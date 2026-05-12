@@ -86,23 +86,23 @@ The following statements about a metric space $X$ are equivalent.
 
 $$\mathcal{B} = \lbrace \Omega(m, r) \mid m \in M,\; r \text{ rational} \rbrace.$$
 
-$\mathcal{B}$ is obviously countable; we show it is a basis. Let $U$ be open and let $x \in U$. Then there is an $\varepsilon > 0$ such that $\Omega(x, \varepsilon) \subseteq U$. Choose an $m_x \in M$ and a rational $r_x$ such that $d(x, m_x) < \tfrac{1}{3}\varepsilon$ and $\tfrac{1}{3}\varepsilon < r_x < \tfrac{2}{3}\varepsilon$. Then
+$\mathcal{B}$ is obviously countable; we show it is a basis. Let $U$ be open and let $x \in U$. Then there is an $\varepsilon > 0$ such that $\Omega(x, \varepsilon) \subseteq U$. Choose an $m\_x \in M$ and a rational $r\_x$ such that $d(x, m\_x) < \tfrac{1}{3}\varepsilon$ and $\tfrac{1}{3}\varepsilon < r\_x < \tfrac{2}{3}\varepsilon$. Then
 
 $$x \in \Omega(m_x, r_x) \subseteq \Omega(x, \varepsilon) \subseteq U.$$
 
-Indeed, $x \in \Omega(m_x, r_x)$ trivially and if $y \in \Omega(m_x, r_x)$ then $d(x, y) \le d(x, m_x) + d(m_x, y) < \tfrac{1}{3}\varepsilon + \tfrac{2}{3}\varepsilon = \varepsilon$. Thus $U = \bigcup \lbrace \Omega(m_x, r_x) \mid x \in U \rbrace$.
+Indeed, $x \in \Omega(m\_x, r\_x)$ trivially and if $y \in \Omega(m\_x, r\_x)$ then $d(x, y) \le d(x, m\_x) + d(m\_x, y) < \tfrac{1}{3}\varepsilon + \tfrac{2}{3}\varepsilon = \varepsilon$. Thus $U = \bigcup \lbrace \Omega(m\_x, r\_x) \mid x \in U \rbrace$.
 
 **(2)$\Rightarrow$(3):** Let $\mathcal{B}$ be a countable basis and let $\mathcal{U}$ be a cover of $X$. Since $U = \bigcup \lbrace B \mid B \in \mathcal{B},\; B \subseteq U \rbrace$ for each $U \in \mathcal{U}$ we have
 
 $$X = \bigcup \lbrace B \in \mathcal{B} \mid \exists U_B \supseteq B,\; U_B \in U \rbrace.$$
 
-The cover $\mathcal{A} = \lbrace B \in \mathcal{B} \mid \exists U_B \supseteq B,\; U_B \in U \rbrace$ is countable and hence so is also the cover $\mathcal{V} = \lbrace U_B \mid B \in \mathcal{A} \rbrace$.
+The cover $\mathcal{A} = \lbrace B \in \mathcal{B} \mid \exists U\_B \supseteq B,\; U\_B \in U \rbrace$ is countable and hence so is also the cover $\mathcal{V} = \lbrace U\_B \mid B \in \mathcal{A} \rbrace$.
 
-**(3)$\Rightarrow$(1):** Let $X$ be Lindelöf. For covers $\mathcal{U}_n = \lbrace \Omega(x, \tfrac{1}{n}) \mid x \in X \rbrace$, choose countable subcovers
+**(3)$\Rightarrow$(1):** Let $X$ be Lindelöf. For covers $\mathcal{U}\_n = \lbrace \Omega(x, \tfrac{1}{n}) \mid x \in X \rbrace$, choose countable subcovers
 
 $$\Omega(x_{n1}, \tfrac{1}{n}),\; \Omega(x_{n2}, \tfrac{1}{n}),\; \dots,\; \Omega(x_{nk}, \tfrac{1}{n}),\; \dots$$
 
-Then $\lbrace x_{nk} \mid n = 1, 2, \dots,\; k = 1, 2, \dots \rbrace$ is dense. $\square$
+Then $\lbrace x\_{nk} \mid n = 1, 2, \dots,\; k = 1, 2, \dots \rbrace$ is dense. $\square$
 
 </details>
 </div>
@@ -156,7 +156,7 @@ Let $Y \subseteq X$. For $\varepsilon > 0$ take the $M(\tfrac{\varepsilon}{2}) \
 
 $$M_Y = \lbrace a \in M(\tfrac{\varepsilon}{2}) \mid \exists y \in Y,\; d(a, y) < \tfrac{\varepsilon}{2} \rbrace.$$
 
-Now for each $a \in M_Y$ choose an $a_Y \in Y$ such that $d(a, a_Y) < \tfrac{\varepsilon}{2}$ and set $N(\varepsilon) = \lbrace a_Y \mid a \in M_Y \rbrace$. Then for every $y \in Y$ we have $d(y, N(\varepsilon)) < \varepsilon$. $\square$
+Now for each $a \in M\_Y$ choose an $a\_Y \in Y$ such that $d(a, a\_Y) < \tfrac{\varepsilon}{2}$ and set $N(\varepsilon) = \lbrace a\_Y \mid a \in M\_Y \rbrace$. Then for every $y \in Y$ we have $d(y, N(\varepsilon)) < \varepsilon$. $\square$
 
 </details>
 </div>
@@ -164,7 +164,7 @@ Now for each $a \in M_Y$ choose an $a_Y \in Y$ such that $d(a, a_Y) < \tfrac{\va
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.3</span></p>
 
-A product $X = \prod_{j=1}^{n} (X_j, d_j)$ of totally bounded spaces is totally bounded.
+A product $X = \prod\_{j=1}^{n} (X\_j, d\_j)$ of totally bounded spaces is totally bounded.
 
 </div>
 
@@ -172,7 +172,7 @@ A product $X = \prod_{j=1}^{n} (X_j, d_j)$ of totally bounded spaces is totally 
 <details markdown="1">
 <summary>Proof</summary>
 
-For the product take the distance $d$ from XIII.5. Then if we take for $X_i$ the $M_i(\varepsilon)$ from the definition, the set $M(\varepsilon) = \prod M_i(\varepsilon)$ has the property needed for $X$. $\square$
+For the product take the distance $d$ from XIII.5. Then if we take for $X\_i$ the $M\_i(\varepsilon)$ from the definition, the set $M(\varepsilon) = \prod M\_i(\varepsilon)$ has the property needed for $X$. $\square$
 
 </details>
 </div>
@@ -180,7 +180,7 @@ For the product take the distance $d$ from XIII.5. Then if we take for $X_i$ the
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.4</span></p>
 
-A subspace of $\mathbb{E}_n$ is totally bounded if and only if it is bounded.
+A subspace of $\mathbb{E}\_n$ is totally bounded if and only if it is bounded.
 
 </div>
 
@@ -208,7 +208,7 @@ If $(X, d)$ is not totally bounded then there is a sequence that contains no Cau
 <details markdown="1">
 <summary>Proof</summary>
 
-If $(X, d)$ is not totally bounded then there is an $\varepsilon_0 > 0$ such that for every finite $M \subseteq X$ there is an $x_M \in X$ such that $d(x_M, M) \ge \varepsilon_0$. Choose $x_1$ arbitrarily and if $x_1, \dots, x_n$ are already chosen set $x_{n+1} = x_{\lbrace x_1, \dots, x_n \rbrace}$. Then any two elements of the resulting sequence have the distance at least $\varepsilon_0$ and hence there is no Cauchy subsequence. $\square$
+If $(X, d)$ is not totally bounded then there is an $\varepsilon\_0 > 0$ such that for every finite $M \subseteq X$ there is an $x\_M \in X$ such that $d(x\_M, M) \ge \varepsilon\_0$. Choose $x\_1$ arbitrarily and if $x\_1, \dots, x\_n$ are already chosen set $x\_{n+1} = x\_{\lbrace x\_1, \dots, x\_n \rbrace}$. Then any two elements of the resulting sequence have the distance at least $\varepsilon\_0$ and hence there is no Cauchy subsequence. $\square$
 
 </details>
 </div>
@@ -224,15 +224,15 @@ A metric space $X$ is totally bounded if and only if every sequence in $X$ conta
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $(x_n)_n$ be a sequence in a totally bounded $(X, d)$. Consider the
+Let $(x\_n)\_n$ be a sequence in a totally bounded $(X, d)$. Consider the
 
 $$M(\tfrac{1}{n}) = \lbrace y_{n1}, \dots, y_{nm_n} \rbrace$$
 
-from the definition. If $A = \lbrace x_n \mid n = 1, 2, \dots \rbrace$ is finite then $(x_n)_n$ contains a constant subsequence. Thus, suppose $A$ is not finite. There is an $r_1$ such that $A_1 = A \cap \Omega(y_{1r_1}, 1)$ is infinite; choose $x_{k_1} \in A_1$. If we already have infinite
+from the definition. If $A = \lbrace x\_n \mid n = 1, 2, \dots \rbrace$ is finite then $(x\_n)\_n$ contains a constant subsequence. Thus, suppose $A$ is not finite. There is an $r\_1$ such that $A\_1 = A \cap \Omega(y\_{1r\_1}, 1)$ is infinite; choose $x\_{k\_1} \in A\_1$. If we already have infinite
 
 $$A_1 \supseteq A_2 \supseteq \cdots \supseteq A_s, \quad A_j \subseteq \Omega(y_{jr_j}, \tfrac{1}{j})$$
 
-and $k_1 < \cdots < k_s$ such that $x_{k_j} \in A_j$, choose $r_{s+1}$ such that $A_{s+1} = A_s \cap \Omega(y_{s+1,r_{s+1}}, \tfrac{1}{s+1})$ is infinite and an $x_{k_{s+1}} \in A_{s+1}$ such that $k_{s+1} > k_s$. Then the subsequence $(x_{k_n})_n$ is Cauchy.
+and $k\_1 < \cdots < k\_s$ such that $x\_{k\_j} \in A\_j$, choose $r\_{s+1}$ such that $A\_{s+1} = A\_s \cap \Omega(y\_{s+1,r\_{s+1}}, \tfrac{1}{s+1})$ is infinite and an $x\_{k\_{s+1}} \in A\_{s+1}$ such that $k\_{s+1} > k\_s$. Then the subsequence $(x\_{k\_n})\_n$ is Cauchy.
 
 The converse is in 2.5.1. $\square$
 
@@ -252,7 +252,7 @@ A metric space is compact if and only if it is totally bounded and complete.
 
 Let $X$ be compact. Then it is complete by XIII.7.7 and totally bounded by 2.5.1.
 
-On the other hand let $X$ be totally bounded and let $(x_n)_n$ be a sequence in $X$. Then it contains a Cauchy subsequence and if it is, moreover, complete, this subsequence converges. $\square$
+On the other hand let $X$ be totally bounded and let $(x\_n)\_n$ be a sequence in $X$. Then it contains a Cauchy subsequence and if it is, moreover, complete, this subsequence converges. $\square$
 
 </details>
 </div>
@@ -260,7 +260,7 @@ On the other hand let $X$ be totally bounded and let $(x_n)_n$ be a sequence in 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2.6.1</span></p>
 
-1. We already know the characterisation of the compact subspaces of $\mathbb{E}_n$ as the closed bounded ones (XIII.7.6). Realize that it is a special case of 2.6: a subset of $\mathbb{E}_n$ is complete iff it is closed (see XIII.6.6 and XIII.6.4), and it is totally bounded iff it is bounded (see 2.4).
+1. We already know the characterisation of the compact subspaces of $\mathbb{E}\_n$ as the closed bounded ones (XIII.7.6). Realize that it is a special case of 2.6: a subset of $\mathbb{E}\_n$ is complete iff it is closed (see XIII.6.6 and XIII.6.4), and it is totally bounded iff it is bounded (see 2.4).
 2. Note that neither completeness nor total boundedness are topological properties, while their conjunction is.
 
 </div>
@@ -276,7 +276,7 @@ Every totally bounded metric space is separable.
 <details markdown="1">
 <summary>Proof</summary>
 
-Take the sets $M(\varepsilon)$ from the definition again. The set $\bigcup_{n=1}^{\infty} M(\tfrac{1}{n})$ is countable and evidently dense. $\square$
+Take the sets $M(\varepsilon)$ from the definition again. The set $\bigcup\_{n=1}^{\infty} M(\tfrac{1}{n})$ is countable and evidently dense. $\square$
 
 </details>
 </div>
@@ -310,9 +310,9 @@ A metric space $X$ is compact iff every infinite $M$ in $X$ has an accumulation 
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $X$ be compact and let $A$ be infinite. Choose an arbitrary sequence $x_1, x_2, \dots, x_n, \dots$ in $A$ such that $x_i \ne x_j$ for $i \ne j$. Then every neighbourhood of a limit $x$ of a subsequence $(x_{k_n})_n$ contains infinitely many $x_j$'s and hence $x$ is an accumulation point of $A$.
+Let $X$ be compact and let $A$ be infinite. Choose an arbitrary sequence $x\_1, x\_2, \dots, x\_n, \dots$ in $A$ such that $x\_i \ne x\_j$ for $i \ne j$. Then every neighbourhood of a limit $x$ of a subsequence $(x\_{k\_n})\_n$ contains infinitely many $x\_j$'s and hence $x$ is an accumulation point of $A$.
 
-On the other hand let the second statement hold and let $(x_n)_n$ be a sequence in $X$. Then either $A = \lbrace x_n \mid n = 1, 2, \dots \rbrace$ is finite and then $(x_n)_n$ contains a constant subsequence, or $A$ has an accumulation point $x$. Then we can proceed as follows. Choose $x_{k_1}$ in $A \cap \Omega(x, 1)$ and if $x_{k_1}, \dots, x_{k_n}$ have been already chosen pick $x_{k_{n+1}}$ in $A \cap \Omega(x, \tfrac{1}{n+1})$ so that $k_{n+1} > k_n$ (this disqualifies only finitely many of infinite number of choices); then $\lim_n x_{k_n} = x$. $\square$
+On the other hand let the second statement hold and let $(x\_n)\_n$ be a sequence in $X$. Then either $A = \lbrace x\_n \mid n = 1, 2, \dots \rbrace$ is finite and then $(x\_n)\_n$ contains a constant subsequence, or $A$ has an accumulation point $x$. Then we can proceed as follows. Choose $x\_{k\_1}$ in $A \cap \Omega(x, 1)$ and if $x\_{k\_1}, \dots, x\_{k\_n}$ have been already chosen pick $x\_{k\_{n+1}}$ in $A \cap \Omega(x, \tfrac{1}{n+1})$ so that $k\_{n+1} > k\_n$ (this disqualifies only finitely many of infinite number of choices); then $\lim\_n x\_{k\_n} = x$. $\square$
 
 </details>
 </div>
@@ -328,18 +328,18 @@ A metric space is compact if and only if each cover of $X$ contains a finite sub
 <details markdown="1">
 <summary>Proof</summary>
 
-**I.** Let $X$ be compact but let there be a cover that has no finite subcover. By 2.7.1 $X$ is Lindelöf and hence there is a *countable* cover $U_1, U_2, \dots, U_n, \dots$ with no finite subcover. Define $V_1, V_2, \dots, V_n, \dots$ as follows:
-- take for $V_1$ the first non-empty $U_k$, and
-- if $V_1, V_2, \dots, V_n$ have been already chosen take for $V_{n+1}$ the first $U_k$ such that $U_k \not\subseteq \bigcup_{j=1}^{n} V_j$ (rejecting the $U_j$ that were redundant for covering the space, only without repetition).
+**I.** Let $X$ be compact but let there be a cover that has no finite subcover. By 2.7.1 $X$ is Lindelöf and hence there is a *countable* cover $U\_1, U\_2, \dots, U\_n, \dots$ with no finite subcover. Define $V\_1, V\_2, \dots, V\_n, \dots$ as follows:
+- take for $V\_1$ the first non-empty $U\_k$, and
+- if $V\_1, V\_2, \dots, V\_n$ have been already chosen take for $V\_{n+1}$ the first $U\_k$ such that $U\_k \not\subseteq \bigcup\_{j=1}^{n} V\_j$ (rejecting the $U\_j$ that were redundant for covering the space, only without repetition).
 
 Hence
-1. $\lbrace V_n \mid n = 1, 2, \dots \rbrace$ is a subcover of $\lbrace U_n \mid n = 1, 2, \dots \rbrace$,
+1. $\lbrace V\_n \mid n = 1, 2, \dots \rbrace$ is a subcover of $\lbrace U\_n \mid n = 1, 2, \dots \rbrace$,
 2. the procedure cannot stop, else we had a finite subcover, and
-3. we can choose $x_n \in V_n \setminus \bigcup_{k=1}^{n-1} V_k$.
+3. we can choose $x\_n \in V\_n \setminus \bigcup\_{k=1}^{n-1} V\_k$.
 
-Now all the $x_n$ are distinct (if $k < n$ then $x_n \in V_n \setminus V_k$ while $x_k \in V_k$) and hence we have an infinite set $A = \lbrace x_1, x_2, \dots, x_n, \dots \rbrace$, and this set has to have an accumulation point $x$. Since $\lbrace V_n \mid n = 1, 2, \dots \rbrace$ is a cover, there is an $n$ such that $x \in V_n$. This is a contradiction since $V_n$ contains none of the $x_k$ with $k > n$ and hence $V_n \cap A$ is not infinite.
+Now all the $x\_n$ are distinct (if $k < n$ then $x\_n \in V\_n \setminus V\_k$ while $x\_k \in V\_k$) and hence we have an infinite set $A = \lbrace x\_1, x\_2, \dots, x\_n, \dots \rbrace$, and this set has to have an accumulation point $x$. Since $\lbrace V\_n \mid n = 1, 2, \dots \rbrace$ is a cover, there is an $n$ such that $x \in V\_n$. This is a contradiction since $V\_n$ contains none of the $x\_k$ with $k > n$ and hence $V\_n \cap A$ is not infinite.
 
-**II.** Let the statement about covers hold and let there be an infinite $A$ without an accumulation point. That is, no $x \in X$ is an accumulation point of $A$ and hence we have open $U_x \ni x$ such that $U_x \cap A$ is finite. Choose a finite subcover $U_{x_1}, U_{x_2}, \dots, U_{x_n}$ of the cover $\lbrace U_x \mid x \in X \rbrace$. Now we have
+**II.** Let the statement about covers hold and let there be an infinite $A$ without an accumulation point. That is, no $x \in X$ is an accumulation point of $A$ and hence we have open $U\_x \ni x$ such that $U\_x \cap A$ is finite. Choose a finite subcover $U\_{x\_1}, U\_{x\_2}, \dots, U\_{x\_n}$ of the cover $\lbrace U\_x \mid x \in X \rbrace$. Now we have
 
 $$A = A \cap X = A \cap \bigcup_{k=1}^{n} U_{x_k} = \bigcup_{k=1}^{n} (A \cap U_{x_k})$$
 
@@ -351,11 +351,11 @@ which is a contradiction since the rightmost union is finite. $\square$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3.3</span><span class="math-callout__name">(Finite Intersection Property)</span></p>
 
-Let $\mathcal{A}$ be a system of closed subsets of a compact space. If $\bigcap \lbrace A \mid A \in \mathcal{A} \rbrace = \emptyset$ then there is a finite $\mathcal{A}_0 \subseteq \mathcal{A}$ such that $\bigcap \lbrace A \mid A \in \mathcal{A}_0 \rbrace = \emptyset$. Consequently, if
+Let $\mathcal{A}$ be a system of closed subsets of a compact space. If $\bigcap \lbrace A \mid A \in \mathcal{A} \rbrace = \emptyset$ then there is a finite $\mathcal{A}\_0 \subseteq \mathcal{A}$ such that $\bigcap \lbrace A \mid A \in \mathcal{A}\_0 \rbrace = \emptyset$. Consequently, if
 
 $$A_1 \supseteq A_2 \supseteq \cdots \supseteq A_n \supseteq \cdots$$
 
-is a decreasing sequence of non-empty closed subsets of $X$ then $\bigcap_{n=1}^{\infty} A_n \ne \emptyset$.
+is a decreasing sequence of non-empty closed subsets of $X$ then $\bigcap\_{n=1}^{\infty} A\_n \ne \emptyset$.
 
 </div>
 
@@ -401,7 +401,7 @@ Let $(X, d)$ be a complete metric space. Let
 
 $$A_1 \supseteq A_2 \supseteq \cdots \supseteq A_n \supseteq \cdots$$
 
-be a decreasing sequence of non-empty closed subsets of $X$ with $\lim_n \operatorname{diam}(A_n) = 0$. Then
+be a decreasing sequence of non-empty closed subsets of $X$ with $\lim\_n \operatorname{diam}(A\_n) = 0$. Then
 
 $$\bigcap_{n=1}^{\infty} A_n \ne \emptyset.$$
 
@@ -411,7 +411,7 @@ $$\bigcap_{n=1}^{\infty} A_n \ne \emptyset.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-Choose $a_n \in A_n$. Then, by the assumption on diameters, $(a_n)_n$ is a Cauchy sequence and hence, by completeness, it has a limit $a$. Now the subsequence $a_n, a_{n+1}, a_{n+2}, \dots$ is in the *closed* $A_n$ and hence its limit $a$ is in $A_n$. As $n$ was arbitrary, $a \in \bigcap_{n=1}^{\infty} A_n$. $\square$
+Choose $a\_n \in A\_n$. Then, by the assumption on diameters, $(a\_n)\_n$ is a Cauchy sequence and hence, by completeness, it has a limit $a$. Now the subsequence $a\_n, a\_{n+1}, a\_{n+2}, \dots$ is in the *closed* $A\_n$ and hence its limit $a$ is in $A\_n$. As $n$ was arbitrary, $a \in \bigcap\_{n=1}^{\infty} A\_n$. $\square$
 
 </details>
 </div>
@@ -419,8 +419,8 @@ Choose $a_n \in A_n$. Then, by the assumption on diameters, $(a_n)_n$ is a Cauch
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Notes 4.2.1</span></p>
 
-1. The assumption on diminishing diameter is essential: take e.g. the closed $A_n = \langle n, +\infty)$ in the complete $\mathbb{R}$. It may look paradoxical that an intersection of small sets is non-void but an intersection of large ones is not necessarily so. But the principle is, hopefully, obvious.
-2. In $\mathbb{R}$ or, more generally, in $\mathbb{E}_n$, the intersection in 4.2 consists necessarily of a single point (see 3.3). But this has to do with compactness, not with completeness — one can easily give an example with $\operatorname{diam}(A_n) = 1$, but not in $\mathbb{R}$ or $\mathbb{E}_n$.
+1. The assumption on diminishing diameter is essential: take e.g. the closed $A\_n = \langle n, +\infty)$ in the complete $\mathbb{R}$. It may look paradoxical that an intersection of small sets is non-void but an intersection of large ones is not necessarily so. But the principle is, hopefully, obvious.
+2. In $\mathbb{R}$ or, more generally, in $\mathbb{E}\_n$, the intersection in 4.2 consists necessarily of a single point (see 3.3). But this has to do with compactness, not with completeness — one can easily give an example with $\operatorname{diam}(A\_n) = 1$, but not in $\mathbb{R}$ or $\mathbb{E}\_n$.
 3. Needless to say, the intersection in 4.2 consists necessarily of a single point.
 
 </div>
@@ -482,7 +482,7 @@ A countable union of nowhere dense sets can be already very far from being nowhe
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Set of First Category / Meagre Set)</span></p>
 
-A subset of a metric space is said to be a **set of first category** (or a **meagre set**) if it is a countable union $\bigcup_{n=1}^{\infty} A_n$ of nowhere dense sets $A_n$.
+A subset of a metric space is said to be a **set of first category** (or a **meagre set**) if it is a countable union $\bigcup\_{n=1}^{\infty} A\_n$ of nowhere dense sets $A\_n$.
 
 </div>
 
@@ -497,23 +497,23 @@ No complete metric space $X$ is of the first category in itself.
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose it is, that is, $X = \bigcup_{n=1}^{\infty} A_n$ with $X \setminus \overline{A_n}$ dense. We can assume all the $A_n$ closed; hence we have $X \setminus A_n$ dense open.
+Suppose it is, that is, $X = \bigcup\_{n=1}^{\infty} A\_n$ with $X \setminus \overline{A\_n}$ dense. We can assume all the $A\_n$ closed; hence we have $X \setminus A\_n$ dense open.
 
-Choose $U_1 = \Omega(x, \varepsilon)$ such that $\Omega(x, 2\varepsilon) \subseteq X \setminus A_1$ and $2\varepsilon < 1$. Thus, by 4.1.1 and 4.3,
+Choose $U\_1 = \Omega(x, \varepsilon)$ such that $\Omega(x, 2\varepsilon) \subseteq X \setminus A\_1$ and $2\varepsilon < 1$. Thus, by 4.1.1 and 4.3,
 
 $$B_1 = \overline{U}_1 \subseteq X \setminus A_1 \quad \text{and} \quad \operatorname{diam}(B_1) < 1.$$
 
-Let us have for $k \le n$ non-empty open $U_1, \dots, U_n$ with
+Let us have for $k \le n$ non-empty open $U\_1, \dots, U\_n$ with
 
 $$U_{k-1} \supseteq B_k = \overline{U}_k \text{ for } k \le n, \quad B_k \subseteq X \setminus A_k, \quad \text{and } \operatorname{diam}(B_k) < \tfrac{1}{k}. \quad (*)$$
 
-Since $U_n \cap (X \setminus A_{n+1})$ is non-empty open we can choose $U_{n+1} = \Omega(y, \eta)$ for some $y \in U_n \cap (X \setminus A_{n+1})$ and $\eta$ sufficiently small to have $\Omega(y, 2\eta) \subseteq U_n \cap (X \setminus A_{n+1})$ and $2\eta < \tfrac{1}{n+1}$. Then we have, by 4.1.1 and 4.3, the system $(*)$ extended from $n$ to $n + 1$ and we inductively obtain a sequence of non-empty closed sets $B_n$ such that
+Since $U\_n \cap (X \setminus A\_{n+1})$ is non-empty open we can choose $U\_{n+1} = \Omega(y, \eta)$ for some $y \in U\_n \cap (X \setminus A\_{n+1})$ and $\eta$ sufficiently small to have $\Omega(y, 2\eta) \subseteq U\_n \cap (X \setminus A\_{n+1})$ and $2\eta < \tfrac{1}{n+1}$. Then we have, by 4.1.1 and 4.3, the system $(\ast)$ extended from $n$ to $n + 1$ and we inductively obtain a sequence of non-empty closed sets $B\_n$ such that
 
-1. $B_1 \supseteq B_2 \supseteq \cdots \supseteq B_n \supseteq \cdots$,
-2. $\operatorname{diam}(B_n) < \tfrac{1}{n}$, and
-3. $B_n \subseteq X \setminus A_n$.
+1. $B\_1 \supseteq B\_2 \supseteq \cdots \supseteq B\_n \supseteq \cdots$,
+2. $\operatorname{diam}(B\_n) < \tfrac{1}{n}$, and
+3. $B\_n \subseteq X \setminus A\_n$.
 
-By (1),(2) and 4.2, $B = \bigcap_{n=1}^{\infty} B_n \ne \emptyset$, and by (3)
+By (1),(2) and 4.2, $B = \bigcap\_{n=1}^{\infty} B\_n \ne \emptyset$, and by (3)
 
 $$B \subseteq \bigcap_{n=1}^{\infty} (X \setminus A_n) = X \setminus \bigcup_{n=1}^{\infty} A_n = X \setminus X = \emptyset,$$
 
@@ -546,7 +546,7 @@ In this section we will show that we can analogously extend every metric space. 
 
 The idea is very natural. In the original space there can be Cauchy sequences without limits; thus, let us add the limits. This will be done by representing the limits by the so far limitless Cauchy sequences; only, we will have to identify the sequences that represent the same limit — see the equivalence $\sim$ below.
 
-Denote by $\mathcal{C}(X, d)$, in short $\mathcal{C}(X)$, the set of all Cauchy sequences in $X$. For $(x_n)_n, (y_n)_n \in \mathcal{C}(X)$ define
+Denote by $\mathcal{C}(X, d)$, in short $\mathcal{C}(X)$, the set of all Cauchy sequences in $X$. For $(x\_n)\_n, (y\_n)\_n \in \mathcal{C}(X)$ define
 
 $$d'((x_n)_n, (y_n)_n) = \lim_n d(x_n, y_n).$$
 
@@ -555,9 +555,9 @@ $$d'((x_n)_n, (y_n)_n) = \lim_n d(x_n, y_n).$$
 
 The limit in the definition of $d'$ always exists and we have
 
-1. $d'((x_n)_n, (x_n)_n) = 0$,
-2. $d'((x_n)_n, (y_n)_n) = d'((y_n)_n, (x_n)_n)$, and
-3. $d'((x_n)_n, (z_n)_n) \le d'((x_n)_n, (y_n)_n) + d'((y_n)_n, (z_n)_n)$.
+1. $d'((x\_n)\_n, (x\_n)\_n) = 0$,
+2. $d'((x\_n)\_n, (y\_n)\_n) = d'((y\_n)\_n, (x\_n)\_n)$, and
+3. $d'((x\_n)\_n, (z\_n)\_n) \le d'((x\_n)\_n, (y\_n)\_n) + d'((y\_n)\_n, (z\_n)\_n)$.
 
 </div>
 
@@ -565,13 +565,13 @@ The limit in the definition of $d'$ always exists and we have
 <details markdown="1">
 <summary>Proof</summary>
 
-The first statement is proved by showing that $(d(x_n, y_n))_n$ is Cauchy in $\mathbb{R}$. Indeed, $(x_n)_n$ and $(y_n)_n$ are Cauchy and hence for an $\varepsilon > 0$ we have an $n_0$ such that for $m, n > n_0$, $d(x_n, x_m) < \tfrac{\varepsilon}{2}$ and $d(y_n, y_m) < \tfrac{\varepsilon}{2}$. Then $d(x_n, y_n) \le d(x_n, x_m) + d(x_m, y_m) + d(y_m, y_n) < \varepsilon + d(x_m, y_m)$, hence $d(x_n, y_n) - d(x_m, y_m) < \varepsilon$ and by symmetry also $d(x_m, y_m) - d(x_n, y_n) < \varepsilon$, so $\lvert d(x_n, y_n) - d(x_m, y_m) \rvert < \varepsilon$.
+The first statement is proved by showing that $(d(x\_n, y\_n))\_n$ is Cauchy in $\mathbb{R}$. Indeed, $(x\_n)\_n$ and $(y\_n)\_n$ are Cauchy and hence for an $\varepsilon > 0$ we have an $n\_0$ such that for $m, n > n\_0$, $d(x\_n, x\_m) < \tfrac{\varepsilon}{2}$ and $d(y\_n, y\_m) < \tfrac{\varepsilon}{2}$. Then $d(x\_n, y\_n) \le d(x\_n, x\_m) + d(x\_m, y\_m) + d(y\_m, y\_n) < \varepsilon + d(x\_m, y\_m)$, hence $d(x\_n, y\_n) - d(x\_m, y\_m) < \varepsilon$ and by symmetry also $d(x\_m, y\_m) - d(x\_n, y\_n) < \varepsilon$, so $\lvert d(x\_n, y\_n) - d(x\_m, y\_m) \rvert < \varepsilon$.
 
 (1) and (2) are trivial and (3) is very easy: choose $k$ such that
 
 $$\lvert d'((x_n)_n, (z_n)_n) - d(x_k, z_k) \rvert < \varepsilon, \quad \lvert d'((x_n)_n, (y_n)_n) - d(x_k, y_k) \rvert < \varepsilon$$
 
-and $\lvert d'((y_n)_n, (z_n)_n) - d(y_k, z_k) \rvert < \varepsilon$. Then we obtain from the triangle inequality of $d$ that $d'((x_n)_n, (z_n)_n) \le d'((x_n)_n, (y_n)_n) + d'((y_n)_n, (z_n)_n) + 3\varepsilon$, and since $\varepsilon$ was arbitrary, (3) follows. $\square$
+and $\lvert d'((y\_n)\_n, (z\_n)\_n) - d(y\_k, z\_k) \rvert < \varepsilon$. Then we obtain from the triangle inequality of $d$ that $d'((x\_n)\_n, (z\_n)\_n) \le d'((x\_n)\_n, (y\_n)\_n) + d'((y\_n)\_n, (z\_n)\_n) + 3\varepsilon$, and since $\varepsilon$ was arbitrary, (3) follows. $\square$
 
 </details>
 </div>
@@ -584,7 +584,7 @@ $$(x_n)_n \sim (y_n)_n \quad \text{iff} \quad d'((x_n)_n, (y_n)_n) = 0$$
 
 $$\widetilde{X} = \mathcal{C}(X) / {\sim},$$
 
-and for classes $p = [(x_n)_n]$ and $q = [(y_n)_n]$ of this equivalence relation set
+and for classes $p = [(x\_n)\_n]$ and $q = [(y\_n)\_n]$ of this equivalence relation set
 
 $$\widetilde{d}(p, q) = d'((x_n)_n, (y_n)_n).$$
 
@@ -599,13 +599,13 @@ The value of $\widetilde{d}(p, q)$ does not depend on the choice of representati
 <details markdown="1">
 <summary>Proof</summary>
 
-If $(x_n)_n \sim (x_n')_n$ and $(y_n)_n \sim (y_n')_n$ we have
+If $(x\_n)\_n \sim (x\_n')\_n$ and $(y\_n)\_n \sim (y\_n')\_n$ we have
 
 $$d'((x_n)_n, (y_n)_n) \le d'((x_n)_n, (x_n')_n) + d'((x_n')_n, (y_n')_n) + d'((y_n')_n, (y_n)_n) = 0 + d'((x_n')_n, (y_n')_n) + 0 = d'((x_n')_n, (y_n')_n)$$
 
-and by symmetry also $d'((x_n')_n, (y_n')_n) \le d'((x_n)_n, (y_n)_n)$.
+and by symmetry also $d'((x\_n')\_n, (y\_n')\_n) \le d'((x\_n)\_n, (y\_n)\_n)$.
 
-Now by 5.2.1, $\widetilde{d}$ satisfies the requirements XIII.2.1(2),(3) and the missing $\widetilde{d}(p, q) = 0 \Rightarrow p = q$ immediately follows from the definition of $\sim$: if $d(p, q) = d'((x_n)_n, (y_n)_n) = 0$ then $(x_n)_n \sim (y_n)_n$ and the sequences represent the same element of $\widetilde{X}$. $\square$
+Now by 5.2.1, $\widetilde{d}$ satisfies the requirements XIII.2.1(2),(3) and the missing $\widetilde{d}(p, q) = 0 \Rightarrow p = q$ immediately follows from the definition of $\sim$: if $d(p, q) = d'((x\_n)\_n, (y\_n)\_n) = 0$ then $(x\_n)\_n \sim (y\_n)\_n$ and the sequences represent the same element of $\widetilde{X}$. $\square$
 
 </details>
 </div>
@@ -621,7 +621,7 @@ by $\iota(x) = [\widetilde{x}]$. We have $d'(\widetilde{x}, \widetilde{y}) = d(x
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.3</span><span class="math-callout__name">(Completion)</span></p>
 
-The image of the isometric embedding $\iota_{(X,d)}$ is dense in $(\widetilde{X}, \widetilde{d})$, and the space $(\widetilde{X}, \widetilde{d})$ is complete.
+The image of the isometric embedding $\iota\_{(X,d)}$ is dense in $(\widetilde{X}, \widetilde{d})$, and the space $(\widetilde{X}, \widetilde{d})$ is complete.
 
 </div>
 
@@ -629,23 +629,23 @@ The image of the isometric embedding $\iota_{(X,d)}$ is dense in $(\widetilde{X}
 <details markdown="1">
 <summary>Proof</summary>
 
-**Density.** Take a $p = [(x_n)_n] \in \widetilde{X}$ and an $\varepsilon > 0$. Since $(x_n)_n$ is Cauchy there is an $n_0$ such that for $m, k > n_0$, $d(x_m, x_k) \le \varepsilon$. But then $\widetilde{d}(\iota(x_{n_0}), p) = d'(\widetilde{x_{n_0}}, (x_k)_k) = \lim_k d(x_{n_0}, x_k) < \varepsilon$.
+**Density.** Take a $p = [(x\_n)\_n] \in \widetilde{X}$ and an $\varepsilon > 0$. Since $(x\_n)\_n$ is Cauchy there is an $n\_0$ such that for $m, k > n\_0$, $d(x\_m, x\_k) \le \varepsilon$. But then $\widetilde{d}(\iota(x\_{n\_0}), p) = d'(\widetilde{x\_{n\_0}}, (x\_k)\_k) = \lim\_k d(x\_{n\_0}, x\_k) < \varepsilon$.
 
 **Completeness.** Now let
 
 $$p_1 = [(x_{1n})_n], \;\; p_2 = [(x_{2n})_n], \;\; \dots, \;\; p_k = [(x_{kn})_n], \;\; \dots \qquad (*)$$
 
-be a Cauchy sequence in $(\widetilde{X}, \widetilde{d})$. For each $p_n$ choose, by the already proved density, an $x_n \in X$ such that $\widetilde{d}(p_n, \iota(x_n)) < \varepsilon$. For $\varepsilon > 0$ choose $n_0 > \tfrac{3}{\varepsilon}$ such that for $m, n \ge n_0$, $\widetilde{d}(p_m, p_n) < \tfrac{\varepsilon}{3}$. Then for $m, n \ge n_0$,
+be a Cauchy sequence in $(\widetilde{X}, \widetilde{d})$. For each $p\_n$ choose, by the already proved density, an $x\_n \in X$ such that $\widetilde{d}(p\_n, \iota(x\_n)) < \varepsilon$. For $\varepsilon > 0$ choose $n\_0 > \tfrac{3}{\varepsilon}$ such that for $m, n \ge n\_0$, $\widetilde{d}(p\_m, p\_n) < \tfrac{\varepsilon}{3}$. Then for $m, n \ge n\_0$,
 
 $$d(x_m, x_n) = \widetilde{d}(\iota(x_m), \iota(x_n)) \le \widetilde{d}(\iota(x_m), p_m) + \widetilde{d}(p_m, p_n) + \widetilde{d}(p_n, \iota(x_n)) < \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} = \varepsilon$$
 
-and we see that $(x_n)_n$ is Cauchy. We will prove that the sequence $(*)$ converges to $p = [(x_n)_n]$.
+and we see that $(x\_n)\_n$ is Cauchy. We will prove that the sequence $(\ast)$ converges to $p = [(x\_n)\_n]$.
 
-We know that $\widetilde{d}(p_n, \iota(x_n)) = \lim_k d(x_{nk}, x_n) < \tfrac{1}{n}$. Choose $n_0 > \tfrac{2}{\varepsilon}$ such that for $k, n \ge n_0$ we have $d(x_k, x_m) < \tfrac{\varepsilon}{2}$. Then
+We know that $\widetilde{d}(p\_n, \iota(x\_n)) = \lim\_k d(x\_{nk}, x\_n) < \tfrac{1}{n}$. Choose $n\_0 > \tfrac{2}{\varepsilon}$ such that for $k, n \ge n\_0$ we have $d(x\_k, x\_m) < \tfrac{\varepsilon}{2}$. Then
 
 $$d(x_{nk}, x_k) \le d(x_{nk}, x_n) + d(x_n, x_k) < \tfrac{\varepsilon}{2} + \tfrac{\varepsilon}{2} = \varepsilon$$
 
-and hence $\widetilde{d}(p_n, p) = \lim_k d(x_{nk}, x_k) \le \varepsilon$. $\square$
+and hence $\widetilde{d}(p\_n, p) = \lim\_k d(x\_{nk}, x\_k) \le \varepsilon$. $\square$
 
 </details>
 </div>
@@ -666,7 +666,7 @@ The question naturally arises whether the completion extending the rational line
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pointwise Convergence)</span></p>
 
-Let $X = (X, d)$ and $Y = (Y, d')$ be metric spaces and let $f_n : X \to Y$ be a sequence of continuous mappings. If for each $x \in X$ there is a $\lim_n f(x) = f(x)$ (in $Y$) we say that the sequence $(f_n)_n$ **converges pointwise** to the mapping $f$ and usually write
+Let $X = (X, d)$ and $Y = (Y, d')$ be metric spaces and let $f\_n : X \to Y$ be a sequence of continuous mappings. If for each $x \in X$ there is a $\lim\_n f(x) = f(x)$ (in $Y$) we say that the sequence $(f\_n)\_n$ **converges pointwise** to the mapping $f$ and usually write
 
 $$f_n \to f.$$
 
@@ -675,25 +675,25 @@ $$f_n \to f.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1.1</span></p>
 
-Pointwise convergence does not preserve nice properties of the functions $f_n$, not even continuity, not to speak of possessing derivatives. Consider $X = Y = \langle 0, 1 \rangle$ and $f_n(x) = x^n$. Then $f(x) = \lim_n f_n(x)$ is $0$ for $x < 1$ while $f(1) = 1$.
+Pointwise convergence does not preserve nice properties of the functions $f\_n$, not even continuity, not to speak of possessing derivatives. Consider $X = Y = \langle 0, 1 \rangle$ and $f\_n(x) = x^n$. Then $f(x) = \lim\_n f\_n(x)$ is $0$ for $x < 1$ while $f(1) = 1$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniform Convergence)</span></p>
 
-A sequence $(f_n : (X, d) \to (Y, d'))_n$ converges **uniformly** to $f : X \to Y$ if
+A sequence $(f\_n : (X, d) \to (Y, d'))\_n$ converges **uniformly** to $f : X \to Y$ if
 
 $$\forall \varepsilon > 0 \;\; \exists n_0 \;\;\text{such that}\;\; \forall x \in X \;\; (n \ge n_0 \;\Rightarrow\; d'(f_n(x), f(x)) < \varepsilon).$$
 
-We speak of a **uniformly convergent sequence** of mappings and write $f_n \rightrightarrows f$.
+We speak of a **uniformly convergent sequence** of mappings and write $f\_n \rightrightarrows f$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 1.3</span><span class="math-callout__name">(Uniform Limit of Continuous Functions)</span></p>
 
-Let $f_n : X \to Y$ be continuous mappings and let $f_n \rightrightarrows f$. Then $f$ is continuous.
+Let $f\_n : X \to Y$ be continuous mappings and let $f\_n \rightrightarrows f$. Then $f$ is continuous.
 
 </div>
 
@@ -705,7 +705,7 @@ Choose $x \in X$ and $\varepsilon > 0$. Fix an $n$ such that
 
 $$\forall y \in X, \;\; d'(f_n(y), f(y)) < \tfrac{\varepsilon}{3}.$$
 
-Since $f_n$ is continuous there is a $\delta > 0$ such that
+Since $f\_n$ is continuous there is a $\delta > 0$ such that
 
 $$d(x, z) < \delta \;\Rightarrow\; d'(f_n(x), f_n(z)) < \tfrac{\varepsilon}{3}.$$
 
@@ -720,21 +720,21 @@ $$d'(f(x), f(z)) \le d'(f(x), f_n(x)) + d'(f_n(x), f_n(z)) + d'(f_n(z), f(z)) < 
   <p class="math-callout__title"><span class="math-callout__label">Notes 1.4</span></p>
 
 1. The adjective "uniform" refers, similarly as in "uniform continuity", to the independence of the property in question on the location in the domain space. One might expect that, similarly as in the uniform continuity, we will obtain something for free in case of a compact domain. But it is not so: the sequence in Example 1.1.1 has a very simple compact domain and range and it is not uniformly convergent.
-2. Theorem 1.3 holds for uniform continuity as well, that is: *if $f_n : X \to Y$ are uniformly continuous mappings and $f_n \rightrightarrows f$, then $f$ is uniformly continuous.* To prove this it suffices to adapt the proof of 1.3 by not fixing the $x$ at the start.
+2. Theorem 1.3 holds for uniform continuity as well, that is: *if $f\_n : X \to Y$ are uniformly continuous mappings and $f\_n \rightrightarrows f$, then $f$ is uniformly continuous.* To prove this it suffices to adapt the proof of 1.3 by not fixing the $x$ at the start.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Locally Uniform Convergence)</span></p>
 
-We say that a sequence $(f_n)_n$ converges to $f$ **locally uniformly** if for every $x \in X$ there exists a neighbourhood $U$ such that $f_n\vert_U \rightrightarrows f\vert_U$ for the restrictions on $U$.
+We say that a sequence $(f\_n)\_n$ converges to $f$ **locally uniformly** if for every $x \in X$ there exists a neighbourhood $U$ such that $f\_n\vert\_U \rightrightarrows f\vert\_U$ for the restrictions on $U$.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 1.5.1</span></p>
 
-Let $f_n : X \to Y$ be continuous mappings and let the sequence $f_n$ converge to $f$ locally uniformly. Then $f$ is continuous.
+Let $f\_n : X \to Y$ be continuous mappings and let the sequence $f\_n$ converge to $f$ locally uniformly. Then $f$ is continuous.
 
 </div>
 
@@ -760,7 +760,7 @@ However, smoothness is preserved if the uniform convergence concerns the derivat
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2</span><span class="math-callout__name">(Uniform Convergence of Derivatives)</span></p>
 
-Let $f_n$ be continuous real functions defined on an open interval $J$ and let them have continuous derivatives $f_n'$. Let $f_n \to f$ and $f_n' \rightrightarrows g$ on $J$. Then $f$ has a derivative on $J$ and $f' = g$.
+Let $f\_n$ be continuous real functions defined on an open interval $J$ and let them have continuous derivatives $f\_n'$. Let $f\_n \to f$ and $f\_n' \rightrightarrows g$ on $J$. Then $f$ has a derivative on $J$ and $f' = g$.
 
 </div>
 
@@ -772,13 +772,13 @@ We have
 
 $$A(h) = \left\lvert \frac{f(x+h) - f(x)}{h} - g(x) \right\rvert = \left\lvert \frac{f(x+h) - f_n(x+h)}{h} - \frac{f(x) - f_n(x)}{h} + \frac{f_n(x+h) - f_n(x)}{h} - g(x) \right\rvert$$
 
-and since by the Lagrange theorem, $\tfrac{f_n(x+h) - f_n(x)}{h} = f_n'(x + \theta h)$ for some $\theta$ with $0 < \theta < 1$, we further obtain
+and since by the Lagrange theorem, $\tfrac{f\_n(x+h) - f\_n(x)}{h} = f\_n'(x + \theta h)$ for some $\theta$ with $0 < \theta < 1$, we further obtain
 
 $$A(h) \le \tfrac{1}{\lvert h \rvert} \lvert f(x+h) - f_n(x+h) \rvert + \tfrac{1}{\lvert h \rvert} \lvert f(x) - f_n(x) \rvert + \lvert f_n'(x + \theta h) - g(x + \theta h) \rvert + \lvert g(x + \theta h) - g(x) \rvert.$$
 
-Since $f_n' \rightrightarrows g$, the function $g$ is continuous by 1.3. Choose $\delta > 0$ such that for $\lvert x - y \rvert < \delta$ we have $\lvert g(x) - g(y) \rvert < \varepsilon$; thus if $\lvert h \rvert < \delta$ the last summand is smaller than $\varepsilon$.
+Since $f\_n' \rightrightarrows g$, the function $g$ is continuous by 1.3. Choose $\delta > 0$ such that for $\lvert x - y \rvert < \delta$ we have $\lvert g(x) - g(y) \rvert < \varepsilon$; thus if $\lvert h \rvert < \delta$ the last summand is smaller than $\varepsilon$.
 
-Now fix an $h$ with $\lvert h \rvert < \delta$ and choose an $n$ sufficiently large so that $\lvert f_n'(y) - g(y) \rvert < \varepsilon$, $\lvert f(x+h) - f_n(x+h) \rvert < \varepsilon \lvert h \rvert$, and $\lvert f(x) - f_n(x) \rvert < \varepsilon \lvert h \rvert$ (note that for the first we have to use the uniform convergence — we do not know precisely where $y = x + \theta h$ is; not so in the other two inequalities, where one uses just convergence in two fixed arguments $x$ and $x + h$). Then we obtain
+Now fix an $h$ with $\lvert h \rvert < \delta$ and choose an $n$ sufficiently large so that $\lvert f\_n'(y) - g(y) \rvert < \varepsilon$, $\lvert f(x+h) - f\_n(x+h) \rvert < \varepsilon \lvert h \rvert$, and $\lvert f(x) - f\_n(x) \rvert < \varepsilon \lvert h \rvert$ (note that for the first we have to use the uniform convergence — we do not know precisely where $y = x + \theta h$ is; not so in the other two inequalities, where one uses just convergence in two fixed arguments $x$ and $x + h$). Then we obtain
 
 $$A(h) = \left\lvert \frac{f(x+h) - f(x)}{h} - g(x) \right\rvert < 4\varepsilon$$
 
@@ -789,16 +789,16 @@ and the statement follows. $\square$
 
 ### 2.3. Integral of a Limit of Functions
 
-For Riemann integral we do not generally have $\int_a^b \lim_n f_n = \lim_n \int_a^b f_n$ even if all the $\int_a^b f_n$ exist and all the functions $f_n$ are bounded by the same constant.
+For Riemann integral we do not generally have $\int\_a^b \lim\_n f\_n = \lim\_n \int\_a^b f\_n$ even if all the $\int\_a^b f\_n$ exist and all the functions $f\_n$ are bounded by the same constant.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span></p>
 
-Order all the rational numbers between 0 and 1 in a sequence $r_1, r_2, \dots, r_n, \dots$ Set
+Order all the rational numbers between 0 and 1 in a sequence $r\_1, r\_2, \dots, r\_n, \dots$ Set
 
 $$f_n(x) = \begin{cases} 1 & \text{if } x = r_k \text{ with } k \le n, \\ 0 & \text{otherwise.} \end{cases}$$
 
-Then obviously $\int_0^1 f_n = 0$ for every $n$. But the limit $f$ of the sequence $f_n$ is the well-known Dirichlet function for which (obviously again) the lower integral is 0 and the upper integral is 1.
+Then obviously $\int\_0^1 f\_n = 0$ for every $n$. But the limit $f$ of the sequence $f\_n$ is the well-known Dirichlet function for which (obviously again) the lower integral is 0 and the upper integral is 1.
 
 </div>
 
@@ -807,7 +807,7 @@ For uniform convergence we have, however
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.3.1</span><span class="math-callout__name">(Uniform Convergence and Integration)</span></p>
 
-Let $f_n \rightrightarrows f$ on $\langle a, b \rangle$ and let the Riemann integrals $\int_a^b f_n$ exist. Then also $\int_a^b f$ exists and we have
+Let $f\_n \rightrightarrows f$ on $\langle a, b \rangle$ and let the Riemann integrals $\int\_a^b f\_n$ exist. Then also $\int\_a^b f$ exists and we have
 
 $$\int_a^b f = \lim_n \int_a^b f_n.$$
 
@@ -817,17 +817,17 @@ $$\int_a^b f = \lim_n \int_a^b f_n.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-For $\varepsilon > 0$ choose an $n_0$ such that for $n \ge n_0$,
+For $\varepsilon > 0$ choose an $n\_0$ such that for $n \ge n\_0$,
 
 $$\lvert f_n(x) - f(x) \rvert < \frac{\varepsilon}{b - a} \qquad (*)$$
 
-for all $x \in \langle a, b \rangle$. Recall the notation from XI.2. For a partition $P : a = t_0 < t_1 < \cdots < t_{n-1} < t_n = b$ consider
+for all $x \in \langle a, b \rangle$. Recall the notation from XI.2. For a partition $P : a = t\_0 < t\_1 < \cdots < t\_{n-1} < t\_n = b$ consider
 
 $$m_j = \inf \lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace, \quad M_j = \sup \lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$$
 
 $$m_j^n = \inf \lbrace f_n(x) \mid t_{j-1} \le x \le t_j \rbrace, \quad M_j^n = \sup \lbrace f_n(x) \mid t_{j-1} \le x \le t_j \rbrace.$$
 
-By $(*)$ we have for $n, k \ge n_0$
+By $(\ast)$ we have for $n, k \ge n\_0$
 
 $$\lvert m_j - m_j^n \rvert,\; \lvert M_j - M_j^n \rvert \le \frac{\varepsilon}{b - a} \quad \text{and hence also} \quad \lvert M_j^k - M_j^n \rvert \le \frac{2\varepsilon}{b-a}$$
 
@@ -835,11 +835,11 @@ and we obtain for the lower sums
 
 $$\lvert s(f, P) - s(f_n, P) \rvert = \left\lvert \sum (m_i - m_i^n)(t_i - t_{i-1}) \right\rvert \le \sum \lvert m_i - m_i^n \rvert (t_i - t_{i-1}) \le \varepsilon$$
 
-and similarly for the upper sums $\lvert S(f, P) - S(f_n, P) \rvert \le \varepsilon$ and $\lvert S(f_k, P) - S(f_n, P) \rvert \le 2\varepsilon$.
+and similarly for the upper sums $\lvert S(f, P) - S(f\_n, P) \rvert \le \varepsilon$ and $\lvert S(f\_k, P) - S(f\_n, P) \rvert \le 2\varepsilon$.
 
-Now, first take a $P$ such that $\lvert \int f_n - S(f_n, P) \rvert < \varepsilon$ and $\lvert \int f_k - S(f_k, P) \rvert < \varepsilon$; then we infer from the triangle inequality that $\lvert \int f_k - \int f_n \rvert < 4\varepsilon$ and see that $(\int f_n)_n$ is a Cauchy sequence. Hence there exists a limit $L = \lim_n \int f_n$. Choose $n \ge n_0$ sufficiently large to have $\lvert \int f_n - L \rvert < \varepsilon$.
+Now, first take a $P$ such that $\lvert \int f\_n - S(f\_n, P) \rvert < \varepsilon$ and $\lvert \int f\_k - S(f\_k, P) \rvert < \varepsilon$; then we infer from the triangle inequality that $\lvert \int f\_k - \int f\_n \rvert < 4\varepsilon$ and see that $(\int f\_n)\_n$ is a Cauchy sequence. Hence there exists a limit $L = \lim\_n \int f\_n$. Choose $n \ge n\_0$ sufficiently large to have $\lvert \int f\_n - L \rvert < \varepsilon$.
 
-Now if the partition $P$ is chosen so as to have $S(f_n, P) - \varepsilon < \int f_n < s(f_n, P) + \varepsilon$ we obtain
+Now if the partition $P$ is chosen so as to have $S(f\_n, P) - \varepsilon < \int f\_n < s(f\_n, P) + \varepsilon$ we obtain
 
 $$L - 3\varepsilon \le \int f_n - 2\varepsilon < s(f_n, P) - \varepsilon \le s(f, P) \le S(f, P) \le S(f_n, P) + \varepsilon \le \int f_n + 2\varepsilon \le L + 3\varepsilon$$
 
@@ -853,27 +853,27 @@ and since $\varepsilon > 0$ was arbitrary we conclude that $L = \underline{\int}
 
 The example in 2.3 where the Riemann integrable functions pointwise converged to the Dirichlet function suggested that the trouble might be rather in the non-integrable limit function than in the value of the integral being different from the limit. This is only partly true. Indeed, if we take the more powerful Lebesgue integral (roughly speaking, based on the idea of sums of *countable* disjoint systems, while our Riemann integral is based on *finite* disjoint systems) the integral of the Dirichlet function is 0 (as the intuition suggests: the part of the interval in which the function is not 0 is infinitely smaller than the one with values 0).
 
-But whatever the strength of the integral might be, the formula $\int_a^b \lim_n f_n = \lim_n \int_a^b f_n$ cannot hold generally.
+But whatever the strength of the integral might be, the formula $\int\_a^b \lim\_n f\_n = \lim\_n \int\_a^b f\_n$ cannot hold generally.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3.3</span></p>
 
-Consider the functions $f_n, g_n : \langle -1, 1 \rangle \to \mathbb{R} \cup \lbrace +\infty \rbrace$ defined by
+Consider the functions $f\_n, g\_n : \langle -1, 1 \rangle \to \mathbb{R} \cup \lbrace +\infty \rbrace$ defined by
 
 $$f_n(x) = \begin{cases} 0 & \text{for } x \le -\tfrac{1}{n} \text{ and } x \ge \tfrac{1}{n}, \\ n + n^2 x & \text{for } -\tfrac{1}{n} \le x \le 0, \\ n - n^2 x & \text{for } 0 \le x \le \tfrac{1}{n}, \end{cases} \qquad g_n(x) = \begin{cases} 0 & \text{for } x \ne 0, \\ n & \text{for } x = 0. \end{cases}$$
 
-Then for each $n$, $\int_a^b f_n = 1$ and $\int_a^b g_n = 0$ while $\lim_n f_n = \lim_n g_n$.
+Then for each $n$, $\int\_a^b f\_n = 1$ and $\int\_a^b g\_n = 0$ while $\lim\_n f\_n = \lim\_n g\_n$.
 
-In actual fact, for Lebesgue integral the formula $\int_a^b \lim_n f_n = \lim_n \int_a^b f_n$ holds for instance if the limit is monotone or if the functions are equally bounded by an integrable function.
+In actual fact, for Lebesgue integral the formula $\int\_a^b \lim\_n f\_n = \lim\_n \int\_a^b f\_n$ holds for instance if the limit is monotone or if the functions are equally bounded by an integrable function.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 2.4</span></p>
 
-Let $\lim_{n \to \infty} g(x_n) = A$ for each sequence $(x_n)_n$ such that $\lim_n x_n = a$. Then $\lim_{x \to a} g(x) = A$.
+Let $\lim\_{n \to \infty} g(x\_n) = A$ for each sequence $(x\_n)\_n$ such that $\lim\_n x\_n = a$. Then $\lim\_{x \to a} g(x) = A$.
 
 </div>
 
@@ -881,7 +881,7 @@ Let $\lim_{n \to \infty} g(x_n) = A$ for each sequence $(x_n)_n$ such that $\lim
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose $\lim_{x \to a} g(x)$ does not exist or is not equal to $A$. Then there is an $\varepsilon > 0$ such that for every $\delta > 0$ there is an $x(\delta)$, with $0 < \lvert a - x(\delta) \rvert < \delta$ and $\lvert A - g(x(\delta)) \rvert \ge \varepsilon$. Set $x_n = x(\tfrac{1}{n})$. Then $\lim_n x_n = a$ while $\lim_{n \to \infty} g(x_n)$ is not $A$. $\square$
+Suppose $\lim\_{x \to a} g(x)$ does not exist or is not equal to $A$. Then there is an $\varepsilon > 0$ such that for every $\delta > 0$ there is an $x(\delta)$, with $0 < \lvert a - x(\delta) \rvert < \delta$ and $\lvert A - g(x(\delta)) \rvert \ge \varepsilon$. Set $x\_n = x(\tfrac{1}{n})$. Then $\lim\_n x\_n = a$ while $\lim\_{n \to \infty} g(x\_n)$ is not $A$. $\square$
 
 </details>
 </div>
@@ -899,9 +899,9 @@ $$\lim_{y \to y_0} \int_a^b f(x, y)\,\mathrm{d}x = \int_a^b f(x, y_0)\,\mathrm{d
 <details markdown="1">
 <summary>Proof</summary>
 
-Since $\langle a, b \rangle \times \langle c, d \rangle$ is compact, $f$ is uniformly continuous. Thus, for every $\varepsilon > 0$ there is a $\delta > 0$ such that $\max \lbrace \lvert x_1 - x_2 \rvert, \lvert y_1 - y_2 \rvert \rbrace < \delta$ implies $\lvert f(x_1, y_1) - f(x_2, y_2) \rvert < \varepsilon$.
+Since $\langle a, b \rangle \times \langle c, d \rangle$ is compact, $f$ is uniformly continuous. Thus, for every $\varepsilon > 0$ there is a $\delta > 0$ such that $\max \lbrace \lvert x\_1 - x\_2 \rvert, \lvert y\_1 - y\_2 \rvert \rbrace < \delta$ implies $\lvert f(x\_1, y\_1) - f(x\_2, y\_2) \rvert < \varepsilon$.
 
-Let $\lim_n y_n = y_0$. Set $g(x) = f(x, y_0)$ and $g_n(x) = f(x, y_n)$. If $\lvert y_n - y_0 \rvert < \delta$ we have $\lvert g_n(x) - g(x) \rvert < \varepsilon$ independently of $x$, hence $g_n \rightrightarrows g$ so that by 2.3.1, $\lim_n \int_a^b g_n(x)\,\mathrm{d}x = \int_a^b g(x)\,\mathrm{d}x$, that is, $\lim_n \int_a^b f(x, y_n)\,\mathrm{d}x = \int_a^b f(x, y_0)\,\mathrm{d}x$, and the statement follows from Lemma 2.4. $\square$
+Let $\lim\_n y\_n = y\_0$. Set $g(x) = f(x, y\_0)$ and $g\_n(x) = f(x, y\_n)$. If $\lvert y\_n - y\_0 \rvert < \delta$ we have $\lvert g\_n(x) - g(x) \rvert < \varepsilon$ independently of $x$, hence $g\_n \rightrightarrows g$ so that by 2.3.1, $\lim\_n \int\_a^b g\_n(x)\,\mathrm{d}x = \int\_a^b g(x)\,\mathrm{d}x$, that is, $\lim\_n \int\_a^b f(x, y\_n)\,\mathrm{d}x = \int\_a^b f(x, y\_0)\,\mathrm{d}x$, and the statement follows from Lemma 2.4. $\square$
 
 </details>
 </div>
@@ -909,7 +909,7 @@ Let $\lim_n y_n = y_0$. Set $g(x) = f(x, y_0)$ and $g_n(x) = f(x, y_n)$. If $\lv
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.4.2</span><span class="math-callout__name">(Differentiation under the Integral Sign)</span></p>
 
-Let $f : \langle a, b \rangle \times \langle c, d \rangle \to \mathbb{R}$ be continuous and let it have a continuous partial derivative $\tfrac{\partial f(x,y)}{\partial y}$ in $\langle a, b \rangle \times (c, d)$. Then $F(y) = \int_a^b f(x, y)\,\mathrm{d}x$ has a derivative in $(c, d)$ and we have
+Let $f : \langle a, b \rangle \times \langle c, d \rangle \to \mathbb{R}$ be continuous and let it have a continuous partial derivative $\tfrac{\partial f(x,y)}{\partial y}$ in $\langle a, b \rangle \times (c, d)$. Then $F(y) = \int\_a^b f(x, y)\,\mathrm{d}x$ has a derivative in $(c, d)$ and we have
 
 $$\frac{\mathrm{d}}{\mathrm{d}y} \int_a^b f(x, y)\,\mathrm{d}x = \int_a^b \frac{\partial f(x, y)}{\partial y}\,\mathrm{d}x.$$
 
@@ -919,7 +919,7 @@ $$\frac{\mathrm{d}}{\mathrm{d}y} \int_a^b f(x, y)\,\mathrm{d}x = \int_a^b \frac{
 <details markdown="1">
 <summary>Proof</summary>
 
-Fix $y \in (c, d)$ and choose an $\alpha > 0$ such that $c < y - \alpha < y + \alpha < d$. Set $F(y) = \int_a^b f(x, y)\,\mathrm{d}x$ and define
+Fix $y \in (c, d)$ and choose an $\alpha > 0$ such that $c < y - \alpha < y + \alpha < d$. Set $F(y) = \int\_a^b f(x, y)\,\mathrm{d}x$ and define
 
 $$g(x, t) = \begin{cases} \tfrac{1}{t}(f(x, y+t) - f(x, y)) & \text{for } t \ne 0, \\ \tfrac{\partial f(x,y)}{\partial y} & \text{for } t = 0. \end{cases}$$
 
@@ -967,7 +967,7 @@ There is no harm in allowing infinite distances; in effect, it has advantages. H
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.2</span></p>
 
-A sequence $(f_n)_n$ converges to $f$ in $C(X)$ if and only if $f_n \rightrightarrows f$.
+A sequence $(f\_n)\_n$ converges to $f$ in $C(X)$ if and only if $f\_n \rightrightarrows f$.
 
 </div>
 
@@ -975,7 +975,7 @@ A sequence $(f_n)_n$ converges to $f$ in $C(X)$ if and only if $f_n \rightrighta
 <details markdown="1">
 <summary>Proof</summary>
 
-We have $\lim_n f_n = f_n$ in $C(X)$ if for every $\varepsilon > 0$ there is an $n_0$ such that $d(f_n, f) = \sup \lbrace \lvert f_n(x) - f(x) \rvert \mid x \in X \rbrace \le \varepsilon$ for $n \ge n_0$. This is to say that for every $\varepsilon > 0$ there is an $n_0$ such that for all $n \ge n_0$ and for all $x \in X$ it holds that $\lvert f_n(x) - f(x) \rvert \le \varepsilon$, which is the definition of uniform convergence. $\square$
+We have $\lim\_n f\_n = f\_n$ in $C(X)$ if for every $\varepsilon > 0$ there is an $n\_0$ such that $d(f\_n, f) = \sup \lbrace \lvert f\_n(x) - f(x) \rvert \mid x \in X \rbrace \le \varepsilon$ for $n \ge n\_0$. This is to say that for every $\varepsilon > 0$ there is an $n\_0$ such that for all $n \ge n\_0$ and for all $x \in X$ it holds that $\lvert f\_n(x) - f(x) \rvert \le \varepsilon$, which is the definition of uniform convergence. $\square$
 
 </details>
 </div>
@@ -998,19 +998,19 @@ $C(X)$ is a complete metric space.
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $(f_n)_n$ be a Cauchy sequence in $C(X)$. Thus, for every $\varepsilon > 0$ there is an $n_0$ such that
+Let $(f\_n)\_n$ be a Cauchy sequence in $C(X)$. Thus, for every $\varepsilon > 0$ there is an $n\_0$ such that
 
 $$\forall m, n \ge n_0, \quad \forall x \in X \quad \lvert f_m(x) - f_n(x) \rvert < \varepsilon. \qquad (*)$$
 
-Thus in particular each of the sequences $(f_n(x))_n$ is Cauchy in $\mathbb{R}$ and we have a limit $f(x) = \lim_n f_n(x)$.
+Thus in particular each of the sequences $(f\_n(x))\_n$ is Cauchy in $\mathbb{R}$ and we have a limit $f(x) = \lim\_n f\_n(x)$.
 
-Fix an $m \ge n_0$. Taking a limit in $(*)$ and using Observation 3.3 we obtain
+Fix an $m \ge n\_0$. Taking a limit in $(\ast)$ and using Observation 3.3 we obtain
 
 $$\forall m \ge n_0, \quad \lvert f_m(x) - \lim_n f_n(x) \rvert = \lvert f_m(x) - f(x) \rvert \le \varepsilon,$$
 
-independently on $x$. Thus $f_n \rightrightarrows f$ and hence
-- by 1.3, $f$ is continuous; it is also bounded since if we fix an $m \ge n_0$ obviously $\lvert f(x) \rvert \le \lvert f_m(x) \rvert + \varepsilon$ (and $f_m$ is bounded) and hence $f \in C(X)$,
-- and by 3.2 $\lim_n f_n = f$ in $C(X)$. $\square$
+independently on $x$. Thus $f\_n \rightrightarrows f$ and hence
+- by 1.3, $f$ is continuous; it is also bounded since if we fix an $m \ge n\_0$ obviously $\lvert f(x) \rvert \le \lvert f\_m(x) \rvert + \varepsilon$ (and $f\_m$ is bounded) and hence $f \in C(X)$,
+- and by 3.2 $\lim\_n f\_n = f$ in $C(X)$. $\square$
 
 </details>
 </div>
@@ -1026,14 +1026,14 @@ Series of continuous functions
 
 $$\sum_{n=0}^{\infty} f_n(x) = f_0(x) + f_1(x) + \cdots + f_n(x) + \cdots$$
 
-are treated as limits $\lim_n \sum_{k=0}^n f_k(x)$ of the partial finite sums. As with series of numbers, the really important ones are the **absolutely convergent series of functions**, namely those for which $\sum_{n=0}^{\infty} f_n(x)$ is absolutely convergent for each $x$ in the domain. In particular (recall III.2.4), *if $\sum_{n=0}^{\infty} f_n(x)$ is absolutely convergent then the sum does not depend on the order of the summands*.
+are treated as limits $\lim\_n \sum\_{k=0}^n f\_k(x)$ of the partial finite sums. As with series of numbers, the really important ones are the **absolutely convergent series of functions**, namely those for which $\sum\_{n=0}^{\infty} f\_n(x)$ is absolutely convergent for each $x$ in the domain. In particular (recall III.2.4), *if $\sum\_{n=0}^{\infty} f\_n(x)$ is absolutely convergent then the sum does not depend on the order of the summands*.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniform and Locally Uniform Convergence of Series)</span></p>
 
-A series $\sum_{n=0}^{\infty} f_n(x)$ is said to **converge uniformly** (resp. **converge locally uniformly**) if $(\sum_{k=0}^n f_k(x))_n$ is a uniformly convergent (resp. locally uniformly convergent) sequence of functions.
+A series $\sum\_{n=0}^{\infty} f\_n(x)$ is said to **converge uniformly** (resp. **converge locally uniformly**) if $(\sum\_{k=0}^n f\_k(x))\_n$ is a uniformly convergent (resp. locally uniformly convergent) sequence of functions.
 
 In the first case we will sometimes use the symbol
 
@@ -1044,14 +1044,14 @@ $$\sum_{n=0}^{\infty} f_n(x) \rightrightarrows f(x) \quad \text{or} \quad f_0(x)
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4.3</span></p>
 
-Let $\sum_{n=0}^{\infty} f_n(x)$ be a uniformly convergent series of functions. Then the sum is continuous.
+Let $\sum\_{n=0}^{\infty} f\_n(x)$ be a uniformly convergent series of functions. Then the sum is continuous.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4.4</span><span class="math-callout__name">(Differentiation of Series)</span></p>
 
-Let the series $\sum_{n=0}^{\infty} f_n(x)$ converge to $f(x)$, let the functions $f_n(x)$ have derivatives $f_n'(x)$ and let the series $\sum_{n=0}^{\infty} f_n'(x)$ uniformly converge. Then $f(x)$ has a derivative
+Let the series $\sum\_{n=0}^{\infty} f\_n(x)$ converge to $f(x)$, let the functions $f\_n(x)$ have derivatives $f\_n'(x)$ and let the series $\sum\_{n=0}^{\infty} f\_n'(x)$ uniformly converge. Then $f(x)$ has a derivative
 
 $$\left(\sum_{n=0}^{\infty} f_n(x)\right)' = \sum_{n=0}^{\infty} f_n'(x).$$
 
@@ -1060,7 +1060,7 @@ $$\left(\sum_{n=0}^{\infty} f_n(x)\right)' = \sum_{n=0}^{\infty} f_n'(x).$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5</span><span class="math-callout__name">(Weierstrass M-test)</span></p>
 
-Let $b_n \ge 0$ and let $\sum_{n=0}^{\infty} b_n$ converge. Let $f_n(x)$ be real functions on a domain $D$ such that $\lvert f_n(x) \rvert \le b_n$ for all $x \in D$. Then $\sum_{n=0}^{\infty} f_n(x)$ converges on $D$ absolutely and uniformly.
+Let $b\_n \ge 0$ and let $\sum\_{n=0}^{\infty} b\_n$ converge. Let $f\_n(x)$ be real functions on a domain $D$ such that $\lvert f\_n(x) \rvert \le b\_n$ for all $x \in D$. Then $\sum\_{n=0}^{\infty} f\_n(x)$ converges on $D$ absolutely and uniformly.
 
 </div>
 
@@ -1068,7 +1068,7 @@ Let $b_n \ge 0$ and let $\sum_{n=0}^{\infty} b_n$ converge. Let $f_n(x)$ be real
 <details markdown="1">
 <summary>Proof</summary>
 
-The absolute convergence is in the definition. Now let $\varepsilon > 0$. The sequence $(\sum_{k=0}^n b_k)_n$ is Cauchy and hence there is an $n_0$ such that for $m, n + 1 \ge n_0$, $\sum_{n+1}^{m} b_k < \varepsilon$. Then we have for $x \in D$
+The absolute convergence is in the definition. Now let $\varepsilon > 0$. The sequence $(\sum\_{k=0}^n b\_k)\_n$ is Cauchy and hence there is an $n\_0$ such that for $m, n + 1 \ge n\_0$, $\sum\_{n+1}^{m} b\_k < \varepsilon$. Then we have for $x \in D$
 
 $$\left\lvert \sum_{n+1}^{m} f_k(x) \right\rvert \le \sum_{n+1}^{m} \lvert f_k(x) \rvert \le \sum_{n+1}^{m} b_k < \varepsilon$$
 
@@ -1076,7 +1076,7 @@ and hence in $C(D)$
 
 $$d\!\left(\sum_{k=0}^{m} f_k,\; \sum_{k=0}^{n} f_k\right) = \sup \left\lbrace \left\lvert \sum_{n+1}^{m} f_k(x) \right\rvert \;\middle|\; x \in D \right\rbrace \le \varepsilon.$$
 
-Thus, the sequence $(\sum_{k=0}^n f_k)_n$ is Cauchy in $C(D)$ and by 3.3.1 (and the definition 3.2) $\sum_{k=0}^{\infty} f_k(x)$ uniformly converges. $\square$
+Thus, the sequence $(\sum\_{k=0}^n f\_k)\_n$ is Cauchy in $C(D)$ and by 3.3.1 (and the definition 3.2) $\sum\_{k=0}^{\infty} f\_k(x)$ uniformly converges. $\square$
 
 </details>
 </div>
@@ -1084,7 +1084,7 @@ Thus, the sequence $(\sum_{k=0}^n f_k)_n$ is Cauchy in $C(D)$ and by 3.3.1 (and 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 4.5.1</span></p>
 
-Let $f(x) = \sum_{n=0}^{\infty} f_n(x)$ converge and let $f_n(x)$ have derivatives. Let there be a convergent series $\sum_{n=0}^{\infty} b_n$ such that $\lvert f_n'(x) \rvert \le b_n$ for all $n$ and $x$. Then the derivative of $f$ exists and we have
+Let $f(x) = \sum\_{n=0}^{\infty} f\_n(x)$ converge and let $f\_n(x)$ have derivatives. Let there be a convergent series $\sum\_{n=0}^{\infty} b\_n$ such that $\lvert f\_n'(x) \rvert \le b\_n$ for all $n$ and $x$. Then the derivative of $f$ exists and we have
 
 $$\left(\sum_{n=0}^{\infty} f_n(x)\right)' = \sum_{n=0}^{\infty} f_n'(x).$$
 
@@ -1109,27 +1109,27 @@ $$(+\infty) \cdot a = a \cdot (+\infty) = +\infty \text{ for positive } a, \quad
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Limes Superior)</span></p>
 
-For a sequence $(a_n)_n$ of real numbers define **limes superior** as the number
+For a sequence $(a\_n)\_n$ of real numbers define **limes superior** as the number
 
 $$\limsup_n a_n = \lim_n \sup_{k \ge n} a_k = \inf_n \sup_{k \ge n} a_k.$$
 
-The second equality is obvious: the sequence $(\sup_{k \ge n} a_k)_n$ is non-increasing. Limes superior is defined for an arbitrary sequence.
+The second equality is obvious: the sequence $(\sup\_{k \ge n} a\_k)\_n$ is non-increasing. Limes superior is defined for an arbitrary sequence.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation 1.2.1</span></p>
 
-If $\lim_n a_n$ exists then $\limsup_n a_n = \lim_n a_n$.
+If $\lim\_n a\_n$ exists then $\limsup\_n a\_n = \lim\_n a\_n$.
 
-(If $\lim_n a_n = -\infty$ then $(\sup_{k \ge n} a_k)_n$ has no lower bound and if $\lim_n a_n = +\infty$ then $\sup_{k \ge n} a_k = +\infty$ for all $n$. Let $a = \lim_n a_n$ be finite and let $\varepsilon > 0$. Then $\lvert a_n - a \rvert < \varepsilon$ implies that $\lvert \sup_{k \ge n} a_k - a \rvert \le \varepsilon$.)
+(If $\lim\_n a\_n = -\infty$ then $(\sup\_{k \ge n} a\_k)\_n$ has no lower bound and if $\lim\_n a\_n = +\infty$ then $\sup\_{k \ge n} a\_k = +\infty$ for all $n$. Let $a = \lim\_n a\_n$ be finite and let $\varepsilon > 0$. Then $\lvert a\_n - a \rvert < \varepsilon$ implies that $\lvert \sup\_{k \ge n} a\_k - a \rvert \le \varepsilon$.)
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 1.3</span></p>
 
-Suppose $a_n, b_n \ge 0$; set $a = \limsup_n a_n$. Let there exist a finite and positive $b = \lim_n b_n$. Then
+Suppose $a\_n, b\_n \ge 0$; set $a = \limsup\_n a\_n$. Let there exist a finite and positive $b = \lim\_n b\_n$. Then
 
 $$\limsup_n a_n b_n = ab.$$
 
@@ -1139,25 +1139,25 @@ $$\limsup_n a_n b_n = ab.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-**I.** For an $\varepsilon > 0$ choose an $n_0$ such that
+**I.** For an $\varepsilon > 0$ choose an $n\_0$ such that
 
 $$n \ge n_0 \;\Rightarrow\; b_n < b + \varepsilon \;\;\text{and}\;\; \sup_{k \ge n} a_k \le a + \varepsilon.$$
 
-Then we have for $n \ge n_0$
+Then we have for $n \ge n\_0$
 
 $$\sup_{k \ge n} a_k b_k \le (\sup_{k \ge n} a_k)(b + \varepsilon) \le (a + \varepsilon)(b + \varepsilon) = ab + \varepsilon(a + b + \varepsilon)$$
 
-and as $\varepsilon > 0$ was arbitrary, we see that $\limsup_n a_n b_n \le ab$ (this also includes the case of $a = +\infty$ where, of course, the estimate is trivial).
+and as $\varepsilon > 0$ was arbitrary, we see that $\limsup\_n a\_n b\_n \le ab$ (this also includes the case of $a = +\infty$ where, of course, the estimate is trivial).
 
-**II.** For $\varepsilon > 0$ sufficiently small to have $b - \varepsilon > 0$ choose an $n_0$ such that
+**II.** For $\varepsilon > 0$ sufficiently small to have $b - \varepsilon > 0$ choose an $n\_0$ such that
 
 $$n \ge n_0 \;\Rightarrow\; b_n > b - \varepsilon.$$
 
-Since $\sup_{k \ge n} a_k \ge \inf_m \sup_{k \ge m} a_k = a$ for every $n$, there exist $k(n) \ge n$ such that $a_{k(n)} \ge a - \varepsilon$ if $a$ is finite, and $a_{k(n)} \ge n$ if $a = +\infty$. Then for $n \ge n_0$,
+Since $\sup\_{k \ge n} a\_k \ge \inf\_m \sup\_{k \ge m} a\_k = a$ for every $n$, there exist $k(n) \ge n$ such that $a\_{k(n)} \ge a - \varepsilon$ if $a$ is finite, and $a\_{k(n)} \ge n$ if $a = +\infty$. Then for $n \ge n\_0$,
 
 $$(a - \varepsilon)(b - \varepsilon) \le a_{k(n)} b_{k(n)} \le \sup_m a_m b_m \quad \text{resp.} \quad n(b - \varepsilon) \le \sup_m a_m b_m \text{ if } a = +\infty$$
 
-so that $ab - \varepsilon(a + b - \varepsilon) \le \sup_m a_m b_m$ resp. $n(b - \varepsilon) \le \sup_m a_m b_m$ if $a = +\infty$, and since $\varepsilon > 0$ was arbitrary and since $n(b - \varepsilon)$ is arbitrarily large, we also have $ab \le \limsup_n a_n b_n$. $\square$
+so that $ab - \varepsilon(a + b - \varepsilon) \le \sup\_m a\_m b\_m$ resp. $n(b - \varepsilon) \le \sup\_m a\_m b\_m$ if $a = +\infty$, and since $\varepsilon > 0$ was arbitrary and since $n(b - \varepsilon)$ is arbitrarily large, we also have $ab \le \limsup\_n a\_n b\_n$. $\square$
 
 </details>
 </div>
@@ -1165,7 +1165,7 @@ so that $ab - \varepsilon(a + b - \varepsilon) \le \sup_m a_m b_m$ resp. $n(b - 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note 1.4</span></p>
 
-There is a counterpart of the limes superior called **limes inferior** defined for an arbitrary sequence $(a_n)_n$ of real numbers by setting
+There is a counterpart of the limes superior called **limes inferior** defined for an arbitrary sequence $(a\_n)\_n$ of real numbers by setting
 
 $$\liminf_n a_n = \lim_n \inf_{k \ge n} a_k = \sup_n \inf_{k \ge n} a_k.$$
 
@@ -1177,12 +1177,12 @@ Its properties are quite analogous.
 
 ## 2. Power Series and the Radius of Convergence
 
-Until Chapter XXI we will not systematically treat complex functions of complex variable, but in this section it will be of advantage to consider the coefficients $a_n$, $c$ and the variable $x$ complex. This is not only because the proof of the theorem on the radius of convergence is literally the same; what is at the moment perhaps more important, it will explain the seemingly paradoxical behaviour of some *real* power series (see 2.4 below).
+Until Chapter XXI we will not systematically treat complex functions of complex variable, but in this section it will be of advantage to consider the coefficients $a\_n$, $c$ and the variable $x$ complex. This is not only because the proof of the theorem on the radius of convergence is literally the same; what is at the moment perhaps more important, it will explain the seemingly paradoxical behaviour of some *real* power series (see 2.4 below).
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Power Series)</span></p>
 
-Let $a_n$ and $c$ be complex numbers. A **power series** with coefficients $a_n$ and **center** $c$ is the series
+Let $a\_n$ and $c$ be complex numbers. A **power series** with coefficients $a\_n$ and **center** $c$ is the series
 
 $$\sum_{n=0}^{\infty} a_n (x - c)^n.$$
 
@@ -1193,7 +1193,7 @@ In this section it will be understood as a function of a complex variable $x$; t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Radius of Convergence)</span></p>
 
-The **radius of convergence** of a power series $\sum_{n=0}^{\infty} a_n (x - c)^n$ is the number
+The **radius of convergence** of a power series $\sum\_{n=0}^{\infty} a\_n (x - c)^n$ is the number
 
 $$\rho = \rho((a_n)_n) = \frac{1}{\limsup_n \sqrt[n]{\lvert a_n \rvert}}.$$
 
@@ -1202,7 +1202,7 @@ $$\rho = \rho((a_n)_n) = \frac{1}{\limsup_n \sqrt[n]{\lvert a_n \rvert}}.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.3.1</span><span class="math-callout__name">(Radius of Convergence)</span></p>
 
-Let $\rho = \rho((a_n)_n)$ be the radius of convergence of $\sum_{n=0}^{\infty} a_n (x - c)^n$ and let $r < \rho$. Then the series $\sum_{n=0}^{\infty} a_n (x - c)^n$ converges uniformly and absolutely in the set $\lbrace x \mid \lvert x - c \rvert \le r \rbrace$.
+Let $\rho = \rho((a\_n)\_n)$ be the radius of convergence of $\sum\_{n=0}^{\infty} a\_n (x - c)^n$ and let $r < \rho$. Then the series $\sum\_{n=0}^{\infty} a\_n (x - c)^n$ converges uniformly and absolutely in the set $\lbrace x \mid \lvert x - c \rvert \le r \rbrace$.
 
 On the other hand, the series does not converge if $\lvert x - c \rvert > \rho$.
 
@@ -1220,13 +1220,13 @@ Then there is an $n$ such that for all $k \ge n$,
 
 $$r \cdot \sup_{k \ge n} \sqrt[k]{\lvert a_k \rvert} < q \quad \text{and hence} \quad r \cdot \sqrt[k]{\lvert a_k \rvert} < q.$$
 
-For a sufficiently large $K \ge 1$ we have, moreover, $r^k \cdot \lvert a_k \rvert < Kq^k$ for all $k \le n$ so that
+For a sufficiently large $K \ge 1$ we have, moreover, $r^k \cdot \lvert a\_k \rvert < Kq^k$ for all $k \le n$ so that
 
 $$\text{if } \lvert x - c \rvert \le r \text{ then } \lvert a_k(x - c)^k \rvert \le Kq^k \text{ for all } k$$
 
-and we see by XVIII.4.5 that $\sum_{n=0}^{\infty} a_n(x - c)^n$ converges uniformly and absolutely in $\lbrace x \mid \lvert x - c \rvert \le r \rbrace$.
+and we see by XVIII.4.5 that $\sum\_{n=0}^{\infty} a\_n(x - c)^n$ converges uniformly and absolutely in $\lbrace x \mid \lvert x - c \rvert \le r \rbrace$.
 
-**II.** If $\lvert x - c \rvert > \rho$ then $\lvert x - c \rvert \cdot \inf_n \sup_{k \ge n} \sqrt[k]{\lvert a_k \rvert} > 1$ and hence $\lvert x - c \rvert \cdot \sup_{k \ge n} \sqrt[k]{\lvert a_k \rvert} > 1$ for all $n$. Consequently, for each $n$ there is a $k(n) \ge n$ such that $\lvert x - c \rvert \cdot \sqrt[k(n)]{\lvert a_{k(n)} \rvert} > 1$ and hence $\lvert a_{k(n)}(x - c)^{k(n)} \rvert > 1$ so that the summands of the series do not even converge to zero. $\square$
+**II.** If $\lvert x - c \rvert > \rho$ then $\lvert x - c \rvert \cdot \inf\_n \sup\_{k \ge n} \sqrt[k]{\lvert a\_k \rvert} > 1$ and hence $\lvert x - c \rvert \cdot \sup\_{k \ge n} \sqrt[k]{\lvert a\_k \rvert} > 1$ for all $n$. Consequently, for each $n$ there is a $k(n) \ge n$ such that $\lvert x - c \rvert \cdot \sqrt[k(n)]{\lvert a\_{k(n)} \rvert} > 1$ and hence $\lvert a\_{k(n)}(x - c)^{k(n)} \rvert > 1$ so that the summands of the series do not even converge to zero. $\square$
 
 </details>
 </div>
@@ -1234,7 +1234,7 @@ and we see by XVIII.4.5 that $\sum_{n=0}^{\infty} a_n(x - c)^n$ converges unifor
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 2.3.2</span></p>
 
-A power series $\sum_{n=0}^{\infty} a_n(x - c)^n$ converges on the open disc $D = \lbrace x \mid \lvert x - c \rvert < \rho((a_n)_n) \rbrace$ and converges in no $x$ with $\lvert x - c \rvert > \rho$. Consequently, the function $f(x) = \sum_{n=0}^{\infty} a_n(x - c)^n$ is continuous on $D$.
+A power series $\sum\_{n=0}^{\infty} a\_n(x - c)^n$ converges on the open disc $D = \lbrace x \mid \lvert x - c \rvert < \rho((a\_n)\_n) \rbrace$ and converges in no $x$ with $\lvert x - c \rvert > \rho$. Consequently, the function $f(x) = \sum\_{n=0}^{\infty} a\_n(x - c)^n$ is continuous on $D$.
 
 </div>
 
@@ -1258,7 +1258,7 @@ In the interval $(-1, 1)$ it can be written as the power series $1 - x^2 + x^4 -
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.5</span></p>
 
-The radius of convergence of the series $\sum_{n=1}^{\infty} na_n(x - c)^{n-1}$ is the same as the radius of convergence of the series $\sum_{n=0}^{\infty} a_n(x - c)^n$.
+The radius of convergence of the series $\sum\_{n=1}^{\infty} na\_n(x - c)^{n-1}$ is the same as the radius of convergence of the series $\sum\_{n=0}^{\infty} a\_n(x - c)^n$.
 
 </div>
 
@@ -1266,11 +1266,11 @@ The radius of convergence of the series $\sum_{n=1}^{\infty} na_n(x - c)^{n-1}$ 
 <details markdown="1">
 <summary>Proof</summary>
 
-For $x \ne 0$ the series $\mathcal{S} = \sum_{n=1}^{\infty} na_n(x - c)^{n-1}$ obviously converges iff the series $\mathcal{S}_1 = \sum_{n=1}^{\infty} na_n(x - c)^n = x(\sum_{n=1}^{\infty} na_n(x-c)^{n-1})$ does. By 1.3 we have
+For $x \ne 0$ the series $\mathcal{S} = \sum\_{n=1}^{\infty} na\_n(x - c)^{n-1}$ obviously converges iff the series $\mathcal{S}\_1 = \sum\_{n=1}^{\infty} na\_n(x - c)^n = x(\sum\_{n=1}^{\infty} na\_n(x-c)^{n-1})$ does. By 1.3 we have
 
 $$\limsup_n \sqrt[n]{n \lvert a_n \rvert} = \limsup_n \sqrt[n]{n} \cdot \sqrt[n]{\lvert a_n \rvert} = \lim_n \sqrt[n]{n} \cdot \limsup_n \sqrt[n]{\lvert a_n \rvert} = \limsup_n \sqrt[n]{\lvert a_n \rvert}$$
 
-since $\lim_n \sqrt[n]{n} = \lim_n \mathrm{e}^{\frac{1}{n}\lg n} = \mathrm{e}^0 = 1$. Consequently, the radius of convergence of $\mathcal{S}$, and hence of $\mathcal{S}_1$, is equal to $\rho((a_n)_n)$. $\square$
+since $\lim\_n \sqrt[n]{n} = \lim\_n \mathrm{e}^{\frac{1}{n}\lg n} = \mathrm{e}^0 = 1$. Consequently, the radius of convergence of $\mathcal{S}$, and hence of $\mathcal{S}\_1$, is equal to $\rho((a\_n)\_n)$. $\square$
 
 </details>
 </div>
@@ -1282,7 +1282,7 @@ By XVIII.4.5.1 we now obtain
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.5.1</span><span class="math-callout__name">(Term-by-term Differentiation and Integration)</span></p>
 
-The series $f(x) = \sum_{n=0}^{\infty} a_n(x - c)^n$ has a derivative
+The series $f(x) = \sum\_{n=0}^{\infty} a\_n(x - c)^n$ has a derivative
 
 $$f'(x) = \sum_{n=1}^{\infty} na_n(x - c)^{n-1}$$
 
@@ -1290,7 +1290,7 @@ and also a primitive function
 
 $$\left(\int f\right)(x) = C + \sum_{n=0}^{\infty} \frac{a_n}{n+1}(x - c)^{n+1}$$
 
-in the whole interval $J = (c - \rho, c + \rho)$ where $\rho = \rho((a_n)_n)$.
+in the whole interval $J = (c - \rho, c + \rho)$ where $\rho = \rho((a\_n)\_n)$.
 
 In other words, one can differentiate and integrate power series by individual summands.
 
@@ -1304,18 +1304,18 @@ Recall VIII.7.3. Let a function $f$ have derivatives $f^{(n)}$ of all orders in 
 
 $$f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(c)}{k!}(x - c)^k + R_n(f, x)$$
 
-with $R_n(f, x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x - c)^{n+1}$ where $\xi$ is a number between $c$ and $x$.
+with $R\_n(f, x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x - c)^{n+1}$ where $\xi$ is a number between $c$ and $x$.
 
 ### 3.1. Higher Derivatives of Power Series
 
-Let $f(x) = \sum_{n=0}^{\infty} a_n(x - c)^n$ be a power series with the radius of convergence $\rho$. Then we have by 2.5.1
+Let $f(x) = \sum\_{n=0}^{\infty} a\_n(x - c)^n$ be a power series with the radius of convergence $\rho$. Then we have by 2.5.1
 
 $$f^{(k)}(x) = \sum_{n=k}^{\infty} n(n-1)\cdots(n-k+1) a_n (x-c)^{n-k} = k! \, a_k + \sum_{n=k+1}^{\infty} n(n-1)\cdots(n-k+1) a_n (x-c)^{n-k}. \qquad (*)$$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.3.1</span></p>
 
-1. The coefficients of a power series $f(x) = \sum_{n=0}^{\infty} a_n(x - c)^n$ are uniquely determined by the function $f$.
+1. The coefficients of a power series $f(x) = \sum\_{n=0}^{\infty} a\_n(x - c)^n$ are uniquely determined by the function $f$.
 2. A power series is its own Taylor series.
 
 </div>
@@ -1324,12 +1324,12 @@ $$f^{(k)}(x) = \sum_{n=k}^{\infty} n(n-1)\cdots(n-k+1) a_n (x-c)^{n-k} = k! \, a
 <details markdown="1">
 <summary>Proof</summary>
 
-1. By $(*)$ we have $a_k = \frac{f^{(k)}(c)}{k!}$.
-2. If the series $f(x) = \sum_{n=0}^{\infty} a_n(x - c)^n$ converges we have
+1. By $(\ast)$ we have $a\_k = \frac{f^{(k)}(c)}{k!}$.
+2. If the series $f(x) = \sum\_{n=0}^{\infty} a\_n(x - c)^n$ converges we have
 
 $$f(x) = \sum_{n=0}^{k} a_n(x-c)^n + \sum_{n=k+1}^{\infty} a_n(x-c)^n$$
 
-and the remainder $R_k(f, x) = \sum_{n=k+1}^{\infty} a_n(x-c)^n$ converges to zero because of the convergence of the series $\sum_{n=0}^{\infty} a_n(x-c)^n$. Moreover, as we have already observed, we have $a_k = \frac{f^{(k)}(c)}{k!}$. $\square$
+and the remainder $R\_k(f, x) = \sum\_{n=k+1}^{\infty} a\_n(x-c)^n$ converges to zero because of the convergence of the series $\sum\_{n=0}^{\infty} a\_n(x-c)^n$. Moreover, as we have already observed, we have $a\_k = \frac{f^{(k)}(c)}{k!}$. $\square$
 
 </details>
 </div>
@@ -1337,7 +1337,7 @@ and the remainder $R_k(f, x) = \sum_{n=k+1}^{\infty} a_n(x-c)^n$ converges to ze
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.1.1</span><span class="math-callout__name">(Taylor Series Representation)</span></p>
 
-Let a function $f$ have derivatives $f^{(n)}$ of all orders in an interval $J = (c - \Delta, c + \Delta)$. Let us have for the remainder $R_n(f, x) = f(x) - \sum_{k=0}^{n} \frac{f^{(k)}(c)}{k!}(x - c)^k$
+Let a function $f$ have derivatives $f^{(n)}$ of all orders in an interval $J = (c - \Delta, c + \Delta)$. Let us have for the remainder $R\_n(f, x) = f(x) - \sum\_{k=0}^{n} \frac{f^{(k)}(c)}{k!}(x - c)^k$
 
 $$\lim_n R_n(f, x) = 0 \quad \text{for all } x \in J.$$
 
@@ -1365,7 +1365,7 @@ $$\lim_n \sum_{k=0}^{n} \frac{f^{(k)}(c)}{k!}(x - c)^k = \lim_n (f(x) - R_n(f, x
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2</span><span class="math-callout__name">(Standard Taylor Series)</span></p>
 
-1. For an arbitrary large $K$ we have $\lim_n \frac{K^n}{n!} = 0$ (indeed, if we put $k_n = \frac{K^n}{n!}$ then for $n > 2K$, $k_{n+1} < \frac{k_n}{2}$ and hence $k_{n+m} < 2^{-m} k_n$). Consequently for any $x$ the remainder in the Taylor formula VIII.7.3 converges to zero for $e^x$, $\sin x$ and $\cos x$ and we have the Taylor series
+1. For an arbitrary large $K$ we have $\lim\_n \frac{K^n}{n!} = 0$ (indeed, if we put $k\_n = \frac{K^n}{n!}$ then for $n > 2K$, $k\_{n+1} < \frac{k\_n}{2}$ and hence $k\_{n+m} < 2^{-m} k\_n$). Consequently for any $x$ the remainder in the Taylor formula VIII.7.3 converges to zero for $e^x$, $\sin x$ and $\cos x$ and we have the Taylor series
 
 $$e^x = 1 + \frac{x}{1!} + \frac{x^2}{2!} + \cdots + \frac{x^n}{n!} + \cdots,$$
 
@@ -1398,7 +1398,7 @@ we have by 2.5.1 (and 3.3.1)
 
 $$\lg(1 - x) = C - x - \frac{1}{2}x^2 - \frac{1}{3}x^3 - \frac{1}{4}x^4 - \cdots$$
 
-and since $\lg 1 = \lg(1 - 0) = 0$ we have $C = 0$ and obtain the well known formula $\lg(1 - x) = -\sum_{n=1}^{\infty} \frac{x^n}{n}$.
+and since $\lg 1 = \lg(1 - 0) = 0$ we have $C = 0$ and obtain the well known formula $\lg(1 - x) = -\sum\_{n=1}^{\infty} \frac{x^n}{n}$.
 
 </div>
 
@@ -1420,7 +1420,7 @@ The additive constant is 0, because $\arctan(0) = 0$.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4.3</span><span class="math-callout__name">(A Formula for $\pi$)</span></p>
 
-The formula $(*)$ suggests that
+The formula $(\ast)$ suggests that
 
 $$\frac{\pi}{4} = \arctan(1) = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \cdots$$
 
@@ -1428,7 +1428,7 @@ This equation really holds true, but it is not quite immediate. Why: the radius 
 
 $$\lim_{x \to 1^-} f(x) = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \cdots$$
 
-Consider $\varepsilon > 0$. The series $1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \cdots$ converges (albeit not absolutely) and hence there is an $n$ such that $\lvert P_n \rvert < \varepsilon$ for $P_n = \frac{1}{2n+1} - \frac{1}{2n+3} + \frac{1}{2n+5} - \cdots$ Now choose a $\delta > 0$ such that for $1 - \delta < x < 1$ and for $P_n(x) = \frac{1}{2n+1}x^{2n+1} - \frac{1}{2n+3}x^{2n+3} + \frac{1}{2n+5}x^{2n+5} - \cdots$ we have $\lvert P_n(x) \rvert < \varepsilon$ and
+Consider $\varepsilon > 0$. The series $1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \cdots$ converges (albeit not absolutely) and hence there is an $n$ such that $\lvert P\_n \rvert < \varepsilon$ for $P\_n = \frac{1}{2n+1} - \frac{1}{2n+3} + \frac{1}{2n+5} - \cdots$ Now choose a $\delta > 0$ such that for $1 - \delta < x < 1$ and for $P\_n(x) = \frac{1}{2n+1}x^{2n+1} - \frac{1}{2n+3}x^{2n+3} + \frac{1}{2n+5}x^{2n+5} - \cdots$ we have $\lvert P\_n(x) \rvert < \varepsilon$ and
 
 $$\lvert (x - \tfrac{1}{3}x^3 + \tfrac{1}{5}x^5 - \cdots \pm \tfrac{1}{2n-1}x^{2n-1}) - (1 - \tfrac{1}{3} + \tfrac{1}{5} - \cdots \pm \tfrac{1}{2n-1}) \rvert < \varepsilon.$$
 
@@ -1455,27 +1455,27 @@ $$a = a_0 < a_1 < a_2 < \cdots < a_n = b$$
 
 such that
 
-- $f$ is continuous on each open interval $(a_j, a_{j+1})$ and
-- there exist finite one-sided limits $\lim_{x \to a_j+} f(x)$, $j = 0, \dots, n-1$ and $\lim_{x \to a_j-} f(x)$, $j = 1, \dots, n$.
+- $f$ is continuous on each open interval $(a\_j, a\_{j+1})$ and
+- there exist finite one-sided limits $\lim\_{x \to a\_j+} f(x)$, $j = 0, \dots, n-1$ and $\lim\_{x \to a\_j-} f(x)$, $j = 1, \dots, n$.
 
 It is **piecewise smooth** if, moreover,
 
-- $f$ has continuous derivatives on each open interval $(a_j, a_{j+1})$ and
-- there exist finite one-sided limits $\lim_{x \to a_j+} f'(x)$, $j = 0, \dots, n-1$ and $\lim_{x \to a_j-} f'(x)$, $j = 1, \dots, n$.
+- $f$ has continuous derivatives on each open interval $(a\_j, a\_{j+1})$ and
+- there exist finite one-sided limits $\lim\_{x \to a\_j+} f'(x)$, $j = 0, \dots, n-1$ and $\lim\_{x \to a\_j-} f'(x)$, $j = 1, \dots, n$.
 
 For $y \in \langle a, b \rangle$ set
 
 $$f(y+) = \lim_{x \to y+} f(x), \quad f(y-) = \lim_{x \to y-} f(x) \quad \text{and} \quad f(y\pm) = \frac{f(y+) + f(y-)}{2}.$$
 
-We will speak of the $a_i$ as of the **exceptional points** of $f$.
+We will speak of the $a\_i$ as of the **exceptional points** of $f$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Notes 1.1.1</span></p>
 
-1. A piecewise continuous $f$ can be extended to a continuous function on each $\langle a_j, a_{j+1} \rangle$. Consequently it has a Riemann integral.
-2. If $y \notin \lbrace a_0, a_1, \dots, a_n \rbrace$ then $f(y+) = f(y-) = f(y\pm) = f(y)$. If $y = a_i$ this may or may not hold. The division points $a_i$ in which $f(a_i+) = f(a_i-) = f(a_i)$ may be thought of as superfluous in the case of plain piecewise continuity, but not so in the case of piecewise smoothness: we consider also functions without derivatives of some of the points in which they are continuous.
+1. A piecewise continuous $f$ can be extended to a continuous function on each $\langle a\_j, a\_{j+1} \rangle$. Consequently it has a Riemann integral.
+2. If $y \notin \lbrace a\_0, a\_1, \dots, a\_n \rbrace$ then $f(y+) = f(y-) = f(y\pm) = f(y)$. If $y = a\_i$ this may or may not hold. The division points $a\_i$ in which $f(a\_i+) = f(a\_i-) = f(a\_i)$ may be thought of as superfluous in the case of plain piecewise continuity, but not so in the case of piecewise smoothness: we consider also functions without derivatives of some of the points in which they are continuous.
 3. One may ask whether the points in which $f(y+) = f(y-) \ne f(y)$ have some special status. Not really: we will be mostly interested in integrals of piecewise continuous functions, and values in isolated points will not play any role.
 4. Recall VII.3.2.1. The last condition for piecewise smoothness is the same as requiring that $f$ has one-sided derivatives in the exceptional points.
 
@@ -1520,7 +1520,7 @@ $$\int_0^p f(x)\,\mathrm{d}x = \int_a^{p+a} f(x)\,\mathrm{d}x \quad \text{for an
 <details markdown="1">
 <summary>Proof</summary>
 
-Obviously $\int_b^c f = \int_{b+p}^{c+p} f$ and hence the equality holds for $a = kp$ with $k$ an integer. Now let $a$ be general. Choose an integer $k$ such that $a \le kp \le a + p$. Then
+Obviously $\int\_b^c f = \int\_{b+p}^{c+p} f$ and hence the equality holds for $a = kp$ with $k$ an integer. Now let $a$ be general. Choose an integer $k$ such that $a \le kp \le a + p$. Then
 
 $$\int_a^{p+a} f = \int_a^{kp} f + \int_{kp}^{p+a} f = \int_{p+a}^{(k+1)p} f + \int_{kp}^{p+a} f = \int_{kp}^{(k+1)p} f = \int_0^p f. \quad \square$$
 
@@ -1633,15 +1633,15 @@ $$\lim_{y \to +\infty} \int_a^b g(x) \sin(yx)\,\mathrm{d}x = 0.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-If $a_0, a_1, \dots, a_n$ are the exceptional points of $g$ we have $\int_a^b g = \sum_{i=0}^{n-1} \int_{a_i}^{a_{i+1}} g$ and hence it suffices to prove the statement for continuous (and hence uniformly continuous) $g$.
+If $a\_0, a\_1, \dots, a\_n$ are the exceptional points of $g$ we have $\int\_a^b g = \sum\_{i=0}^{n-1} \int\_{a\_i}^{a\_{i+1}} g$ and hence it suffices to prove the statement for continuous (and hence uniformly continuous) $g$.
 
 Since the primitive function of $\sin(yx)$ is $-\frac{1}{y}\cos(yx)$ we have for any bounds $u, v$,
 
 $$\left\lvert \int_u^v \sin(yx)\,\mathrm{d}x \right\rvert = \left\lvert \left[-\tfrac{1}{y}\cos(yx)\right]_u^v \right\rvert \le \frac{2}{y}.$$
 
-Choose an $\varepsilon > 0$. The function $g$ is uniformly continuous and hence there is a $\delta > 0$ such that for $\lvert x - z \rvert < \delta$, $\lvert g(x) - g(z) \rvert < \varepsilon$. Choose a partition $a = t_1 < t_2 < \cdots < t_n = b$ of $\langle a, b \rangle$ with mesh $< \delta$, that is such that $t_{i+1} - t_i < \delta$ for all $i$.
+Choose an $\varepsilon > 0$. The function $g$ is uniformly continuous and hence there is a $\delta > 0$ such that for $\lvert x - z \rvert < \delta$, $\lvert g(x) - g(z) \rvert < \varepsilon$. Choose a partition $a = t\_1 < t\_2 < \cdots < t\_n = b$ of $\langle a, b \rangle$ with mesh $< \delta$, that is such that $t\_{i+1} - t\_i < \delta$ for all $i$.
 
-Now let $y > \frac{4}{\varepsilon} \sum_{i=1}^{n} \lvert g(t_i) \rvert$. Then we have
+Now let $y > \frac{4}{\varepsilon} \sum\_{i=1}^{n} \lvert g(t\_i) \rvert$. Then we have
 
 $$\left\lvert \int_a^b g(x) \sin(yx)\,\mathrm{d}x \right\rvert = \left\lvert \sum_{i=1}^{n} \left(\int_{t_{i-1}}^{t_i} (g(x) - g(t_i))\sin(yx)\,\mathrm{d}x + g(t_i)\int_{t_{i-1}}^{t_i} \sin(yx)\,\mathrm{d}x \right) \right\rvert$$
 
@@ -1653,7 +1653,7 @@ $$\le \sum_{i=1}^{n} \int_{t_{i-1}}^{t_i} \frac{\varepsilon}{2(b-a)}\,\mathrm{d}
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note 3.1.1</span></p>
 
-Lemma 3.1 is in fact a very intuitive statement. Suppose we compute $\int_a^b C \sin(yx)\,\mathrm{d}x$ with a constant $C$. Then if $y$ is large we have approximately as much of the function under and over the $x$-axis. Moreover, if $y$ is much larger still, this happens already on short subintervals of $\langle a, b \rangle$ where $g$ behaves "almost like constant".
+Lemma 3.1 is in fact a very intuitive statement. Suppose we compute $\int\_a^b C \sin(yx)\,\mathrm{d}x$ with a constant $C$. Then if $y$ is large we have approximately as much of the function under and over the $x$-axis. Moreover, if $y$ is much larger still, this happens already on short subintervals of $\langle a, b \rangle$ where $g$ behaves "almost like constant".
 
 </div>
 
@@ -1687,7 +1687,7 @@ $$2\sin\frac{\alpha}{2}\left(\frac{1}{2} + \sum_{k=1}^{n}\cos k\alpha\right) = \
 
 ### 4.1. Motivation
 
-Recall from linear algebra representing a general vector as a linear combination of an orthonormal basis. Let $\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_n$ be an orthonormal basis, that is, a basis such that $\mathbf{u}_i \mathbf{u}_j = \delta_{ij}$, of a vector space $V$ endowed with a scalar product $\mathbf{uv}$. Then a general vector $\mathbf{a}$ is expressed as
+Recall from linear algebra representing a general vector as a linear combination of an orthonormal basis. Let $\mathbf{u}\_1, \mathbf{u}\_2, \dots, \mathbf{u}\_n$ be an orthonormal basis, that is, a basis such that $\mathbf{u}\_i \mathbf{u}\_j = \delta\_{ij}$, of a vector space $V$ endowed with a scalar product $\mathbf{uv}$. Then a general vector $\mathbf{a}$ is expressed as
 
 $$\mathbf{a} = \sum_{i=1}^{n} a_i \mathbf{u}_i \quad \text{where} \quad a_i = \mathbf{a}\mathbf{u}_i.$$
 
@@ -1731,7 +1731,7 @@ $$s_n(x) = \frac{1}{\pi}\int_0^{\pi} (f(x+t) + f(x-t)) \cdot \frac{\sin(n + \fra
 <details markdown="1">
 <summary>Proof</summary>
 
-Using the definitions of $a_n$ and $b_n$ and the standard formula for $\cos k(x - t) = \cos(kx - kt)$, and then using the equality from 3.2 we obtain
+Using the definitions of $a\_n$ and $b\_n$ and the standard formula for $\cos k(x - t) = \cos(kx - kt)$, and then using the equality from 3.2 we obtain
 
 $$s_n(x) = \frac{1}{\pi}\int_{-\pi}^{\pi}\left(\frac{1}{2} + \sum_{k=1}^{n}\cos k(x-t)\right)f(t)\,\mathrm{d}t = \frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\frac{\sin(n+\frac{1}{2})(x-t)}{2\sin\frac{x-t}{2}}\,\mathrm{d}t.$$
 
@@ -1759,7 +1759,7 @@ $$\frac{1}{\pi}\int_0^{\pi}\frac{\sin(n + \frac{1}{2})t}{\sin\frac{1}{2}t}\,\mat
 <details markdown="1">
 <summary>Proof</summary>
 
-Consider the constant function $f = (x \mapsto 1)$. Then $a_0 = 2$ and $a_k = b_k = 0$ for all $k \ge 1$. $\square$
+Consider the constant function $f = (x \mapsto 1)$. Then $a\_0 = 2$ and $a\_k = b\_k = 0$ for all $k \ge 1$. $\square$
 
 </details>
 </div>
@@ -1769,7 +1769,7 @@ Consider the constant function $f = (x \mapsto 1)$. Then $a_0 = 2$ and $a_k = b_
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.4</span><span class="math-callout__name">(Fourier's Theorem)</span></p>
 
-Let $f$ be a piecewise smooth periodic function with period $2\pi$. Then (as $f(x\pm) = \frac{1}{2}(f(x+) + f(x-))$) $\sum_{k=1}^{\infty}(a_k \cos kx + b_k \sin kx)$ converges in every $x \in \mathbb{R}$ and we have (recall 1.1)
+Let $f$ be a piecewise smooth periodic function with period $2\pi$. Then (as $f(x\pm) = \frac{1}{2}(f(x+) + f(x-))$) $\sum\_{k=1}^{\infty}(a\_k \cos kx + b\_k \sin kx)$ converges in every $x \in \mathbb{R}$ and we have (recall 1.1)
 
 $$f(x\pm) = \frac{a_0}{2} + \sum_{k=1}^{\infty}(a_k \cos kx + b_k \sin kx).$$
 
@@ -1789,7 +1789,7 @@ Set
 
 $$g(t) = \left(\frac{f(x+t) - f(x+)}{t} + \frac{f(x-t) - f(x-)}{t}\right)\frac{\frac{1}{2}t}{\sin\frac{1}{2}t}.$$
 
-This function $g$ is piecewise continuous on $\langle 0, \pi \rangle$: this is obvious for $t > 0$ and in $t = 0$ we have a finite limit because of the left and right derivatives of $f$ in $x$ and the standard $\lim_{t \to 0}\frac{\frac{1}{2}t}{\sin\frac{1}{2}t} = 1$. Thus, we can apply Lemma 3.1 (and Corollary 4.3.2) to obtain
+This function $g$ is piecewise continuous on $\langle 0, \pi \rangle$: this is obvious for $t > 0$ and in $t = 0$ we have a finite limit because of the left and right derivatives of $f$ in $x$ and the standard $\lim\_{t \to 0}\frac{\frac{1}{2}t}{\sin\frac{1}{2}t} = 1$. Thus, we can apply Lemma 3.1 (and Corollary 4.3.2) to obtain
 
 $$\lim_{n \to \infty} s_n(x) = f(x\pm). \quad \square$$
 
@@ -1816,7 +1816,7 @@ Using the representation from 1.3 this can be applied for piecewise smooth funct
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier Series)</span></p>
 
-The series $\frac{a_0}{2} + \sum_{k=1}^{\infty}(a_k \cos kx + b_k \sin kx)$ resp. $\frac{a_0}{2} + \sum_{k=1}^{\infty}(a_k \cos\frac{2\pi}{p}kx + b_k \sin\frac{2\pi}{p}kx)$ is called the **Fourier series** of $f$. Note that the sum is equal to $f(x)$ in all the non-exceptional points.
+The series $\frac{a\_0}{2} + \sum\_{k=1}^{\infty}(a\_k \cos kx + b\_k \sin kx)$ resp. $\frac{a\_0}{2} + \sum\_{k=1}^{\infty}(a\_k \cos\frac{2\pi}{p}kx + b\_k \sin\frac{2\pi}{p}kx)$ is called the **Fourier series** of $f$. Note that the sum is equal to $f(x)$ in all the non-exceptional points.
 
 </div>
 
@@ -1827,9 +1827,9 @@ The series $\frac{a_0}{2} + \sum_{k=1}^{\infty}(a_k \cos kx + b_k \sin kx)$ resp
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note 5.1</span></p>
 
-The sums $s_n(x)$ are continuous while the resulting $f$ is not necessarily so. Thus, the convergence of the Fourier series in 4.4 is often not uniform (recall XIX.1.3).
+The sums $s\_n(x)$ are continuous while the resulting $f$ is not necessarily so. Thus, the convergence of the Fourier series in 4.4 is often not uniform (recall XIX.1.3).
 
-If the sums $\sum \lvert a_n \rvert$ and $\sum \lvert b_n \rvert$ converge, then, of course, the Fourier series converges uniformly and absolutely, and if $\sum n\lvert a_n \rvert$ and $\sum n\lvert b_n \rvert$ converge then we can take derivative by the individual summands.
+If the sums $\sum \lvert a\_n \rvert$ and $\sum \lvert b\_n \rvert$ converge, then, of course, the Fourier series converges uniformly and absolutely, and if $\sum n\lvert a\_n \rvert$ and $\sum n\lvert b\_n \rvert$ converge then we can take derivative by the individual summands.
 
 </div>
 
@@ -1844,14 +1844,14 @@ $f(x)$ has a derivative 1 in all the $x \ne (2k+1)\pi$. The formal differentiati
 
 $$g(x) = 2(\cos x - \cos 2x + \cos 3x - \cos 4x + \cdots)$$
 
-and if we write $g_n(x)$ for the partial sum up to the $n$-th summand we obtain $g_n(0) = 2(1 - 1 + 1 - \cdots + (-1)^{n+1})$, hence $g_n(0) = 0$ for $n$ even and $g_n(0) = 2$ for $n$ odd.
+and if we write $g\_n(x)$ for the partial sum up to the $n$-th summand we obtain $g\_n(0) = 2(1 - 1 + 1 - \cdots + (-1)^{n+1})$, hence $g\_n(0) = 0$ for $n$ even and $g\_n(0) = 2$ for $n$ odd.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note 5.3</span></p>
 
-Note that for $f$ with $f(-x) = f(x)$ all the $b_n$ are zero, and if $f(-x) = -f(x)$ then all the $a_n$ are zero.
+Note that for $f$ with $f(-x) = f(x)$ all the $b\_n$ are zero, and if $f(-x) = -f(x)$ then all the $a\_n$ are zero.
 
 </div>
 
@@ -1886,7 +1886,7 @@ $$\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak Equivalence and Equivalence of Curves)</span></p>
 
-Parametrized curves $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb{E}_n$ and $\boldsymbol{\psi} = (\psi_1, \dots, \psi_n) : \langle c, d \rangle \to \mathbb{E}_n$ are said to be **weakly equivalent** if there is a homeomorphism $\alpha : \langle a, b \rangle \to \langle c, d \rangle$ such that $\boldsymbol{\psi} \circ \alpha = \boldsymbol{\phi}$. We write $\boldsymbol{\phi} \sim \boldsymbol{\psi}$.
+Parametrized curves $\boldsymbol{\phi} = (\phi\_1, \dots, \phi\_n) : \langle a, b \rangle \to \mathbb{E}\_n$ and $\boldsymbol{\psi} = (\psi\_1, \dots, \psi\_n) : \langle c, d \rangle \to \mathbb{E}\_n$ are said to be **weakly equivalent** if there is a homeomorphism $\alpha : \langle a, b \rangle \to \langle c, d \rangle$ such that $\boldsymbol{\psi} \circ \alpha = \boldsymbol{\phi}$. We write $\boldsymbol{\phi} \sim \boldsymbol{\psi}$.
 
 (This relation is obviously reflexive, symmetric and transitive.)
 
@@ -1920,11 +1920,11 @@ Since $\boldsymbol{\phi} \approx \boldsymbol{\psi}$ implies $\boldsymbol{\phi} \
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Curve, Oriented Curve, Parametrization)</span></p>
 
-The $\sim$-equivalence class $L = [\boldsymbol{\phi}]_\sim$ is called a **curve**. The $\approx$-equivalence classes associated with this curve represent its orientations; we speak of **oriented curves** $L = [\boldsymbol{\phi}]_\approx$.
+The $\sim$-equivalence class $L = [\boldsymbol{\phi}]\_\sim$ is called a **curve**. The $\approx$-equivalence classes associated with this curve represent its orientations; we speak of **oriented curves** $L = [\boldsymbol{\phi}]\_\approx$.
 
 By 1.2.2, a simple arc, or a simple closed curve has two orientations.
 
-A parametrized curve $\boldsymbol{\phi}$ such that $L = [\boldsymbol{\phi}]_\sim$ resp. $L = [\boldsymbol{\phi}]_\approx$ is called a **parametrization** of $L$.
+A parametrized curve $\boldsymbol{\phi}$ such that $L = [\boldsymbol{\phi}]\_\sim$ resp. $L = [\boldsymbol{\phi}]\_\approx$ is called a **parametrization** of $L$.
 
 </div>
 
@@ -1943,11 +1943,11 @@ A parametrized curve $\boldsymbol{\phi}$ such that $L = [\boldsymbol{\phi}]_\sim
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Composition of Oriented Curves)</span></p>
 
-Let $K, L$ be oriented curves represented by parametric ones $\boldsymbol{\phi} : \langle a, b \rangle \to \mathbb{E}_n$, $\boldsymbol{\psi} : \langle b, c \rangle \to \mathbb{E}_n$ (if the latter has not originally started in $b$ transform it as indicated in 1.3.1.2) such that $\boldsymbol{\phi}(b) = \boldsymbol{\psi}(b)$. Set
+Let $K, L$ be oriented curves represented by parametric ones $\boldsymbol{\phi} : \langle a, b \rangle \to \mathbb{E}\_n$, $\boldsymbol{\psi} : \langle b, c \rangle \to \mathbb{E}\_n$ (if the latter has not originally started in $b$ transform it as indicated in 1.3.1.2) such that $\boldsymbol{\phi}(b) = \boldsymbol{\psi}(b)$. Set
 
 $$(\boldsymbol{\phi} * \boldsymbol{\psi})(t) = \begin{cases} \boldsymbol{\phi}(t) & \text{for } t \in \langle a, b \rangle \text{ and} \\ \boldsymbol{\psi}(t) & \text{for } t \in \langle b, c \rangle. \end{cases}$$
 
-Obviously $\boldsymbol{\phi} * \boldsymbol{\psi}$ is a continuous mapping $\langle a, c \rangle \to \mathbb{E}_n$ and if $\boldsymbol{\phi} \approx \boldsymbol{\phi}_1 : \langle a_1, b_1 \rangle \to \mathbb{E}_n$ and $\boldsymbol{\psi} \approx \boldsymbol{\psi}_1 : \langle b_1, c_1 \rangle \to \mathbb{E}_n$ then $\boldsymbol{\phi} * \boldsymbol{\psi} \approx \boldsymbol{\phi}_1 * \boldsymbol{\psi}_1$ (note that it is essential that $K, L$ are *oriented* curves, not just curves). Thus, the oriented curve (determined by) $\boldsymbol{\phi} * \boldsymbol{\psi}$ depends on $K, L$ only; it will be denoted by
+Obviously $\boldsymbol{\phi} \ast \boldsymbol{\psi}$ is a continuous mapping $\langle a, c \rangle \to \mathbb{E}\_n$ and if $\boldsymbol{\phi} \approx \boldsymbol{\phi}\_1 : \langle a\_1, b\_1 \rangle \to \mathbb{E}\_n$ and $\boldsymbol{\psi} \approx \boldsymbol{\psi}\_1 : \langle b\_1, c\_1 \rangle \to \mathbb{E}\_n$ then $\boldsymbol{\phi} \ast \boldsymbol{\psi} \approx \boldsymbol{\phi}\_1 \ast \boldsymbol{\psi}\_1$ (note that it is essential that $K, L$ are *oriented* curves, not just curves). Thus, the oriented curve (determined by) $\boldsymbol{\phi} \ast \boldsymbol{\psi}$ depends on $K, L$ only; it will be denoted by
 
 $$K + L.$$
 
@@ -1960,11 +1960,11 @@ $$K + L.$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Opposite Orientation)</span></p>
 
-For an oriented curve $L$ represented by $\boldsymbol{\phi} : \langle a, b \rangle \to \mathbb{E}_n$ define the **oriented curve with opposite orientation**
+For an oriented curve $L$ represented by $\boldsymbol{\phi} : \langle a, b \rangle \to \mathbb{E}\_n$ define the **oriented curve with opposite orientation**
 
 $$-L$$
 
-as the $\approx$-class of $\boldsymbol{\phi} \circ \iota : \langle a, b \rangle \to \mathbb{E}_n$ with $\iota(t) = -t + b + a$ (recall the proof of 1.2.2). Obviously $-L$ is determined by $L$.
+as the $\approx$-class of $\boldsymbol{\phi} \circ \iota : \langle a, b \rangle \to \mathbb{E}\_n$ with $\iota(t) = -t + b + a$ (recall the proof of 1.2.2). Obviously $-L$ is determined by $L$.
 
 </div>
 
@@ -1973,22 +1973,22 @@ as the $\approx$-class of $\boldsymbol{\phi} \circ \iota : \langle a, b \rangle 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Piecewise Smooth Curve)</span></p>
 
-Recall XX.1.1. A parametrized curve (oriented curve, or curve) $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb{E}_n$ is said to be **piecewise smooth** if each of the $\phi_j$ is piecewise smooth such that, moreover, the system of the exceptional points $a = a_0 < a_1 < a_2 < \cdots < a_n = b$ can be chosen so that
+Recall XX.1.1. A parametrized curve (oriented curve, or curve) $\boldsymbol{\phi} = (\phi\_1, \dots, \phi\_n) : \langle a, b \rangle \to \mathbb{E}\_n$ is said to be **piecewise smooth** if each of the $\phi\_j$ is piecewise smooth such that, moreover, the system of the exceptional points $a = a\_0 < a\_1 < a\_2 < \cdots < a\_n = b$ can be chosen so that
 
-- for each of the open intervals $J = (a_i, a_{i+1})$, there is a $j$ such that $\phi_j'(t)$ is either positive or negative on the whole of $J$.
+- for each of the open intervals $J = (a\_i, a\_{i+1})$, there is a $j$ such that $\phi\_j'(t)$ is either positive or negative on the whole of $J$.
 
-However, we will relax the definition of piecewise smoothness by allowing the one-sided limits $\lim_{t \to a_j+} \phi_j'(t)$ and $\lim_{t \to a_j-} \phi_j'(t)$ (in fact, the one-sided derivatives in the exceptional points — recall VII.3.2) infinite.
+However, we will relax the definition of piecewise smoothness by allowing the one-sided limits $\lim\_{t \to a\_j+} \phi\_j'(t)$ and $\lim\_{t \to a\_j-} \phi\_j'(t)$ (in fact, the one-sided derivatives in the exceptional points — recall VII.3.2) infinite.
 
-We will write $\boldsymbol{\phi}'$ for $(\phi_1', \dots, \phi_n')$ (thus in finitely many points $t \in \langle a, b \rangle$, the value $\boldsymbol{\phi}'(t)$ may be undefined; but the derivative will appear only under an integral so that it does not matter).
+We will write $\boldsymbol{\phi}'$ for $(\phi\_1', \dots, \phi\_n')$ (thus in finitely many points $t \in \langle a, b \rangle$, the value $\boldsymbol{\phi}'(t)$ may be undefined; but the derivative will appear only under an integral so that it does not matter).
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation 1.6.1</span></p>
 
-Let curves $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb{E}_n$ and $\boldsymbol{\psi} = (\psi_1, \dots, \psi_n) : \langle c, d \rangle \to \mathbb{E}_n$ be piecewise smooth and let $\alpha$ be such that $\boldsymbol{\psi} = \boldsymbol{\phi} \circ \alpha$, providing either the $\sim$- or the $\approx$-equivalence of the two parametrizations. Then $\alpha$ is continuous and piecewise smooth.
+Let curves $\boldsymbol{\phi} = (\phi\_1, \dots, \phi\_n) : \langle a, b \rangle \to \mathbb{E}\_n$ and $\boldsymbol{\psi} = (\psi\_1, \dots, \psi\_n) : \langle c, d \rangle \to \mathbb{E}\_n$ be piecewise smooth and let $\alpha$ be such that $\boldsymbol{\psi} = \boldsymbol{\phi} \circ \alpha$, providing either the $\sim$- or the $\approx$-equivalence of the two parametrizations. Then $\alpha$ is continuous and piecewise smooth.
 
-(Indeed, between any two exceptional points, some of the $\phi_j$ is one-to-one. Then we have $\alpha = \phi_j^{-1} \circ \psi_j$ on the interval in question.)
+(Indeed, between any two exceptional points, some of the $\phi\_j$ is one-to-one. Then we have $\alpha = \phi\_j^{-1} \circ \psi\_j$ on the interval in question.)
 
 </div>
 
@@ -2001,11 +2001,11 @@ Let curves $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Line Integral of the Second Kind)</span></p>
 
-Let $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb{E}_n$ be a parametrization of an oriented curve $L$ and let $\mathbf{f} = (f_1, \dots, f_n) : U \to \mathbb{E}_n$ be a continuous vector function defined on a $U \supseteq \boldsymbol{\phi}[\langle a, b \rangle]$. The **line integral of the second kind** over the (oriented) curve $L$ is the number
+Let $\boldsymbol{\phi} = (\phi\_1, \dots, \phi\_n) : \langle a, b \rangle \to \mathbb{E}\_n$ be a parametrization of an oriented curve $L$ and let $\mathbf{f} = (f\_1, \dots, f\_n) : U \to \mathbb{E}\_n$ be a continuous vector function defined on a $U \supseteq \boldsymbol{\phi}[\langle a, b \rangle]$. The **line integral of the second kind** over the (oriented) curve $L$ is the number
 
 $$\text{(II)}\!\int_L \mathbf{f} = \int_a^b \mathbf{f}(\boldsymbol{\phi}(t)) \cdot \boldsymbol{\phi}'(t)\,\mathrm{d}t = \sum_{j=1}^{n}\int_a^b f_j(\boldsymbol{\phi}(t))\phi_j'(t)\,\mathrm{d}t.$$
 
-(Thus the dot in $\int_a^b \mathbf{f}(\boldsymbol{\phi}(t)) \cdot \boldsymbol{\phi}'(t)\,\mathrm{d}t$ indicates the standard scalar product of the $n$-tuples of reals.) If there is no danger of confusion, we write simply $\int_L$ instead of $\text{(II)}\!\int_L$.
+(Thus the dot in $\int\_a^b \mathbf{f}(\boldsymbol{\phi}(t)) \cdot \boldsymbol{\phi}'(t)\,\mathrm{d}t$ indicates the standard scalar product of the $n$-tuples of reals.) If there is no danger of confusion, we write simply $\int\_L$ instead of $\text{(II)}\!\int\_L$.
 
 </div>
 
@@ -2021,7 +2021,7 @@ $$\int_L P\,\mathrm{d}x + Q\,\mathrm{d}y \quad \text{or} \quad \int_L P\,\mathrm
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.2</span></p>
 
-The value of the line integral $\int_L \mathbf{f}$ does not depend on the choice of parametrization of $L$.
+The value of the line integral $\int\_L \mathbf{f}$ does not depend on the choice of parametrization of $L$.
 
 </div>
 
@@ -2049,7 +2049,7 @@ $$\text{(II)}\!\int_{-L} \mathbf{f} = -\text{(II)}\!\int_L \mathbf{f} \quad \tex
 <details markdown="1">
 <summary>Proof</summary>
 
-In the proof of 2.2 above we obtained $\int_c^d$ because $\alpha$ was increasing. For a decreasing $\alpha$ the substitution would yield $\int_d^c = -\int_c^d$, hence $\text{(II)}\!\int_{-L} \mathbf{f} = -\text{(II)}\!\int_L \mathbf{f}$. The other equation is obvious. $\square$
+In the proof of 2.2 above we obtained $\int\_c^d$ because $\alpha$ was increasing. For a decreasing $\alpha$ the substitution would yield $\int\_d^c = -\int\_c^d$, hence $\text{(II)}\!\int\_{-L} \mathbf{f} = -\text{(II)}\!\int\_L \mathbf{f}$. The other equation is obvious. $\square$
 
 </details>
 </div>
@@ -2059,11 +2059,11 @@ In the proof of 2.2 above we obtained $\int_c^d$ because $\alpha$ was increasing
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Line Integral of the First Kind)</span></p>
 
-Sometimes also called *the line integral according to length*, it is defined for a non-oriented curve parametrized by $\boldsymbol{\phi} = (\phi_1, \dots, \phi_n) : \langle a, b \rangle \to \mathbb{E}_n$. Let $f : U \to \mathbb{R}$ be a continuous real function defined on a $U \supseteq \boldsymbol{\phi}[\langle a, b \rangle]$. The idea is in modifying Riemann integral by computing the sums along a (piecewise smooth) line instead of along an interval. The sums
+Sometimes also called *the line integral according to length*, it is defined for a non-oriented curve parametrized by $\boldsymbol{\phi} = (\phi\_1, \dots, \phi\_n) : \langle a, b \rangle \to \mathbb{E}\_n$. Let $f : U \to \mathbb{R}$ be a continuous real function defined on a $U \supseteq \boldsymbol{\phi}[\langle a, b \rangle]$. The idea is in modifying Riemann integral by computing the sums along a (piecewise smooth) line instead of along an interval. The sums
 
 $$\sum_{i=1}^{k} f(\boldsymbol{\phi}(t_i)) \lVert \boldsymbol{\phi}(t_i) - \boldsymbol{\phi}(t_{i-1}) \rVert$$
 
-considered for partitions $a = t_0 < t_1 < \cdots < t_k = b$ converge with the mesh of the partitions converging to 0 to
+considered for partitions $a = t\_0 < t\_1 < \cdots < t\_k = b$ converge with the mesh of the partitions converging to 0 to
 
 $$\int_a^b f(\boldsymbol{\phi}(t)) \lVert \boldsymbol{\phi}'(t) \rVert\,\mathrm{d}t.$$
 
@@ -2086,13 +2086,13 @@ $$\text{(I)}\!\int_L f = \text{(II)}\!\int_L \mathbf{f} \quad \text{where} \quad
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Complex Functions of a Real Variable)</span></p>
 
-We will identify the complex plane $\mathbb{C}$ with the Euclidean plane $\mathbb{E}_2$ (viewing $x + iy$ as $(x, y)$ and taking into account that the absolute value of the difference $\lvert z_1 - z_2 \rvert$ coincides with the Euclidean distance). We only must not forget that the structure of $\mathbb{C}$ is richer: in particular we have the multiplication in the *field* $\mathbb{C}$.
+We will identify the complex plane $\mathbb{C}$ with the Euclidean plane $\mathbb{E}\_2$ (viewing $x + iy$ as $(x, y)$ and taking into account that the absolute value of the difference $\lvert z\_1 - z\_2 \rvert$ coincides with the Euclidean distance). We only must not forget that the structure of $\mathbb{C}$ is richer: in particular we have the multiplication in the *field* $\mathbb{C}$.
 
 A complex function of one real variable will be decomposed into two real functions,
 
 $$f(t) = f_1(t) + if_2(t)$$
 
-and we will define (unsurprisingly) its derivative $f'(t)$ as $f_1'(t) + if_2(t)$ and its Riemann integral as
+and we will define (unsurprisingly) its derivative $f'(t)$ as $f\_1'(t) + if\_2(t)$ and its Riemann integral as
 
 $$\int_a^b f(t)\,\mathrm{d}t = \int_a^b f_1(t)\,\mathrm{d}t + i\int_a^b f_2(t)\,\mathrm{d}t.$$
 
@@ -2112,14 +2112,14 @@ The multiplication indicated by $\cdot$ is now (unlike all the multiplications i
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.5.3</span></p>
 
-Think of a complex function of one complex variable $f(z) = f_1(z) + if_2(z)$ as of a vector function $\mathbf{f} = (f_1, f_2)$. Then the complex line integral over $L$ can be expressed as a line integral of second kind as follows:
+Think of a complex function of one complex variable $f(z) = f\_1(z) + if\_2(z)$ as of a vector function $\mathbf{f} = (f\_1, f\_2)$. Then the complex line integral over $L$ can be expressed as a line integral of second kind as follows:
 
 $$\int_L f(z)\,\mathrm{d}z = \text{(II)}\!\int_L (f_1, -f_2) + i\,\text{(II)}\!\int_L (f_2, f_1).$$
 
 Consequently,
 
-- $\int_L f(z)\,\mathrm{d}z$ does not depend on the choice of parametrization, and
-- we have $\int_{-L} f(z)\,\mathrm{d}z = -\int_L f(z)\,\mathrm{d}z$ and $\int_{L+K} f(z)\,\mathrm{d}z = \int_L f(z)\,\mathrm{d}z + \int_K f(z)\,\mathrm{d}z$.
+- $\int\_L f(z)\,\mathrm{d}z$ does not depend on the choice of parametrization, and
+- we have $\int\_{-L} f(z)\,\mathrm{d}z = -\int\_L f(z)\,\mathrm{d}z$ and $\int\_{L+K} f(z)\,\mathrm{d}z = \int\_L f(z)\,\mathrm{d}z + \int\_K f(z)\,\mathrm{d}z$.
 
 </div>
 
@@ -2153,7 +2153,7 @@ The integral over a closed region $M$ can be understood as over an interval $J$ 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.1</span><span class="math-callout__name">(Green's Theorem, Green's Formula)</span></p>
 
-Let $L$ be a simple closed piecewise smooth curve oriented counterclockwise, and let $M$ be its closed region. Let $\mathbf{f} = (f_1, f_2)$ be such that both $f_j$ have continuous partial derivatives on the (open) region of $L$. Then
+Let $L$ be a simple closed piecewise smooth curve oriented counterclockwise, and let $M$ be its closed region. Let $\mathbf{f} = (f\_1, f\_2)$ be such that both $f\_j$ have continuous partial derivatives on the (open) region of $L$. Then
 
 $$\text{(II)}\!\int_L \mathbf{f} = \int_M \left(\frac{\partial f_2}{\partial x_1} - \frac{\partial f_1}{\partial x_2}\right)\mathrm{d}x_1\,\mathrm{d}x_2.$$
 
@@ -2174,7 +2174,7 @@ Let $L$ be the closed curve which is the perimeter of $M$. Then the Green formul
 <details markdown="1">
 <summary>Proof</summary>
 
-Write $L = L_1 + L_2 + L_3 + L_4$ where
+Write $L = L\_1 + L\_2 + L\_3 + L\_4$ where
 
 $$-L_1 : \phi_1 : \langle a, b \rangle \to \mathbb{R}_2,\; \phi_1(t) = (t, g(t)),$$
 
@@ -2184,13 +2184,13 @@ $$L_3 : \phi_3 : \langle a, b \rangle \to \mathbb{R}_2,\; \phi_3(t) = (t, c),$$
 
 $$L_4 : \phi_4 : \langle c, g(b) \rangle \to \mathbb{R}_2,\; \phi_4(t) = (b, t).$$
 
-Hence $\phi_1'(t) = (1, g'(t))$, $\phi_2'(t) = \phi_a'(t) = (0, 1)$ and $\phi_3'(t) = (1, 0)$ and we have
+Hence $\phi\_1'(t) = (1, g'(t))$, $\phi\_2'(t) = \phi\_a'(t) = (0, 1)$ and $\phi\_3'(t) = (1, 0)$ and we have
 
 $$\text{(II)}\!\int_{L_1} = -\int_a^b f_1(t, g(t))\,\mathrm{d}t - \int_a^b f_2(t, g(t))g'(t)\,\mathrm{d}t,$$
 
 $$\text{(II)}\!\int_{L_2} = -\int_c^{g(a)} f_2(a, t)\,\mathrm{d}t, \quad \text{(II)}\!\int_{L_3} = \int_a^b f_1(t, c)\,\mathrm{d}t, \quad \text{(II)}\!\int_{L_4} = \int_c^{g(b)} f_2(b, t)\,\mathrm{d}t.$$
 
-Substituting $\tau = g(t)$ in the second integral in the formula for $\text{(II)}\!\int_{L_1}$ and extending for the purpose of the integral in two variables the definition of $f_j$ to the interval $J = \langle a, b \rangle \times \langle c, g(a) \rangle$ by values 0 in $J \setminus M$ we obtain
+Substituting $\tau = g(t)$ in the second integral in the formula for $\text{(II)}\!\int\_{L\_1}$ and extending for the purpose of the integral in two variables the definition of $f\_j$ to the interval $J = \langle a, b \rangle \times \langle c, g(a) \rangle$ by values 0 in $J \setminus M$ we obtain
 
 $$f_2(b, x_2) - f_2(a, x_2) = \int_a^b \frac{\partial f_2(x_1, x_2)}{\partial x_1}\,\mathrm{d}x_1, \quad \text{and}$$
 
@@ -2207,7 +2207,7 @@ and the statement follows from Fubini's theorem (XVI.4.1). $\square$
 
 ### 3.3. Extending Green's Theorem
 
-Now we have the Green formula in particular also for quadrangles and right-angled triangles with the hypotenuse possibly curved. Using the fact that $\text{(II)}\!\int_L = -\text{(II)}\!\int_{-L}$ we obtain the formula for any figure that can be cut into such figures.
+Now we have the Green formula in particular also for quadrangles and right-angled triangles with the hypotenuse possibly curved. Using the fact that $\text{(II)}\!\int\_L = -\text{(II)}\!\int\_{-L}$ we obtain the formula for any figure that can be cut into such figures.
 
 **3.3.1.** *The Green formula holds for any triangle.*
 
@@ -2223,7 +2223,7 @@ In fact, any region of a piecewise smooth curve can be decomposed into subregion
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.4</span><span class="math-callout__name">(Green's Formula with a Singularity)</span></p>
 
-Let $L$ be a circle with center $c$ and let $M$ be its closed region. Let $\mathbf{f}$ be bounded on $M$, let partial derivatives of $f_j$ exist and be continuous on $M \setminus \lbrace c \rbrace$, and let $\int_M \left(\frac{\partial f_2}{\partial x_1} - \frac{\partial f_1}{\partial x_2}\right)\mathrm{d}x_1\,\mathrm{d}x_2$ make sense. Then the Green formula holds.
+Let $L$ be a circle with center $c$ and let $M$ be its closed region. Let $\mathbf{f}$ be bounded on $M$, let partial derivatives of $f\_j$ exist and be continuous on $M \setminus \lbrace c \rbrace$, and let $\int\_M \left(\frac{\partial f\_2}{\partial x\_1} - \frac{\partial f\_1}{\partial x\_2}\right)\mathrm{d}x\_1\,\mathrm{d}x\_2$ make sense. Then the Green formula holds.
 
 </div>
 
@@ -2231,7 +2231,7 @@ Let $L$ be a circle with center $c$ and let $M$ be its closed region. Let $\math
 <details markdown="1">
 <summary>Proof</summary>
 
-Denote by $K^n$ the circle with center $c$ and diameter $\frac{1}{n}$ oriented clockwise, let $N(n)$ be its region. Let the $n$ be large enough so that $K^n$ (and hence also $N(n)$) is contained in $M$. Decompose the region between $L$ and $K^n$ into four "curved rectangles" $\widetilde{L}_k^n$ with regions $M_k(n)$. For these curves the Green formula obviously holds (suitable carving the shapes is easy) and we have
+Denote by $K^n$ the circle with center $c$ and diameter $\frac{1}{n}$ oriented clockwise, let $N(n)$ be its region. Let the $n$ be large enough so that $K^n$ (and hence also $N(n)$) is contained in $M$. Decompose the region between $L$ and $K^n$ into four "curved rectangles" $\widetilde{L}\_k^n$ with regions $M\_k(n)$. For these curves the Green formula obviously holds (suitable carving the shapes is easy) and we have
 
 $$\text{(II)}\!\int_{\widetilde{L}_k^n} \mathbf{f} = \int_{M_k(n)} \left(\frac{\partial f_2}{\partial x_1} - \frac{\partial f_1}{\partial x_2}\right). \qquad (*)$$
 
@@ -2239,7 +2239,7 @@ By 2.3,
 
 $$\text{(II)}\!\int_{\widetilde{L}_1^n} + \text{(II)}\!\int_{\widetilde{L}_2^n} + \text{(II)}\!\int_{\widetilde{L}_3^n} + \text{(II)}\!\int_{\widetilde{L}_4^n} = \text{(II)}\!\int_L + \text{(II)}\!\int_{K^n}. \qquad (**)$$
 
-Set $V = V(x_1, x_2) = \frac{\partial f_2}{\partial x_1} - \frac{\partial f_1}{\partial x_2}$. Since we assume the Riemann integral $\int_M V(x_1, x_2)$ exists, $V$ is bounded, that is, we have $\lvert V(x_1, x_2) \rvert < A$ for some $A$. Since $N(n) \subseteq \langle c - \frac{1}{n}, c + \frac{1}{n} \rangle \times \langle c - \frac{1}{n}, c + \frac{1}{n} \rangle$, we have
+Set $V = V(x\_1, x\_2) = \frac{\partial f\_2}{\partial x\_1} - \frac{\partial f\_1}{\partial x\_2}$. Since we assume the Riemann integral $\int\_M V(x\_1, x\_2)$ exists, $V$ is bounded, that is, we have $\lvert V(x\_1, x\_2) \rvert < A$ for some $A$. Since $N(n) \subseteq \langle c - \frac{1}{n}, c + \frac{1}{n} \rangle \times \langle c - \frac{1}{n}, c + \frac{1}{n} \rangle$, we have
 
 $$\left\lvert \int_{N(n)} V \right\rvert < \varepsilon \quad \text{for sufficiently large } n.$$
 
@@ -2247,7 +2247,7 @@ $\mathbf{f}$ is bounded by assumption and hence we also have (we can parametrize
 
 $$\left\lvert \text{(II)}\!\int_{K^n} \mathbf{f} \right\rvert < \varepsilon \quad \text{for sufficiently large } n.$$
 
-Now we have by $(*)$ and $(**)$
+Now we have by $(\ast)$ and $(\ast\ast)$
 
 $$\text{(II)}\!\int_L + \text{(II)}\!\int_{K^n} = \int_{M_1(k)} V + \int_{M_2(k)} V + \int_{M_3(k)} V + \int_{M_4(k)} V = \int_M V - \int_{N(k)} V$$
 
@@ -2287,7 +2287,7 @@ $$(z^n)' = nz^{n-1}.$$
 
 A function $f$ has a derivative $A$ at a $z \in \mathbb{C}$ if and only if there exists for a sufficiently small $\delta > 0$ a complex function $\mu : \lbrace h \mid \lvert h \rvert < \delta \rbrace \to \mathbb{C}$ such that
 
-1. $\lim_{h \to 0} \mu(h) = 0$, and
+1. $\lim\_{h \to 0} \mu(h) = 0$, and
 2. for $0 < \lvert h \rvert < \delta$, $\quad f(z + h) - f(z) = Ah + \mu(h)h$.
 
 ($\lvert h \rvert$ is of course the absolute value in $\mathbb{C}$.)
@@ -2308,11 +2308,11 @@ Let $f$ have a derivative at $z$. Then it is continuous at this point.
 
 Proposition 1.1.2 seems to suggest that similarly like in the real case, the existence of a derivative can be interpreted as a "geometric tangent" and expresses a sort of smoothness. But it is a much more special property.
 
-Consider $f(z) = \overline{z}$ (the complex conjugate) and compute the derivative. Writing $h = h_1 + ih_2$ we obtain
+Consider $f(z) = \overline{z}$ (the complex conjugate) and compute the derivative. Writing $h = h\_1 + ih\_2$ we obtain
 
 $$\frac{\overline{z + h} - \overline{z}}{h} = \frac{\overline{z} + \overline{h} - \overline{z}}{h} = \frac{\overline{h}}{h} = \begin{cases} 1 & \text{for } h_1 \ne 0 = h_2, \\ -1 & \text{for } h_1 = 0 \ne h_2. \end{cases}$$
 
-Hence, there is no limit $\lim_{h \to 0} \frac{\overline{z+h} - \overline{z}}{h}$ and our $f$ does not have a derivative at any $z$ whatsoever, while there can be hardly any mapping $\mathbb{C} \to \mathbb{C}$ smoother than this $f$ which is just a mirroring along the real axis.
+Hence, there is no limit $\lim\_{h \to 0} \frac{\overline{z+h} - \overline{z}}{h}$ and our $f$ does not have a derivative at any $z$ whatsoever, while there can be hardly any mapping $\mathbb{C} \to \mathbb{C}$ smoother than this $f$ which is just a mirroring along the real axis.
 
 </div>
 
@@ -2351,7 +2351,7 @@ We have
 
 $$\frac{1}{h}(f(z+h) - f(z)) = \frac{1}{h_1 + ih_2}(P(x+h_1, y+h_2) - P(x,y)) + i\frac{1}{h_1 + ih_2}(Q(x+h_1, y+h_2) - Q(x,y)).$$
 
-If there is a limit $L = \lim_{h \to 0}\frac{1}{h}(f(z+h) - f(z))$ then we have in particular the limits $L = \lim_{h_1 \to 0}\frac{1}{h_1}(f(z+h_1) - f(z))$ and $L = -i\lim_{h_2 \to 0}\frac{1}{ih_2}(f(z+ih_2) - f(z))$. That is,
+If there is a limit $L = \lim\_{h \to 0}\frac{1}{h}(f(z+h) - f(z))$ then we have in particular the limits $L = \lim\_{h\_1 \to 0}\frac{1}{h\_1}(f(z+h\_1) - f(z))$ and $L = -i\lim\_{h\_2 \to 0}\frac{1}{ih\_2}(f(z+ih\_2) - f(z))$. That is,
 
 $$L = \frac{\partial P}{\partial x}(x,y) + i\frac{\partial Q}{\partial x}(x,y)$$
 
@@ -2398,7 +2398,7 @@ $$F(h_1, h_2, \beta, \gamma) = \frac{\partial P(x+h_1, y+\gamma h_2)}{\partial x
 
 $$G(h_1, h_2, \alpha, \delta) = \frac{\partial Q(x+h_1, y+\alpha h_2)}{\partial x} - \frac{\partial Q(x+\delta h_1, y)}{\partial x}.$$
 
-Since $\lvert h_2 \rvert \le \lvert h \rvert$ and $F(\cdots)$ and $G(\cdots)$ converge to 0 for $h \to 0$ by continuity, the expression converges to $\frac{\partial P}{\partial x}(x,y) + i\frac{\partial Q}{\partial x}(x,y)$. $\square$
+Since $\lvert h\_2 \rvert \le \lvert h \rvert$ and $F(\cdots)$ and $G(\cdots)$ converge to 0 for $h \to 0$ by continuity, the expression converges to $\frac{\partial P}{\partial x}(x,y) + i\frac{\partial Q}{\partial x}(x,y)$. $\square$
 
 </details>
 </div>
@@ -2435,7 +2435,7 @@ $$\frac{\mathrm{d}}{\mathrm{d}\gamma}\int_L f(z, \gamma)\,\mathrm{d}z = \int_L \
 <details markdown="1">
 <summary>Proof</summary>
 
-Write $z = x + iy$, $\gamma = \alpha + i\beta$ and $f(z, \gamma) = P(x,y,\alpha,\beta) + iQ(x,y,\alpha,\beta)$. By XXI.2.5.3 we have for $F(\gamma) = \int_L f(z, \gamma)\,\mathrm{d}z$ by the definition of complex line integral
+Write $z = x + iy$, $\gamma = \alpha + i\beta$ and $f(z, \gamma) = P(x,y,\alpha,\beta) + iQ(x,y,\alpha,\beta)$. By XXI.2.5.3 we have for $F(\gamma) = \int\_L f(z, \gamma)\,\mathrm{d}z$ by the definition of complex line integral
 
 $$F(\gamma) = \mathcal{P}(\alpha, \beta) + i\mathcal{Q}(\alpha, \beta)$$
 
@@ -2461,11 +2461,11 @@ $$\int_L \frac{\partial f(z, \gamma)}{\partial \gamma}\,\mathrm{d}z = \text{(II)
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2</span><span class="math-callout__name">(Uniform Convergence and Complex Line Integral)</span></p>
 
-Let $L$ be an oriented curve parametrized by $\phi$ and let $f_n$ be continuous complex functions defined (at least) on $L$. If $f_n$ uniformly converge to $f$ then
+Let $L$ be an oriented curve parametrized by $\phi$ and let $f\_n$ be continuous complex functions defined (at least) on $L$. If $f\_n$ uniformly converge to $f$ then
 
 $$\int_L f = \lim_n \int_L f_n.$$
 
-In particular if $\sum_{n=1}^{\infty} g_n$ is a uniformly convergent series of continuous functions defined on $L$ then
+In particular if $\sum\_{n=1}^{\infty} g\_n$ is a uniformly convergent series of continuous functions defined on $L$ then
 
 $$\int_L\left(\sum_{n=1}^{\infty} g_n\right) = \sum_{n=1}^{\infty}\int_L g_n.$$
 
@@ -2479,9 +2479,9 @@ Since $\phi$ is piecewise smooth, $\phi'$ is bounded, say by $A$ on $L$. Consequ
 
 $$\lvert f_n(\phi(t)) \cdot \phi'(t) - f(\phi(t)) \cdot \phi'(t) \rvert = \lvert (f_n(\phi(t)) - f(\phi(t))) \cdot \phi'(t) \rvert \le \lvert f_n(\phi(t)) - f(\phi(t)) \rvert \cdot A$$
 
-and hence $f_n \rightrightarrows f$ implies that $(f_n \circ \phi) \cdot \phi' \rightrightarrows (f \circ \phi) \cdot \phi'$ and we can use XVIII.4.1 and the formula $(*)$.
+and hence $f\_n \rightrightarrows f$ implies that $(f\_n \circ \phi) \cdot \phi' \rightrightarrows (f \circ \phi) \cdot \phi'$ and we can use XVIII.4.1 and the formula $(\ast)$.
 
-For the second statement it now suffices to realize that $\int_L(f + g) = \int_L f + \int_L g$. $\square$
+For the second statement it now suffices to realize that $\int\_L(f + g) = \int\_L f + \int\_L g$. $\square$
 
 </details>
 </div>
@@ -2511,7 +2511,7 @@ and by the Green formula (whether we have in mind the situation from statement 1
 
 $$\int_L f = \int_M\left(-\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right) + i\int_M\left(\frac{\partial P}{\partial x} - \frac{\partial Q}{\partial y}\right) = 0$$
 
-because by the Cauchy–Riemann equations the functions under the integrals $\int_M$ are zero. $\square$
+because by the Cauchy–Riemann equations the functions under the integrals $\int\_M$ are zero. $\square$
 
 </details>
 </div>
@@ -2556,7 +2556,7 @@ $$\frac{1}{h}(F(u+h) - F(u)) = \frac{1}{h}\int_0^1 f(u + th)\,\mathrm{d}t = \fra
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note 3.4.2</span></p>
 
-Working with a convex $U$ was just a matter of convenience. More generally, the same can be proved for simply connected open sets $U$ ("open sets without holes"). Instead of the $L(a, u)$ one can take oriented simple arcs $L$ starting with $a$ and ending in $u$; the integral over such an $L$ depends on $a$ and $u$ only (this is an immediate consequence of 3.3.1 if two such curves $L_1, L_2$ meet solely in $a$ and $u$ — use the simple closed curve $L_1 - L_2$ — but it can be proved for curves that intersect as well). For connected but not simply connected $U$ the situation is different, though.
+Working with a convex $U$ was just a matter of convenience. More generally, the same can be proved for simply connected open sets $U$ ("open sets without holes"). Instead of the $L(a, u)$ one can take oriented simple arcs $L$ starting with $a$ and ending in $u$; the integral over such an $L$ depends on $a$ and $u$ only (this is an immediate consequence of 3.3.1 if two such curves $L\_1, L\_2$ meet solely in $a$ and $u$ — use the simple closed curve $L\_1 - L\_2$ — but it can be proved for curves that intersect as well). For connected but not simply connected $U$ the situation is different, though.
 
 </div>
 
@@ -2722,7 +2722,7 @@ Take a circle $K$ with center $a$ and radius $r$ such that the associated disc (
 
 $$\zeta \in K \;\Rightarrow\; \left\lvert \frac{z-a}{\zeta - a} \right\rvert < q < 1. \qquad (**)$$
 
-Now we obtain for $x \in U$ from $(*)$
+Now we obtain for $x \in U$ from $(\ast)$
 
 $$\frac{1}{\zeta - z} = \frac{1}{\zeta - a}\left(\sum_{n=0}^{\infty}\left(\frac{z-a}{\zeta-a}\right)^n\right)$$
 
@@ -2730,11 +2730,11 @@ and hence
 
 $$\frac{f(\zeta)}{\zeta - z} = \sum_{n=0}^{\infty}\frac{f(\zeta)}{\zeta - a}\left(\frac{z-a}{\zeta-a}\right)^n.$$
 
-The continuous function $f$ is bounded on the compact circle $K$ so that by $(**)$ for a suitable $A$,
+The continuous function $f$ is bounded on the compact circle $K$ so that by $(\ast\ast)$ for a suitable $A$,
 
 $$\left\lvert \frac{f(\zeta)}{\zeta - a}\left(\frac{z-a}{\zeta-a}\right)^n \right\rvert < \frac{A}{r} \cdot q^n$$
 
-and hence by XVIII.4.5 the series $\sum_{n=0}^{\infty}\frac{f(\zeta)}{\zeta - a}\left(\frac{z-a}{\zeta - a}\right)^n$ uniformly converges and we can use XXII.3.2 to obtain
+and hence by XVIII.4.5 the series $\sum\_{n=0}^{\infty}\frac{f(\zeta)}{\zeta - a}\left(\frac{z-a}{\zeta - a}\right)^n$ uniformly converges and we can use XXII.3.2 to obtain
 
 $$\int_K \frac{f(\zeta)}{\zeta - z}\,\mathrm{d}\zeta = \sum_{n=0}^{\infty}\int_K \frac{f(\zeta)}{\zeta - a}\left(\frac{z-a}{\zeta-a}\right)^n\mathrm{d}\zeta = \sum_{n=0}^{\infty}(z-a)^n\int_K \frac{f(\zeta)}{(\zeta-a)^{n+1}}\,\mathrm{d}\zeta.$$
 
@@ -2771,7 +2771,7 @@ $$\sin z = \frac{e^{iz} - e^{-iz}}{2i} = z - \frac{z^3}{3!} + \frac{z^5}{5!} - \
 
 $$\cos z = \frac{e^{iz} + e^{-iz}}{2} = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \frac{z^6}{6!} + \cdots$$
 
-We obviously have $\lim_{z \to 0}\frac{\sin z}{z} = 1$ and all the addition formulas are all we will need. We will prove, say, the formula for sinus:
+We obviously have $\lim\_{z \to 0}\frac{\sin z}{z} = 1$ and all the addition formulas are all we will need. We will prove, say, the formula for sinus:
 
 $$\sin u \cos v + \sin v \cos u = \frac{1}{4i}((e^{iu} - e^{-iu})(e^{iv} + e^{-iv}) + (e^{iv} - e^{-iv})(e^{iu} + e^{-iu})) = \frac{1}{2i}(e^{i(u+v)} - e^{-i(u+v)}) = \sin(u+v).$$
 
@@ -2786,7 +2786,7 @@ But in effect this conjecture is not all that wrong. The statement holds true if
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 2.2</span><span class="math-callout__name">(Local Uniqueness)</span></p>
 
-Let $f$ and $g$ be holomorphic in an open set $U$ and let $c$ be in $U$. Let $c_n \ne c$, $c = \lim_n c_n$ and $f(c_n) = g(c_n)$ for all $n$. Then $f$ coincides with $g$ in a neighbourhood of $c$.
+Let $f$ and $g$ be holomorphic in an open set $U$ and let $c$ be in $U$. Let $c\_n \ne c$, $c = \lim\_n c\_n$ and $f(c\_n) = g(c\_n)$ for all $n$. Then $f$ coincides with $g$ in a neighbourhood of $c$.
 
 </div>
 
@@ -2794,17 +2794,17 @@ Let $f$ and $g$ be holomorphic in an open set $U$ and let $c$ be in $U$. Let $c_
 <details markdown="1">
 <summary>Proof</summary>
 
-It suffices to prove that if $f(c_n) = 0$ for all $n$ then $f(z) = 0$ in a neighbourhood of $c$.
+It suffices to prove that if $f(c\_n) = 0$ for all $n$ then $f(z) = 0$ in a neighbourhood of $c$.
 
 Since $c \in U$, the derivative of $f$ in $c$ exists and hence by 1.1 we have in a sufficiently small neighbourhood $V$ of $c$
 
 $$f(z) = \sum_{k=0}^{\infty} a_k(z - c)^k.$$
 
-If $f$ is not constant zero in $V$, some of the $a_k$ is not 0. Let $a_n$ be the first of them. Thus,
+If $f$ is not constant zero in $V$, some of the $a\_k$ is not 0. Let $a\_n$ be the first of them. Thus,
 
 $$f(z) = (z - c)^n(a_n + a_{n+1}(z - c) + a_{n+2}(z - c)^2 + \cdots)$$
 
-The series $g(z) = a_n + a_{n+1}(z - c) + a_{n+2}(z - c)^2 + \cdots$ is a continuous function and $g(0) = a_n \ne 0$ and hence $g(z) \ne 0$ in a neighbourhood $W$ of $c$, and $f(z) = (z - c)^n g(z)$ is in $W$ equal to 0 only at $c$. But for sufficiently large $n$, $c_n$ is in $W$, a contradiction. $\square$
+The series $g(z) = a\_n + a\_{n+1}(z - c) + a\_{n+2}(z - c)^2 + \cdots$ is a continuous function and $g(0) = a\_n \ne 0$ and hence $g(z) \ne 0$ in a neighbourhood $W$ of $c$, and $f(z) = (z - c)^n g(z)$ is in $W$ equal to 0 only at $c$. But for sufficiently large $n$, $c\_n$ is in $W$, a contradiction. $\square$
 
 </details>
 </div>
@@ -2827,7 +2827,7 @@ Of course, we speak of connected resp. pathwise connected *subset* of a metric s
 
 1. For good reasons, void space is defined to be disconnected. But all our spaces will be non-void.
 2. Since closed sets are precisely the complements of open sets, we see that $X$ is *disconnected* if there are disjoint non-empty closed sets $A, B$ such that $X = A \cup B$.
-3. The pathwise connectedness means, of course, connecting of arbitrary pairs of points by curves if we generalize the concept of curve from $\mathbb{E}_n$ to an arbitrary metric space.
+3. The pathwise connectedness means, of course, connecting of arbitrary pairs of points by curves if we generalize the concept of curve from $\mathbb{E}\_n$ to an arbitrary metric space.
 4. If we know that a space $X$ is connected we can prove a statement $\mathcal{V}(x)$ about elements $x \in X$ by showing that the set $\lbrace x \mid \mathcal{V}(x) \text{ holds} \rbrace$ is non-empty, open and closed.
 
 </div>
@@ -2867,7 +2867,7 @@ Suppose $X$ is pathwise connected but not connected. Then there are non-empty op
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Fact 2.3.4</span></p>
 
-An open subset of $\mathbb{E}_n$ is connected if and only if it is pathwise connected.
+An open subset of $\mathbb{E}\_n$ is connected if and only if it is pathwise connected.
 
 </div>
 
@@ -2875,11 +2875,11 @@ An open subset of $\mathbb{E}_n$ is connected if and only if it is pathwise conn
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $U \subseteq \mathbb{E}_n$ be non-empty open. For $x \in U$ define
+Let $U \subseteq \mathbb{E}\_n$ be non-empty open. For $x \in U$ define
 
 $$U(x) = \lbrace y \in U \mid \exists \phi : \langle a, b \rangle \to U,\; \phi(a) = x,\; \phi(b) = y \rbrace.$$
 
-Sets $U(x)$ and $U(y)$ are either disjoint or equal (if $z \in U(x) \cap U(y)$ choose oriented curves $L_1, L_2$ connecting $x$ with $z$ and $z$ with $y$; then $L_1 + L_2$ from XXI.1.4 proves that $y \in U(x)$ and using XXI.1.4 again we see that $U(y) \subseteq U(x)$).
+Sets $U(x)$ and $U(y)$ are either disjoint or equal (if $z \in U(x) \cap U(y)$ choose oriented curves $L\_1, L\_2$ connecting $x$ with $z$ and $z$ with $y$; then $L\_1 + L\_2$ from XXI.1.4 proves that $y \in U(x)$ and using XXI.1.4 again we see that $U(y) \subseteq U(x)$).
 
 Further, each $U(x)$ is open. Indeed let $y \in U(x)$ and let $L$ be an oriented curve connecting $x$ with $y$. Since $U$ is open there is an $\varepsilon > 0$ such that $\Omega(y, \varepsilon) \subseteq U$. Now for an arbitrary $z \in \Omega(y, \varepsilon)$ we have the oriented line segment $K$ parametrized by $\psi = (t \mapsto y + t(z - y)) : \langle 0, 1 \rangle \to \Omega(y, \varepsilon)$ and hence $L + K$ connecting $x$ with $z$. Thus, $\Omega(y, \varepsilon) \subseteq U(x)$.
 
@@ -2891,7 +2891,7 @@ Now if $U$ is not pathwise connected there are $x, y$ with $U(x) \cap U(y) = \em
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4</span><span class="math-callout__name">(Uniqueness Theorem)</span></p>
 
-Let $f$ and $g$ be holomorphic in a connected open set $U$ and let there exist $c$ and $c_n \ne c$ in $U$ such that $c = \lim_n c_n$ and $f(c_n) = g(c_n)$ for all $n$. Then $f = g$.
+Let $f$ and $g$ be holomorphic in a connected open set $U$ and let there exist $c$ and $c\_n \ne c$ in $U$ such that $c = \lim\_n c\_n$ and $f(c\_n) = g(c\_n)$ for all $n$. Then $f = g$.
 
 </div>
 
@@ -2903,7 +2903,7 @@ Set
 
 $$V = \lbrace z \mid z \in U,\; f(u) = g(u) \text{ for all } u \text{ in a neighbourhood of } z \rbrace.$$
 
-Then $V$ is by definition open and by 2.2 and the assumption on $c$ it is not empty. Now let $z_n \in V$ and $\lim_n z_n = z$. Then by 2.2, $z \in V$ so that $V$ is also closed, and hence $V = U$ by connectedness (recall 2.3.1.4). $\square$
+Then $V$ is by definition open and by 2.2 and the assumption on $c$ it is not empty. Now let $z\_n \in V$ and $\lim\_n z\_n = z$. Then by 2.2, $z \in V$ so that $V$ is also closed, and hence $V = U$ by connectedness (recall 2.3.1.4). $\square$
 
 </details>
 </div>
@@ -2925,7 +2925,7 @@ $$\left\lvert \int_L f(z)\,\mathrm{d}z \right\rvert \le 8A\pi r.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $L$ be parametrized by $\phi : \langle 0, 2\pi \rangle \to \mathbb{C}$ defined by $\phi(t) = c + r\cos t + ir\sin t$ so that $\phi'(t) = -r\sin t + ir\cos t$ and $\lvert \phi_1' \rvert, \lvert \phi_2' \rvert \le r$. Let $f = f_1 + if_2$. Then we have
+Let $L$ be parametrized by $\phi : \langle 0, 2\pi \rangle \to \mathbb{C}$ defined by $\phi(t) = c + r\cos t + ir\sin t$ so that $\phi'(t) = -r\sin t + ir\cos t$ and $\lvert \phi\_1' \rvert, \lvert \phi\_2' \rvert \le r$. Let $f = f\_1 + if\_2$. Then we have
 
 $$\left\lvert \int_L f \right\rvert = \left\lvert \int_0^{2\pi} f(\phi(t))\phi'(t)\,\mathrm{d}t \right\rvert \le \left\lvert \int_0^{2\pi} f_1\phi_1' \right\rvert + \left\lvert \int_0^{2\pi} f_2\phi_2' \right\rvert + \left\lvert \int_0^{2\pi} f_1\phi_2' \right\rvert + \left\lvert \int_0^{2\pi} f_2\phi_1' \right\rvert \le 4\int_0^{2\pi} Ar\,\mathrm{d}t = 8A\pi r. \quad \square$$
 
@@ -2978,11 +2978,11 @@ Each polynomial $p$ of $\deg(p) > 0$ with complex coefficients has a complex roo
 <details markdown="1">
 <summary>Proof</summary>
 
-Let a polynomial $p(z) = z^n + a_{n-1}z^{n-1} + \cdots + a_1 z + a_0$ have no root. Then the holomorphic function
+Let a polynomial $p(z) = z^n + a\_{n-1}z^{n-1} + \cdots + a\_1 z + a\_0$ have no root. Then the holomorphic function
 
 $$f(z) = \frac{1}{p(z)}$$
 
-is defined on the whole of $\mathbb{C}$. Set $R = 2n\max\lbrace \lvert a_0 \rvert, \lvert a_1 \rvert, \dots, \lvert a_{n-1} \rvert, 1 \rbrace$. Then we have for $\lvert z \rvert \ge R$
+is defined on the whole of $\mathbb{C}$. Set $R = 2n\max\lbrace \lvert a\_0 \rvert, \lvert a\_1 \rvert, \dots, \lvert a\_{n-1} \rvert, 1 \rbrace$. Then we have for $\lvert z \rvert \ge R$
 
 $$\lvert p(z) \rvert \ge \lvert z \rvert^n - \lvert a_{n-1}z^{n-1} + \cdots + a_1 z + a_0 \rvert \ge \lvert z \rvert^n - \lvert z \rvert^{n-1}\frac{1}{2}R \ge \lvert z \rvert^{n-1}\frac{1}{2}R \ge \frac{1}{2}R^n.$$
 

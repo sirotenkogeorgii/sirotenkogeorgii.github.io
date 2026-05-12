@@ -33,7 +33,7 @@ date: 2024-10-20
 - [SDEs and Diffusion Models HD](/subpages/books/sde_hd/)
 - [PDEs in Data Science HD](/subpages/books/pdeds/)
 - [Reinforcement Learning HD](/subpages/reinforcement_learning_hd/)
-- [Applied Combinatorial Optimization HD](/subpages/books/aco/)
+- [ACO HD](/subpages/books/aco/)
 - [DSO CUNI](/subpages/books/dso/)
 - [Foundations of Schroedinger Bridges for Generative Modeling](/subpages/books/schroedinger_bridges_generative_modeling/)
 - [Differential Geometry of Curves and Surfaces](/subpages/books/differential_geometry_of_curves_and_surfaces/)

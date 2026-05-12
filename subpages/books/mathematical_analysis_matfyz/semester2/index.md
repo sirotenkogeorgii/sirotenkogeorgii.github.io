@@ -20,11 +20,11 @@ tags:
 
 We are interested in real analysis but we will still need some basic facts about polynomials with coefficients and variables in the field $\mathbb{C}$ of complex numbers.
 
-From Chapter I, 3.4, recall the absolute value $\lvert a \rvert = \sqrt{a_1^2 + a_2^2}$ of the complex number $a = a_1 + a_2 i$ and the triangle inequality
+From Chapter I, 3.4, recall the absolute value $\lvert a \rvert = \sqrt{a\_1^2 + a\_2^2}$ of the complex number $a = a\_1 + a\_2 i$ and the triangle inequality
 
 $$\lvert a + b \rvert \le \lvert a \rvert + \lvert b \rvert.$$
 
-Further recall the complex conjugate $\overline{a} = a_1 - a_2 i$ of $a = a_1 + a_2 i$ and the facts that
+Further recall the complex conjugate $\overline{a} = a\_1 - a\_2 i$ of $a = a\_1 + a\_2 i$ and the facts that
 
 $$\overline{a + b} = \overline{a} + \overline{b}, \quad \overline{ab} = \overline{a}\,\overline{b} \quad \text{and} \quad \lvert a \rvert = \sqrt{a\overline{a}}.$$
 
@@ -35,11 +35,11 @@ $a + \overline{a}$ and $a\overline{a}$ are always real numbers.
 
 </div>
 
-**Degree of a polynomial.** If the coefficient $a_n$ in the polynomial
+**Degree of a polynomial.** If the coefficient $a\_n$ in the polynomial
 
 $$p \equiv a_n x^n + \cdots + a_1 x + a_0$$
 
-is not $0$ we say that the degree of $p$ is $n$ and write $\deg(p) = n$. This leaves out $p = \text{const}_0$ which is usually not given a degree.
+is not $0$ we say that the degree of $p$ is $n$ and write $\deg(p) = n$. This leaves out $p = \text{const}\_0$ which is usually not given a degree.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(1.2.1)</span></p>
@@ -54,7 +54,7 @@ Consider polynomials $p, q$ with degrees $n = \deg(p) \ge k = \deg(q)$,
 
 $$p \equiv a_n x^n + \cdots + a_1 x + a_0, \qquad q \equiv b_k x^k + \cdots + b_1 x + b_0.$$
 
-Subtracting $\frac{a_n}{b_k} x^{n-k} q(x)$ from $p(x)$ we obtain zero or a polynomial $p_1$ with $\deg(p_1) < n$, and
+Subtracting $\frac{a\_n}{b\_k} x^{n-k} q(x)$ from $p(x)$ we obtain zero or a polynomial $p\_1$ with $\deg(p\_1) < n$, and
 
 $$p(x) = c_1 x^{n_1} q(x) + p_1(x).$$
 
@@ -62,7 +62,7 @@ Repeating this procedure we finish with
 
 $$p(x) = s(x)q(x) + r(x)$$
 
-with $r = \text{const}_0$ or $\deg(r) < \deg(q)$. One speaks of the $r$ as of the **remainder** when dividing $p$ by $q$.
+with $r = \text{const}\_0$ or $\deg(r) < \deg(q)$. One speaks of the $r$ as of the **remainder** when dividing $p$ by $q$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(1.3.1 - Important)</span></p>
@@ -88,15 +88,15 @@ Recall the obvious formula
 
 $$x^k - \alpha^k = (x - \alpha)(x^{k-1} + x^{k-2}\alpha + \cdots + x\alpha^{k-2} + \alpha^{k-1})$$
 
-and denote the polynomial $x^{k-1} + x^{k-2}\alpha + \cdots + x\alpha^{k-2} + \alpha^{k-1}$ (in $x$) of degree $k - 1$ by $s_k(x, \alpha)$. If $\alpha_1$ is a root of $p(x) = \sum_{k=0}^{n} a_k x^k$ of degree $n$ we have
+and denote the polynomial $x^{k-1} + x^{k-2}\alpha + \cdots + x\alpha^{k-2} + \alpha^{k-1}$ (in $x$) of degree $k - 1$ by $s\_k(x, \alpha)$. If $\alpha\_1$ is a root of $p(x) = \sum\_{k=0}^{n} a\_k x^k$ of degree $n$ we have
 
 $$p(x) = p(x) - p(\alpha_1) = \sum_{k=0}^{n} a_k x^k - \sum_{k=0}^{n} a_k \alpha_1^k = \sum_{k=0}^{n} a_k (x^k - \alpha_1^k) = (x - \alpha_1) \sum_{k=0}^{n} a_k s_k(x, \alpha_1)$$
 
-where the polynomial $p_1(x) = \sum_{k=0}^{n} a_k s_k(x, \alpha)$ has by 1.2.1 degree precisely $n - 1$. Repeating the procedure we obtain
+where the polynomial $p\_1(x) = \sum\_{k=0}^{n} a\_k s\_k(x, \alpha)$ has by 1.2.1 degree precisely $n - 1$. Repeating the procedure we obtain
 
 $$p_1(x) = (x - \alpha_2) p_2(x), \quad p_2(x) = (x - \alpha_3) p_3(x), \quad \text{etc.}$$
 
-with $\deg(p_k) = n - k$, and ultimately
+with $\deg(p\_k) = n - k$, and ultimately
 
 $$p(x) = a(x - \alpha_1)(x - \alpha_2) \cdots (x - \alpha_n) \qquad (*)$$
 
@@ -107,16 +107,30 @@ with $a \neq 0$.
 
 A polynomial of degree $n$ has at most $n$ roots.
 
-*Proof.* Let $x$ be a root of $p(x) = a(x - \alpha_1)(x - \alpha_2) \cdots (x - \alpha_n)$. Then $(x - \alpha_1)(x - \alpha_2) \cdots (x - \alpha_n) = 0$ and hence some of the $x - \alpha_k$ has to be zero, that is, $x = \alpha_k$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $x$ be a root of $p(x) = a(x - \alpha\_1)(x - \alpha\_2) \cdots (x - \alpha\_n)$. Then $(x - \alpha\_1)(x - \alpha\_2) \cdots (x - \alpha\_n) = 0$ and hence some of the $x - \alpha\_k$ has to be zero, that is, $x = \alpha\_k$. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.3.1 - Unicity of the coefficients)</span></p>
 
-The coefficients $a_k$ in the expression $p(x) = a_n x^n + \cdots + a_1 x + a_0$ are uniquely determined by the function $(x \mapsto p(x))$. Consequently, this function also determines $\deg(p)$.
+The coefficients $a\_k$ in the expression $p(x) = a\_n x^n + \cdots + a\_1 x + a\_0$ are uniquely determined by the function $(x \mapsto p(x))$. Consequently, this function also determines $\deg(p)$.
 
-*Proof.* Let $p(x) = a_n x^n + \cdots + a_1 x + a_0 = b_n x^n + \cdots + b_1 x + b_0$ (any of $a_k, b_k$ may be zero). Then $(a_n - b_n) x^n + \cdots + (a_1 - b_1) x + (a_0 - b_0)$ has infinitely many roots and hence cannot have a degree. Thus, $a_k = b_k$ for all $k$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $p(x) = a\_n x^n + \cdots + a\_1 x + a\_0 = b\_n x^n + \cdots + b\_1 x + b\_0$ (any of $a\_k, b\_k$ may be zero). Then $(a\_n - b\_n) x^n + \cdots + (a\_1 - b\_1) x + (a\_0 - b\_0)$ has infinitely many roots and hence cannot have a degree. Thus, $a\_k = b\_k$ for all $k$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -125,24 +139,38 @@ The coefficients $a_k$ in the expression $p(x) = a_n x^n + \cdots + a_1 x + a_0$
 
 The polynomials $s, r$ obtained when dividing polynomial $p$ by a polynomial $q$ as in 1.3 are uniquely determined.
 
-*Proof.* Let $p(x) = s_1(x)q(x) + r_1(x) = s_2(x)q(x) + r_2(x)$. Then $q(x)(s_1(x) - s_2(x)) + (r_1(x) - r_2(x))$ is a zero polynomial and since $\deg(q) > \deg(r_1 - r_2)$ (if the last is determined at all), $s_1 = s_2$. Then $r_1 - r_2 \equiv 0$ and hence also $r_1 = r_2$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $p(x) = s\_1(x)q(x) + r\_1(x) = s\_2(x)q(x) + r\_2(x)$. Then $q(x)(s\_1(x) - s\_2(x)) + (r\_1(x) - r\_2(x))$ is a zero polynomial and since $\deg(q) > \deg(r\_1 - r\_2)$ (if the last is determined at all), $s\_1 = s\_2$. Then $r\_1 - r\_2 \equiv 0$ and hence also $r\_1 = r\_2$. $\square$
+
+</details>
+</div>
 
 </div>
 
 #### 2.4. Multiple Roots
 
-On the other hand, $p(x)$ does not have to have $\deg(p)$ many distinct roots: see for instance $p(x) = x^n$ with only one root, namely zero. The roots $\alpha_k$ in the decomposition $(\ast)$ can appear several times, and after suitable permutation of the factors, $(\ast)$ can be rewritten as
+On the other hand, $p(x)$ does not have to have $\deg(p)$ many distinct roots: see for instance $p(x) = x^n$ with only one root, namely zero. The roots $\alpha\_k$ in the decomposition $(\ast)$ can appear several times, and after suitable permutation of the factors, $(\ast)$ can be rewritten as
 
 $$p(x) = a(x - \beta_1)^{k_1}(x - \beta_2)^{k_2} \cdots (x - \beta_r)^{k_r} \quad \text{with } \beta_k \text{ distinct.} \qquad (**)$$
 
-The power $k_j$ is called **multiplicity** of the root $\beta_j$ and we have $\sum_{j=1}^{r} k_j = n$.
+The power $k\_j$ is called **multiplicity** of the root $\beta\_j$ and we have $\sum\_{j=1}^{r} k\_j = n$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.4.1 - Unicity of multiplicity)</span></p>
 
-The multiplicity of a root is uniquely defined. Consequently, the decomposition $(**)$ is determined up to the permutation of the factors.
+The multiplicity of a root is uniquely defined. Consequently, the decomposition $(\ast\ast)$ is determined up to the permutation of the factors.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* Suppose we have $p(x) = (x - \beta)^k q(x) = (x - \beta)^\ell r(x)$ such that $\beta$ is not a root of neither $q$ nor $r$. Suppose $k < \ell$. Dividing $p(x)$ by $(x - \beta)^k$ we obtain (using the unicity of division, see 2.3.2 above) that $q(x) = (x = \beta)^{\ell - k} r(x)$ so that $\beta$ is a root of $p$, a contradiction. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -158,10 +186,17 @@ The set of all complex polynomials forms an integral domain (similarly like the 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.1 - Conjugate roots)</span></p>
 
-Let the coefficients $a_n$ of a polynomial $p(x) = a_n x^n + \cdots + a_1 x + a_0$ be real. Let $\alpha$ be a root of $p$. Then the complex conjugate $\overline{\alpha}$ is also a root of $p$.
+Let the coefficients $a\_n$ of a polynomial $p(x) = a\_n x^n + \cdots + a\_1 x + a\_0$ be real. Let $\alpha$ be a root of $p$. Then the complex conjugate $\overline{\alpha}$ is also a root of $p$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* We have (recall 1.1) 
-$p(\overline{\alpha}) = a_n \overline{\alpha}^n + \cdots + a_1 \overline{\alpha} + a_0 = \overline{a_n} \overline{\alpha}^n + \cdots + \overline{a_1} \overline{\alpha} + \overline{a_0} = \overline{a_n \alpha^n + \cdots + a_1 \alpha + a_0} = \overline{0} = 0.$ $\square$
+$p(\overline{\alpha}) = a\_n \overline{\alpha}^n + \cdots + a\_1 \overline{\alpha} + a\_0 = \overline{a\_n} \overline{\alpha}^n + \cdots + \overline{a\_1} \overline{\alpha} + \overline{a\_0} = \overline{a\_n \alpha^n + \cdots + a\_1 \alpha + a\_0} = \overline{0} = 0.$ $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -170,11 +205,18 @@ $p(\overline{\alpha}) = a_n \overline{\alpha}^n + \cdots + a_1 \overline{\alpha}
 
 Let $\alpha$ be a root of multiplicity $k$ of a polynomial $p$ with real coefficients. Then the multiplicity of the root $\overline{\alpha}$ is also $k$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* If $\alpha$ is real there is nothing to prove. Now let $\alpha$ not be real. Then we have
 
 $$p(x) = (x - \alpha)(x - \overline{\alpha})q(x) = (x^2 - (\alpha + \overline{\alpha})x + \alpha\overline{\alpha})q(x)$$
 
 and since $x^2 - (\alpha + \overline{\alpha})x + \alpha\overline{\alpha}$ has real coefficients (recall 1.1.1), $q$ also has real coefficients (recall 1.3.1). Now if $\alpha$ is a root of $q$ again we have another root $\overline{\alpha}$ of $q$, and the statement follows inductively. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -187,7 +229,7 @@ Let $p$ be a polynomial of degree $n$ with real coefficients. Then
 
 $$p(x) = a(x - \beta_1)^{k_1}(x - \beta_2)^{k_2} \cdots (x - \beta_r)^{k_r}(x^2 + \gamma_1 x + \delta_1)^{\ell_1} \cdots (x^2 + \gamma_s x + \delta_s)^{\ell_s}$$
 
-with $\beta_j, \gamma_j, \delta_j$ real, $x^2 + \gamma_j x + \delta_j$ irreducible and $\sum_{j=1}^{r} k_j + 2\sum_{j=1}^{s} \ell_j = n$ ($s$ can be equal to $0$).
+with $\beta\_j, \gamma\_j, \delta\_j$ real, $x^2 + \gamma\_j x + \delta\_j$ irreducible and $\sum\_{j=1}^{r} k\_j + 2\sum\_{j=1}^{s} \ell\_j = n$ ($s$ can be equal to $0$).
 
 </div>
 
@@ -215,11 +257,18 @@ $$a = sb + r \quad \text{with} \quad \nu(r) > \nu(b).$$
 
 Then for any $a, b \neq 0$ there exist $x, y$ such that $xa + yb$ is the greatest common divisor of $a, b$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $d = xa + yb$ with the least possible $\nu(d)$. Suppose $d$ does not divide $a$. Then
 
 $$a = sd + r \quad \text{with} \quad \nu(r) < \nu(d).$$
 
 But then $(1 - sx)a - syb = r$ and $\nu((1 - sx)a - syb) = \nu(r) < \nu(d)$, a contradiction. Thus, $d \mid a$ and for the same reason $d \mid b$. On the other hand, if $c \mid a$ and $c \mid b$ then obviously $c \mid (xa + yb)$. Thus, $d$ is the greatest common divisor. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -249,6 +298,10 @@ $$\frac{A}{(x - \alpha)^k}$$
 
 where $A$ is a number and $\alpha$ is a root of the polynomial $q$ with multiplicity at least $k$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* By induction on $\deg(q)$. The statement is trivial for $\deg(q) = 0$. For $\deg(q) = 1$ (and hence $q(x) = C(x - \alpha)$) we obtain from 1.3 that $p(x) = s(x)q(x) + B$ and
 
 $$\frac{p(x)}{q(x)} = s(x) + \frac{B'}{x - \alpha} \quad \text{where} \quad B' = \frac{B}{C}.$$
@@ -257,7 +310,7 @@ Now let the theorem hold for $\deg(q) < n$. It suffices to prove it for $\frac{p
 
 $$\frac{P_1(x)}{x - \alpha} + \sum_j \frac{V_j(x)}{x - \alpha}.$$
 
-If $V_j = \frac{A}{(x - \alpha)^k}$ the corresponding summand will be $\frac{A}{(x - \alpha)^{k+1}}$. If it is $\frac{A}{(x - \beta)^k}$ with $\beta \neq \alpha$ we realize first that the greatest common divisor of $(x - \alpha)$ and $(x - \beta)^k$ is 1 and hence by 4.2 there are polynomials $u, v$ such that
+If $V\_j = \frac{A}{(x - \alpha)^k}$ the corresponding summand will be $\frac{A}{(x - \alpha)^{k+1}}$. If it is $\frac{A}{(x - \beta)^k}$ with $\beta \neq \alpha$ we realize first that the greatest common divisor of $(x - \alpha)$ and $(x - \beta)^k$ is 1 and hence by 4.2 there are polynomials $u, v$ such that
 
 $$u(x)(x - \alpha) + v(x)(x - \beta)^k = 1$$
 
@@ -266,6 +319,9 @@ so that
 $$\frac{A}{(x - \alpha)(x - \beta)^k} = \frac{Au(x)}{(x - \beta)^k} + \frac{Av(x)}{(x - \alpha)}$$
 
 and by induction hypothesis both of the last summands can be written as desired. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -286,11 +342,18 @@ $$\frac{Ax + B}{(x^2 + ax + b)^k}$$
 
 where $x^2 + ax + b$ is some of the irreducible trinomials from 3.4.1 and $k$ is less or equal to the corresponding $\ell$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof* can be done following the lines of the proof of 4.3.1, only distinguishing more cases of the relative primeness of the $x - \alpha$ and $x^2 + ax + b$. With careful checking it can also be deduced from 4.3.1: namely, if a root $\alpha$ is not real we have to have with each $\frac{A}{(x - \alpha)^k}$ a summand $\frac{B}{(x - \overline{\alpha})^k}$ with the same power $k$: else, the sum would not be real. Now we have
 
 $$\frac{A}{(x - \alpha)^k} + \frac{B}{(x - \overline{\alpha})^k} = \frac{A(x - \overline{\alpha}) + B(x - \alpha)}{(x^2 - (\alpha + \overline{\alpha})x + \alpha\overline{\alpha})^k} = \frac{A_1 x + B_1}{(x^2 + ax + b)^k}$$
 
-and again we have to check that the $A_1, B_1$ have to be real. $\square$
+and again we have to check that the $A\_1, B\_1$ have to be real. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -362,7 +425,7 @@ $$\int x^n \mathrm{d}x = \frac{1}{n+1} x^{n+1}.$$
 
 (In fact, this does not hold for integers $n$ only. If $D$ is $\lbrace x \in \mathbb{R} \mid x > 0 \rbrace$ then we have by VI.3.3 the formula $\int x^a \mathrm{d}x = \frac{1}{a+1} x^{a+1}$ for any real $a \neq -1$.)
 
-Hence, using 2.1 we have for a polynomial $p(x) = \sum_{k=0}^{n} a_k x^k$,
+Hence, using 2.1 we have for a polynomial $p(x) = \sum\_{k=0}^{n} a\_k x^k$,
 
 $$\int p(x)\mathrm{d}x = \sum_{k=0}^{n} \frac{a_k}{k+1} x^{k+1}.$$
 
@@ -427,7 +490,7 @@ At the first sight we have not achieved much: we wish to integrate the product $
 2. the formula can result in an equation from which the desired integral can be easily computed, or
 3. the formula may yield a recursive one that leads to our goal.
 
-Using the formula $(*)$ is called **integration per partes**.
+Using the formula $(\ast)$ is called **integration per partes**.
 
 </div>
 
@@ -472,7 +535,7 @@ $$J = \frac{e^x}{2}(\sin x - \cos x).$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.4 - Illustration of 3.1.(3): $\int x^n e^x$)</span></p>
 
-Let us compute $J_n = \int x^n e^x \mathrm{d}x$ for integers $n \ge 0$.
+Let us compute $J\_n = \int x^n e^x \mathrm{d}x$ for integers $n \ge 0$.
 
 Setting $f(x) = x^n$ and $g(x) = g'(x) = e^x$ we obtain
 
@@ -482,7 +545,7 @@ Iterating the procedure we get
 
 $$J_n = x^n e^x - n x^{n-1} + n(n-1) J_{n-2} = \cdots = x^n e^x - n x^{n-1} + n(n-1) x^{n-2} e^x + \cdots \pm n! J_0$$
 
-and since $J_0 = \int e^x = e^x$ this makes
+and since $J\_0 = \int e^x = e^x$ this makes
 
 $$J_n = e^x \cdot \sum_{k=0}^{n} \frac{n!}{(n-k)!} (-1)^k \cdot x^{n-k}.$$
 
@@ -560,11 +623,18 @@ Then we have
 
 $$\int \frac{Ax + B}{(x^2 + ax + b)^k}\mathrm{d}x = \begin{cases} \frac{A}{2(1-k)} \cdot \frac{1}{(x^2+ax+b)^{k-1}} + (B - \frac{Aa}{2})J(a, b, x, k) & \text{for } k \neq 1, \\ \frac{A}{2}\lg\lvert x^2 + ax + b \rvert + (B - \frac{Aa}{2})J(a, b, x, k) & \text{for } k = 1. \end{cases}$$
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We have
 
 $$\frac{Ax + B}{x^2 + ax + b} = \frac{A}{2} \frac{2x + a}{x^2 + ax + b} + \left(B - \frac{Aa}{2}\right) \frac{1}{x^2 + ax + b}$$
 
 Now in the first we can compute $\int \frac{2x + a}{x^2 + ax + b}\mathrm{d}x$ substituting $y = x^2 + ax + b$; then we have $\mathrm{d}y = (2x + a)\mathrm{d}x$ and the task, as in 5.2, reduces to determining $\int \frac{1}{y^k}\mathrm{d}y$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -581,7 +651,7 @@ $$\frac{1}{c^{2k-1}} \int \frac{1}{(y^2 + 1)^k}\mathrm{d}y$$
 and we have further reduced our task to finding $\int \frac{1}{(x^2+1)^k}\mathrm{d}x$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.4.2 - Recursive formula for $J_k = \int \frac{1}{(x^2+1)^k}\mathrm{d}x$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.4.2 - Recursive formula for $J\_k = \int \frac{1}{(x^2+1)^k}\mathrm{d}x$)</span></p>
 
 The integral
 
@@ -591,19 +661,26 @@ can be computed recursively from the formula
 
 $$J_{k+1} = \frac{1}{2k} \cdot \frac{x}{x^2 + 1} + \frac{2k - 1}{2k} J_k \qquad (*)$$
 
-with $J_1 = \arctan x$.
+with $J\_1 = \arctan x$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* First set $f(x) = \frac{1}{(x^2 + 1)^k}$ and $g(x) = x$. Then $f'(x) = -k\frac{2x}{(x^2+1)^{k+1}}$ and $g'(x) = 1$ and from the per partes formula we obtain
 
 $$J_k = \frac{x}{(x^2+1)^k} + 2k \int \frac{x^2}{(x^2+1)^{k+1}} = \frac{x}{(x^2+1)^k} + 2k\left(\int \frac{x^2 + 1}{(x^2+1)^{k+1}} - \int \frac{1}{(x^2+1)^{k+1}}\right) = \frac{x}{(x^2+1)^k} + 2kJ_k - 2kJ_{k+1}$$
 
-and the formula $(*)$ follows; the $J_1 = \arctan x$ was already mentioned in 2.5. $\square$
+and the formula $(\ast)$ follows; the $J\_1 = \arctan x$ was already mentioned in 2.5. $\square$
+
+</details>
+</div>
 
 </div>
 
 ### 6. A Few Standard Substitutions
 
-First let us extend the terminology from Chapter IX. An expression $\sum_{r,s \le n} a_{rs} x^r y^s$ will be called a **polynomial in two variables** $x, y$. If $p(x,y), q(x,y)$ are polynomials in two variables we speak of
+First let us extend the terminology from Chapter IX. An expression $\sum\_{r,s \le n} a\_{rs} x^r y^s$ will be called a **polynomial in two variables** $x, y$. If $p(x,y), q(x,y)$ are polynomials in two variables we speak of
 
 $$R(x, y) = \frac{p(x, y)}{q(x, y)}$$
 
@@ -704,9 +781,16 @@ The following are rules we can certainly easily agree upon.
 1. $\mathsf{vol}(\emptyset) = 0$.
 2. Let $M$ be a segment. Then $\mathsf{vol}(M) = 0$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* 1: $\emptyset$ is a subset of any rectangle, hence the statement follows from (1),(2) and (4).
 
 2 follows similarly: a segment of length $a$ is a subset of a rectangle with sides $a, b$ with arbitrarily small positive $b$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -728,11 +812,18 @@ In particular we have
 
 $$\mathsf{vol}(M \cup N) = \mathsf{vol}(M) + \mathsf{vol}(N) \quad \text{whenever} \quad \mathsf{vol}(M \cap N) = 0.$$
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Follows from 1.2(4) taking into account the disjoint unions $M \cup N = M \cup (N \setminus M)$ and $N = (N \setminus M) \cup (N \cap M)$. $\square$
+
+</details>
+</div>
 
 </div>
 
-**Step figures.** In the sequel the areas of figures of the type consisting of unions of rectangles with sides parallel to the axes (step figures) will play a fundamental role. By the previous trivial statements, their areas are simply the sums of the areas of the rectangles involved. In particular, the area of such a figure with rectangles on the $x$-axis at positions $x_0 < x_1 < \cdots < x_4$ and heights $y_0, y_1, y_2, y_3$ is
+**Step figures.** In the sequel the areas of figures of the type consisting of unions of rectangles with sides parallel to the axes (step figures) will play a fundamental role. By the previous trivial statements, their areas are simply the sums of the areas of the rectangles involved. In particular, the area of such a figure with rectangles on the $x$-axis at positions $x\_0 < x\_1 < \cdots < x\_4$ and heights $y\_0, y\_1, y\_2, y\_3$ is
 
 $$y_0(x_1 - x_0) + y_1(x_2 - x_1) + y_2(x_3 - x_2) + y_3(x_4 - x_3).$$
 
@@ -747,23 +838,23 @@ A **partition** of a compact interval $\langle a, b \rangle$ is a sequence
 
 $$P: \quad a = t_0 < t_1 < \cdots < t_{n-1} < t_n = b.$$
 
-Another partition $P'$: $a = t'_0 < t'_1 < \cdots < t'_{n-1} < t'_m = b$ is said to **refine** $P$ (or to be a **refinement** of $P$) if the set $\lbrace t_j \mid j = 1, \ldots, n-1 \rbrace$ is contained in $\lbrace t'_j \mid j = 1, \ldots, m-1 \rbrace$.
+Another partition $P'$: $a = t'\_0 < t'\_1 < \cdots < t'\_{n-1} < t'\_m = b$ is said to **refine** $P$ (or to be a **refinement** of $P$) if the set $\lbrace t\_j \mid j = 1, \ldots, n-1 \rbrace$ is contained in $\lbrace t'\_j \mid j = 1, \ldots, m-1 \rbrace$.
 
-The **mesh** of $P$, denoted $\mu(P)$, is defined as the maximum of the differences $t_j - t_{j-1}$.
+The **mesh** of $P$, denoted $\mu(P)$, is defined as the maximum of the differences $t\_j - t\_{j-1}$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.3 - Upper and lower sums)</span></p>
 
-For a bounded function $f : J = \langle a, b \rangle \to \mathbb{R}$ and a partition $P : a = t_0 < t_1 < \cdots < t_n = b$ define the **lower** resp. **upper sum** of $f$ in $P$ by setting
+For a bounded function $f : J = \langle a, b \rangle \to \mathbb{R}$ and a partition $P : a = t\_0 < t\_1 < \cdots < t\_n = b$ define the **lower** resp. **upper sum** of $f$ in $P$ by setting
 
 $$s(f, P) = \sum_{j=1}^{n} m_j (t_j - t_{j-1}) \quad \text{resp.} \quad S(f, P) = \sum_{j=1}^{n} M_j (t_j - t_{j-1})$$
 
 where 
 
-* $m_j = \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$
-* $M_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$
+* $m\_j = \inf\lbrace f(x) \mid t\_{j-1} \le x \le t\_j \rbrace$
+* $M\_j = \sup\lbrace f(x) \mid t\_{j-1} \le x \le t\_j \rbrace$
 
 </div>
 
@@ -774,21 +865,35 @@ Let $P'$ refine $P$. Then
 
 $$s(f, P) \le s(f, P') \quad \text{and} \quad S(f, P) \ge S(f, P').$$
 
-*Proof* will be done for the upper sum. Let $t_{k-1} = t'\_l < t'\_{l+1} < \cdots < t'\_{l+r} = t_k$. For $M'\_{l+j} = \sup\lbrace f(x) \mid t'\_{l+j-1} \le x \le t'\_{l+j} \rbrace$ and $M_k = \sup\lbrace f(x) \mid t_{k-1} \le x \le t_k \rbrace$ we have $\sum_j M'\_j(t'\_{l+j} - t'\_{l+j-1}) \le \sum_j M_k(t'\_{l+j} - t'\_{l+j-1}) = M_k(t_k - t_{k-1})$ and the statement follows. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof* will be done for the upper sum. Let $t\_{k-1} = t'\_l < t'\_{l+1} < \cdots < t'\_{l+r} = t\_k$. For $M'\_{l+j} = \sup\lbrace f(x) \mid t'\_{l+j-1} \le x \le t'\_{l+j} \rbrace$ and $M\_k = \sup\lbrace f(x) \mid t\_{k-1} \le x \le t\_k \rbrace$ we have $\sum\_j M'\_j(t'\_{l+j} - t'\_{l+j-1}) \le \sum\_j M\_k(t'\_{l+j} - t'\_{l+j-1}) = M\_k(t\_k - t\_{k-1})$ and the statement follows. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.3.2 - Lower sums bounded by upper sums)</span></p>
 
-For any two partitions $P_1, P_2$ we have
+For any two partitions $P\_1, P\_2$ we have
 
 $$s(f, P_1) \le S(f, P_2).$$
 
-*Proof.* Obviously, $s(f, P) \le S(f, P)$ for any partition. Further, for any two partitions $P_1, P_2$ there is a common refinement $P$: it suffices to take the union of the dividing points of the two partitions. Thus, by 2.3.1,
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Obviously, $s(f, P) \le S(f, P)$ for any partition. Further, for any two partitions $P\_1, P\_2$ there is a common refinement $P$: it suffices to take the union of the dividing points of the two partitions. Thus, by 2.3.1,
 
 $$s(f, P_1) \le s(f, P) \le S(f, P) \le S(f, P_2). \quad \square$$
 
+</div>
+
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -811,7 +916,7 @@ $$\underline{\int_a^b} f(x)\mathrm{d}x \le \overline{\int_a^b} f(x)\mathrm{d}x;$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann integral)</span></p>
 
-If $\underline{\int_a^b} f(x)\mathrm{d}x = \overline{\int_a^b} f(x)\mathrm{d}x$ the common value is denoted by
+If $\underline{\int\_a^b} f(x)\mathrm{d}x = \overline{\int\_a^b} f(x)\mathrm{d}x$ the common value is denoted by
 
 $$\int_a^b f(x)\mathrm{d}x$$
 
@@ -831,15 +936,19 @@ $$m(b - a) \le \underline{\int_a^b} f(x)\mathrm{d}x \le \overline{\int_a^b} f(x)
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.4.2 - $\varepsilon$-characterization of integrability)</span></p>
 
-The Riemann integral $\int_a^b f(x)\mathrm{d}x$ exists if and only if for every $\varepsilon > 0$ there is a partition $P$ such that
+The Riemann integral $\int\_a^b f(x)\mathrm{d}x$ exists if and only if for every $\varepsilon > 0$ there is a partition $P$ such that
 
 $$S(f, P) - s(f, P) < \varepsilon.$$
 
-*Proof.* I. Let $\int_a^b f(x)\mathrm{d}x$ exist and let $\varepsilon > 0$. Then there are partitions $P_1$ and $P_2$ such that
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* I. Let $\int\_a^b f(x)\mathrm{d}x$ exist and let $\varepsilon > 0$. Then there are partitions $P\_1$ and $P\_2$ such that
 
 $$S(f, P_1) < \int_a^b f(x)\mathrm{d}x + \frac{\varepsilon}{2} \quad \text{and} \quad s(f, P_2) > \int_a^b f(x)\mathrm{d}x - \frac{\varepsilon}{2}.$$
 
-Then we have, by 2.3.1, for the common refinement $P$ of $P_1, P_2$,
+Then we have, by 2.3.1, for the common refinement $P$ of $P\_1, P\_2$,
 
 $$S(f, P) - s(f, P) < \int_a^b f(x)\mathrm{d}x + \frac{\varepsilon}{2} - \int_a^b f(x)\mathrm{d}x + \frac{\varepsilon}{2} = \varepsilon.$$
 
@@ -847,20 +956,23 @@ II. Let the statement hold. Choose an $\varepsilon > 0$ such that $S(f, P) - s(f
 
 $$\overline{\int_a^b} f(x)\mathrm{d}x \le S(f, P) < s(f, P) + \varepsilon \le \underline{\int_a^b} f(x)\mathrm{d}x + \varepsilon,$$
 
-and since $\varepsilon$ was arbitrary we conclude that $\overline{\int_a^b} f(x)\mathrm{d}x = \underline{\int_a^b} f(x)\mathrm{d}x$. $\square$
+and since $\varepsilon$ was arbitrary we conclude that $\overline{\int\_a^b} f(x)\mathrm{d}x = \underline{\int\_a^b} f(x)\mathrm{d}x$. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(2.5 - Geometric interpretation)</span></p>
 
-1. We will see best what is happening if we analyse the case of a non-negative function $f$. Consider $F = \lbrace (x, y) \mid x \in \langle a, b \rangle,\, 0 \le f(x) \rbrace$, that is, the figure bordered by the $x$-axis, the graph of $f$ and the vertical lines passing through $(a, 0)$ and $(b, 0)$. Take the largest union $F_l(P)$ of rectangles with the lower horizontal sides $\langle t_{j-1}, t_j \rangle$ (recall the picture in 1.5) that is contained in $F$; obviously $\mathsf{vol}(F_l(P)) = s(f, P)$. The similar smallest union of rectangles $F_u(P)$ that contains $F$ has $\mathsf{vol}(F_u(P)) = S(f, P)$. Thus, if the area of $F$ makes sense we have to have
+1. We will see best what is happening if we analyse the case of a non-negative function $f$. Consider $F = \lbrace (x, y) \mid x \in \langle a, b \rangle,\, 0 \le f(x) \rbrace$, that is, the figure bordered by the $x$-axis, the graph of $f$ and the vertical lines passing through $(a, 0)$ and $(b, 0)$. Take the largest union $F\_l(P)$ of rectangles with the lower horizontal sides $\langle t\_{j-1}, t\_j \rangle$ (recall the picture in 1.5) that is contained in $F$; obviously $\mathsf{vol}(F\_l(P)) = s(f, P)$. The similar smallest union of rectangles $F\_u(P)$ that contains $F$ has $\mathsf{vol}(F\_u(P)) = S(f, P)$. Thus, if the area of $F$ makes sense we have to have
 
 $$s(f, P) = \mathsf{vol}(F_l(P)) \le \mathsf{vol}(F) \le \mathsf{vol}(F_u(P)) = S(f, P),$$
 
-and if $\int_a^b f(x)\mathrm{d}x$ exists then this number is the only candidate for $\mathsf{vol}(F)$ and it is only natural to take it for the definition of the area.
+and if $\int\_a^b f(x)\mathrm{d}x$ exists then this number is the only candidate for $\mathsf{vol}(F)$ and it is only natural to take it for the definition of the area.
 
-2. The notation $\int_a^b f(x)\mathrm{d}x$ comes from not quite correct but useful intuition. Think of $\mathrm{d}x$ as of a very small interval (one would like to say "infinitely small, but with non-zero length", which is not quite such a nonsense as it sounds); anyway, the $\mathrm{d}x$ are disjoint and cover the segment $\langle a, b \rangle$, and $\int$ stands for "sum" of the areas of the "very thin rectangles" with the horizontal side $\mathrm{d}x$ and height $f(x)$. Note how close this intuition is to the more correct view from 1 if we take $P$ with a very small mesh.
+2. The notation $\int\_a^b f(x)\mathrm{d}x$ comes from not quite correct but useful intuition. Think of $\mathrm{d}x$ as of a very small interval (one would like to say "infinitely small, but with non-zero length", which is not quite such a nonsense as it sounds); anyway, the $\mathrm{d}x$ are disjoint and cover the segment $\langle a, b \rangle$, and $\int$ stands for "sum" of the areas of the "very thin rectangles" with the horizontal side $\mathrm{d}x$ and height $f(x)$. Note how close this intuition is to the more correct view from 1 if we take $P$ with a very small mesh.
 
 </div>
 
@@ -895,22 +1007,33 @@ We have $\lvert x^2 - y^2 \rvert = \lvert x - y \rvert \cdot \lvert x + y \rvert
 
 A function $f : \langle a, b \rangle \to \mathbb{R}$ is continuous if and only if it is uniformly continuous.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $f$ not be uniformly continuous. We will prove it is not continuous either.
 
-Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $\lvert x(\delta) - y(\delta) \rvert < \delta$ while $\lvert f(x(\delta)) - f(y(\delta)) \rvert \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. By IV.1.3.1 we can choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ then a convergent subsequence $(y_{k_{l_n}})\_n$ of $(y_{n_k})\_k$ and finally set $\widetilde{x}\_n = x_{k_{l_n}}$ and $\widetilde{y}\_n = y_{k_{l_n}}$). Then $\lvert \widetilde{x}\_n - \widetilde{y}\_n \rvert < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $\lvert f(\widetilde{x}\_n) - f(\widetilde{y}\_n) \rvert \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by IV.5.1 $f$ is not continuous. $\square$
+Since the formula for uniform continuity does not hold we have an $\varepsilon\_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $\lvert x(\delta) - y(\delta) \rvert < \delta$ while $\lvert f(x(\delta)) - f(y(\delta)) \rvert \ge \varepsilon\_0$. Set $x\_n = x(\frac{1}{n})$ and $y\_n = y(\frac{1}{n})$. By IV.1.3.1 we can choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x\_{k\_n})\_n$ of $(x\_n)\_n$ then a convergent subsequence $(y\_{k\_{l\_n}})\_n$ of $(y\_{n\_k})\_k$ and finally set $\widetilde{x}\_n = x\_{k\_{l\_n}}$ and $\widetilde{y}\_n = y\_{k\_{l\_n}}$). Then $\lvert \widetilde{x}\_n - \widetilde{y}\_n \rvert < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $\lvert f(\widetilde{x}\_n) - f(\widetilde{y}\_n) \rvert \ge \varepsilon\_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by IV.5.1 $f$ is not continuous. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.2 - Integrability of continuous functions)</span></p>
 
-For every continuous function $f : \langle a, b \rangle \to \mathbb{R}$ the Riemann integral $\int_a^b f$ exists.
+For every continuous function $f : \langle a, b \rangle \to \mathbb{R}$ the Riemann integral $\int\_a^b f$ exists.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* Since $f$ is by 3.1.2 uniformly continuous we can choose, for $\varepsilon > 0$ a $\delta > 0$ such that
 
 $$\lvert x - y \rvert < \delta \;\Rightarrow\; \lvert f(x) - f(y) \rvert < \frac{\varepsilon}{b - a}.$$
 
-Recall the mesh $\mu(P) = \max_j(t_j - t_{j-1})$ of $P : t_0 < t_1 < \cdots < t_k$. If $\mu(P) < \delta$ we have $t_j - t_{j-1} < \delta$ for all $j$, and hence
+Recall the mesh $\mu(P) = \max\_j(t\_j - t\_{j-1})$ of $P : t\_0 < t\_1 < \cdots < t\_k$. If $\mu(P) < \delta$ we have $t\_j - t\_{j-1} < \delta$ for all $j$, and hence
 
 $$M_j - m_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace - \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace \le \sup\lbrace \lvert f(x) - f(y) \rvert \mid t_{j-1} \le x, y \le t_j \rbrace \le \frac{\varepsilon}{b - a}$$
 
@@ -920,16 +1043,19 @@ $$S(f, P) - s(f, P) = \sum (M_j - m_j)(t_j - t_{j-1}) \le \frac{\varepsilon}{b -
 
 Now use 2.4.2. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.2.1 - Limit of Riemann sums)</span></p>
 
-Let $f : \langle a, b \rangle \to \mathbb{R}$ be a continuous function and let $P_1, P_2, \ldots$ be a sequence of partitions such that $\lim_n \mu(P_n) = 0$. Then
+Let $f : \langle a, b \rangle \to \mathbb{R}$ be a continuous function and let $P\_1, P\_2, \ldots$ be a sequence of partitions such that $\lim\_n \mu(P\_n) = 0$. Then
 
 $$\lim_n s(f, P_n) = \lim_n S(f, P_n) = \int_a^b f.$$
 
-(Indeed, with $\varepsilon$ and $\delta$ as above choose an $n_0$ such that for $n \ge n_0$ we have $\mu(P_n) < \delta$.)
+(Indeed, with $\varepsilon$ and $\delta$ as above choose an $n\_0$ such that for $n \ge n\_0$ we have $\mu(P\_n) < \delta$.)
 
 </div>
 
@@ -940,11 +1066,18 @@ Let $f : \langle a, b \rangle \to \mathbb{R}$ be continuous. Then there exists a
 
 $$\int_a^b f(x)\mathrm{d}x = f(c)(b - a).$$
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Set $m = \min\lbrace f(x) \mid a \le x \le b \rbrace$ and $M = \max\lbrace f(x) \mid a \le x \le b \rbrace$ (recall IV.5.2). Then
 
 $$m(b - a) \le \int_a^b f(x)\mathrm{d}x \le M(b - a).$$
 
-Hence there is a $K$ with $m \le K \le M$ such that $\int_a^b f(x)\mathrm{d}x = K(b - a)$. By IV.3.2 there exists a $c \in \langle a, b \rangle$ such that $K = f(c)$. $\square$
+Hence there is a $K$ with $m \le K \le M$ such that $\int\_a^b f(x)\mathrm{d}x = K(b - a)$. By IV.3.2 there exists a $c \in \langle a, b \rangle$ such that $K = f(c)$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -957,7 +1090,11 @@ Let $a < b < c$ and let $f$ be bounded on $\langle a, c \rangle$. Then
 
 $$\underline{\int_a^b} f + \underline{\int_b^c} f = \underline{\int_a^c} f \quad \text{and} \quad \overline{\int_a^b} f + \overline{\int_b^c} f = \overline{\int_a^c} f.$$
 
-*Proof* for the lower integral. Denote by $\mathcal{P}(u, v)$ the set of all partitions of $\langle u, v \rangle$. For $P_1 \in \mathcal{P}(a, b)$ and $P_2 \in \mathcal{P}(b, c)$ define $P_1 + P_2 \in \mathcal{P}(a, c)$ as the union of the two sequences. Then obviously
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof* for the lower integral. Denote by $\mathcal{P}(u, v)$ the set of all partitions of $\langle u, v \rangle$. For $P\_1 \in \mathcal{P}(a, b)$ and $P\_2 \in \mathcal{P}(b, c)$ define $P\_1 + P\_2 \in \mathcal{P}(a, c)$ as the union of the two sequences. Then obviously
 
 $$s(f, P_1 + P_2) = s(f, P_1) + s(f, P_2)$$
 
@@ -967,13 +1104,16 @@ $$\underline{\int_a^b} f + \underline{\int_b^c} f = \sup_{P_1 \in \mathcal{P}(a,
 
 $$= \sup\lbrace s(f, P_1) + s(f, P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace = \sup\lbrace s(f, P_1 + P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace.$$
 
-Now every $P \in \mathcal{P}(a, c)$ can be refined to a $P_1 + P_2$: it suffices to add $b$ into the sequence. Thus, by 2.3.1 this last supremum is equal to
+Now every $P \in \mathcal{P}(a, c)$ can be refined to a $P\_1 + P\_2$: it suffices to add $b$ into the sequence. Thus, by 2.3.1 this last supremum is equal to
 
 $$\sup\lbrace s(f, P) \mid P \in \mathcal{P}(a, c) \rbrace = \underline{\int_a^c} f. \quad \square$$
 
 </div>
 
-**Convention.** For $a = b$ we set $\int_a^a f = 0$ and for $a > b$ we set $\int_a^b f = \int_b^a f$. Then by straightforward checking we obtain
+**Convention.** For $a = b$ we set $\int\_a^a f = 0$ and for $a > b$ we set $\int\_a^b f = \int\_b^a f$. Then by straightforward checking we obtain
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(4.2.1)</span></p>
@@ -993,11 +1133,18 @@ $$F(x) = \int_a^x f(t)\mathrm{d}t.$$
 
 Then $F'(x) = f(x)$ (to be precise, the derivative in $a$ is from the right and the one in $b$ is from the left).
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* By 4.2.1 and 3.3 we have for $h \neq 0$
 
 $$\frac{1}{h}(F(x+h) - F(x)) = \frac{1}{h}\left(\int_a^{x+h} f - \int_a^x f\right) = \frac{1}{h}\int_x^{x+h} f = \frac{1}{h}f(x + \theta h)h = f(x + \theta h)$$
 
-where $0 < \theta < 1$ and as $f$ is continuous, $\lim_{h \to 0} f(x + \theta h) = f(x)$. $\square$
+where $0 < \theta < 1$ and as $f$ is continuous, $\lim\_{h \to 0} f(x + \theta h) = f(x)$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1008,7 +1155,7 @@ Let $f : \langle a, b \rangle \to \mathbb{R}$ be continuous. Then it has a primi
 
 $$\int_a^b f(t)\mathrm{d}t = G(b) - G(a).$$
 
-(By 4.3 we have $\int_a^b f(t)\mathrm{d}t = F(b) - F(a)$. Recall X.1.2.)
+(By 4.3 we have $\int\_a^b f(t)\mathrm{d}t = F(b) - F(a)$. Recall X.1.2.)
 
 </div>
 
@@ -1032,7 +1179,11 @@ Let $g$ and $f$ differ in finitely many points. Then
 
 $$\underline{\int_a^b} f = \underline{\int_a^b} g \quad \text{and} \quad \overline{\int_a^b} f = \overline{\int_a^b} g.$$
 
-In particular, if $\int_a^b f$ exists then also $\int_a^b g$ exists and $\int_a^b f = \int_a^b g$.
+In particular, if $\int\_a^b f$ exists then also $\int\_a^b g$ exists and $\int\_a^b f = \int\_a^b g$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof* for the lower integral. Recall the mesh $\mu(P)$ from 2.2. If $\lvert f(x) \rvert$ and $\lvert g(x) \rvert$ are $\le A$ for all $x$ and if $f$ and $g$ differ in $n$ points then
 
@@ -1040,29 +1191,43 @@ $$\lvert s(f, P) - s(g, P) \rvert \le n \cdot A \cdot \mu(P),$$
 
 and $\mu(P)$ can be arbitrarily small. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.2 - Integrability with finitely many discontinuities)</span></p>
 
-Let $f$ have only finitely many points of discontinuity in $\langle a, b \rangle$, all of them of the first kind. Then the Riemann integral $\int_a^b f$ exists.
+Let $f$ have only finitely many points of discontinuity in $\langle a, b \rangle$, all of them of the first kind. Then the Riemann integral $\int\_a^b f$ exists.
 
-*Proof.* Let the discontinuity points be $c_1 < c_2 < \cdots < c_n$. Then we have
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let the discontinuity points be $c\_1 < c\_2 < \cdots < c\_n$. Then we have
 
 $$\int_a^b f = \int_a^{c_1} f + \int_{c_1}^{c_2} f + \cdots + \int_{c_n}^b f. \quad \square$$
 
 </div>
 
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.3 - Linearity of the Riemann integral)</span></p>
 
-Let $\int_a^b f$ and $\int_a^b g$ exist and let $\alpha, \beta$ be real numbers. Then $\int_a^b (\alpha f + \beta g)$ exists and we have
+Let $\int\_a^b f$ and $\int\_a^b g$ exist and let $\alpha, \beta$ be real numbers. Then $\int\_a^b (\alpha f + \beta g)$ exists and we have
 
 $$\int_a^b (\alpha f + \beta g) = \alpha \int_a^b f + \beta \int_a^b g.$$
 
-*Proof.* I. First we easily see that $\underline{\int_a^b} \alpha f = \alpha \int_a^b f$. Indeed, for $\alpha \ge 0$ we obviously have $s(\alpha f, P) = \alpha s(f, P)$ and $S(\alpha f, P) = \alpha S(f, P)$, and for $\alpha \le 0$ we have $s(\alpha f, P) = \alpha S(f, P)$ and $S(\alpha f, P) = \alpha s(f, P)$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-II. Thus, it suffices to prove the statement for the sum $f + g$. Set $m_i = \inf\lbrace f(x) + g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$, $m'\_i = \inf\lbrace f(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$ and $m''\_i = \inf\lbrace g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$. Obviously $m'\_i + m''\_i \le m_i$ and consequently
+*Proof.* I. First we easily see that $\underline{\int\_a^b} \alpha f = \alpha \int\_a^b f$. Indeed, for $\alpha \ge 0$ we obviously have $s(\alpha f, P) = \alpha s(f, P)$ and $S(\alpha f, P) = \alpha S(f, P)$, and for $\alpha \le 0$ we have $s(\alpha f, P) = \alpha S(f, P)$ and $S(\alpha f, P) = \alpha s(f, P)$.
+
+II. Thus, it suffices to prove the statement for the sum $f + g$. Set $m\_i = \inf\lbrace f(x) + g(x) \mid x \in \langle t\_{i-1}, t\_i \rangle \rbrace$, $m'\_i = \inf\lbrace f(x) \mid x \in \langle t\_{i-1}, t\_i \rangle \rbrace$ and $m''\_i = \inf\lbrace g(x) \mid x \in \langle t\_{i-1}, t\_i \rangle \rbrace$. Obviously $m'\_i + m''\_i \le m\_i$ and consequently
 
 $$s(f, P) + s(g, P) \le s(f + g, P), \quad \text{and similarly} \quad S(f + g, P) \le S(f, P) + S(g, P)$$
 
@@ -1072,9 +1237,12 @@ $$\underline{\int_a^b} f + \underline{\int_a^b} g \le \underline{\int_a^b} (f + 
 
 </div>
 
+</details>
+</div>
+
 #### 5.4. Per Partes
 
-Set $[h]_a^b = h(b) - h(a)$. Then we trivially obtain from 4.3 and X.3.1
+Set $[h]\_a^b = h(b) - h(a)$. Then we trivially obtain from 4.3 and X.3.1
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.4 - Integration by parts for Riemann integral)</span></p>
@@ -1090,6 +1258,10 @@ Let $f : \langle a, b \rangle \to \mathbb{R}$ be continuous and let $\phi : \lan
 
 $$\int_a^b f(\phi(x))\phi'(x)\mathrm{d}x = \int_{\phi(a)}^{\phi(b)} f(x)\mathrm{d}x.$$
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Recall 4.4 including the definition of $F$. We immediately have
 
 $$\int_{\phi(a)}^{\phi(b)} f(x)\mathrm{d}x = F(\phi(b)) - F(\phi(a)).$$
@@ -1100,12 +1272,15 @@ $$F(\phi(b)) - F(\phi(a)) = \int_a^b f(\phi(x))\phi'(x)\mathrm{d}x,$$
 
 and the statement follows. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(5.5.1 - Geometric intuition of the substitution formula)</span></p>
 
-There is a strong geometric intuition behind the substitution formula. Recall 2.5 and 2.6. Think of $\phi$ as of a deformation of the interval $\langle a, b \rangle$ to obtain $\langle \phi(a), \phi(b) \rangle$. The derivative $\phi'(x)$ is a measure of how a very small interval around $x$ is stretched resp. compressed. Thus, if we compute the integral $\int_{\phi(a)}^{\phi(b)} f$ as an integral over the original $\langle a, b \rangle$ we have to adjust the "small element" of length $\mathrm{d}x$ by the stretch or compression and obtain a corrected "small element" of length $\phi'(x)\mathrm{d}x$.
+There is a strong geometric intuition behind the substitution formula. Recall 2.5 and 2.6. Think of $\phi$ as of a deformation of the interval $\langle a, b \rangle$ to obtain $\langle \phi(a), \phi(b) \rangle$. The derivative $\phi'(x)$ is a measure of how a very small interval around $x$ is stretched resp. compressed. Thus, if we compute the integral $\int\_{\phi(a)}^{\phi(b)} f$ as an integral over the original $\langle a, b \rangle$ we have to adjust the "small element" of length $\mathrm{d}x$ by the stretch or compression and obtain a corrected "small element" of length $\phi'(x)\mathrm{d}x$.
 
 </div>
 
@@ -1119,15 +1294,15 @@ We motivated the definition of Riemann integral by the idea of the area of the p
 
 $$F = \lbrace (x, y) \mid x \in \langle a, b \rangle, 0 \le y \le f(x) \rbrace$$
 
-where $f$ was a non-negative continuous function. Given a partition $P : a = t_0 < t_1 \cdots < t_n = b$ of $\langle a, b \rangle$ this $F$ was minorized by the union of rectangles
+where $f$ was a non-negative continuous function. Given a partition $P : a = t\_0 < t\_1 \cdots < t\_n = b$ of $\langle a, b \rangle$ this $F$ was minorized by the union of rectangles
 
 $$\bigcup_{j=1}^{n} \langle t_{j-1}, t_j \rangle \times \langle 0, m_j \rangle \quad \text{with} \quad m_j = \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace,$$
 
-with the area $s(f, D) = \sum_{j=1}^{n} m_j(t_j - t_{j-1})$, and majorized by the union of rectangles
+with the area $s(f, D) = \sum\_{j=1}^{n} m\_j(t\_j - t\_{j-1})$, and majorized by the union of rectangles
 
 $$\bigcup_{j=1}^{n} \langle t_{j-1}, t_j \rangle \times \langle 0, M_j \rangle \quad \text{with} \quad M_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace,$$
 
-with the area $S(f, D) = \sum_{j=1}^{n} M_j(t_j - t_{j-1})$. Thus (recall XI.2.5), the only candidate for the area of $F$ is
+with the area $S(f, D) = \sum\_{j=1}^{n} M\_j(t\_j - t\_{j-1})$. Thus (recall XI.2.5), the only candidate for the area of $F$ is
 
 $$\mathsf{vol}(F) = \int_a^b f(x)\mathrm{d}x,$$
 
@@ -1169,11 +1344,11 @@ $$C = \lbrace (x, f(x), 0) \mid a \le x \le b \rbrace$$
 
 in the three-dimensional Euclidean space. Now rotate $C$ around the $x$-axis $\lbrace x, 0, 0) \mid x \in \mathbb{R} \rbrace$ and consider the set $F$ surrounded by the result.
 
-It is easy to compute the volume of $F$. Instead of the union of rectangles $\bigcup_{j=1}^{n} \langle t_{j-1}, t_j \rangle \times \langle 0, m_j \rangle$ as in 1.1, we will now minorize the set $F$ by the union of discs (cylinders)
+It is easy to compute the volume of $F$. Instead of the union of rectangles $\bigcup\_{j=1}^{n} \langle t\_{j-1}, t\_j \rangle \times \langle 0, m\_j \rangle$ as in 1.1, we will now minorize the set $F$ by the union of discs (cylinders)
 
 $$\bigcup_{j=1}^{n} \langle t_{j-1}, t_j \rangle \times \lbrace (y, z) \mid y^2 + z^2 \le m_j^2 \rbrace \quad \text{with} \quad m_j = \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$$
 
-with the volume $\sum_{j=1}^{n} \pi m_j^2(t_j - t_{j-1})$ and similarly we obtain the upper estimate of the volume by
+with the volume $\sum\_{j=1}^{n} \pi m\_j^2(t\_j - t\_{j-1})$ and similarly we obtain the upper estimate of the volume by
 
 $$\sum_{j=1}^{n} \pi M_j^2(t_j - t_{j-1}) \quad \text{with} \quad M_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace.$$
 
@@ -1184,7 +1359,7 @@ $$\mathsf{vol}(F) = \pi \int_a^b f^2(x)\mathrm{d}x.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.2 - Volume of a ball)</span></p>
 
-For instance we obtain the three-dimensional ball $B_3$ as bounded by the rotating curve $\lbrace (x, \sqrt{r^2 - x^2}) \mid -r \le x \le r \rbrace$ and hence obtain
+For instance we obtain the three-dimensional ball $B\_3$ as bounded by the rotating curve $\lbrace (x, \sqrt{r^2 - x^2}) \mid -r \le x \le r \rbrace$ and hence obtain
 
 $$\mathsf{vol}(B_3) = \pi \int_{-r}^{r} (r^2 - x^2)\mathrm{d}x = \pi \left[r^2 x - \frac{1}{3}x^3\right]_{-r}^{r} = 2\pi\left(r^3 - \frac{1}{3}r^3\right) = \frac{4}{3}\pi r^3.$$
 
@@ -1196,7 +1371,7 @@ Let $f$ be a continuous function on $\langle a, b \rangle$ (later, we will assum
 
 $$C = \lbrace (x, f(x)) \mid a \le x \le b \rbrace.$$
 
-Take a partition $P : a = t_0 < t_1 < \cdots < t_{n-1} < t_n = b$ of the interval $\langle a, b \rangle$, and approximate $C$ by the system of segments $S(P)$ connecting
+Take a partition $P : a = t\_0 < t\_1 < \cdots < t\_{n-1} < t\_n = b$ of the interval $\langle a, b \rangle$, and approximate $C$ by the system of segments $S(P)$ connecting
 
 $$(t_{j-1}, f(t_{j-1})) \quad \text{with} \quad (t_j, f(t_j)).$$
 
@@ -1208,7 +1383,7 @@ Now suppose $f$ has a derivative. Then we can use the Mean Value Theorem (VII.2.
 
 $$L(P) = \sum_{j=1}^{n} \sqrt{(t_j - t_{j-1})^2 + f'(\theta_i)^2(t_j - t_{j-1})^2} = \sum_{j=1}^{n} \sqrt{1 + f'(\theta_i)^2}\,(t_j - t_{j-1}).$$
 
-Obviously if $P_1$ refines $P$ we have from the triangle inequality
+Obviously if $P\_1$ refines $P$ we have from the triangle inequality
 
 $$L(P_1) \ge L(P)$$
 
@@ -1220,7 +1395,7 @@ can be naturally viewed as the length of the curve $C$. By XI.3.2.1 the sums con
 
 $$L(C) = \int_a^b \sqrt{1 + f'(x)^2}\,\mathrm{d}x.$$
 
-**Surface of a rotating body.** Similarly, approximating the surface of a rotating body by the relevant parts of truncated cones with heights $(t_j - t_{j-1})$ and radii $f(t_i)$ and $f(t_{j-1})$ of the bases, we obtain the formula
+**Surface of a rotating body.** Similarly, approximating the surface of a rotating body by the relevant parts of truncated cones with heights $(t\_j - t\_{j-1})$ and radii $f(t\_i)$ and $f(t\_{j-1})$ of the bases, we obtain the formula
 
 $$2\pi \int_a^b f(x)\sqrt{1 + f'(x)^2}\,\mathrm{d}x.$$
 
@@ -1230,7 +1405,7 @@ In V.1.1 we introduced logarithm axiomatically as a function $L$ that
 
 1. increases in $\langle 0, +\infty)$,
 2. satisfies $L(xy) = L(x) + L(y)$,
-3. and such that $\lim_{x \to 0} \frac{L(x)}{x - 1} = 1$.
+3. and such that $\lim\_{x \to 0} \frac{L(x)}{x - 1} = 1$.
 
 The existence of such a function (which we had to believe in in V.1.1) will be now proven by a simple construction.
 
@@ -1243,7 +1418,7 @@ If $x > 0$ this is correct: the function $\frac{1}{t}$ is well defined and conti
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(4.2.1 - $L$ is increasing)</span></p>
 
-If $x < y$ then $L(y) - L(x) = \int_x^y \frac{1}{t}\mathrm{d}t$ is an integral of a positive function over $\langle x, y \rangle$ and hence a positive number. Hence $L(x)$ increases.
+If $x < y$ then $L(y) - L(x) = \int\_x^y \frac{1}{t}\mathrm{d}t$ is an integral of a positive function over $\langle x, y \rangle$ and hence a positive number. Hence $L(x)$ increases.
 
 </div>
 
@@ -1255,7 +1430,7 @@ In the last summand substitute $z = \phi(t) = xt$ to obtain
 
 $$\int_x^{xy} \frac{1}{z}\mathrm{d}z = \int_1^{y} \frac{1}{xt}\phi'(t)\mathrm{d}t = \int_1^{y} \frac{x}{xt}\mathrm{d}t = \int_1^{y} \frac{1}{t}\mathrm{d}t$$
 
-so that $(*)$ yields
+so that $(\ast)$ yields
 
 $$L(x, y) = \int_1^{x} \frac{1}{t}\mathrm{d}t + \int_1^{y} \frac{1}{t}\mathrm{d}t = L(x) + L(y).$$
 
@@ -1267,16 +1442,20 @@ by XI.4.3.
 
 ### 5. Integral Criterion of Convergence of a Series
 
-Consider a series $\sum a_n$ with $a_1 \ge a_2 \ge a_3 \ge \cdots \ge 0$. Let $f$ be a non-increasing continuous function defined on the interval $\langle 1, +\infty)$ such that $a_n = f(n)$.
+Consider a series $\sum a\_n$ with $a\_1 \ge a\_2 \ge a\_3 \ge \cdots \ge 0$. Let $f$ be a non-increasing continuous function defined on the interval $\langle 1, +\infty)$ such that $a\_n = f(n)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.2 - Integral Criterion of Convergence)</span></p>
 
-The series $\sum a_n$ converges if and only if the limit
+The series $\sum a\_n$ converges if and only if the limit
 
 $$\lim_{n \to \infty} \int_1^n f(x)\mathrm{d}x$$
 
 is finite.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* The trivial estimate of Riemann integral yields
 
@@ -1286,11 +1465,14 @@ Thus,
 
 $$a_2 + a_3 + \cdots + a_n \le \int_1^n f(x)\mathrm{d}x \le a_1 + a_2 + \cdots + a_{n-1}.$$
 
-Hence, if $L = \lim_{n \to \infty} \int_1^n f(x)\mathrm{d}x$ is finite then
+Hence, if $L = \lim\_{n \to \infty} \int\_1^n f(x)\mathrm{d}x$ is finite then
 
 $$\sum_1^n a_k \le a_1 + L$$
 
-and the series converges. On the other hand, if the sequence $(\int_1^n f(x)\mathrm{d}x)_n$ is not bounded then also $(\sum_1^n a_n)_n$ is not bounded. $\square$
+and the series converges. On the other hand, if the sequence $(\int\_1^n f(x)\mathrm{d}x)\_n$ is not bounded then also $(\sum\_1^n a\_n)\_n$ is not bounded. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1310,12 +1492,19 @@ $$\frac{1}{1^\alpha} + \frac{1}{2^\alpha} + \frac{1}{3^\alpha} + \cdots + \frac{
 
 converges.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We have
 
 $$\int_1^n x^{-\alpha}\mathrm{d}x = \left[\frac{1}{1 - \alpha} \cdot x^{1-\alpha}\right] = \frac{1}{1 - \alpha}\left(\frac{1}{n^{\alpha - 1}} - 1\right) \le \frac{1}{\alpha - 1}. \quad \square$$
 
-Note that the convergence of the series $(*)$ does not follow from the criteria III.2.5 even for big $\alpha$.
+Note that the convergence of the series $(\ast)$ does not follow from the criteria III.2.5 even for big $\alpha$.
 
+</div>
+
+</details>
 </div>
 
 ## XIII. Metric Spaces: Basics
@@ -1327,11 +1516,11 @@ In the following chapters we will study real functions of several real variables
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.2 - Continuity in individual variables does not imply joint continuity)</span></p>
 
-Define a function of two real variables $f : \mathbb{E}_2 \to \mathbb{R}$ by setting
+Define a function of two real variables $f : \mathbb{E}\_2 \to \mathbb{R}$ by setting
 
 $$f(x, y) = \begin{cases} \frac{xy}{x^2 + y^2} & \text{for } (x, y) \neq (0, 0), \\ 0 & \text{for } (x, y) = (0, 0). \end{cases}$$
 
-For any fixed $y_0$ the function $\phi : \mathbb{R} \to \mathbb{R}$ defined by $\phi(x) = f(x, y_0)$ is evidently a continuous one (if $y_0 \neq 0$ it is defined by an arithmetic expression, and for $y_0 = 0$ it is the constant 0) and similarly for any fixed $x_0$ the formula $\psi(y) = f(x_0)$ defines a continuous function $\psi : \mathbb{R} \to \mathbb{R}$. But the function $f$ as a whole behaves weirdly: if we approach $(0, 0)$ in the arguments $(x, x)$ with $x \neq 0$ the values of $f$ are constantly $\frac{1}{2}$ and at $x = 0$ we jump to 0, an evident discontinuity in any reasonable intuitive meaning of the word.
+For any fixed $y\_0$ the function $\phi : \mathbb{R} \to \mathbb{R}$ defined by $\phi(x) = f(x, y\_0)$ is evidently a continuous one (if $y\_0 \neq 0$ it is defined by an arithmetic expression, and for $y\_0 = 0$ it is the constant 0) and similarly for any fixed $x\_0$ the formula $\psi(y) = f(x\_0)$ defines a continuous function $\psi : \mathbb{R} \to \mathbb{R}$. But the function $f$ as a whole behaves weirdly: if we approach $(0, 0)$ in the arguments $(x, x)$ with $x \neq 0$ the values of $f$ are constantly $\frac{1}{2}$ and at $x = 0$ we jump to 0, an evident discontinuity in any reasonable intuitive meaning of the word.
 
 </div>
 
@@ -1368,7 +1557,7 @@ The assumptions (1) and (3) are rather intuitive: (1) requires that the distance
 
 2. The **Gauss plane**, that is, the set of complex numbers $\mathbb{C}$ with the distance $d(x, y) = \lvert x - y \rvert$. Note that the fact that this formula is a distance in $\mathbb{C}$ is less trivial than the fact about the $\lvert x - y \rvert$ in $\mathbb{R}$.
 
-3. The $n$**-dimensional Euclidean space** $\mathbb{E}_n$: The set $\lbrace (x_1, \ldots, x_n) \mid x_i \in \mathbb{R} \rbrace$ with the metric
+3. The $n$**-dimensional Euclidean space** $\mathbb{E}\_n$: The set $\lbrace (x\_1, \ldots, x\_n) \mid x\_i \in \mathbb{R} \rbrace$ with the metric
 
 $$d((x_1, \ldots, x_n), (y_1, \ldots, y_n)) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}. \qquad (*)$$
 
@@ -1378,22 +1567,22 @@ $$d(f, g) = \sup\lbrace \lvert f(x) - g(x) \rvert \mid x \in J \rbrace.$$
 
 </div>
 
-**More about $\mathbb{E}_n$.** The Euclidean space $\mathbb{E}_n$ (and its subsets) will play a fundamental role in the sequel. It deserves a few comments.
+**More about $\mathbb{E}\_n$.** The Euclidean space $\mathbb{E}\_n$ (and its subsets) will play a fundamental role in the sequel. It deserves a few comments.
 
-(a) The reader knows from linear algebra the $n$-dimensional vector space $V_n$, the scalar product $x \cdot y = (x_1, \ldots, x_n) \cdot (y_1, \ldots, y_n) = \sum_{i=1}^{n} x_i y_i$, the norm $\lVert x \rVert = \sqrt{x \cdot x}$, and the Cauchy-Schwarz inequality
+(a) The reader knows from linear algebra the $n$-dimensional vector space $V\_n$, the scalar product $x \cdot y = (x\_1, \ldots, x\_n) \cdot (y\_1, \ldots, y\_n) = \sum\_{i=1}^{n} x\_i y\_i$, the norm $\lVert x \rVert = \sqrt{x \cdot x}$, and the Cauchy-Schwarz inequality
 
 $$\lvert x \cdot y \rvert \le \lVert x \rVert \cdot \lVert y \rVert.$$
 
-From this inequality one easily infers that $d(x, y) = \lVert x - y \rVert$ is a distance on $V_n$. Now $\mathbb{E}\_n$ is nothing else than $(V_n, d)$ with the structure of vector space neglected.
+From this inequality one easily infers that $d(x, y) = \lVert x - y \rVert$ is a distance on $V\_n$. Now $\mathbb{E}\_n$ is nothing else than $(V\_n, d)$ with the structure of vector space neglected.
 
-(b) The Gauss plane is the Euclidean plane $\mathbb{E}_2$. Only, similarly as $V_n$ as compared with $\mathbb{E}_n$, it has more structure.
+(b) The Gauss plane is the Euclidean plane $\mathbb{E}\_2$. Only, similarly as $V\_n$ as compared with $\mathbb{E}\_n$, it has more structure.
 
 (c) The (Pythagorean) metric $(\ast)$ in $\mathbb{E}\_n$ is in accordance with the standard Euclidean geometry. It can be, however, somewhat inconvenient to work with. More expedient distances (equivalent with $(\ast)$ for our purposes) will be introduced in 4.3 below.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.3 - Continuous and uniformly continuous maps)</span></p>
 
-Let $(X_1, d_1)$ and $(X_2, d_2)$ be metric spaces. A mapping $f : X_1 \to X_2$ is said to be **continuous** if
+Let $(X\_1, d\_1)$ and $(X\_2, d\_2)$ be metric spaces. A mapping $f : X\_1 \to X\_2$ is said to be **continuous** if
 
 $$\forall x \in X_1 \;\forall \varepsilon > 0 \;\exists \delta > 0 \text{ such that } \forall y \in X_1, \; d_1(x, y) < \delta \;\Rightarrow\; d_2(f(x), f(y)).$$
 
@@ -1410,25 +1599,25 @@ Note that obviously each uniformly continuous mapping is continuous.
 
 (1) The identity mapping $\mathrm{id} : (X, d) \to (X, d)$ is continuous.
 
-(2) The composition $g \circ f : (X_1, d_1) \to (X_3, d_3)$ of (uniformly) continuous maps $f : (X_1, d_1) \to (X_2, d_2)$ and $g : (X_2, d_2) \to (X_3, d_3)$ is (uniformly) continuous.
+(2) The composition $g \circ f : (X\_1, d\_1) \to (X\_3, d\_3)$ of (uniformly) continuous maps $f : (X\_1, d\_1) \to (X\_2, d\_2)$ and $g : (X\_2, d\_2) \to (X\_3, d\_3)$ is (uniformly) continuous.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.4 - Subspaces)</span></p>
 
-Let $(X, d)$ be a metric space and let $Y \subseteq X$ be a subset. Defining $d_Y(x, y) = d(x, y)$ for $x, y \in Y$ we obtain a metric on $Y$; the resulting metric space $(Y, d_Y)$ is said to be a **subspace** of $(X, d)$.
+Let $(X, d)$ be a metric space and let $Y \subseteq X$ be a subset. Defining $d\_Y(x, y) = d(x, y)$ for $x, y \in Y$ we obtain a metric on $Y$; the resulting metric space $(Y, d\_Y)$ is said to be a **subspace** of $(X, d)$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(2.4.1)</span></p>
 
-Let $f : (X_1, d_1) \to (X_2, d_2)$ be a (uniformly) continuous mapping. Let $Y_i \subseteq X_i$ be such that $f[Y_1] \subseteq Y_2$. Then the mapping $g : (Y_1, d\_{1\_{Y\_1}}) \to (Y_2, d\_{2\_{Y\_2}})$ defined by $g(x) = f(x)$ is (uniformly) continuous.
+Let $f : (X\_1, d\_1) \to (X\_2, d\_2)$ be a (uniformly) continuous mapping. Let $Y\_i \subseteq X\_i$ be such that $f[Y\_1] \subseteq Y\_2$. Then the mapping $g : (Y\_1, d\_{1\_{Y\_1}}) \to (Y\_2, d\_{2\_{Y\_2}})$ defined by $g(x) = f(x)$ is (uniformly) continuous.
 
 </div>
 
-**Conventions.** 1. Often, if there is no danger of confusion, we use the same symbol for distinct metrics. In particular we will mostly omit the subscript $Y$ in the subspace metric $d_Y$.
+**Conventions.** 1. Often, if there is no danger of confusion, we use the same symbol for distinct metrics. In particular we will mostly omit the subscript $Y$ in the subspace metric $d\_Y$.
 
 2. Unless stated otherwise, we will endow a subset of a metric space automatically with the subspace metric. We will speak of subspaces as of the corresponding subsets, and of subsets as of the corresponding subspaces. Thus we will speak of a "finite subspace", an "open subspace" (see 3.4 below) or, on the other hand, of a "compact subset" (see Section 7), etc.
 
@@ -1439,29 +1628,36 @@ Let $f : (X_1, d_1) \to (X_2, d_2)$ be a (uniformly) continuous mapping. Let $Y_
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.1 - Convergence in a metric space)</span></p>
 
-A sequence $(x_n)_n$ in a metric space $(X, d)$ **converges** to $x \in X$ if
+A sequence $(x\_n)\_n$ in a metric space $(X, d)$ **converges** to $x \in X$ if
 
 $$\forall \varepsilon > 0 \;\exists n_0 \text{ such that } \forall n \ge n_0, \; d(x_n, x) < \varepsilon.$$
 
-We then speak of a **convergent sequence** and the $x$ is called its **limit**, and we write $x = \lim_n x_n$.
+We then speak of a **convergent sequence** and the $x$ is called its **limit**, and we write $x = \lim\_n x\_n$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(3.1.1)</span></p>
 
-Let $(x_n)\_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ converges and we have $\lim_n x_{k_n} = x$.
+Let $(x\_n)\_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x\_{k\_n})\_n$ of $(x\_n)\_n$ converges and we have $\lim\_n x\_{k\_n} = x$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.1.2 - Sequential characterization of continuity)</span></p>
 
-A mapping $f : (X_1, d_1) \to (X_2, d_2)$ is continuous if and only if for each convergent sequence $(x_n)_n$ in $(X_1, d_1)$ the sequence $(f(x_n))_n$ converges in $(X_2, d_2)$ and $\lim_n f(x_n) = f(\lim_n x_n)$.
+A mapping $f : (X\_1, d\_1) \to (X\_2, d\_2)$ is continuous if and only if for each convergent sequence $(x\_n)\_n$ in $(X\_1, d\_1)$ the sequence $(f(x\_n))\_n$ converges in $(X\_2, d\_2)$ and $\lim\_n f(x\_n) = f(\lim\_n x\_n)$.
 
-*Proof.* I. Let $f$ be continuous and let $\lim_n x_n = x$. For $\varepsilon > 0$ choose by continuity a $\delta > 0$ such that $d_2(f(y), f(x)) < \varepsilon$ for $d_1(x, y) < \delta$. Now by the definition of the convergence of sequences there is an $n_0$ such that for $n \ge n_0$, $d_1(x_n, x) < \delta$. Thus, if $n \le n_0$ we have $d_2(f(x_n), f(x)) < \varepsilon$ so that $\lim_n f(x_n) = f(\lim_n x_n)$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-II. Let $f$ not be continuous. Then there is an $x \in X_1$ and an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there is an $x(\delta)$ such that $d_1(x, x(\delta)) < \delta$ but $d_2(f(x), f(x(\delta))) \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$. Then $\lim_n x_n = x$ but $(f(x_n))_n$ cannot converge to $f(x)$. $\square$
+*Proof.* I. Let $f$ be continuous and let $\lim\_n x\_n = x$. For $\varepsilon > 0$ choose by continuity a $\delta > 0$ such that $d\_2(f(y), f(x)) < \varepsilon$ for $d\_1(x, y) < \delta$. Now by the definition of the convergence of sequences there is an $n\_0$ such that for $n \ge n\_0$, $d\_1(x\_n, x) < \delta$. Thus, if $n \le n\_0$ we have $d\_2(f(x\_n), f(x)) < \varepsilon$ so that $\lim\_n f(x\_n) = f(\lim\_n x\_n)$.
+
+II. Let $f$ not be continuous. Then there is an $x \in X\_1$ and an $\varepsilon\_0 > 0$ such that for every $\delta > 0$ there is an $x(\delta)$ such that $d\_1(x, x(\delta)) < \delta$ but $d\_2(f(x), f(x(\delta))) \ge \varepsilon\_0$. Set $x\_n = x(\frac{1}{n})$. Then $\lim\_n x\_n = x$ but $(f(x\_n))\_n$ cannot converge to $f(x)$. $\square$
+
+</details>
+</div>
 
 Note that the proof is the same as that in IV.5.1, only with the $\lvert u - v \rvert$ substituted by the distances in the two spaces.
 
@@ -1484,16 +1680,30 @@ A **neighbourhood** of a point $x$ in $(X, d)$ is any $U \subseteq X$ such that 
 
 2. If $U$ and $V$ are neighbourhoods of $x$ then the intersection $U \cap V$ is a neighbourhood of $x$.
 
-*Proof.* 1 is trivial. 2: If $\Omega(x, \varepsilon_1) \subseteq U$ and $\Omega(x, \varepsilon_2) \subseteq V$ then $\Omega(x, \min(\varepsilon_1, \varepsilon_2)) \subseteq U \cap V$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* 1 is trivial. 2: If $\Omega(x, \varepsilon\_1) \subseteq U$ and $\Omega(x, \varepsilon\_2) \subseteq V$ then $\Omega(x, \min(\varepsilon\_1, \varepsilon\_2)) \subseteq U \cap V$. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.3.2 - Neighbourhoods in subspaces)</span></p>
 
-Let $Y$ be a subspace of a metric space $(X, d)$. Then $\Omega_Y(x, \varepsilon) = \Omega_X(x, \varepsilon) \cap Y$ and $U \subseteq Y$ is a neighbourhood of $x \in Y$ iff there is a neighbourhood $V$ of $x$ in $(X, d)$ such that $U = V \cap Y$.
+Let $Y$ be a subspace of a metric space $(X, d)$. Then $\Omega\_Y(x, \varepsilon) = \Omega\_X(x, \varepsilon) \cap Y$ and $U \subseteq Y$ is a neighbourhood of $x \in Y$ iff there is a neighbourhood $V$ of $x$ in $(X, d)$ such that $U = V \cap Y$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof* is straightforward. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1509,18 +1719,32 @@ A subset $U \subseteq (X, d)$ is **open** if it is a neighbourhood of each of it
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.4.1)</span></p>
 
-Each $\Omega_X(x, \varepsilon)$ is open in $(X, d)$.
+Each $\Omega\_X(x, \varepsilon)$ is open in $(X, d)$.
 
-*Proof.* Let $y \in \Omega_X(x, \varepsilon)$. Then $d(x, y) < \varepsilon$. Set $\delta = \varepsilon - d(x, y)$. By triangle inequality, $\Omega(y, \delta) \subseteq \Omega(x, \varepsilon)$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $y \in \Omega\_X(x, \varepsilon)$. Then $d(x, y) < \varepsilon$. Set $\delta = \varepsilon - d(x, y)$. By triangle inequality, $\Omega(y, \delta) \subseteq \Omega(x, \varepsilon)$. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(3.4.2 - Properties of open sets)</span></p>
 
-$\emptyset$ and $X$ are open. If $U_i$, $i \in J$, are open then $\bigcup_{i \in J} U_i$ is open, and if $U$ and $V$ are open then $U \cap V$ is open.
+$\emptyset$ and $X$ are open. If $U\_i$, $i \in J$, are open then $\bigcup\_{i \in J} U\_i$ is open, and if $U$ and $V$ are open then $U \cap V$ is open.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* The first three statements are obvious and the third one immediately follows from 2.3.1. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1529,7 +1753,14 @@ $\emptyset$ and $X$ are open. If $U_i$, $i \in J$, are open then $\bigcup_{i \in
 
 Let $Y$ be a subspace of a metric space $(X, d)$. Then $U$ is open in $Y$ iff there is a $V$ open in $X$ such that $U = V \cap Y$.
 
-*Proof.* For every $V$ open in $X$, $U \cap Y$ is open in $Y$ by 3.3.2. On the other hand, if $U$ is open in $Y$ choose for each $x \in U$ an $\Omega_Y(x, \varepsilon_x) \subseteq U$ and set $V = \bigcup_{x \in U} \Omega_X(x, \varepsilon_x)$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* For every $V$ open in $X$, $U \cap Y$ is open in $Y$ by 3.3.2. On the other hand, if $U$ is open in $Y$ choose for each $x \in U$ an $\Omega\_Y(x, \varepsilon\_x) \subseteq U$ and set $V = \bigcup\_{x \in U} \Omega\_X(x, \varepsilon\_x)$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1538,7 +1769,7 @@ Let $Y$ be a subspace of a metric space $(X, d)$. Then $U$ is open in $Y$ iff th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.5 - Closed set)</span></p>
 
-A subset $A \subseteq (X, d)$ is **closed** in $(X, d)$ if for every sequence $(x_n)_n \subseteq A$ convergent in $X$ the limit $\lim_n x_n$ is in $A$.
+A subset $A \subseteq (X, d)$ is **closed** in $(X, d)$ if for every sequence $(x\_n)\_n \subseteq A$ convergent in $X$ the limit $\lim\_n x\_n$ is in $A$.
 
 </div>
 
@@ -1547,16 +1778,23 @@ A subset $A \subseteq (X, d)$ is **closed** in $(X, d)$ if for every sequence $(
 
 A subset $A \subseteq (X, d)$ is closed in $(X, d)$ iff the complement $X \setminus A$ is open.
 
-*Proof.* I. Let $X \setminus A$ not be open. Then there is a point $x \in X \setminus A$ such that for every $n$, $\Omega(x, \frac{1}{n}) \nsubseteq X \setminus A$, that is, $\Omega(x, \frac{1}{n}) \cap A \neq \emptyset$. Choose $x_n \in \Omega(x, \frac{1}{n}) \cap A$. Then $(x_n)_n \subseteq A$ and the sequence converges to $x \notin A$ and hence $A$ is not closed.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-II. Let $X \setminus A$ be open and let $(x_n)_n \subseteq A$ converge to $x \in X \setminus A$. Then for some $\varepsilon > 0$, $\Omega(x, \varepsilon) \subseteq X \setminus A$ and hence for sufficiently large $n$, $x_n \in \Omega(x, \varepsilon) \subseteq X \setminus A$, a contradiction. $\square$
+*Proof.* I. Let $X \setminus A$ not be open. Then there is a point $x \in X \setminus A$ such that for every $n$, $\Omega(x, \frac{1}{n}) \nsubseteq X \setminus A$, that is, $\Omega(x, \frac{1}{n}) \cap A \neq \emptyset$. Choose $x\_n \in \Omega(x, \frac{1}{n}) \cap A$. Then $(x\_n)\_n \subseteq A$ and the sequence converges to $x \notin A$ and hence $A$ is not closed.
+
+II. Let $X \setminus A$ be open and let $(x\_n)\_n \subseteq A$ converge to $x \in X \setminus A$. Then for some $\varepsilon > 0$, $\Omega(x, \varepsilon) \subseteq X \setminus A$ and hence for sufficiently large $n$, $x\_n \in \Omega(x, \varepsilon) \subseteq X \setminus A$, a contradiction. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(3.5.2 - Properties of closed sets)</span></p>
 
-$\emptyset$ and $X$ are closed. If $A_i$, $i \in J$, are closed then $\bigcap_{i \in J} A_i$ is closed, and if $A$ and $B$ are closed then $A \cup B$ is closed.
+$\emptyset$ and $X$ are closed. If $A\_i$, $i \in J$, are closed then $\bigcap\_{i \in J} A\_i$ is closed, and if $A$ and $B$ are closed then $A \cup B$ is closed.
 
 </div>
 
@@ -1586,20 +1824,34 @@ $$\overline{A} = \lbrace x \mid d(x, A) = 0 \rbrace.$$
 (4) $\overline{A \cup B} = \overline{A} \cup \overline{B}$, and
 (5) $\overline{\overline{A}} = \overline{A}$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* (1): $d(x, \emptyset) = +\infty$. (2) and (3) are trivial.
 
 (4): By (3) we have $\overline{A \cup B} \supseteq \overline{A} \cup \overline{B}$. Now let $x \in \overline{A \cup B}$ but not $x \in \overline{A}$. Then $\alpha = d(x, A) > 0$ and hence all the $y \in A \cup B$ such that $d(x, y) < \alpha$ are in $B$; hence $x \in \overline{B}$.
 
 (5): Let $d(x, \overline{A})$ be 0. Choose $\varepsilon > 0$. There is a $z \in \overline{A}$ such that $d(x, z) < \frac{\varepsilon}{2}$ and for this $z$ we can choose a $y \in A$ such that $d(z, y) < \frac{\varepsilon}{2}$. Thus, by triangle inequality, $d(x, y) < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$ and we see that $x \in \overline{A}$. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.6.2 - Closure as set of limits)</span></p>
 
-$\overline{A}$ is the set of all limits of convergent sequences $(x_n)_n \subseteq A$.
+$\overline{A}$ is the set of all limits of convergent sequences $(x\_n)\_n \subseteq A$.
 
-*Proof.* A limit of a convergent $(x_n)_n \subseteq A$ is obviously in $\overline{A}$. Now let $x \in \overline{A}$. If $x \in A$ then it is the limit of the constant sequence $x, x, x, \ldots$. If $x \in \overline{A} \setminus A$ then for each $n$ there is an $x_n \in A$ such that $d(x, x_n) < \frac{1}{n}$. Obviously $x = \lim_n x_n$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* A limit of a convergent $(x\_n)\_n \subseteq A$ is obviously in $\overline{A}$. Now let $x \in \overline{A}$. If $x \in A$ then it is the limit of the constant sequence $x, x, x, \ldots$. If $x \in \overline{A} \setminus A$ then for each $n$ there is an $x\_n \in A$ such that $d(x, x\_n) < \frac{1}{n}$. Obviously $x = \lim\_n x\_n$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1610,9 +1862,16 @@ $\overline{A}$ is closed and it is the least closed set containing $A$. That is,
 
 $$\overline{A} = \bigcap\lbrace B \mid A \subseteq B, \; B \text{ closed} \rbrace.$$
 
-*Proof.* Let $(x_n)_n \subseteq \overline{A}$ converge to $x$. For each $n$ choose $y_n \in A$ such that $d(x_n, y_n) < \frac{1}{n}$. Then $\lim_n y_n = x$ and $x$ is in $\overline{A}$ by 3.5.1.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-Now let $B$ be closed and let $A \subseteq B$. If $x \in \overline{A}$ we can choose, by 3.5.1, a convergent sequence $(x_n)_n$ in $A$, and hence in $B$, such that $\lim x_n = x$. Thus, $x \in B$. $\square$
+*Proof.* Let $(x\_n)\_n \subseteq \overline{A}$ converge to $x$. For each $n$ choose $y\_n \in A$ such that $d(x\_n, y\_n) < \frac{1}{n}$. Then $\lim\_n y\_n = x$ and $x$ is in $\overline{A}$ by 3.5.1.
+
+Now let $B$ be closed and let $A \subseteq B$. If $x \in \overline{A}$ we can choose, by 3.5.1, a convergent sequence $(x\_n)\_n$ in $A$, and hence in $B$, such that $\lim x\_n = x$. Thus, $x \in B$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -1628,13 +1887,17 @@ Let $Y$ be a subspace of a metric space $(X, d)$. Then the closure of $A$ in $Y$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.7 - Equivalent characterizations of continuity)</span></p>
 
-Let $(X_1, d_1), (X_2, d_2)$ be metric spaces and let $f : X_1 \to X_2$ be a mapping. Then the following statements are equivalent.
+Let $(X\_1, d\_1), (X\_2, d\_2)$ be metric spaces and let $f : X\_1 \to X\_2$ be a mapping. Then the following statements are equivalent.
 
 1. $f$ is continuous.
-2. For every $x \in X_1$ and for every neighbourhood $V$ of $f(x)$ there is a neighbourhood $U$ of $x$ such that $f[U] \subseteq V$.
-3. For every open $U$ in $X_2$ the preimage $f^{-1}[U]$ is open in $X_1$.
-4. For every closed $A$ in $X_2$ the preimage $f^{-1}[A]$ is closed in $X_1$.
-5. For every $A \subseteq X_1$, $f[\overline{A}] \subseteq \overline{f[A]}$.
+2. For every $x \in X\_1$ and for every neighbourhood $V$ of $f(x)$ there is a neighbourhood $U$ of $x$ such that $f[U] \subseteq V$.
+3. For every open $U$ in $X\_2$ the preimage $f^{-1}[U]$ is open in $X\_1$.
+4. For every closed $A$ in $X\_2$ the preimage $f^{-1}[A]$ is closed in $X\_1$.
+5. For every $A \subseteq X\_1$, $f[\overline{A}] \subseteq \overline{f[A]}$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* $(1)\Rightarrow(2)$: There is an $\varepsilon > 0$ such that $\Omega(f(x), \varepsilon) \subseteq V$. Take the $\delta$ from the definition of continuity and set $U = \Omega(x, \delta)$. Then $f[U] \subseteq \Omega(f(x), \varepsilon) \subseteq V$.
 
@@ -1644,13 +1907,16 @@ $(3)\Leftrightarrow(4)$ by 3.5.1 since preimage preserves complements.
 
 $(4)\Rightarrow(5)$: We have $A \subseteq f^{-1}[f[A]] \subseteq f^{-1}[\overline{f[A]}]$. By (4), $f^{-1}[\overline{f[A]}]$ is closed and hence by 3.5.3, $\overline{A} \subseteq f^{-1}[\overline{f[A]}]$ and finally $f[\overline{A}] \subseteq \overline{f[A]}$.
 
-$(5)\Rightarrow(1)$: Let $\varepsilon > 0$. Set $B = X_2 \setminus \Omega(f(x), \varepsilon)$ and $A = f^{-1}[B]$. Then $f[\overline{A}] \subseteq f[f^{-1}[B]] \subseteq \overline{B}$. Hence $x \notin \overline{A}$ (the distance $d(f(x), B)$ is at least $\varepsilon$) and hence there is a $\delta > 0$ such that $\Omega(x, \delta) \cap A = \emptyset$ and we easily conclude that $f[\Omega(x, \delta)] \subseteq \Omega(f(x), \varepsilon)$. $\square$
+$(5)\Rightarrow(1)$: Let $\varepsilon > 0$. Set $B = X\_2 \setminus \Omega(f(x), \varepsilon)$ and $A = f^{-1}[B]$. Then $f[\overline{A}] \subseteq f[f^{-1}[B]] \subseteq \overline{B}$. Hence $x \notin \overline{A}$ (the distance $d(f(x), B)$ is at least $\varepsilon$) and hence there is a $\delta > 0$ such that $\Omega(x, \delta) \cap A = \emptyset$ and we easily conclude that $f[\Omega(x, \delta)] \subseteq \Omega(f(x), \varepsilon)$. $\square$
+
+</details>
+</div>
 
 </div>
 
 #### 3.8. Homeomorphism. Topological Concepts
 
-A continuous mapping $f : (X, d) \to (Y, d')$ is called **homeomorphism** if there is a continuous $g : (Y, d') \to (X, d)$ such that $f \circ g = \mathrm{id}_Y$ and $g \circ f = \mathrm{id}_X$. If there exists a homeomorphism $f : (X, d) \to (Y, d')$ we say that the spaces $(X, d)$ and $(Y, d')$ are **homeomorphic**.
+A continuous mapping $f : (X, d) \to (Y, d')$ is called **homeomorphism** if there is a continuous $g : (Y, d') \to (X, d)$ such that $f \circ g = \mathrm{id}\_Y$ and $g \circ f = \mathrm{id}\_X$. If there exists a homeomorphism $f : (X, d) \to (Y, d')$ we say that the spaces $(X, d)$ and $(Y, d')$ are **homeomorphic**.
 
 A property or definition is said to be **topological** if it is preserved by homeomorphisms. Thus we have the following topological properties:
 
@@ -1677,14 +1943,14 @@ If there is an isometry $f : (X, d) \to (Y, d')$ the spaces $(X, d)$ and $(Y, d'
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(4.1 - Equivalent metrics)</span></p>
 
-Two metrics $d_1, d_2$ on a set are said to be **equivalent** if $\mathrm{id}_X : (X, d_1) \to (X, d_2)$ is a homeomorphism. Thus, replacing a metric by an equivalent one we obtain a space in which all topological notions from the original space are preserved.
+Two metrics $d\_1, d\_2$ on a set are said to be **equivalent** if $\mathrm{id}\_X : (X, d\_1) \to (X, d\_2)$ is a homeomorphism. Thus, replacing a metric by an equivalent one we obtain a space in which all topological notions from the original space are preserved.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(4.2 - Strongly equivalent metrics)</span></p>
 
-A much stronger concept is that of a strong equivalence. We say that $d_1, d_2$ on a set are **strongly equivalent** if there are positive constants $\alpha$ and $\beta$ such that for all $x, y \in X$
+A much stronger concept is that of a strong equivalence. We say that $d\_1, d\_2$ on a set are **strongly equivalent** if there are positive constants $\alpha$ and $\beta$ such that for all $x, y \in X$
 
 $$\alpha \cdot d_1(x, y) \le d_2(x, y) \le \beta \cdot d_1(x, y)$$
 
@@ -1695,9 +1961,9 @@ Note that replacing a metric by a strongly equivalent one preserves not only top
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(4.3.1 - Equivalent metrics on $\mathbb{E}_n$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(4.3.1 - Equivalent metrics on $\mathbb{E}\_n$)</span></p>
 
-The metrics $d$, $\lambda$ and $\sigma$ on $\mathbb{E}_n$ defined by
+The metrics $d$, $\lambda$ and $\sigma$ on $\mathbb{E}\_n$ defined by
 
 $$d((x_i), (y_i)) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}, \quad \lambda((x_i), (y_i)) = \sum_{i=1}^{n} \lvert x_i - y_i \rvert, \quad \sigma((x_i), (y_i)) = \max_i \lvert x_i - y_i \rvert$$
 
@@ -1713,7 +1979,7 @@ are strongly equivalent.
 
 $$\lambda((x_i), (y_i)) = \sum_{i=1}^{n} \lvert x_i - y_i \rvert \le n\sigma((x_j), (y_j))$$
 
-since for each $i$, $\lvert x_i - y_i \rvert \le \sigma((x_j), (y_j))$, and for the same reason
+since for each $i$, $\lvert x\_i - y\_i \rvert \le \sigma((x\_j), (y\_j))$, and for the same reason
 
 $$d((x_i), (y_i)) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2} \le \sqrt{n}\,\sigma((x_j), (y_j)).$$
 
@@ -1724,22 +1990,22 @@ $$\sigma((x_i), (y_i)) \le \lambda((x_i), (y_i)) \quad \text{and} \quad \sigma((
 </details>
 </div>
 
-In the sequel we will mostly work with the Euclidean space as with $(\mathbb{E}_n, \sigma)$.
+In the sequel we will mostly work with the Euclidean space as with $(\mathbb{E}\_n, \sigma)$.
 
 ### 5. Products
 
-Let $(X_i, d_i)$, $i = 1, \ldots, n$ be metric spaces. On the cartesian product $\prod_{i=1}^{n} X_i$ define a metric
+Let $(X\_i, d\_i)$, $i = 1, \ldots, n$ be metric spaces. On the cartesian product $\prod\_{i=1}^{n} X\_i$ define a metric
 
 $$d((x_1, \ldots, x_n), (y_1, \ldots, y_n)) = \max_i d_i(x_i, y_i).$$
 
-The resulting metric space will be denoted by $\prod_{i=1}^{n}(X_i, d_i)$.
+The resulting metric space will be denoted by $\prod\_{i=1}^{n}(X\_i, d\_i)$.
 
-**Notation.** We will also write $(X_1, d_1) \times (X_2, d_2)$ or $(X_1, d_1) \times (X_2, d_2) \times (X_3, d_3)$ for products of two or three spaces, and sometimes also $(X_1, d_1) \times \cdots \times (X_n, d_n)$ for the general $\prod_{i=1}^{n}(X_i, d_i)$. Further, if $(X_i, d_i) = (X, d)$ for all $i$ we write $\prod_{i=1}^{n}(X_i, d_i) = (X, d)^n$.
+**Notation.** We will also write $(X\_1, d\_1) \times (X\_2, d\_2)$ or $(X\_1, d\_1) \times (X\_2, d\_2) \times (X\_3, d\_3)$ for products of two or three spaces, and sometimes also $(X\_1, d\_1) \times \cdots \times (X\_n, d\_n)$ for the general $\prod\_{i=1}^{n}(X\_i, d\_i)$. Further, if $(X\_i, d\_i) = (X, d)$ for all $i$ we write $\prod\_{i=1}^{n}(X\_i, d\_i) = (X, d)^n$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(5.1.2)</span></p>
 
-1. Thus, $(\mathbb{E}_n, \sigma)$ is the product $\overbrace{\mathbb{R} \times \cdots \times \mathbb{R}}^{n \text{ times}} = \mathbb{R}^n$.
+1. Thus, $(\mathbb{E}\_n, \sigma)$ is the product $\overbrace{\mathbb{R} \times \cdots \times \mathbb{R}}^{n \text{ times}} = \mathbb{R}^n$.
 
 2. For all purposes we could have defined the metric in the product by
 
@@ -1752,7 +2018,7 @@ but working with the $d$ above is much easier.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(5.2 - Convergence in products)</span></p>
 
-A sequence $(x_1^k, \ldots, x_n^k), \ldots$ **converges** to $(x_1, \ldots, x_n)$ in $\prod(X_i, d_i)$ if and only if each of the sequences $(x_i^k)_k$ converges to $x_i$ in $(X_i, d_i)$.
+A sequence $(x\_1^k, \ldots, x\_n^k), \ldots$ **converges** to $(x\_1, \ldots, x\_n)$ in $\prod(X\_i, d\_i)$ if and only if each of the sequences $(x\_i^k)\_k$ converges to $x\_i$ in $(X\_i, d\_i)$.
 
 (Caution: the superscripts $k$ are indices, not powers.)
 
@@ -1762,9 +2028,9 @@ A sequence $(x_1^k, \ldots, x_n^k), \ldots$ **converges** to $(x_1, \ldots, x_n)
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* $\Rightarrow$ immediately follows from the fact that $d_i(u_i, v_i) \le d((u_j)_j, (v_j)_j)$.
+*Proof.* $\Rightarrow$ immediately follows from the fact that $d\_i(u\_i, v\_i) \le d((u\_j)\_j, (v\_j)\_j)$.
 
-$\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon > 0$ and $i$ we have $k_i$ such that for $k \ge k_i$, $d_i(x_i^k, x_i) < \varepsilon$. Then for $k \ge \max_i k_i$ we have $d((x_1^k, \ldots, x_n^k), (x_1, \ldots, x_n)) < \varepsilon$. $\square$
+$\Leftarrow$: Let each of the $(x\_i^k)\_k$ converge to $x\_i$. For an $\varepsilon > 0$ and $i$ we have $k\_i$ such that for $k \ge k\_i$, $d\_i(x\_i^k, x\_i) < \varepsilon$. Then for $k \ge \max\_i k\_i$ we have $d((x\_1^k, \ldots, x\_n^k), (x\_1, \ldots, x\_n)) < \varepsilon$. $\square$
 
 </details>
 </div>
@@ -1772,9 +2038,9 @@ $\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.3 - Universal property of products)</span></p>
 
-1. The projection mappings $p_j : \prod_{i=1}^{n}(X_i, d_i) \to (X_j, d_j)$ defined by $p_j((x_i)_i) \mapsto x_j$ are continuous.
+1. The projection mappings $p\_j : \prod\_{i=1}^{n}(X\_i, d\_i) \to (X\_j, d\_j)$ defined by $p\_j((x\_i)\_i) \mapsto x\_j$ are continuous.
 
-2. Let $f_j : (Y, d') \to (X_j, d_j)$ be arbitrary continuous mappings. Then the unique mapping $f : (Y, d') \to \prod_{i=1}^{n}(X_i, d_i)$ such that $p_j \circ f = f_j$, namely that defined by $f(y) = (f_1(y), \ldots, f_n(y))$, is continuous.
+2. Let $f\_j : (Y, d') \to (X\_j, d\_j)$ be arbitrary continuous mappings. Then the unique mapping $f : (Y, d') \to \prod\_{i=1}^{n}(X\_i, d\_i)$ such that $p\_j \circ f = f\_j$, namely that defined by $f(y) = (f\_1(y), \ldots, f\_n(y))$, is continuous.
 
 </div>
 
@@ -1782,9 +2048,9 @@ $\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* 1 immediately follows from the fact that $d_j(x_j, y_j) \le d((x_i)_i, (y_i)_i)$.
+*Proof.* 1 immediately follows from the fact that $d\_j(x\_j, y\_j) \le d((x\_i)\_i, (y\_i)\_i)$.
 
-2: Follows from 3.1.2 and 5.2. If $\lim_k y_k = y$ in $(Y, d')$ then $\lim_k f_j(y_k) = f_j(y)$ in $(X_j, d_j)$ for all $j$ and hence $(f(y_k))_k$, that is, $(f_1(y_1), \ldots, f_n(y_1)), (f_1(y_2), \ldots, f_n(y_2)), \ldots$ converges to $(f_1(y), \ldots, f_n(y))$. $\square$
+2: Follows from 3.1.2 and 5.2. If $\lim\_k y\_k = y$ in $(Y, d')$ then $\lim\_k f\_j(y\_k) = f\_j(y)$ in $(X\_j, d\_j)$ for all $j$ and hence $(f(y\_k))\_k$, that is, $(f\_1(y\_1), \ldots, f\_n(y\_1)), (f\_1(y\_2), \ldots, f\_n(y\_2)), \ldots$ converges to $(f\_1(y), \ldots, f\_n(y))$. $\square$
 
 </details>
 </div>
@@ -1792,7 +2058,7 @@ $\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(5.4)</span></p>
 
-Obviously $\prod_{i=1}^{n+1}(X_i, d_i)$ is isometric (recall 3.9) with $\prod_{i=1}^{n}(X_i, d_i) \times (X_{n+1}, d_{n+1})$. Consequently, it usually suffices to prove a statement on finite products for products of two spaces only.
+Obviously $\prod\_{i=1}^{n+1}(X\_i, d\_i)$ is isometric (recall 3.9) with $\prod\_{i=1}^{n}(X\_i, d\_i) \times (X\_{n+1}, d\_{n+1})$. Consequently, it usually suffices to prove a statement on finite products for products of two spaces only.
 
 </div>
 
@@ -1801,7 +2067,7 @@ Obviously $\prod_{i=1}^{n+1}(X_i, d_i)$ is isometric (recall 3.9) with $\prod_{i
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(6.1 - Cauchy sequence)</span></p>
 
-A sequence $(x_n)_n$ in a metric space $(X, d)$ is said to be **Cauchy** if
+A sequence $(x\_n)\_n$ in a metric space $(X, d)$ is said to be **Cauchy** if
 
 $$\forall \varepsilon > 0 \;\exists n_0 \text{ such that } m, n \ge n_0 \;\Rightarrow\; d(x_m, x_n) < \varepsilon.$$
 
@@ -1810,7 +2076,7 @@ $$\forall \varepsilon > 0 \;\exists n_0 \text{ such that } m, n \ge n_0 \;\Right
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(6.1.1)</span></p>
 
-Each convergent sequence is Cauchy. (Just like in $\mathbb{R}$: if $d(x_n, x) < \varepsilon$ for $n \ge n_0$ then for $m, n \ge n_0$, $d(x_n, x_m) \le d(x_n, x) + d(x, x_m) < 2\varepsilon$.)
+Each convergent sequence is Cauchy. (Just like in $\mathbb{R}$: if $d(x\_n, x) < \varepsilon$ for $n \ge n\_0$ then for $m, n \ge n\_0$, $d(x\_n, x\_m) \le d(x\_n, x) + d(x, x\_m) < 2\varepsilon$.)
 
 </div>
 
@@ -1825,7 +2091,7 @@ Let a Cauchy sequence have a convergent subsequence. Then it converges (to the l
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $(x_n)\_n$ be Cauchy and let $\lim_n x_{k_n} = x$. Let $d(x_m, x_n) < \varepsilon$ for $m, n \ge n_1$ and $d(x_{k_n}, x) \le \varepsilon$ for $n \ge n_2$. If we set $n_0 = \max(n_1, n_2)$ we have for $n \ge n_0$ (since $k_n \ge n$)
+*Proof.* Let $(x\_n)\_n$ be Cauchy and let $\lim\_n x\_{k\_n} = x$. Let $d(x\_m, x\_n) < \varepsilon$ for $m, n \ge n\_1$ and $d(x\_{k\_n}, x) \le \varepsilon$ for $n \ge n\_2$. If we set $n\_0 = \max(n\_1, n\_2)$ we have for $n \ge n\_0$ (since $k\_n \ge n$)
 
 $$d(x_n, x) \le d(x_n, x_{k_n}) + d(x_{k_n}, x) < 2\varepsilon. \quad \square$$
 
@@ -1852,9 +2118,9 @@ A subspace of a complete space is complete if and only if it is closed.
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y_n)_n$ be Cauchy in $Y$. Then it is Cauchy and hence convergent in $X$, and the limit, by closedness, is in $Y$.
+*Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y\_n)\_n$ be Cauchy in $Y$. Then it is Cauchy and hence convergent in $X$, and the limit, by closedness, is in $Y$.
 
-II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent in $X$ such that $\lim_n y_n \notin Y$. Then $(y_n)_n$ is Cauchy in $X$, but since the distance is the same, also in $Y$. But in $Y$ it does not converge. $\square$
+II. Let $Y$ not be closed. Then there is a sequence $(y\_n)\_n$ in $Y$ convergent in $X$ such that $\lim\_n y\_n \notin Y$. Then $(y\_n)\_n$ is Cauchy in $X$, but since the distance is the same, also in $Y$. But in $Y$ it does not converge. $\square$
 
 </details>
 </div>
@@ -1862,7 +2128,7 @@ II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(6.5 - Cauchy sequences in products)</span></p>
 
-A sequence $(x_1^k, \ldots, x_n^k), \ldots$ is Cauchy in $\prod_{i=1}^{n}(X_i, d_i)$ if and only if each of the sequences $(x_i^k)_k$ is Cauchy in $(X_i, d_i)$.
+A sequence $(x\_1^k, \ldots, x\_n^k), \ldots$ is Cauchy in $\prod\_{i=1}^{n}(X\_i, d\_i)$ if and only if each of the sequences $(x\_i^k)\_k$ is Cauchy in $(X\_i, d\_i)$.
 
 </div>
 
@@ -1870,9 +2136,9 @@ A sequence $(x_1^k, \ldots, x_n^k), \ldots$ is Cauchy in $\prod_{i=1}^{n}(X_i, d
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* $\Rightarrow$ immediately follows from the fact that $d_i(u_i, v_i) \le d((u_j)_j, (v_j)_j)$.
+*Proof.* $\Rightarrow$ immediately follows from the fact that $d\_i(u\_i, v\_i) \le d((u\_j)\_j, (v\_j)\_j)$.
 
-$\Leftarrow$: Let each of the $(x_i^k)_k$ be Cauchy. For an $\varepsilon > 0$ and $i$ we have $k_i$ such that for $k, l \ge k_i$, $d_i(x_i^k, x_i^l) < \varepsilon$. Then for $k, l \ge \max_i k_i$ we have $d((x_1^k, \ldots, x_n^k), (x_1^l, \ldots, x_n^l)) < \varepsilon$. $\square$
+$\Leftarrow$: Let each of the $(x\_i^k)\_k$ be Cauchy. For an $\varepsilon > 0$ and $i$ we have $k\_i$ such that for $k, l \ge k\_i$, $d\_i(x\_i^k, x\_i^l) < \varepsilon$. Then for $k, l \ge \max\_i k\_i$ we have $d((x\_1^k, \ldots, x\_n^k), (x\_1^l, \ldots, x\_n^l)) < \varepsilon$. $\square$
 
 </details>
 </div>
@@ -1880,12 +2146,12 @@ $\Leftarrow$: Let each of the $(x_i^k)_k$ be Cauchy. For an $\varepsilon > 0$ an
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(6.6 - Products of complete spaces)</span></p>
 
-A product of complete spaces is complete. In particular, the Euclidean space $\mathbb{E}_n$ is complete.
+A product of complete spaces is complete. In particular, the Euclidean space $\mathbb{E}\_n$ is complete.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(6.7 - Complete subspaces of $\mathbb{E}_n$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(6.7 - Complete subspaces of $\mathbb{E}\_n$)</span></p>
 
 A subspace $Y$ of the Euclidean space $\mathbb{E}\_n$ is complete if and only if it is closed.
 
@@ -1927,9 +2193,9 @@ A subspace of a compact space is compact if and only if it is closed.
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y_n)_n$ be a sequence in $Y$. In $X$ it has a convergent subsequence $(y_{k_n})_n$ convergent in $X$, and the limit, by closedness, is in $Y$.
+*Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y\_n)\_n$ be a sequence in $Y$. In $X$ it has a convergent subsequence $(y\_{k\_n})\_n$ convergent in $X$, and the limit, by closedness, is in $Y$.
 
-II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent in $X$ such that $y = \lim_n y_n \notin Y$. Then $(y_n)_n$ cannot have a subsequence convergent in $Y$ since each subsequence converges to $y$. $\square$
+II. Let $Y$ not be closed. Then there is a sequence $(y\_n)\_n$ in $Y$ convergent in $X$ such that $y = \lim\_n y\_n \notin Y$. Then $(y\_n)\_n$ cannot have a subsequence convergent in $Y$ since each subsequence converges to $y$. $\square$
 
 </details>
 </div>
@@ -1945,7 +2211,7 @@ Let $(X, d)$ be arbitrary and let a subspace $Y$ of $X$ be compact. Then $Y$ is 
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $(y_n)_n$ be a sequence in $Y$ convergent in $X$ to a limit $y$. Then each subsequence of $(y_n)_n$ converges to $y$ and hence $y \in Y$. $\square$
+*Proof.* Let $(y\_n)\_n$ be a sequence in $Y$ convergent in $X$ to a limit $y$. Then each subsequence of $(y\_n)\_n$ converges to $y$ and hence $y \in Y$. $\square$
 
 </details>
 </div>
@@ -1970,17 +2236,17 @@ Each compact metric space is bounded.
 
 This is a proof by contradiction that uses **sequential compactness**: in a metric space, "compact" is equivalent to "every sequence has a convergent subsequence." That's the engine of the argument. Let me unpack it step by step.
 
-**The setup.** We want to show the metric space $X$ is bounded. Suppose it isn't. Recall that "bounded" means: fixing any point $x_1$, all other points lie within some finite distance $M$ of $x_1$. So "not bounded" means the opposite: no matter how big a number we pick, *some* point is farther than that. In particular, for every natural number $n$, we can find a point $x_n$ with $d(x_1, x_n) > n$. We use this to build a sequence $(x_n)$ that "runs off to infinity" away from $x_1$.
+**The setup.** We want to show the metric space $X$ is bounded. Suppose it isn't. Recall that "bounded" means: fixing any point $x\_1$, all other points lie within some finite distance $M$ of $x\_1$. So "not bounded" means the opposite: no matter how big a number we pick, *some* point is farther than that. In particular, for every natural number $n$, we can find a point $x\_n$ with $d(x\_1, x\_n) > n$. We use this to build a sequence $(x\_n)$ that "runs off to infinity" away from $x\_1$.
 
 **The key claim.** This sequence has no convergent subsequence. Once we prove this, we're done — because compactness *forces* every sequence to have a convergent subsequence, so we'll have our contradiction.
 
-**Why no convergent subsequence?** Suppose, for contradiction, that some subsequence $(x_{n_k})$ converged to a point $x \in X$. Then eventually $d(x_{n_k}, x) < 1$. By the triangle inequality:
+**Why no convergent subsequence?** Suppose, for contradiction, that some subsequence $(x\_{n\_k})$ converged to a point $x \in X$. Then eventually $d(x\_{n\_k}, x) < 1$. By the triangle inequality:
 
 $$d(x_1, x_{n_k}) \;\leq\; d(x_1, x) + d(x, x_{n_k}) \;<\; d(x_1, x) + 1.$$
 
-So infinitely many terms of the subsequence sit within distance $d(x_1, x) + 1$ of $x_1$. But we *constructed* the sequence so that $d(x_1, x_n) > n$, which grows without bound. Once $n_k$ exceeds $d(x_1, x) + 1$, the term $x_{n_k}$ can't possibly be that close to $x_1$. Contradiction.
+So infinitely many terms of the subsequence sit within distance $d(x\_1, x) + 1$ of $x\_1$. But we *constructed* the sequence so that $d(x\_1, x\_n) > n$, which grows without bound. Once $n\_k$ exceeds $d(x\_1, x) + 1$, the term $x\_{n\_k}$ can't possibly be that close to $x\_1$. Contradiction.
 
-**The conclusion.** Compactness says $(x_n)$ must have a convergent subsequence; our construction says it can't. The only thing we assumed was that $X$ is unbounded, so that assumption fails: $X$ must be bounded. $\square$
+**The conclusion.** Compactness says $(x\_n)$ must have a convergent subsequence; our construction says it can't. The only thing we assumed was that $X$ is unbounded, so that assumption fails: $X$ must be bounded. $\square$
 
 </details>
 </div>
@@ -1998,17 +2264,17 @@ A product of finitely many compact metric spaces is compact.
 
 *Proof.* By 5.4 it suffices to prove the statement for two spaces.
 
-Let $(X, d_1)$, $(Y, d_2)$ be compact and let $((x_n, y_n))_n$ be a sequence in $X \times Y$. Choose a convergent subsequence $(x_{k_n})_n$ of $(x_n)_n$ and a convergent subsequence $(y_{k_{l_n}})_n$ of $(y_{k_n})_n$. Then by 5.2
+Let $(X, d\_1)$, $(Y, d\_2)$ be compact and let $((x\_n, y\_n))\_n$ be a sequence in $X \times Y$. Choose a convergent subsequence $(x\_{k\_n})\_n$ of $(x\_n)\_n$ and a convergent subsequence $(y\_{k\_{l\_n}})\_n$ of $(y\_{k\_n})\_n$. Then by 5.2
 
 $$((x_{k_{l_n}}, y_{k_{l_n}}))_n$$
 
-is a convergent subsequence of $((x_n, y_n))_n$. $\square$
+is a convergent subsequence of $((x\_n, y\_n))\_n$. $\square$
 
 </details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(7.6 - Heine-Borel for $\mathbb{E}_n$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(7.6 - Heine-Borel for $\mathbb{E}\_n$)</span></p>
 
 A subspace of the Euclidean space $\mathbb{E}\_n$ is compact if and only if it is bounded and closed.
 
@@ -2020,7 +2286,7 @@ A subspace of the Euclidean space $\mathbb{E}\_n$ is compact if and only if it i
 
 *Proof.* I. A compact subspace of any metric space is closed by 7.3 and bounded by 7.4.1.
 
-II. Now let $Y \subseteq \mathbb{E}_n$ be bounded and closed. Since it is bounded we have for a sufficiently large compact interval $Y \subseteq J^n \subseteq \mathbb{E}_n$. Now by 7.5 $J^n$ is compact and since $Y$ is closed in $\mathbb{E}_n$ it is also closed in $J^n$ and hence compact by 7.2. $\square$
+II. Now let $Y \subseteq \mathbb{E}\_n$ be bounded and closed. Since it is bounded we have for a sufficiently large compact interval $Y \subseteq J^n \subseteq \mathbb{E}\_n$. Now by 7.5 $J^n$ is compact and since $Y$ is closed in $\mathbb{E}\_n$ it is also closed in $J^n$ and hence compact by 7.2. $\square$
 
 </details>
 </div>
@@ -2052,7 +2318,7 @@ Let $f : (X, d) \to (Y, d')$ be a continuous mapping and let $A \subseteq X$ be 
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $(y_n)\_n$ be a sequence in $f[A]$. Choose $x_n \in A$ such that $y_n = f(x_n)$. Let $(x\_{k\_n})\_n$ be a convergent subsequence of $(x_n)\_n$. Then $(y\_{k\_n})\_n = (f(x_\{k\_n}))\_n$ is by 3.1.2 a convergent subsequence of $(x_n)_n$. $\square$
+*Proof.* Let $(y\_n)\_n$ be a sequence in $f[A]$. Choose $x\_n \in A$ such that $y\_n = f(x\_n)$. Let $(x\_{k\_n})\_n$ be a convergent subsequence of $(x\_n)\_n$. Then $(y\_{k\_n})\_n = (f(x\_\{k\_n}))\_n$ is by 3.1.2 a convergent subsequence of $(x\_n)\_n$. $\square$
 
 </details>
 </div>
@@ -2093,7 +2359,7 @@ More generally, let $f : (X, d) \to (Y, d')$ be an onto continuous map, let $g :
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* We will prove the second statement: the first one follows by setting $g = \mathrm{id}_Y$.
+*Proof.* We will prove the second statement: the first one follows by setting $g = \mathrm{id}\_Y$.
 
 Let $B$ be closed in $Z$. Then $A = g^{-1}[B]$ is closed and hence compact in $X$ and hence $f[A]$ is compact and hence closed in $Y$. Since $f$ is onto we have $f[f^{-1}[C]] = C$ for any $C$. Thus,
 
@@ -2117,7 +2383,7 @@ Let $(X, d)$ be a compact space. Then a mapping $f : (X, d) \to (Y, d')$ is cont
 
 *Proof.* Let $f$ not be uniformly continuous. We will prove it is not continuous either.
 
-Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $d(x(\delta), y(\delta)) < \delta$ while $d'(f(x(\delta)), f(y(\delta))) \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. Choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ then a convergent subsequence $(y\_{k\_{l\_n}})_n$ of $(y\_{n\_k})\_k$ and finally set $\widetilde{x}\_n = x\_{k\_{l\_n}}$ and $\widetilde{y}\_n = y\_{k\_{l\_n}}$). Then $d(\widetilde{x}\_n, \widetilde{y}\_n) < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $d'(f(\widetilde{x}\_n), f(\widetilde{y}\_n)) \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by 3.1.2, $f$ is not continuous. $\square$
+Since the formula for uniform continuity does not hold we have an $\varepsilon\_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $d(x(\delta), y(\delta)) < \delta$ while $d'(f(x(\delta)), f(y(\delta))) \ge \varepsilon\_0$. Set $x\_n = x(\frac{1}{n})$ and $y\_n = y(\frac{1}{n})$. Choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x\_{k\_n})\_n$ of $(x\_n)\_n$ then a convergent subsequence $(y\_{k\_{l\_n}})\_n$ of $(y\_{n\_k})\_k$ and finally set $\widetilde{x}\_n = x\_{k\_{l\_n}}$ and $\widetilde{y}\_n = y\_{k\_{l\_n}}$). Then $d(\widetilde{x}\_n, \widetilde{y}\_n) < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $d'(f(\widetilde{x}\_n), f(\widetilde{y}\_n)) \ge \varepsilon\_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by 3.1.2, $f$ is not continuous. $\square$
 
 </details>
 </div>
@@ -2126,23 +2392,23 @@ Since the formula for uniform continuity does not hold we have an $\varepsilon_0
 
 ### 1. Conventions
 
-We will work with real functions of several real variables, that is, with mappings $f : D \to \mathbb{R}$ where the domain $D$ is a subset of $\mathbb{E}_n$. When taking derivatives, $D$ will be typically open. Sometimes we will also have closed domains, usually closures of open sets with transparent boundaries.
+We will work with real functions of several real variables, that is, with mappings $f : D \to \mathbb{R}$ where the domain $D$ is a subset of $\mathbb{E}\_n$. When taking derivatives, $D$ will be typically open. Sometimes we will also have closed domains, usually closures of open sets with transparent boundaries.
 
 We already know (recall XIII.1) that the behaviour of such functions cannot be reduced to that of functions of one variable obtained by fixing all the variables but one. But this will not prevent us from such fixings in some constructions (for instance already in the definition of partial derivative in the next section).
 
-**Convention.** To simplify notation, we will often use bold-face letters to indicate points of the Euclidean space $\mathbb{E}_n$ (that is, $n$-tuples of real numbers, real arithmetic vectors). For example, we will write
+**Convention.** To simplify notation, we will often use bold-face letters to indicate points of the Euclidean space $\mathbb{E}\_n$ (that is, $n$-tuples of real numbers, real arithmetic vectors). For example, we will write
 
 $$\mathbf{x} \text{ for } (x_1, \ldots, x_n) \quad \text{or} \quad \mathbf{A} \text{ for } (A_1, \ldots, A_n).$$
 
-We will also write $\mathbf{o}$ for $(0, 0, \ldots, 0)$. The scalar product of vectors $\mathbf{x}$, $\mathbf{y}$, that is, $\sum_{j=1}^{n} x_j y_j$, can be written as $\mathbf{xy}$.
+We will also write $\mathbf{o}$ for $(0, 0, \ldots, 0)$. The scalar product of vectors $\mathbf{x}$, $\mathbf{y}$, that is, $\sum\_{j=1}^{n} x\_j y\_j$, can be written as $\mathbf{xy}$.
 
 **Extending the convention.** The "bold face" convention will be also used for **vector functions**, that is,
 
 $$\mathbf{f} = (f_1, \ldots, f_m) : D \to \mathbb{E}_m, \quad f_j : D \to \mathbb{R}.$$
 
-Note that here there is no problem with continuity: $\mathbf{f}$ is continuous iff all the $f_i$ are continuous (recall XIII.5.3).
+Note that here there is no problem with continuity: $\mathbf{f}$ is continuous iff all the $f\_i$ are continuous (recall XIII.5.3).
 
-**Composition.** Vector functions $\mathbf{f} : D \to \mathbb{E}_m$, $D \subseteq \mathbb{E}_n$, and $\mathbf{g} : D' \to \mathbb{E}_k$, $D \subseteq \mathbb{E}_n$ can be composed if $\mathbf{f}[D] \subseteq D'$, and we shall write
+**Composition.** Vector functions $\mathbf{f} : D \to \mathbb{E}\_m$, $D \subseteq \mathbb{E}\_n$, and $\mathbf{g} : D' \to \mathbb{E}\_k$, $D \subseteq \mathbb{E}\_n$ can be composed if $\mathbf{f}[D] \subseteq D'$, and we shall write
 
 $$\mathbf{g} \circ \mathbf{f} : D \to \mathbb{E}_k, \quad \text{(if there is no danger of confusion, just } \mathbf{gf} : D \to \mathbb{E}_k\text{)},$$
 
@@ -2157,7 +2423,7 @@ Let $f : D \to \mathbb{R}$ be a real function of $n$ variables. Consider the fun
 
 $$\phi_k(t) = f(x_1, \ldots, x_{k-1}, t, x_{k+1}, \ldots, x_n), \quad \text{all } x_j \text{ with } j \neq k \text{ fixed.}$$
 
-The **partial derivative** of $f$ by $x_k$ (at the point $(x_1, \ldots, x_n)$) is the (ordinary) derivative of the function $\phi_k$, that is, the limit
+The **partial derivative** of $f$ by $x\_k$ (at the point $(x\_1, \ldots, x\_n)$) is the (ordinary) derivative of the function $\phi\_k$, that is, the limit
 
 $$\lim_{h \to 0} \frac{f(x_1, \ldots, x_{k-1}, x_k + h, x_{k+1}, \ldots, x_n) - f(x_1, \ldots, x_n)}{h}.$$
 
@@ -2171,7 +2437,7 @@ in case of denoting variables by different letters, say $f(x, y)$, we write, of 
 
 </div>
 
-Similarly as with the standard derivative it can happen (and typically it does) that a partial derivative $\frac{\partial f(x_1, \ldots, x_n)}{\partial x_k}$ exists for all $(x_1, \ldots, x_n)$ in some domain $D'$. In such a case, we have a function $\frac{\partial f}{\partial x_k} : D' \to \mathbb{R}$.
+Similarly as with the standard derivative it can happen (and typically it does) that a partial derivative $\frac{\partial f(x\_1, \ldots, x\_n)}{\partial x\_k}$ exists for all $(x\_1, \ldots, x\_n)$ in some domain $D'$. In such a case, we have a function $\frac{\partial f}{\partial x\_k} : D' \to \mathbb{R}$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(2.3 - Partial derivatives do not imply continuity)</span></p>
@@ -2195,12 +2461,12 @@ The two partial derivatives express the directions of two tangent lines to $S$ i
 
 This will be mended by the concept of total differential.
 
-**The norm.** For a point $\mathbf{x} \in \mathbb{E}\_n$ we define the norm $\lVert \mathbf{x} \rVert$ as the distance of $\mathbf{x}$ from $\mathbf{o}$. Thus, we will typically use the formula $\lVert \mathbf{x} \rVert = \max_i \lvert x_i \rvert$ (but $\lVert \mathbf{x} \rVert = \sum_{i=1}^{n} \lvert x_i \rvert$ or the standard Pythagorean $\lVert \mathbf{x} \rVert = \sqrt{\mathbf{x} \cdot \mathbf{x}}$ would yield the same results, recall XIII.4).
+**The norm.** For a point $\mathbf{x} \in \mathbb{E}\_n$ we define the norm $\lVert \mathbf{x} \rVert$ as the distance of $\mathbf{x}$ from $\mathbf{o}$. Thus, we will typically use the formula $\lVert \mathbf{x} \rVert = \max\_i \lvert x\_i \rvert$ (but $\lVert \mathbf{x} \rVert = \sum\_{i=1}^{n} \lvert x\_i \rvert$ or the standard Pythagorean $\lVert \mathbf{x} \rVert = \sqrt{\mathbf{x} \cdot \mathbf{x}}$ would yield the same results, recall XIII.4).
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.3 - Total differential)</span></p>
 
-We say that $f(x_1, \ldots, x_n)$ has a **total differential** at a point $\mathbf{a} = (a_1, \ldots, a_n)$ if there exists a function $\mu$ continuous in a neighborhood $U$ of $\mathbf{o}$ which satisfies $\mu(\mathbf{o}) = 0$ (in another, equivalent, formulation, one requires $\mu$ to be defined in $U \setminus \lbrace \mathbf{o} \rbrace$ and satisfy $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$), and numbers $A_1, \ldots, A_n$ such that
+We say that $f(x\_1, \ldots, x\_n)$ has a **total differential** at a point $\mathbf{a} = (a\_1, \ldots, a\_n)$ if there exists a function $\mu$ continuous in a neighborhood $U$ of $\mathbf{o}$ which satisfies $\mu(\mathbf{o}) = 0$ (in another, equivalent, formulation, one requires $\mu$ to be defined in $U \setminus \lbrace \mathbf{o} \rbrace$ and satisfy $\lim\_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$), and numbers $A\_1, \ldots, A\_n$ such that
 
 $$f(\mathbf{a} + \mathbf{h}) - f(\mathbf{a}) = \sum_{k=1}^{n} A_k h_k + \lVert \mathbf{h} \rVert \mu(\mathbf{h}).$$
 
@@ -2221,7 +2487,7 @@ $$f(\mathbf{a} + \mathbf{h}) - f(\mathbf{a}) = \sum_{k=1}^{n} A_k h_k + \lVert \
 Let a function $f$ have a total differential at a point $\mathbf{a}$. Then
 
 1. $f$ is continuous in $\mathbf{a}$.
-2. $f$ has all the partial derivatives in $\mathbf{a}$, with values $\frac{\partial f(\mathbf{a})}{\partial x_k} = A_k$.
+2. $f$ has all the partial derivatives in $\mathbf{a}$, with values $\frac{\partial f(\mathbf{a})}{\partial x\_k} = A\_k$.
 
 
 </div>
@@ -2240,7 +2506,7 @@ and the limit of the right hand side for $\mathbf{y} \to \mathbf{x}$ is obviousl
   
 $$\frac{1}{h}(f(x_1, \ldots, x_{k-1}, x_k + h, x_{k+1}, \ldots, x_n) - f(x_1, \ldots, x_n)) = A_k + \mu((0, \ldots, 0, h, 0, \ldots, 0))\frac{\lVert(0, \ldots, h, \ldots, 0)\rVert}{h}$$
 
-and the limit of the right hand side is clearly $A_k$. $\square$
+and the limit of the right hand side is clearly $A\_k$. $\square$
 
 </details>
 </div>
@@ -2288,7 +2554,7 @@ $$\dots$$
 
 $$f(\mathbf{a} + \mathbf{h}) - f(\mathbf{a}) = \sum_{k=1}^{n} (f(\mathbf{a} + \mathbf{h}^{(k-1)}) - f(\mathbf{a} + \mathbf{h}^{(k)})) = M.$$
 
-By Lagrange Theorem (VII.2.2), there are $0 \le \theta_k \le 1$ such that
+By Lagrange Theorem (VII.2.2), there are $0 \le \theta\_k \le 1$ such that
 
 $$f(\mathbf{a} + \mathbf{h}^{(k-1)}) - f(\mathbf{a} + \mathbf{h}^{(k)}) = \frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} h_k$$
 
@@ -2307,7 +2573,7 @@ $$
 \mu(\mathbf{h}) = \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}
 $$
 
-Since $\left\lvert \frac{h_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1$ and since the functions $\frac{\partial f}{\partial x_k}$ are continuous, $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
+Since $\left\lvert \frac{h\_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1$ and since the functions $\frac{\partial f}{\partial x\_k}$ are continuous, $\lim\_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
 
 </details>
 </div>
@@ -2327,7 +2593,7 @@ In the rest of this chapter, simply assuming that partial derivatives exist will
 
 ### 4. Higher Order Partial Derivatives. Interchangeability
 
-Recall 2.2. When we have a function $g(\mathbf{x}) = \frac{\partial f(\mathbf{x})}{\partial x_k}$ then similarly as taking the second derivative of a function of one variable, we may consider partial derivatives of $g(\mathbf{x})$, that is, $\frac{\partial g(\mathbf{x})}{\partial x_l}$. The result, if it exists, is then denoted by
+Recall 2.2. When we have a function $g(\mathbf{x}) = \frac{\partial f(\mathbf{x})}{\partial x\_k}$ then similarly as taking the second derivative of a function of one variable, we may consider partial derivatives of $g(\mathbf{x})$, that is, $\frac{\partial g(\mathbf{x})}{\partial x\_l}$. The result, if it exists, is then denoted by
 
 $$\frac{\partial^2 f(\mathbf{x})}{\partial x_k \partial x_l}.$$
 
@@ -2369,7 +2635,7 @@ $$\frac{\partial^2 f(x, y)}{\partial x \partial y} = \frac{\partial^2 f(x, y)}{\
 <details markdown="1">
 <summary>Proof</summary>
 
-The idea of the proof is easy: we compute the second derivative in one step. This leads, as one easily sees, to computing the limit $\lim_{h \to 0} F(h)$ of the function
+The idea of the proof is easy: we compute the second derivative in one step. This leads, as one easily sees, to computing the limit $\lim\_{h \to 0} F(h)$ of the function
 
 $$F(h) = \frac{f(x + h, y + h) - f(x, y + h) - f(x + h, y) + f(x, y)}{h^2}$$
 
@@ -2385,7 +2651,7 @@ we obtain two expressions for $F(h)$:
 
 $$F(h) = \frac{1}{h^2}(\varphi_h(y + h) - \varphi_h(y)) \quad \text{and} \quad F(h) = \frac{1}{h^2}(\psi_h(x + h) - \psi_h(x)).$$
 
-Let us compute the first one. The function $\varphi_h$, which is a function of one variable $y$, has the derivative 
+Let us compute the first one. The function $\varphi\_h$, which is a function of one variable $y$, has the derivative 
 
 $$\varphi'_h(y) = \frac{\partial f(x + h, y)}{\partial y} - \frac{\partial f(x, y)}{\partial y}$$ 
 
@@ -2397,7 +2663,7 @@ Then, using VI.2.2 again, we obtain
 
 $$F(h) = \frac{\partial}{\partial x}\left(\frac{\partial f(x + \theta_2 h, y + \theta_1 h)}{\partial y}\right) \qquad (*)$$
 
-for some $\theta_1, \theta_2$ between 0 and 1. Similarly, computing 
+for some $\theta\_1, \theta\_2$ between 0 and 1. Similarly, computing 
 
 $$\frac{1}{h^2}(\psi_h(x + h) - \psi_h(x))$$
 
@@ -2405,7 +2671,7 @@ we obtain
 
 $$F(h) = \frac{\partial}{\partial y}\left(\frac{\partial f(x + \theta_4 h, y + \theta_2 h)}{\partial x}\right). \qquad (**)$$
 
-Now since both $\frac{\partial}{\partial y}(\frac{\partial f}{\partial x})$ and $\frac{\partial}{\partial x}(\frac{\partial f}{\partial y})$ are continuous at the point $(x, y)$, we can compute $\lim_{h \to 0} F(h)$ from either of the formulas $(*)$ or $(**)$ and obtain
+Now since both $\frac{\partial}{\partial y}(\frac{\partial f}{\partial x})$ and $\frac{\partial}{\partial x}(\frac{\partial f}{\partial y})$ are continuous at the point $(x, y)$, we can compute $\lim\_{h \to 0} F(h)$ from either of the formulas $(\ast)$ or $(\ast\ast)$ and obtain
 
 $$\lim_{h \to 0} F(h) = \frac{\partial^2 f(x, y)}{\partial x \partial y} = \frac{\partial^2 f(x, y)}{\partial y \partial x}. \quad \square$$
 
@@ -2415,7 +2681,7 @@ $$\lim_{h \to 0} F(h) = \frac{\partial^2 f(x, y)}{\partial x \partial y} = \frac
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(4.3 - General interchangeability)</span></p>
 
-Let a function $f$ of $n$ variables possess continuous partial derivatives up to the order $k$. Then the values of these derivatives depend only on the number of times a partial derivative is taken in each of the individual variables $x_1, \ldots, x_n$.
+Let a function $f$ of $n$ variables possess continuous partial derivatives up to the order $k$. Then the values of these derivatives depend only on the number of times a partial derivative is taken in each of the individual variables $x\_1, \ldots, x\_n$.
 
 </div>
 
@@ -2423,7 +2689,7 @@ Thus, under the assumption of Theorem 4.3, we can write a general partial deriva
 
 $$\frac{\partial^r f}{\partial x_1^{r_1} \partial x_2^{r_2} \ldots \partial x_n^{r_n}} \quad \text{with} \quad r_1 + r_2 + \cdots + r_n = r$$
 
-where, of course, $r_j = 0$ is allowed and indicates the absence of the symbol $\partial x_j$.
+where, of course, $r\_j = 0$ is allowed and indicates the absence of the symbol $\partial x\_j$.
 
 ### 5. Composed Functions and the Chain Rule
 
@@ -2432,7 +2698,7 @@ Recall the proof of the rule of the derivative for composed functions in VI.2.2.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.1 - Chain Rule, simplest form)</span></p>
 
-Let $f(\mathbf{x})$ have a total differential at a point $\mathbf{a}$. Let real functions $g_k(t)$ have derivatives at a point $b$ and let $g_k(b) = a_k$ for all $k = 1, \ldots, n$. Put
+Let $f(\mathbf{x})$ have a total differential at a point $\mathbf{a}$. Let real functions $g\_k(t)$ have derivatives at a point $b$ and let $g\_k(b) = a\_k$ for all $k = 1, \ldots, n$. Put
 
 $$F(t) = f(\mathbf{g}(t)) = f(g_1(t), \ldots, g_n(t)).$$
 
@@ -2454,7 +2720,7 @@ $$
 \end{aligned}
 $$
 
-We have $\lim_{h \to 0} \mu(\mathbf{g}(b + h) - \mathbf{g}(b)) = 0$ since the functions $g_k$ are continuous at $b$. Since the functions $g_k$ have derivatives, the values $\max_k \frac{\lvert g_k(b+h) - g_k(b) \rvert}{h}$ are bounded in a sufficiently small neighborhood of 0. Thus, the limit of the last summand is zero and we have
+We have $\lim\_{h \to 0} \mu(\mathbf{g}(b + h) - \mathbf{g}(b)) = 0$ since the functions $g\_k$ are continuous at $b$. Since the functions $g\_k$ have derivatives, the values $\max\_k \frac{\lvert g\_k(b+h) - g\_k(b) \rvert}{h}$ are bounded in a sufficiently small neighborhood of 0. Thus, the limit of the last summand is zero and we have
 
 $$
 \begin{aligned}
@@ -2468,7 +2734,7 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(5.1.1 - Chain Rule for partial derivatives)</span></p>
 
-Let $f(\mathbf{x})$ have a total differential at a point $\mathbf{a}$. Let real functions $g_k(t_1, \ldots, t_r)$ have partial derivatives at $\mathbf{b} = (b_1, \ldots, b_r)$ and let $g_k(\mathbf{b}) = a_k$ for all $k = 1, \ldots, n$. Then the function
+Let $f(\mathbf{x})$ have a total differential at a point $\mathbf{a}$. Let real functions $g\_k(t\_1, \ldots, t\_r)$ have partial derivatives at $\mathbf{b} = (b\_1, \ldots, b\_r)$ and let $g\_k(\mathbf{b}) = a\_k$ for all $k = 1, \ldots, n$. Then the function
 
 $$(f \circ \mathbf{g})(t_1, \ldots, t_r) = f(\mathbf{g}(t)) = f(g_1(t), \ldots, g_n(t))$$
 
@@ -2481,7 +2747,7 @@ $$\frac{\partial(f \circ \mathbf{g})(\mathbf{b})}{\partial t_j} = \sum_{k=1}^{n}
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(5.1.2 - Why total differential is essential)</span></p>
 
-Just possessing partial derivatives would not suffice. The assumption of the existence of total differential in 5.1 is essential and it is easy to see why. Recall the geometric intuition from 3.1 and the last paragraph of 3.5. The $n$-tuple of functions $\mathbf{g} = (g_1, \ldots, g_n)$ represents a parametrized curve in $D$, and $f \circ \mathbf{g}$ is then a curve on the hypersurface $S$. The partial derivatives of $f$ (or the tangent lines of $S$ in the directions of the coordinate axes) have in general nothing to do with the behaviour on this curve.
+Just possessing partial derivatives would not suffice. The assumption of the existence of total differential in 5.1 is essential and it is easy to see why. Recall the geometric intuition from 3.1 and the last paragraph of 3.5. The $n$-tuple of functions $\mathbf{g} = (g\_1, \ldots, g\_n)$ represents a parametrized curve in $D$, and $f \circ \mathbf{g}$ is then a curve on the hypersurface $S$. The partial derivatives of $f$ (or the tangent lines of $S$ in the directions of the coordinate axes) have in general nothing to do with the behaviour on this curve.
 
 </div>
 
@@ -2497,7 +2763,7 @@ $$\frac{u(t)}{v(t)}' = \frac{1}{v(t)}u'(t) - \frac{u(t)}{v^2(t)} = \frac{v(t)u'(
 
 #### 5.3. Chain Rule for Vector Functions
 
-Let us make one more step and consider in 5.1.1 a mapping $\mathbf{f} = (f_1, \ldots, f_s) : D \to \mathbb{E}_s$. Take its composition $\mathbf{f} \circ \mathbf{g}$ with a mapping $\mathbf{g} : D' \to \mathbb{E}_n$ (recall the convention in 1.4). Then we have
+Let us make one more step and consider in 5.1.1 a mapping $\mathbf{f} = (f\_1, \ldots, f\_s) : D \to \mathbb{E}\_s$. Take its composition $\mathbf{f} \circ \mathbf{g}$ with a mapping $\mathbf{g} : D' \to \mathbb{E}\_n$ (recall the convention in 1.4). Then we have
 
 $$\frac{\partial(\mathbf{f} \circ \mathbf{g})}{\partial t_j} = \sum_k \frac{\partial f_i}{\partial x_k} \cdot \frac{\partial g_k}{\partial x_j}. \qquad (*)$$
 
@@ -2508,7 +2774,7 @@ $$\left(\frac{\partial f_i}{\partial x_k}\right)_{i,k} \left(\frac{\partial g_k}
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.3.1 - Jacobian matrix)</span></p>
 
-For an $\mathbf{f} = (f_1, \ldots, f_s) : U \to \mathbb{E}_s$, $D \subseteq \mathbb{E}_n$, define $D\mathbf{f}$ as the matrix
+For an $\mathbf{f} = (f\_1, \ldots, f\_s) : U \to \mathbb{E}\_s$, $D \subseteq \mathbb{E}\_n$, define $D\mathbf{f}$ as the matrix
 
 $$D\mathbf{f} = \left(\frac{\partial f_i}{\partial x_k}\right)_{i,k}.$$
 
@@ -2526,14 +2792,14 @@ Compare it with the one variable rule $(f \circ g)'(t) = f'(g(t)) \cdot g'(t)$; 
 
 #### 5.4. Lagrange Formula in Several Variables
 
-Recall that a subset $U \subseteq \mathbb{E}_n$ is said to be **convex** if
+Recall that a subset $U \subseteq \mathbb{E}\_n$ is said to be **convex** if
 
 $$\mathbf{x}, \mathbf{y} \in U \;\Rightarrow\; \forall t, \; 0 \le t \le 1, \; (1 - t)\mathbf{x} + t\mathbf{y} = \mathbf{x} + t(\mathbf{y} - \mathbf{x}) \in U.$$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.4.1 - Lagrange formula in several variables)</span></p>
 
-Let $f$ have continuous partial derivatives in a convex open set $U \subseteq \mathbb{E}_n$. Then for any two points $\mathbf{x}, \mathbf{y} \in D$, there exists a $\theta$ with $0 \le \theta \le 1$ such that
+Let $f$ have continuous partial derivatives in a convex open set $U \subseteq \mathbb{E}\_n$. Then for any two points $\mathbf{x}, \mathbf{y} \in D$, there exists a $\theta$ with $0 \le \theta \le 1$ such that
 
 $$f(\mathbf{y}) - f(\mathbf{x}) = \sum_{j=1}^{n} \frac{\partial f(\mathbf{x} + \theta(\mathbf{y} - \mathbf{x}))}{\partial x_j}(y_j - x_j).$$
 
@@ -2580,7 +2846,7 @@ Compare this with the formula for total differential.
 
 ### 1. The Task
 
-Suppose we have $m$ real functions $F_k(x_1, \ldots, x_n, y_1, \ldots, y_m)$, $k = 1, \ldots, m$, of $n + m$ variables each. Consider the system of equations
+Suppose we have $m$ real functions $F\_k(x\_1, \ldots, x\_n, y\_1, \ldots, y\_m)$, $k = 1, \ldots, m$, of $n + m$ variables each. Consider the system of equations
 
 $$F_1(x_1, \ldots, x_n, y_1, \ldots, y_m) = 0$$
 
@@ -2588,11 +2854,11 @@ $$\vdots$$
 
 $$F_m(x_1, \ldots, x_n, y_1, \ldots, y_m) = 0$$
 
-We would like to find a solution $y_1, \ldots, y_m$. Better, using the convention of XIV.1, we have a system of $m$ equations of $m$ unknowns (the number $n$ of the variables $x_j$ is inessential)
+We would like to find a solution $y\_1, \ldots, y\_m$. Better, using the convention of XIV.1, we have a system of $m$ equations of $m$ unknowns (the number $n$ of the variables $x\_j$ is inessential)
 
 $$F_k(\mathbf{x}, y_1, \ldots, y_m) = 0, \quad k = 1, \ldots, m \qquad (*)$$
 
-and we are looking for solutions $y_k = f_k(\mathbf{x})$ $(= f(x_1, \ldots, x_n))$.
+and we are looking for solutions $y\_k = f\_k(\mathbf{x})$ $(= f(x\_1, \ldots, x\_n))$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.2 - The circle equation)</span></p>
@@ -2601,17 +2867,17 @@ Even in simplest cases we cannot expect to have necessarily a solution, not to s
 
 $$F(x, y) = x^2 + y^2 - 1 = 0.$$
 
-For $\lvert x \rvert > 1$ there is no $y$ with $f(x, y) = 0$. For $\lvert x_0 \rvert < 1$, we have in a sufficiently small open interval containing $x_0$ two solutions
+For $\lvert x \rvert > 1$ there is no $y$ with $f(x, y) = 0$. For $\lvert x\_0 \rvert < 1$, we have in a sufficiently small open interval containing $x\_0$ two solutions
 
 $$f(x) = \sqrt{1 - x^2} \quad \text{and} \quad g(x) = -\sqrt{1 - x^2}.$$
 
-This is better, but we have *two* values in each point, contradicting the definition of a function. To achieve uniqueness, we have to restrict not only the values of $x$, but *also the values of* $y$ to an interval $(y_0 - \Delta, y_0 + \Delta)$ (where $F(x_0, y_0) = 0$). That is, if we have a particular solution $(x_0, y_0)$ we have a "window"
+This is better, but we have *two* values in each point, contradicting the definition of a function. To achieve uniqueness, we have to restrict not only the values of $x$, but *also the values of* $y$ to an interval $(y\_0 - \Delta, y\_0 + \Delta)$ (where $F(x\_0, y\_0) = 0$). That is, if we have a particular solution $(x\_0, y\_0)$ we have a "window"
 
 $$(x_0 - \delta, x_0 + \delta) \times (y_0 - \Delta, y_0 + \Delta)$$
 
 through which we see a unique solution.
 
-But in our example there is also the case $(x_0, y_0) = (1, 0)$, where there is a unique solution, but no suitable window as above, since in every neighborhood of $(1, 0)$, there are no solutions on the right hand side of $(1, 0)$, and two solutions on the left hand side.
+But in our example there is also the case $(x\_0, y\_0) = (1, 0)$, where there is a unique solution, but no suitable window as above, since in every neighborhood of $(1, 0)$, there are no solutions on the right hand side of $(1, 0)$, and two solutions on the left hand side.
 
 Note that in the critical points $(1, 0)$ and $(-1, 0)$ we have
 
@@ -2619,24 +2885,24 @@ $$\frac{\partial F}{\partial y}(1, 0) = \frac{\partial F}{\partial y}(-1, 0) = 0
 
 </div>
 
-**Summary of the situation.** In this chapter we will show that for functions $F_k$ with continuous partial derivatives the situation is not worse than in the example above:
+**Summary of the situation.** In this chapter we will show that for functions $F\_k$ with continuous partial derivatives the situation is not worse than in the example above:
 
-* we will have to have some points $\mathbf{x}^0, \mathbf{y}^0$ such that $F_k(\mathbf{x}^0, \mathbf{y}^0) = 0$ to start with;
-* with certain exceptions we then have "windows" $U \times V$ such that for $\mathbf{x} \in U$ there is precisely one $\mathbf{y} \in V$, that is, $y_k = f(x_1, \ldots, x_n)$, satisfying the system of equations;
-* and the exceptions are natural extensions of the condition associated with the $(**)$ above: instead of $\frac{\partial F}{\partial y}(x^0, y^0) \neq 0$ we will have $\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{y})}(\mathbf{x}^0, \mathbf{y}^0) \neq 0$ for something related, called Jacobian.
+* we will have to have some points $\mathbf{x}^0, \mathbf{y}^0$ such that $F\_k(\mathbf{x}^0, \mathbf{y}^0) = 0$ to start with;
+* with certain exceptions we then have "windows" $U \times V$ such that for $\mathbf{x} \in U$ there is precisely one $\mathbf{y} \in V$, that is, $y\_k = f(x\_1, \ldots, x\_n)$, satisfying the system of equations;
+* and the exceptions are natural extensions of the condition associated with the $(\ast\ast)$ above: instead of $\frac{\partial F}{\partial y}(x^0, y^0) \neq 0$ we will have $\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{y})}(\mathbf{x}^0, \mathbf{y}^0) \neq 0$ for something related, called Jacobian.
 
-Furthermore, the solutions will have continuous partial derivatives as long as the $F_j$ have them.
+Furthermore, the solutions will have continuous partial derivatives as long as the $F\_j$ have them.
 
 ### 2. One Equation
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.1 - Implicit Function Theorem, one equation)</span></p>
 
-Let $F(\mathbf{x}, y)$ be a function of $n + 1$ variables defined in a neighbourhood of a point $(\mathbf{x}^0, y_0)$. Let $F$ have continuous partial derivatives up to the order $k \ge 1$ and let
+Let $F(\mathbf{x}, y)$ be a function of $n + 1$ variables defined in a neighbourhood of a point $(\mathbf{x}^0, y\_0)$. Let $F$ have continuous partial derivatives up to the order $k \ge 1$ and let
 
 $$F(\mathbf{x}^0, y_0) = 0 \quad \text{and} \quad \left\lvert \frac{\partial F(\mathbf{x}^0, y_0)}{\partial y}\right\rvert \neq 0.$$
 
-Then there exist $\delta > 0$ and $\Delta > 0$ such that for every $\mathbf{x}$ with $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \delta$ there exists precisely one $y$ with $\lvert y - y_0 \rvert < \Delta$ such that
+Then there exist $\delta > 0$ and $\Delta > 0$ such that for every $\mathbf{x}$ with $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \delta$ there exists precisely one $y$ with $\lvert y - y\_0 \rvert < \Delta$ such that
 
 $$F(\mathbf{x}, y) = 0.$$
 
@@ -2646,21 +2912,25 @@ $$f : (x_1^0 - \delta, x_1^0 + \delta) \times \cdots \times (x_n^0 - \delta, x_n
 
 has continuous partial derivatives up to the order $k$.
 
-*Proof.* The norm $\lVert \mathbf{x} \rVert$ will be as in XIV.3.2, that is $\max_i \lvert x_i \rvert$. Set $U(\gamma) = \lbrace \mathbf{x} \mid \lVert \mathbf{x} - \mathbf{x}^0 \rVert < \gamma \rbrace$ and $A(\gamma) = \lbrace \mathbf{x} \mid \lVert \mathbf{x} - \mathbf{x}^0 \rVert \le \gamma \rbrace$ (the "window" we are seeking will turn out to be $U(\delta) \times (y_0 - \Delta, y_0 + \delta)$). Without loss of generality let, say, $\frac{\partial F(\mathbf{x}^0, y_0)}{\partial y} > 0$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-The first partial derivatives of $F$ are continuous and $A(\delta)$ is closed and bounded and hence compact by XIII.7.6. Hence, by XIII.7.9 there exist $a > 0$, $K$, $\delta_1 > 0$ and $\Delta > 0$ such that for all $(\mathbf{x}, y) \in U(\delta_1) \times \langle y_0 - \Delta, y_0 + \Delta \rangle$ we have
+*Proof.* The norm $\lVert \mathbf{x} \rVert$ will be as in XIV.3.2, that is $\max\_i \lvert x\_i \rvert$. Set $U(\gamma) = \lbrace \mathbf{x} \mid \lVert \mathbf{x} - \mathbf{x}^0 \rVert < \gamma \rbrace$ and $A(\gamma) = \lbrace \mathbf{x} \mid \lVert \mathbf{x} - \mathbf{x}^0 \rVert \le \gamma \rbrace$ (the "window" we are seeking will turn out to be $U(\delta) \times (y\_0 - \Delta, y\_0 + \delta)$). Without loss of generality let, say, $\frac{\partial F(\mathbf{x}^0, y\_0)}{\partial y} > 0$.
+
+The first partial derivatives of $F$ are continuous and $A(\delta)$ is closed and bounded and hence compact by XIII.7.6. Hence, by XIII.7.9 there exist $a > 0$, $K$, $\delta\_1 > 0$ and $\Delta > 0$ such that for all $(\mathbf{x}, y) \in U(\delta\_1) \times \langle y\_0 - \Delta, y\_0 + \Delta \rangle$ we have
 
 $$\frac{\partial F(\mathbf{x}, y)}{\partial y} \ge a \quad \text{and} \quad \left\lvert \frac{\partial F(\mathbf{x}, y)}{\partial x_i}\right\rvert \le K. \qquad (*)$$
 
-**I. The function $f$:** Fix an $\mathbf{x} \in U(\delta_1)$, and define a function of one variable $y \in (y_0 - \Delta, y_0 + \Delta)$ by $\varphi_{\mathbf{x}}(y) = F(\mathbf{x}, y)$. Then $\varphi'_{\mathbf{x}}(y) = \frac{\partial F(\mathbf{x},y)}{\partial y} > 0$ and hence all $\varphi_{\mathbf{x}}(y)$ are increasing functions of $y$, and $\varphi_{\mathbf{x}\_0}(y_0 - \Delta) < \varphi_{\mathbf{x}\_0}(y_0) = 0 < \varphi_{\mathbf{x}\_0}(y_0 + \Delta)$.
+**I. The function $f$:** Fix an $\mathbf{x} \in U(\delta\_1)$, and define a function of one variable $y \in (y\_0 - \Delta, y\_0 + \Delta)$ by $\varphi\_{\mathbf{x}}(y) = F(\mathbf{x}, y)$. Then $\varphi'\_{\mathbf{x}}(y) = \frac{\partial F(\mathbf{x},y)}{\partial y} > 0$ and hence all $\varphi\_{\mathbf{x}}(y)$ are increasing functions of $y$, and $\varphi\_{\mathbf{x}\_0}(y\_0 - \Delta) < \varphi\_{\mathbf{x}\_0}(y\_0) = 0 < \varphi\_{\mathbf{x}\_0}(y\_0 + \Delta)$.
 
-By XIV.2.5 and XIV.3.4, $F$ is continuous, and hence there is a $\delta$, $0 < \delta \le \delta_1$, such that $\forall \mathbf{x} \in U(\delta)$, $\varphi_{\mathbf{x}}(y_0 - \Delta) < 0 < \varphi_{\mathbf{x}}(y_0 + \Delta)$.
+By XIV.2.5 and XIV.3.4, $F$ is continuous, and hence there is a $\delta$, $0 < \delta \le \delta\_1$, such that $\forall \mathbf{x} \in U(\delta)$, $\varphi\_{\mathbf{x}}(y\_0 - \Delta) < 0 < \varphi\_{\mathbf{x}}(y\_0 + \Delta)$.
 
-Now $\varphi_{\mathbf{x}}$ is increasing and hence one-to-one. Thus, by IV.3 there is precisely one $y \in (y_0 - \Delta, y_0 + \Delta)$ such that $\varphi_{\mathbf{x}}(y) = 0$ -- that is, $F(\mathbf{x}, y) = 0$. Denote this $y$ by $f(\mathbf{x})$.
+Now $\varphi\_{\mathbf{x}}$ is increasing and hence one-to-one. Thus, by IV.3 there is precisely one $y \in (y\_0 - \Delta, y\_0 + \Delta)$ such that $\varphi\_{\mathbf{x}}(y) = 0$ -- that is, $F(\mathbf{x}, y) = 0$. Denote this $y$ by $f(\mathbf{x})$.
 
 Note this $f$ is so far just a function; we know nothing about its properties, in particular, we do not know whether it is continuous or not.
 
-**II. The first derivatives.** Fix an index $j$, abbreviate the sequence $x_1, \ldots, x_{j-1}$ by $\mathbf{x}\_b$ and the sequence $x_{j+1}, \ldots, x_n$ by $\mathbf{x}\_a$; thus, we have $\mathbf{x} = (\mathbf{x}\_b, x_j, \mathbf{x}\_a)$. We will compute $\frac{\partial f}{\partial x_j}$ as the derivative of $\psi(t) = f(\mathbf{x}\_b, t, \mathbf{x}\_a)$.
+**II. The first derivatives.** Fix an index $j$, abbreviate the sequence $x\_1, \ldots, x\_{j-1}$ by $\mathbf{x}\_b$ and the sequence $x\_{j+1}, \ldots, x\_n$ by $\mathbf{x}\_a$; thus, we have $\mathbf{x} = (\mathbf{x}\_b, x\_j, \mathbf{x}\_a)$. We will compute $\frac{\partial f}{\partial x\_j}$ as the derivative of $\psi(t) = f(\mathbf{x}\_b, t, \mathbf{x}\_a)$.
 
 By XIV.5.4.1 we have
 
@@ -2672,9 +2942,9 @@ $$\psi(t + h) - \psi(t) = -h \cdot \frac{\frac{\partial F(\mathbf{x}_b, t + \the
 
 for some $\theta$ between 0 and 1.
 
-Now we can infer that $f$ is continuous. From $(*)$ we obtain $\lvert \psi(t + h) - \psi(t) \rvert \le \lvert h \rvert \cdot \left\lvert \frac{K}{a}\right\rvert$.
+Now we can infer that $f$ is continuous. From $(\ast)$ we obtain $\lvert \psi(t + h) - \psi(t) \rvert \le \lvert h \rvert \cdot \left\lvert \frac{K}{a}\right\rvert$.
 
-Using this fact we can compute from $(**)$ further
+Using this fact we can compute from $(\ast\ast)$ further
 
 $$\lim_{h \to 0} \frac{\psi(t + h) - \psi(t)}{h} = -\frac{\frac{\partial F(\mathbf{x}_b, t, \mathbf{x}_a, \psi(t))}{\partial x_j}}{\frac{\partial F(\mathbf{x}_b, t, \mathbf{x}_a, \psi(t))}{\partial y}} = -\frac{\frac{\partial F(\mathbf{x}, f(\mathbf{x}))}{\partial x_j}}{\frac{\partial F(\mathbf{x}, f(\mathbf{x}))}{\partial y}}$$
 
@@ -2682,14 +2952,17 @@ $$\lim_{h \to 0} \frac{\psi(t + h) - \psi(t)}{h} = -\frac{\frac{\partial F(\math
 
 $$\frac{\partial f(\mathbf{x})}{\partial x_j} = -\frac{\partial F(\mathbf{x}, f(\mathbf{x}))}{\partial x_j} \cdot \left(\frac{\partial F(\mathbf{x}, f(\mathbf{x}))}{\partial y}\right)^{-1}. \qquad (***)$$
 
-From this we can inductively compute the higher derivatives of $f$ (using the standard rules of differentiation) as long as the derivatives $\frac{\partial^r F}{\partial x_1^{r_1} \cdots \partial x_n^{r_n} \partial y^{r_{n+1}}}$ exist and are continuous. $\square$
+From this we can inductively compute the higher derivatives of $f$ (using the standard rules of differentiation) as long as the derivatives $\frac{\partial^r F}{\partial x\_1^{r\_1} \cdots \partial x\_n^{r\_n} \partial y^{r\_{n+1}}}$ exist and are continuous. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(2.2 - Derivative formula via chain rule)</span></p>
 
-We have obtained the formula $(***)$ as a by-product of the proof that $f$ has a derivative (it was useful further on, but this is not the point). Note that if we knew beforehand that $f$ had one we could deduce $(***)$ immediately from the Chain Rule. In effect, we have
+We have obtained the formula $(\ast\ast\ast)$ as a by-product of the proof that $f$ has a derivative (it was useful further on, but this is not the point). Note that if we knew beforehand that $f$ had one we could deduce $(\ast\ast\ast)$ immediately from the Chain Rule. In effect, we have
 
 $$0 \equiv F(\mathbf{x}, f(\mathbf{x}));$$
 
@@ -2714,21 +2987,21 @@ Consider a pair of equations
 
 $$F_1(\mathbf{x}, y_1, y_2) = 0, \qquad F_2(\mathbf{x}, y_1, y_2) = 0$$
 
-and try to find a solution $y_i = f_i(\mathbf{x})$, $i = 1, 2$, in a neighborhood of a point $(\mathbf{x}^0, y_1^0, y_2^0)$ (at which the equalities hold). We will apply the "substitution method" based on Theorem 2.1. First think of the second equation as an equation for the $y_2$; in a neighborhood of $(\mathbf{x}^0, y_1^0, y_2^0)$ we then obtain $y_2$ as a function $\psi(\mathbf{x}, y_1)$. Substitute this into the first equation to obtain
+and try to find a solution $y\_i = f\_i(\mathbf{x})$, $i = 1, 2$, in a neighborhood of a point $(\mathbf{x}^0, y\_1^0, y\_2^0)$ (at which the equalities hold). We will apply the "substitution method" based on Theorem 2.1. First think of the second equation as an equation for the $y\_2$; in a neighborhood of $(\mathbf{x}^0, y\_1^0, y\_2^0)$ we then obtain $y\_2$ as a function $\psi(\mathbf{x}, y\_1)$. Substitute this into the first equation to obtain
 
 $$G(\mathbf{x}, y_1) = F_1(\mathbf{x}, y_1, \psi(\mathbf{x}, y_1));$$
 
-if we find a solution $y_1 = f_1(\mathbf{x})$ in a neighborhood of $(\mathbf{x}^0, y_1^0)$ we can substitute it into $\psi$ and obtain $y_2 = f_2(\mathbf{x}) = \psi(\mathbf{x}, f_1(\mathbf{x}))$.
+if we find a solution $y\_1 = f\_1(\mathbf{x})$ in a neighborhood of $(\mathbf{x}^0, y\_1^0)$ we can substitute it into $\psi$ and obtain $y\_2 = f\_2(\mathbf{x}) = \psi(\mathbf{x}, f\_1(\mathbf{x}))$.
 
 Now we have a solution let us summarize what exactly we have assumed:
 
--- First we had to have the continuous partial derivatives of the functions $F_i$.
+-- First we had to have the continuous partial derivatives of the functions $F\_i$.
 
--- Then, to be able to obtain $\psi$ by 2.1 the way we did, we needed to have $\frac{\partial F_2}{\partial y_2}(\mathbf{x}^0, y_1^0, y_2^0) \neq 0$.
+-- Then, to be able to obtain $\psi$ by 2.1 the way we did, we needed to have $\frac{\partial F\_2}{\partial y\_2}(\mathbf{x}^0, y\_1^0, y\_2^0) \neq 0$.
 
--- Finally, we also need to have (use the Chain Rule) $0 \neq \frac{\partial G}{\partial y_1}(\mathbf{x}^0, x^0) = \frac{\partial F_1}{\partial y_1} + \frac{\partial F_1}{\partial y_2}\frac{\partial \psi}{\partial y_1}$.
+-- Finally, we also need to have (use the Chain Rule) $0 \neq \frac{\partial G}{\partial y\_1}(\mathbf{x}^0, x^0) = \frac{\partial F\_1}{\partial y\_1} + \frac{\partial F\_1}{\partial y\_2}\frac{\partial \psi}{\partial y\_1}$.
 
-Use the formula for the first derivative $\frac{\partial \psi}{\partial y_1} = -\left(\frac{\partial F_1}{\partial y_2}\right)^{-1}\frac{\partial F_2}{\partial y_1}$ from the proof of 2.1 and transform to
+Use the formula for the first derivative $\frac{\partial \psi}{\partial y\_1} = -\left(\frac{\partial F\_1}{\partial y\_2}\right)^{-1}\frac{\partial F\_2}{\partial y\_1}$ from the proof of 2.1 and transform to
 
 $$\left(\frac{\partial F_1}{\partial y_2}\right)^{-1}\left(\frac{\partial F_1}{\partial y_1}\frac{\partial F_1}{\partial y_2} - \frac{\partial F_1}{\partial y_2}\frac{\partial F_2}{\partial y_1}\right) \neq 0,$$
 
@@ -2740,14 +3013,14 @@ This is a familiar formula, namely that for a determinant. Thus we have in fact 
 
 $$\begin{vmatrix} \frac{\partial F_1}{\partial y_1}, & \frac{\partial F_1}{\partial y_2} \\ \frac{\partial F_2}{\partial y_1}, & \frac{\partial F_2}{\partial y_2} \end{vmatrix} = \det\left(\frac{\partial F_i}{\partial y_j}\right)_{i,j} \neq 0.$$
 
-And this condition suffices: if we assume that this determinant is non-zero we have *either* $\frac{\partial F_2}{\partial y_2}(\mathbf{x}^0, y_1^0, y_2^0) \neq 0$ *and/or* $\frac{\partial F_2}{\partial y_1}(\mathbf{x}^0, y_1^0, y_2^0) \neq 0$, so if the latter holds, we can start by solving $F_2(\mathbf{x}, y_1, y_2) = 0$ for $y_1$ instead of $y_2$.
+And this condition suffices: if we assume that this determinant is non-zero we have *either* $\frac{\partial F\_2}{\partial y\_2}(\mathbf{x}^0, y\_1^0, y\_2^0) \neq 0$ *and/or* $\frac{\partial F\_2}{\partial y\_1}(\mathbf{x}^0, y\_1^0, y\_2^0) \neq 0$, so if the latter holds, we can start by solving $F\_2(\mathbf{x}, y\_1, y\_2) = 0$ for $y\_1$ instead of $y\_2$.
 
 ### 4. The General System
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(4.1 - Jacobi determinant)</span></p>
 
-Let $\mathbf{F}$ be a sequence of functions $\mathbf{F}(\mathbf{x}, \mathbf{y}) = (F_1(\mathbf{x}, y_1, \ldots, y_m), \ldots, F_m(\mathbf{x}, y_1, \ldots, y_m))$. For this $\mathbf{F}$ and the sequence $\mathbf{y} = (y_1, \ldots, y_m)$ define the **Jacobi determinant** (briefly, the **Jacobian**)
+Let $\mathbf{F}$ be a sequence of functions $\mathbf{F}(\mathbf{x}, \mathbf{y}) = (F\_1(\mathbf{x}, y\_1, \ldots, y\_m), \ldots, F\_m(\mathbf{x}, y\_1, \ldots, y\_m))$. For this $\mathbf{F}$ and the sequence $\mathbf{y} = (y\_1, \ldots, y\_m)$ define the **Jacobi determinant** (briefly, the **Jacobian**)
 
 $$\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{y})} = \det\left(\frac{\partial F_i}{\partial y_j}\right)_{i,j=1,\ldots,m}$$
 
@@ -2758,7 +3031,7 @@ Note that if $m = 1$, that is if we have one function $F$ and one $y$, we have $
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.2 - Implicit Function Theorem, general system)</span></p>
 
-Let $F_i(\mathbf{x}, y_1, \ldots, y_m)$, $i = 1, \ldots, m$, be functions of $n + m$ variables with continuous partial derivatives up to an order $k \ge 1$. Let
+Let $F\_i(\mathbf{x}, y\_1, \ldots, y\_m)$, $i = 1, \ldots, m$, be functions of $n + m$ variables with continuous partial derivatives up to an order $k \ge 1$. Let
 
 $$\mathbf{F}(\mathbf{x}^0, \mathbf{y}^0) = \mathbf{o}$$
 
@@ -2776,29 +3049,40 @@ $$\mathbf{y} \in (y_1^0 - \Delta, y_1^0 + \Delta) \times \cdots \times (y_m^0 - 
 
 such that $\mathbf{F}(\mathbf{x}, \mathbf{y}) = \mathbf{o}$.
 
-Furthermore, if we write this $\mathbf{y}$ as a vector function $\mathbf{f}(\mathbf{x}) = (f_1(\mathbf{x}), \ldots, f_m(\mathbf{x}))$, then the functions $f_i$ have continuous partial derivatives up to the order $k$.
+Furthermore, if we write this $\mathbf{y}$ as a vector function $\mathbf{f}(\mathbf{x}) = (f\_1(\mathbf{x}), \ldots, f\_m(\mathbf{x}))$, then the functions $f\_i$ have continuous partial derivatives up to the order $k$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* The procedure will follow the idea of the substitution method from Section 3. Only, we will have to do something more with determinants (but this is linear algebra, well known to the reader) and at the end we will have to tidy up the $\Delta$ and $\delta$ (which we have so far neglected).
 
-*Proof* will be done by induction. The statement holds for $m = 1$ (see 2.1). Now let it hold for $m$, and let us have a system of equations $F_i(\mathbf{x}, \mathbf{y})$, $i = 1, \ldots, m + 1$ satisfying the assumptions (note that the unknown vector $\mathbf{y}$ is $m+1$-dimensional, too). Then, in particular, in the Jacobian determinant we cannot have a column consisting entirely of zeros, and hence, after possibly reshuffling the $F_i$'s, we can assume that
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof* will be done by induction. The statement holds for $m = 1$ (see 2.1). Now let it hold for $m$, and let us have a system of equations $F\_i(\mathbf{x}, \mathbf{y})$, $i = 1, \ldots, m + 1$ satisfying the assumptions (note that the unknown vector $\mathbf{y}$ is $m+1$-dimensional, too). Then, in particular, in the Jacobian determinant we cannot have a column consisting entirely of zeros, and hence, after possibly reshuffling the $F\_i$'s, we can assume that
 
 $$\frac{\partial F_{m+1}}{\partial y_{m+1}}(\mathbf{x}^0, \mathbf{y}^0) \neq 0.$$
 
-Write $\widetilde{\mathbf{y}} = (y_1, \ldots, y_m)$; then, by the induction hypothesis, we have $\delta_1 > 0$ and $\Delta_1 > 0$ such that for $(\mathbf{x}, \widetilde{\mathbf{y}}) \in (x_1^0 - \delta_1, x_1^0 + \delta_1) \times \cdots \times (y_m^0 - \delta_1, y_m^0 + \delta_1)$, there exists precisely one $y_{m+1} = \psi(\mathbf{x}, \widetilde{\mathbf{y}})$ satisfying $F_{m+1}(\mathbf{x}, \widetilde{\mathbf{y}}, y_{m+1}) = 0$ and $\lvert y_{m+1} - y_{m+1}^0 \rvert < \Delta_1$.
+Write $\widetilde{\mathbf{y}} = (y\_1, \ldots, y\_m)$; then, by the induction hypothesis, we have $\delta\_1 > 0$ and $\Delta\_1 > 0$ such that for $(\mathbf{x}, \widetilde{\mathbf{y}}) \in (x\_1^0 - \delta\_1, x\_1^0 + \delta\_1) \times \cdots \times (y\_m^0 - \delta\_1, y\_m^0 + \delta\_1)$, there exists precisely one $y\_{m+1} = \psi(\mathbf{x}, \widetilde{\mathbf{y}})$ satisfying $F\_{m+1}(\mathbf{x}, \widetilde{\mathbf{y}}, y\_{m+1}) = 0$ and $\lvert y\_{m+1} - y\_{m+1}^0 \rvert < \Delta\_1$.
 
 This $\psi$ has continuous partial derivatives up to the order $k$ and hence so have the functions
 
 $$G_i(\mathbf{x}, \widetilde{\mathbf{y}}) = F_i(\mathbf{x}, \widetilde{\mathbf{y}}, \psi(\mathbf{x}, \widetilde{\mathbf{y}})), \quad i = 1, \ldots, m+1$$
 
-(the last $G_{m+1}$ is constant 0). By the Chain Rule we obtain
+(the last $G\_{m+1}$ is constant 0). By the Chain Rule we obtain
 
 $$\frac{\partial G_j}{\partial y_i} = \frac{\partial F_j}{\partial y_i} + \frac{\partial F_j}{\partial y_{m+1}}\frac{\partial \psi}{\partial y_i}. \qquad (*)$$
 
-Now consider the determinant. Multiply the last column by $\frac{\partial \psi}{\partial y_i}$ and add it to the $i$th one. By $(*)$, taking into account that $G_{m+1} \equiv 0$ and hence $\frac{\partial G_{m+1}}{\partial y_i} = \frac{\partial F_{m+1}}{\partial y_i} + \frac{\partial F_{m+1}}{\partial y_{m+1}}\frac{\partial \psi}{\partial y_i} = 0$, we obtain
+Now consider the determinant. Multiply the last column by $\frac{\partial \psi}{\partial y\_i}$ and add it to the $i$th one. By $(\ast)$, taking into account that $G\_{m+1} \equiv 0$ and hence $\frac{\partial G\_{m+1}}{\partial y\_i} = \frac{\partial F\_{m+1}}{\partial y\_i} + \frac{\partial F\_{m+1}}{\partial y\_{m+1}}\frac{\partial \psi}{\partial y\_i} = 0$, we obtain
 
 $$\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{y})} = \frac{\partial F_{m+1}}{\partial y_{m+1}} \cdot \frac{\mathsf{D}(G_1, \ldots, G_m)}{\mathsf{D}(y_1, \ldots, y_m)}.$$
 
-Thus, $\frac{\mathsf{D}(G_1, \ldots, G_m)}{\mathsf{D}(y_1, \ldots, y_m)} \neq 0$ and hence by the induction hypothesis there are $\delta_2 > 0$, $\Delta_2 > 0$ such that for $\lvert x_i - x_i^0 \rvert < \delta_2$ there is a uniquely determined $\widetilde{\mathbf{y}}$ with $\lvert y_i - y_i^0 \rvert < \Delta_2$ such that $G_i(\mathbf{x}, \widetilde{\mathbf{y}}) = 0$ for $i = 1, \ldots, m$ and that the resulting $f_i(\mathbf{x})$ have continuous partial derivatives up to the order $k$. Finally defining
+Thus, $\frac{\mathsf{D}(G\_1, \ldots, G\_m)}{\mathsf{D}(y\_1, \ldots, y\_m)} \neq 0$ and hence by the induction hypothesis there are $\delta\_2 > 0$, $\Delta\_2 > 0$ such that for $\lvert x\_i - x\_i^0 \rvert < \delta\_2$ there is a uniquely determined $\widetilde{\mathbf{y}}$ with $\lvert y\_i - y\_i^0 \rvert < \Delta\_2$ such that $G\_i(\mathbf{x}, \widetilde{\mathbf{y}}) = 0$ for $i = 1, \ldots, m$ and that the resulting $f\_i(\mathbf{x})$ have continuous partial derivatives up to the order $k$. Finally defining
 
 $$f_{i+1}(\mathbf{x}) = \psi(\mathbf{x}, f_1(\mathbf{x}), \ldots, f_m(\mathbf{x}))$$
 
@@ -2806,11 +3090,14 @@ we obtain a solution $\mathbf{f}$ of the original system of equations $\mathbf{F
 
 To finish the proof we need the constraints $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \delta$ and $\lVert \mathbf{y} - \mathbf{y}^0 \rVert < \Delta$ within which the solution is correct (that is, unique).
 
-Choose $0 < \Delta \le \delta_1, \Delta_1, \Delta_2$ and then $0 < \delta < \delta_1, \delta_2$ and sufficiently small so that for $\lvert x_1 - x_i^0 \rvert < \delta$ one has $\lvert f_j(\mathbf{x}) - f_j(\mathbf{x}^0) \rvert < \Delta$ (the last condition makes sure to have in the $\Delta$-interval *at least one* solution). Now let
+Choose $0 < \Delta \le \delta\_1, \Delta\_1, \Delta\_2$ and then $0 < \delta < \delta\_1, \delta\_2$ and sufficiently small so that for $\lvert x\_1 - x\_i^0 \rvert < \delta$ one has $\lvert f\_j(\mathbf{x}) - f\_j(\mathbf{x}^0) \rvert < \Delta$ (the last condition makes sure to have in the $\Delta$-interval *at least one* solution). Now let
 
 $$\mathbf{F}(\mathbf{x}, \mathbf{y}) = \mathbf{o}, \quad \lVert \mathbf{x} - \mathbf{x}^0 \rVert < \delta \text{ and } \lVert \mathbf{y} - \mathbf{y}^0 \rVert < \Delta. \qquad (**)$$
 
-We have to prove that then necessarily $y_i = f_i(\mathbf{x})$ for all $i$. Since $\lvert x_i - x_i^0 \rvert < \delta \le \delta_1$ for $i = 1, \ldots, n$, $\lvert y_i - y_i^0 \rvert < \Delta \le \delta_1$ for $i = 1, \ldots, m$ and $\lvert y_{m+1} - y_{m+1}^0 \rvert < \Delta \le \Delta_1$ we have necessarily $y_{m+1} = \psi(\mathbf{x}, \widetilde{\mathbf{y}})$. Thus, by $(**)$, $\mathbf{G}(\mathbf{x}, \widetilde{\mathbf{y}}) = \mathbf{o}$ and since $\lvert x_i - x_i^0 \rvert < \delta \le \delta_2$ and $\lvert y_i - y_i^0 \rvert < \Delta \le \Delta_2$ we have indeed $y_i = f_i(\mathbf{x})$. $\square$
+We have to prove that then necessarily $y\_i = f\_i(\mathbf{x})$ for all $i$. Since $\lvert x\_i - x\_i^0 \rvert < \delta \le \delta\_1$ for $i = 1, \ldots, n$, $\lvert y\_i - y\_i^0 \rvert < \Delta \le \delta\_1$ for $i = 1, \ldots, m$ and $\lvert y\_{m+1} - y\_{m+1}^0 \rvert < \Delta \le \Delta\_1$ we have necessarily $y\_{m+1} = \psi(\mathbf{x}, \widetilde{\mathbf{y}})$. Thus, by $(\ast\ast)$, $\mathbf{G}(\mathbf{x}, \widetilde{\mathbf{y}}) = \mathbf{o}$ and since $\lvert x\_i - x\_i^0 \rvert < \delta \le \delta\_2$ and $\lvert y\_i - y\_i^0 \rvert < \Delta \le \Delta\_2$ we have indeed $y\_i = f\_i(\mathbf{x})$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -2819,7 +3106,7 @@ We have to prove that then necessarily $y_i = f_i(\mathbf{x})$ for all $i$. Sinc
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.1 - Regular mapping)</span></p>
 
-Let $U \subseteq \mathbb{E}_n$ be an open set. Let $f_i$, $i = 1, \ldots, n$, be mappings with continuous partial derivatives (and hence continuous themselves). The resulting (continuous) mapping $\mathbf{f} = (f_1, \ldots, f_n) : U \to \mathbb{E}_n$ is said to be **regular** if
+Let $U \subseteq \mathbb{E}\_n$ be an open set. Let $f\_i$, $i = 1, \ldots, n$, be mappings with continuous partial derivatives (and hence continuous themselves). The resulting (continuous) mapping $\mathbf{f} = (f\_1, \ldots, f\_n) : U \to \mathbb{E}\_n$ is said to be **regular** if
 
 $$\frac{\mathsf{D}(\mathbf{f})}{\mathsf{D}(\mathbf{x})}(\mathbf{x}) \neq 0$$
 
@@ -2832,20 +3119,31 @@ Recall that continuous mappings are characterized by preserving openness (or clo
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.2 - Regular mappings are open)</span></p>
 
-If $\mathbf{f} : U \to \mathbb{E}_n$ is regular then the image $\mathbf{f}[V]$ of every open $V \subseteq U$ is open.
+If $\mathbf{f} : U \to \mathbb{E}\_n$ is regular then the image $\mathbf{f}[V]$ of every open $V \subseteq U$ is open.
 
-*Proof.* Let $f(\mathbf{x}^0) = \mathbf{y}^0$. Define $\mathbf{F} : V \times \mathbb{E}_n \to \mathbb{E}_n$ by setting $F_i(\mathbf{x}, \mathbf{y}) = f_i(\mathbf{x}) - y_i$; then $\mathbf{F}(\mathbf{x}^0, \mathbf{y}^0) = \mathbf{o}$ and $\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{x})} \neq 0$, and hence we can apply 4.2 to obtain $\delta > 0$ and $\Delta > 0$ such that for every $\mathbf{y}$ with $\lVert \mathbf{y} - \mathbf{y}^0 \rVert < \delta$, there exists a $\mathbf{x}$ such that $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \Delta$ and $F_i(\mathbf{x}, \mathbf{y}) = f_i(\mathbf{x}) - y_i = 0$. This means that we have $\mathbf{f}(\mathbf{x}) = \mathbf{y}$ (do not get confused by the reversed roles of the $x_i$ and the $y_i$: the $y_i$ are here the independent variables), and
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $f(\mathbf{x}^0) = \mathbf{y}^0$. Define $\mathbf{F} : V \times \mathbb{E}\_n \to \mathbb{E}\_n$ by setting $F\_i(\mathbf{x}, \mathbf{y}) = f\_i(\mathbf{x}) - y\_i$; then $\mathbf{F}(\mathbf{x}^0, \mathbf{y}^0) = \mathbf{o}$ and $\frac{\mathsf{D}(\mathbf{F})}{\mathsf{D}(\mathbf{x})} \neq 0$, and hence we can apply 4.2 to obtain $\delta > 0$ and $\Delta > 0$ such that for every $\mathbf{y}$ with $\lVert \mathbf{y} - \mathbf{y}^0 \rVert < \delta$, there exists a $\mathbf{x}$ such that $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \Delta$ and $F\_i(\mathbf{x}, \mathbf{y}) = f\_i(\mathbf{x}) - y\_i = 0$. This means that we have $\mathbf{f}(\mathbf{x}) = \mathbf{y}$ (do not get confused by the reversed roles of the $x\_i$ and the $y\_i$: the $y\_i$ are here the independent variables), and
 
 $$\Omega(\mathbf{y}^0, \delta) = \lbrace \mathbf{y} \mid \lVert \mathbf{y} - \mathbf{y}^0 \rVert < \delta \rbrace \subseteq \mathbf{f}[V]. \quad \square$$
 
 </div>
 
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.3 - Local invertibility of regular mappings)</span></p>
 
-Let $\mathbf{f} : U \to \mathbb{E}_n$ be a regular mapping. Then for each $\mathbf{x}^0 \in U$ there exists an open neighborhood $V$ such that the restriction $\mathbf{f}\vert_V$ is one-to-one. Moreover, the mapping $\mathbf{g} : \mathbf{f}[V] \to \mathbb{E}_n$ inverse to $\mathbf{f}\vert_V$ is regular.
+Let $\mathbf{f} : U \to \mathbb{E}\_n$ be a regular mapping. Then for each $\mathbf{x}^0 \in U$ there exists an open neighborhood $V$ such that the restriction $\mathbf{f}\vert\_V$ is one-to-one. Moreover, the mapping $\mathbf{g} : \mathbf{f}[V] \to \mathbb{E}\_n$ inverse to $\mathbf{f}\vert\_V$ is regular.
 
-*Proof.* We will use again the mapping $\mathbf{F} = (F_1, \ldots, F_n)$ from $(*)$. For a sufficiently small $\Delta > 0$ we have precisely one $\mathbf{x} = \mathbf{g}(\mathbf{y})$ such that $\mathbf{F}(\mathbf{x}, \mathbf{y}) = 0$ and $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \Delta$. This $\mathbf{g}$ has, furthermore, continuous partial derivatives. By XIV.5.3 we have
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* We will use again the mapping $\mathbf{F} = (F\_1, \ldots, F\_n)$ from $(\ast)$. For a sufficiently small $\Delta > 0$ we have precisely one $\mathbf{x} = \mathbf{g}(\mathbf{y})$ such that $\mathbf{F}(\mathbf{x}, \mathbf{y}) = 0$ and $\lVert \mathbf{x} - \mathbf{x}^0 \rVert < \Delta$. This $\mathbf{g}$ has, furthermore, continuous partial derivatives. By XIV.5.3 we have
 
 $$D(\mathrm{id}) = D(\mathbf{f} \circ \mathbf{g}) = D(\mathbf{f}) \cdot D(\mathbf{g}).$$
 
@@ -2855,12 +3153,15 @@ $$\frac{\mathsf{D}(\mathbf{f})}{\mathsf{D}(\mathbf{x})} \cdot \frac{\mathsf{D}(\
 
 and hence for each $\mathbf{y} \in \mathbf{f}[V]$, $\frac{\mathsf{D}(\mathbf{g})}{\mathsf{D}(\mathbf{y})}(\mathbf{y}) \neq 0$. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(5.3.1)</span></p>
 
-A one-to-one regular mapping $\mathbf{f} : U \to \mathbb{E}_n$ has a regular inverse $\mathbf{g} : \mathbf{f}[U] \to \mathbb{E}_n$.
+A one-to-one regular mapping $\mathbf{f} : U \to \mathbb{E}\_n$ has a regular inverse $\mathbf{g} : \mathbf{f}[U] \to \mathbb{E}\_n$.
 
 </div>
 
@@ -2877,26 +3178,26 @@ But the boundary is now another matter. Typically it does not consist of finitel
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.1.1 - Extremes on a ball)</span></p>
 
-Suppose we want to find the local extremes of the function $f(x, y) = x + 2y$ on the ball $B = \lbrace (x, y) \mid x^2 + y^2 \le 1 \rbrace$. The domain $B$ is compact, and hence the function $f$ certainly attains a minimum and a maximum on $B$. They cannot be in the interior of $B$: we have constantly $\frac{\partial f}{\partial x} = 1$ and $\frac{\partial f}{\partial y} = 2$; thus, the extremes must be located somewhere in the infinite set $\lbrace (x, y) \mid x^2 + y^2 = 1 \rbrace$, and the rule $(*)$ is of no use.
+Suppose we want to find the local extremes of the function $f(x, y) = x + 2y$ on the ball $B = \lbrace (x, y) \mid x^2 + y^2 \le 1 \rbrace$. The domain $B$ is compact, and hence the function $f$ certainly attains a minimum and a maximum on $B$. They cannot be in the interior of $B$: we have constantly $\frac{\partial f}{\partial x} = 1$ and $\frac{\partial f}{\partial y} = 2$; thus, the extremes must be located somewhere in the infinite set $\lbrace (x, y) \mid x^2 + y^2 = 1 \rbrace$, and the rule $(\ast)$ is of no use.
 
 </div>
 
-Hence we will try to find local extremes of a function $f(x_1, \ldots, x_n)$ *subject to certain constraints* $g_i(x_1, \ldots, x_n) = 0$, $i = 1, \ldots, k$. We have the following
+Hence we will try to find local extremes of a function $f(x\_1, \ldots, x\_n)$ *subject to certain constraints* $g\_i(x\_1, \ldots, x\_n) = 0$, $i = 1, \ldots, k$. We have the following
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(6.2 - Lagrange Multipliers)</span></p>
 
-Let $f, g_1, \ldots, g_k$ be real functions defined in an open set $D \subseteq \mathbb{E}_n$, and let them have continuous partial derivatives. Suppose that the rank of the matrix
+Let $f, g\_1, \ldots, g\_k$ be real functions defined in an open set $D \subseteq \mathbb{E}\_n$, and let them have continuous partial derivatives. Suppose that the rank of the matrix
 
 $$M = \begin{pmatrix} \frac{\partial g_1}{\partial x_1}, & \ldots, & \frac{\partial g_1}{\partial x_n} \\ \vdots & & \vdots \\ \frac{\partial g_k}{\partial x_1}, & \ldots, & \frac{\partial g_k}{\partial x_n} \end{pmatrix}$$
 
 is the largest possible, that is $k$, at each point of $D$.
 
-If the function $f$ achieves at a point $\mathbf{a} = (a_1, \ldots, a_n)$ a local extreme subject to the constraints
+If the function $f$ achieves at a point $\mathbf{a} = (a\_1, \ldots, a\_n)$ a local extreme subject to the constraints
 
 $$g_i(x_1, \ldots, x_n) = 0, \quad i = 1, \ldots, k$$
 
-then there exist numbers $\lambda_1, \ldots, \lambda_k$ such that for each $i = 1, \ldots, n$ we have
+then there exist numbers $\lambda\_1, \ldots, \lambda\_k$ such that for each $i = 1, \ldots, n$ we have
 
 $$\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{k} \lambda_j \cdot \frac{\partial g_j(\mathbf{a})}{\partial x_i} = 0.$$
 
@@ -2905,19 +3206,23 @@ $$\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{k} \lambda_j \cdot \
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Notes on the Lagrange Multipliers Theorem)</span></p>
 
-1. The functions $f, g_i$ were assumed to be defined in an open $D$ so that we can take derivatives whenever we need them. In typical applications one works with functions that can be extended to an open set containing the area in question.
+1. The functions $f, g\_i$ were assumed to be defined in an open $D$ so that we can take derivatives whenever we need them. In typical applications one works with functions that can be extended to an open set containing the area in question.
 
-2. The force of the statement is in asserting the existence of $\lambda_1, \ldots, \lambda_k$ that satisfy *more than* $k$ equations. See the solution of 6.1.1 in 6.3 below.
+2. The force of the statement is in asserting the existence of $\lambda\_1, \ldots, \lambda\_k$ that satisfy *more than* $k$ equations. See the solution of 6.1.1 in 6.3 below.
 
-3. The numbers $\lambda_i$ are known as **Lagrange multipliers**.
+3. The numbers $\lambda\_i$ are known as **Lagrange multipliers**.
 
 </div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* From linear algebra we know that a matrix $M$ has rank $k$ iff at least one of the $k \times k$ submatrices of $M$ is regular (and hence has a non-zero determinant). Without loss of generality we can assume that at the extremal point we have
 
 $$\begin{vmatrix} \frac{\partial g_1}{\partial x_1}, & \ldots, & \frac{\partial g_1}{\partial x_k} \\ \vdots & & \vdots \\ \frac{\partial g_k}{\partial x_1}, & \ldots, & \frac{\partial g_k}{\partial x_k} \end{vmatrix} \neq 0. \qquad (1)$$
 
-If this holds, we have by the Implicit Function Theorem in a neighborhood of the point $\mathbf{a}$ functions $\phi_i(x_{k+1}, \ldots, x_n)$ with continuous partial derivatives such that (we write $\widetilde{\mathbf{x}}$ for $(x_{k+1}, \ldots, x_n)$)
+If this holds, we have by the Implicit Function Theorem in a neighborhood of the point $\mathbf{a}$ functions $\phi\_i(x\_{k+1}, \ldots, x\_n)$ with continuous partial derivatives such that (we write $\widetilde{\mathbf{x}}$ for $(x\_{k+1}, \ldots, x\_n)$)
 
 $$g_i(\phi_1(\widetilde{\mathbf{x}}), \ldots, \phi_k(\widetilde{\mathbf{x}}), \widetilde{\mathbf{x}}) = 0 \quad \text{for} \quad i = 1, \ldots, k,$$
 
@@ -2933,7 +3238,7 @@ that is, by the Chain Rule,
 
 $$\sum_{r=1}^{k} \frac{\partial f(\mathbf{a})}{\partial x_r}\frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} + \frac{\partial f(\mathbf{a})}{\partial x_i} \quad \text{for} \quad i = k + 1, \ldots, n. \qquad (2)$$
 
-Taking derivatives of the constant functions $g_i(\phi_1(\widetilde{\mathbf{x}}), \ldots, \phi_k(\widetilde{\mathbf{x}}), \widetilde{\mathbf{x}}) = 0$ we obtain for $j = 1, \ldots, k$,
+Taking derivatives of the constant functions $g\_i(\phi\_1(\widetilde{\mathbf{x}}), \ldots, \phi\_k(\widetilde{\mathbf{x}}), \widetilde{\mathbf{x}}) = 0$ we obtain for $j = 1, \ldots, k$,
 
 $$\sum_{r=1}^{k} \frac{\partial g_j(\mathbf{a})}{\partial x_r}\frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} + \frac{\partial g_j(\mathbf{a})}{\partial x_i} \quad \text{for} \quad i = k + 1, \ldots, n. \qquad (3)$$
 
@@ -2941,9 +3246,12 @@ Now we will use (1) again, for another purpose. Because of the rank of the matri
 
 $$\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{n} \lambda_j \cdot \frac{\partial g_j(\mathbf{a})}{\partial x_i} = 0, \quad i = 1, \ldots, k,$$
 
-has a unique solution $\lambda_1, \ldots, \lambda_k$. These are the equalities from the statement, but so far for $i \le k$ only. It remains to be shown that the same equalities hold also for $i > k$. In effect, by (2) and (3), for $i > k$ we obtain
+has a unique solution $\lambda\_1, \ldots, \lambda\_k$. These are the equalities from the statement, but so far for $i \le k$ only. It remains to be shown that the same equalities hold also for $i > k$. In effect, by (2) and (3), for $i > k$ we obtain
 
 $$\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{n} \lambda_j \cdot \frac{\partial g_j(\mathbf{a})}{\partial x_i} = -\sum_{r=1}^{k} \frac{\partial f(\mathbf{a})}{\partial x_r}\frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} - \sum_{j=1}^{k}\lambda_j\sum_{r=1}^{k}\frac{\partial g_j(\mathbf{a})}{\partial x_r}\frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} = -\sum_{r=1}^{n}\left(\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{n}\lambda_j \cdot \frac{\partial g_j(\mathbf{a})}{\partial x_i}\right)\frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} = -\sum_{r=1}^{n} 0 \cdot \frac{\partial \phi_r(\widetilde{\mathbf{a}})}{\partial x_i} = 0. \quad \square$$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.3 - Solution of 6.1.1)</span></p>
@@ -2959,27 +3267,27 @@ This is possible only if $y = 2x$. Thus, as $x^2 + y^2 = 1$ we obtain $5x^2 = 1$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.4 - Parallelepiped of largest volume for given surface area)</span></p>
 
-The constraints $g_i$ do not necessarily come from describing boundaries. Here is an example of another nature.
+The constraints $g\_i$ do not necessarily come from describing boundaries. Here is an example of another nature.
 
-Let us ask the question which rectangular parallelepiped of a given surface area has the largest volume. Denoting the lengths of the edges by $x_1, \ldots, x_n$, the surface area is
+Let us ask the question which rectangular parallelepiped of a given surface area has the largest volume. Denoting the lengths of the edges by $x\_1, \ldots, x\_n$, the surface area is
 
 $$S(x_1, \ldots, x_n) = 2x_1 \cdots x_n\left(\frac{1}{x_1} + \cdots + \frac{1}{x_n}\right)$$
 
-and the volume is $V(x_1, \ldots, x_n) = x_1 \cdots x_n$. Hence
+and the volume is $V(x\_1, \ldots, x\_n) = x\_1 \cdots x\_n$. Hence
 
 $$\frac{\partial V}{\partial x_i} = \frac{1}{x_i} \cdot x_1 \cdots x_n \quad \text{and} \quad \frac{\partial S}{\partial x_i} = \frac{2}{x_i}(x_1 \cdots x_n)\left(\frac{1}{x_1} + \cdots + \frac{1}{x_n}\right) - 2x_1 \cdots x_n \frac{1}{x_i^2}.$$
 
-If we denote $y_i = \frac{1}{x_i}$ and $s = y_1 + \cdots + y_n$, and divide the equation from the theorem by $x_1 \cdots x_n$, we obtain
+If we denote $y\_i = \frac{1}{x\_i}$ and $s = y\_1 + \cdots + y\_n$, and divide the equation from the theorem by $x\_1 \cdots x\_n$, we obtain
 
 $$2y_i(s - y_i) + \lambda y_i = 0 \quad \text{resulting in} \quad y_i = s + \frac{\lambda}{2}.$$
 
-Thus, all the $x_i$ are equal and the solution is the cube.
+Thus, all the $x\_i$ are equal and the solution is the cube.
 
 </div>
 
 ## XVI. Multivariable Riemann Integral
 
-The idea of Riemann integral in several variables is the same as that in one variable. The only difference is that we will have $n$-dimensional intervals instead of the standard ones, and that the partitions will have to divide such intervals in all dimensions so that the resulting intervals of the partition will not be so tidily ordered as the small intervals $\langle t_0, t_1 \rangle, \langle t_1, t_2 \rangle, \ldots$. But a finite sum is a finite sum and we will see that the ordering is not important.
+The idea of Riemann integral in several variables is the same as that in one variable. The only difference is that we will have $n$-dimensional intervals instead of the standard ones, and that the partitions will have to divide such intervals in all dimensions so that the resulting intervals of the partition will not be so tidily ordered as the small intervals $\langle t\_0, t\_1 \rangle, \langle t\_1, t\_2 \rangle, \ldots$. But a finite sum is a finite sum and we will see that the ordering is not important.
 
 What is new is the Fubini theorem (Section 4) allowing to compute multivariable integrals using integrals of one variable. All what will be done before that will be modifications of facts from Chapter XI.
 
@@ -2998,14 +3306,14 @@ A **partition** of $J$ is a sequence $P = (P^1, \ldots, P^n)$ of partitions
 
 $$P^j: \quad a_j = t_{j0} < t_{j1} < \cdots < t_{j,n_j-1} < t_{j,n_j} = b_j, \quad j = 1, \ldots n.$$
 
-The intervals $\langle t_{1,i_1}, t_{1,i_1+1} \rangle \times \cdots \times \langle t_{n,i_n}, t_{n,i_n+1} \rangle$ will be called the **bricks** of $P$ and the set of all bricks of $P$ will be denoted by $\mathcal{B}(P)$.
+The intervals $\langle t\_{1,i\_1}, t\_{1,i\_1+1} \rangle \times \cdots \times \langle t\_{n,i\_n}, t\_{n,i\_n+1} \rangle$ will be called the **bricks** of $P$ and the set of all bricks of $P$ will be denoted by $\mathcal{B}(P)$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(1.2 - Volume of an interval)</span></p>
 
-The **volume** of an interval $J = \langle a_1, b_1 \rangle \times \cdots \times \langle a_n, b_n \rangle$ is the number
+The **volume** of an interval $J = \langle a\_1, b\_1 \rangle \times \cdots \times \langle a\_n, b\_n \rangle$ is the number
 
 $$\mathsf{vol}(J) = (b_1 - a_1)(b_2 - a_2) \cdots (b_n - a_n).$$
 
@@ -3023,7 +3331,7 @@ $\mathsf{vol}(J) = \sum\lbrace \mathsf{vol}(B) \mid B \in \mathcal{B}(J) \rbrace
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(1.3 - Diameter and mesh)</span></p>
 
-The **diameter** of $J = \langle a_1, b_1 \rangle \times \cdots \times \langle a_n, b_n \rangle$ is
+The **diameter** of $J = \langle a\_1, b\_1 \rangle \times \cdots \times \langle a\_n, b\_n \rangle$ is
 
 $$\mathsf{diam}(J) = \max_i(b_i - a_i)$$
 
@@ -3038,7 +3346,7 @@ $$\mu(P) = \max\lbrace \mathsf{diam}(B) \mid B \in \mathcal{B}(P) \rbrace.$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(1.4.1 - Refinement and bricks)</span></p>
 
-A refinement $Q$ of a partition $P$ induces partitions $Q_B$ of the bricks $B \in \mathcal{B}(P)$ and we have a disjoint union
+A refinement $Q$ of a partition $P$ induces partitions $Q\_B$ of the bricks $B \in \mathcal{B}(P)$ and we have a disjoint union
 
 $$\mathcal{B}(Q) = \bigcup\lbrace \mathcal{B}(Q_B) \mid B \in \mathcal{B}(P) \rbrace.$$
 
@@ -3088,11 +3396,18 @@ Let a partition $Q$ refine $P$. Then
 
 $$s(f, Q) \ge s(f, P) \quad \text{and} \quad S(f, Q) \le S(f, P).$$
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We have (the statement used is indicated over $=$ or $\le$)
 
 $$S(f, Q) = \sum\lbrace M(f, C) \cdot \mathsf{vol}(C) \mid C \in \mathcal{B}(Q) \rbrace \overset{1.4.1}{=} \sum\lbrace \sum\lbrace M(f, C) \cdot \mathsf{vol}(C) \mid C \in \mathcal{B}(Q_B) \rbrace \mid B \in \mathcal{B}(P) \rbrace \overset{2.1.1}{\le} \sum\lbrace M(f, B) \sum\lbrace \mathsf{vol}(C) \mid C \in \mathcal{B}(Q_B) \rbrace \mid B \in \mathcal{B}(P) \rbrace \overset{1.2.1}{=} \sum\lbrace M(f, B) \cdot \mathsf{vol}(B) \mid B \in \mathcal{B}(P) \rbrace = S(f, P).$$
 
 Similarly for $s(f, Q)$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -3101,7 +3416,14 @@ Similarly for $s(f, Q)$. $\square$
 
 Let $P, Q$ be partitions of $J$. We have $s(f, P) \le S(f, Q)$.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* For a common partition $R$ of $P, Q$ (recall 1.5) we have by 2.2.1 $s(f, P) \le s(f, R) \le S(f, R) \le S(f, Q)$. $\square$
+
+</details>
+</div>
 
 </div>
 
@@ -3125,7 +3447,7 @@ $$\int_J f(\mathbf{x})\mathrm{d}\mathbf{x} \quad \text{or simply} \quad \int_J f
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(2.3.1 - Notation)</span></p>
 
-The integral can be also denoted e.g. by $\int_J f(x_1, \ldots, x_n)\mathrm{d}x_1, \ldots x_n$ which certainly does not surprise. The reader may encounter also symbols like
+The integral can be also denoted e.g. by $\int\_J f(x\_1, \ldots, x\_n)\mathrm{d}x\_1, \ldots x\_n$ which certainly does not surprise. The reader may encounter also symbols like
 
 $$\int_J f(x_1, \ldots, x_n)\mathrm{d}x_1\mathrm{d}x_2 \cdots \mathrm{d}x_n.$$
 
@@ -3142,20 +3464,24 @@ $$\inf\lbrace f(\mathbf{x}) \mid \mathbf{x} \in J \rbrace \cdot \mathsf{vol}(J) 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.1 - $\varepsilon$-characterization of integrability)</span></p>
 
-The Riemann integral $\int_J f(\mathbf{x})\mathrm{d}\mathbf{x}$ exists if and only if for every $\varepsilon > 0$ there is a partition $P$ such that
+The Riemann integral $\int\_J f(\mathbf{x})\mathrm{d}\mathbf{x}$ exists if and only if for every $\varepsilon > 0$ there is a partition $P$ such that
 
 $$S_J(f, P) - s_J(f, P) < \varepsilon.$$
 
-**Note instead of a proof.** The statement can be proved by repeating the proof of XI.2.4.2. But the reader may realize that rather than having here an easy generalization of IX.2.4.2, the statements are both special cases of a general simple statement on suprema and infima. Suppose you have a set $(X, \le)$ partially ordered by $\le$ such that for any two $x, y \in X$ there is a $z \le x, y$. If we have $\alpha : X \to \mathbb{R}$ such that $x \le y$ implies $\alpha(x) \ge \alpha(y)$ and $\beta : X \to \mathbb{R}$ such that $x \le y$ implies $\beta(x) \le \beta(y)$, and if $\alpha(x) \le \beta(x)$ for all $x, y$ then $\sup_x \alpha(x) = \inf_x \beta(x)$ iff for every $\varepsilon > 0$ there is an $x$ such that $\beta(x) < \alpha(x) + \varepsilon$. This is a trivial fact that has nothing to do with sums and such. But of course the criterion is very useful.
+**Note instead of a proof.** The statement can be proved by repeating the proof of XI.2.4.2. But the reader may realize that rather than having here an easy generalization of IX.2.4.2, the statements are both special cases of a general simple statement on suprema and infima. Suppose you have a set $(X, \le)$ partially ordered by $\le$ such that for any two $x, y \in X$ there is a $z \le x, y$. If we have $\alpha : X \to \mathbb{R}$ such that $x \le y$ implies $\alpha(x) \ge \alpha(y)$ and $\beta : X \to \mathbb{R}$ such that $x \le y$ implies $\beta(x) \le \beta(y)$, and if $\alpha(x) \le \beta(x)$ for all $x, y$ then $\sup\_x \alpha(x) = \inf\_x \beta(x)$ iff for every $\varepsilon > 0$ there is an $x$ such that $\beta(x) < \alpha(x) + \varepsilon$. This is a trivial fact that has nothing to do with sums and such. But of course the criterion is very useful.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.2 - Integrability of continuous functions)</span></p>
 
-For every continuous function $f : J \to \mathbb{R}$ on an $n$-dimensional compact interval the Riemann integral $\int_J f$ exists.
+For every continuous function $f : J \to \mathbb{R}$ on an $n$-dimensional compact interval the Riemann integral $\int\_J f$ exists.
 
-*Proof.* We will use the distance $\sigma$ in $\mathbb{E}_n$ defined by $\sigma(\mathbf{x}, \mathbf{y}) = \max_i \lvert x_i - y_i \rvert$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* We will use the distance $\sigma$ in $\mathbb{E}\_n$ defined by $\sigma(\mathbf{x}, \mathbf{y}) = \max\_i \lvert x\_i - y\_i \rvert$.
 
 Since $f$ is uniformly continuous we can choose for $\varepsilon > 0$ a $\delta > 0$ such that
 
@@ -3171,27 +3497,30 @@ $$S(f, P) - s(f, P) = \sum\lbrace (M(f, B) - m(f, B)) \cdot \mathsf{vol}(B) \mid
 
 by 1.2.1. Now use 3.1. $\square$
 
+</details>
+</div>
+
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.2.1 - Limit of Riemann sums)</span></p>
 
-Let $f : J \to \mathbb{R}$ be a continuous function and let $P_1, P_2, \ldots$ be a sequence of partitions such that $\lim_n \mu(P_n) = 0$. Then
+Let $f : J \to \mathbb{R}$ be a continuous function and let $P\_1, P\_2, \ldots$ be a sequence of partitions such that $\lim\_n \mu(P\_n) = 0$. Then
 
 $$\lim_n s(f, P_n) = \lim_n S(f, P_n) = \int_J f.$$
 
-(Indeed, with $\varepsilon$ and $\delta$ as above choose an $n_0$ such that for $n \ge n_0$ we have $\mu(P_n) < \delta$.)
+(Indeed, with $\varepsilon$ and $\delta$ as above choose an $n\_0$ such that for $n \ge n\_0$ we have $\mu(P\_n) < \delta$.)
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(3.2.2 - Riemann sums with sample points)</span></p>
 
-Let $f : J \to \mathbb{R}$ be a continuous function on an $n$-dimensional compact interval $J$. For every brick $B \subseteq J$ choose an element $\mathbf{x}_B \in B$ and define for a partition $P$ of $J$
+Let $f : J \to \mathbb{R}$ be a continuous function on an $n$-dimensional compact interval $J$. For every brick $B \subseteq J$ choose an element $\mathbf{x}\_B \in B$ and define for a partition $P$ of $J$
 
 $$\Sigma(f, P) = \sum\lbrace f(\mathbf{x}_B) \cdot \mathsf{vol}(B) \mid B \in \mathcal{B}(P) \rbrace.$$
 
-Let $P_1, P_2, \ldots$ be a sequence of partitions such that $\lim_n \mu(P_n) = 0$. Then
+Let $P\_1, P\_2, \ldots$ be a sequence of partitions such that $\lim\_n \mu(P\_n) = 0$. Then
 
 $$\lim_n \Sigma(f, P_n) = \int_J f.$$
 
@@ -3202,17 +3531,21 @@ $$\lim_n \Sigma(f, P_n) = \int_J f.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.1 - Fubini Theorem)</span></p>
 
-Consider the product $J = J' \times J'' \subseteq \mathbb{E}\_{m+n}$ of intervals $J' \subseteq \mathbb{E}\_m$, $J'' \subseteq \mathbb{E}\_n$. Let $f : J \to \mathbb{R}$ be such that $\int_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y}$ exists and that for every $\mathbf{x} \in J'$ (resp. every $\mathbf{y} \in J''$) the integral $\int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}$ (resp. $\int_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}$) exists (this holds in particular for every continuous function). Then
+Consider the product $J = J' \times J'' \subseteq \mathbb{E}\_{m+n}$ of intervals $J' \subseteq \mathbb{E}\_m$, $J'' \subseteq \mathbb{E}\_n$. Let $f : J \to \mathbb{R}$ be such that $\int\_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y}$ exists and that for every $\mathbf{x} \in J'$ (resp. every $\mathbf{y} \in J''$) the integral $\int\_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}$ (resp. $\int\_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}$) exists (this holds in particular for every continuous function). Then
 
 $$\int_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y} = \int_{J'}\left(\int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}\right)\mathrm{d}\mathbf{x} = \int_{J''}\left(\int_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\right)\mathrm{d}\mathbf{y}.$$
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* We will discuss the first equality, the second one is analogous. Set
 
 $$F(\mathbf{x}) = \int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}.$$
 
-We will prove that $\int_{J'} F$ exists and that $\int_J f = \int_{J'} F$.
+We will prove that $\int\_{J'} F$ exists and that $\int\_J f = \int\_{J'} F$.
 
-Choose a partition $P$ of $J$ such that $\int_J f - \varepsilon \le s(f, P) \le S(f, P) \le \int_J f + \varepsilon$.
+Choose a partition $P$ of $J$ such that $\int\_J f - \varepsilon \le s(f, P) \le S(f, P) \le \int\_J f + \varepsilon$.
 
 This partition $P$ is obviously constituted of a partition $P'$ of $J'$ and a partition $P''$ of $J''$. We have $\mathcal{B}(P) = \lbrace B' \times B'' \mid B' \in \mathcal{B}(P'), B'' \in \mathcal{B}(P'') \rbrace$, and each brick of $P$ appears as precisely one $B' \times B''$. By 2.4
 
@@ -3228,14 +3561,17 @@ Hence we have
 
 $$\int_J f - \varepsilon \le s(F, P') \le \int_{J'} F \le S(F, P') \le \int_J f + \varepsilon$$
 
-and therefore $\int_{J'} F$ is equal to $\int_J f$. $\square$
+and therefore $\int\_{J'} F$ is equal to $\int\_J f$. $\square$
+
+</details>
+</div>
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(4.2 - Iterated integrals)</span></p>
 
-Let $f : J = \langle a_1, b_1 \rangle \times \cdots \times \langle a_n, b_n \rangle \to \mathbb{R}$ be a continuous function. Then
+Let $f : J = \langle a\_1, b\_1 \rangle \times \cdots \times \langle a\_n, b\_n \rangle \to \mathbb{R}$ be a continuous function. Then
 
 $$\int_J f(\mathbf{x})\mathrm{d}\mathbf{x} = \int_{a_n}^{b_n}\left(\cdots\left(\int_{a_2}^{b_2}\left(\int_{a_1}^{b_1} f(x_1, x_2, \ldots, x_n)\mathrm{d}x_1\right)\mathrm{d}x_2\right)\cdots\right)\mathrm{d}x_n.$$
 
@@ -3244,6 +3580,6 @@ $$\int_J f(\mathbf{x})\mathrm{d}\mathbf{x} = \int_{a_n}^{b_n}\left(\cdots\left(\
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Notation for iterated integrals)</span></p>
 
-The notation $\int_J f(x_1, \ldots, x_n)\mathrm{d}x_1\mathrm{d}x_2 \cdots \mathrm{d}x_n$ mentioned in 2.3 comes, of course, from omitting the brackets in the iterated integral above.
+The notation $\int\_J f(x\_1, \ldots, x\_n)\mathrm{d}x\_1\mathrm{d}x\_2 \cdots \mathrm{d}x\_n$ mentioned in 2.3 comes, of course, from omitting the brackets in the iterated integral above.
 
 </div>

@@ -71,15 +71,15 @@ To understand the basic meaning of the calculus of variations, it is important t
 
 $$J[y] = \int_a^b F(x, y, y')\,dx, \quad y(a) = A, \quad y(b) = B.$$
 
-Using the points $a = x_0, x_1, \ldots, x_n, x_{n+1} = b$, we divide $[a, b]$ into $n + 1$ equal parts and approximate $y(x)$ by a polygonal line with vertices $(x_i, y(x_i))$. Then
+Using the points $a = x\_0, x\_1, \ldots, x\_n, x\_{n+1} = b$, we divide $[a, b]$ into $n + 1$ equal parts and approximate $y(x)$ by a polygonal line with vertices $(x\_i, y(x\_i))$. Then
 
 $$J(y_1, \ldots, y_n) = \sum_{i=1}^{n+1} F\!\left(x_i, y_i, \frac{y_i - y_{i-1}}{h}\right) h,$$
 
-where $y_i = y(x_i)$ and $h = x_i - x_{i-1}$. Thus, as an approximation, the variational problem reduces to finding extrema of a function of $n$ variables $J(y_1, \ldots, y_n)$. Euler made extensive use of this *method of finite differences*. By passing to the limit as $n \to \infty$, functionals can be regarded as "functions of infinitely many variables," and the calculus of variations can be regarded as the corresponding analog of differential calculus.
+where $y\_i = y(x\_i)$ and $h = x\_i - x\_{i-1}$. Thus, as an approximation, the variational problem reduces to finding extrema of a function of $n$ variables $J(y\_1, \ldots, y\_n)$. Euler made extensive use of this *method of finite differences*. By passing to the limit as $n \to \infty$, functionals can be regarded as "functions of infinitely many variables," and the calculus of variations can be regarded as the corresponding analog of differential calculus.
 
 ### 2. Function Spaces
 
-Just as in the study of functions of $n$ variables it is convenient to use geometric language by regarding $(y_1, \ldots, y_n)$ as a point in $n$-dimensional space, we regard each function $y(x)$ belonging to some class as a point in some space. Spaces whose elements are functions are called *function spaces*.
+Just as in the study of functions of $n$ variables it is convenient to use geometric language by regarding $(y\_1, \ldots, y\_n)$ as a point in $n$-dimensional space, we regard each function $y(x)$ belonging to some class as a point in some space. Spaces whose elements are functions are called *function spaces*.
 
 In the case of function spaces, there is no single "universal" space. The nature of the problem determines the choice of the function space.
 
@@ -114,24 +114,24 @@ Two functions in $\mathscr{C}$ are "close" if their values are uniformly close o
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}_1(a, b)$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}\_1(a, b)$)</span></p>
 
-The space $\mathscr{D}_1 = \mathscr{D}_1(a, b)$ consists of all functions $y(x)$ defined on $[a, b]$ which are continuous and have continuous first derivatives. The norm is
+The space $\mathscr{D}\_1 = \mathscr{D}\_1(a, b)$ consists of all functions $y(x)$ defined on $[a, b]$ which are continuous and have continuous first derivatives. The norm is
 
 $$\lVert y \rVert_1 = \max_{a \leqslant x \leqslant b} |y(x)| + \max_{a \leqslant x \leqslant b} |y'(x)|.$$
 
-Two functions in $\mathscr{D}_1$ are close if both the functions themselves and their first derivatives are close together.
+Two functions in $\mathscr{D}\_1$ are close if both the functions themselves and their first derivatives are close together.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}_n(a, b)$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}\_n(a, b)$)</span></p>
 
-The space $\mathscr{D}_n = \mathscr{D}_n(a, b)$ consists of all functions $y(x)$ on $[a, b]$ which are continuous and have continuous derivatives up to order $n$ inclusive. The norm is
+The space $\mathscr{D}\_n = \mathscr{D}\_n(a, b)$ consists of all functions $y(x)$ on $[a, b]$ which are continuous and have continuous derivatives up to order $n$ inclusive. The norm is
 
 $$\lVert y \rVert_n = \sum_{i=0}^{n} \max_{a \leqslant x \leqslant b} |y^{(i)}(x)|,$$
 
-where $y^{(0)}(x)$ denotes $y(x)$ itself. Two functions in $\mathscr{D}_n$ are close if the functions and all their derivatives up to order $n$ are close together.
+where $y^{(0)}(x)$ denotes $y(x)$ itself. Two functions in $\mathscr{D}\_n$ are close if the functions and all their derivatives up to order $n$ are close together.
 
 </div>
 
@@ -156,7 +156,7 @@ The inequality $\|J[y] - J[\hat{y}]\| < \varepsilon$ is equivalent to the pair $
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Choice of Function Space)</span></p>
 
-It might seem that the largest space $\mathscr{C}$ would suffice for all variational problems. However, this is not the case. For example, a functional of the form $\int_a^b F(x, y, y')\,dx$ (e.g., arc length) will be continuous if we use the norm of $\mathscr{D}_1$, but in general will not be continuous in the norm of $\mathscr{C}$. Therefore, in studying functionals of various types, it is reasonable to use various function spaces.
+It might seem that the largest space $\mathscr{C}$ would suffice for all variational problems. However, this is not the case. For example, a functional of the form $\int\_a^b F(x, y, y')\,dx$ (e.g., arc length) will be continuous if we use the norm of $\mathscr{D}\_1$, but in general will not be continuous in the norm of $\mathscr{C}$. Therefore, in studying functionals of various types, it is reasonable to use various function spaces.
 
 </div>
 
@@ -177,7 +177,7 @@ In many variational problems, we deal with functionals defined on sets of functi
 Given a normed linear space $\mathscr{R}$, let each element $h \in \mathscr{R}$ be assigned a number $\varphi[h]$, i.e., let $\varphi[h]$ be a functional defined on $\mathscr{R}$. Then $\varphi[h]$ is said to be a **(continuous) linear functional** if
 
 1. $\varphi[\alpha h] = \alpha \varphi[h]$ for any $h \in \mathscr{R}$ and any real number $\alpha$;
-2. $\varphi[h_1 + h_2] = \varphi[h_1] + \varphi[h_2]$ for any $h_1, h_2 \in \mathscr{R}$;
+2. $\varphi[h\_1 + h\_2] = \varphi[h\_1] + \varphi[h\_2]$ for any $h\_1, h\_2 \in \mathscr{R}$;
 3. $\varphi[h]$ is continuous (for all $h \in \mathscr{R}$).
 
 </div>
@@ -185,16 +185,16 @@ Given a normed linear space $\mathscr{R}$, let each element $h \in \mathscr{R}$ 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Functionals)</span></p>
 
-1. If $h(x) \in \mathscr{C}(a, b)$ and we fix a point $x_0 \in [a, b]$, then $\varphi[h] = h(x_0)$ is a linear functional on $\mathscr{C}(a, b)$.
-2. The integral $\varphi[h] = \int_a^b h(x)\,dx$ is a linear functional on $\mathscr{C}(a, b)$.
-3. The integral $\varphi[h] = \int_a^b \alpha(x) h(x)\,dx$, where $\alpha(x)$ is a fixed function in $\mathscr{C}(a, b)$, is a linear functional on $\mathscr{C}(a, b)$.
-4. More generally, $\varphi[h] = \int_a^b [\alpha_0(x)h(x) + \alpha_1(x)h'(x) + \cdots + \alpha_n(x)h^{(n)}(x)]\,dx$, where the $\alpha_i(x)$ are fixed functions in $\mathscr{C}(a, b)$, defines a linear functional on $\mathscr{D}_n(a, b)$.
+1. If $h(x) \in \mathscr{C}(a, b)$ and we fix a point $x\_0 \in [a, b]$, then $\varphi[h] = h(x\_0)$ is a linear functional on $\mathscr{C}(a, b)$.
+2. The integral $\varphi[h] = \int\_a^b h(x)\,dx$ is a linear functional on $\mathscr{C}(a, b)$.
+3. The integral $\varphi[h] = \int\_a^b \alpha(x) h(x)\,dx$, where $\alpha(x)$ is a fixed function in $\mathscr{C}(a, b)$, is a linear functional on $\mathscr{C}(a, b)$.
+4. More generally, $\varphi[h] = \int\_a^b [\alpha\_0(x)h(x) + \alpha\_1(x)h'(x) + \cdots + \alpha\_n(x)h^{(n)}(x)]\,dx$, where the $\alpha\_i(x)$ are fixed functions in $\mathscr{C}(a, b)$, defines a linear functional on $\mathscr{D}\_n(a, b)$.
 
 </div>
 
 #### Fundamental Lemmas
 
-Suppose the linear functional from Example 4 vanishes for all $h(x)$ belonging to some class. What can be said about the functions $\alpha_i(x)$? Some typical results in this direction are given by the following lemmas.
+Suppose the linear functional from Example 4 vanishes for all $h(x)$ belonging to some class. What can be said about the functions $\alpha\_i(x)$? Some typical results in this direction are given by the following lemmas.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Fundamental Lemma 1)</span></p>
@@ -211,11 +211,11 @@ for every function $h(x) \in \mathscr{C}(a, b)$ such that $h(a) = h(b) = 0$, the
 <details>
 <summary>Proof</summary>
 
-Suppose $\alpha(x)$ is nonzero, say positive, at some point in $[a, b]$. Then $\alpha(x)$ is also positive in some interval $[x_1, x_2] \subset [a, b]$. Set $h(x) = (x - x_1)(x_2 - x)$ for $x \in [x_1, x_2]$ and $h(x) = 0$ otherwise. Then $h(x)$ satisfies the conditions of the lemma. However,
+Suppose $\alpha(x)$ is nonzero, say positive, at some point in $[a, b]$. Then $\alpha(x)$ is also positive in some interval $[x\_1, x\_2] \subset [a, b]$. Set $h(x) = (x - x\_1)(x\_2 - x)$ for $x \in [x\_1, x\_2]$ and $h(x) = 0$ otherwise. Then $h(x)$ satisfies the conditions of the lemma. However,
 
 $$\int_a^b \alpha(x)h(x)\,dx = \int_{x_1}^{x_2} \alpha(x)(x - x_1)(x_2 - x)\,dx > 0,$$
 
-since the integrand is positive (except at $x_1$ and $x_2$). This contradiction proves the lemma.
+since the integrand is positive (except at $x\_1$ and $x\_2$). This contradiction proves the lemma.
 
 </details>
 </div>
@@ -227,7 +227,7 @@ If $\alpha(x)$ is continuous in $[a, b]$, and if
 
 $$\int_a^b \alpha(x) h'(x)\,dx = 0$$
 
-for every function $h(x) \in \mathscr{D}_1(a, b)$ such that $h(a) = h(b) = 0$, then $\alpha(x) = c$ for all $x$ in $[a, b]$, where $c$ is a constant.
+for every function $h(x) \in \mathscr{D}\_1(a, b)$ such that $h(a) = h(b) = 0$, then $\alpha(x) = c$ for all $x$ in $[a, b]$, where $c$ is a constant.
 
 </div>
 
@@ -235,11 +235,11 @@ for every function $h(x) \in \mathscr{D}_1(a, b)$ such that $h(a) = h(b) = 0$, t
 <details>
 <summary>Proof</summary>
 
-Let $c$ be the constant defined by the condition $\int_a^b [\alpha(x) - c]\,dx = 0$, and let
+Let $c$ be the constant defined by the condition $\int\_a^b [\alpha(x) - c]\,dx = 0$, and let
 
 $$h(x) = \int_a^x [\alpha(\xi) - c]\,d\xi,$$
 
-so that $h(x)$ automatically belongs to $\mathscr{D}_1(a, b)$ and satisfies $h(a) = h(b) = 0$. Then on one hand,
+so that $h(x)$ automatically belongs to $\mathscr{D}\_1(a, b)$ and satisfies $h(a) = h(b) = 0$. Then on one hand,
 
 $$\int_a^b [\alpha(x) - c] h'(x)\,dx = \int_a^b \alpha(x) h'(x)\,dx - c[h(b) - h(a)] = 0,$$
 
@@ -259,7 +259,7 @@ If $\alpha(x)$ is continuous in $[a, b]$, and if
 
 $$\int_a^b \alpha(x) h''(x)\,dx = 0$$
 
-for every function $h(x) \in \mathscr{D}_2(a, b)$ such that $h(a) = h(b) = 0$ and $h'(a) = h'(b) = 0$, then $\alpha(x) = c_0 + c_1 x$ for all $x$ in $[a, b]$, where $c_0$ and $c_1$ are constants.
+for every function $h(x) \in \mathscr{D}\_2(a, b)$ such that $h(a) = h(b) = 0$ and $h'(a) = h'(b) = 0$, then $\alpha(x) = c\_0 + c\_1 x$ for all $x$ in $[a, b]$, where $c\_0$ and $c\_1$ are constants.
 
 </div>
 
@@ -270,7 +270,7 @@ If $\alpha(x)$ and $\beta(x)$ are continuous in $[a, b]$, and if
 
 $$\int_a^b [\alpha(x)h(x) + \beta(x)h'(x)]\,dx = 0$$
 
-for every function $h(x) \in \mathscr{D}_1(a, b)$ such that $h(a) = h(b) = 0$, then $\beta(x)$ is differentiable and $\beta'(x) = \alpha(x)$ for all $x$ in $[a, b]$.
+for every function $h(x) \in \mathscr{D}\_1(a, b)$ such that $h(a) = h(b) = 0$, then $\beta(x)$ is differentiable and $\beta'(x) = \alpha(x)$ for all $x$ in $[a, b]$.
 
 </div>
 
@@ -278,7 +278,7 @@ for every function $h(x) \in \mathscr{D}_1(a, b)$ such that $h(a) = h(b) = 0$, t
 <details>
 <summary>Proof of Lemma 4</summary>
 
-Setting $A(x) = \int_a^x \alpha(\xi)\,d\xi$ and integrating by parts, we find that
+Setting $A(x) = \int\_a^x \alpha(\xi)\,d\xi$ and integrating by parts, we find that
 
 $$\int_a^b \alpha(x)h(x)\,dx = -\int_a^b A(x)h'(x)\,dx,$$
 
@@ -319,11 +319,11 @@ The differential of a differentiable functional is unique.
 <details>
 <summary>Proof</summary>
 
-If $\varphi[h]$ is a linear functional and $\varphi[h]/\lVert h \rVert \to 0$ as $\lVert h \rVert \to 0$, then $\varphi[h] \equiv 0$. In fact, suppose $\varphi[h_0] \neq 0$ for some $h_0 \neq 0$. Setting $h_n = h_0/n$ and $\lambda = \varphi[h_0]/\lVert h_0 \rVert$, we have $\lVert h_n \rVert \to 0$ as $n \to \infty$, but
+If $\varphi[h]$ is a linear functional and $\varphi[h]/\lVert h \rVert \to 0$ as $\lVert h \rVert \to 0$, then $\varphi[h] \equiv 0$. In fact, suppose $\varphi[h\_0] \neq 0$ for some $h\_0 \neq 0$. Setting $h\_n = h\_0/n$ and $\lambda = \varphi[h\_0]/\lVert h\_0 \rVert$, we have $\lVert h\_n \rVert \to 0$ as $n \to \infty$, but
 
 $$\lim_{n \to \infty} \frac{\varphi[h_n]}{\lVert h_n \rVert} = \lim_{n \to \infty} \frac{n \varphi[h_0]}{n \lVert h_0 \rVert} = \lambda \neq 0,$$
 
-a contradiction. Now, if $\Delta J[h] = \varphi_1[h] + \varepsilon_1 \lVert h \rVert = \varphi_2[h] + \varepsilon_2 \lVert h \rVert$, then $\varphi_1[h] - \varphi_2[h] = \varepsilon_2 \lVert h \rVert$, and since $\varphi_1 - \varphi_2$ is linear with $(\varphi_1[h] - \varphi_2[h])/\lVert h \rVert \to 0$, by the above it follows that $\varphi_1[h] - \varphi_2[h] \equiv 0$.
+a contradiction. Now, if $\Delta J[h] = \varphi\_1[h] + \varepsilon\_1 \lVert h \rVert = \varphi\_2[h] + \varepsilon\_2 \lVert h \rVert$, then $\varphi\_1[h] - \varphi\_2[h] = \varepsilon\_2 \lVert h \rVert$, and since $\varphi\_1 - \varphi\_2$ is linear with $(\varphi\_1[h] - \varphi\_2[h])/\lVert h \rVert \to 0$, by the above it follows that $\varphi\_1[h] - \varphi\_2[h] \equiv 0$.
 
 </details>
 </div>
@@ -333,11 +333,11 @@ a contradiction. Now, if $\Delta J[h] = \varphi_1[h] + \varepsilon_1 \lVert h \r
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak and Strong Extremum)</span></p>
 
-We shall say that the functional $J[y]$ has a **weak extremum** for $y = \hat{y}$ if there exists an $\varepsilon > 0$ such that $J[y] - J[\hat{y}]$ has the same sign for all $y$ in the domain of definition of the functional which satisfy $\lVert y - \hat{y} \rVert_1 < \varepsilon$, where $\lVert \cdot \rVert_1$ denotes the norm in $\mathscr{D}_1$.
+We shall say that the functional $J[y]$ has a **weak extremum** for $y = \hat{y}$ if there exists an $\varepsilon > 0$ such that $J[y] - J[\hat{y}]$ has the same sign for all $y$ in the domain of definition of the functional which satisfy $\lVert y - \hat{y} \rVert\_1 < \varepsilon$, where $\lVert \cdot \rVert\_1$ denotes the norm in $\mathscr{D}\_1$.
 
-We say that $J[y]$ has a **strong extremum** for $y = \hat{y}$ if there exists an $\varepsilon > 0$ such that $J[y] - J[\hat{y}]$ has the same sign for all $y$ satisfying $\lVert y - \hat{y} \rVert_0 < \varepsilon$, where $\lVert \cdot \rVert_0$ denotes the norm in $\mathscr{C}$.
+We say that $J[y]$ has a **strong extremum** for $y = \hat{y}$ if there exists an $\varepsilon > 0$ such that $J[y] - J[\hat{y}]$ has the same sign for all $y$ satisfying $\lVert y - \hat{y} \rVert\_0 < \varepsilon$, where $\lVert \cdot \rVert\_0$ denotes the norm in $\mathscr{C}$.
 
-Every strong extremum is simultaneously a weak extremum, since if $\lVert y - \hat{y} \rVert_1 < \varepsilon$, then $\lVert y - \hat{y} \rVert_0 < \varepsilon$, *a fortiori*. However, the converse is not true in general: a weak extremum may not be a strong extremum.
+Every strong extremum is simultaneously a weak extremum, since if $\lVert y - \hat{y} \rVert\_1 < \varepsilon$, then $\lVert y - \hat{y} \rVert\_0 < \varepsilon$, *a fortiori*. However, the converse is not true in general: a weak extremum may not be a strong extremum.
 
 </div>
 
@@ -356,7 +356,7 @@ for all admissible $h$.
 <details>
 <summary>Proof</summary>
 
-Suppose $J[y]$ has a minimum for $y = \hat{y}$. By definition of the variation $\delta J[h]$, we have $\Delta J[h] = \delta J[h] + \varepsilon \lVert h \rVert$, where $\varepsilon \to 0$ as $\lVert h \rVert \to 0$. Thus, for sufficiently small $\lVert h \rVert$, $\Delta J[h]$ has the same sign as $\delta J[h]$. If $\delta J[h_0] \neq 0$ for some admissible $h_0$, then $\delta J[-\alpha h_0] = -\delta J[\alpha h_0]$, so $\Delta J$ can be made to have either sign for arbitrarily small $\lVert h \rVert$. This contradicts the assumption that $J[y]$ has a minimum for $y = \hat{y}$.
+Suppose $J[y]$ has a minimum for $y = \hat{y}$. By definition of the variation $\delta J[h]$, we have $\Delta J[h] = \delta J[h] + \varepsilon \lVert h \rVert$, where $\varepsilon \to 0$ as $\lVert h \rVert \to 0$. Thus, for sufficiently small $\lVert h \rVert$, $\Delta J[h]$ has the same sign as $\delta J[h]$. If $\delta J[h\_0] \neq 0$ for some admissible $h\_0$, then $\delta J[-\alpha h\_0] = -\delta J[\alpha h\_0]$, so $\Delta J$ can be made to have either sign for arbitrarily small $\lVert h \rVert$. This contradicts the assumption that $J[y]$ has a minimum for $y = \hat{y}$.
 
 </details>
 </div>
@@ -436,7 +436,7 @@ Euler's equation gives a necessary condition for an extremum, not a sufficient o
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bernstein's Existence and Uniqueness Theorem)</span></p>
 
-If the functions $F$, $F_y$ and $F_{y'}$ are continuous at every finite point $(x, y)$ for any finite $y'$, and if a constant $k > 0$ and functions
+If the functions $F$, $F\_y$ and $F\_{y'}$ are continuous at every finite point $(x, y)$ for any finite $y'$, and if a constant $k > 0$ and functions
 
 $$\alpha = \alpha(x, y) \geqslant 0, \qquad \beta = \beta(x, y) \geqslant 0$$
 
@@ -455,7 +455,7 @@ Suppose $y = y(x)$ has a continuous first derivative and satisfies Euler's equat
 
 $$F_y - \frac{d}{dx} F_{y'} = 0.$$
 
-Then, if $F(x, y, y')$ has continuous first and second derivatives with respect to all its arguments at all points $(x, y)$ where $F_{y'y'}[x, y(x), y'(x)] \neq 0$, it follows that $y(x)$ has a continuous second derivative.
+Then, if $F(x, y, y')$ has continuous first and second derivatives with respect to all its arguments at all points $(x, y)$ where $F\_{y'y'}[x, y(x), y'(x)] \neq 0$, it follows that $y(x)$ has a continuous second derivative.
 
 </div>
 
@@ -466,21 +466,21 @@ Euler's equation is in general a second-order differential equation. In certain 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Special Cases of Euler's Equation)</span></p>
 
-**Case 1.** $F$ does not depend on $y$, i.e., the functional is $\int_a^b F(x, y')\,dx$. Then Euler's equation becomes $\frac{d}{dx} F_{y'} = 0$, which has the first integral
+**Case 1.** $F$ does not depend on $y$, i.e., the functional is $\int\_a^b F(x, y')\,dx$. Then Euler's equation becomes $\frac{d}{dx} F\_{y'} = 0$, which has the first integral
 
 $$F_{y'} = C,$$
 
 a first-order ODE. Solving for $y'$, we get $y' = f(x, C)$, and $y$ is found by a quadrature.
 
-**Case 2.** $F$ does not depend on $x$, i.e., the functional is $\int_a^b F(y, y')\,dx$. Then Euler's equation has the first integral
+**Case 2.** $F$ does not depend on $x$, i.e., the functional is $\int\_a^b F(y, y')\,dx$. Then Euler's equation has the first integral
 
 $$F - y' F_{y'} = C.$$
 
-This follows from multiplying the expanded Euler equation $F_y - F_{y'y}y' - F_{y'y'}y'' = 0$ by $y'$ to obtain $\frac{d}{dx}(F - y'F_{y'}) = 0$.
+This follows from multiplying the expanded Euler equation $F\_y - F\_{y'y}y' - F\_{y'y'}y'' = 0$ by $y'$ to obtain $\frac{d}{dx}(F - y'F\_{y'}) = 0$.
 
-**Case 3.** $F$ does not depend on $y'$. Then Euler's equation becomes $F_y(x, y) = 0$, which is not a differential equation but a "finite" equation whose solution consists of one or more curves $y = y(x)$.
+**Case 3.** $F$ does not depend on $y'$. Then Euler's equation becomes $F\_y(x, y) = 0$, which is not a differential equation but a "finite" equation whose solution consists of one or more curves $y = y(x)$.
 
-**Case 4.** Functionals of the form $\int_a^b f(x, y)\sqrt{1 + y'^2}\,dx$, representing integrals with respect to arc length $s$ ($ds = \sqrt{1 + y'^2}\,dx$). Euler's equation simplifies to
+**Case 4.** Functionals of the form $\int\_a^b f(x, y)\sqrt{1 + y'^2}\,dx$, representing integrals with respect to arc length $s$ ($ds = \sqrt{1 + y'^2}\,dx$). Euler's equation simplifies to
 
 $$f_y - f_x y' - f \frac{y''}{1 + y'^2} = 0.$$
 
@@ -489,7 +489,7 @@ $$f_y - f_x y' - f \frac{y''}{1 + y'^2} = 0.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortest Curve Revisited)</span></p>
 
-Consider $J[y] = \int_1^2 \frac{\sqrt{1 + y'^2}}{x}\,dx$, with $y(1) = 0$, $y(2) = 1$. The integrand does not contain $y$, so by Case 1, $F_{y'} = C$. Thus
+Consider $J[y] = \int\_1^2 \frac{\sqrt{1 + y'^2}}{x}\,dx$, with $y(1) = 0$, $y(2) = 1$. The integrand does not contain $y$, so by Case 1, $F\_{y'} = C$. Thus
 
 $$\frac{y'}{x\sqrt{1 + y'^2}} = C,$$
 
@@ -497,7 +497,7 @@ so that $y'^2(1 - C^2 x^2) = C^2 x^2$, giving $y' = \frac{Cx}{\sqrt{1 - C^2 x^2}
 
 $$y = \int \frac{Cx\,dx}{\sqrt{1 - C^2 x^2}} = \frac{1}{C}\sqrt{1 - C^2 x^2} + C_1.$$
 
-This gives $(y - C_1)^2 + x^2 = 1/C^2$, a circle with center on the $y$-axis. From $y(1) = 0$ and $y(2) = 1$, we find $C = 1/\sqrt{5}$ and $C_1 = 2$, so the final solution is
+This gives $(y - C\_1)^2 + x^2 = 1/C^2$, a circle with center on the $y$-axis. From $y(1) = 0$ and $y(2) = 1$, we find $C = 1/\sqrt{5}$ and $C\_1 = 2$, so the final solution is
 
 $$(y - 2)^2 + x^2 = 5.$$
 
@@ -506,11 +506,11 @@ $$(y - 2)^2 + x^2 = 5.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Surface of Revolution of Minimum Area — Catenary)</span></p>
 
-Among all curves joining two given points $(x_0, y_0)$ and $(x_1, y_1)$, find the one which generates the surface of revolution of minimum area when rotated about the $x$-axis. The area is
+Among all curves joining two given points $(x\_0, y\_0)$ and $(x\_1, y\_1)$, find the one which generates the surface of revolution of minimum area when rotated about the $x$-axis. The area is
 
 $$2\pi \int_{x_0}^{x_1} y\sqrt{1 + y'^2}\,dx.$$
 
-Since the integrand does not depend explicitly on $x$, by Case 2, $F - y'F_{y'} = C$, i.e.,
+Since the integrand does not depend explicitly on $x$, by Case 2, $F - y'F\_{y'} = C$, i.e.,
 
 $$y\sqrt{1 + y'^2} - y \cdot \frac{y'^2}{\sqrt{1 + y'^2}} = C,$$
 
@@ -522,7 +522,7 @@ giving
 
 $$y = C \cosh \frac{x + C_1}{C}.$$
 
-The curve is a **catenary**, and the surface of revolution is a **catenoid**. The constants $C$ and $C_1$ are determined by the boundary conditions $y(x_0) = y_0$ and $y(x_1) = y_1$.
+The curve is a **catenary**, and the surface of revolution is a **catenoid**. The constants $C$ and $C\_1$ are determined by the boundary conditions $y(x\_0) = y\_0$ and $y(x\_1) = y\_1$.
 
 Depending on the positions of the two points, three cases are possible:
 
@@ -539,7 +539,7 @@ For the functional
 
 $$J[y] = \int_a^b (x - y)^2\,dx,$$
 
-Euler's equation reduces to the finite equation $F_y = -2(x - y) = 0$ (Case 3), whose solution is the straight line $y = x$. The integral $J[y]$ vanishes along this line.
+Euler's equation reduces to the finite equation $F\_y = -2(x - y) = 0$ (Case 3), whose solution is the straight line $y = x$. The integral $J[y]$ vanishes along this line.
 
 </div>
 
@@ -551,7 +551,7 @@ Consider two independent variables (the considerations remain the same for $n$ v
 
 $$J[z] = \iint_R F(x, y, z, z_x, z_y)\,dx\,dy,$$
 
-where $R$ is a closed region, $z_x$ and $z_y$ are the partial derivatives of $z$. We seek a function $z(x, y)$ such that:
+where $R$ is a closed region, $z\_x$ and $z\_y$ are the partial derivatives of $z$. We seek a function $z(x, y)$ such that:
 
 1. $z(x, y)$ and its first and second derivatives are continuous in $R$;
 2. $z(x, y)$ takes given values on the boundary $\Gamma$ of $R$;
@@ -602,7 +602,7 @@ Euler's equation has the form
 
 $$r(1 + q^2) - 2spq + t(1 + p^2) = 0,$$
 
-where $p = z_x$, $q = z_y$, $r = z_{xx}$, $s = z_{xy}$, $t = z_{yy}$. This equation states that the **mean curvature** of the required surface is zero:
+where $p = z\_x$, $q = z\_y$, $r = z\_{xx}$, $s = z\_{xy}$, $t = z\_{yy}$. This equation states that the **mean curvature** of the required surface is zero:
 
 $$M = \frac{1}{2}\left(\frac{1}{\kappa_1} + \frac{1}{\kappa_2}\right) = \frac{Eg - 2Ff + Ge}{2(EG - F^2)} = 0.$$
 
@@ -639,7 +639,7 @@ $$F_{y'}\big|_{x=a} = 0, \qquad F_{y'}\big|_{x=b} = 0.$$
 
 Thus, to solve the variable end point problem, we must first find the general integral of Euler's equation, and then use the natural boundary conditions to determine the values of the arbitrary constants.
 
-In the **mixed case**, where one end is fixed (say $y(a) = A$) and the other is variable (the end point lies on $x = b$), the conditions reduce to Euler's equation, the fixed condition $y(a) = A$, and the single natural boundary condition $F_{y'}\big\|\_{x=b} = 0$.
+In the **mixed case**, where one end is fixed (say $y(a) = A$) and the other is variable (the end point lies on $x = b$), the conditions reduce to Euler's equation, the fixed condition $y(a) = A$, and the single natural boundary condition $F\_{y'}\big\|\_{x=b} = 0$.
 
 </div>
 
@@ -656,7 +656,7 @@ The general solution of the corresponding Euler equation consists of a family of
 
 $$x = r(\theta - \sin \theta) + c, \qquad y = r(1 - \cos \theta).$$
 
-Since the curve passes through the origin, $c = 0$. The natural boundary condition $F_{y'}\big\|\_{x=b} = 0$ gives $y' = 0$ at $x = b$, meaning the tangent to the curve at the right end point must be horizontal. It follows that $r = b/\pi$, so the required curve is
+Since the curve passes through the origin, $c = 0$. The natural boundary condition $F\_{y'}\big\|\_{x=b} = 0$ gives $y' = 0$ at $x = b$, meaning the tangent to the curve at the right end point must be horizontal. It follows that $r = b/\pi$, so the required curve is
 
 $$x = \frac{b}{\pi}(\theta - \sin \theta), \qquad y = \frac{b}{\pi}(1 - \cos \theta).$$
 
@@ -672,11 +672,11 @@ $$J[y] = \int_a^b F(x, y, y')\,dx, \qquad y(a) = A, \quad y(b) = B,$$
 
 corresponding to the simplest variational problem. Our approach is to go from the variational problem to an $n$-dimensional problem, and then pass to the limit $n \to \infty$.
 
-We divide $[a, b]$ into $n + 1$ equal subintervals by introducing points $x_0 = a, x_1, \ldots, x_n, x_{n+1} = b$ with $x_{i+1} - x_i = \Delta x$, and replace the smooth function $y(x)$ by a polygonal line with vertices $(x_i, y_i)$, where $y_i = y(x_i)$. Then $J[y]$ is approximated by
+We divide $[a, b]$ into $n + 1$ equal subintervals by introducing points $x\_0 = a, x\_1, \ldots, x\_n, x\_{n+1} = b$ with $x\_{i+1} - x\_i = \Delta x$, and replace the smooth function $y(x)$ by a polygonal line with vertices $(x\_i, y\_i)$, where $y\_i = y(x\_i)$. Then $J[y]$ is approximated by
 
 $$J(y_1, \ldots, y_n) \approx \sum_{i=0}^{n} F\!\left(x_i, y_i, \frac{y_{i+1} - y_i}{\Delta x}\right) \Delta x.$$
 
-Computing the partial derivative $\partial J / \partial y_k$, only the terms with $i = k$ and $i = k - 1$ contribute:
+Computing the partial derivative $\partial J / \partial y\_k$, only the terms with $i = k$ and $i = k - 1$ contribute:
 
 $$\frac{\partial J}{\partial y_k} = F_y\!\left(x_k, y_k, \frac{y_{k+1} - y_k}{\Delta x}\right)\Delta x + F_{y'}\!\left(x_{k-1}, y_{k-1}, \frac{y_k - y_{k-1}}{\Delta x}\right) - F_{y'}\!\left(x_k, y_k, \frac{y_{k+1} - y_k}{\Delta x}\right).$$
 
@@ -693,11 +693,11 @@ called the **variational derivative** of the functional $J[y]$.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Variational Derivative)</span></p>
 
-Let $J[y]$ be a functional depending on $y(x)$, and suppose we give $y(x)$ an increment $h(x)$ which is different from zero only in a neighborhood of a point $x_0$. Dividing the corresponding increment $J[y + h] - J[y]$ by the area $\Delta\sigma$ lying between the curve $y = h(x)$ and the $x$-axis, we obtain the ratio
+Let $J[y]$ be a functional depending on $y(x)$, and suppose we give $y(x)$ an increment $h(x)$ which is different from zero only in a neighborhood of a point $x\_0$. Dividing the corresponding increment $J[y + h] - J[y]$ by the area $\Delta\sigma$ lying between the curve $y = h(x)$ and the $x$-axis, we obtain the ratio
 
 $$\frac{J[y + h] - J[y]}{\Delta\sigma}.$$
 
-If, as $\Delta\sigma \to 0$ (with both $\max \|h(x)\|$ and the length of the interval where $h(x)$ is nonvanishing going to zero), this ratio converges to a limit, that limit is called the **variational derivative** of $J[y]$ at the point $x_0$ [for the curve $y = y(x)$], and is denoted by
+If, as $\Delta\sigma \to 0$ (with both $\max \|h(x)\|$ and the length of the interval where $h(x)$ is nonvanishing going to zero), this ratio converges to a limit, that limit is called the **variational derivative** of $J[y]$ at the point $x\_0$ [for the curve $y = y(x)$], and is denoted by
 
 $$\frac{\delta J}{\delta y}\bigg|_{x = x_0}.$$
 
@@ -708,11 +708,11 @@ The variational derivative obeys all the familiar rules of ordinary derivatives 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variation via the Variational Derivative)</span></p>
 
-If $h(x)$ is different from zero in a neighborhood of $x_0$ and $\Delta\sigma$ is the area between $y = h(x)$ and the $x$-axis, then
+If $h(x)$ is different from zero in a neighborhood of $x\_0$ and $\Delta\sigma$ is the area between $y = h(x)$ and the $x$-axis, then
 
 $$\Delta J = J[y + h] - J[y] = \left\lbrace\frac{\delta J}{\delta y}\bigg|_{x = x_0} + \varepsilon\right\rbrace \Delta\sigma,$$
 
-where $\varepsilon \to 0$ as both $\max \|h(x)\|$ and the length of the interval in which $h(x)$ is nonvanishing go to zero. It follows that the differential (or variation) of $J[y]$ at the point $x_0$ is
+where $\varepsilon \to 0$ as both $\max \|h(x)\|$ and the length of the interval in which $h(x)$ is nonvanishing go to zero. It follows that the differential (or variation) of $J[y]$ at the point $x\_0$ is
 
 $$\delta J = \frac{\delta J}{\delta y}\bigg|_{x = x_0} \Delta\sigma.$$
 
@@ -745,7 +745,7 @@ corresponding to the original functional $J[y]$, then the corresponding curve $v
 
 $$\frac{\partial F_1}{\partial v} - \frac{d}{du}\frac{\partial F_1}{\partial v'} = 0$$
 
-corresponding to the new functional $J_1[v]$. In other words, whether or not a curve is an extremal is a property which is independent of the choice of coordinate system.
+corresponding to the new functional $J\_1[v]$. In other words, whether or not a curve is an extremal is a property which is independent of the choice of coordinate system.
 
 </div>
 
@@ -753,7 +753,7 @@ corresponding to the new functional $J_1[v]$. In other words, whether or not a c
 <details>
 <summary>Proof (sketch)</summary>
 
-Let $\Delta\sigma$ denote the area bounded by the curves $y = y(x)$ and $y = y(x) + h(x)$, and let $\Delta\sigma_1$ denote the area bounded by the corresponding curves $v = v(u)$ and $v = v(u) + \eta(u)$ in the $uv$-plane. By the standard formula for the transformation of areas, in the limit as $\Delta\sigma, \Delta\sigma_1 \to 0$ the ratio $\Delta\sigma/\Delta\sigma_1$ approaches the Jacobian
+Let $\Delta\sigma$ denote the area bounded by the curves $y = y(x)$ and $y = y(x) + h(x)$, and let $\Delta\sigma\_1$ denote the area bounded by the corresponding curves $v = v(u)$ and $v = v(u) + \eta(u)$ in the $uv$-plane. By the standard formula for the transformation of areas, in the limit as $\Delta\sigma, \Delta\sigma\_1 \to 0$ the ratio $\Delta\sigma/\Delta\sigma\_1$ approaches the Jacobian
 
 $$\begin{vmatrix} x_u & x_v \\ y_u & y_v \end{vmatrix},$$
 
@@ -765,7 +765,7 @@ then
 
 $$\lim_{\Delta\sigma_1 \to 0} \frac{J_1[v + \eta] - J_1[v]}{\Delta\sigma_1} = 0$$
 
-as well. It follows that $v(u)$ satisfies Euler's equation for $J_1[v]$ whenever $y(x)$ satisfies Euler's equation for $J[y]$.
+as well. It follows that $v(u)$ satisfies Euler's equation for $J\_1[v]$ whenever $y(x)$ satisfies Euler's equation for $J[y]$.
 
 </details>
 </div>
@@ -806,21 +806,21 @@ This chapter extends the simplest variational problem to several settings: funct
 
 ### 9. The Fixed End Point Problem for $n$ Unknown Functions
 
-Let $F(x, y_1, \ldots, y_n, z_1, \ldots, z_n)$ be a function with continuous first and second (partial) derivatives with respect to all its arguments. Consider the problem of finding necessary conditions for an extremum of a functional of the form
+Let $F(x, y\_1, \ldots, y\_n, z\_1, \ldots, z\_n)$ be a function with continuous first and second (partial) derivatives with respect to all its arguments. Consider the problem of finding necessary conditions for an extremum of a functional of the form
 
 $$J[y_1, \ldots, y_n] = \int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx,$$
 
-which depends on $n$ continuously differentiable functions $y_1(x), \ldots, y_n(x)$ satisfying the boundary conditions
+which depends on $n$ continuously differentiable functions $y\_1(x), \ldots, y\_n(x)$ satisfying the boundary conditions
 
 $$y_i(a) = A_i, \quad y_i(b) = B_i \qquad (i = 1, \ldots, n).$$
 
-In other words, we are looking for an extremum of the functional defined on the set of smooth curves joining two fixed points in $(n + 1)$-dimensional Euclidean space $\mathscr{E}_{n+1}$. The problem of finding *geodesics*, i.e., shortest curves joining two points of some manifold, is of this type. The same kind of problem arises in geometric optics, in finding the paths along which light rays propagate in an inhomogeneous medium. In fact, according to *Fermat's principle*, light goes from a point $P_0$ to a point $P_1$ along the path for which the transit time is the smallest.
+In other words, we are looking for an extremum of the functional defined on the set of smooth curves joining two fixed points in $(n + 1)$-dimensional Euclidean space $\mathscr{E}\_{n+1}$. The problem of finding *geodesics*, i.e., shortest curves joining two points of some manifold, is of this type. The same kind of problem arises in geometric optics, in finding the paths along which light rays propagate in an inhomogeneous medium. In fact, according to *Fermat's principle*, light goes from a point $P\_0$ to a point $P\_1$ along the path for which the transit time is the smallest.
 
-To find necessary conditions for the functional to have an extremum, we replace each $y_i(x)$ by a "varied" function $y_i(x) + h_i(x)$. The *variation* $\delta J$ of the functional $J[y_1, \ldots, y_n]$, i.e., the expression linear in $h_i$, $h_i'$ $(i = 1, \ldots, n)$ which differs from the increment $\Delta J$ by a quantity of order higher than 1, is
+To find necessary conditions for the functional to have an extremum, we replace each $y\_i(x)$ by a "varied" function $y\_i(x) + h\_i(x)$. The *variation* $\delta J$ of the functional $J[y\_1, \ldots, y\_n]$, i.e., the expression linear in $h\_i$, $h\_i'$ $(i = 1, \ldots, n)$ which differs from the increment $\Delta J$ by a quantity of order higher than 1, is
 
 $$\delta J = \int_a^b \sum_{i=1}^{n} (F_{y_i} h_i + F_{y_i'} h_i')\,dx.$$
 
-Since all the increments $h_i(x)$ are independent, we can choose one of them quite arbitrarily (as long as the boundary conditions are satisfied), setting all the others equal to zero. Therefore, the necessary condition $\delta J = 0$ for an extremum implies
+Since all the increments $h\_i(x)$ are independent, we can choose one of them quite arbitrarily (as long as the boundary conditions are satisfied), setting all the others equal to zero. Therefore, the necessary condition $\delta J = 0$ for an extremum implies
 
 $$\int_a^b (F_{y_i} h_i + F_{y_i'} h_i')\,dx = 0 \qquad (i = 1, \ldots, n).$$
 
@@ -829,11 +829,11 @@ Using Lemma 4 of Sec. 3.1, we obtain the following system of Euler equations:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler Equations for $n$ Unknown Functions)</span></p>
 
-A necessary condition for the curve $y_i = y_i(x)$ $(i = 1, \ldots, n)$ to be an extremal of the functional
+A necessary condition for the curve $y\_i = y\_i(x)$ $(i = 1, \ldots, n)$ to be an extremal of the functional
 
 $$\int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx$$
 
-is that the functions $y_i(x)$ satisfy the Euler equations
+is that the functions $y\_i(x)$ satisfy the Euler equations
 
 $$F_{y_i} - \frac{d}{dx} F_{y_i'} = 0 \qquad (i = 1, \ldots, n).$$
 
@@ -844,11 +844,11 @@ Since this is a system of $n$ second-order differential equations, its general s
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Equivalent Functionals)</span></p>
 
-Two different integrands $F$ can lead to the same system of Euler equations. In fact, let $\Phi = \Phi(x, y_1, \ldots, y_n)$ be any twice differentiable function, and let
+Two different integrands $F$ can lead to the same system of Euler equations. In fact, let $\Phi = \Phi(x, y\_1, \ldots, y\_n)$ be any twice differentiable function, and let
 
 $$\Psi(x, y_1, \ldots, y_n, y_1', \ldots, y_n') = \frac{\partial \Phi}{\partial x} + \sum_{i=1}^{n} \frac{\partial \Phi}{\partial y_i} y_i'.$$
 
-Then by direct calculation $\frac{\partial}{\partial y_i} - \frac{d}{dx}\!\left(\frac{\partial}{\partial y_i'}\right)$ applied to $\Psi$ gives zero. Hence the functionals
+Then by direct calculation $\frac{\partial}{\partial y\_i} - \frac{d}{dx}\!\left(\frac{\partial}{\partial y\_i'}\right)$ applied to $\Psi$ gives zero. Hence the functionals
 
 $$\int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx$$
 
@@ -882,11 +882,11 @@ we obtain the differential equations for the curves along which the light propag
 
 Suppose we have a surface $\sigma$ specified by a vector equation $\mathbf{r} = \mathbf{r}(u, v)$. The shortest curve lying on $\sigma$ and connecting two points of $\sigma$ is called the *geodesic* connecting the two points. The equations for the geodesics of $\sigma$ are the Euler equations of the corresponding variational problem, i.e., the problem of finding the minimum distance (measured along $\sigma$) between two points of $\sigma$.
 
-A curve lying on the surface can be specified by the equations $u = u(t)$, $v = v(t)$. The arc length between the points corresponding to $t_1$ and $t_2$ equals
+A curve lying on the surface can be specified by the equations $u = u(t)$, $v = v(t)$. The arc length between the points corresponding to $t\_1$ and $t\_2$ equals
 
 $$J[u, v] = \int_{t_1}^{t_2} \sqrt{Eu'^2 + 2Fu'v' + Gv'^2}\,dt,$$
 
-where $E$, $F$ and $G$ are the coefficients of the first fundamental (quadratic) form of the surface, i.e., $E = \mathbf{r}_u \cdot \mathbf{r}_u$, $F = \mathbf{r}_u \cdot \mathbf{r}_v$, $G = \mathbf{r}_v \cdot \mathbf{r}_v$.
+where $E$, $F$ and $G$ are the coefficients of the first fundamental (quadratic) form of the surface, i.e., $E = \mathbf{r}\_u \cdot \mathbf{r}\_u$, $F = \mathbf{r}\_u \cdot \mathbf{r}\_v$, $G = \mathbf{r}\_v \cdot \mathbf{r}\_v$.
 
 Writing the Euler equations for this functional, we obtain
 
@@ -898,7 +898,7 @@ As a simple illustration, consider the geodesics of the circular cylinder $\math
 
 $$\frac{d}{dt}\frac{a^2\varphi'}{\sqrt{a^2\varphi'^2 + z'^2}} = 0, \qquad \frac{d}{dt}\frac{z'}{\sqrt{a^2\varphi'^2 + z'^2}} = 0,$$
 
-i.e., $\frac{a^2\varphi'}{\sqrt{a^2\varphi'^2 + z'^2}} = C_1$ and $\frac{z'}{\sqrt{a^2\varphi'^2 + z'^2}} = C_2$. Dividing the second equation by the first, we obtain $\frac{dz}{d\varphi} = c_1$, which has the solution $z = c_1\varphi + c_2$, representing a two-parameter family of helical lines lying on the cylinder.
+i.e., $\frac{a^2\varphi'}{\sqrt{a^2\varphi'^2 + z'^2}} = C\_1$ and $\frac{z'}{\sqrt{a^2\varphi'^2 + z'^2}} = C\_2$. Dividing the second equation by the first, we obtain $\frac{dz}{d\varphi} = c\_1$, which has the solution $z = c\_1\varphi + c\_2$, representing a two-parameter family of helical lines lying on the cylinder.
 
 </div>
 
@@ -920,7 +920,7 @@ $$\Phi(x, y, \lambda\dot{x}, \lambda\dot{y}) \equiv \lambda\Phi(x, y, \dot{x}, \
 
 for every $\lambda > 0$.
 
-Conversely, let $\int_{t_0}^{t_1} \Phi(x, y, \dot{x}, \dot{y})\,dt$ be a functional whose integrand $\Phi$ does not involve $t$ explicitly and is positive-homogeneous of degree 1 in $\dot{x}$ and $\dot{y}$. We now show that the value of such a functional depends only on the curve in the $xy$-plane defined by the parametric equations $x = x(t)$, $y = y(t)$, and not on the functions $x(t)$, $y(t)$ themselves, i.e., that if we go from $t$ to some new parameter $\tau$ by setting $t = t(\tau)$, where $dt/d\tau > 0$, the value of the functional does not change.
+Conversely, let $\int\_{t\_0}^{t\_1} \Phi(x, y, \dot{x}, \dot{y})\,dt$ be a functional whose integrand $\Phi$ does not involve $t$ explicitly and is positive-homogeneous of degree 1 in $\dot{x}$ and $\dot{y}$. We now show that the value of such a functional depends only on the curve in the $xy$-plane defined by the parametric equations $x = x(t)$, $y = y(t)$, and not on the functions $x(t)$, $y(t)$ themselves, i.e., that if we go from $t$ to some new parameter $\tau$ by setting $t = t(\tau)$, where $dt/d\tau > 0$, the value of the functional does not change.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parametric Invariance)</span></p>
@@ -941,25 +941,25 @@ The variational problem for the right-hand side leads to the pair of Euler equat
 
 $$\Phi_x - \frac{d}{dt}\Phi_{\dot{x}} = 0, \qquad \Phi_y - \frac{d}{dt}\Phi_{\dot{y}} = 0,$$
 
-which must be equivalent to the single Euler equation $F_y - \frac{d}{dx}F_{y'} = 0$ corresponding to the variational problem for the original functional. Hence, the equations cannot be independent, and in fact it is easily verified that they are connected by the identity
+which must be equivalent to the single Euler equation $F\_y - \frac{d}{dx}F\_{y'} = 0$ corresponding to the variational problem for the original functional. Hence, the equations cannot be independent, and in fact it is easily verified that they are connected by the identity
 
 $$\dot{x}\!\left(\Phi_x - \frac{d}{dt}\Phi_{\dot{x}}\right) + \dot{y}\!\left(\Phi_y - \frac{d}{dt}\Phi_{\dot{y}}\right) = 0.$$
 
 ### 11. Functionals Depending on Higher-Order Derivatives
 
-So far, we have considered functionals of the form $\int_a^b F(x, y, y')\,dx$, depending on the function $y(x)$ and its first derivative $y'(x)$. However, many problems (e.g., in the theory of elasticity) involve functionals whose integrands contain not only $y_i(x)$ and $y_i'(x)$, but also higher-order derivatives $y_i''(x), y_i'''(x), \ldots$ The method given above for finding extrema of functionals can be carried over to this more general case without essential changes. For simplicity, we confine ourselves to the case of a single unknown function $y(x)$.
+So far, we have considered functionals of the form $\int\_a^b F(x, y, y')\,dx$, depending on the function $y(x)$ and its first derivative $y'(x)$. However, many problems (e.g., in the theory of elasticity) involve functionals whose integrands contain not only $y\_i(x)$ and $y\_i'(x)$, but also higher-order derivatives $y\_i''(x), y\_i'''(x), \ldots$ The method given above for finding extrema of functionals can be carried over to this more general case without essential changes. For simplicity, we confine ourselves to the case of a single unknown function $y(x)$.
 
-Thus, let $F(x, y, z_1, \ldots, z_n)$ be a function with continuous first and second (partial) derivatives with respect to all its arguments, and consider a functional of the form
+Thus, let $F(x, y, z\_1, \ldots, z\_n)$ be a function with continuous first and second (partial) derivatives with respect to all its arguments, and consider a functional of the form
 
 $$J[y] = \int_a^b F(x, y, y', \ldots, y^{(n)})\,dx.$$
 
-Then we pose the following problem: *Among all functions $y(x)$ belonging to the space $\mathscr{D}_n(a, b)$* and satisfying the conditions
+Then we pose the following problem: *Among all functions $y(x)$ belonging to the space $\mathscr{D}\_n(a, b)$* and satisfying the conditions
 
 $$y(a) = A_0, \quad y'(a) = A_1, \quad \ldots, \quad y^{(n-1)}(a) = A_{n-1},$$
 
 $$y(b) = B_0, \quad y'(b) = B_1, \quad \ldots, \quad y^{(n-1)}(b) = B_{n-1},$$
 
-*find the function for which $J[y]$ has an extremum.* We replace $y(x)$ by the "varied" function $y(x) + h(x)$, where $h(x)$ belongs to $\mathscr{D}_n(a, b)$. By the *variation* $\delta J$ of the functional $J[y]$, we mean the expression which is linear in $h, h', \ldots, h^{(n)}$, and which differs from the increment by a quantity of order higher than 1. Then
+*find the function for which $J[y]$ has an extremum.* We replace $y(x)$ by the "varied" function $y(x) + h(x)$, where $h(x)$ belongs to $\mathscr{D}\_n(a, b)$. By the *variation* $\delta J$ of the functional $J[y]$, we mean the expression which is linear in $h, h', \ldots, h^{(n)}$, and which differs from the increment by a quantity of order higher than 1. Then
 
 $$\delta J = \int_a^b (F_y h + F_{y'} h' + \cdots + F_{y^{(n)}} h^{(n)})\,dx.$$
 
@@ -991,7 +991,7 @@ Since this is a differential equation of order $2n$, its general solution contai
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-The derivation of the Euler equation above is not completely rigorous, since the transition from the integral condition to the pointwise equation presupposes the existence of the derivatives $\frac{d}{dx}F_{y'}, \frac{d^2}{dx^2}F_{y''}, \ldots, \frac{d^n}{dx^n}F_{y^{(n)}}$. However, by a somewhat more elaborate argument, it can be shown that the result holds without this additional hypothesis.
+The derivation of the Euler equation above is not completely rigorous, since the transition from the integral condition to the pointwise equation presupposes the existence of the derivatives $\frac{d}{dx}F\_{y'}, \frac{d^2}{dx^2}F\_{y''}, \ldots, \frac{d^n}{dx^n}F\_{y^{(n)}}$. However, by a somewhat more elaborate argument, it can be shown that the result holds without this additional hypothesis.
 
 </div>
 
@@ -1040,25 +1040,25 @@ $$F_y - \frac{d}{dx}F_{y'} + \lambda\!\left(G_y - \frac{d}{dx}G_{y'}\right) = 0.
 <details>
 <summary>Proof</summary>
 
-Let $J[y]$ have an extremum for the curve $y = y(x)$, subject to the conditions. We choose two points $x_1$ and $x_2$ in the interval $[a, b]$, where $x_1$ is arbitrary and $x_2$ satisfies a condition to be stated below. Then we give $y(x)$ an increment $\delta_1 y(x) + \delta_2 y(x)$, where $\delta_1 y(x)$ is nonzero only in a neighborhood of $x_1$, and $\delta_2 y(x)$ is nonzero only in a neighborhood of $x_2$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J$ in the form
+Let $J[y]$ have an extremum for the curve $y = y(x)$, subject to the conditions. We choose two points $x\_1$ and $x\_2$ in the interval $[a, b]$, where $x\_1$ is arbitrary and $x\_2$ satisfies a condition to be stated below. Then we give $y(x)$ an increment $\delta\_1 y(x) + \delta\_2 y(x)$, where $\delta\_1 y(x)$ is nonzero only in a neighborhood of $x\_1$, and $\delta\_2 y(x)$ is nonzero only in a neighborhood of $x\_2$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J$ in the form
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} + \varepsilon_1\right\rbrace\!\Delta\sigma_1 + \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_2} + \varepsilon_2\right\rbrace\!\Delta\sigma_2,$$
 
-where $\varepsilon_1, \varepsilon_2 \to 0$ as $\Delta\sigma_1, \Delta\sigma_2 \to 0$.
+where $\varepsilon\_1, \varepsilon\_2 \to 0$ as $\Delta\sigma\_1, \Delta\sigma\_2 \to 0$.
 
-We now require that the "varied" curve $y^*(x) = y(x) + \delta_1 y(x) + \delta_2 y(x)$ satisfy the condition $K[y^*] = K[y]$. Writing $\Delta K$ in a form similar to the above, we obtain
+We now require that the "varied" curve $y^\ast(x) = y(x) + \delta\_1 y(x) + \delta\_2 y(x)$ satisfy the condition $K[y^\ast] = K[y]$. Writing $\Delta K$ in a form similar to the above, we obtain
 
 $$\Delta K = \left\lbrace\frac{\delta G}{\delta y}\bigg\vert_{x=x_1} + \varepsilon_1'\right\rbrace\!\Delta\sigma_1 + \left\lbrace\frac{\delta G}{\delta y}\bigg\vert_{x=x_2} + \varepsilon_2'\right\rbrace\!\Delta\sigma_2 = 0.$$
 
-Next, we choose $x_2$ to be a point for which $\frac{\delta G}{\delta y}\big\vert_{x=x_2} \neq 0$. Such a point exists, since by hypothesis $y = y(x)$ is not an extremal of the functional $K$. With this choice of $x_2$, we can write the condition in the form
+Next, we choose $x\_2$ to be a point for which $\frac{\delta G}{\delta y}\big\vert\_{x=x\_2} \neq 0$. Such a point exists, since by hypothesis $y = y(x)$ is not an extremal of the functional $K$. With this choice of $x\_2$, we can write the condition in the form
 
 $$\Delta\sigma_2 = -\left\lbrace\frac{\frac{\delta G}{\delta y}\big\vert_{x=x_1}}{\frac{\delta G}{\delta y}\big\vert_{x=x_2}} + \varepsilon'\right\rbrace\!\Delta\sigma_1,$$
 
-where $\varepsilon' \to 0$ as $\Delta\sigma_1 \to 0$. Setting $\lambda = -\frac{\frac{\delta F}{\delta y}\big\vert_{x=x_2}}{\frac{\delta G}{\delta y}\big\vert_{x=x_2}}$ and substituting into the formula for $\Delta J$, we obtain
+where $\varepsilon' \to 0$ as $\Delta\sigma\_1 \to 0$. Setting $\lambda = -\frac{\frac{\delta F}{\delta y}\big\vert\_{x=x\_2}}{\frac{\delta G}{\delta y}\big\vert\_{x=x\_2}}$ and substituting into the formula for $\Delta J$, we obtain
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} + \lambda\frac{\delta G}{\delta y}\bigg\vert_{x=x_1}\right\rbrace\!\Delta\sigma_1 + \varepsilon\,\Delta\sigma_1,$$
 
-where $\varepsilon \to 0$ as $\Delta\sigma_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma_1$ is nonzero while $x_1$ is arbitrary, we finally have
+where $\varepsilon \to 0$ as $\Delta\sigma\_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma\_1$ is nonzero while $x\_1$ is arbitrary, we finally have
 
 $$\frac{\delta F}{\delta y} + \lambda\frac{\delta G}{\delta y} = F_y - \frac{d}{dx}F_{y'} + \lambda\!\left(G_y - \frac{d}{dx}G_{y'}\right) = 0,$$
 
@@ -1067,9 +1067,9 @@ which is precisely the stated equation. This completes the proof.
 </details>
 </div>
 
-To use Theorem 1 to solve a given isoperimetric problem, we first write the general solution of the Euler equation for $\int_a^b (F + \lambda G)\,dx$, which will contain two arbitrary constants in addition to the parameter $\lambda$. We then determine these three quantities from the boundary conditions $y(a) = A$, $y(b) = B$ and the subsidiary condition $K[y] = l$.
+To use Theorem 1 to solve a given isoperimetric problem, we first write the general solution of the Euler equation for $\int\_a^b (F + \lambda G)\,dx$, which will contain two arbitrary constants in addition to the parameter $\lambda$. We then determine these three quantities from the boundary conditions $y(a) = A$, $y(b) = B$ and the subsidiary condition $K[y] = l$.
 
-Everything just said generalizes immediately to the case of functionals depending on several functions $y_1, \ldots, y_n$ and subject to several subsidiary conditions of the form
+Everything just said generalizes immediately to the case of functionals depending on several functions $y\_1, \ldots, y\_n$ and subject to several subsidiary conditions of the form
 
 $$\int_a^b G_j(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx = l_j \qquad (j = 1, \ldots, k).$$
 
@@ -1077,7 +1077,7 @@ In this case a necessary condition for an extremum is that
 
 $$\frac{\partial}{\partial y_i}\!\left(F + \sum_{j=1}^{k} \lambda_j G_j\right) - \frac{d}{dx}\!\left\lbrace\frac{\partial}{\partial y_i'}\!\left(F + \sum_{j=1}^{k} \lambda_j G_j\right)\right\rbrace = 0 \qquad (i = 1, \ldots, n).$$
 
-The $2n$ arbitrary constants appearing in the solution of the system, and the values of the $k$ parameters $\lambda_1, \ldots, \lambda_k$, sometimes called *Lagrange multipliers*, are determined from the boundary conditions and the subsidiary conditions.
+The $2n$ arbitrary constants appearing in the solution of the system, and the values of the $k$ parameters $\lambda\_1, \ldots, \lambda\_k$, sometimes called *Lagrange multipliers*, are determined from the boundary conditions and the subsidiary conditions.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Largest Area under a Curve of Given Length)</span></p>
@@ -1090,22 +1090,22 @@ takes the largest value subject to the conditions
 
 $$y(-a) = y(a) = 0, \qquad K[y] = \int_{-a}^{a} \sqrt{1 + y'^2}\,dx = l.$$
 
-Thus, we are dealing with an isoperimetric problem. Using Theorem 1, we form the functional $J[y] + \lambda K[y] = \int_{-a}^{a} (y + \lambda\sqrt{1 + y'^2})\,dx$, and write the corresponding Euler equation
+Thus, we are dealing with an isoperimetric problem. Using Theorem 1, we form the functional $J[y] + \lambda K[y] = \int\_{-a}^{a} (y + \lambda\sqrt{1 + y'^2})\,dx$, and write the corresponding Euler equation
 
 $$1 + \lambda\frac{d}{dx}\frac{y'}{\sqrt{1 + y'^2}} = 0,$$
 
-which implies $x + \lambda\frac{y'}{\sqrt{1 + y'^2}} = C_1$. Integrating, we obtain the equation
+which implies $x + \lambda\frac{y'}{\sqrt{1 + y'^2}} = C\_1$. Integrating, we obtain the equation
 
 $$(x - C_1)^2 + (y - C_2)^2 = \lambda^2$$
 
-of a family of circles. The values of $C_1$, $C_2$ and $\lambda$ are then determined from the conditions $y(-a) = y(a) = 0$ and $K[y] = l$.
+of a family of circles. The values of $C\_1$, $C\_2$ and $\lambda$ are then determined from the conditions $y(-a) = y(a) = 0$ and $K[y] = l$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Shortest Curve on a Sphere)</span></p>
 
-Among all curves lying on the sphere $x^2 + y^2 + z^2 = a^2$ and passing through two given points $(x_0, y_0, z_0)$ and $(x_1, y_1, z_1)$, find the one which has the least length. The length of the curve $y = y(x)$, $z = z(x)$ is given by the integral
+Among all curves lying on the sphere $x^2 + y^2 + z^2 = a^2$ and passing through two given points $(x\_0, y\_0, z\_0)$ and $(x\_1, y\_1, z\_1)$, find the one which has the least length. The length of the curve $y = y(x)$, $z = z(x)$ is given by the integral
 
 $$\int_{x_0}^{x_1} \sqrt{1 + y'^2 + z'^2}\,dx.$$
 
@@ -1125,7 +1125,7 @@ Solving these equations, we obtain a family of curves depending on four constant
 
 #### 12.2. Finite Subsidiary Conditions
 
-In the isoperimetric problem, the subsidiary conditions which must be satisfied by the functions $y_1, \ldots, y_n$ are of the form of integral (functional) conditions. We now consider a problem of a different type, which can be stated as follows: *Find the functions $y_i(x)$ for which the functional*
+In the isoperimetric problem, the subsidiary conditions which must be satisfied by the functions $y\_1, \ldots, y\_n$ are of the form of integral (functional) conditions. We now consider a problem of a different type, which can be stated as follows: *Find the functions $y\_i(x)$ for which the functional*
 
 $$J[y_1, \ldots, y_n] = \int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx$$
 
@@ -1150,9 +1150,9 @@ let the admissible curves lie on the surface
 
 $$g(x, y, z) = 0$$
 
-and satisfy the boundary conditions $y(a) = A_1$, $y(b) = B_1$, $z(a) = A_2$, $z(b) = B_2$, and moreover, let $J[y]$ have an extremum for the curve $y = y(x)$, $z = z(x)$.
+and satisfy the boundary conditions $y(a) = A\_1$, $y(b) = B\_1$, $z(a) = A\_2$, $z(b) = B\_2$, and moreover, let $J[y]$ have an extremum for the curve $y = y(x)$, $z = z(x)$.
 
-Then, if $g_y$ and $g_z$ do not vanish simultaneously at any point of the surface, there exists a function $\lambda(x)$ such that the curve is an extremal of the functional
+Then, if $g\_y$ and $g\_z$ do not vanish simultaneously at any point of the surface, there exists a function $\lambda(x)$ such that the curve is an extremal of the functional
 
 $$\int_a^b [F + \lambda(x) g]\,dx,$$
 
@@ -1166,25 +1166,25 @@ $$F_y + \lambda g_y - \frac{d}{dx}F_{y'} = 0, \qquad F_z + \lambda g_z - \frac{d
 <details>
 <summary>Proof</summary>
 
-Let $J[y, z]$ have an extremum for the curve $y = y(x)$, $z = z(x)$, subject to the conditions, and let $x_1$ be an arbitrary point of the interval $[a, b]$. Then we give $y(x)$ an increment $\delta y(x)$ and $z(x)$ an increment $\delta z(x)$, where both $\delta y(x)$ and $\delta z(x)$ are nonzero only in a neighborhood $[\alpha, \beta]$ of $x_1$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J[y, z]$ in the form
+Let $J[y, z]$ have an extremum for the curve $y = y(x)$, $z = z(x)$, subject to the conditions, and let $x\_1$ be an arbitrary point of the interval $[a, b]$. Then we give $y(x)$ an increment $\delta y(x)$ and $z(x)$ an increment $\delta z(x)$, where both $\delta y(x)$ and $\delta z(x)$ are nonzero only in a neighborhood $[\alpha, \beta]$ of $x\_1$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J[y, z]$ in the form
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} + \varepsilon_1\right\rbrace\!\Delta\sigma_1 + \left\lbrace\frac{\delta F}{\delta z}\bigg\vert_{x=x_1} + \varepsilon_2\right\rbrace\!\Delta\sigma_2,$$
 
-where $\Delta\sigma_1 = \int_a^b \delta y(x)\,dx$, $\Delta\sigma_2 = \int_a^b \delta z(x)\,dx$, and $\varepsilon_1, \varepsilon_2 \to 0$ as $\Delta\sigma_1, \Delta\sigma_2 \to 0$.
+where $\Delta\sigma\_1 = \int\_a^b \delta y(x)\,dx$, $\Delta\sigma\_2 = \int\_a^b \delta z(x)\,dx$, and $\varepsilon\_1, \varepsilon\_2 \to 0$ as $\Delta\sigma\_1, \Delta\sigma\_2 \to 0$.
 
-We now require that the "varied" curve $y^*(x) = y(x) + \delta y(x)$, $z^*(x) = z(x) + \delta z(x)$ satisfy the condition $g(x, y^*, z^*) = 0$. In view of this, we have
+We now require that the "varied" curve $y^\ast(x) = y(x) + \delta y(x)$, $z^\ast(x) = z(x) + \delta z(x)$ satisfy the condition $g(x, y^\ast, z^\ast) = 0$. In view of this, we have
 
 $$0 = \int_a^b [g(x, y^*, z^*) - g(x, y, z)]\,dx = \lbrace\bar{g}_y\vert_{x=x_1} + \varepsilon_1'\rbrace\Delta\sigma_1 + \lbrace\bar{g}_z\vert_{x=x_1} + \varepsilon_2'\rbrace\Delta\sigma_2,$$
 
-where the overbar indicates that the corresponding derivatives are evaluated along certain intermediate curves. By hypothesis, either $g_y\vert_{x=x_1}$ or $g_z\vert_{x=x_1}$ is nonzero. If $g_z\vert_{x=x_1} \neq 0$, we can write the condition in the form
+where the overbar indicates that the corresponding derivatives are evaluated along certain intermediate curves. By hypothesis, either $g\_y\vert\_{x=x\_1}$ or $g\_z\vert\_{x=x\_1}$ is nonzero. If $g\_z\vert\_{x=x\_1} \neq 0$, we can write the condition in the form
 
 $$\Delta\sigma_2 = -\left\lbrace\frac{\bar{g}_y\vert_{x=x_1}}{\bar{g}_z\vert_{x=x_1}} + \varepsilon'\right\rbrace\!\Delta\sigma_1,$$
 
-where $\varepsilon' \to 0$ as $\Delta\sigma_1 \to 0$. Substituting into the formula for $\Delta J$, we obtain
+where $\varepsilon' \to 0$ as $\Delta\sigma\_1 \to 0$. Substituting into the formula for $\Delta J$, we obtain
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} - \frac{g_y}{g_z}\frac{\delta F}{\delta z}\bigg\vert_{x=x_1}\right\rbrace\!\Delta\sigma_1 + \varepsilon\,\Delta\sigma_1,$$
 
-where $\varepsilon \to 0$ as $\Delta\sigma_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma_1$ is nonzero while $x_1$ is arbitrary, we finally have
+where $\varepsilon \to 0$ as $\Delta\sigma\_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma\_1$ is nonzero while $x\_1$ is arbitrary, we finally have
 
 $$\frac{\delta F}{\delta y} - \frac{g_y}{g_z}\frac{\delta F}{\delta z} = 0$$
 
@@ -1192,7 +1192,7 @@ or
 
 $$\frac{F_y - \frac{d}{dx}F_{y'}}{g_y} = \frac{F_z - \frac{d}{dx}F_{z'}}{g_z}.$$
 
-Along the curve $y = y(x)$, $z = z(x)$, the common value of the ratios is some function of $x$. If we denote this function by $-\lambda(x)$, then the system reduces to precisely $F_y + \lambda g_y - \frac{d}{dx}F_{y'} = 0$ and $F_z + \lambda g_z - \frac{d}{dx}F_{z'} = 0$. This completes the proof.
+Along the curve $y = y(x)$, $z = z(x)$, the common value of the ratios is some function of $x$. If we denote this function by $-\lambda(x)$, then the system reduces to precisely $F\_y + \lambda g\_y - \frac{d}{dx}F\_{y'} = 0$ and $F\_z + \lambda g\_z - \frac{d}{dx}F\_{z'} = 0$. This completes the proof.
 
 </details>
 </div>
@@ -1200,14 +1200,14 @@ Along the curve $y = y(x)$, $z = z(x)$, the common value of the ratios is some f
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Nonholonomic Constraints)</span></p>
 
-Theorem 2 remains valid when the class of admissible curves consists of smooth space curves satisfying the differential equation $g(x, y, z, y', z') = 0$. More precisely, if the functional $J$ has an extremum for a curve $\gamma$, subject to the condition $g(x, y, z, y', z') = 0$, and if the derivatives $g_{y'}$, $g_{z'}$ do not vanish simultaneously along $\gamma$, then there exists a function $\lambda(x)$ such that $\gamma$ is an integral curve of the system $\Phi_y - \frac{d}{dx}\Phi_{y'} = 0$, $\Phi_z - \frac{d}{dx}\Phi_{z'} = 0$, where $\Phi = F + \lambda G$. In mechanics, conditions like $g(x, y, z, y', z') = 0$, which contain derivatives, are called *nonholonomic constraints*, and conditions like $g(x, y, z) = 0$ are called *holonomic constraints*.
+Theorem 2 remains valid when the class of admissible curves consists of smooth space curves satisfying the differential equation $g(x, y, z, y', z') = 0$. More precisely, if the functional $J$ has an extremum for a curve $\gamma$, subject to the condition $g(x, y, z, y', z') = 0$, and if the derivatives $g\_{y'}$, $g\_{z'}$ do not vanish simultaneously along $\gamma$, then there exists a function $\lambda(x)$ such that $\gamma$ is an integral curve of the system $\Phi\_y - \frac{d}{dx}\Phi\_{y'} = 0$, $\Phi\_z - \frac{d}{dx}\Phi\_{z'} = 0$, where $\Phi = F + \lambda G$. In mechanics, conditions like $g(x, y, z, y', z') = 0$, which contain derivatives, are called *nonholonomic constraints*, and conditions like $g(x, y, z) = 0$ are called *holonomic constraints*.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span><span class="math-callout__name">(Finite Conditions as Limiting Isoperimetric Problems)</span></p>
 
-In a certain sense, we can consider a variational problem with a finite subsidiary condition to be a limiting case of an isoperimetric problem. In fact, if we assume that the condition $g(x, y, z) = 0$ does not hold everywhere, but only at some fixed point $g(x_1, y, z) = 0$, we obtain a condition whose left side can be regarded as a functional of $y$ and $z$, i.e., a condition of the type appearing in the isoperimetric problem. Thus, the condition $g(x, y, z) = 0$ can be regarded as an infinite set of conditions, each of which is a functional. As we have seen, in the isoperimetric problem the number of Lagrange multipliers $\lambda_1, \ldots, \lambda_k$ equals the number of conditions of constraint. In the same way, the function $\lambda(x)$ appearing in the problem with a finite subsidiary condition can be interpreted as a "Lagrange multiplier for each point $x$."
+In a certain sense, we can consider a variational problem with a finite subsidiary condition to be a limiting case of an isoperimetric problem. In fact, if we assume that the condition $g(x, y, z) = 0$ does not hold everywhere, but only at some fixed point $g(x\_1, y, z) = 0$, we obtain a condition whose left side can be regarded as a functional of $y$ and $z$, i.e., a condition of the type appearing in the isoperimetric problem. Thus, the condition $g(x, y, z) = 0$ can be regarded as an infinite set of conditions, each of which is a functional. As we have seen, in the isoperimetric problem the number of Lagrange multipliers $\lambda\_1, \ldots, \lambda\_k$ equals the number of conditions of constraint. In the same way, the function $\lambda(x)$ appearing in the problem with a finite subsidiary condition can be interpreted as a "Lagrange multiplier for each point $x$."
 
 </div>
 
@@ -1230,17 +1230,17 @@ beginning with the case where it depends on a single function $y$ and hence redu
 
 $$J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx.$$
 
-We assume that all admissible curves are smooth, but, departing from our previous hypothesis, we assume that the end points of the curves for which $J[y]$ is defined can move in an arbitrary way. By the *distance* between two curves $y = y(x)$ and $y = y^*(x)$ is meant the quantity
+We assume that all admissible curves are smooth, but, departing from our previous hypothesis, we assume that the end points of the curves for which $J[y]$ is defined can move in an arbitrary way. By the *distance* between two curves $y = y(x)$ and $y = y^\ast(x)$ is meant the quantity
 
 $$\rho(y, y^*) = \max \lvert y - y^*\rvert + \max \lvert y' - y^{*\prime}\rvert + \rho(P_0, P_0^*) + \rho(P_1, P_1^*),$$
 
-where $P_0$, $P_0^*$ denote the left-hand end points of the curves $y = y(x)$, $y = y^*(x)$, respectively, and $P_1$, $P_1^*$ denote their right-hand end points. In general, the functions $y$ and $y^*$ are defined on different intervals $I$ and $I^*$. Thus, in order for the distance to make sense, we have to extend $y$ and $y^*$ onto some interval containing both $I$ and $I^*$. For example, this can be done by drawing tangents to the curves at their end points.
+where $P\_0$, $P\_0^\ast$ denote the left-hand end points of the curves $y = y(x)$, $y = y^\ast(x)$, respectively, and $P\_1$, $P\_1^\ast$ denote their right-hand end points. In general, the functions $y$ and $y^\ast$ are defined on different intervals $I$ and $I^\ast$. Thus, in order for the distance to make sense, we have to extend $y$ and $y^\ast$ onto some interval containing both $I$ and $I^\ast$. For example, this can be done by drawing tangents to the curves at their end points.
 
-Now let $y = y(x)$ and $y = y^*(x)$ be two neighboring curves, in the sense of the distance, and let $h(x) = y^*(x) - y(x)$. Moreover, let $P_0 = (x_0, y_0)$, $P_1 = (x_1, y_1)$ denote the end points of the curve $y = y(x)$, while the end points of the curve $y = y^*(x) = y(x) + h(x)$ are denoted by
+Now let $y = y(x)$ and $y = y^\ast(x)$ be two neighboring curves, in the sense of the distance, and let $h(x) = y^\ast(x) - y(x)$. Moreover, let $P\_0 = (x\_0, y\_0)$, $P\_1 = (x\_1, y\_1)$ denote the end points of the curve $y = y(x)$, while the end points of the curve $y = y^\ast(x) = y(x) + h(x)$ are denoted by
 
 $$P_0^* = (x_0 + \delta x_0, y_0 + \delta y_0), \qquad P_1^* = (x_1 + \delta x_1, y_1 + \delta y_1).$$
 
-The corresponding variation $\delta J$ of the functional $J[y]$ is defined as the expression which is linear in $h$, $h'$, $\delta x_0$, $\delta y_0$, $\delta x_1$, $\delta y_1$, and which differs from the increment
+The corresponding variation $\delta J$ of the functional $J[y]$ is defined as the expression which is linear in $h$, $h'$, $\delta x\_0$, $\delta y\_0$, $\delta x\_1$, $\delta y\_1$, and which differs from the increment
 
 $$\Delta J = J[y + h] - J[y]$$
 
@@ -1256,7 +1256,7 @@ It follows by using Taylor's theorem and letting the symbol $\sim$ denote equali
 
 $$\Delta J \sim \int_{x_0}^{x_1} [F_y(x, y, y')h + F_{y'}(x, y, y')h']\,dx + F(x, y, y')\vert_{x=x_1}\,\delta x_1 - F(x, y, y')\vert_{x=x_0}\,\delta x_0.$$
 
-After integrating the term containing $h'$ by parts, and noting from the geometry that $h(x_0) \sim \delta y_0 - y'(x_0)\,\delta x_0$ and $h(x_1) \sim \delta y_1 - y'(x_1)\,\delta x_1$, we obtain
+After integrating the term containing $h'$ by parts, and noting from the geometry that $h(x\_0) \sim \delta y\_0 - y'(x\_0)\,\delta x\_0$ and $h(x\_1) \sim \delta y\_1 - y'(x\_1)\,\delta x\_1$, we obtain
 
 $$\delta J = \int_{x_0}^{x_1} \left[F_y - \frac{d}{dx}F_{y'}\right] h(x)\,dx + F_{y'}\vert_{x=x_1}\,\delta y_1 + (F - F_{y'}y')\vert_{x=x_1}\,\delta x_1 - F_{y'}\vert_{x=x_0}\,\delta y_0 - (F - F_{y'}y')\vert_{x=x_0}\,\delta x_0,$$
 
@@ -1265,7 +1265,7 @@ or more concisely,
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Variation of $J[y]$)</span></p>
 
-The general variation of the functional $J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx$ is
+The general variation of the functional $J[y] = \int\_{x\_0}^{x\_1} F(x, y, y')\,dx$ is
 
 $$\delta J = \int_{x_0}^{x_1} \left[F_y - \frac{d}{dx}F_{y'}\right] h(x)\,dx + F_{y'}\,\delta y\bigg\vert_{x=x_0}^{x=x_1} + (F - F_{y'}y')\,\delta x\bigg\vert_{x=x_0}^{x=x_1},$$
 
@@ -1275,32 +1275,32 @@ $$\delta x\vert_{x=x_i} = \delta x_i, \qquad \delta y\vert_{x=x_i} = \delta y_i 
 
 </div>
 
-This is the basic formula for the general variation of the functional $J[y]$. If the end points of the admissible curves are constrained to lie on the straight lines $x = x_0$, $x = x_1$, as in the simple variable end point problem considered in Sec. 6, then $\delta x_0 = \delta x_1 = 0$, while in the case of the fixed end point problem, $\delta x_0 = \delta x_1 = 0$ and $\delta y_0 = \delta y_1 = 0$.
+This is the basic formula for the general variation of the functional $J[y]$. If the end points of the admissible curves are constrained to lie on the straight lines $x = x\_0$, $x = x\_1$, as in the simple variable end point problem considered in Sec. 6, then $\delta x\_0 = \delta x\_1 = 0$, while in the case of the fixed end point problem, $\delta x\_0 = \delta x\_1 = 0$ and $\delta y\_0 = \delta y\_1 = 0$.
 
 #### The General Case of $n$ Functions
 
-Next, we return to the more general functional depending on $n$ functions $y_1, \ldots, y_n$. Since any system of $n$ functions can be interpreted as a curve in $(n + 1)$-dimensional Euclidean space $\mathscr{E}_{n+1}$, we can regard the functional as defined on some set of curves in $\mathscr{E}_{n+1}$. Paralleling the treatment just given for $n = 1$, we now calculate the variation of the functional when there are no restrictions on the end points of the admissible curves. As before, we write
+Next, we return to the more general functional depending on $n$ functions $y\_1, \ldots, y\_n$. Since any system of $n$ functions can be interpreted as a curve in $(n + 1)$-dimensional Euclidean space $\mathscr{E}\_{n+1}$, we can regard the functional as defined on some set of curves in $\mathscr{E}\_{n+1}$. Paralleling the treatment just given for $n = 1$, we now calculate the variation of the functional when there are no restrictions on the end points of the admissible curves. As before, we write
 
 $$h_i(x) = y_i^*(x) - y_i(x) \qquad (i = 1, \ldots, n),$$
 
-where for each $i$, the function $y_i^*(x)$ is close to $y_i(x)$ in the sense of the distance. Moreover, we let
+where for each $i$, the function $y\_i^\ast(x)$ is close to $y\_i(x)$ in the sense of the distance. Moreover, we let
 
 $$P_0 = (x_0, y_1^0, \ldots, y_n^0), \qquad P_1 = (x_1, y_1^1, \ldots, y_n^1)$$
 
-denote the end points of the curve $y_i = y_i(x)$, $i = 1, \ldots, n$, while the end points of the curve $y_i = y_i^*(x) = y_i(x) + h_i(x)$, $i = 1, \ldots, n$, are denoted by
+denote the end points of the curve $y\_i = y\_i(x)$, $i = 1, \ldots, n$, while the end points of the curve $y\_i = y\_i^\ast(x) = y\_i(x) + h\_i(x)$, $i = 1, \ldots, n$, are denoted by
 
 $$P_0^* = (x_0 + \delta x_0, y_1^0 + \delta y_1^0, \ldots, y_n^0 + \delta y_n^0), \qquad P_1^* = (x_1 + \delta x_1, y_1^1 + \delta y_1^1, \ldots, y_n^1 + \delta y_n^1).$$
 
-The corresponding variation $\delta J$ of the functional $J[y_1, \ldots, y_n]$ is defined as the expression which is linear in $\delta x_0$, $\delta x_1$ and all $h_i$, $h_i'$, $\delta y_i^0$, $\delta y_i^1$ $(i = 1, \ldots, n)$, and which differs from the increment $\Delta J = J[y_1 + h_1, \ldots, y_n + h_n] - J[y_1, \ldots, y_n]$ by a quantity of order higher than 1. After computations similar to the single-function case (integrating by parts the terms containing $h_i'$ and using the approximations $h_i(x_0) \sim \delta y_i^0 - y_i'(x_0)\,\delta x_0$ and $h_i(x_1) \sim \delta y_i^1 - y_i'(x_1)\,\delta x_1$), we obtain
+The corresponding variation $\delta J$ of the functional $J[y\_1, \ldots, y\_n]$ is defined as the expression which is linear in $\delta x\_0$, $\delta x\_1$ and all $h\_i$, $h\_i'$, $\delta y\_i^0$, $\delta y\_i^1$ $(i = 1, \ldots, n)$, and which differs from the increment $\Delta J = J[y\_1 + h\_1, \ldots, y\_n + h\_n] - J[y\_1, \ldots, y\_n]$ by a quantity of order higher than 1. After computations similar to the single-function case (integrating by parts the terms containing $h\_i'$ and using the approximations $h\_i(x\_0) \sim \delta y\_i^0 - y\_i'(x\_0)\,\delta x\_0$ and $h\_i(x\_1) \sim \delta y\_i^1 - y\_i'(x\_1)\,\delta x\_1$), we obtain
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Variation of $J[y_1, \ldots, y_n]$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Variation of $J[y\_1, \ldots, y\_n]$)</span></p>
 
-The general variation of the functional $J[y_1, \ldots, y_n] = \int_{x_0}^{x_1} F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx$ is
+The general variation of the functional $J[y\_1, \ldots, y\_n] = \int\_{x\_0}^{x\_1} F(x, y\_1, \ldots, y\_n, y\_1', \ldots, y\_n')\,dx$ is
 
 $$\delta J = \int_{x_0}^{x_1} \sum_{i=1}^{n} \left(F_{y_i} - \frac{d}{dx}F_{y_i'}\right) h_i(x)\,dx + \sum_{i=1}^{n} F_{y_i'}\,\delta y_i\bigg\vert_{x=x_0}^{x=x_1} + \left(F - \sum_{i=1}^{n} y_i' F_{y_i'}\right)\delta x\bigg\vert_{x=x_0}^{x=x_1},$$
 
-where we *define* $\delta x\vert_{x=x_j} = \delta x_j$, $\delta y_i\vert_{x=x_j} = \delta y_i^j$ $(j = 0, 1)$.
+where we *define* $\delta x\vert\_{x=x\_j} = \delta x\_j$, $\delta y\_i\vert\_{x=x\_j} = \delta y\_i^j$ $(j = 0, 1)$.
 
 </div>
 
@@ -1314,16 +1314,16 @@ and suppose that the Jacobian
 
 $$\frac{\partial(p_1, \ldots, p_n)}{\partial(y_1', \ldots, y_n')} = \det \lVert F_{y_i' y_k'}\rVert$$
 
-is nonzero. Then we can solve the equations $p_i = F_{y_i'}$ for $y_1', \ldots, y_n'$ as functions of the variables $x, y_1, \ldots, y_n, p_1, \ldots, p_n$.
+is nonzero. Then we can solve the equations $p\_i = F\_{y\_i'}$ for $y\_1', \ldots, y\_n'$ as functions of the variables $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hamiltonian)</span></p>
 
-Next, we express the function $F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')$ appearing in the functional in terms of a new function $H(x, y_1, \ldots, y_n, p_1, \ldots, p_n)$ related to $F$ by the formula
+Next, we express the function $F(x, y\_1, \ldots, y\_n, y\_1', \ldots, y\_n')$ appearing in the functional in terms of a new function $H(x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$ related to $F$ by the formula
 
 $$H = -F + \sum_{i=1}^{n} y_i' F_{y_i'} \equiv -F + \sum_{i=1}^{n} y_i' p_i,$$
 
-where the $y_i'$ are regarded as functions of the variables $x, y_1, \ldots, y_n, p_1, \ldots, p_n$. The function $H$ is called the **Hamiltonian** (function) corresponding to the functional $J[y_1, \ldots, y_n]$. In this way, we can make a local transformation from the "variables" $x, y_1, \ldots, y_n, y_1', \ldots, y_n'$, $F$ appearing in the functional to the new quantities $x, y_1, \ldots, y_n, p_1, \ldots, p_n$, $H$, called the **canonical variables** (corresponding to the functional $J[y_1, \ldots, y_n]$).
+where the $y\_i'$ are regarded as functions of the variables $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n$. The function $H$ is called the **Hamiltonian** (function) corresponding to the functional $J[y\_1, \ldots, y\_n]$. In this way, we can make a local transformation from the "variables" $x, y\_1, \ldots, y\_n, y\_1', \ldots, y\_n'$, $F$ appearing in the functional to the new quantities $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n$, $H$, called the **canonical variables** (corresponding to the functional $J[y\_1, \ldots, y\_n]$).
 
 </div>
 
@@ -1331,15 +1331,15 @@ In terms of the canonical variables, the general variation can be written in the
 
 $$\delta J = \int_{x_0}^{x_1} \sum_{i=1}^{n} \left(F_{y_i} - \frac{dp_i}{dx}\right) h_i(x)\,dx + \left(\sum_{i=1}^{n} p_i\,\delta y_i - H\,\delta x\right)\bigg\vert_{x=x_0}^{x=x_1},$$
 
-or, if the integral in the variation vanishes (which happens when the curve for which $J[y_1, \ldots, y_n]$ has an extremum is an extremal and then satisfies the condition that the boundary terms vanish — see Problem 1, p. 63),
+or, if the integral in the variation vanishes (which happens when the curve for which $J[y\_1, \ldots, y\_n]$ has an extremum is an extremal and then satisfies the condition that the boundary terms vanish — see Problem 1, p. 63),
 
 $$\delta J = \left(\sum_{i=1}^{n} p_i\,\delta y_i - H\,\delta x\right)\bigg\vert_{x=x_0}^{x=x_1}.$$
 
-Thus, regardless of the boundary conditions defining our variable end point problem, the curve for which $J[y_1, \ldots, y_n]$ has an extremum must first be an extremal and then satisfy the condition that the boundary terms in the variation vanish.
+Thus, regardless of the boundary conditions defining our variable end point problem, the curve for which $J[y\_1, \ldots, y\_n]$ has an extremum must first be an extremal and then satisfy the condition that the boundary terms in the variation vanish.
 
 ### 14. End Points Lying on Two Given Curves or Surfaces
 
-The first two chapters of this book were devoted mainly to fixed end point problems, where the boundary conditions require that all admissible curves have two given end points. The only exception is the simple variable end point problem considered in Sec. 6, where the end points of the admissible curves are free to move along two fixed straight lines parallel to the $y$-axis. We now consider a more general variable end point problem. To keep matters simple, we start with the case where there is only one unknown function. Our problem can be stated as follows: *Among all smooth curves whose end points $P_0$ and $P_1$ lie on two given curves $y = \varphi(x)$ and $y = \psi(x)$, find the curve for which the functional*
+The first two chapters of this book were devoted mainly to fixed end point problems, where the boundary conditions require that all admissible curves have two given end points. The only exception is the simple variable end point problem considered in Sec. 6, where the end points of the admissible curves are free to move along two fixed straight lines parallel to the $y$-axis. We now consider a more general variable end point problem. To keep matters simple, we start with the case where there is only one unknown function. Our problem can be stated as follows: *Among all smooth curves whose end points $P\_0$ and $P\_1$ lie on two given curves $y = \varphi(x)$ and $y = \psi(x)$, find the curve for which the functional*
 
 $$J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx$$
 
@@ -1351,20 +1351,20 @@ $$\delta J = F_{y'}\vert_{x=x_1}\,\delta y_1 + (F - y'F_{y'})\vert_{x=x_1}\,\del
 
 which must vanish if $J[y]$ is to have an extremum for $y = y(x)$.
 
-Next, we observe that since the end points lie on the given curves, the increments $\delta y_0$, $\delta y_1$ are related to $\delta x_0$, $\delta x_1$ by
+Next, we observe that since the end points lie on the given curves, the increments $\delta y\_0$, $\delta y\_1$ are related to $\delta x\_0$, $\delta x\_1$ by
 
 $$\delta y_0 = [\varphi'(x) + \varepsilon_0]\,\delta x_0, \qquad \delta y_1 = [\psi'(x_1) + \varepsilon_1]\,\delta x_1,$$
 
-where $\varepsilon_0 \to 0$ as $\delta x_0 \to 0$, and $\varepsilon_1 \to 0$ as $\delta x_1 \to 0$. Thus, in the present case, the condition $\delta J = 0$ becomes
+where $\varepsilon\_0 \to 0$ as $\delta x\_0 \to 0$, and $\varepsilon\_1 \to 0$ as $\delta x\_1 \to 0$. Thus, in the present case, the condition $\delta J = 0$ becomes
 
 $$\delta J = (F_{y'}\psi' + F - y'F_{y'})\vert_{x=x_1}\,\delta x_1 - (F_{y'}\varphi' + F - y'F_{y'})\vert_{x=x_0}\,\delta x_0 = 0.$$
 
-Since $\delta x_0$ and $\delta x_1$ are independent, this implies the boundary conditions
+Since $\delta x\_0$ and $\delta x\_1$ are independent, this implies the boundary conditions
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Transversality Conditions)</span></p>
 
-For the functional $J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx$, suppose the end points of the admissible curves lie on two given curves $y = \varphi(x)$ and $y = \psi(x)$. Then a necessary condition for an extremum is that the extremal $y = y(x)$ satisfies Euler's equation
+For the functional $J[y] = \int\_{x\_0}^{x\_1} F(x, y, y')\,dx$, suppose the end points of the admissible curves lie on two given curves $y = \varphi(x)$ and $y = \psi(x)$. Then a necessary condition for an extremum is that the extremal $y = y(x)$ satisfies Euler's equation
 
 $$F_y - \frac{d}{dx}F_{y'} = 0,$$
 
@@ -1448,17 +1448,17 @@ Writing $J[y]$ as a sum of two functionals, i.e.,
 
 $$J[y] = \int_a^c F(x, y, y')\,dx + \int_c^b F(x, y, y')\,dx \equiv J_1[y] + J_2[y],$$
 
-we calculate the variations $\delta J_1$ and $\delta J_2$ of the two terms separately. The end points $x = a$, $x = b$ are fixed, and we require that the two "pieces" of the function $y(x)$ join continuously at $x = c$, but otherwise the point $x = c$ can move freely. Using formula (5) of Sec. 13 to write $\delta J_1$ and $\delta J_2$, and recalling that $y(x)$ is an extremal, we find that
+we calculate the variations $\delta J\_1$ and $\delta J\_2$ of the two terms separately. The end points $x = a$, $x = b$ are fixed, and we require that the two "pieces" of the function $y(x)$ join continuously at $x = c$, but otherwise the point $x = c$ can move freely. Using formula (5) of Sec. 13 to write $\delta J\_1$ and $\delta J\_2$, and recalling that $y(x)$ is an extremal, we find that
 
 $$\delta J_1 = F_{y'}\vert_{x=c-0}\,\delta y_1 + (F - y'F_{y'})\vert_{x=c-0}\,\delta x_1,$$
 
 $$\delta J_2 = -F_{y'}\vert_{x=c+0}\,\delta y_1 - (F - y'F_{y'})\vert_{x=c+0}\,\delta x_1.$$
 
-[The condition that $y(x)$ be continuous at $x = c$ implies that $\delta J_1$ and $\delta J_2$ involve the same increments $\delta x_1$ and $\delta y_1$.] At an extremum we must have $\delta J = \delta J_1 + \delta J_2 = 0$, and hence
+[The condition that $y(x)$ be continuous at $x = c$ implies that $\delta J\_1$ and $\delta J\_2$ involve the same increments $\delta x\_1$ and $\delta y\_1$.] At an extremum we must have $\delta J = \delta J\_1 + \delta J\_2 = 0$, and hence
 
 $$(F_{y'}\vert_{x=c-0} - F_{y'}\vert_{x=c+0})\,\delta y_1 + [(F - y'F_{y'})\vert_{x=c-0} - (F - y'F_{y'})\vert_{x=c+0}]\,\delta x_1 = 0.$$
 
-Since $\delta x_1$ and $\delta y_1$ are arbitrary, the conditions
+Since $\delta x\_1$ and $\delta y\_1$ are arbitrary, the conditions
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Weierstrass-Erdmann Corner Conditions)</span></p>
@@ -1511,27 +1511,27 @@ $$J[y_1, \ldots, y_n] = \int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx$
 
 $$F_{y_i} - \frac{d}{dx} F_{y_i'} = 0 \qquad (i = 1, \ldots, n).$$
 
-This system can be reduced (in various ways) to a system of $2n$ first-order differential equations. For example, regarding $y_1', \ldots, y_n'$ as $n$ new functions, independent of $y_1, \ldots, y_n$, we can write the system in the form
+This system can be reduced (in various ways) to a system of $2n$ first-order differential equations. For example, regarding $y\_1', \ldots, y\_n'$ as $n$ new functions, independent of $y\_1, \ldots, y\_n$, we can write the system in the form
 
 $$\frac{dy_i}{dx} = y_i', \qquad F_{y_i} - \frac{d}{dx} F_{y_i'} = 0 \qquad (i = 1, \ldots, n),$$
 
-where $y_1, \ldots, y_n, y_1', \ldots, y_n'$ are $2n$ unknown functions and $x$ is the independent variable. However, we obtain a much more convenient and symmetric form of the Euler equations if we replace $x, y_1, \ldots, y_n, y_1', \ldots, y_n'$ by the *canonical variables* introduced in Sec. 13.
+where $y\_1, \ldots, y\_n, y\_1', \ldots, y\_n'$ are $2n$ unknown functions and $x$ is the independent variable. However, we obtain a much more convenient and symmetric form of the Euler equations if we replace $x, y\_1, \ldots, y\_n, y\_1', \ldots, y\_n'$ by the *canonical variables* introduced in Sec. 13.
 
 Recall from Sec. 13 the equations
 
 $$p_i = F_{y_i'} \qquad (i = 1, \ldots, n)$$
 
-to write $y_1', \ldots, y_n'$ as functions of the variables $x, y_1, \ldots, y_n, p_1, \ldots, p_n$. We then express the function $F$ appearing in the functional in terms of a new function $H(x, y_1, \ldots, y_n, p_1, \ldots, p_n)$ related to $F$ by the formula
+to write $y\_1', \ldots, y\_n'$ as functions of the variables $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n$. We then express the function $F$ appearing in the functional in terms of a new function $H(x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$ related to $F$ by the formula
 
 $$H = -F + \sum_{i=1}^{n} y_i' p_i,$$
 
-where the $y_i'$ are regarded as functions of the variables $x, y_1, \ldots, y_n, p_1, \ldots, p_n$. The function $H$ is called the **Hamiltonian** corresponding to the functional $J[y_1, \ldots, y_n]$. Finally, we introduce the new variables $x, y_1, \ldots, y_n, p_1, \ldots, p_n, H$.
+where the $y\_i'$ are regarded as functions of the variables $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n$. The function $H$ is called the **Hamiltonian** corresponding to the functional $J[y\_1, \ldots, y\_n]$. Finally, we introduce the new variables $x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n, H$.
 
 We now show how the Euler equations transform when we go over to canonical variables. By the definition of $H$, we have
 
 $$dH = -dF + \sum_{i=1}^{n} p_i\,dy_i' + \sum_{i=1}^{n} y_i'\,dp_i.$$
 
-Expanding $dF$ and using the fact that $\frac{\partial F}{\partial y_i'} = p_i$, the terms containing $dy_i'$ cancel, and we obtain
+Expanding $dF$ and using the fact that $\frac{\partial F}{\partial y\_i'} = p\_i$, the terms containing $dy\_i'$ cancel, and we obtain
 
 $$dH = -\frac{\partial F}{\partial x}\,dx - \sum_{i=1}^{n} \frac{\partial F}{\partial y_i}\,dy_i + \sum_{i=1}^{n} y_i'\,dp_i.$$
 
@@ -1546,7 +1546,7 @@ Using these relations, the Euler equations can be written in the form
 
 $$\frac{dy_i}{dx} = \frac{\partial H}{\partial p_i}, \qquad \frac{dp_i}{dx} = -\frac{\partial H}{\partial y_i} \qquad (i = 1, \ldots, n).$$
 
-These $2n$ first-order differential equations form a system which is equivalent to the original system of $n$ second-order Euler equations. It is called the **canonical system of Euler equations** (or simply the **canonical Euler equations**) for the functional $J[y_1, \ldots, y_n]$.
+These $2n$ first-order differential equations form a system which is equivalent to the original system of $n$ second-order Euler equations. It is called the **canonical system of Euler equations** (or simply the **canonical Euler equations**) for the functional $J[y\_1, \ldots, y\_n]$.
 
 </div>
 
@@ -1554,7 +1554,7 @@ These $2n$ first-order differential equations form a system which is equivalent 
 
 Recall that a *first integral* of a system of differential equations is a function which has a constant value along each integral curve of the system. We now look for first integrals of the canonical system, and hence of the original Euler equations.
 
-First, we consider the case where the function $F$ defining the functional does not depend on $x$ explicitly, i.e., is of the form $F(y_1, \ldots, y_n, y_1', \ldots, y_n')$. Then the function
+First, we consider the case where the function $F$ defining the functional does not depend on $x$ explicitly, i.e., is of the form $F(y\_1, \ldots, y\_n, y\_1', \ldots, y\_n')$. Then the function
 
 $$H = -F + \sum_{i=1}^{n} y_i' p_i$$
 
@@ -1569,7 +1569,7 @@ Using the Euler equations in canonical form, we find that
 
 $$\frac{dH}{dx} = \sum_{i=1}^{n} \left(\frac{\partial H}{\partial y_i}\frac{\partial H}{\partial p_i} - \frac{\partial H}{\partial p_i}\frac{\partial H}{\partial y_i}\right) = 0,$$
 
-along each extremal. Thus, *if $F$ does not depend on $x$ explicitly, the function $H(y_1, \ldots, y_n, p_1, \ldots, p_n)$ is a first integral of the Euler equations*.
+along each extremal. Thus, *if $F$ does not depend on $x$ explicitly, the function $H(y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$ is a first integral of the Euler equations*.
 
 </div>
 
@@ -1604,7 +1604,7 @@ $$\frac{d\Phi}{dx} = [\Phi, H].$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(First Integrals via Poisson Brackets)</span></p>
 
-It follows that *a necessary and sufficient condition for a function $\Phi = \Phi(y_1, \ldots, y_n, p_1, \ldots, p_n)$ to be a first integral of the system of canonical Euler equations is that the Poisson bracket $[\Phi, H]$ vanish identically*.
+It follows that *a necessary and sufficient condition for a function $\Phi = \Phi(y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$ to be a first integral of the system of canonical Euler equations is that the Poisson bracket $[\Phi, H]$ vanish identically*.
 
 </div>
 
@@ -1666,11 +1666,11 @@ If $-H(p) + \xi p$ is regarded as a function of two variables, then
 
 $$f(\xi) = \max_p\,[-H(p) + \xi p].$$
 
-It follows that $-H(p_1, \ldots, p_n) + \sum_{i=1}^{n} p_i \xi_i \leqslant f(\xi_1, \ldots, \xi_n)$ for arbitrary $p_1, \ldots, p_n$, i.e.,
+It follows that $-H(p\_1, \ldots, p\_n) + \sum\_{i=1}^{n} p\_i \xi\_i \leqslant f(\xi\_1, \ldots, \xi\_n)$ for arbitrary $p\_1, \ldots, p\_n$, i.e.,
 
 $$\sum_{i=1}^{n} p_i \xi_i \leqslant H(p_1, \ldots, p_n) + f(\xi_1, \ldots, \xi_n),$$
 
-a result known as **Young's inequality**. Moreover, if the matrix $\lVert f_{\xi_i \xi_k}\rVert$ is *positive definite*, then
+a result known as **Young's inequality**. Moreover, if the matrix $\lVert f\_{\xi\_i \xi\_k}\rVert$ is *positive definite*, then
 
 $$f(\xi_1, \ldots, \xi_n) = \max_{p_1, \ldots, p_n}\!\left[-H(p_1, \ldots, p_n) + \sum_{i=1}^{n} p_i \xi_i\right].$$
 
@@ -1690,16 +1690,16 @@ and
 
 $$H(x, y, p) = -F + py'.$$
 
-Here we assume that $F_{y'y'} \neq 0$, so that the equation $p = F_{y'}$ defines $y'$ as a function of $x$, $y$ and $p$. Then we introduce the new functional
+Here we assume that $F\_{y'y'} \neq 0$, so that the equation $p = F\_{y'}$ defines $y'$ as a function of $x$, $y$ and $p$. Then we introduce the new functional
 
 $$J[y, p] = \int_a^b [-H(x, y, p) + py']\,dx,$$
 
-where $y$ and $p$ are regarded as two independent functions, and $y'$ is the derivative of $y$. This functional is obviously the same as the original functional $J[y]$, if we choose $p$ to be given by the expression $F_{y'}$.
+where $y$ and $p$ are regarded as two independent functions, and $y'$ is the derivative of $y$. This functional is obviously the same as the original functional $J[y]$, if we choose $p$ to be given by the expression $F\_{y'}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Equivalence via the Legendre Transformation)</span></p>
 
-The Euler equations for the functional $J[y, p] = \int_a^b [-H(x, y, p) + py']\,dx$ are
+The Euler equations for the functional $J[y, p] = \int\_a^b [-H(x, y, p) + py']\,dx$ are
 
 $$-\frac{\partial H}{\partial y} - \frac{dp}{dx} = 0, \qquad -\frac{\partial H}{\partial p} + \frac{dy}{dx} = 0,$$
 
@@ -1730,7 +1730,7 @@ while the usual form of the Euler equation for this functional is $2yQ - \frac{d
 
 ### 19. Canonical Transformations
 
-Next, we look for transformations under which the canonical Euler equations preserve their canonical form. Recall from Sec. 8 that the Euler equation $F_y - \frac{d}{dx}F_{y'} = 0$ is invariant under coordinate transformations of the form $u = u(x, y)$, $v = v(x, y)$ with nonvanishing Jacobian. The canonical Euler equations also have this invariance property. Furthermore, because of the symmetry between the variables $y_i$ and $p_i$ in the canonical equations, they permit even more general changes of variables, i.e., we can transform the variables $x, y_i, p_i$ into new variables $x, Y_i, P_i$:
+Next, we look for transformations under which the canonical Euler equations preserve their canonical form. Recall from Sec. 8 that the Euler equation $F\_y - \frac{d}{dx}F\_{y'} = 0$ is invariant under coordinate transformations of the form $u = u(x, y)$, $v = v(x, y)$ with nonvanishing Jacobian. The canonical Euler equations also have this invariance property. Furthermore, because of the symmetry between the variables $y\_i$ and $p\_i$ in the canonical equations, they permit even more general changes of variables, i.e., we can transform the variables $x, y\_i, p\_i$ into new variables $x, Y\_i, P\_i$:
 
 $$Y_i = Y_i(x, y_1, \ldots, y_n, p_1, \ldots, p_n),$$
 
@@ -1740,13 +1740,13 @@ However, the canonical equations do not preserve their form under all transforma
 
 $$\frac{dY_i}{dx} = \frac{\partial H^*}{\partial P_i}, \qquad \frac{dP_i}{dx} = -\frac{\partial H^*}{\partial Y_i},$$
 
-where $H^* = H^*(x, Y_1, \ldots, Y_n, P_1, \ldots, P_n)$ is some new function. Transformations which preserve the canonical form of the Euler equations are called **canonical transformations**.
+where $H^\ast = H^\ast(x, Y\_1, \ldots, Y\_n, P\_1, \ldots, P\_n)$ is some new function. Transformations which preserve the canonical form of the Euler equations are called **canonical transformations**.
 
 The Euler equations of the functional
 
 $$J[y_1, \ldots, y_n, p_1, \ldots, p_n] = \int_a^b \left(\sum_{i=1}^{n} p_i y_i' - H\right)dx$$
 
-are the canonical Euler equations. We want the new variables $Y_i$ and $P_i$ to satisfy the equations with $H^*$ as its Euler equations. This functional is
+are the canonical Euler equations. We want the new variables $Y\_i$ and $P\_i$ to satisfy the equations with $H^\ast$ as its Euler equations. This functional is
 
 $$J^*[Y_1, \ldots, Y_n, P_1, \ldots, P_n] = \int_a^b \left(\sum_{i=1}^{n} P_i Y_i' - H^*\right)dx.$$
 
@@ -1754,7 +1754,7 @@ As was shown in Sec. 9 (Remark 1), two variational problems are equivalent (i.e.
 
 $$\sum_{i=1}^{n} p_i\,dy_i - H\,dx = \sum_{i=1}^{n} P_i\,dY_i - H^*\,dx + d\Phi(x, y_1, \ldots, y_n, p_1, \ldots, p_n)$$
 
-for some function $\Phi$. Thus, if a given transformation from the variables $x, y_i, p_i$ to the variables $x, Y_i, P_i$ is such that there exists a function $\Phi$ satisfying this condition, then the transformation is canonical. The function $\Phi$ defined by this condition is called the **generating function** of the canonical transformation.
+for some function $\Phi$. Thus, if a given transformation from the variables $x, y\_i, p\_i$ to the variables $x, Y\_i, P\_i$ is such that there exists a function $\Phi$ satisfying this condition, then the transformation is canonical. The function $\Phi$ defined by this condition is called the **generating function** of the canonical transformation.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Generating Function of a Canonical Transformation)</span></p>
@@ -1763,22 +1763,22 @@ Writing the condition in the form
 
 $$d\Phi = \sum_{i=1}^{n} p_i\,dy_i - \sum_{i=1}^{n} P_i\,dY_i + (H^* - H)\,dx,$$
 
-and assuming $\Phi$ is a function of $x$, $y_i$ and $Y_i$, we find that the $2n + 1$ equations
+and assuming $\Phi$ is a function of $x$, $y\_i$ and $Y\_i$, we find that the $2n + 1$ equations
 
 $$p_i = \frac{\partial \Phi}{\partial y_i}, \qquad P_i = -\frac{\partial \Phi}{\partial Y_i}, \qquad H^* = H + \frac{\partial \Phi}{\partial x}$$
 
-establish the connection between the old variables $y_i$, $p_i$ and the new variables $Y_i$, $P_i$, and also give an expression for the new Hamiltonian $H^*$. If the generating function $\Phi$ does not depend on $x$ explicitly, then $H^* = H$.
+establish the connection between the old variables $y\_i$, $p\_i$ and the new variables $Y\_i$, $P\_i$, and also give an expression for the new Hamiltonian $H^\ast$. If the generating function $\Phi$ does not depend on $x$ explicitly, then $H^\ast = H$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Alternative Generating Functions)</span></p>
 
-It may be more convenient to express the generating function in terms of $y_i$ and $P_i$ instead of $y_i$ and $Y_i$. To this end, we rewrite the condition as
+It may be more convenient to express the generating function in terms of $y\_i$ and $P\_i$ instead of $y\_i$ and $Y\_i$. To this end, we rewrite the condition as
 
 $$d\!\left(\Phi + \sum_{i=1}^{n} P_i Y_i\right) = \sum_{i=1}^{n} p_i\,dy_i + \sum_{i=1}^{n} Y_i\,dP_i + (H^* - H)\,dx,$$
 
-thereby obtaining a new generating function $\Psi = \Phi + \sum_{i=1}^{n} P_i Y_i$, which is to be regarded as a function of $x$, $y_i$ and $P_i$. The corresponding canonical transformation is given by the form
+thereby obtaining a new generating function $\Psi = \Phi + \sum\_{i=1}^{n} P\_i Y\_i$, which is to be regarded as a function of $x$, $y\_i$ and $P\_i$. The corresponding canonical transformation is given by the form
 
 $$p_i = \frac{\partial \Psi}{\partial y_i}, \qquad Y_i = \frac{\partial \Psi}{\partial P_i}, \qquad H^* = H + \frac{\partial \Psi}{\partial x}.$$
 
@@ -1790,7 +1790,7 @@ In Sec. 17 we proved that the system of Euler equations corresponding to the fun
 
 $$\int_a^b F(y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx,$$
 
-where $F$ does not depend on $x$ explicitly, has the first integral $H = -F + \sum_{i=1}^{n} y_i' F_{y_i'}$. The statement "$F$ does not depend on $x$ explicitly" is equivalent to the statement that the integral remains the same if we replace $x$ by the new variable $x^* = x + \varepsilon$, where $\varepsilon$ is an arbitrary constant. We now show that even in the general case, there is a connection between the existence of first integrals of a system of Euler equations and the invariance of the corresponding functional under certain transformations.
+where $F$ does not depend on $x$ explicitly, has the first integral $H = -F + \sum\_{i=1}^{n} y\_i' F\_{y\_i'}$. The statement "$F$ does not depend on $x$ explicitly" is equivalent to the statement that the integral remains the same if we replace $x$ by the new variable $x^\ast = x + \varepsilon$, where $\varepsilon$ is an arbitrary constant. We now show that even in the general case, there is a connection between the existence of first integrals of a system of Euler equations and the invariance of the corresponding functional under certain transformations.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Invariance of a Functional)</span></p>
@@ -1799,13 +1799,13 @@ Suppose we are given a functional
 
 $$J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx,$$
 
-where now $y$ indicates the $n$-dimensional vector $(y_1, \ldots, y_n)$ and $y'$ the $n$-dimensional vector $(y_1', \ldots, y_n')$. Consider the transformation
+where now $y$ indicates the $n$-dimensional vector $(y\_1, \ldots, y\_n)$ and $y'$ the $n$-dimensional vector $(y\_1', \ldots, y\_n')$. Consider the transformation
 
 $$x^* = \Phi(x, y, y'), \qquad y_i^* = \Psi_i(x, y, y'),$$
 
-where $i = 1, \ldots, n$. The transformation carries the curve $\gamma$, with vector equation $y = y(x)$ $(x_0 \leqslant x \leqslant x_1)$, into another curve $\gamma^*$, with vector equation $y^* = y^*(x^*)$ $(x_0^* \leqslant x^* \leqslant x_1^*)$.
+where $i = 1, \ldots, n$. The transformation carries the curve $\gamma$, with vector equation $y = y(x)$ $(x\_0 \leqslant x \leqslant x\_1)$, into another curve $\gamma^\ast$, with vector equation $y^\ast = y^\ast(x^\ast)$ $(x\_0^\ast \leqslant x^\ast \leqslant x\_1^\ast)$.
 
-The functional $J[y]$ is said to be **invariant** under the transformation if $J[\gamma^*] = J[\gamma]$, i.e., if
+The functional $J[y]$ is said to be **invariant** under the transformation if $J[\gamma^\ast] = J[\gamma]$, i.e., if
 
 $$\int_{x_0^*}^{x_1^*} F\!\left(x^*, y^*, \frac{dy^*}{dx^*}\right)dx^* = \int_{x_0}^{x_1} F\!\left(x, y, \frac{dy}{dx}\right)dx.$$
 
@@ -1814,14 +1814,14 @@ $$\int_{x_0^*}^{x_1^*} F\!\left(x^*, y^*, \frac{dy^*}{dx^*}\right)dx^* = \int_{x
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Translation Invariance)</span></p>
 
-The functional $J[y] = \int_{x_0}^{x_1} y'^2\,dx$ is invariant under the transformation $x^* = x + \varepsilon$, $y^* = y$, where $\varepsilon$ is an arbitrary constant. In fact, the "transformed" curve $\gamma^*$, obtained by shifting $\gamma$ a distance $\varepsilon$ along the $x$-axis, satisfies $y^*(x^* - \varepsilon) = y(x^* - \varepsilon) = y^*(x^*)$, and so $J[\gamma^*] = J[\gamma]$.
+The functional $J[y] = \int\_{x\_0}^{x\_1} y'^2\,dx$ is invariant under the transformation $x^\ast = x + \varepsilon$, $y^\ast = y$, where $\varepsilon$ is an arbitrary constant. In fact, the "transformed" curve $\gamma^\ast$, obtained by shifting $\gamma$ a distance $\varepsilon$ along the $x$-axis, satisfies $y^\ast(x^\ast - \varepsilon) = y(x^\ast - \varepsilon) = y^\ast(x^\ast)$, and so $J[\gamma^\ast] = J[\gamma]$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Non-Invariance)</span></p>
 
-The integral $J[y] = \int_{x_0}^{x_1} xy'^2\,dx$ is *not* invariant under the translation $x^* = x + \varepsilon$, $y^* = y$. In fact, $J[\gamma^*] = \int_{x_0 + \varepsilon}^{x_1 + \varepsilon} (x + \varepsilon)\left[\frac{dy(x)}{dx}\right]^2 dx \neq J[\gamma]$.
+The integral $J[y] = \int\_{x\_0}^{x\_1} xy'^2\,dx$ is *not* invariant under the translation $x^\ast = x + \varepsilon$, $y^\ast = y$. In fact, $J[\gamma^\ast] = \int\_{x\_0 + \varepsilon}^{x\_1 + \varepsilon} (x + \varepsilon)\left[\frac{dy(x)}{dx}\right]^2 dx \neq J[\gamma]$.
 
 </div>
 
@@ -1829,7 +1829,7 @@ Now suppose that we have a *family* of transformations
 
 $$x^* = \Phi(x, y, y'; \varepsilon), \qquad y_i^* = \Psi_i(x, y, y'; \varepsilon),$$
 
-depending on a parameter $\varepsilon$, where the functions $\Phi$ and $\Psi_i$ are differentiable with respect to $\varepsilon$, and the value $\varepsilon = 0$ corresponds to the identity transformation:
+depending on a parameter $\varepsilon$, where the functions $\Phi$ and $\Psi\_i$ are differentiable with respect to $\varepsilon$, and the value $\varepsilon = 0$ corresponds to the identity transformation:
 
 $$\Phi(x, y, y'; 0) = x, \qquad \Psi_i(x, y, y'; 0) = y_i.$$
 
@@ -1840,7 +1840,7 @@ If the functional
 
 $$J[y] = \int_{x_0}^{x_1} F(x, y, y')\,dx$$
 
-is invariant under the family of transformations $x^* = \Phi(x, y, y'; \varepsilon)$, $y_i^* = \Psi_i(x, y, y'; \varepsilon)$ for arbitrary $x_0$ and $x_1$, then
+is invariant under the family of transformations $x^\ast = \Phi(x, y, y'; \varepsilon)$, $y\_i^\ast = \Psi\_i(x, y, y'; \varepsilon)$ for arbitrary $x\_0$ and $x\_1$, then
 
 $$\sum_{i=1}^{n} F_{y_i'}\psi_i + \left(F - \sum_{i=1}^{n} y_i' F_{y_i'}\right)\varphi = \mathrm{const}$$
 
@@ -1862,7 +1862,7 @@ $$x^* = \Phi(x, y, y'; 0) + \varepsilon\,\frac{\partial \Phi}{\partial \varepsil
 
 $$y_i^* = \Psi_i(x, y, y'; 0) + \varepsilon\,\frac{\partial \Psi_i}{\partial \varepsilon}\bigg\vert_{\varepsilon = 0} + o(\varepsilon) = y_i + \varepsilon\psi_i(x, y, y') + o(\varepsilon).$$
 
-Assuming that the curve $y_i = y_i(x)$ $(1 \leqslant i \leqslant n)$ is an extremal of $J[y]$, we can use the formula for the general variation of $J[y]$ from Sec. 13 corresponding to the transformation. In the present case,
+Assuming that the curve $y\_i = y\_i(x)$ $(1 \leqslant i \leqslant n)$ is an extremal of $J[y]$, we can use the formula for the general variation of $J[y]$ from Sec. 13 corresponding to the transformation. In the present case,
 
 $$\delta x = \varepsilon\varphi, \qquad \delta y_i = \varepsilon\psi_i.$$
 
@@ -1870,7 +1870,7 @@ Since by hypothesis $J[y]$ is invariant under the transformation, $\delta J$ van
 
 $$\left[\sum_{i=1}^{n} F_{y_i'}\psi_i + \left(F - \sum_{i=1}^{n} y_i' F_{y_i'}\right)\varphi\right]\bigg\vert_{x = x_0}^{x = x_1} = 0$$
 
-(the integral term vanishes because $y$ is an extremal). The fact that this holds along each extremal now follows from the arbitrariness of $x_0$ and $x_1$.
+(the integral term vanishes because $y$ is an extremal). The fact that this holds along each extremal now follows from the arbitrariness of $x\_0$ and $x\_1$.
 
 </details>
 </div>
@@ -1878,7 +1878,7 @@ $$\left[\sum_{i=1}^{n} F_{y_i'}\psi_i + \left(F - \sum_{i=1}^{n} y_i' F_{y_i'}\r
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Canonical Variables Form)</span></p>
 
-In terms of the canonical variables $p_i$ and $H$, the first integral from Noether's theorem becomes simply
+In terms of the canonical variables $p\_i$ and $H$, the first integral from Noether's theorem becomes simply
 
 $$\sum_{i=1}^{n} p_i \psi_i - H\varphi = \mathrm{const}.$$
 
@@ -1887,13 +1887,13 @@ $$\sum_{i=1}^{n} p_i \psi_i - H\varphi = \mathrm{const}.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Hamiltonian as a Special Case of Noether's Theorem)</span></p>
 
-Consider the functional $J[y] = \int_{x_0}^{x_1} F(y, y')\,dx$, whose integrand does not depend on $x$ explicitly. Then, by the same argument as in Example 1, $J[y]$ is invariant under the one-parameter family of transformations $x^* = x + \varepsilon$, $y_i^* = y_i$. In this case, $\varphi = 1$, $\psi_i = 0$, and the first integral reduces to just $H = \mathrm{const}$, i.e., the Hamiltonian $H$ is constant along each extremal of $J[y]$. This recovers the result already obtained in Sec. 17.
+Consider the functional $J[y] = \int\_{x\_0}^{x\_1} F(y, y')\,dx$, whose integrand does not depend on $x$ explicitly. Then, by the same argument as in Example 1, $J[y]$ is invariant under the one-parameter family of transformations $x^\ast = x + \varepsilon$, $y\_i^\ast = y\_i$. In this case, $\varphi = 1$, $\psi\_i = 0$, and the first integral reduces to just $H = \mathrm{const}$, i.e., the Hamiltonian $H$ is constant along each extremal of $J[y]$. This recovers the result already obtained in Sec. 17.
 
 </div>
 
 ### 21. The Principle of Least Action
 
-We now apply the general results obtained in the preceding sections to some mechanical problems. Suppose we are given a system of $n$ particles (mass points), where no constraints whatsoever are imposed on the system. Let the $i$th particle have mass $m_i$ and coordinates $x_i, y_i, z_i$ $(i = 1, \ldots, n)$. Then the *kinetic energy* of the system is
+We now apply the general results obtained in the preceding sections to some mechanical problems. Suppose we are given a system of $n$ particles (mass points), where no constraints whatsoever are imposed on the system. Let the $i$th particle have mass $m\_i$ and coordinates $x\_i, y\_i, z\_i$ $(i = 1, \ldots, n)$. Then the *kinetic energy* of the system is
 
 $$T = \frac{1}{2}\sum_{i=1}^{n} m_i(\dot{x}_i^2 + \dot{y}_i^2 + \dot{z}_i^2),$$
 
@@ -1903,7 +1903,7 @@ We assume that the system has *potential energy* $U$, i.e., that there exists a 
 
 $$U = U(t, x_1, y_1, z_1, \ldots, x_n, y_n, z_n)$$
 
-such that the force acting on the $i$th particle has components $X_i = -\frac{\partial U}{\partial x_i}$, $Y_i = -\frac{\partial U}{\partial y_i}$, $Z_i = -\frac{\partial U}{\partial z_i}$.
+such that the force acting on the $i$th particle has components $X\_i = -\frac{\partial U}{\partial x\_i}$, $Y\_i = -\frac{\partial U}{\partial y\_i}$, $Z\_i = -\frac{\partial U}{\partial z\_i}$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lagrangian)</span></p>
@@ -1912,11 +1912,11 @@ Next, we introduce the expression
 
 $$L = T - U,$$
 
-called the **Lagrangian** (function) of the system of particles. Obviously, $L$ is a function of the time $t$ and of the positions $(x_i, y_i, z_i)$ and velocities $(\dot{x}_i, \dot{y}_i, \dot{z}_i)$ of the $n$ particles in the system.
+called the **Lagrangian** (function) of the system of particles. Obviously, $L$ is a function of the time $t$ and of the positions $(x\_i, y\_i, z\_i)$ and velocities $(\dot{x}\_i, \dot{y}\_i, \dot{z}\_i)$ of the $n$ particles in the system.
 
 </div>
 
-Suppose that at time $t_0$ the system is in some fixed position. Then subsequent evolution of the system in time is described by a curve
+Suppose that at time $t\_0$ the system is in some fixed position. Then subsequent evolution of the system in time is described by a curve
 
 $$x_i = x_i(t), \quad y_i = y_i(t), \quad z_i = z_i(t) \qquad (i = 1, \ldots, n)$$
 
@@ -1925,7 +1925,7 @@ in a space of $3n$ dimensions. It can be shown that among all curves passing thr
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Principle of Least Action)</span></p>
 
-*The motion of a system of $n$ particles during the time interval $[t_0, t_1]$ is described by those functions $x_i(t), y_i(t), z_i(t)$, $1 \leqslant i \leqslant n$, for which the integral*
+*The motion of a system of $n$ particles during the time interval $[t\_0, t\_1]$ is described by those functions $x\_i(t), y\_i(t), z\_i(t)$, $1 \leqslant i \leqslant n$, for which the integral*
 
 $$\int_{t_0}^{t_1} L\,dt,$$
 
@@ -1937,15 +1937,15 @@ $$\int_{t_0}^{t_1} L\,dt,$$
 <details>
 <summary>Proof (sketch)</summary>
 
-We show that the principle of least action implies the usual equations of motion for a system of $n$ particles. If the functional $\int_{t_0}^{t_1} L\,dt$ has a minimum, then the Euler equations
+We show that the principle of least action implies the usual equations of motion for a system of $n$ particles. If the functional $\int\_{t\_0}^{t\_1} L\,dt$ has a minimum, then the Euler equations
 
 $$\frac{\partial L}{\partial x_i} - \frac{d}{dt}\frac{\partial L}{\partial \dot{x}_i} = 0, \qquad \frac{\partial L}{\partial y_i} - \frac{d}{dt}\frac{\partial L}{\partial \dot{y}_i} = 0, \qquad \frac{\partial L}{\partial z_i} - \frac{d}{dt}\frac{\partial L}{\partial \dot{z}_i} = 0$$
 
-must be satisfied for $i = 1, \ldots, n$. Bearing in mind that the potential energy $U$ depends only on $t, x_i, y_i, z_i$, and not on $\dot{x}_i, \dot{y}_i, \dot{z}_i$, while $T$ is a sum of squares of the velocity components (with coefficients $\frac{1}{2}m_i$), we can write these equations in the form
+must be satisfied for $i = 1, \ldots, n$. Bearing in mind that the potential energy $U$ depends only on $t, x\_i, y\_i, z\_i$, and not on $\dot{x}\_i, \dot{y}\_i, \dot{z}\_i$, while $T$ is a sum of squares of the velocity components (with coefficients $\frac{1}{2}m\_i$), we can write these equations in the form
 
 $$-\frac{\partial U}{\partial x_i} - \frac{d}{dt}m_i\dot{x}_i = 0, \quad -\frac{\partial U}{\partial y_i} - \frac{d}{dt}m_i\dot{y}_i = 0, \quad -\frac{\partial U}{\partial z_i} - \frac{d}{dt}m_i\dot{z}_i = 0,$$
 
-which reduce to $m_i\ddot{x}_i = X_i$, $m_i\ddot{y}_i = Y_i$, $m_i\ddot{z}_i = Z_i$, i.e., just Newton's equations of motion for a system of $n$ particles, subject to no constraints.
+which reduce to $m\_i\ddot{x}\_i = X\_i$, $m\_i\ddot{y}\_i = Y\_i$, $m\_i\ddot{z}\_i = Z\_i$, i.e., just Newton's equations of motion for a system of $n$ particles, subject to no constraints.
 
 </details>
 </div>
@@ -1953,14 +1953,14 @@ which reduce to $m_i\ddot{x}_i = X_i$, $m_i\ddot{y}_i = Y_i$, $m_i\ddot{z}_i = Z
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span></p>
 
-The principle of least action remains valid in the case where the system of particles is subject to constraints, except that then the admissible curves for which the functional $\int_{t_0}^{t_1} L\,dt$ is considered have to satisfy the constraints. In other words, in this case, application of the principle of least action leads to a variational problem with subsidiary conditions.
+The principle of least action remains valid in the case where the system of particles is subject to constraints, except that then the admissible curves for which the functional $\int\_{t\_0}^{t\_1} L\,dt$ is considered have to satisfy the constraints. In other words, in this case, application of the principle of least action leads to a variational problem with subsidiary conditions.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span></p>
 
-Actually, the principle of least action only holds for sufficiently small time intervals $[t_0, t_1]$, and has to be modified for continuous systems.
+Actually, the principle of least action only holds for sufficiently small time intervals $[t\_0, t\_1]$, and has to be modified for continuous systems.
 
 </div>
 
@@ -1974,7 +1974,7 @@ The canonical variables corresponding to this functional turn out to be
 
 $$p_{ix} = \frac{\partial L}{\partial \dot{x}_i} = m_i\dot{x}_i, \qquad p_{iy} = \frac{\partial L}{\partial \dot{y}_i} = m_i\dot{y}_i, \qquad p_{iz} = \frac{\partial L}{\partial \dot{z}_i} = m_i\dot{z}_i,$$
 
-which are just the components of the momentum of the $i$th particle. In terms of $p_{ix}$, $p_{iy}$ and $p_{iz}$, we have
+which are just the components of the momentum of the $i$th particle. In terms of $p\_{ix}$, $p\_{iy}$ and $p\_{iz}$, we have
 
 $$H = \sum_{i=1}^{n} (\dot{x}_i p_{ix} + \dot{y}_i p_{iy} + \dot{z}_i p_{iz}) - L = 2T - (T - U) = T + U,$$
 
@@ -1996,9 +1996,9 @@ First, we recall that according to Noether's theorem (Sec. 20), invariance of th
 
 $$x^* = \Phi(x, y, y'; \varepsilon) = x, \qquad y_i^* = \Psi_i(x, y, y'; \varepsilon)$$
 
-implies that the corresponding system of Euler equations has the first integral $\sum_{i=1}^{n} F_{y_i'}\psi_i = \mathrm{const}$, where $\psi_i = \frac{\partial \Psi_i}{\partial \varepsilon}\big\vert_{\varepsilon=0}$.
+implies that the corresponding system of Euler equations has the first integral $\sum\_{i=1}^{n} F\_{y\_i'}\psi\_i = \mathrm{const}$, where $\psi\_i = \frac{\partial \Psi\_i}{\partial \varepsilon}\big\vert\_{\varepsilon=0}$.
 
-Therefore, the invariance of the functional $\int_{t_0}^{t_1} L\,dt$ under the transformation
+Therefore, the invariance of the functional $\int\_{t\_0}^{t\_1} L\,dt$ under the transformation
 
 $$x_i^* = x_i + \varepsilon, \qquad y_i^* = y_i, \qquad z_i^* = z_i$$
 
@@ -2006,7 +2006,7 @@ implies that
 
 $$\sum_{i=1}^{n} \frac{\partial L}{\partial \dot{x}_i} = \mathrm{const},$$
 
-i.e., $\sum_{i=1}^{n} p_{ix} = \mathrm{const}$. The same argument applies to translations in the $y$- and $z$-directions, so that the total momentum of the system is conserved in each direction where the Lagrangian is translation-invariant.
+i.e., $\sum\_{i=1}^{n} p\_{ix} = \mathrm{const}$. The same argument applies to translations in the $y$- and $z$-directions, so that the total momentum of the system is conserved in each direction where the Lagrangian is translation-invariant.
 
 </div>
 
@@ -2038,21 +2038,21 @@ If we set $y = x$ in a bilinear functional, we obtain an expression called a **q
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Inner Product as Bilinear Functional)</span></p>
 
-The expression $B[x, y] = \int_a^b x(t)y(t)\,dt$ is a bilinear functional defined on the space $\mathscr{C}$ of all functions which are continuous in the interval $a \leqslant t \leqslant b$. The corresponding quadratic functional is $A[x] = \int_a^b x^2(t)\,dt$.
+The expression $B[x, y] = \int\_a^b x(t)y(t)\,dt$ is a bilinear functional defined on the space $\mathscr{C}$ of all functions which are continuous in the interval $a \leqslant t \leqslant b$. The corresponding quadratic functional is $A[x] = \int\_a^b x^2(t)\,dt$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Weighted Bilinear Functional)</span></p>
 
-A more general bilinear functional defined on $\mathscr{C}$ is $B[x, y] = \int_a^b \alpha(t)x(t)y(t)\,dt$, where $\alpha(t)$ is a fixed function. If $\alpha(t) > 0$ for all $t$ in $[a, b]$, then the corresponding quadratic functional $A[x] = \int_a^b \alpha(t)x^2(t)\,dt$ is positive definite.
+A more general bilinear functional defined on $\mathscr{C}$ is $B[x, y] = \int\_a^b \alpha(t)x(t)y(t)\,dt$, where $\alpha(t)$ is a fixed function. If $\alpha(t) > 0$ for all $t$ in $[a, b]$, then the corresponding quadratic functional $A[x] = \int\_a^b \alpha(t)x^2(t)\,dt$ is positive definite.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Quadratic Functional on $\mathscr{D}_1$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Quadratic Functional on $\mathscr{D}\_1$)</span></p>
 
-The expression $A[x] = \int_a^b [\alpha(t)x^2(t) + \beta(t)x(t)x'(t) + \gamma(t)x'^2(t)]\,dt$ is a quadratic functional defined on the space $\mathscr{D}_1$ of all functions which are continuously differentiable in $[a, b]$.
+The expression $A[x] = \int\_a^b [\alpha(t)x^2(t) + \beta(t)x(t)x'(t) + \gamma(t)x'^2(t)]\,dt$ is a quadratic functional defined on the space $\mathscr{D}\_1$ of all functions which are continuously differentiable in $[a, b]$.
 
 </div>
 
@@ -2069,7 +2069,7 @@ Similarly, we say that the functional $J[y]$ is **twice differentiable** if its 
 
 $$\Delta J[h] = \varphi_1[h] + \varphi_2[h] + \varepsilon\lVert h\rVert^2,$$
 
-where $\varphi_1[h]$ is a linear functional (in fact, the first variation), $\varphi_2[h]$ is a quadratic functional, and $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. The quadratic functional $\varphi_2[h]$ is called the **second variation** (or **second differential**) of the functional $J[y]$, and is denoted by $\delta^2 J[h]$.
+where $\varphi\_1[h]$ is a linear functional (in fact, the first variation), $\varphi\_2[h]$ is a quadratic functional, and $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. The quadratic functional $\varphi\_2[h]$ is called the **second variation** (or **second differential**) of the functional $J[y]$, and is denoted by $\delta^2 J[h]$.
 
 </div>
 
@@ -2088,7 +2088,7 @@ $$\delta^2 J[y] \geqslant 0$$
 <details>
 <summary>Proof</summary>
 
-By definition, we have $\Delta J[h] = \delta J[h] + \delta^2 J[h] + \varepsilon\lVert h\rVert^2$, where $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. According to the necessary condition for an extremum (Theorem 2 of Sec. 3.2), $\delta J[h] = 0$ for $y = \hat{y}$ and all admissible $h$, and hence $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2$. Thus, for sufficiently small $\lVert h\rVert$, the sign of $\Delta J[h]$ will be the same as the sign of $\delta^2 J[h]$. Now suppose that $\delta^2 J[h_0] < 0$ for some admissible $h_0$. Then for any $\alpha \neq 0$, no matter how small, we have $\delta^2 J[\alpha h_0] = \alpha^2 \delta^2 J[h_0] < 0$. Hence $\Delta J[h] = J[\hat{y} + h] - J[\hat{y}] \geqslant 0$ for all sufficiently small $\lVert h\rVert$ is contradicted. This proves the theorem.
+By definition, we have $\Delta J[h] = \delta J[h] + \delta^2 J[h] + \varepsilon\lVert h\rVert^2$, where $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. According to the necessary condition for an extremum (Theorem 2 of Sec. 3.2), $\delta J[h] = 0$ for $y = \hat{y}$ and all admissible $h$, and hence $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2$. Thus, for sufficiently small $\lVert h\rVert$, the sign of $\Delta J[h]$ will be the same as the sign of $\delta^2 J[h]$. Now suppose that $\delta^2 J[h\_0] < 0$ for some admissible $h\_0$. Then for any $\alpha \neq 0$, no matter how small, we have $\delta^2 J[\alpha h\_0] = \alpha^2 \delta^2 J[h\_0] < 0$. Hence $\Delta J[h] = J[\hat{y} + h] - J[\hat{y}] \geqslant 0$ for all sufficiently small $\lVert h\rVert$ is contradicted. This proves the theorem.
 
 </details>
 </div>
@@ -2098,7 +2098,7 @@ The condition $\delta^2 J \geqslant 0$ is necessary but of course not sufficient
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strongly Positive Quadratic Functional)</span></p>
 
-We say that a quadratic functional $\varphi_2[h]$ defined on some normed linear space $\mathscr{R}$ is **strongly positive** if there exists a constant $k > 0$ such that
+We say that a quadratic functional $\varphi\_2[h]$ defined on some normed linear space $\mathscr{R}$ is **strongly positive** if there exists a constant $k > 0$ such that
 
 $$\varphi_2[h] \geqslant k\lVert h\rVert^2$$
 
@@ -2117,7 +2117,7 @@ for all $h$.
 <details>
 <summary>Proof</summary>
 
-For $y = \hat{y}$, we have $\delta J[h] = 0$ for all admissible $h$, and hence $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2$, where $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. Moreover, for $y = \hat{y}$, $\delta^2 J[h] \geqslant k\lVert h\rVert^2$, where $k = \mathrm{const} > 0$. Thus, for sufficiently small $\varepsilon_1$, $\|\varepsilon\| < \frac{1}{2}k$ if $\lVert h\rVert < \varepsilon_1$. It follows that $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2 > \frac{1}{2}k\lVert h\rVert^2 > 0$ if $\lVert h\rVert < \varepsilon_1$, i.e., $J[y]$ has a minimum for $y = \hat{y}$, as asserted.
+For $y = \hat{y}$, we have $\delta J[h] = 0$ for all admissible $h$, and hence $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2$, where $\varepsilon \to 0$ as $\lVert h\rVert \to 0$. Moreover, for $y = \hat{y}$, $\delta^2 J[h] \geqslant k\lVert h\rVert^2$, where $k = \mathrm{const} > 0$. Thus, for sufficiently small $\varepsilon\_1$, $\|\varepsilon\| < \frac{1}{2}k$ if $\lVert h\rVert < \varepsilon\_1$. It follows that $\Delta J[h] = \delta^2 J[h] + \varepsilon\lVert h\rVert^2 > \frac{1}{2}k\lVert h\rVert^2 > 0$ if $\lVert h\rVert < \varepsilon\_1$, i.e., $J[y]$ has a minimum for $y = \hat{y}$, as asserted.
 
 </details>
 </div>
@@ -2138,7 +2138,7 @@ where the first term on the right-hand side is $\delta J[h]$, and the second ter
 
 $$\delta^2 J[h] = \frac{1}{2}\int_a^b (F_{yy}h^2 + 2F_{yy'}hh' + F_{y'y'}h'^2)\,dx.$$
 
-We now transform this into a more convenient form. Integrating the term $2F_{yy'}hh'$ by parts and taking account of the boundary conditions $h(a) = h(b) = 0$, we obtain
+We now transform this into a more convenient form. Integrating the term $2F\_{yy'}hh'$ by parts and taking account of the boundary conditions $h(a) = h(b) = 0$, we obtain
 
 $$\delta^2 J[h] = \int_a^b (Ph'^2 + Qh^2)\,dx,$$
 
@@ -2155,13 +2155,13 @@ The following consequence of the above formulas should be noted. If $J[y]$ has a
 
 $$\Delta J[h] = \int_a^b (Ph'^2 + Qh^2)\,dx + \int_a^b (\xi h^2 + \eta h'^2)\,dx,$$
 
-where $\xi, \eta \to 0$ as $\lVert h\rVert_1 \to 0$. In fact, since $J[y]$ has an extremum for $y = y(x)$, the linear terms in the right-hand side of the expansion vanish, while the remainder $\varepsilon$ can be written in the form $\int_a^b (\xi h^2 + \eta h'^2)\,dx$. This formula will be used later, when we derive sufficient conditions for a weak extremum (see Sec. 28).
+where $\xi, \eta \to 0$ as $\lVert h\rVert\_1 \to 0$. In fact, since $J[y]$ has an extremum for $y = y(x)$, the linear terms in the right-hand side of the expansion vanish, while the remainder $\varepsilon$ can be written in the form $\int\_a^b (\xi h^2 + \eta h'^2)\,dx$. This formula will be used later, when we derive sufficient conditions for a weak extremum (see Sec. 28).
 
 </div>
 
 We now use the expression for the second variation to derive a new necessary condition for a minimum.
 
-The term $Ph'^2$ plays the dominant role in the quadratic functional $\int_a^b (Ph'^2 + Qh^2)\,dx$, in the sense that $Ph'^2$ can be much larger than the second term $Qh^2$ (this is because we can construct a function $h(x)$ which is itself small but has a large derivative $h'(x)$ in $[a, b]$). Therefore, it might be expected that the coefficient $P(x)$ determines whether the functional takes values with just one sign or values with both signs. We now make this qualitative argument precise:
+The term $Ph'^2$ plays the dominant role in the quadratic functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$, in the sense that $Ph'^2$ can be much larger than the second term $Qh^2$ (this is because we can construct a function $h(x)$ which is itself small but has a large derivative $h'(x)$ in $[a, b]$). Therefore, it might be expected that the coefficient $P(x)$ determines whether the functional takes values with just one sign or values with both signs. We now make this qualitative argument precise:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Necessary Condition on $P(x)$)</span></p>
@@ -2170,7 +2170,7 @@ The term $Ph'^2$ plays the dominant role in the quadratic functional $\int_a^b (
 
 $$\delta^2 J[h] = \int_a^b (Ph'^2 + Qh^2)\,dx,$$
 
-*defined for all functions $h(x) \in \mathscr{D}_1(a, b)$ such that $h(a) = h(b) = 0$, to be nonnegative is that*
+*defined for all functions $h(x) \in \mathscr{D}\_1(a, b)$ such that $h(a) = h(b) = 0$, to be nonnegative is that*
 
 $$P(x) \geqslant 0 \qquad (a \leqslant x \leqslant b).$$
 
@@ -2180,11 +2180,11 @@ $$P(x) \geqslant 0 \qquad (a \leqslant x \leqslant b).$$
 <details>
 <summary>Proof</summary>
 
-Suppose the condition does not hold, i.e., suppose (without loss of generality) that $P(x_0) = -2\beta$ $(\beta > 0)$ at some point $x_0$ in $[a, b]$. Then, since $P(x)$ is continuous, there exists an $\alpha > 0$ such that $a \leqslant x_0 - \alpha$, $x_0 + \alpha \leqslant b$, and $P(x_0) < -\beta$ for $x_0 - \alpha \leqslant x \leqslant x_0 + \alpha$. We now construct a function $h(x) \in \mathscr{D}_1(a, b)$ such that the functional is negative. In fact, let
+Suppose the condition does not hold, i.e., suppose (without loss of generality) that $P(x\_0) = -2\beta$ $(\beta > 0)$ at some point $x\_0$ in $[a, b]$. Then, since $P(x)$ is continuous, there exists an $\alpha > 0$ such that $a \leqslant x\_0 - \alpha$, $x\_0 + \alpha \leqslant b$, and $P(x\_0) < -\beta$ for $x\_0 - \alpha \leqslant x \leqslant x\_0 + \alpha$. We now construct a function $h(x) \in \mathscr{D}\_1(a, b)$ such that the functional is negative. In fact, let
 
 $$h(x) = \begin{cases} \sin^2 \frac{\pi(x - x_0)}{\alpha} & \text{for } x_0 - \alpha \leqslant x \leqslant x_0 + \alpha, \\\\ 0 & \text{otherwise}. \end{cases}$$
 
-Then $\int_a^b (Ph'^2 + Qh^2)\,dx < -\frac{2\beta\pi^2}{\alpha} + 2M\alpha$, where $M = \max_{a \leqslant x \leqslant b} \|Q(x)\|$. For sufficiently small $\alpha$, the right side is negative, and hence the functional is negative for the corresponding function $h(x)$. This proves the lemma.
+Then $\int\_a^b (Ph'^2 + Qh^2)\,dx < -\frac{2\beta\pi^2}{\alpha} + 2M\alpha$, where $M = \max\_{a \leqslant x \leqslant b} \|Q(x)\|$. For sufficiently small $\alpha$, the right side is negative, and hence the functional is negative for the corresponding function $h(x)$. This proves the lemma.
 
 </details>
 </div>
@@ -2209,19 +2209,19 @@ $$F_{y'y'} \geqslant 0$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Legendre's Attempted Sufficient Condition)</span></p>
 
-Legendre attempted (unsuccessfully) to show that a sufficient condition for $J[y]$ to have a (weak) minimum for the curve $y = y(x)$ is that the *strict* inequality $F_{y'y'} > 0$ (the **strengthened Legendre condition**) be satisfied at every point of the curve. His approach was to first write the second variation in the form
+Legendre attempted (unsuccessfully) to show that a sufficient condition for $J[y]$ to have a (weak) minimum for the curve $y = y(x)$ is that the *strict* inequality $F\_{y'y'} > 0$ (the **strengthened Legendre condition**) be satisfied at every point of the curve. His approach was to first write the second variation in the form
 
 $$\delta^2 J[h] = \int_a^b [Ph'^2 + 2whh' + (Q + w')h^2]\,dx,$$
 
-where $w(x)$ is an arbitrary differentiable function, using the fact that $\int_a^b \frac{d}{dx}(wh^2)\,dx = 0$ since $h(a) = h(b) = 0$. Next, he observed that the condition $F_{y'y'} > 0$ would indeed be sufficient if it were possible to find a function $w(x)$ for which the integrand in the above is a perfect square. However, this is not always possible, as was first shown by Legendre himself, since $w(x)$ would have to satisfy the equation $P(Q + w') = w^2$, and although this equation is "locally solvable," it may not have a solution on a sufficiently large interval.
+where $w(x)$ is an arbitrary differentiable function, using the fact that $\int\_a^b \frac{d}{dx}(wh^2)\,dx = 0$ since $h(a) = h(b) = 0$. Next, he observed that the condition $F\_{y'y'} > 0$ would indeed be sufficient if it were possible to find a function $w(x)$ for which the integrand in the above is a perfect square. However, this is not always possible, as was first shown by Legendre himself, since $w(x)$ would have to satisfy the equation $P(Q + w') = w^2$, and although this equation is "locally solvable," it may not have a solution on a sufficiently large interval.
 
 </div>
 
-Actually, the following argument shows that the requirement $F_{y'y'}[x, y(x), y'(x)] > 0$ cannot be a sufficient condition for the extremal to be a minimum of the functional $J[y]$. The condition $F_{y'y'} > 0$, like the condition $F_y - \frac{d}{dx}F_{y'} = 0$, is of a "local" character, i.e., it does not pertain to the curve as a whole, but only to individual points of the curve. Therefore, if the condition holds for any two curves $AB$ and $BC$, it also holds for the curve $AC$ formed by joining $AB$ and $BC$. On the other hand, the fact that a functional has an extremum for each part $AB$ and $BC$ of some curve $AC$ does not imply that it has an extremum for the whole curve $AC$. For example, a great circle arc on a given sphere is the shortest curve joining its end points if the arc consists of less than half a circle, but it is not the shortest curve if the arc consists of more than half a circle.
+Actually, the following argument shows that the requirement $F\_{y'y'}[x, y(x), y'(x)] > 0$ cannot be a sufficient condition for the extremal to be a minimum of the functional $J[y]$. The condition $F\_{y'y'} > 0$, like the condition $F\_y - \frac{d}{dx}F\_{y'} = 0$, is of a "local" character, i.e., it does not pertain to the curve as a whole, but only to individual points of the curve. Therefore, if the condition holds for any two curves $AB$ and $BC$, it also holds for the curve $AC$ formed by joining $AB$ and $BC$. On the other hand, the fact that a functional has an extremum for each part $AB$ and $BC$ of some curve $AC$ does not imply that it has an extremum for the whole curve $AC$. For example, a great circle arc on a given sphere is the shortest curve joining its end points if the arc consists of less than half a circle, but it is not the shortest curve if the arc consists of more than half a circle.
 
-Although the condition $F_{y'y'} > 0$ alone does not guarantee a minimum, the idea of completing the square of the integrand in the formula for the second variation, with the aim of finding sufficient conditions for an extremum, turns out to be very fruitful. In fact, the differential equation $P(Q + w') = w^2$, which comes to the fore when trying to implement this idea, leads to new necessary conditions for an extremum (which are no longer local!). We shall discuss these matters further in the next two sections.
+Although the condition $F\_{y'y'} > 0$ alone does not guarantee a minimum, the idea of completing the square of the integrand in the formula for the second variation, with the aim of finding sufficient conditions for an extremum, turns out to be very fruitful. In fact, the differential equation $P(Q + w') = w^2$, which comes to the fore when trying to implement this idea, leads to new necessary conditions for an extremum (which are no longer local!). We shall discuss these matters further in the next two sections.
 
-### 26. Analysis of the Quadratic Functional $\int_a^b (Ph'^2 + Qh^2)\,dx$
+### 26. Analysis of the Quadratic Functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$
 
 As shown in the preceding section, to pursue our study of the "simplest" variational problem, i.e., that of finding the extrema of the functional
 
@@ -2231,7 +2231,7 @@ where $y(a) = A$, $y(b) = B$, we have to analyze the quadratic functional
 
 $$\int_a^b (Ph'^2 + Qh^2)\,dx,$$
 
-defined on the set of functions $h(x) \in \mathscr{D}_1(a, b)$ satisfying the conditions $h(a) = 0$, $h(b) = 0$. Here the functions $P$ and $Q$ are related to the function $F$ appearing in the integrand of the original functional by the formulas
+defined on the set of functions $h(x) \in \mathscr{D}\_1(a, b)$ satisfying the conditions $h(a) = 0$, $h(b) = 0$. Here the functions $P$ and $Q$ are related to the function $F$ appearing in the integrand of the original functional by the formulas
 
 $$P = \tfrac{1}{2}F_{y'y'}, \qquad Q = \tfrac{1}{2}(F_{yy} - \tfrac{d}{dx}F_{yy'}).$$
 
@@ -2272,23 +2272,23 @@ $$\int_a^b (Ph'^2 + Qh^2)\,dx$$
 <details>
 <summary>Proof</summary>
 
-The fact that the functional is positive definite will be proved if we can reduce it to the form $\int_a^b P\varphi^2(\cdots)\,dx$, where $\varphi^2(\cdots)$ is some expression which cannot be identically zero unless $h(x) \equiv 0$. To achieve this, we add a quantity of the form $d(wh^2)$ to the integrand of the functional, where $w(x)$ is a differentiable function. This will not change the value of the functional, since $h(a) = h(b) = 0$ implies $\int_a^b d(wh^2) = 0$.
+The fact that the functional is positive definite will be proved if we can reduce it to the form $\int\_a^b P\varphi^2(\cdots)\,dx$, where $\varphi^2(\cdots)$ is some expression which cannot be identically zero unless $h(x) \equiv 0$. To achieve this, we add a quantity of the form $d(wh^2)$ to the integrand of the functional, where $w(x)$ is a differentiable function. This will not change the value of the functional, since $h(a) = h(b) = 0$ implies $\int\_a^b d(wh^2) = 0$.
 
 We now select a function $w(x)$ such that the expression $Ph'^2 + Qh^2 + \frac{d}{dx}(wh^2)$ is a perfect square. This will be the case if $w(x)$ is chosen to be a solution of the equation $P(Q + w') = w^2$, which is a Riccati equation. By setting $w = -\frac{u'}{u}P$, where $u$ is a new unknown function, we obtain the equation $-\frac{d}{dx}(Pu') + Qu = 0$, which is just the Euler equation. If there are no points conjugate to $a$ in $[a, b]$, then the Euler equation has a solution which does not vanish anywhere in $[a, b]$, and then there exists a solution of the Riccati equation, given by $w = -\frac{u'}{u}P$, which is defined on the whole interval $[a, b]$. This completes the proof of the theorem.
 
-The quadratic functional can be transformed into $\int_a^b P\!\left(h' + \frac{w}{P}h\right)^2 dx$, which is nonnegative. Moreover, if this expression vanishes for some function $h(x)$, then $h'(x) + \frac{w}{P}h(x) \equiv 0$, and since $P(x) > 0$, the boundary condition $h(a) = 0$ implies $h(x) \equiv 0$ by the uniqueness theorem. It follows that the functional is actually positive definite.
+The quadratic functional can be transformed into $\int\_a^b P\!\left(h' + \frac{w}{P}h\right)^2 dx$, which is nonnegative. Moreover, if this expression vanishes for some function $h(x)$, then $h'(x) + \frac{w}{P}h(x) \equiv 0$, and since $P(x) > 0$, the boundary condition $h(a) = 0$ implies $h(x) \equiv 0$ by the uniqueness theorem. It follows that the functional is actually positive definite.
 
 </details>
 </div>
 
-The reduction of the quadratic functional to the form $\int_a^b P\!\left(h' + \frac{w}{P}h\right)^2 dx$ is the continuous analog of the reduction of a quadratic form to a sum of squares. The absence of points conjugate to $a$ in the interval $[a, b]$ is the analog of the familiar criterion for a quadratic form to be positive definite.
+The reduction of the quadratic functional to the form $\int\_a^b P\!\left(h' + \frac{w}{P}h\right)^2 dx$ is the continuous analog of the reduction of a quadratic form to a sum of squares. The absence of points conjugate to $a$ in the interval $[a, b]$ is the analog of the familiar criterion for a quadratic form to be positive definite.
 
 Next, we show that the absence of points conjugate to $a$ in $[a, b]$ is not only sufficient but also necessary for the quadratic functional to be positive definite.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2</span><span class="math-callout__name">(Converse: Conjugate Points Destroy Positive Definiteness)</span></p>
 
-*If the quadratic functional $\int_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no points conjugate to $a$.*
+*If the quadratic functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no points conjugate to $a$.*
 
 </div>
 
@@ -2296,9 +2296,9 @@ Next, we show that the absence of points conjugate to $a$ in $[a, b]$ is not onl
 <details>
 <summary>Proof (sketch)</summary>
 
-The idea of the proof is the following: We construct a family of positive definite quadratic functionals, depending on a parameter $t$, which for $t = 1$ gives the functional $\int_a^b (Ph'^2 + Qh^2)\,dx$ and for $t = 0$ gives the very simple quadratic functional $\int_a^b h'^2\,dx$, for which there can certainly be no points in $[a, b]$ conjugate to $a$. We then prove that as the parameter $t$ is varied continuously from 0 to 1, no conjugate points can appear in the interval $[a, b]$.
+The idea of the proof is the following: We construct a family of positive definite quadratic functionals, depending on a parameter $t$, which for $t = 1$ gives the functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$ and for $t = 0$ gives the very simple quadratic functional $\int\_a^b h'^2\,dx$, for which there can certainly be no points in $[a, b]$ conjugate to $a$. We then prove that as the parameter $t$ is varied continuously from 0 to 1, no conjugate points can appear in the interval $[a, b]$.
 
-Consider the functional $\int_a^b [t(Ph'^2 + Qh^2) + (1 - t)h'^2]\,dx$, which is positive definite for all $t$, $0 \leqslant t \leqslant 1$, since (by assumption) the original functional is positive definite. The Euler equation corresponding to this mixed functional is $-\frac{d}{dx}\{[tP + (1 - t)]h'\} + tQh = 0$. Let $h(x, t)$ be the solution satisfying the initial conditions $h(a, t) = 0$, $h_x(a, t) = 1$ for all $t$, $0 \leqslant t \leqslant 1$. This solution is a continuous function of the parameter $t$. If $h(x_0, t_0) = 0$ at some point $x = x_0$ in $[a, b]$ for some $t_0$, this would contradict the assumption that the functional is positive definite. Therefore, no such zeros (and hence no conjugate points) can exist in $[a, b]$.
+Consider the functional $\int\_a^b [t(Ph'^2 + Qh^2) + (1 - t)h'^2]\,dx$, which is positive definite for all $t$, $0 \leqslant t \leqslant 1$, since (by assumption) the original functional is positive definite. The Euler equation corresponding to this mixed functional is $-\frac{d}{dx}\{[tP + (1 - t)]h'\} + tQh = 0$. Let $h(x, t)$ be the solution satisfying the initial conditions $h(a, t) = 0$, $h\_x(a, t) = 1$ for all $t$, $0 \leqslant t \leqslant 1$. This solution is a continuous function of the parameter $t$. If $h(x\_0, t\_0) = 0$ at some point $x = x\_0$ in $[a, b]$ for some $t\_0$, this would contradict the assumption that the functional is positive definite. Therefore, no such zeros (and hence no conjugate points) can exist in $[a, b]$.
 
 </details>
 </div>
@@ -2308,7 +2308,7 @@ If we replace the condition that the functional be positive definite by the cond
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2'</span><span class="math-callout__name">(Nonnegativity and Interior Conjugate Points)</span></p>
 
-*If the quadratic functional $\int_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is nonnegative for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no interior points conjugate to $a$.*
+*If the quadratic functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is nonnegative for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no interior points conjugate to $a$.*
 
 </div>
 
@@ -2317,7 +2317,7 @@ Combining Theorems 1 and 2, we finally obtain
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3</span><span class="math-callout__name">(Complete Characterization of Positive Definiteness)</span></p>
 
-*The quadratic functional $\int_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$ if and only if the interval $[a, b]$ contains no points conjugate to $a$.*
+*The quadratic functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$, where $P(x) > 0$ $(a \leqslant x \leqslant b)$, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$ if and only if the interval $[a, b]$ contains no points conjugate to $a$.*
 
 </div>
 
@@ -2353,7 +2353,7 @@ with the boundary conditions $y(a) = A$, $y(b) = B$. It will be recalled from Se
 
 $$\int_a^b (Ph'^2 + Qh^2)\,dx,$$
 
-where $P = \frac{1}{2}F_{y'y'}$, $Q = \frac{1}{2}(F_{yy} - \frac{d}{dx}F_{yy'})$.
+where $P = \frac{1}{2}F\_{y'y'}$, $Q = \frac{1}{2}(F\_{yy} - \frac{d}{dx}F\_{yy'})$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 1</span><span class="math-callout__name">(Jacobi Equation)</span></p>
@@ -2362,21 +2362,21 @@ The Euler equation
 
 $$-\frac{d}{dx}(Ph') + Qh = 0$$
 
-of the quadratic functional representing the second variation is called the **Jacobi equation** of the original functional $\int_a^b F(x, y, y')\,dx$.
+of the quadratic functional representing the second variation is called the **Jacobi equation** of the original functional $\int\_a^b F(x, y, y')\,dx$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2</span><span class="math-callout__name">(Conjugate Point for a Functional)</span></p>
 
-The point $\tilde{a}$ is said to be **conjugate** to the point $a$ with respect to the functional $\int_a^b F(x, y, y')\,dx$ if it is conjugate to $a$ with respect to the quadratic functional representing the second variation, i.e., if the Jacobi equation has a solution which vanishes for $x = a$ and $x = \tilde{a}$ but is not identically zero.
+The point $\tilde{a}$ is said to be **conjugate** to the point $a$ with respect to the functional $\int\_a^b F(x, y, y')\,dx$ if it is conjugate to $a$ with respect to the quadratic functional representing the second variation, i.e., if the Jacobi equation has a solution which vanishes for $x = a$ and $x = \tilde{a}$ but is not identically zero.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jacobi's Necessary Condition)</span></p>
 
-*If the extremal $y = y(x)$ corresponds to a minimum of the functional $\int_a^b F(x, y, y')\,dx$, and if $F_{y'y'} > 0$ along this extremal, then the open interval $(a, b)$ contains no points conjugate to $a$.*
+*If the extremal $y = y(x)$ corresponds to a minimum of the functional $\int\_a^b F(x, y, y')\,dx$, and if $F\_{y'y'} > 0$ along this extremal, then the open interval $(a, b)$ contains no points conjugate to $a$.*
 
 </div>
 
@@ -2389,7 +2389,7 @@ In Sec. 24 it was proved that nonnegativity of the second variation is a necessa
 </details>
 </div>
 
-We have just defined the Jacobi equation as the Euler equation of the quadratic functional which represents the second variation. We can also derive Jacobi's equation by the following argument: Given that $y = y(x)$ is an extremal, let us examine the conditions which have to be imposed on $h(x)$ if the varied curve $y = y^*(x) = y(x) + h(x)$ is to be an extremal also. Substituting $y(x) + h(x)$ into Euler's equation, using Taylor's formula, and bearing in mind that $y(x)$ is already a solution of Euler's equation, we find that
+We have just defined the Jacobi equation as the Euler equation of the quadratic functional which represents the second variation. We can also derive Jacobi's equation by the following argument: Given that $y = y(x)$ is an extremal, let us examine the conditions which have to be imposed on $h(x)$ if the varied curve $y = y^\ast(x) = y(x) + h(x)$ is to be an extremal also. Substituting $y(x) + h(x)$ into Euler's equation, using Taylor's formula, and bearing in mind that $y(x)$ is already a solution of Euler's equation, we find that
 
 $$F_{yy}h + F_{yy'}h' - \frac{d}{dx}(F_{yy'}h + F_{y'y'}h') = o(h),$$
 
@@ -2410,19 +2410,19 @@ satisfied by the variation $\delta y$; as before, this equation is called the **
 
 </div>
 
-We now return to the concept of a *conjugate point*. Recall that in Sec. 26 the point $\tilde{a}$ was said to be conjugate to the point $a$ if $h(\tilde{a}) = 0$, where $h(x)$ is a solution of Jacobi's equation satisfying the initial conditions $h(a) = 0$, $h'(a) = 1$. As just shown, the difference $z(x) = y^*(x) - y(x)$ corresponding to two neighboring extremals $y = y(x)$ and $y = y^*(x)$ drawn from the same initial point must satisfy the condition $-\frac{d}{dx}(Pz') + Qz = o(z)$, i.e., to within such an infinitesimal, $y^*(x) - y(x)$ is a nonzero solution of Jacobi's equation. This leads to another definition of a conjugate point:
+We now return to the concept of a *conjugate point*. Recall that in Sec. 26 the point $\tilde{a}$ was said to be conjugate to the point $a$ if $h(\tilde{a}) = 0$, where $h(x)$ is a solution of Jacobi's equation satisfying the initial conditions $h(a) = 0$, $h'(a) = 1$. As just shown, the difference $z(x) = y^\ast(x) - y(x)$ corresponding to two neighboring extremals $y = y(x)$ and $y = y^\ast(x)$ drawn from the same initial point must satisfy the condition $-\frac{d}{dx}(Pz') + Qz = o(z)$, i.e., to within such an infinitesimal, $y^\ast(x) - y(x)$ is a nonzero solution of Jacobi's equation. This leads to another definition of a conjugate point:
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3</span><span class="math-callout__name">(Conjugate Point via Neighboring Extremals)</span></p>
 
-Given an extremal $y = y(x)$, the point $\tilde{M} = (\tilde{a}, y(\tilde{a}))$ is said to be conjugate to the point $M = (a, y(a))$ if at $\tilde{M}$ the difference $y^*(x) - y(x)$ is an infinitesimal of order higher than 1 relative to $\lVert y^*(x) - y(x)\rVert_1$, where $y = y^*(x)$ is any neighboring extremal drawn from the same initial point $M$.
+Given an extremal $y = y(x)$, the point $\tilde{M} = (\tilde{a}, y(\tilde{a}))$ is said to be conjugate to the point $M = (a, y(a))$ if at $\tilde{M}$ the difference $y^\ast(x) - y(x)$ is an infinitesimal of order higher than 1 relative to $\lVert y^\ast(x) - y(x)\rVert\_1$, where $y = y^\ast(x)$ is any neighboring extremal drawn from the same initial point $M$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4</span><span class="math-callout__name">(Conjugate Point as Limit of Intersections)</span></p>
 
-Given an extremal $y = y(x)$, the point $\tilde{M} = (\tilde{a}, y(\tilde{a}))$ is said to be conjugate to the point $M = (a, y(a))$ if $\tilde{M}$ is the limit as $\lVert y^*(x) - y(x)\rVert_1 \to 0$ of the points of intersection of $y = y(x)$ and the neighboring extremals $y = y^*(x)$ drawn from the same initial point $M$.
+Given an extremal $y = y(x)$, the point $\tilde{M} = (\tilde{a}, y(\tilde{a}))$ is said to be conjugate to the point $M = (a, y(a))$ if $\tilde{M}$ is the limit as $\lVert y^\ast(x) - y(x)\rVert\_1 \to 0$ of the points of intersection of $y = y(x)$ and the neighboring extremals $y = y^\ast(x)$ drawn from the same initial point $M$.
 
 </div>
 
@@ -2446,8 +2446,8 @@ $$\int_a^b F(x, y, y')\,dx, \qquad y(a) = A, \quad y(b) = B$$
 
 has a weak extremum for the curve $y = y(x)$, then
 
-1. The curve $y = y(x)$ is an extremal, i.e., satisfies Euler's equation $F_y - \frac{d}{dx}F_{y'} = 0$ (see Sec. 4);
-2. Along the curve $y = y(x)$, $P(x) \equiv \frac{1}{2}F_{y'y'} \geqslant 0$ for a minimum and $F_{y'y'} \leqslant 0$ for a maximum (see Sec. 25);
+1. The curve $y = y(x)$ is an extremal, i.e., satisfies Euler's equation $F\_y - \frac{d}{dx}F\_{y'} = 0$ (see Sec. 4);
+2. Along the curve $y = y(x)$, $P(x) \equiv \frac{1}{2}F\_{y'y'} \geqslant 0$ for a minimum and $F\_{y'y'} \leqslant 0$ for a maximum (see Sec. 25);
 3. The interval $(a, b)$ contains no points conjugate to $a$ (see Sec. 27).
 
 ### 28. Sufficient Conditions for a Weak Extremum
@@ -2461,11 +2461,11 @@ to have a weak extremum for the curve $y = y(x)$. It should be noted that the su
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Sufficient Conditions for a Weak Minimum)</span></p>
 
-*Suppose that for some admissible curve $y = y(x)$, the functional $J[y] = \int_a^b F(x, y, y')\,dx$, $y(a) = A$, $y(b) = B$ satisfies the following conditions:*
+*Suppose that for some admissible curve $y = y(x)$, the functional $J[y] = \int\_a^b F(x, y, y')\,dx$, $y(a) = A$, $y(b) = B$ satisfies the following conditions:*
 
-1. *The curve $y = y(x)$ is an extremal, i.e., satisfies Euler's equation $F_y - \frac{d}{dx}F_{y'} = 0$;*
+1. *The curve $y = y(x)$ is an extremal, i.e., satisfies Euler's equation $F\_y - \frac{d}{dx}F\_{y'} = 0$;*
 
-2. *Along the curve $y = y(x)$, the **strengthened Legendre condition** $P(x) \equiv \frac{1}{2}F_{y'y'}[x, y(x), y'(x)] > 0$ holds;*
+2. *Along the curve $y = y(x)$, the **strengthened Legendre condition** $P(x) \equiv \frac{1}{2}F\_{y'y'}[x, y(x), y'(x)] > 0$ holds;*
 
 3. *The interval $[a, b]$ contains no points conjugate to the point $a$ (the **strengthened Jacobi condition**).*
 
@@ -2486,22 +2486,22 @@ with the Euler equation $-\frac{d}{dx}\{(P - \alpha^2)h'\} + Qh = 0$. Since $P(x
 1. $P(x) - \alpha^2 > 0$, $a \leqslant x \leqslant b$;
 2. The solution of the Euler equation satisfying the boundary conditions $h(a) = 0$, $h'(a) = 1$ does not vanish for $a < x \leqslant b$.
 
-As shown in Theorem 1 of Sec. 26, these two conditions imply that the quadratic functional $\int_a^b (Ph'^2 + Qh^2)\,dx$ is positive definite for all sufficiently small $\alpha$. In other words, there exists a positive number $c > 0$ such that
+As shown in Theorem 1 of Sec. 26, these two conditions imply that the quadratic functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$ is positive definite for all sufficiently small $\alpha$. In other words, there exists a positive number $c > 0$ such that
 
 $$\int_a^b (Ph'^2 + Qh^2)\,dx > c\int_a^b h'^2\,dx.$$
 
-Now, from the increment formula established in Sec. 25, we have $\Delta J[h] = \int_a^b (Ph'^2 + Qh^2)\,dx + \int_a^b (\xi h^2 + \eta h'^2)\,dx$. Since $\xi, \eta \to 0$ as $\lVert h\rVert_1 \to 0$, for sufficiently small $\lVert h\rVert_1$ the second integral is small compared to $c\int_a^b h'^2\,dx$, and it follows that $\Delta J[h] > 0$. Thus $J[y]$ has a weak minimum for $y = y(x)$.
+Now, from the increment formula established in Sec. 25, we have $\Delta J[h] = \int\_a^b (Ph'^2 + Qh^2)\,dx + \int\_a^b (\xi h^2 + \eta h'^2)\,dx$. Since $\xi, \eta \to 0$ as $\lVert h\rVert\_1 \to 0$, for sufficiently small $\lVert h\rVert\_1$ the second integral is small compared to $c\int\_a^b h'^2\,dx$, and it follows that $\Delta J[h] > 0$. Thus $J[y]$ has a weak minimum for $y = y(x)$.
 
 </details>
 </div>
 
 ### 29. Generalization to $n$ Unknown Functions
 
-The concept of a conjugate point and the related Jacobi conditions can be generalized to the case where the functional under consideration depends on $n$ functions $y_1(x), \ldots, y_n(x)$. We carry over to such functionals the definitions and results given earlier for functionals depending on a single function. To keep the notation simple, we write
+The concept of a conjugate point and the related Jacobi conditions can be generalized to the case where the functional under consideration depends on $n$ functions $y\_1(x), \ldots, y\_n(x)$. We carry over to such functionals the definitions and results given earlier for functionals depending on a single function. To keep the notation simple, we write
 
 $$J[y] = \int_a^b F(x, y, y')\,dx, \tag{50}$$
 
-as before, where now $y$ denotes the $n$-dimensional vector $(y_1, \ldots, y_n)$ and $y'$ denotes $(y_1', \ldots, y_n')$. By the *scalar product* of two vectors $y = (y_1, \ldots, y_n)$ and $z = (z_1, \ldots, z_n)$, we mean
+as before, where now $y$ denotes the $n$-dimensional vector $(y\_1, \ldots, y\_n)$ and $y'$ denotes $(y\_1', \ldots, y\_n')$. By the *scalar product* of two vectors $y = (y\_1, \ldots, y\_n)$ and $z = (z\_1, \ldots, z\_n)$, we mean
 
 $$(y, z) = y_1 z_1 + \cdots + y_n z_n.$$
 
@@ -2513,7 +2513,7 @@ If the increment $\Delta J[h]$ of the functional (50), corresponding to the chan
 
 $$\Delta J[h] = \varphi_1[h] + \varphi_2[h] + \varepsilon\lVert h\rVert^2,$$
 
-where $\varphi_1[h]$ is a linear functional, $\varphi_2[h]$ is a quadratic functional, and $\varepsilon \to 0$ as $\lVert h\rVert \to 0$, then $\varphi_2[h]$ is called the **second variation** of the original functional (50) and is denoted by $\delta^2 J[h]$. In the case of fixed end points, where
+where $\varphi\_1[h]$ is a linear functional, $\varphi\_2[h]$ is a quadratic functional, and $\varepsilon \to 0$ as $\lVert h\rVert \to 0$, then $\varphi\_2[h]$ is called the **second variation** of the original functional (50) and is denoted by $\delta^2 J[h]$. In the case of fixed end points, where
 
 $$h(a) = h(b) = 0,$$
 
@@ -2537,7 +2537,7 @@ where $P = P(x)$ and $Q = Q(x)$ are the matrices
 
 $$P = \lVert P_{ik}\rVert = \frac{1}{2}F_{y'y'}, \qquad Q = \lVert Q_{ik}\rVert = \frac{1}{2}\!\left(F_{yy} - \frac{d}{dx}F_{yy'}\right). \tag{*}$$
 
-In deriving (54), we assume that $F_{yy'}$ is a *symmetric* matrix, i.e., that $F_{y_i y_k'} = F_{y_k y_i'}$ for all $i, k = 1, \ldots, n$ ($F_{yy'}$ and $F_{y'y'}$ are automatically symmetric, because of the tacitly assumed smoothness of $F$). Just as in the case of one unknown function, it is easily verified that the term $(Ph', h')$ makes the "main contribution" to the quadratic functional (54). More precisely, we have the following result:
+In deriving (54), we assume that $F\_{yy'}$ is a *symmetric* matrix, i.e., that $F\_{y\_i y\_k'} = F\_{y\_k y\_i'}$ for all $i, k = 1, \ldots, n$ ($F\_{yy'}$ and $F\_{y'y'}$ are automatically symmetric, because of the tacitly assumed smoothness of $F$). Just as in the case of one unknown function, it is easily verified that the term $(Ph', h')$ makes the "main contribution" to the quadratic functional (54). More precisely, we have the following result:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 1</span><span class="math-callout__name">(Necessary Condition — Legendre)</span></p>
@@ -2638,7 +2638,7 @@ Next we show, as in Sec. 26, that the absence of points conjugate to $a$ in the 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Solutions of the Euler System and the Quadratic Functional)</span></p>
 
-If $h(x) = (h_1(x), \ldots, h_n(x))$ satisfies the system (55) and the boundary conditions $h(a) = h(b) = 0$, then
+If $h(x) = (h\_1(x), \ldots, h\_n(x))$ satisfies the system (55) and the boundary conditions $h(a) = h(b) = 0$, then
 
 $$\int_a^b \left[(Ph', h') + (Qh, h)\right] dx = 0. \tag{66}$$
 
@@ -2680,7 +2680,7 @@ The system of Euler equations corresponding to (68) is
 
 $$-\frac{d}{dx}\!\left[t\sum_{i=1}^{n} P_{ik}h_i' + (1-t)h_k'\right] + t\sum_{i=1}^{n} Q_{ik}h_i = 0 \qquad (k = 1, \ldots, n), \tag{69}$$
 
-which for $t = 1$ reduces to the system (55), and for $t = 0$ reduces to $h_k'' = 0$ $(k = 1, \ldots, n)$.
+which for $t = 1$ reduces to the system (55), and for $t = 0$ reduces to $h\_k'' = 0$ $(k = 1, \ldots, n)$.
 
 Suppose the interval $[a, b]$ contains a point $\tilde{a}$ conjugate to $a$, i.e., suppose the determinant (60) vanishes for $x = \tilde{a}$. Then there exists a linear combination $h(x)$ of the solutions (57) which is not identically zero such that $h(\tilde{a}) = 0$. Moreover, there exists a nontrivial solution $h(x, t)$ of the system (69) which depends continuously on $t$ and reduces to $h(x)$ for $t = 1$. It is clear that $\tilde{a} \neq b$, since otherwise, according to the lemma, the positive definite functional (67) would vanish for $h(x) \neq 0$, which is impossible. The fact that $\tilde{a}$ cannot be an interior point of $[a, b]$ is proved by the same kind of argument as used in Theorem 2 of Sec. 26, for the case of a scalar function $h(x)$. Further details are left to the reader.
 
@@ -2692,7 +2692,7 @@ Suppose now that we only require that the functional (67) be nonnegative. Then, 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3'</span><span class="math-callout__name">(Nonnegative Functional $\Rightarrow$ No Interior Conjugate Points)</span></p>
 
-*If the quadratic functional $\int_a^b [(Ph', h') + (Qh, h)]\,dx$, where $P$ is a positive definite symmetric matrix, is nonnegative for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no interior points conjugate to $a$.*
+*If the quadratic functional $\int\_a^b [(Ph', h') + (Qh, h)]\,dx$, where $P$ is a positive definite symmetric matrix, is nonnegative for all $h(x)$ such that $h(a) = h(b) = 0$, then the interval $[a, b]$ contains no interior points conjugate to $a$.*
 
 </div>
 
@@ -2701,7 +2701,7 @@ Finally, combining Theorems 2 and 3, we obtain
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4</span><span class="math-callout__name">(Characterization of Positive Definite Quadratic Functionals)</span></p>
 
-*The quadratic functional $\int_a^b [(Ph', h') + (Qh, h)]\,dx$, where $P$ is a positive definite symmetric matrix, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$ if and only if the interval $[a, b]$ contains no point conjugate to $a$.*
+*The quadratic functional $\int\_a^b [(Ph', h') + (Qh, h)]\,dx$, where $P$ is a positive definite symmetric matrix, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$ if and only if the interval $[a, b]$ contains no point conjugate to $a$.*
 
 </div>
 
@@ -2711,7 +2711,7 @@ We now apply the results just obtained to the original functional
 
 $$J[y] = \int_a^b F(x, y, y')\,dx, \qquad y(a) = M_0, \quad y(b) = M_1, \tag{70}$$
 
-where $M_0$ and $M_1$ are two fixed points, recalling that the second variation of (70) is given by
+where $M\_0$ and $M\_1$ are two fixed points, recalling that the second variation of (70) is given by
 
 $$\int_a^b \left[(Ph', h') + (Qh, h)\right] dx, \tag{71}$$
 
@@ -2746,7 +2746,7 @@ Since nonnegativity of the second variation is a necessary condition for the fun
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5</span><span class="math-callout__name">(Jacobi's Necessary Condition for $n$ Functions)</span></p>
 
-*If the extremal $y_1 = y_1(x), \ldots, y_n = y_n(x)$ corresponds to a minimum of the functional (70), and if the matrix $F_{y'y'}[x, y(x), y'(x)]$ is positive definite, then the open interval $(a, b)$ contains no points conjugate to $a$.*
+*If the extremal $y\_1 = y\_1(x), \ldots, y\_n = y\_n(x)$ corresponds to a minimum of the functional (70), and if the matrix $F\_{y'y'}[x, y(x), y'(x)]$ is positive definite, then the open interval $(a, b)$ contains no points conjugate to $a$.*
 
 </div>
 
@@ -2770,11 +2770,11 @@ for $x = \tilde{a}$ is an infinitesimal whose order is higher than its values fo
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5</span><span class="math-callout__name">(Conjugate Point via Limit of Intersections)</span></p>
 
-Given an extremal $\gamma$ with equations $y_1 = y_1(x), \ldots, y_n = y_n(x)$, the point
+Given an extremal $\gamma$ with equations $y\_1 = y\_1(x), \ldots, y\_n = y\_n(x)$, the point
 
 $$\tilde{M} = (\tilde{a},\; y_1(\tilde{a}), \ldots, y_n(\tilde{a}))$$
 
-is said to be **conjugate** to the point $M = (a,\; y_1(a), \ldots, y_n(a))$ if $\gamma$ has a sequence of neighboring extremals drawn from the same initial point $M$, such that each neighboring extremal intersects $\gamma$ and the points of intersection have $\tilde{M}$ as their limit.
+is said to be **conjugate** to the point $M = (a,\; y\_1(a), \ldots, y\_n(a))$ if $\gamma$ has a sequence of neighboring extremals drawn from the same initial point $M$, such that each neighboring extremal intersects $\gamma$ and the points of intersection have $\tilde{M}$ as their limit.
 
 </div>
 
@@ -2787,13 +2787,13 @@ Theorem 2 and an argument like that used to prove the corresponding theorem of S
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6</span><span class="math-callout__name">(Sufficient Conditions for a Weak Minimum — $n$ Functions)</span></p>
 
-*Suppose that for some admissible curve $\gamma$ with equations $y_1 = y_1(x), \ldots, y_n = y_n(x)$, the functional (70) satisfies the following conditions:*
+*Suppose that for some admissible curve $\gamma$ with equations $y\_1 = y\_1(x), \ldots, y\_n = y\_n(x)$, the functional (70) satisfies the following conditions:*
 
 1. *The curve $\gamma$ is an extremal, i.e., satisfies the system of Euler equations*
 
    $$F_{y_i} - \frac{d}{dx}F_{y_i'} = 0 \qquad (i = 1, \ldots, n);$$
 
-2. *Along $\gamma$ the matrix $P(x) = \frac{1}{2}F_{y'y'}[x, y(x), y'(x)]$ is positive definite;*
+2. *Along $\gamma$ the matrix $P(x) = \frac{1}{2}F\_{y'y'}[x, y(x), y'(x)]$ is positive definite;*
 
 3. *The interval $[a, b]$ contains no points conjugate to the point $a$.*
 
@@ -2809,7 +2809,7 @@ $$\int_a^b (Ph'^2 + Qh^2)\,dx, \tag{74}$$
 
 where $P(x) > 0$ for $a \leqslant x \leqslant b$, is positive definite for all $h(x)$ such that $h(a) = h(b) = 0$ if and only if the interval $[a, b]$ contains no points conjugate to $a$. The functional (74) is the infinite-dimensional analog of a quadratic form. Therefore, to obtain conditions for (74) to be positive definite, it is natural to start from the conditions for a quadratic form defined on an $n$-dimensional space to be positive definite, and then take the limit as $n \to \infty$.
 
-This may be done as follows: By introducing the points $a = x_0, x_1, \ldots, x_n, x_{n+1} = b$, we divide the interval $[a, b]$ into $n + 1$ equal parts of length
+This may be done as follows: By introducing the points $a = x\_0, x\_1, \ldots, x\_n, x\_{n+1} = b$, we divide the interval $[a, b]$ into $n + 1$ equal parts of length
 
 $$\Delta x = x_{i+1} - x_i = \frac{b - a}{n + 1} \qquad (i = 0, 1, \ldots, n).$$
 
@@ -2817,11 +2817,11 @@ Then we consider the quadratic form
 
 $$\sum_{i=0}^{n} \left[P_i\!\left(\frac{h_{i+1} - h_i}{\Delta x}\right)^{\!2} + Q_i h_i^2\right] \Delta x, \tag{75}$$
 
-where $P_i$, $Q_i$ and $h_i$ are the values of the functions $P(x)$, $Q(x)$ and $h(x)$ at the point $x = x_i$. This quadratic form is a "finite-dimensional approximation" to the functional (74). Grouping similar terms and bearing in mind that $h_0 = h(a) = 0$, $h_{n+1} = h(b) = 0$, we can write (75) as
+where $P\_i$, $Q\_i$ and $h\_i$ are the values of the functions $P(x)$, $Q(x)$ and $h(x)$ at the point $x = x\_i$. This quadratic form is a "finite-dimensional approximation" to the functional (74). Grouping similar terms and bearing in mind that $h\_0 = h(a) = 0$, $h\_{n+1} = h(b) = 0$, we can write (75) as
 
 $$\sum_{i=1}^{n} \left[\!\left(Q_i \Delta x + \frac{P_{i-1} + P_i}{\Delta x}\right)h_i^2 - 2\frac{P_{i-1}}{\Delta x}\, h_{i-1} h_i\right]. \tag{76}$$
 
-In other words, the quadratic functional (74) can be approximated by a quadratic form in $n$ variables $h_1, \ldots, h_n$, with the $n \times n$ matrix
+In other words, the quadratic functional (74) can be approximated by a quadratic form in $n$ variables $h\_1, \ldots, h\_n$, with the $n \times n$ matrix
 
 $$\begin{pmatrix} a_1 & b_1 & 0 & \cdots & 0 & 0 & 0 \\\ b_1 & a_2 & b_2 & \cdots & 0 & 0 & 0 \\\ 0 & b_2 & a_3 & \cdots & 0 & 0 & 0 \\\ \vdots & & & \ddots & & & \vdots \\\ 0 & 0 & 0 & \cdots & b_{n-2} & a_{n-1} & b_{n-1} \\\ 0 & 0 & 0 & \cdots & 0 & b_{n-1} & a_n \end{pmatrix}, \tag{77}$$
 
@@ -2837,11 +2837,11 @@ A symmetric matrix like (77), all of whose elements vanish except those appearin
 
 $$D_i = \begin{vmatrix} a_1 & b_1 & 0 & \cdots & 0 & 0 \\\ b_1 & a_2 & b_2 & \cdots & 0 & 0 \\\ 0 & b_2 & a_3 & \cdots & 0 & 0 \\\ \vdots & & & \ddots & & \vdots \\\ 0 & 0 & 0 & \cdots & a_{i-1} & b_{i-1} \\\ 0 & 0 & 0 & \cdots & b_{i-1} & a_i \end{vmatrix} \tag{80}$$
 
-where $i = 1, \ldots, n$. In fact, expanding $D_i$ with respect to the elements of the last row, we obtain the recursion relation
+where $i = 1, \ldots, n$. In fact, expanding $D\_i$ with respect to the elements of the last row, we obtain the recursion relation
 
 $$D_i = a_i D_{i-1} - b_{i-1}^2\,D_{i-2}, \tag{81}$$
 
-which allows us to determine the minors $D_3, \ldots, D_n$ in terms of the first two minors $D_1$ and $D_2$. Moreover, if we set $D_0 = 1$, $D_{-1} = 0$, then (81) is valid for all $i = 1, \ldots, n$, and uniquely determines $D_1, \ldots, D_n$.
+which allows us to determine the minors $D\_3, \ldots, D\_n$ in terms of the first two minors $D\_1$ and $D\_2$. Moreover, if we set $D\_0 = 1$, $D\_{-1} = 0$, then (81) is valid for all $i = 1, \ldots, n$, and uniquely determines $D\_1, \ldots, D\_n$.
 
 According to a familiar result, sometimes called the **Sylvester criterion**, a quadratic form
 
@@ -2851,13 +2851,13 @@ is positive definite if and only if the descending principal minors
 
 $$a_{11}, \quad \begin{vmatrix} a_{11} & a_{12} \\\ a_{21} & a_{22}\end{vmatrix}, \quad \begin{vmatrix} a_{11} & a_{12} & a_{13} \\\ a_{21} & a_{22} & a_{23} \\\ a_{31} & a_{32} & a_{33}\end{vmatrix}, \quad \ldots, \quad \det\lVert a_{ik}\rVert$$
 
-are all positive. Applied to the present problem, this criterion states that the Jacobi form (76), with matrix (77), is positive definite if and only if all the quantities defined by (81) are positive, where $i = 1, \ldots, n$ and $D_0 = 1$, $D_{-1} = 0$.
+are all positive. Applied to the present problem, this criterion states that the Jacobi form (76), with matrix (77), is positive definite if and only if all the quantities defined by (81) are positive, where $i = 1, \ldots, n$ and $D\_0 = 1$, $D\_{-1} = 0$.
 
-We now use this result to obtain a criterion for the quadratic functional (74) to be positive definite. Thus, we examine what happens to the recurrence relation (81) as $n \to \infty$. Substituting for the coefficients $a_i$ and $b_i$ from (78) and (79), we can write (81) in the form
+We now use this result to obtain a criterion for the quadratic functional (74) to be positive definite. Thus, we examine what happens to the recurrence relation (81) as $n \to \infty$. Substituting for the coefficients $a\_i$ and $b\_i$ from (78) and (79), we can write (81) in the form
 
 $$D_i = \left(Q_i \Delta x + \frac{P_{i-1} + P_i}{\Delta x}\right)D_{i-1} - \frac{P_{i-1}^2}{(\Delta x)^2}\,D_{i-2} \qquad (i = 1, \ldots, n). \tag{82}$$
 
-It is obviously impossible to pass directly to the limit $n \to \infty$ (i.e., $\Delta x \to 0$) in (82), since the coefficients of $D_{i-1}$ and $D_{i-2}$ become infinite. To avoid this difficulty, we make the "change of variables"
+It is obviously impossible to pass directly to the limit $n \to \infty$ (i.e., $\Delta x \to 0$) in (82), since the coefficients of $D\_{i-1}$ and $D\_{i-2}$ become infinite. To avoid this difficulty, we make the "change of variables"
 
 $$D_i = \frac{P_1 \cdots P_i\, Z_{i+1}}{(\Delta x)^{i+1}} \qquad (i = 1, \ldots, n),$$
 
@@ -2865,7 +2865,7 @@ $$D_0 = \frac{Z_1}{\Delta x} = 1,$$
 
 $$D_{-1} = Z_0 = 0. \tag{83}$$
 
-In terms of the variables $Z_i$, the recurrence relation (82) becomes
+In terms of the variables $Z\_i$, the recurrence relation (82) becomes
 
 $$Q_i Z_i(\Delta x)^2 + P_{i-1}Z_i + P_i Z_i - P_i Z_{i+1} - P_{i-1}Z_{i-1} = 0$$
 
@@ -2877,9 +2877,9 @@ Passing to the limit $\Delta x \to 0$ in (84), we obtain the differential equati
 
 $$-\frac{d}{dx}(PZ') + QZ = 0, \tag{85}$$
 
-which is just the Jacobi equation! The condition that the quantities $D_i$ satisfying the relation (82) be positive is equivalent to the condition that the quantities $Z_i$ satisfying the difference equation (84) be positive, since the factor $P_1 \cdots P_i / (\Delta x)^{i+1}$ is always positive [because $P(x) > 0$]. Thus, we have proved that *the quadratic form (76) is positive definite if and only if all but the first of the $n + 2$ quantities $Z_0, Z_1, \ldots, Z_{n+1}$ satisfying the difference equation (84) are positive*.
+which is just the Jacobi equation! The condition that the quantities $D\_i$ satisfying the relation (82) be positive is equivalent to the condition that the quantities $Z\_i$ satisfying the difference equation (84) be positive, since the factor $P\_1 \cdots P\_i / (\Delta x)^{i+1}$ is always positive [because $P(x) > 0$]. Thus, we have proved that *the quadratic form (76) is positive definite if and only if all but the first of the $n + 2$ quantities $Z\_0, Z\_1, \ldots, Z\_{n+1}$ satisfying the difference equation (84) are positive*.
 
-If we consider the polygonal line $\Pi_n$ with vertices $(a, Z_0)$, $(x_1, Z_1)$, $\ldots$, $(b, Z_{n+1})$, recall that $a = x_0$, $b = x_{n+1}$, the condition that $Z_0 = 0$ and $Z_i > 0$ for $i = 1, \ldots, n + 1$ means that $\Pi_n$ does not intersect the interval $[a, b]$ except at the end point $a$. As $\Delta x \to 0$, the difference equation (84) goes into the Jacobi differential equation (85), and the polygonal line $\Pi_n$ goes into a nontrivial solution of (85) which satisfies the initial condition
+If we consider the polygonal line $\Pi\_n$ with vertices $(a, Z\_0)$, $(x\_1, Z\_1)$, $\ldots$, $(b, Z\_{n+1})$, recall that $a = x\_0$, $b = x\_{n+1}$, the condition that $Z\_0 = 0$ and $Z\_i > 0$ for $i = 1, \ldots, n + 1$ means that $\Pi\_n$ does not intersect the interval $[a, b]$ except at the end point $a$. As $\Delta x \to 0$, the difference equation (84) goes into the Jacobi differential equation (85), and the polygonal line $\Pi\_n$ goes into a nontrivial solution of (85) which satisfies the initial condition
 
 $$Z(a) = Z_0 = 0, \qquad Z'(a) = \lim_{\Delta x \to 0} \frac{Z_1 - Z_0}{\Delta x} = \lim_{\Delta x \to 0} \frac{\Delta x}{\Delta x} = 1$$
 
@@ -2901,7 +2901,7 @@ solved explicitly for the second derivatives. In order to single out a definite 
 
 $$y_i' = \psi_i(y_1, \ldots, y_n) \qquad (i = 1, \ldots, n) \tag{2}$$
 
-for two values of $x$, say $x_1$ and $x_2$. Boundary conditions of this kind are commonly encountered in variational problems. If we require that the boundary conditions (2) hold only at one point, they determine a solution of the system (1) which depends on $n$ parameters.
+for two values of $x$, say $x\_1$ and $x\_2$. Boundary conditions of this kind are commonly encountered in variational problems. If we require that the boundary conditions (2) hold only at one point, they determine a solution of the system (1) which depends on $n$ parameters.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 1</span><span class="math-callout__name">(Mutually Consistent Boundary Conditions)</span></p>
@@ -2910,11 +2910,11 @@ The boundary conditions
 
 $$y_i' = \psi_i^{(1)}(y_1, \ldots, y_n) \qquad (i = 1, \ldots, n), \tag{3}$$
 
-prescribed for $x = x_1$, and the boundary conditions
+prescribed for $x = x\_1$, and the boundary conditions
 
 $$y_i' = \psi_i^{(2)}(y_1, \ldots, y_n) \qquad (i = 1, \ldots, n), \tag{4}$$
 
-prescribed for $x = x_2$, are said to be **(mutually) consistent** if every solution of the system (1) satisfying the boundary conditions (3) at $x = x_1$ also satisfies the boundary conditions (4) at $x = x_2$, and conversely.
+prescribed for $x = x\_2$, are said to be **(mutually) consistent** if every solution of the system (1) satisfying the boundary conditions (3) at $x = x\_1$ also satisfies the boundary conditions (4) at $x = x\_2$, and conversely.
 
 </div>
 
@@ -2925,15 +2925,15 @@ Suppose the boundary conditions
 
 $$y_i' = \psi_i(x, y_1, \ldots, y_n) \qquad (i = 1, \ldots, n) \tag{5}$$
 
-(where the $\psi_i$ are continuously differentiable functions) are prescribed for every $x$ in the interval $[a, b]$, and suppose they are consistent for every pair of points $x_1$, $x_2$ in $[a, b]$. Then the family of mutually consistent boundary conditions (5) is called a **field** (of directions) for the given system (1).
+(where the $\psi\_i$ are continuously differentiable functions) are prescribed for every $x$ in the interval $[a, b]$, and suppose they are consistent for every pair of points $x\_1$, $x\_2$ in $[a, b]$. Then the family of mutually consistent boundary conditions (5) is called a **field** (of directions) for the given system (1).
 
 </div>
 
 As is clear from (5), boundary conditions prescribed for every value of $x$ define a system of first-order differential equations. The requirement that the boundary conditions be consistent for different values of $x$ means that the solutions of the system (5) must also satisfy the system (1), i.e., that (1) is implied by (5).
 
-Because of the existence and uniqueness theorem for systems of differential equations, one and only one integral curve of the system (5) passes through each point $(x, y_1, \ldots, y_n)$ of the region $R$ where the functions $\psi_i(x, y_1, \ldots, y_n)$ are defined. According to what has just been said, each of these curves is at the same time a solution of the system (1). Thus, specifying a field (5) of the system (1) in some region $R$ defines an $n$-parameter family of solutions of (1), such that one and only one curve from the family passes through each point of $R$. The curves of the family will be called *trajectories* of the field.
+Because of the existence and uniqueness theorem for systems of differential equations, one and only one integral curve of the system (5) passes through each point $(x, y\_1, \ldots, y\_n)$ of the region $R$ where the functions $\psi\_i(x, y\_1, \ldots, y\_n)$ are defined. According to what has just been said, each of these curves is at the same time a solution of the system (1). Thus, specifying a field (5) of the system (1) in some region $R$ defines an $n$-parameter family of solutions of (1), such that one and only one curve from the family passes through each point of $R$. The curves of the family will be called *trajectories* of the field.
 
-The following theorem gives conditions which must be satisfied by the functions $\psi_i(x, y_1, \ldots, y_n)$, $1 \leqslant i \leqslant n$, if the system (5) is to be a field for the system (1):
+The following theorem gives conditions which must be satisfied by the functions $\psi\_i(x, y\_1, \ldots, y\_n)$, $1 \leqslant i \leqslant n$, if the system (5) is to be a field for the system (1):
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hamilton-Jacobi System Characterization of a Field)</span></p>
@@ -2946,7 +2946,7 @@ is a field for the second-order system
 
 $$y_i'' = f_i(x, y_1, \ldots, y_n, y_1', \ldots, y_n') \tag{7}$$
 
-if and only if the functions $\psi_i(x, y_1, \ldots, y_n)$ satisfy the following system of partial differential equations, called the **Hamilton-Jacobi system** for the original system (7):
+if and only if the functions $\psi\_i(x, y\_1, \ldots, y\_n)$ satisfy the following system of partial differential equations, called the **Hamilton-Jacobi system** for the original system (7):
 
 $$\frac{\partial \psi_i}{\partial x} + \sum_{k=1}^{n} \frac{\partial \psi_i}{\partial y_k}\,\psi_k = f_i(x, y_1, \ldots, y_n, \psi_1, \ldots, \psi_n). \tag{8}$$
 
@@ -2989,11 +2989,11 @@ The set of solutions of (10) depends on an arbitrary function, and according to 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Field for a System of Linear Equations)</span></p>
 
-In the same way, we can find the simplest field for a system of linear differential equations $Y'' = P(x)Y$, where $Y = (y_1, \ldots, y_n)$ and $P(x) = \lVert p_{ik}(x)\rVert$ is a matrix. The system of Hamilton-Jacobi equations corresponding to this system is
+In the same way, we can find the simplest field for a system of linear differential equations $Y'' = P(x)Y$, where $Y = (y\_1, \ldots, y\_n)$ and $P(x) = \lVert p\_{ik}(x)\rVert$ is a matrix. The system of Hamilton-Jacobi equations corresponding to this system is
 
 $$\frac{\partial \psi_i}{\partial x} + \sum_{k=1}^{n} \frac{\partial \psi_i}{\partial y_k}\,\psi_k = \sum_{k=1}^{n} p_{ik}(x)y_k \qquad (i = 1, \ldots, n). \tag{14}$$
 
-Looking for a solution which is linear in $Y$, i.e., $\psi_i(x, y_1, \ldots, y_n) = \sum_{k=1}^{n} \alpha_{ik}(x)y_k$, or in vector notation $\Psi = AY$, and substituting into (14), we find that the matrix $A(x) = \lVert \alpha_{ik}\rVert$ satisfies the **matrix Riccati equation**
+Looking for a solution which is linear in $Y$, i.e., $\psi\_i(x, y\_1, \ldots, y\_n) = \sum\_{k=1}^{n} \alpha\_{ik}(x)y\_k$, or in vector notation $\Psi = AY$, and substituting into (14), we find that the matrix $A(x) = \lVert \alpha\_{ik}\rVert$ satisfies the **matrix Riccati equation**
 
 $$\frac{d}{dx}A(x) + A^2(x) = P(x),$$
 
@@ -3004,7 +3004,7 @@ and the functions $\Psi = AY$ define a field (linear in $y$) for the system $Y''
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection with the Sweep Method)</span></p>
 
-The concept of a field is intimately related to the solution of boundary value problems for systems of second-order differential equations by the so-called "sweep method." Consider the simple case of $y'' = p(x)y + f(x)$ with boundary conditions $y'(a) = c_0 y(a) + d_0$ and $y'(b) = c_1 y(b) + d_1$. We construct a first-order equation $y' = \alpha(x)y + \beta(x)$ such that all its solutions satisfy the boundary conditions and the original equation. Setting $\alpha(a) = c_0$, $\beta(a) = d_0$ to meet the first requirement, differentiation gives $y'' = \alpha' y + \alpha y' + \beta' = [\alpha' + \alpha^2]y + \alpha\beta + \beta'$. This equals $p(x)y + f(x)$ if and only if $\alpha' + \alpha^2 = p(x)$ and $\beta' + \alpha\beta = f(x)$. The process of shifting the boundary condition from $x = a$ to every other point in $[a, b]$ is called the "forward sweep." Setting $x = b$ gives $y'(b) = \alpha(b)y(b) + \beta(b)$, which together with the boundary condition at $b$ determines $y(b)$ and $y'(b)$. Finding $y(b)$ is the "backward sweep." The forward sweep is nothing but the construction of a field linear in $y$, and the system the $\alpha$, $\beta$ must satisfy is precisely the Hamilton-Jacobi system for this case.
+The concept of a field is intimately related to the solution of boundary value problems for systems of second-order differential equations by the so-called "sweep method." Consider the simple case of $y'' = p(x)y + f(x)$ with boundary conditions $y'(a) = c\_0 y(a) + d\_0$ and $y'(b) = c\_1 y(b) + d\_1$. We construct a first-order equation $y' = \alpha(x)y + \beta(x)$ such that all its solutions satisfy the boundary conditions and the original equation. Setting $\alpha(a) = c\_0$, $\beta(a) = d\_0$ to meet the first requirement, differentiation gives $y'' = \alpha' y + \alpha y' + \beta' = [\alpha' + \alpha^2]y + \alpha\beta + \beta'$. This equals $p(x)y + f(x)$ if and only if $\alpha' + \alpha^2 = p(x)$ and $\beta' + \alpha\beta = f(x)$. The process of shifting the boundary condition from $x = a$ to every other point in $[a, b]$ is called the "forward sweep." Setting $x = b$ gives $y'(b) = \alpha(b)y(b) + \beta(b)$, which together with the boundary condition at $b$ determines $y(b)$ and $y'(b)$. Finding $y(b)$ is the "backward sweep." The forward sweep is nothing but the construction of a field linear in $y$, and the system the $\alpha$, $\beta$ must satisfy is precisely the Hamilton-Jacobi system for this case.
 
 </div>
 
@@ -3020,7 +3020,7 @@ corresponding to the functional
 
 $$\int_a^b F(x, y_1, \ldots, y_n, y_1', \ldots, y_n')\,dx, \tag{22}$$
 
-form a system of $n$ second-order differential equations. In order to single out a definite solution of this system, we have to specify $2n$ supplementary conditions, which are usually given in the form of boundary conditions, i.e., relations connecting the values of $y_i$ and $y_i'$ at the end points of the interval $[a, b]$ (there are $n$ such relations at each end point). In many cases, the boundary conditions are determined by the very functional under consideration.
+form a system of $n$ second-order differential equations. In order to single out a definite solution of this system, we have to specify $2n$ supplementary conditions, which are usually given in the form of boundary conditions, i.e., relations connecting the values of $y\_i$ and $y\_i'$ at the end points of the interval $[a, b]$ (there are $n$ such relations at each end point). In many cases, the boundary conditions are determined by the very functional under consideration.
 
 For example, consider the variable end point problem for the functional
 
@@ -3030,11 +3030,11 @@ differing from (22) by two functions $g^{(1)}$ and $g^{(2)}$ of the coordinates 
 
 $$\int_a^b \sum_{i=1}^{n}\!\left(F_{y_i} - \frac{d}{dx}F_{y_i'}\right)h_i\,dx + \sum_{i=1}^{n} F_{y_i'}\,h_i\Big|_{x=a}^{x=b} + \sum_{i=1}^{n} g_{y_i}^{(1)} h_i(a) + \sum_{i=1}^{n} g_{y_i}^{(2)} h_i(b). \tag{24}$$
 
-Setting (24) equal to zero, and assuming that the curve $y_i = y_i(x)$, $1 \leqslant i \leqslant n$, is an extremal, we find that
+Setting (24) equal to zero, and assuming that the curve $y\_i = y\_i(x)$, $1 \leqslant i \leqslant n$, is an extremal, we find that
 
 $$\sum_{i=1}^{n} F_{y_i'}\,h_i\Big|_{x=a}^{x=b} + \sum_{i=1}^{n} g_{y_i}^{(1)} h_i(a) + \sum_{i=1}^{n} g_{y_i}^{(2)} h_i(b) = 0. \tag{25}$$
 
-Since $h_i(a)$ and $h_i(b)$ are arbitrary, (25) implies that
+Since $h\_i(a)$ and $h\_i(b)$ are arbitrary, (25) implies that
 
 $$(F_{y_i'} - g_{y_i}^{(1)})\big|_{x=a} = 0 \qquad (i = 1, \ldots, n) \tag{26}$$
 
@@ -3042,9 +3042,9 @@ and
 
 $$(F_{y_i'} - g_{y_i}^{(2)})\big|_{x=b} = 0 \qquad (i = 1, \ldots, n), \tag{27}$$
 
-i.e., the natural boundary conditions for a variable end point problem like the one considered in Sec. 6. If $g^{(1)} = g^{(2)} \equiv 0$, (25) implies $F_{y_i'}\big\|\_{x=a} = F_{y_i'}\big\|\_{x=b} = 0$, i.e., the transversality conditions (see Sec. 15).
+i.e., the natural boundary conditions for a variable end point problem like the one considered in Sec. 6. If $g^{(1)} = g^{(2)} \equiv 0$, (25) implies $F\_{y\_i'}\big\|\_{x=a} = F\_{y\_i'}\big\|\_{x=b} = 0$, i.e., the transversality conditions (see Sec. 15).
 
-Next, we examine in more detail the boundary conditions corresponding to one end point, say $x = a$. For simplicity, we write $g$ instead of $g^{(1)}$, and adopt the vector notation $y = (y_1, \ldots, y_n)$, $y' = (y_1', \ldots, y_n')$. As usual, we introduce the "momenta" (see Sec. 15)
+Next, we examine in more detail the boundary conditions corresponding to one end point, say $x = a$. For simplicity, we write $g$ instead of $g^{(1)}$, and adopt the vector notation $y = (y\_1, \ldots, y\_n)$, $y' = (y\_1', \ldots, y\_n')$. As usual, we introduce the "momenta" (see Sec. 15)
 
 $$p_i(x, y, y') = F_{y_i'}(x, y, y') \qquad (i = 1, \ldots, n), \tag{28}$$
 
@@ -3052,7 +3052,7 @@ and then write the boundary conditions (26) in the form
 
 $$p_i(x, y, y')\big|_{x=a} = g_{y_i}(x, y)\big|_{x=a} \qquad (i = 1, \ldots, n). \tag{29}$$
 
-The relations (28) determine $y_1'(a), \ldots, y_n'(a)$ as functions of $y_1(a), \ldots, y_n(a)$:
+The relations (28) determine $y\_1'(a), \ldots, y\_n'(a)$ as functions of $y\_1(a), \ldots, y\_n(a)$:
 
 $$y_i'(a) = \psi_i(y) \qquad (i = 1, \ldots, n). \tag{30}$$
 
@@ -3061,7 +3061,7 @@ Boundary conditions that can be derived in this way merit a special name:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 1</span><span class="math-callout__name">(Self-Adjoint Boundary Conditions)</span></p>
 
-Given a functional $\int_a^b F(x, y, y')\,dx$, with momenta (28), the boundary conditions (30), prescribed for $x = a$, are said to be **self-adjoint** if there exists a function $g(x, y)$ such that
+Given a functional $\int\_a^b F(x, y, y')\,dx$, with momenta (28), the boundary conditions (30), prescribed for $x = a$, are said to be **self-adjoint** if there exists a function $g(x, y)$ such that
 
 $$p_i[x, y, \psi(y)]\big|_{x=a} \equiv g_{y_i}(x, y)\big|_{x=a} \qquad (i = 1, \ldots, n). \tag{31}$$
 
@@ -3086,7 +3086,7 @@ If the boundary conditions (30) are self-adjoint, then (31) holds, and hence
 
 $$\frac{\partial p_i[x, y, \psi(y)]}{\partial y_k} = \frac{\partial^2 g(x, y)}{\partial y_i\,\partial y_k} = \frac{\partial p_k[x, y, \psi(y)]}{\partial y_i},$$
 
-which is just (32). Conversely, if the boundary conditions (30) are such that the functions $p_i[x, y, \psi(y)]$ satisfy (32), then, for $x = a$, the $p_i$ are the partial derivatives with respect to $y_i$ of some function $g(y)$, so that the boundary conditions (30) are self-adjoint in the sense of Definition 1.
+which is just (32). Conversely, if the boundary conditions (30) are such that the functions $p\_i[x, y, \psi(y)]$ satisfy (32), then, for $x = a$, the $p\_i$ are the partial derivatives with respect to $y\_i$ of some function $g(y)$, so that the boundary conditions (30) are self-adjoint in the sense of Definition 1.
 
 </details>
 </div>
@@ -3117,11 +3117,11 @@ we say that boundary conditions
 
 $$y_i' = \psi_i^{(1)}(y) \qquad (i = 1, \ldots, n), \tag{35}$$
 
-prescribed for $x = x_1$, and the boundary conditions
+prescribed for $x = x\_1$, and the boundary conditions
 
 $$y_i' = \psi_i^{(2)}(y) \qquad (i = 1, \ldots, n), \tag{36}$$
 
-prescribed for $x = x_2$, are **(mutually) consistent** with respect to the functional (33) if they are consistent with respect to the system (34), i.e., if every extremal satisfying the boundary conditions (35) at $x = x_1$ also satisfies the boundary conditions (36) at $x = x_2$, and conversely.
+prescribed for $x = x\_2$, are **(mutually) consistent** with respect to the functional (33) if they are consistent with respect to the system (34), i.e., if every extremal satisfying the boundary conditions (35) at $x = x\_1$ also satisfies the boundary conditions (36) at $x = x\_2$, and conversely.
 
 </div>
 
@@ -3135,11 +3135,11 @@ $$y_i' = \psi_i(x, y) \qquad (i = 1, \ldots, n), \tag{37}$$
 prescribed for every $x$ in the interval $[a, b]$, is said to be a **field** of the functional (33) if
 
 1. The conditions (37) are self-adjoint for every $x$ in $[a, b]$;
-2. The conditions (37) are consistent for every pair of points $x_1$, $x_2$ in $[a, b]$.
+2. The conditions (37) are consistent for every pair of points $x\_1$, $x\_2$ in $[a, b]$.
 
 </div>
 
-In other words, by a field of the functional (33) is meant a field for the corresponding system of Euler equations (34) which satisfies the self-adjointness conditions at every point $x$. The equations (37) represent a system of first-order differential equations. Its general solution (the family of *trajectories* of the field) is an $n$-parameter family of extremals such that one and only one extremal passes through each point $(x, y_1, \ldots, y_n)$ of the region where the field is defined.
+In other words, by a field of the functional (33) is meant a field for the corresponding system of Euler equations (34) which satisfies the self-adjointness conditions at every point $x$. The equations (37) represent a system of first-order differential equations. Its general solution (the family of *trajectories* of the field) is an $n$-parameter family of extremals such that one and only one extremal passes through each point $(x, y\_1, \ldots, y\_n)$ of the region where the field is defined.
 
 We now give an effective criterion for a given family of boundary conditions to be the field of a functional:
 
@@ -3168,17 +3168,17 @@ $$H(x, y, y') = -F(x, y, y') + \sum_{i=1}^{n} p_i(x, y, y')\,y_i'. \tag{41}$$
 <details>
 <summary>Proof</summary>
 
-We have already shown in Theorem 1 that the conditions (38) are necessary and sufficient for the boundary conditions (42) given by $y_i' = \psi_i(x, y)$ to be self-adjoint at every point $x$ in $[a, b]$. Therefore, it only remains to show that if (38) holds at every point in $[a, b]$, then the conditions (39) are necessary and sufficient for the boundary conditions (42) to be consistent for $a \leqslant x \leqslant b$.
+We have already shown in Theorem 1 that the conditions (38) are necessary and sufficient for the boundary conditions (42) given by $y\_i' = \psi\_i(x, y)$ to be self-adjoint at every point $x$ in $[a, b]$. Therefore, it only remains to show that if (38) holds at every point in $[a, b]$, then the conditions (39) are necessary and sufficient for the boundary conditions (42) to be consistent for $a \leqslant x \leqslant b$.
 
-To prove this, we set $y_i' = \psi_i(x, y)$, $y'' = \psi(x, y)$ in (40) and (41), and substitute the right-hand sides of the resulting equations into (39). Performing the indicated differentiations and dropping arguments (to keep the notation concise), we obtain
+To prove this, we set $y\_i' = \psi\_i(x, y)$, $y'' = \psi(x, y)$ in (40) and (41), and substitute the right-hand sides of the resulting equations into (39). Performing the indicated differentiations and dropping arguments (to keep the notation concise), we obtain
 
 $$F_{y_ix} + \sum_{k=1}^{n} F_{y_iy_k}\frac{\partial \psi_k}{\partial x} = F_{y_i} + \sum_{k=1}^{n} F_{y_k}\frac{\partial \psi_k}{\partial y_i} - \sum_{k=1}^{n}\psi_k\frac{\partial F_{y_k}}{\partial y_i} - \sum_{k=1}^{n} F_{y_k}\frac{\partial \psi_k}{\partial y_i}. \tag{43}$$
 
-Using the self-adjointness conditions $\frac{\partial F_{y_i'}}{\partial y_k} = \frac{\partial F_{y_k'}}{\partial y_i}$, we can write (43) in the form
+Using the self-adjointness conditions $\frac{\partial F\_{y\_i'}}{\partial y\_k} = \frac{\partial F\_{y\_k'}}{\partial y\_i}$, we can write (43) in the form
 
 $$F_{y_i} = F_{y_ix} + \sum_{k=1}^{n} F_{y_iy_k}\frac{\partial \psi_k}{\partial x} + \sum_{k=1}^{n} F_{y_iy_k'}\!\left(\frac{\partial \psi_k}{\partial x} + \sum_{j=1}^{n}\frac{\partial \psi_k}{\partial y_j}\,\psi_j\right). \tag{45}$$
 
-Along the trajectories of the field, we have $\frac{dy_k}{dx} = \psi_k$ and $\frac{d^2 y_k}{dx^2} = \frac{\partial \psi_k}{\partial x} + \sum_j \frac{\partial \psi_k}{\partial y_j}\psi_j$. Therefore, (45) reduces to
+Along the trajectories of the field, we have $\frac{dy\_k}{dx} = \psi\_k$ and $\frac{d^2 y\_k}{dx^2} = \frac{\partial \psi\_k}{\partial x} + \sum\_j \frac{\partial \psi\_k}{\partial y\_j}\psi\_j$. Therefore, (45) reduces to
 
 $$F_{y_i} - \frac{d}{dx}F_{y_i'} = 0, \tag{46}$$
 
@@ -3212,11 +3212,11 @@ $$\frac{d}{dx}\!\left(\frac{\partial p_i}{\partial y_k}\right) = \frac{\partial 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Extremals as Field Trajectories)</span></p>
 
-Suppose the boundary conditions $y_i' = \psi_i(x, y)$ $(a \leqslant x \leqslant b;\; 1 \leqslant i \leqslant n)$ are consistent, i.e., suppose the solutions of the system (49) are extremals of the functional (47). Then, to prove that the conditions (49) define a field of the functional (47), it is only necessary to verify that they are self-adjoint at a single (arbitrary) point in $[a, b]$.
+Suppose the boundary conditions $y\_i' = \psi\_i(x, y)$ $(a \leqslant x \leqslant b;\; 1 \leqslant i \leqslant n)$ are consistent, i.e., suppose the solutions of the system (49) are extremals of the functional (47). Then, to prove that the conditions (49) define a field of the functional (47), it is only necessary to verify that they are self-adjoint at a single (arbitrary) point in $[a, b]$.
 
 </div>
 
-According to Definition 1, the boundary conditions are self-adjoint if there exists a function $g(x, y)$ such that $p_i[x, y, \psi(x, y)] = g_{y_i}(x, y)$ for $a \leqslant x \leqslant b$. It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form
+According to Definition 1, the boundary conditions are self-adjoint if there exists a function $g(x, y)$ such that $p\_i[x, y, \psi(x, y)] = g\_{y\_i}(x, y)$ for $a \leqslant x \leqslant b$. It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form
 
 $$\frac{\partial g}{\partial x} + H\!\left(x, y_1, \ldots, y_n, \frac{\partial g}{\partial y_1}, \ldots, \frac{\partial g}{\partial y_n}\right) = 0. \tag{51}$$
 
@@ -3231,7 +3231,7 @@ $$\frac{\partial g}{\partial x} + H\!\left(x, y_1, \ldots, y_n, \frac{\partial g
 <details>
 <summary>Proof</summary>
 
-It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form $\frac{\partial g}{\partial x} = -H(x, y_1, \ldots, y_n, p_1, \ldots, p_n)$. Differentiating (52) with respect to $y_i$, we obtain
+It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form $\frac{\partial g}{\partial x} = -H(x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$. Differentiating (52) with respect to $y\_i$, we obtain
 
 $$\frac{\partial^2 g}{\partial x\,\partial y_i} = -\frac{\partial H[x, y_1, \ldots, y_n, \psi_1(x, y), \ldots, \psi_n(x, y)]}{\partial y_i},$$
 
@@ -3247,7 +3247,7 @@ which is just the set of consistency conditions (39).
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection between the Two Hamilton-Jacobi Systems)</span></p>
 
-The connection between the Hamilton-Jacobi system introduced in Sec. 31 and the Hamilton-Jacobi equation introduced in Sec. 23 is now apparent. As we saw in Sec. 31, in the case of an arbitrary system of $n$ second-order differential equations, a field is a system of $n$ first-order differential equations of the form (49), where the functions $\psi_i(x, y)$ satisfy the Hamilton-Jacobi system (8). When we deal with the field of a functional, and in this case, we impose the additional requirement that the boundary conditions defining the field be self-adjoint at every point. This means that the field of a functional is not really determined by $n$ functions $\psi_i(x, y)$, but rather by a single function $g(x, y)$ from which the functions $\psi_i(x, y)$ are derived by using the relations (50). In other words, the function $g(x, y)$ is a kind of *potential* for the field of a functional. Since the field of a functional is determined by a single function, instead of $n$ consistency conditions, the set of $n$ consistency conditions for such a field should reduce to a single equation, i.e., that the Hamilton-Jacobi system should be replaced by the Hamilton-Jacobi equation.
+The connection between the Hamilton-Jacobi system introduced in Sec. 31 and the Hamilton-Jacobi equation introduced in Sec. 23 is now apparent. As we saw in Sec. 31, in the case of an arbitrary system of $n$ second-order differential equations, a field is a system of $n$ first-order differential equations of the form (49), where the functions $\psi\_i(x, y)$ satisfy the Hamilton-Jacobi system (8). When we deal with the field of a functional, and in this case, we impose the additional requirement that the boundary conditions defining the field be self-adjoint at every point. This means that the field of a functional is not really determined by $n$ functions $\psi\_i(x, y)$, but rather by a single function $g(x, y)$ from which the functions $\psi\_i(x, y)$ are derived by using the relations (50). In other words, the function $g(x, y)$ is a kind of *potential* for the field of a functional. Since the field of a functional is determined by a single function, instead of $n$ consistency conditions, the set of $n$ consistency conditions for such a field should reduce to a single equation, i.e., that the Hamilton-Jacobi system should be replaced by the Hamilton-Jacobi equation.
 
 </div>
 
@@ -3257,7 +3257,7 @@ Once more, we consider a functional
 
 $$\int_a^b F(x, y, y')\,dx, \tag{53}$$
 
-whose extremals are curves in the $(n + 1)$-dimensional space of points $(x, y) = (x, y_1, \ldots, y_n)$. Let $R$ be a simply connected region in this space, and let $c = (c_0, c_1, \ldots, c_n)$ be a point lying outside $R$.
+whose extremals are curves in the $(n + 1)$-dimensional space of points $(x, y) = (x, y\_1, \ldots, y\_n)$. Let $R$ be a simply connected region in this space, and let $c = (c\_0, c\_1, \ldots, c\_n)$ be a point lying outside $R$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4</span><span class="math-callout__name">(Central Field)</span></p>
@@ -3289,7 +3289,7 @@ where the integral is taken along the extremal of (53) joining the point $c$ to 
 
 $$F_{y_i'}(x, y, y') \equiv p_i(x, y, y') = g_{y_i}(x, y) \qquad (i = 1, \ldots, n). \tag{56}$$
 
-The theorem will be proved if it can be shown that this field coincides with the original field (54), since then the original field will satisfy the self-adjointness conditions [since its trajectories are extremals] and also the consistency conditions [this follows from Theorem 1 applied to the field defined by (56)]. But (55) is just the function $S(x, y_1, \ldots, y_n)$ of Sec. 23, and hence $g_{y_i}(x, y) = p_i(x, y, z)$, where $z$ denotes the slope of the extremal joining $c$ to $(x, y)$, evaluated at $(x, y)$. This shows that the field of directions (56) actually coincides with the original field (54). The proof is now completed by using Theorem 5.
+The theorem will be proved if it can be shown that this field coincides with the original field (54), since then the original field will satisfy the self-adjointness conditions [since its trajectories are extremals] and also the consistency conditions [this follows from Theorem 1 applied to the field defined by (56)]. But (55) is just the function $S(x, y\_1, \ldots, y\_n)$ of Sec. 23, and hence $g\_{y\_i}(x, y) = p\_i(x, y, z)$, where $z$ denotes the slope of the extremal joining $c$ to $(x, y)$, evaluated at $(x, y)$. This shows that the field of directions (56) actually coincides with the original field (54). The proof is now completed by using Theorem 5.
 
 </details>
 </div>
@@ -3309,7 +3309,7 @@ Then we say that $\gamma$ **can be imbedded in a field** (of the functional (53)
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6</span><span class="math-callout__name">(Imbedding an Extremal in a Field)</span></p>
 
-*Let $\gamma$ be an extremal of the functional (53), with equation $y = y(x)$ $(a \leqslant x \leqslant b)$, in vector form. Moreover, suppose that $\det\lVert F_{y_i'y_k'}\rVert$ is nonvanishing in $[a, b]$, and that no points conjugate to $(a, y(a))$ lie on $\gamma$. Then $\gamma$ can be imbedded in a field.*
+*Let $\gamma$ be an extremal of the functional (53), with equation $y = y(x)$ $(a \leqslant x \leqslant b)$, in vector form. Moreover, suppose that $\det\lVert F\_{y\_i'y\_k'}\rVert$ is nonvanishing in $[a, b]$, and that no points conjugate to $(a, y(a))$ lie on $\gamma$. Then $\gamma$ can be imbedded in a field.*
 
 </div>
 
@@ -3329,7 +3329,7 @@ Now consider the family of extremals leaving the point $(a - \varepsilon, y(a - 
 
 ### 33. Hilbert's Invariant Integral
 
-As before, let $R$ be a simply connected region in the $(n + 1)$-dimensional space of points $(x, y) = (x, y_1, \ldots, y_n)$, and let
+As before, let $R$ be a simply connected region in the $(n + 1)$-dimensional space of points $(x, y) = (x, y\_1, \ldots, y\_n)$, and let
 
 $$y_i' = \psi_i(x, y) \qquad (i = 1, \ldots, n) \tag{57}$$
 
@@ -3337,7 +3337,7 @@ define a field of the functional
 
 $$\int_a^b F(x, y, y')\,dx \tag{58}$$
 
-in $R$. It was proved in the preceding section (see Theorem 2) that the field of directions (57) is a field of the functional (58) if and only if the functions $\psi_i(x, y)$ satisfy the self-adjointness conditions
+in $R$. It was proved in the preceding section (see Theorem 2) that the field of directions (57) is a field of the functional (58) if and only if the functions $\psi\_i(x, y)$ satisfy the self-adjointness conditions
 
 $$\frac{\partial p_i[x, y, \psi(x, y)]}{\partial y_k} = \frac{\partial p_k[x, y, \psi(x, y)]}{\partial y_i} \tag{59}$$
 
@@ -3349,17 +3349,17 @@ Taken together, the conditions (59) and (60) imply that the quantity
 
 $$-H[x, y, \psi(x, y)]\,dx + \sum_{i=1}^{n} p_i[x, y, \psi(x, y)]\,dy_i$$
 
-is the exact differential of some function $g(x, y) = g(x, y_1, \ldots, y_n)$. As is familiar from elementary analysis, this function, which is determined to within an additive constant, can be written as a line integral
+is the exact differential of some function $g(x, y) = g(x, y\_1, \ldots, y\_n)$. As is familiar from elementary analysis, this function, which is determined to within an additive constant, can be written as a line integral
 
 $$g(x, y) = \int_\Gamma \!\left(-H\,dx + \sum_{i=1}^{n} p_i\,dy_i\right), \tag{61}$$
 
-evaluated along the curve $\Gamma$ going from some fixed point $M_0 = (x_0, y(x_0))$ to the variable point $M = (x, y)$. Since the integrand of (61) is an exact differential, the choice of the curve $\Gamma$ does not matter; in fact, the value of the integral depends only on the points $M_0$, $M_1$, and not on the curve $\Gamma$. The right-hand side of (61) is known as **Hilbert's invariant integral**.
+evaluated along the curve $\Gamma$ going from some fixed point $M\_0 = (x\_0, y(x\_0))$ to the variable point $M = (x, y)$. Since the integrand of (61) is an exact differential, the choice of the curve $\Gamma$ does not matter; in fact, the value of the integral depends only on the points $M\_0$, $M\_1$, and not on the curve $\Gamma$. The right-hand side of (61) is known as **Hilbert's invariant integral**.
 
 Using the equations (57) defining the field, and explicitly introducing the integrand $F$ of the functional (58), we can write the integral in (61) as
 
 $$\int_\Gamma \!\left(\left\{F[x, y, \psi(x, y)] - \sum_{i=1}^{n} \psi_i(x, y)\,F_{y_i'}[x, y, \psi(x, y)]\right\}dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi(x, y)]\,dy_i\right). \tag{62}$$
 
-This expression is Hilbert's invariant integral, in the form corresponding to the field defined by the functions $\psi_i(x, y)$. If the curve $\Gamma$ along which the integral (62) is evaluated is one of the trajectories of the field, then $dy_i = \psi_i(x, y)\,dx$ along $\Gamma$, and hence (62) reduces to
+This expression is Hilbert's invariant integral, in the form corresponding to the field defined by the functions $\psi\_i(x, y)$. If the curve $\Gamma$ along which the integral (62) is evaluated is one of the trajectories of the field, then $dy\_i = \psi\_i(x, y)\,dx$ along $\Gamma$, and hence (62) reduces to
 
 $$\int_\Gamma F(x, y, y')\,dx$$
 
@@ -3393,13 +3393,13 @@ $$(0 < \theta < 1).$$
 
 </div>
 
-For $n = 1$, the Weierstrass $E$-function has a simple geometric interpretation, since if we regard $F(x, y, z)$ as a function of $z$, then $F(x, y, w) - F(x, y, z) - (w - z)F_{y'}(x, y, z)$ is just the vertical distance from the curve $\Gamma$ representing $F(x, y, z)$ to the tangent to $\Gamma$ drawn through a fixed point of $\Gamma$.
+For $n = 1$, the Weierstrass $E$-function has a simple geometric interpretation, since if we regard $F(x, y, z)$ as a function of $z$, then $F(x, y, w) - F(x, y, z) - (w - z)F\_{y'}(x, y, z)$ is just the vertical distance from the curve $\Gamma$ representing $F(x, y, z)$ to the tangent to $\Gamma$ drawn through a fixed point of $\Gamma$.
 
 Our goal in this section is to derive sufficient conditions for the functional (63) to have a strong extremum. It will be recalled from Secs. 28 and 29 that the following set of conditions is sufficient for the functional (63) to have a weak minimum for the admissible curve $\gamma$:
 
 **Condition 1.** The curve $\gamma$ is an extremal;
 
-**Condition 2.** The matrix $\lVert F_{y_i'y_k'}\rVert$ is positive definite along $\gamma$;
+**Condition 2.** The matrix $\lVert F\_{y\_i'y\_k'}\rVert$ is positive definite along $\gamma$;
 
 **Condition 3.** The interval $[a, b]$ contains no points conjugate to $a$.
 
@@ -3407,11 +3407,11 @@ Every strong extremum is simultaneously a weak extremum, but the converse is in 
 
 $$y_i' = \psi_i(x, y) \qquad (i = 1, \ldots, n) \tag{65}$$
 
-of the functional (63) (see Theorem 6 of Sec. 32). Let $\gamma$ have the equations $y_i = y_i(x)$ $(i = 1, \ldots, n)$, and let $\gamma^*$ be an arbitrary curve with the same end points as $\gamma$, lying in the $(n + 1)$-dimensional region $R$ containing $\gamma$ and covered by the field (65). Then, according to the remark at the end of Sec. 33, we have
+of the functional (63) (see Theorem 6 of Sec. 32). Let $\gamma$ have the equations $y\_i = y\_i(x)$ $(i = 1, \ldots, n)$, and let $\gamma^\ast$ be an arbitrary curve with the same end points as $\gamma$, lying in the $(n + 1)$-dimensional region $R$ containing $\gamma$ and covered by the field (65). Then, according to the remark at the end of Sec. 33, we have
 
 $$\int_\gamma F(x, y, y')\,dx = \int_{\gamma^*}\!\left(\left\{F[x, y, \psi] - \sum_{i=1}^{n}\psi_i\,F_{y_i'}[x, y, \psi]\right\}dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi]\,dy_i\right), \tag{66}$$
 
-where for simplicity we omit the arguments of the functions $\psi$ and $\psi_i$. The right-hand side of (66) is just Hilbert's invariant integral, in the form corresponding to the field (65). As usual, we are interested in the increment
+where for simplicity we omit the arguments of the functions $\psi$ and $\psi\_i$. The right-hand side of (66) is just Hilbert's invariant integral, in the form corresponding to the field (65). As usual, we are interested in the increment
 
 $$\Delta J = \int_{\gamma^*} F(x, y, y')\,dx - \int_\gamma F(x, y, y')\,dx.$$
 
@@ -3436,11 +3436,11 @@ $$y_i' = \psi_i(x, y) \qquad (i = 1, \ldots, n) \tag{68}$$
 
 $$J[y] = \int_a^b F(x, y, y')\,dx, \qquad y(a) = A, \quad y(b) = B. \tag{69}$$
 
-*Suppose that at every point $(x, y) = (x, y_1, \ldots, y_n)$ of some (open) region containing $\gamma$ and covered by the field (68), the condition*
+*Suppose that at every point $(x, y) = (x, y\_1, \ldots, y\_n)$ of some (open) region containing $\gamma$ and covered by the field (68), the condition*
 
 $$E(x, y, \psi, w) \geqslant 0 \tag{70}$$
 
-*is satisfied for every finite vector $w = (w_1, \ldots, w_n)$. Then $J[y]$ has a **strong minimum** for the extremal $\gamma$.*
+*is satisfied for every finite vector $w = (w\_1, \ldots, w\_n)$. Then $J[y]$ has a **strong minimum** for the extremal $\gamma$.*
 
 </div>
 
@@ -3448,7 +3448,7 @@ $$E(x, y, \psi, w) \geqslant 0 \tag{70}$$
 <details>
 <summary>Proof</summary>
 
-To say that the functional $J[y]$ has a strong minimum for the extremal $\gamma$ means that $\Delta J$ is nonnegative for any admissible curve $\gamma^*$ which is sufficiently close to $\gamma$ in the norm of the space $\mathscr{C}_1(a, b)$. But the condition (70) guarantees that the increment $\Delta J$, given by (67), is nonnegative for all such curves. Note that we do not impose any restrictions at all on the slope of the curve $\gamma^*$, i.e., $\gamma^*$ need not be close to $\gamma$ in the norm of the space $\mathscr{D}_1(a, b)$. In fact, $\gamma^*$ need not even belong to $\mathscr{D}_1(a, b)$.
+To say that the functional $J[y]$ has a strong minimum for the extremal $\gamma$ means that $\Delta J$ is nonnegative for any admissible curve $\gamma^\ast$ which is sufficiently close to $\gamma$ in the norm of the space $\mathscr{C}\_1(a, b)$. But the condition (70) guarantees that the increment $\Delta J$, given by (67), is nonnegative for all such curves. Note that we do not impose any restrictions at all on the slope of the curve $\gamma^\ast$, i.e., $\gamma^\ast$ need not be close to $\gamma$ in the norm of the space $\mathscr{D}\_1(a, b)$. In fact, $\gamma^\ast$ need not even belong to $\mathscr{D}\_1(a, b)$.
 
 </details>
 </div>
@@ -3469,7 +3469,7 @@ $$E(x, y, \psi, w) = \frac{1}{2}\sum_{i,\,k=1}^{n}(w_i - \psi_i)(w_k - \psi_k)\,
 
 $$(0 < \theta < 1),$$
 
-we can replace (70) by the condition that at every point of some region containing $\gamma$, the matrix $\lVert F_{y_i'y_k'}(x, y, z)\rVert$ be nonnegative definite for every finite $z$.
+we can replace (70) by the condition that at every point of some region containing $\gamma$, the matrix $\lVert F\_{y\_i'y\_k'}(x, y, z)\rVert$ be nonnegative definite for every finite $z$.
 
 </div>
 
@@ -3478,7 +3478,7 @@ We conclude this section by indicating the following *necessary* condition for a
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2</span><span class="math-callout__name">(Weierstrass' Necessary Condition)</span></p>
 
-*If the functional $J[y] = \int_a^b F(x, y, y')\,dx$, $y(a) = A$, $y(b) = B$ has a strong minimum for the extremal $\gamma$, then*
+*If the functional $J[y] = \int\_a^b F(x, y, y')\,dx$, $y(a) = A$, $y(b) = B$ has a strong minimum for the extremal $\gamma$, then*
 
 $$E(x, y, y', w) \geqslant 0 \tag{71}$$
 
@@ -3486,7 +3486,7 @@ $$E(x, y, y', w) \geqslant 0 \tag{71}$$
 
 </div>
 
-The idea of the proof is the following: If (71) is not satisfied, there exists a point $\xi$ in $[a, b]$ and a vector $q$ such that $E[\xi, y(\xi), y'(\xi), q] < 0$, where $y = y(x)$ is the equation of the extremal $\gamma$. It can then be shown that a suitable modification of $\gamma$ leads to an admissible curve $\gamma^*$ close to $\gamma$ in the norm of the space $\mathscr{C}(a, b)$ such that $\Delta J = \int_{\gamma^*} F(x, y, y')\,dx - \int_\gamma F(x, y, y')\,dx < 0$, which contradicts the hypothesis that $J[y]$ has a strong minimum for $\gamma$. However, the construction of $\gamma^*$ must be carried out carefully, since all we know is that (72) holds for a suitable $q$.
+The idea of the proof is the following: If (71) is not satisfied, there exists a point $\xi$ in $[a, b]$ and a vector $q$ such that $E[\xi, y(\xi), y'(\xi), q] < 0$, where $y = y(x)$ is the equation of the extremal $\gamma$. It can then be shown that a suitable modification of $\gamma$ leads to an admissible curve $\gamma^\ast$ close to $\gamma$ in the norm of the space $\mathscr{C}(a, b)$ such that $\Delta J = \int\_{\gamma^\ast} F(x, y, y')\,dx - \int\_\gamma F(x, y, y')\,dx < 0$, which contradicts the hypothesis that $J[y]$ has a strong minimum for $\gamma$. However, the construction of $\gamma^\ast$ must be carried out carefully, since all we know is that (72) holds for a suitable $q$.
 
 ## Chapter 7: Variational Problems Involving Multiple Integrals
 
@@ -3498,13 +3498,13 @@ Consider the functional
 
 $$J[u] = \int \cdots \int_R F(x_1, \ldots, x_n, u, u_{x_1}, \ldots, u_{x_n})\,dx_1 \cdots dx_n,$$
 
-depending on $n$ independent variables $x_1, \ldots, x_n$, an unknown function $u$ of these variables, and the partial derivatives $u_{x_1}, \ldots, u_{x_n}$ of $u$. As usual, it is assumed that the integrand $F$ has continuous first and second derivatives with respect to all its arguments.
+depending on $n$ independent variables $x\_1, \ldots, x\_n$, an unknown function $u$ of these variables, and the partial derivatives $u\_{x\_1}, \ldots, u\_{x\_n}$ of $u$. As usual, it is assumed that the integrand $F$ has continuous first and second derivatives with respect to all its arguments.
 
-We calculate the variation of $J[u]$, assuming the region $R$ stays fixed, while the function $u(x_1, \ldots, x_n)$ goes into
+We calculate the variation of $J[u]$, assuming the region $R$ stays fixed, while the function $u(x\_1, \ldots, x\_n)$ goes into
 
 $$u^*(x_1, \ldots, x_n) = u(x_1, \ldots, x_n) + \varepsilon\psi(x_1, \ldots, x_n) + \cdots$$
 
-For simplicity, we write $u(x)$, $\psi(x)$ instead of $u(x_1, \ldots, x_n)$, $\psi(x_1, \ldots, x_n)$, $dx$ instead of $dx_1 \cdots dx_n$, etc. Then, using Taylor's theorem, we find that
+For simplicity, we write $u(x)$, $\psi(x)$ instead of $u(x\_1, \ldots, x\_n)$, $\psi(x\_1, \ldots, x\_n)$, $dx$ instead of $dx\_1 \cdots dx\_n$, etc. Then, using Taylor's theorem, we find that
 
 $$J[u^*] - J[u] = \varepsilon \int_R \left(F_u + \sum_{i=1}^{n} F_{u_{x_i}} \psi_{x_i}\right) dx + \cdots,$$
 
@@ -3512,7 +3512,7 @@ where the dots denote terms of order higher than 1 relative to $\varepsilon$. It
 
 $$\delta J = \varepsilon \int_R \left(F_u + \sum_{i=1}^{n} F_{u_{x_i}} \psi_{x_i}\right) dx.$$
 
-Next, we try to represent the variation as an integral of the form $G(x)\psi(x) + \operatorname{div}(\cdots)$, so that the derivatives $\psi_{x_i}$ only appear in a divergence. Replacing $F_{u_{x_i}} \psi_{x_i}$ by
+Next, we try to represent the variation as an integral of the form $G(x)\psi(x) + \operatorname{div}(\cdots)$, so that the derivatives $\psi\_{x\_i}$ only appear in a divergence. Replacing $F\_{u\_{x\_i}} \psi\_{x\_i}$ by
 
 $$\frac{\partial}{\partial x_i}[F_{u_{x_i}} \psi(x)] - \frac{\partial F_{u_{x_i}}}{\partial x_i}\,\psi(x)$$
 
@@ -3524,7 +3524,7 @@ The second term is the integral of a divergence, and by the $n$-dimensional vers
 
 $$\int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}[F_{u_{x_i}} \psi(x)]\,dx = \int_\Gamma \psi(x)(G, \nu)\,d\sigma,$$
 
-where $G = (F_{u_{x_1}}, \ldots, F_{u_{x_n}})$, $\nu = (\nu_1, \ldots, \nu_n)$ is the unit outward normal to $\Gamma$, and $(G, \nu)$ denotes the scalar product. Using this, we can write the variation as
+where $G = (F\_{u\_{x\_1}}, \ldots, F\_{u\_{x\_n}})$, $\nu = (\nu\_1, \ldots, \nu\_n)$ is the unit outward normal to $\Gamma$, and $(G, \nu)$ denotes the scalar product. Using this, we can write the variation as
 
 $$\delta J = \varepsilon \int_R \left(F_u - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} F_{u_{x_i}}\right)\psi(x)\,dx + \varepsilon \int_\Gamma \psi(x)(G, \nu)\,d\sigma.$$
 
@@ -3537,7 +3537,7 @@ and by the arbitrariness of $\psi(x)$ inside $R$, $\delta J = 0$ implies
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler Equation for Multiple Integrals)</span></p>
 
-*A necessary condition for the functional $J[u] = \int \cdots \int_R F(x_1, \ldots, x_n, u, u_{x_1}, \ldots, u_{x_n})\,dx_1 \cdots dx_n$ to have an extremum is that $u$ satisfies the Euler equation*
+*A necessary condition for the functional $J[u] = \int \cdots \int\_R F(x\_1, \ldots, x\_n, u, u\_{x\_1}, \ldots, u\_{x\_n})\,dx\_1 \cdots dx\_n$ to have an extremum is that $u$ satisfies the Euler equation*
 
 $$F_u - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} F_{u_{x_i}} = 0$$
 
@@ -3564,7 +3564,7 @@ where $T$ is the kinetic energy and $U$ the potential energy of the system of pa
 
 Consider the transverse motion of a *string* (i.e., a homogeneous flexible cord) of length $l$ and linear mass density $\rho$. Suppose the ends of the string (at $x = 0$ and $x = l$) are *fastened elastically*, which means that if either end is displaced from its equilibrium position, a restoring force proportional to the displacement appears.
 
-Let the equilibrium position of the string lie along the $x$-axis, and let $u(x, t)$ denote the displacement at the point $x$ and time $t$ from its equilibrium position. Then, at time $t$, the kinetic energy of the element of string which initially lies between $x_0$ and $x_0 + \Delta x$ is clearly
+Let the equilibrium position of the string lie along the $x$-axis, and let $u(x, t)$ denote the displacement at the point $x$ and time $t$ from its equilibrium position. Then, at time $t$, the kinetic energy of the element of string which initially lies between $x\_0$ and $x\_0 + \Delta x$ is clearly
 
 $$\tfrac{1}{2}\,\rho\, u_t^2(x_0, t)\,\Delta x.$$
 
@@ -3586,7 +3586,7 @@ except for the work expended in displacing the elastically fastened ends of the 
 
 $$U_2 = \frac{1}{2}\,\varkappa_1 u^2(0, t) + \frac{1}{2}\,\varkappa_2 u^2(l, t),$$
 
-where $\varkappa_1$ and $\varkappa_2$ are positive constants (the *elastic moduli* of the springs). In fact, the force $f_1$ acting on the end point $P_1$ is proportional to the displacement $\xi$ of $P_1$ from its equilibrium position $x = 0$, $u = 0$, i.e., $\lvert f_1 \rvert = \varkappa_1 \xi$. Integration of this shows that the work required to move $P_1$ from $(0, 0)$ to $(0, u(0, t))$ is $\frac{1}{2}\,\varkappa_1 u^2(0, t)$, and similarly for $P_2$.
+where $\varkappa\_1$ and $\varkappa\_2$ are positive constants (the *elastic moduli* of the springs). In fact, the force $f\_1$ acting on the end point $P\_1$ is proportional to the displacement $\xi$ of $P\_1$ from its equilibrium position $x = 0$, $u = 0$, i.e., $\lvert f\_1 \rvert = \varkappa\_1 \xi$. Integration of this shows that the work required to move $P\_1$ from $(0, 0)$ to $(0, u(0, t))$ is $\frac{1}{2}\,\varkappa\_1 u^2(0, t)$, and similarly for $P\_2$.
 
 Then, adding, the total potential energy of the string in the position described by $u(x, t)$ is
 
@@ -3596,7 +3596,7 @@ Finally, using the expressions for $T$ and $U$, we write the action functional f
 
 $$J[u] = \frac{1}{2}\int_{t_0}^{t_1}\!\int_0^l [\rho\, u_t^2(x, t) - \tau\, u_x^2(x, t)]\,dx\,dt - \frac{1}{2}\,\varkappa_1 \int_{t_0}^{t_1} u^2(0, t)\,dt - \frac{1}{2}\,\varkappa_2 \int_{t_0}^{t_1} u^2(l, t)\,dt.$$
 
-According to the principle of least action, $\delta J$ must vanish for the function $u(x, t)$ which describes the actual motion of the string. Suppose we go from the function $u(x, t)$ to the "varied" function $u^*(x, t) = u(x, t) + \varepsilon\psi(x, t) + \cdots$ Then, using formula (4) of Sec. 35 and the fact that the variation of a sum equals the sum of the variations of the separate terms, we find that
+According to the principle of least action, $\delta J$ must vanish for the function $u(x, t)$ which describes the actual motion of the string. Suppose we go from the function $u(x, t)$ to the "varied" function $u^\ast(x, t) = u(x, t) + \varepsilon\psi(x, t) + \cdots$ Then, using formula (4) of Sec. 35 and the fact that the variation of a sum equals the sum of the variations of the separate terms, we find that
 
 $$\delta J = \varepsilon\!\left\lbrace \int_{t_0}^{t_1}\!\int_0^l [-\rho\, u_{tt}(x, t) + \tau\, u_{xx}(x, t)]\,\psi(x, t)\,dx\,dt - \varkappa_1 \int_{t_0}^{t_1} u(0, t)\,\psi(0, t)\,dt - \varkappa_2 \int_{t_0}^{t_1} u(l, t)\,\psi(l, t)\,dt \right\rbrace$$
 
@@ -3614,7 +3614,7 @@ It follows that the variation can be written in the form
 
 $$\delta J = \varepsilon\!\left\lbrace \int_{t_0}^{t_1}\!\int_0^l [-\rho\, u_{tt} + \tau\, u_{xx}]\,\psi\,dx\,dt - \int_{t_0}^{t_1}[\varkappa_1 u(0, t) - \tau u_x(0, t)]\psi(0, t)\,dt + \int_{t_0}^{t_1}[\varkappa_2 u(l, t) + \tau u_x(l, t)]\psi(l, t)\,dt\right\rbrace.$$
 
-Suppose first that $\psi(x, t)$ vanishes at the ends of the string, i.e., that $\psi(0, t) = 0$, $\psi(l, t) = 0$ for $t_0 \leqslant t \leqslant t_1$. Then $\delta J$ reduces to just the double integral. Setting it equal to zero, and using the arbitrariness of $\psi(x, t)$ for $0 < x < l$, $t_0 < t < t_1$, we find that
+Suppose first that $\psi(x, t)$ vanishes at the ends of the string, i.e., that $\psi(0, t) = 0$, $\psi(l, t) = 0$ for $t\_0 \leqslant t \leqslant t\_1$. Then $\delta J$ reduces to just the double integral. Setting it equal to zero, and using the arbitrariness of $\psi(x, t)$ for $0 < x < l$, $t\_0 < t < t\_1$, we find that
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Vibrating String)</span></p>
@@ -3629,7 +3629,7 @@ Next, we remove the restriction that $\psi$ vanishes at the ends. Since $u(x, t)
 
 $$\delta J = -\varepsilon\!\left\lbrace \int_{t_0}^{t_1}[\varkappa_1 u(0, t) - \tau u_x(0, t)]\,\psi(0, t)\,dt + \int_{t_0}^{t_1}[\varkappa_2 u(l, t) + \tau u_x(l, t)]\,\psi(l, t)\,dt \right\rbrace.$$
 
-This expression must also vanish. Since $[t_0, t_1]$ is arbitrary and $\psi(0, t)$, $\psi(l, t)$ are arbitrary admissible functions, equating to zero leads to the boundary conditions:
+This expression must also vanish. Since $[t\_0, t\_1]$ is arbitrary and $\psi(0, t)$, $\psi(l, t)$ are arbitrary admissible functions, equating to zero leads to the boundary conditions:
 
 $$\varkappa_1 u(0, t) - \tau u_x(0, t) = 0 \qquad \left(\alpha = -\frac{\varkappa_1}{\tau}\right)$$
 
@@ -3642,9 +3642,9 @@ which connect the displacement from equilibrium and the direction of the tangent
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Special Boundary Conditions)</span></p>
 
-**Free ends:** If the ends of the string are free (springs absent, $\varkappa_1 = \varkappa_2 = 0$), the boundary conditions become $u_x(0, t) = 0$, $u_x(l, t) = 0$. Thus, at a free end point, the tangent to the string always preserves the same slope (zero) as it had in the equilibrium position.
+**Free ends:** If the ends of the string are free (springs absent, $\varkappa\_1 = \varkappa\_2 = 0$), the boundary conditions become $u\_x(0, t) = 0$, $u\_x(l, t) = 0$. Thus, at a free end point, the tangent to the string always preserves the same slope (zero) as it had in the equilibrium position.
 
-**Fixed ends:** If the ends of the string are fixed, corresponding to $\varkappa_1 \to \infty$, $\varkappa_2 \to \infty$, the boundary conditions become $u(0, t) = 0$, $u(l, t) = 0$. This can be regarded as a limit of the elastically fastened case.
+**Fixed ends:** If the ends of the string are fixed, corresponding to $\varkappa\_1 \to \infty$, $\varkappa\_2 \to \infty$, the boundary conditions become $u(0, t) = 0$, $u(l, t) = 0$. This can be regarded as a limit of the elastically fastened case.
 
 </div>
 
@@ -3666,17 +3666,17 @@ The Euler equation for this functional gives $m\ddot{x} + \varkappa x = 0$, but 
 
 $$x = \frac{1}{\omega}\sin \omega t,$$
 
-which passes through the point $x = 0$, $t = 0$ and satisfies $\dot{x}(0) = 1$. The point $(\pi/\omega, 0)$ is conjugate to the point $(0, 0)$, since every extremal satisfying $x(0) = 0$ intersects the extremal at $(\pi/\omega, 0)$. Since $F_{\dot{x}\dot{x}} = m > 0$, the extremal satisfies the sufficient conditions for a minimum, *provided that* $0 \leqslant t \leqslant t_0 < \pi/\omega$. However, if we consider time intervals greater than $\pi/\omega$, we can no longer guarantee that the extremal minimizes the action functional.
+which passes through the point $x = 0$, $t = 0$ and satisfies $\dot{x}(0) = 1$. The point $(\pi/\omega, 0)$ is conjugate to the point $(0, 0)$, since every extremal satisfying $x(0) = 0$ intersects the extremal at $(\pi/\omega, 0)$. Since $F\_{\dot{x}\dot{x}} = m > 0$, the extremal satisfies the sufficient conditions for a minimum, *provided that* $0 \leqslant t \leqslant t\_0 < \pi/\omega$. However, if we consider time intervals greater than $\pi/\omega$, we can no longer guarantee that the extremal minimizes the action functional.
 
 Next, consider a system of $n$ coupled oscillators, with kinetic energy
 
 $$T = \sum_{i,k=1}^{n} a_{ik}\dot{x}_i\dot{x}_k$$
 
-(a quadratic form in the velocities $\dot{x}_i$) and potential energy
+(a quadratic form in the velocities $\dot{x}\_i$) and potential energy
 
 $$U = \sum_{i,k=1}^{n} b_{ik} x_i x_k$$
 
-(a quadratic form in the coordinates $x_i$). The quadratic form for $T$ is positive definite (since it is a kinetic energy); therefore, both forms can be simultaneously reduced to sums of squares by a suitable linear transformation $x_i = \sum_{k=1}^{n} c_{ik} q_k$ ($i = 1, \ldots, n$), i.e., substitution gives
+(a quadratic form in the coordinates $x\_i$). The quadratic form for $T$ is positive definite (since it is a kinetic energy); therefore, both forms can be simultaneously reduced to sums of squares by a suitable linear transformation $x\_i = \sum\_{k=1}^{n} c\_{ik} q\_k$ ($i = 1, \ldots, n$), i.e., substitution gives
 
 $$T = \sum_{i=1}^{n} \dot{q}_i^2, \qquad U = \sum_{i=1}^{n} \lambda_i q_i^2.$$
 
@@ -3684,13 +3684,13 @@ Then the equations of motion of the system of oscillators are given by the Euler
 
 $$\ddot{q}_i + \lambda_i q_i = 0 \qquad (i = 1, \ldots, n),$$
 
-corresponding to the action functional $\int_{t_0}^{t_1} \sum_{i=1}^{n}(\dot{q}_i^2 - \lambda_i q_i^2)\,dt$.
+corresponding to the action functional $\int\_{t\_0}^{t\_1} \sum\_{i=1}^{n}(\dot{q}\_i^2 - \lambda\_i q\_i^2)\,dt$.
 
-Suppose all the $\lambda_i$ are positive, which means that we are considering oscillations about a position of stable equilibrium. Then the solution has the form
+Suppose all the $\lambda\_i$ are positive, which means that we are considering oscillations about a position of stable equilibrium. Then the solution has the form
 
 $$q_i = C_i \sin \omega_i(t + \theta_i) \qquad (i = 1, \ldots, n),$$
 
-where $\omega_i = \sqrt{\lambda_i}$, and the values of $C_i$, $\theta_i$ are determined from the initial conditions. An argument like that made for the simple harmonic oscillator ($n = 1$) shows that a trajectory of the system [i.e., a curve given by the $q_i(t)$ in a space of $n + 1$ dimensions] whose projection on the time axis is of length no greater than $\pi/\omega$, where
+where $\omega\_i = \sqrt{\lambda\_i}$, and the values of $C\_i$, $\theta\_i$ are determined from the initial conditions. An argument like that made for the simple harmonic oscillator ($n = 1$) shows that a trajectory of the system [i.e., a curve given by the $q\_i(t)$ in a space of $n + 1$ dimensions] whose projection on the time axis is of length no greater than $\pi/\omega$, where
 
 $$\omega = \max_{1 \leqslant i \leqslant n} \omega_i,$$
 
@@ -3704,7 +3704,7 @@ and the boundary conditions $u(0, t) = 0$, $u(l, t) = 0$. It follows that
 
 $$u(x, t) = \sum_{k=1}^{\infty} C_k(x) \sin \omega_k(t + \theta_k),$$
 
-where $\omega_k = k a\pi / l$. Thus, in a certain sense, a vibrating string can be regarded as a system of infinitely many coupled oscillators, with natural frequencies $\omega_k$. However, the numbers $\omega_k$ have no finite upper bound, and hence the analogy with the case of $n$ coupled oscillators leads us to believe that for a vibrating string, there is no time interval short enough to guarantee that $u(x, t)$ actually minimizes the action functional.
+where $\omega\_k = k a\pi / l$. Thus, in a certain sense, a vibrating string can be regarded as a system of infinitely many coupled oscillators, with natural frequencies $\omega\_k$. However, the numbers $\omega\_k$ have no finite upper bound, and hence the analogy with the case of $n$ coupled oscillators leads us to believe that for a vibrating string, there is no time interval short enough to guarantee that $u(x, t)$ actually minimizes the action functional.
 
 Guided by the above considerations, we shall henceforth replace the principle of *least* action by the principle of *stationary* action. In other words, the actual trajectory of a given mechanical system will not be required to minimize the action but only to cause its first variation to vanish.
 
@@ -3716,9 +3716,9 @@ $$T = \frac{1}{2}\,\rho \iint_R u_t^2(x, y, t)\,dx\,dy,$$
 
 where $R$ is the region of the $xy$-plane occupied by the membrane at rest.
 
-The potential energy of the membrane in the position described by the function $u(x, y, t)$, where $t$ is fixed, is just the work required to move the membrane from its equilibrium position $u \equiv 0$ into the given position $u(x, y, t)$. This work is the sum of the work $U_1$ expended in deforming the membrane and the work $U_2$ expended in moving the boundary of the membrane, which we assume to be elastically fastened to its equilibrium position.
+The potential energy of the membrane in the position described by the function $u(x, y, t)$, where $t$ is fixed, is just the work required to move the membrane from its equilibrium position $u \equiv 0$ into the given position $u(x, y, t)$. This work is the sum of the work $U\_1$ expended in deforming the membrane and the work $U\_2$ expended in moving the boundary of the membrane, which we assume to be elastically fastened to its equilibrium position.
 
-To calculate $U_1$, let $\tau$ denote the tension in the membrane, and consider the element $\Delta A$ of the membrane initially occupying the region $x_0 \leqslant x \leqslant x_0 + \Delta x$, $y_0 \leqslant y \leqslant y_0 + \Delta y$. The work needed to deform $\Delta A$ equals the product of $\tau$ and the increase in area of $\Delta A$ under deformation, i.e.,
+To calculate $U\_1$, let $\tau$ denote the tension in the membrane, and consider the element $\Delta A$ of the membrane initially occupying the region $x\_0 \leqslant x \leqslant x\_0 + \Delta x$, $y\_0 \leqslant y \leqslant y\_0 + \Delta y$. The work needed to deform $\Delta A$ equals the product of $\tau$ and the increase in area of $\Delta A$ under deformation, i.e.,
 
 $$\tau\sqrt{(\Delta x)^2 + (\Delta u)^2}\sqrt{(\Delta y)^2 + (\Delta u)^2} - \tau\,\Delta x\,\Delta y = \frac{1}{2}\,\tau[u_x^2(x_0, y_0, t) + u_y^2(x_0, y_0, t)]\,\Delta x\,\Delta y + \cdots$$
 
@@ -3726,21 +3726,21 @@ Integrating over $R$, we find that the work required to deform the whole membran
 
 $$U_1 = \frac{1}{2}\,\tau \iint_R [u_x^2(x, y, t) + u_y^2(x, y, t)]\,dx\,dy.$$
 
-To calculate $U_2$, if $\Gamma$ is the boundary of the region $R$, and $s$ is arc length measured along $\Gamma$ from some fixed point on $\Gamma$, then
+To calculate $U\_2$, if $\Gamma$ is the boundary of the region $R$, and $s$ is arc length measured along $\Gamma$ from some fixed point on $\Gamma$, then
 
 $$U_2 = \frac{1}{2}\int_\Gamma \varkappa(s)\,u^2(s, t)\,ds,$$
 
 where $u(s, t)$ is the displacement of the membrane from equilibrium at the point $s$ and time $t$, and $\varkappa(s)$ is the linear density of the elastic modulus of the forces retaining the boundary of the membrane.
 
-Combining $T$, $U_1$, and $U_2$, we find that the action functional for the vibrating membrane is
+Combining $T$, $U\_1$, and $U\_2$, we find that the action functional for the vibrating membrane is
 
 $$J[u] = \frac{1}{2}\int_{t_0}^{t_1}\!\iint_R \lbrace\rho\, u_t^2(x, y, t) - \tau[u_x^2(x, y, t) + u_y^2(x, y, t)]\rbrace\,dx\,dy\,dt - \frac{1}{2}\int_{t_0}^{t_1}\!\int_\Gamma \varkappa(s)\,u^2(s, t)\,ds\,dt.$$
 
-Suppose we go from the function $u(x, y, t)$ to the "varied" function $u^*(x, y, t) = u(x, y, t) + \varepsilon\psi(x, y, t) + \cdots$ Then, using formula (4) of Sec. 35, the variation of the functional is
+Suppose we go from the function $u(x, y, t)$ to the "varied" function $u^\ast(x, y, t) = u(x, y, t) + \varepsilon\psi(x, y, t) + \cdots$ Then, using formula (4) of Sec. 35, the variation of the functional is
 
 $$\delta J = \varepsilon \int_{t_0}^{t_1}\!\iint_R [-\rho u_{tt} + \tau(u_{xx} + u_{yy})]\,\psi\,dx\,dy\,dt - \varepsilon \int_{t_0}^{t_1}\!\int_\Gamma xu\psi\,ds\,dt + \varepsilon \int_{t_0}^{t_1}\!\iint_R \left[\frac{\partial}{\partial x}(u_x\psi) + \frac{\partial}{\partial y}(u_y\psi)\right] dx\,dy\,dt + \varepsilon\int_{t_0}^{t_1}\!\iint_R \frac{\partial}{\partial t}(u_t\psi)\,dx\,dy\,dt.$$
 
-Just as in the case of the vibrating string, we assume that $u(x, y, t)$ is not varied at the initial and final times, i.e., that $\psi(x, y, t_0) = \psi(x, y, t_1) \equiv 0$. Then the last integral vanishes. Moreover, using Green's theorem in two dimensions, the boundary term evaluates as $\int_\Gamma \frac{\partial u}{\partial n}\,\psi\,ds$, where $\partial/\partial n$ denotes differentiation with respect to the outward normal to $\Gamma$.
+Just as in the case of the vibrating string, we assume that $u(x, y, t)$ is not varied at the initial and final times, i.e., that $\psi(x, y, t\_0) = \psi(x, y, t\_1) \equiv 0$. Then the last integral vanishes. Moreover, using Green's theorem in two dimensions, the boundary term evaluates as $\int\_\Gamma \frac{\partial u}{\partial n}\,\psi\,ds$, where $\partial/\partial n$ denotes differentiation with respect to the outward normal to $\Gamma$.
 
 Thus, we can write the variation as
 
@@ -3753,7 +3753,7 @@ We first assume that $\psi(s, t) = 0$ ($s \in \Gamma$), i.e., that $u$ does not 
 
 $$u_{tt} = a^2[u_{xx}(x, y, t) + u_{yy}(x, y, t)] \qquad \left(a^2 = \frac{\tau}{\rho}\right)$$
 
-for $(x, y) \in R$ and all $t$. Equation can also be written as $u_{tt} = a^2 \nabla^2 u(x, y, t)$, in terms of the **Laplacian** (operator)
+for $(x, y) \in R$ and all $t$. Equation can also be written as $u\_{tt} = a^2 \nabla^2 u(x, y, t)$, in terms of the **Laplacian** (operator)
 
 $$\nabla^2 = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}.$$
 
@@ -3777,7 +3777,7 @@ $$T = \frac{1}{2}\,\rho \iint_R u_t^2(x, y, t)\,dx\,dy,$$
 
 where $R$ is the region of the $xy$-plane occupied by the plate at rest.
 
-The potential energy of deformation of the plate, denoted by $U_1$, depends on how the plate is bent, and hence involves the second derivatives $u_{xx}$, $u_{xy}$ and $u_{yy}$. Unlike the case of the membrane, it is assumed that no work is done in stretching the plate, so that $U_1$ does not involve $u_x$ and $u_y$. Moreover, we require $U_1$ to be a quadratic functional in $u_{xx}$, $u_{xy}$ and $u_{yy}$, which does not depend on the orientation of the coordinate system. Then, since the matrix
+The potential energy of deformation of the plate, denoted by $U\_1$, depends on how the plate is bent, and hence involves the second derivatives $u\_{xx}$, $u\_{xy}$ and $u\_{yy}$. Unlike the case of the membrane, it is assumed that no work is done in stretching the plate, so that $U\_1$ does not involve $u\_x$ and $u\_y$. Moreover, we require $U\_1$ to be a quadratic functional in $u\_{xx}$, $u\_{xy}$ and $u\_{yy}$, which does not depend on the orientation of the coordinate system. Then, since the matrix
 
 $$\begin{Vmatrix} u_{xx} & u_{xy} \\ u_{yx} & u_{yy} \end{Vmatrix}$$
 
@@ -3791,7 +3791,7 @@ $$U_1 = \frac{1}{2}\,c \iint_R [(u_{xx}^2 + u_{yy}^2) - 2(1 - \mu)(u_{xx}u_{yy} 
 
 where $c$ is a constant depending on the choice of units, and $\mu$ is an absolute constant (*Poisson's ratio*) characterizing the material from which the plate is made. For simplicity, we set $c = 1$.
 
-In addition to $U_1$, the total potential energy of the plate may also contain a contribution $U_2$ due to bending moments with density $m(s, t)$, prescribed on the boundary $\Gamma$ of $R$, and a contribution $U_3$ due to external forces acting on $R$ with surface density $f(x, y, t)$ and on $\Gamma$ with linear density $p(s, t)$. This would give
+In addition to $U\_1$, the total potential energy of the plate may also contain a contribution $U\_2$ due to bending moments with density $m(s, t)$, prescribed on the boundary $\Gamma$ of $R$, and a contribution $U\_3$ due to external forces acting on $R$ with surface density $f(x, y, t)$ and on $\Gamma$ with linear density $p(s, t)$. This would give
 
 $$U_2 = \int_\Gamma m(s, t)\frac{\partial u(s, t)}{\partial n}\,ds,$$
 
@@ -3805,7 +3805,7 @@ $$= \frac{1}{2}\int_{t_0}^{t_1}\!\iint_R [\rho u_t^2 - (u_{xx} + u_{yy})^2 + 2(1
 
 $$- \int_{t_0}^{t_1}\!\int_\Gamma \left(\rho u + m\frac{\partial u}{\partial n}\right) ds\,dt.$$
 
-Unlike the corresponding expressions for the vibrating string and the vibrating membrane, this functional contains second derivatives of the unknown function $u$. The variation of the functional, corresponding to the transition from $u(x, y, t)$ to $u^*(x, y, t) = u(x, y, t) + \varepsilon\psi(x, y, t) + \cdots$, turns out to be
+Unlike the corresponding expressions for the vibrating string and the vibrating membrane, this functional contains second derivatives of the unknown function $u$. The variation of the functional, corresponding to the transition from $u(x, y, t)$ to $u^\ast(x, y, t) = u(x, y, t) + \varepsilon\psi(x, y, t) + \cdots$, turns out to be
 
 $$\delta J = \varepsilon \int_{t_0}^{t_1}\!\iint_R (-\rho u_{tt} - \nabla^4 u - f)\,\psi\,dx\,dy\,dt + \varepsilon \int_{t_0}^{t_1}\!\int_\Gamma \left[(P - p)\psi + (M - m)\frac{\partial\psi}{\partial n}\right] ds\,dt.$$
 
@@ -3817,7 +3817,7 @@ and
 
 $$P = \frac{\partial}{\partial n}\nabla^2 u + (1 - \mu)\frac{\partial}{\partial s}[u_{xx}x_n x_s + u_{xy}(x_n y_s + x_s y_n) + u_{yy}y_n y_s],$$
 
-where $\partial/\partial n$ denotes differentiation in the direction of the outward normal to $\Gamma$, with direction cosines $x_n$, $y_n$, and $\partial/\partial s$ denotes differentiation in the direction of the tangent to $\Gamma$, with direction cosines $x_s$, $y_s$. Moreover,
+where $\partial/\partial n$ denotes differentiation in the direction of the outward normal to $\Gamma$, with direction cosines $x\_n$, $y\_n$, and $\partial/\partial s$ denotes differentiation in the direction of the tangent to $\Gamma$, with direction cosines $x\_s$, $y\_s$. Moreover,
 
 $$\nabla^4 u = \nabla^2(\nabla^2 u) = \frac{\partial^4 u}{\partial x^4} + 2\frac{\partial^4 u}{\partial x^2\,\partial y^2} + \frac{\partial^4 u}{\partial y^4}$$
 
@@ -3830,16 +3830,16 @@ We first assume that $\psi(s, t) = 0$, $\frac{\partial\psi(s, t)}{\partial n} = 
 
 $$\rho\, u_{tt}(x, y, t) + \nabla^4 u(x, y, t) + f(x, y, t) = 0.$$
 
-If we set $f \equiv 0$, so that there are no external forces acting on the plate, this reduces to the equation for **free** vibrations of the plate: $\rho\, u_{tt} + \nabla^4 u = 0$.
+If we set $f \equiv 0$, so that there are no external forces acting on the plate, this reduces to the equation for **free** vibrations of the plate: $\rho\, u\_{tt} + \nabla^4 u = 0$.
 
-Finally, if we set $u_{tt} \equiv 0$ and assume that $f = f(x, y)$ is independent of time, we obtain the equation for the equilibrium position of the plate under the action of external forces: $\nabla^4 u(x, y) + f(x, y) = 0$.
+Finally, if we set $u\_{tt} \equiv 0$ and assume that $f = f(x, y)$ is independent of time, we obtain the equation for the equilibrium position of the plate under the action of external forces: $\nabla^4 u(x, y) + f(x, y) = 0$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Poisson's Ratio)</span></p>
 
-The Euler equation for the plate does not involve the coefficient $\mu$. This is explained by the fact that the expression $u_{xx}u_{yy} - u_{xy}^2$ is the divergence of the vector $(u_x u_{yy}, -u_x u_{xy})$, and hence has no effect on the Euler equation. However, it does have a decisive effect on the boundary conditions, via the functions $M(s, t)$ and $P(s, t)$.
+The Euler equation for the plate does not involve the coefficient $\mu$. This is explained by the fact that the expression $u\_{xx}u\_{yy} - u\_{xy}^2$ is the divergence of the vector $(u\_x u\_{yy}, -u\_x u\_{xy})$, and hence has no effect on the Euler equation. However, it does have a decisive effect on the boundary conditions, via the functions $M(s, t)$ and $P(s, t)$.
 
 </div>
 
@@ -3854,7 +3854,7 @@ Next, we remove the restriction on the boundary. Since $u(x, y, t)$ must satisfy
 
 $$\delta J = \varepsilon \int_{t_0}^{t_1}\!\int_\Gamma \left[(P - p)\psi + (M - m)\frac{\partial\psi}{\partial n}\right] ds\,dt.$$
 
-Then, since the functions $\psi$, $\partial\psi/\partial n$ and the interval $[t_0, t_1]$ are arbitrary, equating to zero leads to the **natural boundary conditions**
+Then, since the functions $\psi$, $\partial\psi/\partial n$ and the interval $[t\_0, t\_1]$ are arbitrary, equating to zero leads to the **natural boundary conditions**
 
 $$P(s, t) - p(s, t) = 0, \quad M(s, t) - m(s, t) = 0 \qquad (s \in \Gamma).$$
 
@@ -3868,7 +3868,7 @@ In Sec. 35, we derived the variation formula for the functional
 
 $$J[u] = \int \cdots \int_R F(x_1, \ldots, x_n, u, u_{x_1}, \ldots, u_{x_n})\,dx_1 \cdots dx_n,$$
 
-allowing only the function $u$ (and hence its derivatives) to vary, while leaving the independent variables (and hence the region of integration $R$) unchanged. We now find the variation of the functional in the general case where the independent variables $x_1, \ldots, x_n$ are varied, as well as the function $u$ and its derivatives. For simplicity, we use vector notation, writing $x = (x_1, \ldots, x_n)$, $dx = dx_1 \cdots dx_n$ and $\operatorname{grad} u \equiv \nabla u = (u_{x_1}, \ldots, u_{x_n})$. With this notation, the functional becomes
+allowing only the function $u$ (and hence its derivatives) to vary, while leaving the independent variables (and hence the region of integration $R$) unchanged. We now find the variation of the functional in the general case where the independent variables $x\_1, \ldots, x\_n$ are varied, as well as the function $u$ and its derivatives. For simplicity, we use vector notation, writing $x = (x\_1, \ldots, x\_n)$, $dx = dx\_1 \cdots dx\_n$ and $\operatorname{grad} u \equiv \nabla u = (u\_{x\_1}, \ldots, u\_{x\_n})$. With this notation, the functional becomes
 
 $$J[u] = \int_R F(x, u, \nabla u)\,dx.$$
 
@@ -3876,29 +3876,29 @@ Now consider the family of transformations
 
 $$x_i^* = \Phi_i(x, u, \nabla u;\, \varepsilon), \qquad u^* = \Psi(x, u, \nabla u;\, \varepsilon),$$
 
-$(i = 1, \ldots, n)$ depending on a parameter $\varepsilon$, where the functions $\Phi_i$ and $\Psi$ are differentiable with respect to $\varepsilon$, and $\varepsilon = 0$ corresponds to the identity transformation: $\Phi_i(x, u, \nabla u; 0) = x_i$, $\Psi(x, u, \nabla u; 0) = u$.
+$(i = 1, \ldots, n)$ depending on a parameter $\varepsilon$, where the functions $\Phi\_i$ and $\Psi$ are differentiable with respect to $\varepsilon$, and $\varepsilon = 0$ corresponds to the identity transformation: $\Phi\_i(x, u, \nabla u; 0) = x\_i$, $\Psi(x, u, \nabla u; 0) = u$.
 
-The transformation carries the surface $\sigma$, with equation $u = u(x)$ ($x \in R$), into another surface $\sigma^*$ with equation $u^* = u^*(x^*)$ ($x^* \in R^*$), and $R^*$ is a new $n$-dimensional region. Thus, the transformation carries the functional $J[u(x)]$ into
+The transformation carries the surface $\sigma$, with equation $u = u(x)$ ($x \in R$), into another surface $\sigma^\ast$ with equation $u^\ast = u^\ast(x^\ast)$ ($x^\ast \in R^\ast$), and $R^\ast$ is a new $n$-dimensional region. Thus, the transformation carries the functional $J[u(x)]$ into
 
 $$J[u^*(x^*)] = \int_{R^*} F(x^*, u^*, \nabla^* u^*)\,dx^*,$$
 
-where $\nabla^* u^* = (u^*_{x_1^*}, \ldots, u^*_{x_n^*})$.
+where $\nabla^\ast u^\ast = (u^\ast\_{x\_1^\ast}, \ldots, u^\ast\_{x\_n^\ast})$.
 
-Our goal in this section is to calculate the variation of the functional corresponding to the transformation from $x$, $u(x)$ to $x^*$, $u^*(x^*)$, i.e., the principal linear part (relative to $\varepsilon$) of the difference $J[u^*(x^*)] - J[u(x)]$.
+Our goal in this section is to calculate the variation of the functional corresponding to the transformation from $x$, $u(x)$ to $x^\ast$, $u^\ast(x^\ast)$, i.e., the principal linear part (relative to $\varepsilon$) of the difference $J[u^\ast(x^\ast)] - J[u(x)]$.
 
-#### 37.2. Calculation of $\delta x_i$ and $\delta u$
+#### 37.2. Calculation of $\delta x\_i$ and $\delta u$
 
 Writing
 
 $$x_i^* = \Phi_i(x, u, \nabla u;\, \varepsilon) \sim x_i + \varepsilon\varphi_i(x, u, \nabla u), \qquad u^* = \Psi(x, u, \nabla u;\, \varepsilon) \sim u + \varepsilon\psi(x, u, \nabla u),$$
 
-where $\varphi_i = \frac{\partial \Phi_i}{\partial \varepsilon}\big\vert_{\varepsilon=0}$ and $\psi = \frac{\partial \Psi}{\partial \varepsilon}\big\vert_{\varepsilon=0}$, the increments and variations are defined as the principal linear parts (relative to $\varepsilon$):
+where $\varphi\_i = \frac{\partial \Phi\_i}{\partial \varepsilon}\big\vert\_{\varepsilon=0}$ and $\psi = \frac{\partial \Psi}{\partial \varepsilon}\big\vert\_{\varepsilon=0}$, the increments and variations are defined as the principal linear parts (relative to $\varepsilon$):
 
 $$\Delta x_i = x_i^* - x_i = \varepsilon\varphi_i(x) + o(\varepsilon), \qquad \Delta u = u^*(x^*) - u(x) = \varepsilon\psi(x) + o(\varepsilon),$$
 
-and the **variations** $\delta x_i = \varepsilon\varphi_i$, $\delta u = \varepsilon\psi$.
+and the **variations** $\delta x\_i = \varepsilon\varphi\_i$, $\delta u = \varepsilon\psi$.
 
-We must also consider the increment $\overline{\Delta u} = u^*(x^*) - u(x)$, i.e., the change in the $u$-coordinate as we go from the point $(x, u(x))$ on the surface $\sigma$ to its image $(x^*, u^*(x^*))$ on the surface $\sigma^*$ under the transformation. Introducing a new function $\bar{\psi}(x)$ and a corresponding variation $\bar{\delta}u$:
+We must also consider the increment $\overline{\Delta u} = u^\ast(x^\ast) - u(x)$, i.e., the change in the $u$-coordinate as we go from the point $(x, u(x))$ on the surface $\sigma$ to its image $(x^\ast, u^\ast(x^\ast))$ on the surface $\sigma^\ast$ under the transformation. Introducing a new function $\bar{\psi}(x)$ and a corresponding variation $\bar{\delta}u$:
 
 $$\overline{\Delta u} = u^*(x^*) - u(x^*) = \varepsilon\bar{\psi}(x) + o(\varepsilon), \qquad \bar{\delta}u = \varepsilon\bar{\psi}(x).$$
 
@@ -3906,7 +3906,7 @@ To find the relation between $\delta u$ and $\bar{\delta}u$, we write
 
 $$\Delta u = u^*(x^*) - u(x) = [u^*(x^*) - u^*(x)] + [u^*(x) - u(x)] = \sum_{i=1}^{n} \frac{\partial u^*}{\partial x_i}(x_i^* - x_i) + \bar{\delta}u + o(\varepsilon).$$
 
-Since $\partial u^*/dx_i$ and $\partial u/\partial x_i$ differ only by a quantity of order $\varepsilon$, we have $u^*(x) = \varepsilon x + u(x) + o(\varepsilon)$, and:
+Since $\partial u^\ast/dx\_i$ and $\partial u/\partial x\_i$ differ only by a quantity of order $\varepsilon$, we have $u^\ast(x) = \varepsilon x + u(x) + o(\varepsilon)$, and:
 
 $$\delta u = \bar{\delta}u + \sum_{i=1}^{n} u_{x_i}\,\delta x_i,$$
 
@@ -3914,9 +3914,9 @@ or equivalently,
 
 $$\psi = \bar{\psi} + \sum_{i=1}^{n} u_{x_i}\,\varphi_i.$$
 
-#### 37.3. Calculation of $\delta u_{x_i}$
+#### 37.3. Calculation of $\delta u\_{x\_i}$
 
-We now derive an expression for the quantity $\Delta u_{x_i} = \frac{\partial u^*(x^*)}{\partial x_i^*} - \frac{\partial u(x)}{\partial x_i}$, or more precisely, its principal part $\delta u_{x_i}$. Using the chain rule and the expressions for $\delta x_k$ from above, after careful analysis involving the Kronecker delta $\delta_{ik}$ and the relation
+We now derive an expression for the quantity $\Delta u\_{x\_i} = \frac{\partial u^\ast(x^\ast)}{\partial x\_i^\ast} - \frac{\partial u(x)}{\partial x\_i}$, or more precisely, its principal part $\delta u\_{x\_i}$. Using the chain rule and the expressions for $\delta x\_k$ from above, after careful analysis involving the Kronecker delta $\delta\_{ik}$ and the relation
 
 $$\frac{\partial}{\partial x_i} - \frac{\partial}{\partial x_i^*} \sim \varepsilon \sum_{k=1}^{n} \frac{\partial\varphi_k}{\partial x_i} \frac{\partial}{\partial x_k^*},$$
 
@@ -3924,7 +3924,7 @@ we arrive at
 
 $$\delta u_{x_i} = (\bar{\delta}u)_{x_i} + \sum_{k=1}^{n} u_{x_i x_k}\,\delta x_k.$$
 
-This formula shows that **the operations $\delta$ and $\partial/\partial x_i$ commute when applied to $\bar{\delta}u$**, i.e., $\delta u_{x_i} - (\bar{\delta}u)_{x_i} = \sum_k u_{x_i x_k}\,\delta x_k$, which is analogous to the one-variable formula from Sec. 13.
+This formula shows that **the operations $\delta$ and $\partial/\partial x\_i$ commute when applied to $\bar{\delta}u$**, i.e., $\delta u\_{x\_i} - (\bar{\delta}u)\_{x\_i} = \sum\_k u\_{x\_i x\_k}\,\delta x\_k$, which is analogous to the one-variable formula from Sec. 13.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Rotation in the $xu$-Plane)</span></p>
@@ -3957,14 +3957,14 @@ $$u^* = \Psi(x, u, \nabla u;\, \varepsilon) \sim u + \varepsilon\psi(x, u, \nabl
 
 $$\delta J = \varepsilon \int_R \left(F_u - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} F_{u_{x_i}}\right)\bar{\psi}\,dx + \varepsilon \int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}(F_{u_{x_i}}\bar{\psi} + F\,\delta x_i)\,dx,$$
 
-*where $\bar{\psi} = \psi - \sum_{i=1}^{n} u_{x_i}\varphi_i$.*
+*where $\bar{\psi} = \psi - \sum\_{i=1}^{n} u\_{x\_i}\varphi\_i$.*
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Fixed Independent Variables)</span></p>
 
-In the special case where the function $u$ and its derivatives are varied, but not the independent variables $x_i$, we have $\varphi_i = 0$, $\bar{\psi} = \psi - \sum u_{x_i}\varphi_i = \psi$, and the formula reduces to
+In the special case where the function $u$ and its derivatives are varied, but not the independent variables $x\_i$, we have $\varphi\_i = 0$, $\bar{\psi} = \psi - \sum u\_{x\_i}\varphi\_i = \psi$, and the formula reduces to
 
 $$\delta J = \varepsilon \int_R \left(F_u - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} F_{u_{x_i}}\right)\psi(x)\,dx + \varepsilon \int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}[F_{u_{x_i}}\psi(x)]\,dx,$$
 
@@ -3975,26 +3975,26 @@ which is identical with formula (4) of Sec. 35.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span><span class="math-callout__name">(Extremal Surface)</span></p>
 
-The formula for the variation of $J[u]$ is ordinarily used in the case where $u = u(x)$ is an extremal surface of $J[u]$, i.e., satisfies the Euler equation $F_u - \sum \frac{\partial}{\partial x_i} F_{u_{x_i}} = 0$. Then the formula reduces to
+The formula for the variation of $J[u]$ is ordinarily used in the case where $u = u(x)$ is an extremal surface of $J[u]$, i.e., satisfies the Euler equation $F\_u - \sum \frac{\partial}{\partial x\_i} F\_{u\_{x\_i}} = 0$. Then the formula reduces to
 
 $$\delta J = \varepsilon \int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}(F_{u_{x_i}}\bar{\psi} + F\varphi_i)\,dx$$
 
-in the general case, and to $\delta J = \varepsilon \int_R \sum \frac{\partial}{\partial x_i}(F_{u_{x_i}}\psi)\,dx$ in the case where the independent variables $x_i$ are not varied.
+in the general case, and to $\delta J = \varepsilon \int\_R \sum \frac{\partial}{\partial x\_i}(F\_{u\_{x\_i}}\psi)\,dx$ in the case where the independent variables $x\_i$ are not varied.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 3</span><span class="math-callout__name">(Multiple Unknown Functions)</span></p>
 
-Consider the functional involving $m$ unknown functions $u_1, \ldots, u_m$ and their derivatives:
+Consider the functional involving $m$ unknown functions $u\_1, \ldots, u\_m$ and their derivatives:
 
 $$J[u_1, \ldots, u_m] = \int_R F\!\left(x, u_1, \ldots, u_m, \frac{\partial u_1}{\partial x_1}, \ldots, \frac{\partial u_m}{\partial x_n}\right) dx.$$
 
-Introducing the vector $u = (u_1, \ldots, u_m)$ and interpreting $\nabla u$ as the tensor with components $\frac{\partial u_j}{\partial x_i}$ ($i = 1, \ldots, n$; $j = 1, \ldots, m$), the formula for the variation generalizes to
+Introducing the vector $u = (u\_1, \ldots, u\_m)$ and interpreting $\nabla u$ as the tensor with components $\frac{\partial u\_j}{\partial x\_i}$ ($i = 1, \ldots, n$; $j = 1, \ldots, m$), the formula for the variation generalizes to
 
 $$\delta J = \varepsilon \int_R \sum_{j=1}^{m} \left(F_{u_j} - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} \frac{\partial F}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)}\right)\bar{\psi}_j\,dx + \varepsilon \int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}\left(\sum_{j=1}^{m} \frac{\partial F}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)}\bar{\psi}_j + F\varphi_i\right) dx,$$
 
-where $\bar{\psi}_j = \psi_j - \sum_{i=1}^{n} \frac{\partial u_j}{\partial x_i}\varphi_i$ ($j = 1, \ldots, m$).
+where $\bar{\psi}\_j = \psi\_j - \sum\_{i=1}^{n} \frac{\partial u\_j}{\partial x\_i}\varphi\_i$ ($j = 1, \ldots, m$).
 
 </div>
 
@@ -4005,7 +4005,7 @@ Using the formula for the variation of a functional, we can deduce an important 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Invariance under a Transformation)</span></p>
 
-The functional $J[u] = \int_R F(x, u, \nabla u)\,dx$ is said to be **invariant** under the transformation $x_i^* = \Phi_i(x, u, \nabla u)$, $u^* = \Psi(x, u, \nabla u)$ if $J[\sigma^*] = J[\sigma]$, i.e., if
+The functional $J[u] = \int\_R F(x, u, \nabla u)\,dx$ is said to be **invariant** under the transformation $x\_i^\ast = \Phi\_i(x, u, \nabla u)$, $u^\ast = \Psi(x, u, \nabla u)$ if $J[\sigma^\ast] = J[\sigma]$, i.e., if
 
 $$\int_{R^*} F(x^*, u^*, \nabla^* u^*)\,dx^* = \int_R F(x, u, \nabla u)\,dx.$$
 
@@ -4018,7 +4018,7 @@ The functional
 
 $$J[u] = \iint_R \left[\left(\frac{\partial u}{\partial x}\right)^2 + \left(\frac{\partial u}{\partial y}\right)^2\right] dx\,dy$$
 
-is invariant under the rotation $x^* = x\cos\varepsilon - y\sin\varepsilon$, $y^* = x\sin\varepsilon + y\cos\varepsilon$, $u^* = u$, where $\varepsilon$ is an arbitrary constant. In fact, since the inverse of the transformation is $x = x^*\cos\varepsilon + y^*\sin\varepsilon$, $y = -x^*\sin\varepsilon + y^*\cos\varepsilon$, $u = u^*$, a surface $\sigma$ with equation $u = u(x, y)$ has "transformed" surface $\sigma^*$ with equation $u^* = u^*(x^*, y^*)$, and
+is invariant under the rotation $x^\ast = x\cos\varepsilon - y\sin\varepsilon$, $y^\ast = x\sin\varepsilon + y\cos\varepsilon$, $u^\ast = u$, where $\varepsilon$ is an arbitrary constant. In fact, since the inverse of the transformation is $x = x^\ast\cos\varepsilon + y^\ast\sin\varepsilon$, $y = -x^\ast\sin\varepsilon + y^\ast\cos\varepsilon$, $u = u^\ast$, a surface $\sigma$ with equation $u = u(x, y)$ has "transformed" surface $\sigma^\ast$ with equation $u^\ast = u^\ast(x^\ast, y^\ast)$, and
 
 $$J[\sigma^*] = \iint_{R^*}\left[\left(\frac{\partial u^*}{\partial x^*}\right)^2 + \left(\frac{\partial u^*}{\partial y^*}\right)^2\right] dx^*\,dy^* = \iint_R \left[\left(\frac{\partial u}{\partial x}\right)^2 + \left(\frac{\partial u}{\partial y}\right)^2\right] dx\,dy = J[\sigma].$$
 
@@ -4039,7 +4039,7 @@ $$x_i^* = \Phi_i(x, u, \nabla u;\, \varepsilon) \sim x_i + \varepsilon\varphi_i(
 
 $$\sum_{i=1}^{n} \frac{\partial}{\partial x_i}(F_{u_{x_i}}\bar{\psi} + F\varphi_i) = 0$$
 
-*on each extremal surface of $J[u]$, where $\bar{\psi} = \psi - \sum_{i=1}^{n} u_{x_i}\varphi_i$.*
+*on each extremal surface of $J[u]$, where $\bar{\psi} = \psi - \sum\_{i=1}^{n} u\_{x\_i}\varphi\_i$.*
 
 </div>
 
@@ -4047,7 +4047,7 @@ $$\sum_{i=1}^{n} \frac{\partial}{\partial x_i}(F_{u_{x_i}}\bar{\psi} + F\varphi_
 <details>
 <summary>Proof</summary>
 
-According to the variation formula, $\delta J = \varepsilon \int_R \sum_{i=1}^{n} \frac{\partial}{\partial x_i}(F_{u_{x_i}}\bar{\psi} + F\varphi_i)\,dx$, if $u = u(x)$ is an extremal surface. Since $J[u]$ is invariant under the given transformation, $\delta J = 0$, and since $R$ is arbitrary, this implies the asserted divergence-free condition.
+According to the variation formula, $\delta J = \varepsilon \int\_R \sum\_{i=1}^{n} \frac{\partial}{\partial x\_i}(F\_{u\_{x\_i}}\bar{\psi} + F\varphi\_i)\,dx$, if $u = u(x)$ is an extremal surface. Since $J[u]$ is invariant under the given transformation, $\delta J = 0$, and since $R$ is arbitrary, this implies the asserted divergence-free condition.
 
 </details>
 </div>
@@ -4064,7 +4064,7 @@ $$\left(F_u - \sum_{i=1}^{n} \frac{\partial}{\partial x_i} F_{u_{x_i}}\right)\ba
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span><span class="math-callout__name">(Multiple Unknown Functions)</span></p>
 
-If there are $m$ unknown functions $u = (u_1, \ldots, u_m)$ and we continue to write the functional as $J[u] = \int_R F(x, u, \nabla u)\,dx$, then invariance of $J[u]$ under the family of transformations
+If there are $m$ unknown functions $u = (u\_1, \ldots, u\_m)$ and we continue to write the functional as $J[u] = \int\_R F(x, u, \nabla u)\,dx$, then invariance of $J[u]$ under the family of transformations
 
 $$x_i^* \sim x_i + \varepsilon\varphi_i(x, u, \nabla u), \qquad u_j^* \sim u_j + \varepsilon\psi_j(x, u, \nabla u)$$
 
@@ -4072,16 +4072,16 @@ implies that
 
 $$\sum_{i=1}^{n} \frac{\partial}{\partial x_i}\left(\sum_{j=1}^{m} \frac{\partial F}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)}\bar{\psi}_j + F\varphi_i\right) = 0,$$
 
-where $\bar{\psi}_j = \psi_j - \sum_{i=1}^{n} \frac{\partial u_j}{\partial x_i}\varphi_i$.
+where $\bar{\psi}\_j = \psi\_j - \sum\_{i=1}^{n} \frac{\partial u\_j}{\partial x\_i}\varphi\_i$.
 
-When $n = 1$, this reduces to $\frac{d}{dx}\!\left(\sum_{j=1}^{m} F_{u_j'}\bar{\psi}_j + F\varphi\right) = 0$, or equivalently $\sum_{j=1}^{m} F_{u_j'}\psi_j + \left(F - \sum_{j=1}^{m} u_j' F_{u_j'}\right)\varphi = \text{const}$, which is precisely the version of Noether's theorem proved in Sec. 20.
+When $n = 1$, this reduces to $\frac{d}{dx}\!\left(\sum\_{j=1}^{m} F\_{u\_j'}\bar{\psi}\_j + F\varphi\right) = 0$, or equivalently $\sum\_{j=1}^{m} F\_{u\_j'}\psi\_j + \left(F - \sum\_{j=1}^{m} u\_j' F\_{u\_j'}\right)\varphi = \text{const}$, which is precisely the version of Noether's theorem proved in Sec. 20.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 3</span><span class="math-callout__name">(Multi-Parameter Invariance)</span></p>
 
-Invariance of the functional $J[u] = \int_R F(x, u, \nabla u)\,dx$ under an $r$-parameter family of transformations
+Invariance of the functional $J[u] = \int\_R F(x, u, \nabla u)\,dx$ under an $r$-parameter family of transformations
 
 $$x_i^* \sim x_i + \sum_{k=1}^{r} \varepsilon_k\,\varphi_i^{(k)}(x, u, \nabla u), \qquad u_j^* \sim u_j + \sum_{k=1}^{r} \varepsilon_k\,\psi_j^{(k)}(x, u, \nabla u)$$
 
@@ -4089,14 +4089,14 @@ implies the existence of $r$ linearly independent relations
 
 $$\sum_{i=1}^{n} \frac{\partial}{\partial x_i}\left(\sum_{j=1}^{m} \frac{\partial F}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)}\bar{\psi}_j^{(k)} + F\varphi_i^{(k)}\right) = 0 \qquad (k = 1, \ldots, r),$$
 
-where $\bar{\psi}_j^{(k)} = \psi_j^{(k)} - \sum_{i=1}^{n} \frac{\partial u_j}{\partial x_i}\,\varphi_i^{(k)}$.
+where $\bar{\psi}\_j^{(k)} = \psi\_j^{(k)} - \sum\_{i=1}^{n} \frac{\partial u\_j}{\partial x\_i}\,\varphi\_i^{(k)}$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 4</span><span class="math-callout__name">(Identities from Function-Dependent Invariance)</span></p>
 
-Suppose the functional $J[u]$ is invariant under a family of transformations depending on $r$ arbitrary functions instead of $r$ arbitrary parameters. Then, according to another theorem of Noether (which will not be proved here), there are $r$ identities connecting the left-hand sides of the Euler equations corresponding to $J[u]$. For example, consider the simplest variational problem in parametric form, involving a functional $J[x, y] = \int_{t_0}^{t_1} \Phi(x, y, \dot{x}, \dot{y})\,dt$, where $\Phi$ is a positive-homogeneous function of degree 1 in $\dot{x}(t)$ and $\dot{y}(t)$. Then $J[x, y]$ does not change if we introduce a new parameter $\tau$ by setting $t = t(\tau)$, where $dt/d\tau > 0$. In fact, the left-hand sides of the Euler equations $\Phi_x - \frac{d}{dt}\Phi_{\dot{x}} = 0$, $\Phi_y - \frac{d}{dt}\Phi_{\dot{y}} = 0$ are connected by the identity
+Suppose the functional $J[u]$ is invariant under a family of transformations depending on $r$ arbitrary functions instead of $r$ arbitrary parameters. Then, according to another theorem of Noether (which will not be proved here), there are $r$ identities connecting the left-hand sides of the Euler equations corresponding to $J[u]$. For example, consider the simplest variational problem in parametric form, involving a functional $J[x, y] = \int\_{t\_0}^{t\_1} \Phi(x, y, \dot{x}, \dot{y})\,dt$, where $\Phi$ is a positive-homogeneous function of degree 1 in $\dot{x}(t)$ and $\dot{y}(t)$. Then $J[x, y]$ does not change if we introduce a new parameter $\tau$ by setting $t = t(\tau)$, where $dt/d\tau > 0$. In fact, the left-hand sides of the Euler equations $\Phi\_x - \frac{d}{dt}\Phi\_{\dot{x}} = 0$, $\Phi\_y - \frac{d}{dt}\Phi\_{\dot{y}} = 0$ are connected by the identity
 
 $$\dot{x}\!\left(\Phi_x - \frac{d}{dt}\Phi_{\dot{x}}\right) + \dot{y}\!\left(\Phi - \frac{d}{dt}\Phi_{\dot{y}}\right) = 0.$$
 
@@ -4114,17 +4114,17 @@ or by a set of functions
 
 $$u_j(t, x_1, \ldots, x_n) \qquad (j = 1, \ldots, m),$$
 
-depending on the time $t$ and the space coordinates $x_1, \ldots, x_n$. Such a system is called a *field*, and the functions $u_j$ are called the *field functions*. As usual, we can simplify the notation by interpreting $u = (u_1, \ldots, u_m)$ as a vector function in the case where $m > 1$. It is also convenient to write
+depending on the time $t$ and the space coordinates $x\_1, \ldots, x\_n$. Such a system is called a *field*, and the functions $u\_j$ are called the *field functions*. As usual, we can simplify the notation by interpreting $u = (u\_1, \ldots, u\_m)$ as a vector function in the case where $m > 1$. It is also convenient to write
 
 $$t = x_0, \quad x = (x_0, x_1, \ldots, x_n), \quad dx = dx_0\,dx_1 \cdots dx_n.$$
 
 Then the field function becomes simply $u(x)$.
 
-In the case of the simple vibrating systems studied in Sec. 36, the equations of motion for the system were derived by first calculating the action functional $\int_a^b (T - U)\,dt$, where $T$ is the kinetic energy and $U$ the potential energy of the system, and then invoking the principle of stationary action. Similarly, many other physical fields can be derived from a suitably defined action functional. By analogy with the vibrating string and the vibrating membrane, we write the action in the form
+In the case of the simple vibrating systems studied in Sec. 36, the equations of motion for the system were derived by first calculating the action functional $\int\_a^b (T - U)\,dt$, where $T$ is the kinetic energy and $U$ the potential energy of the system, and then invoking the principle of stationary action. Similarly, many other physical fields can be derived from a suitably defined action functional. By analogy with the vibrating string and the vibrating membrane, we write the action in the form
 
 $$J[u, \nabla u] = \int_a^b dx_0 \int \cdots \int_R L(u, \nabla u)\,dx_1 \cdots dx_n = \int_\Omega \mathscr{L}(u, \nabla u)\,dx,$$
 
-where $\nabla$ is the operator $\left(\frac{\partial}{\partial x_0}, \frac{\partial}{\partial x_1}, \ldots, \frac{\partial}{\partial x_n}\right)$, $R$ is some $n$-dimensional region, and $\Omega$ is the "cylindrical space-time region" $R \times [a, b]$, i.e., the Cartesian product of $R$ and the interval $[a, b]$. The functions $L(u, \nabla u)$ and $\mathscr{L}(u, \nabla u)$ are called the **Lagrangian** and **Lagrangian density** of the field, respectively.
+where $\nabla$ is the operator $\left(\frac{\partial}{\partial x\_0}, \frac{\partial}{\partial x\_1}, \ldots, \frac{\partial}{\partial x\_n}\right)$, $R$ is some $n$-dimensional region, and $\Omega$ is the "cylindrical space-time region" $R \times [a, b]$, i.e., the Cartesian product of $R$ and the interval $[a, b]$. The functions $L(u, \nabla u)$ and $\mathscr{L}(u, \nabla u)$ are called the **Lagrangian** and **Lagrangian density** of the field, respectively.
 
 Applying the principle of stationary action to the functional, we require that $\delta J = 0$. This leads to the Euler equations
 
@@ -4140,7 +4140,7 @@ which are the desired field equations.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Vibrating String with Free Ends)</span></p>
 
-For the vibrating string with free ends ($\varkappa_1 = \varkappa_2 = 0$), we have $m = n = 1$, and
+For the vibrating string with free ends ($\varkappa\_1 = \varkappa\_2 = 0$), we have $m = n = 1$, and
 
 $$\mathscr{L} = \tfrac{1}{2}(\rho u_t^2 - \tau u_x^2) = \tfrac{1}{2}(\rho u_{x_0}^2 - \tau u_{x_1}^2)$$
 
@@ -4190,7 +4190,7 @@ $$x_i^* = \Phi_i(x, u, \nabla u;\, \varepsilon) \sim x_i + \sum_{k=1}^{r} \varep
 
 $$u_j^* = \Psi_j(x, u, \nabla u;\, \varepsilon) \sim u_j + \sum_{k=1}^{r} \varepsilon_k\,\psi_j^{(k)} \qquad (j = 1, \ldots, m),$$
 
-where $\varepsilon = (\varepsilon_1, \ldots, \varepsilon_r)$. Then, according to Remark 3 of Sec. 37.5, we have $r$ relations of the form
+where $\varepsilon = (\varepsilon\_1, \ldots, \varepsilon\_r)$. Then, according to Remark 3 of Sec. 37.5, we have $r$ relations of the form
 
 $$\operatorname{div} I^{(k)} = \sum_{i=0}^{3} \frac{\partial I_i^{(k)}}{\partial x_i} = 0,$$
 
@@ -4198,21 +4198,21 @@ where
 
 $$I_i^{(k)} = \sum_{j=1}^{m} \frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)} \bar{\psi}_j^{(k)} + \mathscr{L}\,\varphi_i^{(k)} \qquad (k = 1, \ldots, r)$$
 
-and $\bar{\psi}_j^{(k)} = \psi_j^{(k)} - \sum_{i=0}^{n} \frac{\partial u_j}{\partial x_i}\,\varphi_i^{(k)}$.
+and $\bar{\psi}\_j^{(k)} = \psi\_j^{(k)} - \sum\_{i=0}^{n} \frac{\partial u\_j}{\partial x\_i}\,\varphi\_i^{(k)}$.
 
-These equations have the following interesting consequence: Suppose the cylinder $\Omega = R \times [a, b]$, where $R$ is the three-dimensional sphere defined by $x_1^2 + x_2^2 + x_3^2 \leqslant c^2$. Let $\Gamma$ be the boundary of $\Omega$, and let $\nu$ be the unit outward normal to $\Gamma$. Then, integrating each of the relations $\operatorname{div} I^{(k)} = 0$ over $\Omega$ and using Green's theorem [formula (5) of Sec. 35], we obtain
+These equations have the following interesting consequence: Suppose the cylinder $\Omega = R \times [a, b]$, where $R$ is the three-dimensional sphere defined by $x\_1^2 + x\_2^2 + x\_3^2 \leqslant c^2$. Let $\Gamma$ be the boundary of $\Omega$, and let $\nu$ be the unit outward normal to $\Gamma$. Then, integrating each of the relations $\operatorname{div} I^{(k)} = 0$ over $\Omega$ and using Green's theorem [formula (5) of Sec. 35], we obtain
 
 $$\int_\Omega \operatorname{div} I^{(k)}\,dx = \int_\Gamma (I^{(k)}, \nu)\,d\sigma = 0 \qquad (k = 1, \ldots, r).$$
 
-The surface integral is the sum of an integral over the lateral surface of the cylinder $\Gamma$ and an integral over the two end surfaces cut off by the planes $x_0 = a$, $x_0 = b$. As $c \to \infty$, the integral over the lateral surfaces goes to zero (by the usual argument requiring that the field fall off at infinity "sufficiently rapidly"), and we are left with the integral over the end surfaces. On these surfaces, the scalar product $(I^{(k)}, \nu)$ reduces to $I_0^{(k)}$, where the plus sign refers to the "top" surface and the minus sign to the "bottom" surface. Therefore, taking the limit as $c \to \infty$, we find that
+The surface integral is the sum of an integral over the lateral surface of the cylinder $\Gamma$ and an integral over the two end surfaces cut off by the planes $x\_0 = a$, $x\_0 = b$. As $c \to \infty$, the integral over the lateral surfaces goes to zero (by the usual argument requiring that the field fall off at infinity "sufficiently rapidly"), and we are left with the integral over the end surfaces. On these surfaces, the scalar product $(I^{(k)}, \nu)$ reduces to $I\_0^{(k)}$, where the plus sign refers to the "top" surface and the minus sign to the "bottom" surface. Therefore, taking the limit as $c \to \infty$, we find that
 
 $$\int I_0^{(k)}(a, x_1, x_2, x_3)\,dx_1\,dx_2\,dx_3 = \int I_0^{(k)}(b, x_1, x_2, x_3)\,dx_1\,dx_2\,dx_3 \qquad (k = 1, \ldots, r),$$
 
-where $I_0^{(k)}$ denotes the $x_0$-component of the vector $I^{(k)}$, and the integrations extend over all of three-dimensional space. Since $a$ and $b$ are arbitrary, it follows from this that the quantities
+where $I\_0^{(k)}$ denotes the $x\_0$-component of the vector $I^{(k)}$, and the integrations extend over all of three-dimensional space. Since $a$ and $b$ are arbitrary, it follows from this that the quantities
 
 $$P_k = \int I_0^{(k)}\,dx_1\,dx_2\,dx_3 = \int \left(\sum_{j=1}^{m} \frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial u_j}{\partial x_0}\right)} \bar{\psi}_j^{(k)} + \mathscr{L}\,\varphi_0^{(k)}\right) dx_1\,dx_2\,dx_3 \qquad (k = 1, \ldots, r)$$
 
-are independent of time. The $r$ quantities $P_k$ are the required field invariants, whose existence is implied by the invariance of the action functional under the $r$-parameter family of transformations.
+are independent of time. The $r$ quantities $P\_k$ are the required field invariants, whose existence is implied by the invariance of the action functional under the $r$-parameter family of transformations.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
@@ -4227,11 +4227,11 @@ The action functional of any physical field is invariant under parallel displace
 
 $$x_i^* = x_i + \varepsilon_i \quad (i = 0, 1, 2, 3), \qquad u_j^* = u_j \quad (j = 1, \ldots, m),$$
 
-where the $\varepsilon_i$ are arbitrary. In this case, we have $\delta x_i = \varepsilon_i$, $\delta u_j = 0$, which implies
+where the $\varepsilon\_i$ are arbitrary. In this case, we have $\delta x\_i = \varepsilon\_i$, $\delta u\_j = 0$, which implies
 
 $$\varphi_i^{(k)} = \delta_{ik}, \qquad \bar{\psi}_j^{(k)} = -\sum_{i=0}^{n} \frac{\partial u_j}{\partial x_i}\,\delta_{ik} = -\frac{\partial u_j}{\partial x_k},$$
 
-where $\delta_{ik}$ is the Kronecker delta. It is convenient to introduce the second-rank tensor
+where $\delta\_{ik}$ is the Kronecker delta. It is convenient to introduce the second-rank tensor
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Energy-Momentum Tensor)</span></p>
@@ -4240,11 +4240,11 @@ The **energy-momentum tensor** is defined as
 
 $$T_{ik} = \sum_{j=1}^{m} \frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial u_j}{\partial x_i}\right)} \frac{\partial u_j}{\partial x_k} - \mathscr{L}\,\delta_{ik}.$$
 
-In terms of $T_{ik}$, the field invariants corresponding to translational symmetry are
+In terms of $T\_{ik}$, the field invariants corresponding to translational symmetry are
 
 $$P_k = \int T_{0k}\,dx_1\,dx_2\,dx_3 \qquad (k = 0, 1, 2, 3).$$
 
-The vector $P = (P_0, P_1, P_2, P_3)$ is called the **energy-momentum vector**, and in fact it can be shown that $P_0$ is the energy and $P_1, P_2, P_3$ the momentum components of the field. Thus, since $P$ is a field invariant, we have just proved that *the energy and momentum of the field are conserved*.
+The vector $P = (P\_0, P\_1, P\_2, P\_3)$ is called the **energy-momentum vector**, and in fact it can be shown that $P\_0$ is the energy and $P\_1, P\_2, P\_3$ the momentum components of the field. Thus, since $P$ is a field invariant, we have just proved that *the energy and momentum of the field are conserved*.
 
 </div>
 
@@ -4258,13 +4258,13 @@ invariant and preserve the time direction. For simplicity, we consider the case 
 
 $$x_i^* \sim x_i + \sum_{l \neq i} g_{il}\,\varepsilon_{il}\,x_l, \qquad u^* = u,$$
 
-where $g_{00} = -1$, $g_{11} = g_{22} = g_{33} = 1$, and $\varepsilon_{kl} = -\varepsilon_{ik}$ ($k \neq l$). Since the twelve parameters $\varepsilon_{kl}$ are connected by the relations $\varepsilon_{kl} = -\varepsilon_{lk}$, only six of them are independent, and we choose the independent parameters to be those for which $k < l$.
+where $g\_{00} = -1$, $g\_{11} = g\_{22} = g\_{33} = 1$, and $\varepsilon\_{kl} = -\varepsilon\_{ik}$ ($k \neq l$). Since the twelve parameters $\varepsilon\_{kl}$ are connected by the relations $\varepsilon\_{kl} = -\varepsilon\_{lk}$, only six of them are independent, and we choose the independent parameters to be those for which $k < l$.
 
 Corresponding to the transformations, we have
 
 $$\delta x_i = \sum_{l \neq i} g_{il}\,\varepsilon_{il}\,x_l = \sum_{l < k} \sum_{k=0}^{3} \varepsilon_{kl}(g_{il}\,\delta_{ik}\,x_l - g_{ik}\,\delta_{il}\,x_k),$$
 
-and $\bar{\delta}u = -\sum_{i=0}^{3} \frac{\partial u}{\partial x_i}\,\delta x_i$, where the pair of indices $k$, $l$ plays the same role as the single index $k$ in the general theory, and ranges over the six combinations $0, 1;\; 0, 2;\; 0, 3;\; 1, 2;\; 1, 3;\; 2, 3$.
+and $\bar{\delta}u = -\sum\_{i=0}^{3} \frac{\partial u}{\partial x\_i}\,\delta x\_i$, where the pair of indices $k$, $l$ plays the same role as the single index $k$ in the general theory, and ranges over the six combinations $0, 1;\; 0, 2;\; 0, 3;\; 1, 2;\; 1, 3;\; 2, 3$.
 
 According to the field invariant formula, the corresponding field invariants are
 
@@ -4281,11 +4281,11 @@ $$M_{ikl} = \frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial u}{\parti
 
 $$M_{ikl} = -M_{ilk} \qquad (k > l),$$
 
-i.e., $M_{ikl}$ is antisymmetric in the indices $k$ and $l$. Using the expression for the energy-momentum tensor (specialized to the case of scalar fields), we can write $M_{ikl}$ as
+i.e., $M\_{ikl}$ is antisymmetric in the indices $k$ and $l$. Using the expression for the energy-momentum tensor (specialized to the case of scalar fields), we can write $M\_{ikl}$ as
 
 $$M_{ikl} = g_{kk}\,x_k\,T_{il} - g_{ll}\,x_l\,T_{ik}.$$
 
-In terms of $M_{ikl}$, the field invariants are
+In terms of $M\_{ikl}$, the field invariants are
 
 $$\int M_{0kl}\,dx_1\,dx_2\,dx_3 \qquad (k < l),$$
 
@@ -4296,7 +4296,7 @@ a fact summarized by saying that *the angular momentum of the field is conserved
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Klein-Gordon Field)</span></p>
 
-Using the quantities $g_{ii}$, we can write the Lagrangian density corresponding to the Klein-Gordon equation in the form
+Using the quantities $g\_{ii}$, we can write the Lagrangian density corresponding to the Klein-Gordon equation in the form
 
 $$\mathscr{L} = -\frac{1}{2}\sum_{i=0}^{3} g_{ii}\!\left(\frac{\partial u}{\partial x_i}\right)^2 - \frac{1}{2}M^2 u^2.$$
 
@@ -4320,7 +4320,7 @@ $$T_{0k} = \frac{\partial u}{\partial x_0}\,\frac{\partial u}{\partial x_k} \qqu
 
 #### 38.5. The Electromagnetic Field
 
-To illustrate the methods developed above, we now derive the equations of the electromagnetic field from a suitable Lagrangian density. The electromagnetic field is described by two three-dimensional vectors, the *electric field vector* $E = (E_1, E_2, E_3)$ and the *magnetic field vector* $H = (H_1, H_2, H_3)$. In the absence of electric charges, $E$ and $H$ are related by the familiar *Maxwell equations*
+To illustrate the methods developed above, we now derive the equations of the electromagnetic field from a suitable Lagrangian density. The electromagnetic field is described by two three-dimensional vectors, the *electric field vector* $E = (E\_1, E\_2, E\_3)$ and the *magnetic field vector* $H = (H\_1, H\_2, H\_3)$. In the absence of electric charges, $E$ and $H$ are related by the familiar *Maxwell equations*
 
 $$\operatorname{curl} E = -\frac{\partial H}{\partial x_0}, \qquad \operatorname{curl} H = \frac{\partial E}{\partial x_0},$$
 
@@ -4332,27 +4332,27 @@ $$\operatorname{div} E = \frac{\partial E_1}{\partial x_1} + \frac{\partial E_2}
 
 $$\operatorname{curl} E = \left(\frac{\partial E_3}{\partial x_2} - \frac{\partial E_2}{\partial x_3},\; \frac{\partial E_1}{\partial x_3} - \frac{\partial E_3}{\partial x_1},\; \frac{\partial E_2}{\partial x_1} - \frac{\partial E_1}{\partial x_2}\right),$$
 
-and similarly for $\operatorname{div} H$, $\operatorname{curl} H$. It is convenient to express $E$ and $H$ in terms of a four-dimensional *electromagnetic potential* $\lbrace A_i \rbrace = (A_0, A_1, A_2, A_3)$, by setting
+and similarly for $\operatorname{div} H$, $\operatorname{curl} H$. It is convenient to express $E$ and $H$ in terms of a four-dimensional *electromagnetic potential* $\lbrace A\_i \rbrace = (A\_0, A\_1, A\_2, A\_3)$, by setting
 
 $$E = \operatorname{grad} A_0 - \frac{\partial A}{\partial x_0}, \qquad H = \operatorname{curl} A,$$
 
-where $A = (A_1, A_2, A_3)$ and $\operatorname{grad} A_0 = \left(\frac{\partial A_0}{\partial x_1}, \frac{\partial A_0}{\partial x_2}, \frac{\partial A_0}{\partial x_3}\right)$.
+where $A = (A\_1, A\_2, A\_3)$ and $\operatorname{grad} A\_0 = \left(\frac{\partial A\_0}{\partial x\_1}, \frac{\partial A\_0}{\partial x\_2}, \frac{\partial A\_0}{\partial x\_3}\right)$.
 
-The potential $\lbrace A_i \rbrace$ is not uniquely determined by the vectors $E$ and $H$. In fact, $E$ and $H$ do not change if we make a *gauge transformation*, i.e., if we replace $\lbrace A_i \rbrace$ by a new potential $\lbrace A_i' \rbrace$ with components $A_j'(x) = A_j(x) + \frac{\partial f(x)}{\partial x_j}$ ($j = 0, 1, 2, 3$), where $f(x)$ is an arbitrary function. To avoid this lack of uniqueness, an extra condition can be imposed on $\lbrace A_i \rbrace$. The condition usually chosen is
+The potential $\lbrace A\_i \rbrace$ is not uniquely determined by the vectors $E$ and $H$. In fact, $E$ and $H$ do not change if we make a *gauge transformation*, i.e., if we replace $\lbrace A\_i \rbrace$ by a new potential $\lbrace A\_i' \rbrace$ with components $A\_j'(x) = A\_j(x) + \frac{\partial f(x)}{\partial x\_j}$ ($j = 0, 1, 2, 3$), where $f(x)$ is an arbitrary function. To avoid this lack of uniqueness, an extra condition can be imposed on $\lbrace A\_i \rbrace$. The condition usually chosen is
 
 $$-\frac{\partial A_0}{\partial x_0} + \operatorname{div} A = \sum_{j=0}^{3} g_{jj}\,\frac{\partial A_j}{\partial x_j} = 0,$$
 
 and is known as the *Lorentz condition*.
 
-Next, we prove that the Maxwell equations reduce to a single equation determining the electromagnetic potential $\lbrace A_i \rbrace$. First, we introduce the antisymmetric tensor $H_{ij}$, whose matrix
+Next, we prove that the Maxwell equations reduce to a single equation determining the electromagnetic potential $\lbrace A\_i \rbrace$. First, we introduce the antisymmetric tensor $H\_{ij}$, whose matrix
 
 $$\begin{Vmatrix} 0 & -E_1 & -E_2 & -E_3 \\ E_1 & 0 & H_3 & -H_2 \\ E_2 & -H_3 & 0 & H_1 \\ E_3 & H_2 & -H_1 & 0 \end{Vmatrix}$$
 
-is formed from the components of $E$ and $H$. It is easily verified that the formula relating $H_{ij}$ to the potential $\lbrace A_i \rbrace$ is
+is formed from the components of $E$ and $H$. It is easily verified that the formula relating $H\_{ij}$ to the potential $\lbrace A\_i \rbrace$ is
 
 $$H_{ij} = \frac{\partial A_j}{\partial x_i} - \frac{\partial A_i}{\partial x_j}.$$
 
-In terms of $H_{ij}$, we can write the Maxwell equations in the form
+In terms of $H\_{ij}$, we can write the Maxwell equations in the form
 
 $$\sum_{i=0}^{3} g_{ii}\,\frac{\partial H_{ij}}{\partial x_i} = 0 \qquad (j = 0, 1, 2, 3),$$
 
@@ -4360,17 +4360,17 @@ $$\frac{\partial H_{ij}}{\partial x_k} + \frac{\partial H_{ki}}{\partial x_j} + 
 
 where in the second equation $i, j, k$ ranges over the cyclic combinations $0, 1, 2;\; 1, 2, 3;\; 2, 3, 0;\; 3, 0, 1$.
 
-Substituting the expression for $H_{ij}$ in terms of $\lbrace A_i \rbrace$ into these equations, and using the Lorentz condition, we find that the second equation is an identity, while the first reduces to
+Substituting the expression for $H\_{ij}$ in terms of $\lbrace A\_i \rbrace$ into these equations, and using the Lorentz condition, we find that the second equation is an identity, while the first reduces to
 
 $$\Box A_j = 0 \qquad (j = 0, 1, 2, 3),$$
 
-where $\Box$ is the D'Alembertian $\Box = -\frac{\partial^2}{\partial x_0^2} + \frac{\partial^2}{\partial x_1^2} + \frac{\partial^2}{\partial x_2^2} + \frac{\partial^2}{\partial x_3^2}$.
+where $\Box$ is the D'Alembertian $\Box = -\frac{\partial^2}{\partial x\_0^2} + \frac{\partial^2}{\partial x\_1^2} + \frac{\partial^2}{\partial x\_2^2} + \frac{\partial^2}{\partial x\_3^2}$.
 
-Finally, we show that $\Box A_j = 0$ is a consequence of the principle of stationary action, if we choose the Lagrangian density of the electromagnetic field to be
+Finally, we show that $\Box A\_j = 0$ is a consequence of the principle of stationary action, if we choose the Lagrangian density of the electromagnetic field to be
 
 $$\mathscr{L} = \frac{1}{8\pi}(E^2 - H^2).$$
 
-Replacing $E$ and $H$ by their expressions in terms of the electromagnetic potential $\lbrace A_i \rbrace$, we obtain
+Replacing $E$ and $H$ by their expressions in terms of the electromagnetic potential $\lbrace A\_i \rbrace$, we obtain
 
 $$\mathscr{L} = \frac{1}{8\pi}\!\left[\left(\operatorname{grad} A_0 - \frac{\partial A}{\partial x_0}\right)^2 - (\operatorname{curl} A)^2\right].$$
 
@@ -4378,31 +4378,31 @@ We verify that the Euler equations
 
 $$\frac{\partial \mathscr{L}}{\partial A_j} - \sum_{i=0}^{3} \frac{\partial}{\partial x_i}\frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial A_j}{\partial x_i}\right)} = 0 \qquad (j = 0, 1, 2, 3)$$
 
-corresponding to this Lagrangian density can be reduced to $\Box A_j = 0$. For example, for $j = 0$ the Euler equation becomes
+corresponding to this Lagrangian density can be reduced to $\Box A\_j = 0$. For example, for $j = 0$ the Euler equation becomes
 
 $$\frac{\partial \mathscr{L}}{\partial A_0} - \sum_{i=0}^{3}\frac{\partial}{\partial x_i}\frac{\partial \mathscr{L}}{\partial\!\left(\frac{\partial A_0}{\partial x_i}\right)} = -\frac{1}{4\pi}\!\left[\frac{\partial^2 A_0}{\partial x_1^2} + \frac{\partial^2 A_0}{\partial x_2^2} + \frac{\partial^2 A_0}{\partial x_3^2} - \frac{\partial}{\partial x_0}\!\left(\frac{\partial A_1}{\partial x_1} + \frac{\partial A_2}{\partial x_2} + \frac{\partial A_3}{\partial x_3}\right)\right] = 0.$$
 
-According to the Lorentz condition, $\frac{\partial A_1}{\partial x_1} + \frac{\partial A_2}{\partial x_2} + \frac{\partial A_3}{\partial x_3} = \frac{\partial A_0}{\partial x_0}$, and hence the expression reduces to
+According to the Lorentz condition, $\frac{\partial A\_1}{\partial x\_1} + \frac{\partial A\_2}{\partial x\_2} + \frac{\partial A\_3}{\partial x\_3} = \frac{\partial A\_0}{\partial x\_0}$, and hence the expression reduces to
 
 $$-\frac{\partial^2 A_0}{\partial x_0^2} + \frac{\partial^2 A_0}{\partial x_1^2} + \frac{\partial^2 A_0}{\partial x_2^2} + \frac{\partial^2 A_0}{\partial x_3^2} = \Box A_0 = 0,$$
 
-which is just $\Box A_j = 0$ for $j = 0$. The calculations for $A_1$, $A_2$, $A_3$ are completely analogous.
+which is just $\Box A\_j = 0$ for $j = 0$. The calculations for $A\_1$, $A\_2$, $A\_3$ are completely analogous.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Lorentz Condition)</span></p>
 
-In deriving $\Box A_j = 0$ from the Lagrangian density, we made use of the Lorentz condition. Instead, we could have introduced an additional term into the Lagrangian density by writing
+In deriving $\Box A\_j = 0$ from the Lagrangian density, we made use of the Lorentz condition. Instead, we could have introduced an additional term into the Lagrangian density by writing
 
 $$\mathscr{L} = \frac{1}{8\pi}\!\left\lbrace\left(\operatorname{grad} A_0 - \frac{\partial A}{\partial x_0}\right)^2 - (\operatorname{curl} A)^2 - \left(\operatorname{div} A - \frac{\partial A_0}{\partial x_0}\right)^2\right\rbrace,$$
 
-which reduces to the previous expression if the Lorentz condition is satisfied. The Euler equations corresponding to this modified Lagrangian density reduce to $\Box A_j = 0$ for *arbitrary* $\lbrace A_i \rbrace$.
+which reduces to the previous expression if the Lorentz condition is satisfied. The Euler equations corresponding to this modified Lagrangian density reduce to $\Box A\_j = 0$ for *arbitrary* $\lbrace A\_i \rbrace$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span><span class="math-callout__name">(Symmetries of the Electromagnetic Field)</span></p>
 
-The Lagrangian density of the electromagnetic field, and hence its action functional, is invariant under parallel displacements, Lorentz transformations, and gauge transformations. According to Sec. 38.3, the invariance under parallel displacements implies conservation of energy and momentum of the field, while according to Sec. 38.4, the invariance under Lorentz transformations implies conservation of angular momentum of the field. Moreover, according to Remark 4 of Sec. 37.5, the invariance under gauge transformations (which depend on one arbitrary function) implies the existence of a relation between the left-hand sides of the corresponding Euler equations $\Box A_j = 0$. Therefore, these equations do not uniquely determine the electromagnetic potential $\lbrace A_i \rbrace$. In fact, to determine $\lbrace A_i \rbrace$ uniquely, we need an extra equation, which is usually chosen to be the Lorentz condition.
+The Lagrangian density of the electromagnetic field, and hence its action functional, is invariant under parallel displacements, Lorentz transformations, and gauge transformations. According to Sec. 38.3, the invariance under parallel displacements implies conservation of energy and momentum of the field, while according to Sec. 38.4, the invariance under Lorentz transformations implies conservation of angular momentum of the field. Moreover, according to Remark 4 of Sec. 37.5, the invariance under gauge transformations (which depend on one arbitrary function) implies the existence of a relation between the left-hand sides of the corresponding Euler equations $\Box A\_j = 0$. Therefore, these equations do not uniquely determine the electromagnetic potential $\lbrace A\_i \rbrace$. In fact, to determine $\lbrace A\_i \rbrace$ uniquely, we need an extra equation, which is usually chosen to be the Lorentz condition.
 
 </div>
 
@@ -4418,18 +4418,18 @@ The direct methods considered here all rest on a single general idea. Consider t
 
 $$\inf_y J[y] = \mu > -\infty,$$
 
-where the greatest lower bound is taken over all admissible $y$. By the definition of $\mu$, we can find an infinite sequence of functions $y_1, y_2, \ldots$ such that
+where the greatest lower bound is taken over all admissible $y$. By the definition of $\mu$, we can find an infinite sequence of functions $y\_1, y\_2, \ldots$ such that
 
 $$\lim_{n \to \infty} J[y_n] = \mu.$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Minimizing Sequence)</span></p>
 
-A sequence of admissible functions $\lbrace y_n \rbrace$ is called a **minimizing sequence** for the functional $J[y]$ if $\lim_{n \to \infty} J[y_n] = \mu$, where $\mu = \inf_y J[y]$.
+A sequence of admissible functions $\lbrace y\_n \rbrace$ is called a **minimizing sequence** for the functional $J[y]$ if $\lim\_{n \to \infty} J[y\_n] = \mu$, where $\mu = \inf\_y J[y]$.
 
 </div>
 
-If the minimizing sequence $\lbrace y_n \rbrace$ converges to a limit function $\hat{y}$, and if interchanging the functional and the limit is justified, then
+If the minimizing sequence $\lbrace y\_n \rbrace$ converges to a limit function $\hat{y}$, and if interchanging the functional and the limit is justified, then
 
 $$J[\hat{y}] = \lim_{n \to \infty} J[y_n] = \mu,$$
 
@@ -4437,8 +4437,8 @@ and $\hat{y}$ solves the variational problem. The functions of the minimizing se
 
 Thus, solving a variational problem by the direct method requires three steps:
 
-1. Construct a minimizing sequence $\lbrace y_n \rbrace$.
-2. Show that $\lbrace y_n \rbrace$ has a limit function $\hat{y}$.
+1. Construct a minimizing sequence $\lbrace y\_n \rbrace$.
+2. Show that $\lbrace y\_n \rbrace$ has a limit function $\hat{y}$.
 3. Justify passing the functional through the limit.
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -4459,7 +4459,7 @@ Since $J[y]$ is always nonnegative, $\inf J[y] = 0$. The sequence
 
 $$y_n(x) = \frac{\tan^{-1}(nx)}{\tan^{-1}(n)} \qquad (n = 1, 2, \ldots)$$
 
-is a minimizing sequence with $J[y_n] \to 0$. However, this sequence has no limit in the class of continuous functions satisfying the boundary conditions.
+is a minimizing sequence with $J[y\_n] \to 0$. However, this sequence has no limit in the class of continuous functions satisfying the boundary conditions.
 
 </div>
 
@@ -4468,13 +4468,13 @@ Even when a minimizing sequence does converge in the $\mathscr{C}$-norm (i.e., u
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lower Semicontinuity and Minimizing Sequences)</span></p>
 
-If $\lbrace y_n \rbrace$ is a minimizing sequence of the functional $J[y]$ with limit function $\hat{y}$, and if $J[y]$ is lower semicontinuous at $\hat{y}$, then
+If $\lbrace y\_n \rbrace$ is a minimizing sequence of the functional $J[y]$ with limit function $\hat{y}$, and if $J[y]$ is lower semicontinuous at $\hat{y}$, then
 
 $$J[\hat{y}] = \lim_{n \to \infty} J[y_n].$$
 
 </div>
 
-*Sketch of proof.* On one hand, $J[\hat{y}] \geqslant \lim_{n\to\infty} J[y_n] = \inf J[y]$, since $\hat{y}$ is admissible. On the other hand, for every $\varepsilon > 0$ and $n$ large enough, lower semicontinuity gives $J[y_n] - J[\hat{y}] > -\varepsilon$, so letting $n \to \infty$ yields $J[\hat{y}] \leqslant \lim_{n\to\infty} J[y_n]$. Combining both inequalities gives equality.
+*Sketch of proof.* On one hand, $J[\hat{y}] \geqslant \lim\_{n\to\infty} J[y\_n] = \inf J[y]$, since $\hat{y}$ is admissible. On the other hand, for every $\varepsilon > 0$ and $n$ large enough, lower semicontinuity gives $J[y\_n] - J[\hat{y}] > -\varepsilon$, so letting $n \to \infty$ yields $J[\hat{y}] \leqslant \lim\_{n\to\infty} J[y\_n]$. Combining both inequalities gives equality.
 
 ### 40. The Ritz Method and the Method of Finite Differences
 
@@ -4484,15 +4484,15 @@ The Ritz method is one of the most widely used direct variational methods. Suppo
 
 $$\varphi_1, \quad \varphi_2, \quad \ldots$$
 
-in $\mathscr{M}$, and let $\mathscr{M}_n$ be the $n$-dimensional subspace spanned by the first $n$ of these functions, consisting of all linear combinations
+in $\mathscr{M}$, and let $\mathscr{M}\_n$ be the $n$-dimensional subspace spanned by the first $n$ of these functions, consisting of all linear combinations
 
 $$\alpha_1 \varphi_1 + \cdots + \alpha_n \varphi_n.$$
 
-Restricting $J[y]$ to $\mathscr{M}_n$ turns it into an ordinary function of $n$ real variables:
+Restricting $J[y]$ to $\mathscr{M}\_n$ turns it into an ordinary function of $n$ real variables:
 
 $$J[\alpha_1 \varphi_1 + \cdots + \alpha_n \varphi_n],$$
 
-which we minimize over $\alpha_1, \ldots, \alpha_n$. Denote the minimum value on $\mathscr{M}_n$ by $\mu_n$ and the minimizing element by $y_n$. Since $\mathscr{M}_n \subset \mathscr{M}_{n+1}$, the minima form a non-increasing sequence:
+which we minimize over $\alpha\_1, \ldots, \alpha\_n$. Denote the minimum value on $\mathscr{M}\_n$ by $\mu\_n$ and the minimizing element by $y\_n$. Since $\mathscr{M}\_n \subset \mathscr{M}\_{n+1}$, the minima form a non-increasing sequence:
 
 $$\mu_1 \geqslant \mu_2 \geqslant \cdots$$
 
@@ -4501,41 +4501,41 @@ The key question is whether this procedure actually produces a minimizing sequen
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Complete Sequence)</span></p>
 
-The sequence $\lbrace \varphi_n \rbrace$ is said to be **complete** in $\mathscr{M}$ if, given any $y \in \mathscr{M}$ and any $\varepsilon > 0$, there exists a linear combination $\eta_n = \alpha_1 \varphi_1 + \cdots + \alpha_n \varphi_n$ (for some $n$ depending on $\varepsilon$) such that $\lVert \eta_n - y \rVert < \varepsilon$.
+The sequence $\lbrace \varphi\_n \rbrace$ is said to be **complete** in $\mathscr{M}$ if, given any $y \in \mathscr{M}$ and any $\varepsilon > 0$, there exists a linear combination $\eta\_n = \alpha\_1 \varphi\_1 + \cdots + \alpha\_n \varphi\_n$ (for some $n$ depending on $\varepsilon$) such that $\lVert \eta\_n - y \rVert < \varepsilon$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Convergence of the Ritz Method)</span></p>
 
-If the functional $J[y]$ is continuous (in the norm of $\mathscr{M}$) and the sequence $\lbrace \varphi_n \rbrace$ is complete, then $\lim_{n \to \infty} \mu_n = \mu$, where $\mu = \inf_y J[y]$.
+If the functional $J[y]$ is continuous (in the norm of $\mathscr{M}$) and the sequence $\lbrace \varphi\_n \rbrace$ is complete, then $\lim\_{n \to \infty} \mu\_n = \mu$, where $\mu = \inf\_y J[y]$.
 
 </div>
 
-*Sketch of proof.* Given $\varepsilon > 0$, pick $y^*$ with $J[y^*] < \mu + \varepsilon$. By continuity, $\lvert J[y] - J[y^*] \rvert < \varepsilon$ whenever $\lVert y - y^* \rVert < \delta$. By completeness, there exists a linear combination $\eta_n$ in $\mathscr{M}_n$ with $\lVert \eta_n - y^* \rVert < \delta$. Then
+*Sketch of proof.* Given $\varepsilon > 0$, pick $y^\ast$ with $J[y^\ast] < \mu + \varepsilon$. By continuity, $\lvert J[y] - J[y^\ast] \rvert < \varepsilon$ whenever $\lVert y - y^\ast \rVert < \delta$. By completeness, there exists a linear combination $\eta\_n$ in $\mathscr{M}\_n$ with $\lVert \eta\_n - y^\ast \rVert < \delta$. Then
 
 $$\mu \leqslant J[y_n] \leqslant J[\eta_n] < \mu + 2\varepsilon.$$
 
-Since $\varepsilon$ is arbitrary, $\mu_n \to \mu$.
+Since $\varepsilon$ is arbitrary, $\mu\_n \to \mu$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Geometric Interpretation)</span></p>
 
-If $\lbrace \varphi_n \rbrace$ is complete, every element of the infinite-dimensional space $\mathscr{M}$ can be approximated arbitrarily closely by elements of the finite-dimensional subspaces $\mathscr{M}_n$, i.e., $\lim_{n \to \infty} \mathscr{M}_n = \mathscr{M}$.
+If $\lbrace \varphi\_n \rbrace$ is complete, every element of the infinite-dimensional space $\mathscr{M}$ can be approximated arbitrarily closely by elements of the finite-dimensional subspaces $\mathscr{M}\_n$, i.e., $\lim\_{n \to \infty} \mathscr{M}\_n = \mathscr{M}$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2</span><span class="math-callout__name">(Rate of Convergence)</span></p>
 
-The speed of convergence of the Ritz method depends on the problem and on the choice of the basis functions $\varphi_n$. In many cases, a very small number of basis functions already gives a remarkably good approximation.
+The speed of convergence of the Ritz method depends on the problem and on the choice of the basis functions $\varphi\_n$. In many cases, a very small number of basis functions already gives a remarkably good approximation.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 3</span><span class="math-callout__name">(Generalized Setting)</span></p>
 
-The spaces $\mathscr{M}$ and $\mathscr{M}_n$ need not themselves be normed linear spaces — it suffices that the admissible functions belong to a normed linear space $\mathscr{R}$. For example, one may impose boundary conditions $y(a) = A$, $y(b) = B$ or subsidiary integral conditions such as $\int_a^b y^2\,dx = 1$, with appropriate modifications to the Ritz procedure.
+The spaces $\mathscr{M}$ and $\mathscr{M}\_n$ need not themselves be normed linear spaces — it suffices that the admissible functions belong to a normed linear space $\mathscr{R}$. For example, one may impose boundary conditions $y(a) = A$, $y(b) = B$ or subsidiary integral conditions such as $\int\_a^b y^2\,dx = 1$, with appropriate modifications to the Ritz procedure.
 
 </div>
 
@@ -4549,11 +4549,11 @@ we subdivide $[a, b]$ into $n + 1$ equal parts by introducing nodes
 
 $$x_0 = a,\quad x_1, \ldots, x_n,\quad x_{n+1} = b, \qquad x_{i+1} - x_i = \Delta x,$$
 
-and replace the unknown function $y(x)$ by a polygonal line through the vertices $(x_0, y_0), (x_1, y_1), \ldots, (x_{n+1}, y_{n+1})$, where $y_i = y(x_i)$, and $y_0 = A$, $y_{n+1} = B$ are fixed. The functional is then approximated by the sum
+and replace the unknown function $y(x)$ by a polygonal line through the vertices $(x\_0, y\_0), (x\_1, y\_1), \ldots, (x\_{n+1}, y\_{n+1})$, where $y\_i = y(x\_i)$, and $y\_0 = A$, $y\_{n+1} = B$ are fixed. The functional is then approximated by the sum
 
 $$J(y_1, \ldots, y_n) = \sum_{i=0}^{n} F\!\left(x_i,\; y_i,\; \frac{y_{i+1} - y_i}{\Delta x}\right) \Delta x,$$
 
-which is an ordinary function of the $n$ free variables $y_1, \ldots, y_n$. Minimizing this function for each $n$ yields a sequence of polygonal approximations to the solution of the original variational problem.
+which is an ordinary function of the $n$ free variables $y\_1, \ldots, y\_n$. Minimizing this function for each $n$ yields a sequence of polygonal approximations to the solution of the original variational problem.
 
 ### 41. The Sturm–Liouville Problem
 
@@ -4574,7 +4574,7 @@ The proof is carried out in stages using the Ritz method. The central observatio
 
 $$J[y] = \int_a^b (Py'^2 + Qy^2)\,dx$$
 
-subject to $y(a) = 0$, $y(b) = 0$ and the normalization $\int_a^b y^2\,dx = 1$ is precisely the Sturm–Liouville equation $\text{(SL)}$, and the extremal value of $J$ equals the corresponding eigenvalue $\lambda$.
+subject to $y(a) = 0$, $y(b) = 0$ and the normalization $\int\_a^b y^2\,dx = 1$ is precisely the Sturm–Liouville equation $\text{(SL)}$, and the extremal value of $J$ equals the corresponding eigenvalue $\lambda$.
 
 #### 41.1. Setting Up the Ritz Approximation
 
@@ -4582,11 +4582,11 @@ Since $P(x) > 0$, the functional $J[y]$ is bounded from below. For simplicity, t
 
 $$y(x) = \sum_{k=1}^{n} \alpha_k \sin kx$$
 
-satisfies the normalization constraint $\int_0^\pi y^2\,dx = 1$ if and only if $\frac{\pi}{2}\sum_{k=1}^{n} \alpha_k^2 = 1$, so the coefficients lie on an $n$-dimensional sphere $\sigma_n$. On $\sigma_n$, the functional becomes
+satisfies the normalization constraint $\int\_0^\pi y^2\,dx = 1$ if and only if $\frac{\pi}{2}\sum\_{k=1}^{n} \alpha\_k^2 = 1$, so the coefficients lie on an $n$-dimensional sphere $\sigma\_n$. On $\sigma\_n$, the functional becomes
 
 $$J_n(\alpha_1, \ldots, \alpha_n) = \int_0^\pi \!\left[P(x)\!\left(\sum_{k=1}^{n} \alpha_k \cos kx \cdot k\right)^{\!2} + Q(x)\!\left(\sum_{k=1}^{n} \alpha_k \sin kx\right)^{\!2}\right] dx,$$
 
-a quadratic form in $\alpha_1, \ldots, \alpha_n$, which attains a minimum $\lambda_n^{(1)}$ on the compact set $\sigma_n$. Since $\sigma_n \subset \sigma_{n+1}$ (by setting $\alpha_{n+1} = 0$), the minima form a non-increasing sequence
+a quadratic form in $\alpha\_1, \ldots, \alpha\_n$, which attains a minimum $\lambda\_n^{(1)}$ on the compact set $\sigma\_n$. Since $\sigma\_n \subset \sigma\_{n+1}$ (by setting $\alpha\_{n+1} = 0$), the minima form a non-increasing sequence
 
 $$\lambda_{n+1}^{(1)} \leqslant \lambda_n^{(1)},$$
 
@@ -4601,17 +4601,17 @@ exists and is finite.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1</span><span class="math-callout__name">(Uniform Convergence of a Subsequence)</span></p>
 
-The sequence of Ritz minimizers $\lbrace y_n^{(1)}(x) \rbrace$ contains a uniformly convergent subsequence.
+The sequence of Ritz minimizers $\lbrace y\_n^{(1)}(x) \rbrace$ contains a uniformly convergent subsequence.
 
 </div>
 
-*Sketch of proof.* From the boundedness of $J[y_n]$ and the positivity of $P$, one obtains uniform bounds on both $\int y_n'^2\,dx$ and $\int y_n^2\,dx$. By Schwarz's inequality and the boundary condition $y_n(0) = 0$, the sequence $\lbrace y_n \rbrace$ is uniformly bounded. A second application of Schwarz's inequality shows equicontinuity:
+*Sketch of proof.* From the boundedness of $J[y\_n]$ and the positivity of $P$, one obtains uniform bounds on both $\int y\_n'^2\,dx$ and $\int y\_n^2\,dx$. By Schwarz's inequality and the boundary condition $y\_n(0) = 0$, the sequence $\lbrace y\_n \rbrace$ is uniformly bounded. A second application of Schwarz's inequality shows equicontinuity:
 
 $$\lvert y_n(x_2) - y_n(x_1) \rvert^2 \leqslant M_2 \lvert x_2 - x_1 \rvert.$$
 
 By the Arzelà–Ascoli theorem, a uniformly convergent subsequence exists.
 
-We set $y^{(1)}(x) = \lim_{m \to \infty} y_{n_m}(x)$, where $\lbrace y_{n_m} \rbrace$ is the convergent subsequence.
+We set $y^{(1)}(x) = \lim\_{m \to \infty} y\_{n\_m}(x)$, where $\lbrace y\_{n\_m} \rbrace$ is the convergent subsequence.
 
 #### 41.3. The Limit Function Solves the Sturm–Liouville Equation
 
@@ -4622,15 +4622,15 @@ Let $y(x)$ be continuous on $[0, \pi]$ and suppose
 
 $$\int_0^\pi [-(Ph')' + Q_1 h]\,y\,dx = 0$$
 
-for every $h(x) \in \mathscr{D}_2(0, \pi)$ with $h(0) = h(\pi) = 0$ and $h'(0) = h'(\pi) = 0$. Then $y \in \mathscr{D}_2(0, \pi)$ and $-(Py')' + Q_1 y = 0$.
+for every $h(x) \in \mathscr{D}\_2(0, \pi)$ with $h(0) = h(\pi) = 0$ and $h'(0) = h'(\pi) = 0$. Then $y \in \mathscr{D}\_2(0, \pi)$ and $-(Py')' + Q\_1 y = 0$.
 
 </div>
 
-Using this lemma, one shows that the limit function $y^{(1)}$ belongs to $\mathscr{D}_2(0, \pi)$ and satisfies the Sturm–Liouville equation with $\lambda = \lambda^{(1)}$:
+Using this lemma, one shows that the limit function $y^{(1)}$ belongs to $\mathscr{D}\_2(0, \pi)$ and satisfies the Sturm–Liouville equation with $\lambda = \lambda^{(1)}$:
 
 $$-(Py^{(1)})' + Qy^{(1)} = \lambda^{(1)} y^{(1)}.$$
 
-The proof proceeds by showing that the Ritz optimality conditions for each finite-dimensional approximation pass to the limit. In particular, convergence in the mean of $y_n \to y^{(1)}$, $y_n' \to (y^{(1)})'$, and $y_n'' \to (y^{(1)})''$ is established, which allows the integral identity to transfer to the limit function.
+The proof proceeds by showing that the Ritz optimality conditions for each finite-dimensional approximation pass to the limit. In particular, convergence in the mean of $y\_n \to y^{(1)}$, $y\_n' \to (y^{(1)})'$, and $y\_n'' \to (y^{(1)})''$ is established, which allows the integral identity to transfer to the limit function.
 
 #### 41.4. Higher Eigenvalues and Eigenfunctions
 
@@ -4642,7 +4642,7 @@ subject to the same boundary and normalization conditions as before, plus the ad
 
 $$\int_0^\pi y^{(1)}(x)\,y(x)\,dx = 0.$$
 
-In the Ritz framework with basis $\lbrace \sin kx \rbrace$, this orthogonality constraint cuts the sphere $\sigma_n$ down to a lower-dimensional sphere $\hat{\sigma}_{n-1}$. The minimum $\lambda_n^{(2)}$ on $\hat{\sigma}_{n-1}$ satisfies $\lambda_{n+1}^{(2)} \leqslant \lambda_n^{(2)}$ (non-increasing in $n$), and the limit
+In the Ritz framework with basis $\lbrace \sin kx \rbrace$, this orthogonality constraint cuts the sphere $\sigma\_n$ down to a lower-dimensional sphere $\hat{\sigma}\_{n-1}$. The minimum $\lambda\_n^{(2)}$ on $\hat{\sigma}\_{n-1}$ satisfies $\lambda\_{n+1}^{(2)} \leqslant \lambda\_n^{(2)}$ (non-increasing in $n$), and the limit
 
 $$\lambda^{(2)} = \lim_{n \to \infty} \lambda_n^{(2)}$$
 
@@ -4665,29 +4665,29 @@ This construction is essentially a mathematical formulation of *Huygens' princip
 
 ### I.1. Statement of the Problem
 
-Let the medium fill an $n$-dimensional Euclidean space $\mathscr{X}$, so that every point $x \in \mathscr{X}$ is specified by $n$ real numbers $x^1, \ldots, x^n$. Fix a point $x_0 \in \mathscr{X}$ and consider all smooth curves
+Let the medium fill an $n$-dimensional Euclidean space $\mathscr{X}$, so that every point $x \in \mathscr{X}$ is specified by $n$ real numbers $x^1, \ldots, x^n$. Fix a point $x\_0 \in \mathscr{X}$ and consider all smooth curves
 
 $$x = x(s)$$
 
-passing through $x_0$. The set of vectors tangent to such a curve at $x_0$, i.e., the set of vectors
+passing through $x\_0$. The set of vectors tangent to such a curve at $x\_0$, i.e., the set of vectors
 
 $$x' = \frac{dx}{ds},$$
 
-forms the *tangent space* $\mathscr{T}(x_0)$.
+forms the *tangent space* $\mathscr{T}(x\_0)$.
 
 Since the medium is inhomogeneous and anisotropic, the velocity of propagation depends on both position and direction. Let $f(x, x')$ denote the reciprocal of the velocity. Then if $x(s)$ and $x(s + ds)$ are two neighboring points on a curve $x = x(s)$, the time $dt$ for the disturbance to travel between them is
 
 $$dt = f\!\left(x, \frac{dx}{ds}\right) ds,$$
 
-and the total propagation time along an infinite path joining $x_0 = x(s_0)$ and $x_1 = x(s_1)$ is
+and the total propagation time along an infinite path joining $x\_0 = x(s\_0)$ and $x\_1 = x(s\_1)$ is
 
 $$\int_{s_0}^{s_1} f\!\left(x, \frac{dx}{ds}\right) ds.$$
 
-Because only the fastest path matters (excited points are "on or off"), the propagation time from $x_0$ to $x_1$ is
+Because only the fastest path matters (excited points are "on or off"), the propagation time from $x\_0$ to $x\_1$ is
 
 $$\tau = \min \int_{s_0}^{s_1} f\!\left(x, \frac{dx}{ds}\right) ds,$$
 
-where the minimum is taken over all curves $x = x(s)$ joining $x_0$ and $x_1$. Thus, disturbances in the medium obey the *Fermat principle*: among all paths joining $x_0$ and $x_1$, the disturbance always propagates along the path which it traverses in the least time. Such paths are called the *trajectories* of the disturbance.
+where the minimum is taken over all curves $x = x(s)$ joining $x\_0$ and $x\_1$. Thus, disturbances in the medium obey the *Fermat principle*: among all paths joining $x\_0$ and $x\_1$, the disturbance always propagates along the path which it traverses in the least time. Such paths are called the *trajectories* of the disturbance.
 
 ### I.2. Properties of the Function $f(x, x')$
 
@@ -4707,7 +4707,7 @@ $$f(x, x' + \bar{x}') = f(x, x') + f(x, \bar{x}'),$$
 
    whenever $\bar{x}' = \lambda x'$ with $\lambda > 0$.
 
-3. The time to traverse a curve $\gamma$ from $x_0$ to $x_1$ equals the time to traverse $\gamma$ in the opposite direction from $x_1$ to $x_0$:
+3. The time to traverse a curve $\gamma$ from $x\_0$ to $x\_1$ equals the time to traverse $\gamma$ in the opposite direction from $x\_1$ to $x\_0$:
 
 $$f(x, -x') = f(x, x').$$
 
@@ -4740,7 +4740,7 @@ $$f(x, dx) = dt.$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Conjugate Space)</span></p>
 
-Let $\varphi[x']$ be a linear functional on $\mathscr{T}(x)$. Then there is a unique vector $p = (p_1, \ldots, p_n)$ such that
+Let $\varphi[x']$ be a linear functional on $\mathscr{T}(x)$. Then there is a unique vector $p = (p\_1, \ldots, p\_n)$ such that
 
 $$\varphi[x'] = (p, x') = \sum_{i=1}^n p_i x^{i'}.$$
 
@@ -4760,28 +4760,28 @@ The transition from $f(x, x')$ to $H(x, p)$ via this formula is precisely the pa
 
 ### I.5. The Propagation Process
 
-Suppose the wave front at time $t$ is the surface $\sigma_t$ with equation
+Suppose the wave front at time $t$ is the surface $\sigma\_t$ with equation
 
 $$S(x, t) = 0.$$
 
-Each point of $\sigma_t$ serves as a source of new disturbances, which during time $dt$ excite the region bounded by the sphere
+Each point of $\sigma\_t$ serves as a source of new disturbances, which during time $dt$ excite the region bounded by the sphere
 
 $$f(x, dx) = dt.$$
 
-Since $f(x, x')$ is differentiable and strictly convex, there is a unique hyperplane tangent to each point of the sphere, and this hyperplane has only one point in common with the sphere. Constructing a family of spheres, one for each $x \in \sigma_t$, the wave front $\sigma_{t+dt}$ at time $t + dt$ has the equation
+Since $f(x, x')$ is differentiable and strictly convex, there is a unique hyperplane tangent to each point of the sphere, and this hyperplane has only one point in common with the sphere. Constructing a family of spheres, one for each $x \in \sigma\_t$, the wave front $\sigma\_{t+dt}$ at time $t + dt$ has the equation
 
 $$S(x, t + dt) = 0$$
 
-and is the *envelope* $E$ of this family of spheres — the interface separating points reachable from $\sigma_t$ in times $\leqslant dt$ from those reachable only in times $> dt$.
+and is the *envelope* $E$ of this family of spheres — the interface separating points reachable from $\sigma\_t$ in times $\leqslant dt$ from those reachable only in times $> dt$.
 
 Two important implications follow:
 
-1. Given $x \in \sigma_t$, there is a unique point $x + dx \in \sigma_{t+dt}$ excited after time $dt$ by a disturbance at $x$, namely the point lying on the unique hyperplane tangent to both $\sigma_{t+dt}$ and the sphere. Thus there is a unique *direction of propagation* at each $x \in \sigma_t$.
-2. Conversely, given $x + dx \in \sigma_{t+dt}$, there is a unique point $x \in \sigma_t$ that was the source at time $t$.
+1. Given $x \in \sigma\_t$, there is a unique point $x + dx \in \sigma\_{t+dt}$ excited after time $dt$ by a disturbance at $x$, namely the point lying on the unique hyperplane tangent to both $\sigma\_{t+dt}$ and the sphere. Thus there is a unique *direction of propagation* at each $x \in \sigma\_t$.
+2. Conversely, given $x + dx \in \sigma\_{t+dt}$, there is a unique point $x \in \sigma\_t$ that was the source at time $t$.
 
 ### I.6. The Hamilton–Jacobi Equation
 
-Every hyperplane in the tangent space $\mathscr{T}(x)$ can be written as $\sum p_i x^{i'} = \text{const}$ for some $p \in \widetilde{\mathscr{T}}(x)$. Let $x + dx$ be the point on $\sigma_{t+dt}$ whose "source" is $x \in \sigma_t$. The hyperplane in $\mathscr{T}(x)$ tangent to $\sigma_{t+dt}$ at $x + dx$ has the equation
+Every hyperplane in the tangent space $\mathscr{T}(x)$ can be written as $\sum p\_i x^{i'} = \text{const}$ for some $p \in \widetilde{\mathscr{T}}(x)$. Let $x + dx$ be the point on $\sigma\_{t+dt}$ whose "source" is $x \in \sigma\_t$. The hyperplane in $\mathscr{T}(x)$ tangent to $\sigma\_{t+dt}$ at $x + dx$ has the equation
 
 $$\sum_{i=1}^n \frac{\partial S}{\partial x^i}\,dx^i = c,$$
 
@@ -4807,11 +4807,11 @@ The general solution of the Hamilton–Jacobi equation describes how the wave fr
 
 $$S(x, t) = 0,$$
 
-where $t$ is the parameter, every point $x_0$ on some initial surface generates a trajectory, and the one-parameter family determines an $(n - 1)$-parameter family of trajectories, one through each point of $\mathscr{X}$. More generally, let
+where $t$ is the parameter, every point $x\_0$ on some initial surface generates a trajectory, and the one-parameter family determines an $(n - 1)$-parameter family of trajectories, one through each point of $\mathscr{X}$. More generally, let
 
 $$S(x, t, \alpha_1, \ldots, \alpha_n)$$
 
-be a *complete integral* of the Hamilton–Jacobi equation depending on $n$ parameters $\alpha_1, \ldots, \alpha_n$. This determines an $(n + 1)$-parameter family of surfaces
+be a *complete integral* of the Hamilton–Jacobi equation depending on $n$ parameters $\alpha\_1, \ldots, \alpha\_n$. This determines an $(n + 1)$-parameter family of surfaces
 
 $$S(x, t, \alpha_1, \ldots, \alpha_n) = 0,$$
 
@@ -4835,7 +4835,7 @@ regarded as a function of $p$, achieves its maximum when $p$ is the vector deter
 
 $$\frac{dx^i}{dt} = \frac{\partial H(x, p)}{\partial p_i} \qquad (i = 1, \ldots, n).$$
 
-This gives $n$ first-order equations. To find the remaining $n$ equations for $p_1, \ldots, p_n$, note that along each trajectory $p_i(t) = \partial S / \partial x^i$, and hence
+This gives $n$ first-order equations. To find the remaining $n$ equations for $p\_1, \ldots, p\_n$, note that along each trajectory $p\_i(t) = \partial S / \partial x^i$, and hence
 
 $$\frac{dp_i}{dt} = \frac{d}{dt}\frac{\partial S}{\partial x^i} = \frac{\partial}{\partial t}\frac{\partial S}{\partial x^i} + \sum_{k=1}^n \frac{\partial^2 S}{\partial x^k \partial x^i}\frac{dx^k}{dt}.$$
 
@@ -4871,11 +4871,11 @@ where $u = (u^1, \ldots, u^k) \in \Omega$ is the *control vector*, belonging to 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control Function, Control Process, Trajectory)</span></p>
 
-A *control function* is a vector function $u(t)$ with values in $\Omega$, defined for $t_0 \leqslant t \leqslant t_1$. Substituting $u = u(t)$ into the system gives
+A *control function* is a vector function $u(t)$ with values in $\Omega$, defined for $t\_0 \leqslant t \leqslant t\_1$. Substituting $u = u(t)$ into the system gives
 
 $$\frac{dx^i}{dt} = f^i[x^1, \ldots, x^n, u^1(t), \ldots, u^k(t)] \qquad (i = 1, \ldots, n).$$
 
-For every initial value $x_0 = x(t_0)$, this system has a definite solution called a *trajectory*. The aggregate
+For every initial value $x\_0 = x(t\_0)$, this system has a definite solution called a *trajectory*. The aggregate
 
 $$U = \lbrace u(t),\, t_0,\, t_1,\, x_0 \rbrace$$
 
@@ -4894,21 +4894,21 @@ be a function defined, together with its partial derivatives $\partial f^0 / \pa
 
 $$J[U] = \int_{t_0}^{t_1} f^0(x, u)\,dt.$$
 
-The control process $U$ (with corresponding trajectory carrying $x_0$ into $x_1$) is said to be *optimal* if
+The control process $U$ (with corresponding trajectory carrying $x\_0$ into $x\_1$) is said to be *optimal* if
 
 $$J[U] \leqslant J[U^*]$$
 
-for any other control process $U^*$ carrying $x_0$ into $x_1$. The corresponding trajectory is called the *optimal trajectory*.
+for any other control process $U^\ast$ carrying $x\_0$ into $x\_1$. The corresponding trajectory is called the *optimal trajectory*.
 
 </div>
 
 The components $u^1(t), \ldots, u^k(t)$ of any admissible control process take values in $\Omega$, are bounded, and are piecewise continuous (with left- and right-hand limits at every point of discontinuity).
 
-An important special case is the *time-optimal problem*, where $J[U] = \int_{t_0}^{t_1} dt = t_1 - t_0$, and optimality means reaching $x_1$ from $x_0$ in the least time.
+An important special case is the *time-optimal problem*, where $J[U] = \int\_{t\_0}^{t\_1} dt = t\_1 - t\_0$, and optimality means reaching $x\_1$ from $x\_0$ in the least time.
 
 ### II.2. Relation to the Calculus of Variations
 
-The integral $\int_{t_0}^{t_1} f^0(x, u)\,dt$ can be viewed as a functional depending on the $n + k$ functions $x^1, \ldots, x^n, u^1, \ldots, u^k$, i.e., a functional defined on some class of curves in $n + k + 1$ dimensions. Since the $x^i$ and $u^\alpha$ are connected by the equations of motion, this is a problem of finding a minimum subject to *nonholonomic constraints* (see p. 48). The boundary conditions require the optimal trajectory $x(t)$ to pass through the fixed endpoints $x_0$ and $x_1$, which means the endpoints of the admissible curves must lie on two $(k+1)$-dimensional hyperplanes.
+The integral $\int\_{t\_0}^{t\_1} f^0(x, u)\,dt$ can be viewed as a functional depending on the $n + k$ functions $x^1, \ldots, x^n, u^1, \ldots, u^k$, i.e., a functional defined on some class of curves in $n + k + 1$ dimensions. Since the $x^i$ and $u^\alpha$ are connected by the equations of motion, this is a problem of finding a minimum subject to *nonholonomic constraints* (see p. 48). The boundary conditions require the optimal trajectory $x(t)$ to pass through the fixed endpoints $x\_0$ and $x\_1$, which means the endpoints of the admissible curves must lie on two $(k+1)$-dimensional hyperplanes.
 
 The problem of optimal control is thus a variant of finding a minimum subject to subsidiary conditions, with the special feature that the control functions $u^1(t), \ldots, u^k(t)$ take values in a fixed region $\Omega$ but are in general *not required to be continuous*.
 
@@ -4937,16 +4937,16 @@ Introducing the $(n+1)$-dimensional vector $\mathbf{x}(t) = (x^0(t), x^1(t), \ld
 
 $$\frac{dx^i}{dt} = f^i(x, u) \qquad (i = 0, 1, \ldots, n),$$
 
-and $J[U] = \int_{t_0}^{t_1} f^0(x, u)\,dt = x^0(t_1)$. The problem reduces to finding the admissible control $U$ for which $x^0(t_1)$ is as small as possible.
+and $J[U] = \int\_{t\_0}^{t\_1} f^0(x, u)\,dt = x^0(t\_1)$. The problem reduces to finding the admissible control $U$ for which $x^0(t\_1)$ is as small as possible.
 
-Next, we introduce new variables $\psi_0, \psi_1, \ldots, \psi_n$ satisfying the *conjugate* (or *adjoint*) system of differential equations
+Next, we introduce new variables $\psi\_0, \psi\_1, \ldots, \psi\_n$ satisfying the *conjugate* (or *adjoint*) system of differential equations
 
 $$\frac{d\psi_i}{dt} = -\sum_{\alpha=0}^{n} \frac{\partial f^\alpha(x, u)}{\partial x^i}\,\psi_\alpha \qquad (i = 0, 1, \ldots, n).$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Function $\Pi$ and the Hamiltonian $\mathscr{H}$)</span></p>
 
-Let $\boldsymbol{\psi}(t) = (\psi_0(t), \psi_1(t), \ldots, \psi_n(t))$ and consider the function
+Let $\boldsymbol{\psi}(t) = (\psi\_0(t), \psi\_1(t), \ldots, \psi\_n(t))$ and consider the function
 
 $$\Pi(\boldsymbol{\psi}, x, u) = \sum_{\alpha=0}^{n} \psi_\alpha f^\alpha(x, u).$$
 
@@ -4965,10 +4965,10 @@ $$\mathscr{H}(\boldsymbol{\psi}, x) = \sup_{u \in \Omega}\, \Pi(\boldsymbol{\psi
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Pontryagin's Maximum Principle)</span></p>
 
-Let $U = \lbrace u(t), t_0, t_1, x_0 \rbrace$ be an admissible control process, and let $\mathbf{x}(t)$ be the corresponding integral curve of the augmented system passing through $(0, x_0^1, \ldots, x_0^n)$ for $t = 0$, and satisfying $x^i(t_1) = x_1^i$ for $i = 1, \ldots, n$. If the control process $U$ is optimal, then there exists a continuous vector function $\boldsymbol{\psi}(t) = (\psi_0(t), \psi_1(t), \ldots, \psi_n(t))$ such that:
+Let $U = \lbrace u(t), t\_0, t\_1, x\_0 \rbrace$ be an admissible control process, and let $\mathbf{x}(t)$ be the corresponding integral curve of the augmented system passing through $(0, x\_0^1, \ldots, x\_0^n)$ for $t = 0$, and satisfying $x^i(t\_1) = x\_1^i$ for $i = 1, \ldots, n$. If the control process $U$ is optimal, then there exists a continuous vector function $\boldsymbol{\psi}(t) = (\psi\_0(t), \psi\_1(t), \ldots, \psi\_n(t))$ such that:
 
 1. $\boldsymbol{\psi}(t)$ satisfies the conjugate system for $x = \mathbf{x}(t)$, $u = u(t)$;
-2. For all $t$ in $[t_0, t_1]$, the function $\Pi(\boldsymbol{\psi}(t), \mathbf{x}(t), u(t))$ achieves its maximum for $u = u(t)$, i.e.,
+2. For all $t$ in $[t\_0, t\_1]$, the function $\Pi(\boldsymbol{\psi}(t), \mathbf{x}(t), u(t))$ achieves its maximum for $u = u(t)$, i.e.,
 
 $$\Pi[\boldsymbol{\psi}(t), \mathbf{x}(t), u(t)] = \mathscr{H}[\boldsymbol{\psi}(t), \mathbf{x}(t)];$$
 
@@ -4976,7 +4976,7 @@ $$\Pi[\boldsymbol{\psi}(t), \mathbf{x}(t), u(t)] = \mathscr{H}[\boldsymbol{\psi}
 
 $$\psi_0(t_1) \leqslant 0, \qquad \mathscr{H}[\boldsymbol{\psi}(t_1), \mathbf{x}(t_1)] = 0$$
 
-   hold at the time $t_1$. In fact, since $\psi_0$ and $\mathscr{H}$ turn out to be constants along the optimal trajectory, we can replace $t_1$ by any $t \in [t_0, t_1]$.
+   hold at the time $t\_1$. In fact, since $\psi\_0$ and $\mathscr{H}$ turn out to be constants along the optimal trajectory, we can replace $t\_1$ by any $t \in [t\_0, t\_1]$.
 
 </div>
 
