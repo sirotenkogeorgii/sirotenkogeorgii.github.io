@@ -71,7 +71,7 @@ $$
 [D^k f]_\alpha := \sup_{x \ne y} \frac{\lvert D^k f(x) - D^k f(y) \rvert}{\lvert x - y \rvert^\alpha} < \infty,
 $$
 
-with norm $\|f\|_{C^{k,\alpha}} = \|f\|_{C^k} + [D^k f]_\alpha$.
+with norm $\|f\|\_{C^{k,\alpha}} = \|f\|\_{C^k} + [D^k f]\_\alpha$.
 
 </div>
 
@@ -106,7 +106,7 @@ Hilbert case $H^k := W^{k,2}$.
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(the two facts you reuse)</span></p>
 
-* **Sobolev embedding**: enough derivatives in $L^p$ buys higher integrability or continuity. On $\mathbb{R}^n$ with $p < n$, $W^{1,p} \hookrightarrow L^{p^*}$ with $p^* = \tfrac{np}{n-p}$. If $kp > n$, $W^{k,p} \hookrightarrow C^{0,\alpha}$.
+* **Sobolev embedding**: enough derivatives in $L^p$ buys higher integrability or continuity. On $\mathbb{R}^n$ with $p < n$, $W^{1,p} \hookrightarrow L^{p^\ast}$ with $p^\ast = \tfrac{np}{n-p}$. If $kp > n$, $W^{k,p} \hookrightarrow C^{0,\alpha}$.
 * **Rellich–Kondrachov**: on bounded $\Omega$ the embeddings are **compact**, which is how you extract limits in nonlinear PDE.
 
 </div>
@@ -192,7 +192,7 @@ For $f : \Omega \to X$ valued in a Banach space $X$:
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bochner integral)</span></p>
 
-For $f : \Omega \to X$ strongly measurable into a Banach space, $f$ is **Bochner integrable** iff $\int_\Omega \|f(x)\|_X \, d\mu(x) < \infty$. The integral $\int_\Omega f \, d\mu \in X$ is then the $X$-norm limit of integrals of simple-function approximants.
+For $f : \Omega \to X$ strongly measurable into a Banach space, $f$ is **Bochner integrable** iff $\int_\Omega \|f(x)\|\_X \, d\mu(x) < \infty$. The integral $\int_\Omega f \, d\mu \in X$ is then the $X$-norm limit of integrals of simple-function approximants.
 
 </div>
 
@@ -221,7 +221,7 @@ In a normed space $X$: $x_n \to x$ if $\|x_n - x\|_X \to 0$. I.e. convergence in
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(weak convergence)</span></p>
 
-In a Banach space $X$: $x_n \rightharpoonup x$ if $x^*(x_n) \to x^*(x)$ for every $x^* \in X^*$.
+In a Banach space $X$: $x_n \rightharpoonup x$ if $x^\ast(x_n) \to x^\ast(x)$ for every $x^\ast \in X^\ast$.
 
 </div>
 
@@ -523,6 +523,73 @@ Examples: $\mathbb{R}^n$, $C([0,T])$, every separable Banach space, $\mathcal{D}
 
 ---
 
+## Probability and stochastic processes
+
+### Filtration
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(filtration)</span></p>
+
+Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space and $I \subseteq \mathbb{R}$ an index set ("time"). A **filtration** is a family
+
+$$
+\mathbb{F} := (\mathcal{F}_t)_{t \in I}
+$$
+
+of sub-$\sigma$-algebras of $\mathcal{F}$ that is **monotone**:
+
+$$
+\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \qquad \text{whenever } s \le t.
+$$
+
+The filtered probability space is then $(\Omega, \mathcal{F}, \mathbb{F}, \mathbb{P})$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(intuition)</span></p>
+
+$\mathcal{F}\_t$ is the **information available up to time $t$**: the collection of events whose occurrence/non-occurrence can be decided using only what has happened by time $t$. The monotonicity condition says "information is never forgotten."
+
+Vocabulary you will see attached to a filtration:
+
+* A process $X = (X\_t)\_{t \in I}$ is **$\mathbb{F}$-adapted** if $X\_t$ is $\mathcal{F}\_t$-measurable for every $t$ — its value at time $t$ depends only on past information.
+* A random time $\tau : \Omega \to I \cup \lbrace +\infty\rbrace$ is a **stopping time** w.r.t. $\mathbb{F}$ if $\lbrace\tau \le t\rbrace \in \mathcal{F}\_t$ for every $t$ — you can decide whether $\tau$ has occurred from the information at time $t$.
+* The **usual conditions**: $\mathbb{F}$ is right-continuous ($\mathcal{F}\_t = \bigcap\_{s > t}\mathcal{F}\_s$) and $\mathcal{F}\_0$ contains all $\mathbb{P}$-null sets. This is the technical hygiene assumed in continuous-time stochastic analysis (Itô calculus, martingales).
+
+</div>
+
+### Natural / canonical filtration
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(natural filtration of a process)</span></p>
+
+Let $X = (X\_t)\_{t \in I}$ be a stochastic process on $(\Omega, \mathcal{F}, \mathbb{P})$. The **natural** (or **canonical**) filtration generated by $X$ is
+
+$$
+\mathcal{F}_t^X := \sigma\!\big(X_s : s \in I, \; s \le t\big),
+$$
+
+i.e. the smallest sub-$\sigma$-algebra of $\mathcal{F}$ making every past value $X\_s$, $s \le t$, measurable. Set $\mathbb{F}^X := (\mathcal{F}\_t^X)\_{t \in I}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why this filtration)</span></p>
+
+$\mathcal{F}\_t^X$ encodes exactly **the information you obtain by observing $X$ up to time $t$**, and nothing else. It is the **minimal** filtration to which $X$ is adapted — for any other filtration $\mathbb{G}$ with $X$ $\mathbb{G}$-adapted, $\mathcal{F}\_t^X \subseteq \mathcal{G}\_t$.
+
+Two reasons you constantly meet it:
+
+* When no filtration is specified (e.g. "the Markov property", "$X$ is a martingale") the implicit default is $\mathbb{F}^X$.
+* Constructing $\mathbb{F}^X$ is how you upgrade a bare process $X$ into a filtered setup where you can talk about adaptedness, stopping times, conditional expectations $\mathbb{E}[\cdot \mid \mathcal{F}\_t^X]$, and the Markov / martingale properties.
+
+Caveat: $\mathbb{F}^X$ generally does **not** satisfy the usual conditions out of the box — you typically augment it with $\mathbb{P}$-null sets and pass to its right-continuous version to obtain the **augmented natural filtration** before doing serious stochastic analysis.
+
+</div>
+
+---
+
 ## The headline theorems
 
 ### Riesz representation theorem
@@ -530,13 +597,13 @@ Examples: $\mathbb{R}^n$, $C([0,T])$, every separable Banach space, $\mathcal{D}
 <div class="math-callout math-callout--theorem" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Riesz — Hilbert version)</span></p>
 
-Let $H$ be a Hilbert space. For every continuous linear functional $\varphi \in H^*$ there is a **unique** $y \in H$ with
+Let $H$ be a Hilbert space. For every continuous linear functional $\varphi \in H^\ast$ there is a **unique** $y \in H$ with
 
 $$
 \varphi(x) = \langle x, y \rangle \quad \forall x \in H,
 $$
 
-and $\|\varphi\|_{H^*} = \|y\|_H$. So $H^* \cong H$ canonically.
+and $\|\varphi\|\_{H^\ast} = \|y\|\_H$. So $H^\ast \cong H$ canonically.
 
 </div>
 
@@ -633,7 +700,7 @@ Let $X$ be a normed space. The closed unit ball $B_{X^*}$ of the dual is **compa
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(sequential version)</span></p>
 
-If $X$ is **separable**, $B_{X^*}$ is metrizable in the weak-$*$ topology, hence **sequentially compact**: every bounded sequence in $X^*$ has a weak-$*$ convergent subsequence. The workhorse for extracting limits in infinite dimensions (limits of measures, of $L^\infty$ data, of approximate solutions of PDE).
+If $X$ is **separable**, $B_{X^\ast}$ is metrizable in the weak-$\ast$ topology, hence **sequentially compact**: every bounded sequence in $X^\ast$ has a weak-$\ast$ convergent subsequence. The workhorse for extracting limits in infinite dimensions (limits of measures, of $L^\infty$ data, of approximate solutions of PDE).
 
 </div>
 
@@ -666,7 +733,7 @@ The probabilistic analogue of Banach–Alaoglu, and the standard route to provin
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(weak derivative)</span></p>
 
-For $f \in L^1_{\text{loc}}(\Omega)$ and multi-index $\alpha$, a function $g \in L^1_{\text{loc}}(\Omega)$ is the **weak $\alpha$-th derivative** of $f$, written $g = D^\alpha f$, if
+For $f \in L^1\_{\text{loc}}(\Omega)$ and multi-index $\alpha$, a function $g \in L^1\_{\text{loc}}(\Omega)$ is the **weak $\alpha$-th derivative** of $f$, written $g = D^\alpha f$, if
 
 $$
 \int_\Omega f \, D^\alpha \varphi \, dx \;=\; (-1)^{\lvert \alpha \rvert} \int_\Omega g \, \varphi \, dx \qquad \forall \varphi \in C_c^\infty(\Omega).
