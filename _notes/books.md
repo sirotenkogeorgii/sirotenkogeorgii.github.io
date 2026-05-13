@@ -44,3 +44,4 @@ date: 2024-10-20
 - [The Variational Principles of Mechanics](/subpages/books/the_variational_principles_of_mechanics/)
 - [Lecture notes on variational methods based on John Ball's MIGSAA 2019 course](/subpages/books/variational_methods/lectures_paper/)
 - [Mathematical Theory of Deep Learning](/subpages/books/theory_of_deep_learning/)
+- [Optimal Transport: Old and New](/subpages/books/optimal_transport_old_and_new/)

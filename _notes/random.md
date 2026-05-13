@@ -7374,13 +7374,23 @@ When a system fits the gradient-flow framework, an entire toolkit comes for free
 
 ## Decomposing forces in Newton's second law: conservative vs non-conservative
 
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">High Level Idea</span><span class="math-callout__name">(Decomposing forces in Newton's second law)</span></p>
+
 Newton's second law $m\ddot x=F_{\rm total}$ is happy with any forces. For the structural analysis underlying gradient-flow theory, the cleanest decomposition is
 
 $$
 F_{\rm total}\;=\;F_{\rm cons}\;+\;F_{\rm non\text{-}cons},
 $$
 
-where $F_{\rm cons}=-\nabla V$ for some scalar potential and $F_{\rm non\text{-}cons}$ is *everything else*. The non-conservative side is *not* monolithic — it splits into several physically distinct kinds (dissipative, gyroscopic, driving, constraint), each failing to be conservative for a *different reason* and contributing differently to the energy balance. The decomposition $F=-\nabla E-\lambda v$ used in the gradient-flow notes is the simplest non-trivial special case: conservative + linear friction.
+where 
+
+* $F_{\rm cons}=-\nabla V$ for some **scalar potential**.
+* $F_{\rm non\text{-}cons}$ is **everything else**. 
+  
+The non-conservative side is **not** monolithic — it splits into several physically distinct kinds (dissipative, gyroscopic, driving, constraint), each failing to be conservative for a **different reason** and contributing differently to the energy balance. The decomposition $F=-\nabla E-\lambda v$ used in the gradient-flow notes is the simplest non-trivial special case: conservative + linear friction.
+
+</div>
 
 ### Conservative force: four equivalent definitions
 
