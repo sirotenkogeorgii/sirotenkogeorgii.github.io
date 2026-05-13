@@ -2298,7 +2298,7 @@ Next, we show that the absence of points conjugate to $a$ in $[a, b]$ is not onl
 
 The idea of the proof is the following: We construct a family of positive definite quadratic functionals, depending on a parameter $t$, which for $t = 1$ gives the functional $\int\_a^b (Ph'^2 + Qh^2)\,dx$ and for $t = 0$ gives the very simple quadratic functional $\int\_a^b h'^2\,dx$, for which there can certainly be no points in $[a, b]$ conjugate to $a$. We then prove that as the parameter $t$ is varied continuously from 0 to 1, no conjugate points can appear in the interval $[a, b]$.
 
-Consider the functional $\int\_a^b [t(Ph'^2 + Qh^2) + (1 - t)h'^2]\,dx$, which is positive definite for all $t$, $0 \leqslant t \leqslant 1$, since (by assumption) the original functional is positive definite. The Euler equation corresponding to this mixed functional is $-\frac{d}{dx}\{[tP + (1 - t)]h'\} + tQh = 0$. Let $h(x, t)$ be the solution satisfying the initial conditions $h(a, t) = 0$, $h\_x(a, t) = 1$ for all $t$, $0 \leqslant t \leqslant 1$. This solution is a continuous function of the parameter $t$. If $h(x\_0, t\_0) = 0$ at some point $x = x\_0$ in $[a, b]$ for some $t\_0$, this would contradict the assumption that the functional is positive definite. Therefore, no such zeros (and hence no conjugate points) can exist in $[a, b]$.
+Consider the functional $\int\_a^b [t(Ph'^2 + Qh^2) + (1 - t)h'^2]\,dx$, which is positive definite for all $t$, $0 \leqslant t \leqslant 1$, since (by assumption) the original functional is positive definite. The Euler equation corresponding to this mixed functional is $-\frac{d}{dx}\lbrace [tP + (1 - t)]h'\rbrace  + tQh = 0$. Let $h(x, t)$ be the solution satisfying the initial conditions $h(a, t) = 0$, $h\_x(a, t) = 1$ for all $t$, $0 \leqslant t \leqslant 1$. This solution is a continuous function of the parameter $t$. If $h(x\_0, t\_0) = 0$ at some point $x = x\_0$ in $[a, b]$ for some $t\_0$, this would contradict the assumption that the functional is positive definite. Therefore, no such zeros (and hence no conjugate points) can exist in $[a, b]$.
 
 </details>
 </div>
@@ -2481,7 +2481,7 @@ If $[a, b]$ contains no points conjugate to $a$, and if $P(x) > 0$ in $[a, b]$, 
 
 $$\int_a^b (Ph'^2 + Qh^2)\,dx - \alpha^2 \int_a^b h'^2\,dx$$
 
-with the Euler equation $-\frac{d}{dx}\{(P - \alpha^2)h'\} + Qh = 0$. Since $P(x)$ is positive in $[a, b + \varepsilon]$ and hence has a positive greatest lower bound on this interval, and since the solution of the Euler equation satisfying the initial conditions $h(a) = 0$, $h'(0) = 1$ depends continuously on the parameter $\alpha$, for all sufficiently small $\alpha$ we have:
+with the Euler equation $-\frac{d}{dx}\lbrace (P - \alpha^2)h'\rbrace  + Qh = 0$. Since $P(x)$ is positive in $[a, b + \varepsilon]$ and hence has a positive greatest lower bound on this interval, and since the solution of the Euler equation satisfying the initial conditions $h(a) = 0$, $h'(0) = 1$ depends continuously on the parameter $\alpha$, for all sufficiently small $\alpha$ we have:
 
 1. $P(x) - \alpha^2 > 0$, $a \leqslant x \leqslant b$;
 2. The solution of the Euler equation satisfying the boundary conditions $h(a) = 0$, $h'(a) = 1$ does not vanish for $a < x \leqslant b$.
@@ -2674,7 +2674,7 @@ where $P$ is a positive definite symmetric matrix, is positive definite for all 
 
 The proof follows the same plan as the proof of the corresponding theorem for the case of one unknown function (Theorem 2 of Sec. 26). We consider the positive definite quadratic functional
 
-$$\int_a^b \left\{t\left[(Ph', h') + (Qh, h)\right] + (1 - t)(h', h')\right\} dx. \tag{68}$$
+$$\int_a^b \left\lbrace t\left[(Ph', h') + (Qh, h)\right] + (1 - t)(h', h')\right\rbrace  dx. \tag{68}$$
 
 The system of Euler equations corresponding to (68) is
 
@@ -3357,7 +3357,7 @@ evaluated along the curve $\Gamma$ going from some fixed point $M\_0 = (x\_0, y(
 
 Using the equations (57) defining the field, and explicitly introducing the integrand $F$ of the functional (58), we can write the integral in (61) as
 
-$$\int_\Gamma \!\left(\left\{F[x, y, \psi(x, y)] - \sum_{i=1}^{n} \psi_i(x, y)\,F_{y_i'}[x, y, \psi(x, y)]\right\}dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi(x, y)]\,dy_i\right). \tag{62}$$
+$$\int_\Gamma \!\left(\left\lbrace F[x, y, \psi(x, y)] - \sum_{i=1}^{n} \psi_i(x, y)\,F_{y_i'}[x, y, \psi(x, y)]\right\rbrace dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi(x, y)]\,dy_i\right). \tag{62}$$
 
 This expression is Hilbert's invariant integral, in the form corresponding to the field defined by the functions $\psi\_i(x, y)$. If the curve $\Gamma$ along which the integral (62) is evaluated is one of the trajectories of the field, then $dy\_i = \psi\_i(x, y)\,dx$ along $\Gamma$, and hence (62) reduces to
 
@@ -3409,7 +3409,7 @@ $$y_i' = \psi_i(x, y) \qquad (i = 1, \ldots, n) \tag{65}$$
 
 of the functional (63) (see Theorem 6 of Sec. 32). Let $\gamma$ have the equations $y\_i = y\_i(x)$ $(i = 1, \ldots, n)$, and let $\gamma^\ast$ be an arbitrary curve with the same end points as $\gamma$, lying in the $(n + 1)$-dimensional region $R$ containing $\gamma$ and covered by the field (65). Then, according to the remark at the end of Sec. 33, we have
 
-$$\int_\gamma F(x, y, y')\,dx = \int_{\gamma^*}\!\left(\left\{F[x, y, \psi] - \sum_{i=1}^{n}\psi_i\,F_{y_i'}[x, y, \psi]\right\}dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi]\,dy_i\right), \tag{66}$$
+$$\int_\gamma F(x, y, y')\,dx = \int_{\gamma^*}\!\left(\left\lbrace F[x, y, \psi] - \sum_{i=1}^{n}\psi_i\,F_{y_i'}[x, y, \psi]\right\rbrace dx + \sum_{i=1}^{n} F_{y_i'}[x, y, \psi]\,dy_i\right), \tag{66}$$
 
 where for simplicity we omit the arguments of the functions $\psi$ and $\psi\_i$. The right-hand side of (66) is just Hilbert's invariant integral, in the form corresponding to the field (65). As usual, we are interested in the increment
 

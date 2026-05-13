@@ -24,7 +24,7 @@ date: 2026-05-13
 For a measure space $(\Omega, \mathcal{A}, \mu)$ and $1 \le p < \infty$,
 
 $$
-L^p(\Omega) = \Big\{ f : \Omega \to \mathbb{R} \text{ measurable} \;\Big|\; \int_\Omega \lvert f \rvert^p \, d\mu < \infty \Big\}, \qquad \|f\|_{L^p} = \Big(\int_\Omega \lvert f \rvert^p \, d\mu\Big)^{1/p},
+L^p(\Omega) = \Big\lbrace f : \Omega \to \mathbb{R} \text{ measurable} \;\Big|\; \int_\Omega \lvert f \rvert^p \, d\mu < \infty \Big\rbrace, \qquad \|f\|_{L^p} = \Big(\int_\Omega \lvert f \rvert^p \, d\mu\Big)^{1/p},
 $$
 
 modulo equality $\mu$-a.e. For $p=\infty$, $\|f\|_{L^\infty} = \operatorname*{ess\,sup} \lvert f \rvert$.
@@ -46,7 +46,7 @@ modulo equality $\mu$-a.e. For $p=\infty$, $\|f\|_{L^\infty} = \operatorname*{es
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($C_c^\infty$ — test functions)</span></p>
 
-$C_c^\infty(\Omega)$ is the space of smooth functions $\varphi : \Omega \to \mathbb{R}$ whose **support** $\overline{\{x : \varphi(x) \ne 0\}}$ is a compact subset of $\Omega$.
+$C_c^\infty(\Omega)$ is the space of smooth functions $\varphi : \Omega \to \mathbb{R}$ whose **support** $\overline{\lbrace x : \varphi(x) \ne 0\rbrace}$ is a compact subset of $\Omega$.
 
 </div>
 
@@ -90,7 +90,7 @@ A quantitative "smoothness up to a fractional order" — interpolates between $C
 For $k \in \mathbb{N}_0$ and $1 \le p \le \infty$,
 
 $$
-W^{k,p}(\Omega) = \Big\{ f \in L^p(\Omega) \;\Big|\; D^\alpha f \in L^p(\Omega) \text{ for all } \lvert\alpha\rvert \le k\Big\},
+W^{k,p}(\Omega) = \Big\lbrace f \in L^p(\Omega) \;\Big|\; D^\alpha f \in L^p(\Omega) \text{ for all } \lvert\alpha\rvert \le k\Big\rbrace,
 $$
 
 where $D^\alpha f$ is the **weak** derivative, with norm
@@ -315,7 +315,9 @@ Strongest of the three below; preserves continuity, integrals, derivatives (up t
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(pointwise topology)</span></p>
 
-The product topology on $\mathbb{R}^X$: $f_n \to f$ iff $f_n(x) \to f(x)$ for every $x$.
+The product topology on $\mathbb{R}^X$: 
+
+$$f_n \to f \quad\iff\quad f_n(x) \to f(x) \quad \forall x$$
 
 </div>
 
@@ -334,7 +336,7 @@ Very weak — limits can be horribly discontinuous (e.g. $x^n$ on $[0,1]$). Usef
 The coarsest topology on $X$ making every $x^* \in X^*$ continuous. A subbase of open sets is
 
 $$
-\{ x : \lvert x^*(x) - x^*(x_0) \rvert < \varepsilon \}, \quad x^* \in X^*, \; \varepsilon > 0, \; x_0 \in X.
+\lbrace x : \lvert x^*(x) - x^*(x_0) \rvert < \varepsilon \rbrace, \quad x^* \in X^*, \; \varepsilon > 0, \; x_0 \in X.
 $$
 
 The associated sequential convergence is weak convergence.
@@ -357,7 +359,11 @@ The point: bounded sets are **much closer to compact** here than in the norm top
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(compact support)</span></p>
 
-A function $f$ on $X$ has compact support if $\operatorname{supp}(f) := \overline{\{x : f(x) \ne 0\}}$ is compact.
+A function $f$ on $X$ has compact support if 
+
+$\operatorname{supp}(f) := \overline{\lbrace x : f(x) \ne 0\rbrace}$ 
+
+is compact.
 
 </div>
 
@@ -441,13 +447,13 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(lower semicontinuity)</span></p>
 
-$f : X \to \mathbb{R} \cup \{+\infty\}$ is **lower semicontinuous (l.s.c.)** at $x_0$ if
+$f : X \to \mathbb{R} \cup \lbrace +\infty\rbrace$ is **lower semicontinuous (l.s.c.)** at $x_0$ if
 
 $$
 \liminf_{x \to x_0} f(x) \ge f(x_0).
 $$
 
-Equivalently, $\{f \le c\}$ is closed for every $c \in \mathbb{R}$.
+Equivalently, $\lbrace f \le c\rbrace$ is closed for every $c \in \mathbb{R}$.
 
 </div>
 
@@ -455,6 +461,35 @@ Equivalently, $\{f \le c\}$ is closed for every $c \in \mathbb{R}$.
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why it matters for optimization)</span></p>
 
 The right class for **minimization**: a l.s.c. function attains its infimum on a compact set (Weierstrass). Norms are l.s.c. **for weak convergence** — which is why one minimizes energies by passing to weak limits.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(four canonical plots)</span></p>
+
+<figure>
+  <img src="{{ 'assets/images/notes/cheat-sheet/lsc_examples.png' | relative_url }}" alt="Four canonical lower-semicontinuous examples and one non-example" loading="lazy">
+  <figcaption>Rule of thumb at every discontinuity: $f$ is l.s.c. iff the filled dot lies on the <em>lower</em> branch. The empty circle marks the value the limit approaches but $f$ does not take.</figcaption>
+</figure>
+
+* **(a) Step, l.s.c.** — $f(x) = 0$ for $x \le 0$, $f(x) = 1$ for $x > 0$. At $x_0 = 0$: $f(0) = 0$ and $\liminf\_{x \to 0} f(x) = 0$. The inequality $\liminf \ge f(x_0)$ holds with equality. The value lands on the **lower** branch.
+* **(b) Step, NOT l.s.c.** — same graph but with $f(0) = 1$. Now $\liminf\_{x \to 0} f(x) = 0 < 1 = f(0)$, so l.s.c. fails. This $f$ is **upper** semicontinuous instead. Same picture, dot on the upper branch.
+* **(c) Isolated dip, l.s.c.** — $f(x) = x^2$ for $x \ne 0$ and $f(0) = -0.6$. The value at $0$ is *strictly below* the surrounding limit ($\liminf = 0$). l.s.c. allows this: a function can dip down at isolated points but never spike up.
+* **(d) Convex-analysis indicator $\delta_{[-1,1]}$, l.s.c.** — $0$ on $[-1,1]$, $+\infty$ off it. The sublevel sets are $\lbrace \delta\_C \le c\rbrace = [-1,1]$ for $c \ge 0$ and $\emptyset$ for $c < 0$, both closed. This is *the* canonical extended-real-valued l.s.c. function in convex analysis — it lets you encode the constraint "$x \in C$" inside an unconstrained minimization.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(epigraph characterization)</span></p>
+
+<figure>
+  <img src="{{ 'assets/images/notes/cheat-sheet/lsc_epigraph.png' | relative_url }}" alt="Epigraph characterization of lower semicontinuity" loading="lazy">
+  <figcaption>$f$ is l.s.c. iff its epigraph $\mathrm{epi}(f) = \lbrace (x,t) : t \ge f(x)\rbrace$ is a closed subset of $X \times \mathbb{R}$.</figcaption>
+</figure>
+
+The cleanest reformulation: **l.s.c. = closed epigraph**. At a downward jump (filled dot on the lower side), the epigraph picks up the vertical line all the way down to that lower value, and the set stays closed. If instead the filled dot were on the upper side (the u.s.c. case), the epigraph would be missing exactly that vertical segment between the two branches and would no longer be closed.
+
+This is the version of l.s.c. you actually use in convex analysis and the calculus of variations — closedness of the epigraph is preserved under pointwise suprema, infimal convolutions, perspectives, etc., which is why **a supremum of any family of continuous (or l.s.c.) functions is l.s.c.**, while suprema of u.s.c. functions are generally not u.s.c.
 
 </div>
 
@@ -485,7 +520,11 @@ A topological space is **separable** if it contains a **countable dense** subset
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(reflexive)</span></p>
 
-A Banach space $X$ is **reflexive** if the canonical embedding $J : X \to X^{**}$, $J(x)(x^*) = x^*(x)$, is **surjective** (and hence an isometric isomorphism).
+A Banach space $X$ is **reflexive** if the canonical embedding 
+
+$$J : X \to X^{\ast\ast}$, $J(x)(x^\ast) = x^\ast(x)$$
+
+is **surjective** (and hence an isometric isomorphism).
 
 </div>
 
@@ -630,7 +669,7 @@ The bridge from "abstract functional" to "concrete object" (vector or measure). 
 <div class="math-callout math-callout--theorem" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parseval)</span></p>
 
-For a Hilbert space $H$ with orthonormal basis $\{e_n\}_{n \in \mathbb{N}}$ and any $x \in H$,
+For a Hilbert space $H$ with orthonormal basis $\lbrace e_n\rbrace\_{n \in \mathbb{N}}$ and any $x \in H$,
 
 $$
 \|x\|_H^2 = \sum_{n} \lvert \langle x, e_n \rangle \rvert^2.
@@ -809,7 +848,7 @@ The tensor product $V \otimes W$ is defined as the universal object through whic
 For a bounded operator $T : X \to X$ on a Banach space,
 
 $$
-\sigma(T) = \{ \lambda \in \mathbb{C} : T - \lambda I \text{ is not invertible} \}.
+\sigma(T) = \lbrace \lambda \in \mathbb{C} : T - \lambda I \text{ is not invertible} \rbrace.
 $$
 
 It splits into:
