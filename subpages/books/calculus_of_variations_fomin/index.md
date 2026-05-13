@@ -4474,7 +4474,14 @@ $$J[\hat{y}] = \lim_{n \to \infty} J[y_n].$$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of proof</summary>
+
 *Sketch of proof.* On one hand, $J[\hat{y}] \geqslant \lim\_{n\to\infty} J[y\_n] = \inf J[y]$, since $\hat{y}$ is admissible. On the other hand, for every $\varepsilon > 0$ and $n$ large enough, lower semicontinuity gives $J[y\_n] - J[\hat{y}] > -\varepsilon$, so letting $n \to \infty$ yields $J[\hat{y}] \leqslant \lim\_{n\to\infty} J[y\_n]$. Combining both inequalities gives equality.
+
+</details>
+</div>
 
 ### 40. The Ritz Method and the Method of Finite Differences
 
@@ -4512,11 +4519,18 @@ If the functional $J[y]$ is continuous (in the norm of $\mathscr{M}$) and the se
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of proof</summary>
+
 *Sketch of proof.* Given $\varepsilon > 0$, pick $y^\ast$ with $J[y^\ast] < \mu + \varepsilon$. By continuity, $\lvert J[y] - J[y^\ast] \rvert < \varepsilon$ whenever $\lVert y - y^\ast \rVert < \delta$. By completeness, there exists a linear combination $\eta\_n$ in $\mathscr{M}\_n$ with $\lVert \eta\_n - y^\ast \rVert < \delta$. Then
 
 $$\mu \leqslant J[y_n] \leqslant J[\eta_n] < \mu + 2\varepsilon.$$
 
 Since $\varepsilon$ is arbitrary, $\mu\_n \to \mu$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 1</span><span class="math-callout__name">(Geometric Interpretation)</span></p>
@@ -4605,6 +4619,10 @@ The sequence of Ritz minimizers $\lbrace y\_n^{(1)}(x) \rbrace$ contains a unifo
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of proof</summary>
+
 *Sketch of proof.* From the boundedness of $J[y\_n]$ and the positivity of $P$, one obtains uniform bounds on both $\int y\_n'^2\,dx$ and $\int y\_n^2\,dx$. By Schwarz's inequality and the boundary condition $y\_n(0) = 0$, the sequence $\lbrace y\_n \rbrace$ is uniformly bounded. A second application of Schwarz's inequality shows equicontinuity:
 
 $$\lvert y_n(x_2) - y_n(x_1) \rvert^2 \leqslant M_2 \lvert x_2 - x_1 \rvert.$$
@@ -4612,6 +4630,9 @@ $$\lvert y_n(x_2) - y_n(x_1) \rvert^2 \leqslant M_2 \lvert x_2 - x_1 \rvert.$$
 By the Arzelà–Ascoli theorem, a uniformly convergent subsequence exists.
 
 We set $y^{(1)}(x) = \lim\_{m \to \infty} y\_{n\_m}(x)$, where $\lbrace y\_{n\_m} \rbrace$ is the convergent subsequence.
+
+</details>
+</div>
 
 #### 41.3. The Limit Function Solves the Sturm–Liouville Equation
 
