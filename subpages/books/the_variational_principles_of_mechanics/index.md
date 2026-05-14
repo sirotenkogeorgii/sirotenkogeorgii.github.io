@@ -33,31 +33,31 @@ Since motion is by its very nature a *directed* phenomenon, it seems puzzling th
 
 ### 2. The Procedure of Euler and Lagrange
 
-Consider a particle at a point $P_1$ at time $t_1$, with known velocity. Assume that the particle will be at a point $P_2$ after a given time has elapsed. Although we do not know the path taken by the particle, it is possible to establish that path completely by mathematical experimentation, provided that the kinetic and potential energies are given for any possible velocity and any possible position.
+Consider a particle at a point $P\_1$ at time $t\_1$, with known velocity. Assume that the particle will be at a point $P\_2$ after a given time has elapsed. Although we do not know the path taken by the particle, it is possible to establish that path completely by mathematical experimentation, provided that the kinetic and potential energies are given for any possible velocity and any possible position.
 
-Euler and Lagrange, the first discoverers of the exact principle of least action, proceed as follows. Connect the two points $P_1$ and $P_2$ by *any* tentative path --- an arbitrary continuous curve that will in all probability *not* coincide with the actual path that nature has chosen for the motion. However, we can gradually *correct* our tentative solution and eventually arrive at a curve which can be designated as the *actual* path of motion.
+Euler and Lagrange, the first discoverers of the exact principle of least action, proceed as follows. Connect the two points $P\_1$ and $P\_2$ by *any* tentative path --- an arbitrary continuous curve that will in all probability *not* coincide with the actual path that nature has chosen for the motion. However, we can gradually *correct* our tentative solution and eventually arrive at a curve which can be designated as the *actual* path of motion.
 
-For this purpose we let the particle move along the tentative path in accordance with the energy principle. The sum of the kinetic and potential energies is kept constant and always equal to that value $E$ which the actual motion has revealed at time $t_1$. This restriction assigns a definite velocity to any point of our path and thus determines the motion. We can choose our path freely, but once this is done the conservation of energy determines the motion uniquely.
+For this purpose we let the particle move along the tentative path in accordance with the energy principle. The sum of the kinetic and potential energies is kept constant and always equal to that value $E$ which the actual motion has revealed at time $t\_1$. This restriction assigns a definite velocity to any point of our path and thus determines the motion. We can choose our path freely, but once this is done the conservation of energy determines the motion uniquely.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Action in the Euler--Lagrange Sense)</span></p>
 
-The **action** is the time-integral of the *vis viva*, i.e., of double the kinetic energy, extended over the entire motion from $P_1$ to $P_2$:
+The **action** is the time-integral of the *vis viva*, i.e., of double the kinetic energy, extended over the entire motion from $P\_1$ to $P\_2$:
 
 $$A = \int_{P_1}^{P_2} 2T \, dt$$
 
-where all paths share the same end-points $P_1$, $P_2$ and the same given energy constant $E$.
+where all paths share the same end-points $P\_1$, $P\_2$ and the same given energy constant $E$.
 
 </div>
 
-The value of this "action" will vary from path to path. For some paths it will come out larger, for others smaller. Mathematically we can imagine that *all* possible paths have been tried. There must exist one definite path (at least if $P_1$ and $P_2$ are not too far apart) for which the action assumes a minimum value.
+The value of this "action" will vary from path to path. For some paths it will come out larger, for others smaller. Mathematically we can imagine that *all* possible paths have been tried. There must exist one definite path (at least if $P\_1$ and $P\_2$ are not too far apart) for which the action assumes a minimum value.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Principle of Least Action, Euler--Lagrange Form)</span></p>
 
 The principle of least action asserts that *this particular path is the one chosen by nature as the actual path of motion*.
 
-That is, among all paths connecting $P_1$ and $P_2$ with the same energy constant $E$, the actual path of motion is the one for which the action $A = \int 2T\,dt$ is minimized.
+That is, among all paths connecting $P\_1$ and $P\_2$ with the same energy constant $E$, the actual path of motion is the one for which the action $A = \int 2T\,dt$ is minimized.
 
 </div>
 
@@ -67,7 +67,7 @@ This principle, explained here for one single particle, can be generalized to an
 
 We encounter problems of mechanics for which the work function is a function not only of the position of the particle but also of the time. For such systems the law of the conservation of energy does not hold, and the principle of Euler and Lagrange is not applicable, but that of Hamilton is.
 
-In Hamilton's procedure we again start with the given initial point $P_1$ and the given end-point $P_2$. But now we do not restrict the trial motion in any way. Not only can the path be chosen arbitrarily --- save for natural continuity conditions --- but also the motion in time is at our disposal. All that we require now is that our tentative motion shall start at the observed time $t_1$ of the actual motion and end at the observed time $t_2$. (This condition is not satisfied in the procedure of Euler--Lagrange, because there the energy theorem restricts the motion, and the time taken to go from $P_1$ to $P_2$ in the tentative motion will generally differ from the time taken in the actual motion.)
+In Hamilton's procedure we again start with the given initial point $P\_1$ and the given end-point $P\_2$. But now we do not restrict the trial motion in any way. Not only can the path be chosen arbitrarily --- save for natural continuity conditions --- but also the motion in time is at our disposal. All that we require now is that our tentative motion shall start at the observed time $t\_1$ of the actual motion and end at the observed time $t\_2$. (This condition is not satisfied in the procedure of Euler--Lagrange, because there the energy theorem restricts the motion, and the time taken to go from $P\_1$ to $P\_2$ in the tentative motion will generally differ from the time taken in the actual motion.)
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Action in the Hamiltonian Sense)</span></p>
@@ -184,11 +184,11 @@ Analytical mechanics is a completely mathematical science. Everything is done by
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Coordinates)</span></p>
 
-Consider a mechanical system of $N$ free particles with rectangular coordinates $x_i, y_i, z_i$ ($i = 1, 2, \ldots, N$). The same problem is likewise solved if the $x_i, y_i, z_i$ are expressed in terms of some other quantities
+Consider a mechanical system of $N$ free particles with rectangular coordinates $x\_i, y\_i, z\_i$ ($i = 1, 2, \ldots, N$). The same problem is likewise solved if the $x\_i, y\_i, z\_i$ are expressed in terms of some other quantities
 
 $$q_1, q_2, \ldots, q_{3N}$$
 
-provided these quantities $q_k$ are determined as functions of time $t$. The general form of such a **coordinate transformation** is:
+provided these quantities $q\_k$ are determined as functions of time $t$. The general form of such a **coordinate transformation** is:
 
 $$x_1 = f_1(q_1, \ldots, q_{3N}), \quad \ldots, \quad z_N = f_{3N}(q_1, \ldots, q_{3N}).$$
 
@@ -203,7 +203,7 @@ If a mechanical system consists of $N$ particles and there are $m$ independent k
 
 $$n = 3N - m$$
 
-independent parameters $q_1, q_2, \ldots, q_n$. The number $n$ is a characteristic constant of the given mechanical system called the number of **degrees of freedom**. The parameters $q_1, \ldots, q_n$ are the **generalized coordinates** of the system.
+independent parameters $q\_1, q\_2, \ldots, q\_n$. The number $n$ is a characteristic constant of the given mechanical system called the number of **degrees of freedom**. The parameters $q\_1, \ldots, q\_n$ are the **generalized coordinates** of the system.
 
 </div>
 
@@ -222,7 +222,7 @@ independent parameters $q_1, q_2, \ldots, q_n$. The number $n$ is a characterist
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Regularity Conditions on Generalized Coordinates)</span></p>
 
-The generalized coordinates $q_1, q_2, \ldots, q_n$ may or may not have a geometrical significance. It is necessary, however, that the functions (12.8) shall be finite, single valued, continuous and differentiable, and that the Jacobian of at least *one* combination of $n$ functions shall be different from zero. These conditions may be violated at certain singular points, which have to be excluded from consideration.
+The generalized coordinates $q\_1, q\_2, \ldots, q\_n$ may or may not have a geometrical significance. It is necessary, however, that the functions (12.8) shall be finite, single valued, continuous and differentiable, and that the Jacobian of at least *one* combination of $n$ functions shall be different from zero. These conditions may be violated at certain singular points, which have to be excluded from consideration.
 
 It is not always advisable to eliminate all the kinematical conditions by introducing suitable generalized coordinates. We sometimes prefer to eliminate only *some* of the kinematical conditions, and to leave the others as additional restricting conditions of the form:
 
@@ -235,7 +235,7 @@ $$\varphi_i(q_1, q_2, \ldots, q_n) = 0, \quad (i = 1, \ldots, m).$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Configuration Space, C-point, C-curve)</span></p>
 
-If we associate with the $n$ numbers $q_1, q_2, \ldots, q_n$ the rectangular coordinates of a "point" $P$ in an $n$-dimensional space, the entire mechanical system is pictured as a single point of a many-dimensional space, called the **configuration space**. The point which symbolizes the position of the mechanical system in the configuration space is called the **C-point**, while the curve traced out by that point during the motion is the **C-curve**.
+If we associate with the $n$ numbers $q\_1, q\_2, \ldots, q\_n$ the rectangular coordinates of a "point" $P$ in an $n$-dimensional space, the entire mechanical system is pictured as a single point of a many-dimensional space, called the **configuration space**. The point which symbolizes the position of the mechanical system in the configuration space is called the **C-point**, while the curve traced out by that point during the motion is the **C-curve**.
 
 The solution of a dynamical problem takes the form
 
@@ -254,14 +254,14 @@ For the purposes of the calculus of variations such "topological" properties of 
 
 ### 4. Mapping of the Space on Itself
 
-Since the significance of the $n$ generalized coordinates $q_1, \ldots, q_n$ is not specified beyond the requirement that it shall allow a complete characterization of the system, we may choose another set of quantities $\bar{q}_1, \bar{q}_2, \ldots, \bar{q}_n$ as generalized coordinates. There must exist a functional relationship between the two sets expressible in the form:
+Since the significance of the $n$ generalized coordinates $q\_1, \ldots, q\_n$ is not specified beyond the requirement that it shall allow a complete characterization of the system, we may choose another set of quantities $\bar{q}\_1, \bar{q}\_2, \ldots, \bar{q}\_n$ as generalized coordinates. There must exist a functional relationship between the two sets expressible in the form:
 
 $$\bar{q}_1 = f_1(q_1, \ldots, q_n), \quad \ldots, \quad \bar{q}_n = f_n(q_1, \ldots, q_n).$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Point Transformation and the Jacobian)</span></p>
 
-A **point transformation** is a mapping of the $n$-dimensional space on itself: to a definite point $P$ of the $q$-space corresponds a definite point $\bar{P}$ of the $\bar{q}$-space. The functions $f_1, \ldots, f_n$ must satisfy the ordinary regularity conditions: they must be finite, single valued, continuous and differentiable functions of the $q_k$, with a **Jacobian** $\Delta$ which is different from zero.
+A **point transformation** is a mapping of the $n$-dimensional space on itself: to a definite point $P$ of the $q$-space corresponds a definite point $\bar{P}$ of the $\bar{q}$-space. The functions $f\_1, \ldots, f\_n$ must satisfy the ordinary regularity conditions: they must be finite, single valued, continuous and differentiable functions of the $q\_k$, with a **Jacobian** $\Delta$ which is different from zero.
 
 Differentiation gives
 
@@ -282,14 +282,14 @@ The geometry of an $n$-dimensional space is determined by postulating the **line
 
 $$d\bar{s}^2 = \sum_{i,k=1}^{n} g_{ik} \, dx_i \, dx_k,$$
 
-with the additional symmetry condition $g_{ik} = g_{ki}$, which makes the **metrical tensor** $g_{ik}$ a "symmetric tensor." The quantities $g_{ik}$ are generally not constants but functions of the variables $x_1, \ldots, x_n$. They are constants only if rectangular (or more generally "rectilinear") coordinates are employed.
+with the additional symmetry condition $g\_{ik} = g\_{ki}$, which makes the **metrical tensor** $g\_{ik}$ a "symmetric tensor." The quantities $g\_{ik}$ are generally not constants but functions of the variables $x\_1, \ldots, x\_n$. They are constants only if rectangular (or more generally "rectilinear") coordinates are employed.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Riemannian vs. Euclidean Geometry)</span></p>
 
-Riemann's discovery was that the definition of the line element gives not only a new, but a much more *general*, basis for building geometry than the older basis of Euclidean postulates. The $g_{ik}$ have to belong to a *certain class of functions* in order to yield the Euclidean type of geometry. If the $g_{ik}$ are not thus restricted, a new type of geometry emerges, characterized by two fundamental properties:
+Riemann's discovery was that the definition of the line element gives not only a new, but a much more *general*, basis for building geometry than the older basis of Euclidean postulates. The $g\_{ik}$ have to belong to a *certain class of functions* in order to yield the Euclidean type of geometry. If the $g\_{ik}$ are not thus restricted, a new type of geometry emerges, characterized by two fundamental properties:
 
 1. The properties of space change from point to point, but only in a *continuous* fashion.
 2. Although Euclidean geometry does not hold in large regions, it holds in *infinitesimal* regions.
@@ -298,7 +298,7 @@ Riemann showed how one may obtain by differentiation a characteristic quantity, 
 
 </div>
 
-The kinetic energy is a scalar quantity and defined as $T = \frac{1}{2}\sum_{i=1}^{N} m_i v_i^2$ for a system of particles. Now let us define the line element of a $3N$-dimensional space by
+The kinetic energy is a scalar quantity and defined as $T = \frac{1}{2}\sum\_{i=1}^{N} m\_i v\_i^2$ for a system of particles. Now let us define the line element of a $3N$-dimensional space by
 
 $$d\bar{s}^2 = 2T \, dt^2 = \sum_{i=1}^{N} m_i(dx_i^2 + dy_i^2 + dz_i^2).$$
 
@@ -311,7 +311,7 @@ $$T = \tfrac{1}{2} m \left(\frac{ds}{dt}\right)^2, \quad \text{with } m = 1.$$
 
 *The kinetic energy of the whole system may be replaced by the kinetic energy of one single particle of mass 1.* This imaginary particle is a point of the $3N$-dimensional configuration space which symbolizes the position of the mechanical system. In this space one point is sufficient to represent the mechanical system, and hence we can carry over the mechanics of a free particle to any mechanical system if we place that particle in a space of the proper number of dimensions and proper geometry.
 
-If kinematical conditions are present, the line element in terms of the $n$ generalized coordinates $q_i$ takes the form
+If kinematical conditions are present, the line element in terms of the $n$ generalized coordinates $q\_i$ takes the form
 
 $$d\bar{s}^2 = \sum_{i,k=1}^{n} a_{ik} \, dq_i \, dq_k,$$
 
@@ -336,7 +336,7 @@ However, if we start with a differential relation of the form
 
 $$A_1 \, dq_1 + \cdots + A_n \, dq_n = 0,$$
 
-where the coefficients $A_k$ are given functions of the $q_k$, this relation is convertible into a finite (holonomic) form only if certain integrability conditions are satisfied. If the integrability conditions are *not* satisfied, the kinematical condition is called **non-holonomic**.
+where the coefficients $A\_k$ are given functions of the $q\_k$, this relation is convertible into a finite (holonomic) form only if certain integrability conditions are satisfied. If the integrability conditions are *not* satisfied, the kinematical condition is called **non-holonomic**.
 
 </div>
 
@@ -354,11 +354,11 @@ The *differentials* of $\alpha$, $\beta$, $\gamma$ are expressible in terms of t
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Testing Integrability)</span></p>
 
-For the simplest case of one condition between three variables $dq_3 = B_1\,dq_1 + B_2\,dq_2$, the integrability condition is:
+For the simplest case of one condition between three variables $dq\_3 = B\_1\,dq\_1 + B\_2\,dq\_2$, the integrability condition is:
 
 $$\frac{\partial B_1}{\partial q_2} + \frac{\partial B_1}{\partial q_3} B_2 = \frac{\partial B_2}{\partial q_1} + \frac{\partial B_2}{\partial q_3} B_1.$$
 
-If this relation is satisfied identically for all values of $q_1$ and $q_2$, the condition is holonomic; otherwise it is non-holonomic. In the case of more than two independent variables, all the integrability conditions $\frac{\partial B_i}{\partial q_k} = \frac{\partial B_k}{\partial q_i}$ have to be tested in a similar manner.
+If this relation is satisfied identically for all values of $q\_1$ and $q\_2$, the condition is holonomic; otherwise it is non-holonomic. In the case of more than two independent variables, all the integrability conditions $\frac{\partial B\_i}{\partial q\_k} = \frac{\partial B\_k}{\partial q\_i}$ have to be tested in a similar manner.
 
 Holonomic conditions can be attacked in *two* ways: we can eliminate $m$ of the variables and reduce the problem to $n - m$ independent variables, or we can operate with a surplus number of variables and retain the given relations as auxiliary conditions. Non-holonomic conditions necessitate the *second* form of treatment --- a reduction in variables is not possible.
 
@@ -371,15 +371,15 @@ The two sides of the Newtonian equation of motion correspond to two fundamentall
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Force)</span></p>
 
-Let each particle of mass $m_i$ with rectangular coordinates $x_i, y_i, z_i$ be acted on by a force $F_i$ with components $X_i, Y_i, Z_i$. The total work of all the impressed forces for arbitrary infinitesimal displacements is
+Let each particle of mass $m\_i$ with rectangular coordinates $x\_i, y\_i, z\_i$ be acted on by a force $F\_i$ with components $X\_i, Y\_i, Z\_i$. The total work of all the impressed forces for arbitrary infinitesimal displacements is
 
 $$d\bar{w} = \sum_{i=1}^{N} (X_i \, dx_i + Y_i \, dy_i + Z_i \, dz_i).$$
 
-When the rectangular coordinates are expressed in terms of the generalized coordinates $q_1, \ldots, q_n$, the infinitesimal work comes out as a linear differential form:
+When the rectangular coordinates are expressed in terms of the generalized coordinates $q\_1, \ldots, q\_n$, the infinitesimal work comes out as a linear differential form:
 
 $$d\bar{w} = F_1 \, dq_1 + F_2 \, dq_2 + \cdots + F_n \, dq_n.$$
 
-The coefficients $F_1, F_2, \ldots, F_n$ are called the components of the **generalized force**. These quantities form the components of a vector of the $n$-dimensional configuration space. They are analytically defined as the coefficients of an invariant differential form of the first order which gives the total work of all the impressed forces for an arbitrary infinitesimal change of the position of the system.
+The coefficients $F\_1, F\_2, \ldots, F\_n$ are called the components of the **generalized force**. These quantities form the components of a vector of the $n$-dimensional configuration space. They are analytically defined as the coefficients of an invariant differential form of the first order which gives the total work of all the impressed forces for an arbitrary infinitesimal change of the position of the system.
 
 </div>
 
@@ -405,7 +405,7 @@ $$V = -U, \quad \text{so that} \quad F_i = -\frac{\partial V}{\partial q_i}.$$
 
 Forces which are derivable from a scalar quantity (a work function), irrespective of whether they are conservative or not, are called **monogenic** (single-generated). Forces which are not derivable from a scalar function --- such as friction --- are called **polygenic**.
 
-If the work function depends only on the position coordinates, $U = U(q_1, \ldots, q_n)$, then the forces are called **conservative forces**, because they satisfy the law of the conservation of energy.
+If the work function depends only on the position coordinates, $U = U(q\_1, \ldots, q\_n)$, then the forces are called **conservative forces**, because they satisfy the law of the conservation of energy.
 
 The work function in the most general case may also be a function of the coordinates *and the velocities*:
 
@@ -424,8 +424,8 @@ $$F_i = \frac{\partial U}{\partial q_i} - \frac{d}{dt}\frac{\partial U}{\partial
 
 Boltzmann used the terms **rheonomic** and **scleronomic** as distinguishing names for kinematical conditions which do or do not involve the time $t$:
 
-* A kinematical condition is **scleronomic** if it does not contain the time $t$ explicitly: $f(q_1, \ldots, q_n) = 0$.
-* A kinematical condition is **rheonomic** if it contains the time $t$ explicitly: $f(q_1, \ldots, q_n, t) = 0$.
+* A kinematical condition is **scleronomic** if it does not contain the time $t$ explicitly: $f(q\_1, \ldots, q\_n) = 0$.
+* A kinematical condition is **rheonomic** if it contains the time $t$ explicitly: $f(q\_1, \ldots, q\_n, t) = 0$.
 
 This is the situation, for example, if a mass point moves on a surface which itself is moving according to a given law, or a pendulum whose length is being constantly changed by pulling the thread.
 
@@ -434,11 +434,11 @@ This is the situation, for example, if a mass point moves on a surface which its
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Consequences of Rheonomic Conditions)</span></p>
 
-If rheonomic conditions are present, the elimination of these conditions by a proper choice of curvilinear coordinates will have the consequence that the transformation equations $x_i = f_i(q_1, \ldots, q_n, t)$ contain $t$ explicitly. Differentiating with respect to $t$:
+If rheonomic conditions are present, the elimination of these conditions by a proper choice of curvilinear coordinates will have the consequence that the transformation equations $x\_i = f\_i(q\_1, \ldots, q\_n, t)$ contain $t$ explicitly. Differentiating with respect to $t$:
 
 $$\dot{x}_1 = \frac{\partial f_1}{\partial q_1}\dot{q}_1 + \cdots + \frac{\partial f_1}{\partial q_n}\dot{q}_n + \frac{\partial f_1}{\partial t}.$$
 
-If these expressions are substituted in the definition of kinetic energy, it will not come out as a purely quadratic form of the generalized velocities $\dot{q}_i$; we obtain additional new terms which are linear in the velocities, and others which are independent of the velocities. The Riemannian geometry of the configuration space ceases to play the role that it has before.
+If these expressions are substituted in the definition of kinetic energy, it will not come out as a purely quadratic form of the generalized velocities $\dot{q}\_i$; we obtain additional new terms which are linear in the velocities, and others which are independent of the velocities. The Riemannian geometry of the configuration space ceases to play the role that it has before.
 
 A similar situation arises even without time-dependent kinematical conditions, if the coordinates chosen belong to a reference system *which is in motion*.
 
@@ -493,11 +493,11 @@ A **variation** is a virtual and infinitesimal change of the position. Lagrange 
 
 </div>
 
-The infinitesimal virtual changes of coordinates are written as $\delta u_1, \delta u_2, \ldots, \delta u_n$. The corresponding change of the function $F$ becomes by the rules of elementary calculus:
+The infinitesimal virtual changes of coordinates are written as $\delta u\_1, \delta u\_2, \ldots, \delta u\_n$. The corresponding change of the function $F$ becomes by the rules of elementary calculus:
 
 $$\delta F = \frac{\partial F}{\partial u_1} \delta u_1 + \frac{\partial F}{\partial u_2} \delta u_2 + \cdots + \frac{\partial F}{\partial u_n} \delta u_n.$$
 
-This expression is called the **first variation** of the function $F$. To operate with finite rather than infinitesimal quantities, we put $\delta u_i = \epsilon a_i$, where $a_1, \ldots, a_n$ are the direction cosines of the virtual direction and $\epsilon$ tends toward zero. The rate of change becomes:
+This expression is called the **first variation** of the function $F$. To operate with finite rather than infinitesimal quantities, we put $\delta u\_i = \epsilon a\_i$, where $a\_1, \ldots, a\_n$ are the direction cosines of the virtual direction and $\epsilon$ tends toward zero. The rate of change becomes:
 
 $$\frac{\delta F}{\epsilon} = \frac{\partial F}{\partial u_1} a_1 + \frac{\partial F}{\partial u_2} a_2 + \cdots + \frac{\partial F}{\partial u_n} a_n.$$
 
@@ -508,13 +508,13 @@ The necessary and sufficient condition that a function $F$ of $n$ variables shal
 
 $$\frac{\partial F}{\partial u_k} = 0, \quad (k = 1, 2, \ldots, n).$$
 
-These equations determine the *position* of a stationary value rather than the stationary value itself. If we have found the $n$ values $u_1, \ldots, u_n$ which satisfy these $n$ equations, we can substitute them in $F$ to obtain the stationary value of the function.
+These equations determine the *position* of a stationary value rather than the stationary value itself. If we have found the $n$ values $u\_1, \ldots, u\_n$ which satisfy these $n$ equations, we can substitute them in $F$ to obtain the stationary value of the function.
 
 </div>
 
 ### 3. The Second Variation
 
-Let us once more determine the infinitesimal change of a function due to a virtual variation of the coordinates. Writing the variation in the form $\delta u_i = \epsilon a_i$, we have to evaluate:
+Let us once more determine the infinitesimal change of a function due to a virtual variation of the coordinates. Writing the variation in the form $\delta u\_i = \epsilon a\_i$, we have to evaluate:
 
 $$\Delta F = F(u_1 + \epsilon a_1, u_2 + \epsilon a_2, \ldots, u_n + \epsilon a_n) - F(u_1, u_2, \ldots, u_n).$$
 
@@ -544,11 +544,11 @@ This expression is called the **second variation** of $F$.
 
 The sign of the second variation determines the existence of an extremum:
 
-- If $\delta^2 F$ is always **positive** (no matter what values the direction cosines $a_i$ take, subject to the constraint that their squares sum to 1), then $F$ is *increasing* in every possible direction from $P$ and we have a real **minimum**.
+- If $\delta^2 F$ is always **positive** (no matter what values the direction cosines $a\_i$ take, subject to the constraint that their squares sum to 1), then $F$ is *increasing* in every possible direction from $P$ and we have a real **minimum**.
 - If $\delta^2 F$ is always **negative**, then $F$ is *decreasing* in every direction and we have a real **maximum**.
 - If $\delta^2 F$ is positive in some directions and negative in others, then we have **neither a maximum nor a minimum** (a saddle point).
 
-To test whether $\delta^2 F$ can change sign, one checks whether the equation $\delta^2 F = 0$ has real solutions for the $a_i$. If it does, no extremum exists. If no real solution exists, then $\delta^2 F$ cannot change sign and an extremum is present.
+To test whether $\delta^2 F$ can change sign, one checks whether the equation $\delta^2 F = 0$ has real solutions for the $a\_i$. If it does, no extremum exists. If no real solution exists, then $\delta^2 F$ cannot change sign and an extremum is present.
 
 </div>
 
@@ -574,7 +574,7 @@ The problem of minimizing a function does not always present itself as a free va
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lagrangian Multiplier Method --- Single Constraint)</span></p>
 
-Consider the variation of the function $F = F(u_1, u_2, \ldots, u_n)$ with a single auxiliary condition $f(u_1, \ldots, u_n) = 0$.
+Consider the variation of the function $F = F(u\_1, u\_2, \ldots, u\_n)$ with a single auxiliary condition $f(u\_1, \ldots, u\_n) = 0$.
 
 Taking the variation of the auxiliary condition gives
 
@@ -588,17 +588,17 @@ The Lagrangian method multiplies $\delta f$ by an undetermined factor $\lambda$ 
 
 $$\sum_{k=1}^{n} \left( \frac{\partial F}{\partial u_k} + \lambda \frac{\partial f}{\partial u_k} \right) \delta u_k = 0.$$
 
-We choose $\lambda$ so that the factor multiplying $\delta u_n$ vanishes: $\frac{\partial F}{\partial u_n} + \lambda \frac{\partial f}{\partial u_n} = 0$. After this elimination, all remaining $\delta u_k$ are free variations, leading to:
+We choose $\lambda$ so that the factor multiplying $\delta u\_n$ vanishes: $\frac{\partial F}{\partial u\_n} + \lambda \frac{\partial f}{\partial u\_n} = 0$. After this elimination, all remaining $\delta u\_k$ are free variations, leading to:
 
 $$\frac{\partial F}{\partial u_k} + \lambda \frac{\partial f}{\partial u_k} = 0, \quad (k = 1, 2, \ldots, n-1).$$
 
-Combined with the condition on $\lambda$, we obtain $n$ equations that hold for *all* $k = 1, \ldots, n$, *just as if all the variations $\delta u_k$ were free*.
+Combined with the condition on $\lambda$, we obtain $n$ equations that hold for *all* $k = 1, \ldots, n$, *just as if all the variations $\delta u\_k$ were free*.
 
 Equivalently, instead of putting the first variation of $F$ equal to zero, we modify the function $F$ to
 
 $$\bar{F} = F + \lambda f,$$
 
-and put its first variation equal to zero for *arbitrary* variations of the $u_k$.
+and put its first variation equal to zero for *arbitrary* variations of the $u\_k$.
 
 </div>
 
@@ -617,7 +617,7 @@ dropping the auxiliary conditions and handling this as a free variation problem.
 
 $$\frac{\partial F}{\partial u_k} + \lambda_1 \frac{\partial f_1}{\partial u_k} + \cdots + \lambda_m \frac{\partial f_m}{\partial u_k} = 0, \quad (k = 1, \ldots, n),$$
 
-together with the $m$ auxiliary conditions, giving $n + m$ equations for the $n + m$ unknowns $u_1, \ldots, u_n; \lambda_1, \ldots, \lambda_m$.
+together with the $m$ auxiliary conditions, giving $n + m$ equations for the $n + m$ unknowns $u\_1, \ldots, u\_n; \lambda\_1, \ldots, \lambda\_m$.
 
 The method of Lagrange permits the use of surplus coordinates --- a great convenience in many considerations of mechanics. It preserves the full symmetry of all coordinates by making it unnecessary to distinguish between dependent and independent variables.
 
@@ -634,11 +634,11 @@ Non-holonomic conditions cannot be handled by the elimination method, because th
 
 $$\bar{\delta} f_i = A_{i1} \delta u_1 + A_{i2} \delta u_2 + \cdots + A_{in} \delta u_n = 0, \quad (i = 1, \ldots, m).$$
 
-Here the $A_{ik}$ are given functions of the $u_i$ which cannot be considered as the partial derivatives of a function $f_i$. By exactly the same procedure as before, we obtain an equation analogous to the holonomic case:
+Here the $A\_{ik}$ are given functions of the $u\_i$ which cannot be considered as the partial derivatives of a function $f\_i$. By exactly the same procedure as before, we obtain an equation analogous to the holonomic case:
 
 $$\delta F + \lambda_1 \bar{\delta} f_1 + \cdots + \lambda_m \bar{\delta} f_m = 0,$$
 
-and again all the $\delta u_k$ are handled as free variations. The only difference lies in the fact that we cannot proceed to the integrated form $\delta(F + \lambda_1 f_1 + \cdots + \lambda_m f_m) = 0$ and have to be content with the differential formulation. The reduction of a conditioned variation problem to a free variation problem is once more accomplished.
+and again all the $\delta u\_k$ are handled as free variations. The only difference lies in the fact that we cannot proceed to the integrated form $\delta(F + \lambda\_1 f\_1 + \cdots + \lambda\_m f\_m) = 0$ and have to be content with the differential formulation. The reduction of a conditioned variation problem to a free variation problem is once more accomplished.
 
 </div>
 
@@ -666,13 +666,13 @@ with boundary conditions $f(a) = \alpha$, $f(b) = \beta$. The problem is to find
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Function Space and Hilbert's Approach)</span></p>
 
-At first sight this problem appears utterly different from the previous problem where we dealt with the extremum of a function $F(u_1, \ldots, u_n)$ of a set of variables. Instead of a *function*, a *definite integral* must be minimized. Moreover, instead of a *set of variables* $u_1, \ldots, u_n$ we have a certain unknown *function* $y = f(x)$ at our disposal. Yet closer inspection reveals that the mathematical nature of this new problem is not substantially different from the previous one.
+At first sight this problem appears utterly different from the previous problem where we dealt with the extremum of a function $F(u\_1, \ldots, u\_n)$ of a set of variables. Instead of a *function*, a *definite integral* must be minimized. Moreover, instead of a *set of variables* $u\_1, \ldots, u\_n$ we have a certain unknown *function* $y = f(x)$ at our disposal. Yet closer inspection reveals that the mathematical nature of this new problem is not substantially different from the previous one.
 
 Using the concept of the "function space" originated by Hilbert, the arbitrary function $y = f(x)$ can be expanded in an infinite Fourier series throughout the given range between $a$ and $b$. The coefficients of this expansion are uniquely determined and can be plotted as rectangular coordinates of a point $P$ in a $(2n+1)$-dimensional space. The problem of finding the function $f(x)$ which minimizes the definite integral $I$ is translated into the problem of finding the deepest point of a surface in a space of $2n + 2$ dimensions.
 
 </div>
 
-Euler has shown how the problem can be solved by elementary means, without resorting to the tools of a specific calculus. A definite integral can be replaced by a sum of an increasing number of terms, and the derivative can be replaced by a difference coefficient. We divide the interval between $x = a$ and $x = b$ into many equal small intervals, obtaining abscissa values $x_0 = a, x_1, x_2, \ldots, x_n, x_{n+1} = b$ and corresponding ordinates $y_0 = \alpha, y_1, \ldots, y_n, y_{n+1} = \beta$. The derivative $f'(x_k)$ is replaced by the difference coefficient
+Euler has shown how the problem can be solved by elementary means, without resorting to the tools of a specific calculus. A definite integral can be replaced by a sum of an increasing number of terms, and the derivative can be replaced by a difference coefficient. We divide the interval between $x = a$ and $x = b$ into many equal small intervals, obtaining abscissa values $x\_0 = a, x\_1, x\_2, \ldots, x\_n, x\_{n+1} = b$ and corresponding ordinates $y\_0 = \alpha, y\_1, \ldots, y\_n, y\_{n+1} = \beta$. The derivative $f'(x\_k)$ is replaced by the difference coefficient
 
 $$z_k = \frac{y_{k+1} - y_k}{x_{k+1} - x_k},$$
 
@@ -680,7 +680,7 @@ and the integral by the sum
 
 $$S' = \sum_{j=0}^{n} F(y_{j+1}, z_j, x_j)(x_{j+1} - x_j).$$
 
-Setting the partial derivatives of $S'$ with respect to $y_{k+1}$ equal to zero and passing to the limit as $\Delta x \to 0$, we arrive at a differential equation.
+Setting the partial derivatives of $S'$ with respect to $y\_{k+1}$ equal to zero and passing to the limit as $\Delta x \to 0$, we arrive at a differential equation.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler--Lagrange Differential Equation)</span></p>
@@ -689,7 +689,7 @@ The fundamental equation discovered independently by Euler and Lagrange, called 
 
 $$\frac{\partial F}{\partial y} - \frac{d}{dx}\left(\frac{\partial F}{\partial y'}\right) = 0, \quad (a \leq x \leq b).$$
 
-This equation is the necessary and sufficient condition for the integral $I = \int_a^b F(y, y', x)\,dx$ to be stationary, given boundary conditions $y(a) = \alpha$, $y(b) = \beta$. The two limiting ordinates $y_0$ and $y_{n+1}$ are *given quantities* and thus remain unvaried.
+This equation is the necessary and sufficient condition for the integral $I = \int\_a^b F(y, y', x)\,dx$ to be stationary, given boundary conditions $y(a) = \alpha$, $y(b) = \beta$. The two limiting ordinates $y\_0$ and $y\_{n+1}$ are *given quantities* and thus remain unvaried.
 
 </div>
 
@@ -767,7 +767,7 @@ Variation and integration are **permutable** processes.
 
 ### 10. The Stationary Value of a Definite Integral Treated by the Calculus of Variations
 
-We consider once more the problem of Section 7, but this time treated by the direct methods of the calculus of variations. Given the definite integral $I = \int_a^b F(y, y', x)\,dx$ with boundary conditions $y(a) = \alpha$, $y(b) = \beta$, the stationary value of this integral is to be found.
+We consider once more the problem of Section 7, but this time treated by the direct methods of the calculus of variations. Given the definite integral $I = \int\_a^b F(y, y', x)\,dx$ with boundary conditions $y(a) = \alpha$, $y(b) = \beta$, the stationary value of this integral is to be found.
 
 We start out with the variation of the integrand $F(y, y', x)$ itself, caused by the variation of $y$ (remembering that $F$ is a *given function* of the three variables $y$, $y'$, $x$ and this functional dependence is *not altered* by the process of variation):
 
@@ -833,13 +833,13 @@ In mechanics the problem of variation presents itself in the following form. Fin
 
 $$I = \int_{t_1}^{t_2} L(q_1, \ldots, q_n; \dot{q}_1, \ldots, \dot{q}_n; t)\,dt,$$
 
-with the boundary conditions that the $q_k$ are given (and thus their variation is zero) at the two end-points $t_1$ and $t_2$:
+with the boundary conditions that the $q\_k$ are given (and thus their variation is zero) at the two end-points $t\_1$ and $t\_2$:
 
 $$[\delta q_k(t)]_{t=t_1} = 0, \quad [\delta q_k(t)]_{t=t_2} = 0.$$
 
-The $q_1, \ldots, q_n$ are unknown functions of $t$, to be determined by the condition that the actual motion shall make the integral $I$ stationary: $\delta I = 0$, for arbitrary independent variations of the $q_k$, subject only to the boundary conditions.
+The $q\_1, \ldots, q\_n$ are unknown functions of $t$, to be determined by the condition that the actual motion shall make the integral $I$ stationary: $\delta I = 0$, for arbitrary independent variations of the $q\_k$, subject only to the boundary conditions.
 
-We can select one definite $q_k$ and vary it all by itself, leaving the other $q_i$ unchanged. Hence we can apply the Euler--Lagrange equation to our present problem, after adapting the notation: $y$ corresponds to $q_k$, $y'$ to $\dot{q}_k$, the independent variable $x$ is now the time $t$, and the function $F$ is denoted by $L$.
+We can select one definite $q\_k$ and vary it all by itself, leaving the other $q\_i$ unchanged. Hence we can apply the Euler--Lagrange equation to our present problem, after adapting the notation: $y$ corresponds to $q\_k$, $y'$ to $\dot{q}\_k$, the independent variable $x$ is now the time $t$, and the function $F$ is denoted by $L$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler--Lagrange Equations for $n$ Degrees of Freedom)</span></p>
@@ -850,18 +850,18 @@ $$\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_k} - \frac{\partial L}{\partial
 
 These are called the **differential equations of Euler and Lagrange**, or, if applied to problems of mechanics, the **Lagrangian equations of motion**.
 
-The variations employed so far are but *special* variations --- we vary each $q_k$ one at a time. But on account of the superposition principle of infinitesimal processes, a simultaneous variation of all the $q_k$ would not bring in additional conditions. Denoting by $\delta_k I$ the variation of $I$ produced by varying $q_k$ alone, the simultaneous variation of all the $q_k$ produces:
+The variations employed so far are but *special* variations --- we vary each $q\_k$ one at a time. But on account of the superposition principle of infinitesimal processes, a simultaneous variation of all the $q\_k$ would not bring in additional conditions. Denoting by $\delta\_k I$ the variation of $I$ produced by varying $q\_k$ alone, the simultaneous variation of all the $q\_k$ produces:
 
 $$\delta I = \delta_1 I + \delta_2 I + \cdots + \delta_n I.$$
 
-If each $\delta_k I$ vanishes separately, then $\delta I$ is zero for *arbitrary* variations of the $q_k$.
+If each $\delta\_k I$ vanishes separately, then $\delta I$ is zero for *arbitrary* variations of the $q\_k$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Nature of the Lagrangian Equations)</span></p>
 
-With the exception of the singular case in which the function $L$ depends on some or all the $\dot{q}_k$ in a *linear* way, the partial derivatives $\frac{\partial L}{\partial \dot{q}_k}$ will contain all the $\dot{q}_k$, so that differentiation with respect to $t$ brings in all the second derivatives $\ddot{q}_k$. We can solve the equations for the $\ddot{q}_k$ algebraically and thus rewrite the differential equations in the following explicit form:
+With the exception of the singular case in which the function $L$ depends on some or all the $\dot{q}\_k$ in a *linear* way, the partial derivatives $\frac{\partial L}{\partial \dot{q}\_k}$ will contain all the $\dot{q}\_k$, so that differentiation with respect to $t$ brings in all the second derivatives $\ddot{q}\_k$. We can solve the equations for the $\ddot{q}\_k$ algebraically and thus rewrite the differential equations in the following explicit form:
 
 $$\ddot{q}_k = \phi_k(q_1, \ldots, q_n, \dot{q}_1, \ldots, \dot{q}_n, t).$$
 
@@ -869,22 +869,22 @@ The integration of such a system of differential equations of the second order i
 
 $$q_k = q_k(A_1, \ldots, A_n; B_1, \ldots, B_n; t).$$
 
-The constants $A_k$ and $B_k$ can be adjusted to the given boundary conditions. In mechanical problems more frequently *initial conditions* take the place of boundary conditions. The freedom of $2n$ constants of integration allows all the initial position coordinates and velocities to be prescribed arbitrarily.
+The constants $A\_k$ and $B\_k$ can be adjusted to the given boundary conditions. In mechanical problems more frequently *initial conditions* take the place of boundary conditions. The freedom of $2n$ constants of integration allows all the initial position coordinates and velocities to be prescribed arbitrarily.
 
 </div>
 
 ### 12. Variation with Auxiliary Conditions
 
-We consider once more the problem of the previous paragraph, with the modification that the variables $q_1, \ldots, q_n$ shall not be independent, but restricted by given auxiliary conditions of the form:
+We consider once more the problem of the previous paragraph, with the modification that the variables $q\_1, \ldots, q\_n$ shall not be independent, but restricted by given auxiliary conditions of the form:
 
 $$f_1(q_1, \ldots, q_n, t) = 0, \quad \ldots, \quad f_m(q_1, \ldots, q_n, t) = 0.$$
 
-It is possible to eliminate $m$ of the $q_k$ in terms of the other variables and thus reduce the problem to $n - m$ degrees of freedom. However, this elimination may be rather cumbersome, and the conditions between the variables may make the distinction between dependent and independent variables artificial. Here again the method of the Lagrangian multiplier, studied before in Section 5, gives an adequate solution.
+It is possible to eliminate $m$ of the $q\_k$ in terms of the other variables and thus reduce the problem to $n - m$ degrees of freedom. However, this elimination may be rather cumbersome, and the conditions between the variables may make the distinction between dependent and independent variables artificial. Here again the method of the Lagrangian multiplier, studied before in Section 5, gives an adequate solution.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lagrangian $\lambda$-method for Variational Problems with Auxiliary Conditions)</span></p>
 
-Given the variational problem of making the integral $I = \int_{t_1}^{t_2} L\,dt$ stationary, with $m$ auxiliary conditions $f_i(q_1, \ldots, q_n, t) = 0$ $(i = 1, \ldots, m)$, we multiply the variation of each auxiliary condition by an undetermined $\lambda$-factor and add it to $\delta I$:
+Given the variational problem of making the integral $I = \int\_{t\_1}^{t\_2} L\,dt$ stationary, with $m$ auxiliary conditions $f\_i(q\_1, \ldots, q\_n, t) = 0$ $(i = 1, \ldots, m)$, we multiply the variation of each auxiliary condition by an undetermined $\lambda$-factor and add it to $\delta I$:
 
 $$\delta I' = \delta \int_{t_1}^{t_2} L\,dt + \int_{t_1}^{t_2} (\lambda_1 \delta f_1 + \cdots + \lambda_m \delta f_m)\,dt = 0.$$
 
@@ -896,20 +896,20 @@ This is equivalent to replacing the original integrand $L$ by the modified integ
 
 $$L' = L + \lambda_1 f_1 + \cdots + \lambda_m f_m,$$
 
-and considering the variation of $I' = \int_{t_1}^{t_2} L'\,dt$, dropping the auxiliary conditions and handling all the $q_k$ as independent variables.
+and considering the variation of $I' = \int\_{t\_1}^{t\_2} L'\,dt$, dropping the auxiliary conditions and handling all the $q\_k$ as independent variables.
 
-The solution of the $n$ differential equations together with the $m$ auxiliary conditions determines both the $q_k$ and the $\lambda_i$ as functions of $t$. In the matter of initial conditions we can choose arbitrarily only $n - m$ position coordinates and $n - m$ velocities, because the remaining $q_i$ and $\dot{q}_i$ are determined by the auxiliary conditions.
+The solution of the $n$ differential equations together with the $m$ auxiliary conditions determines both the $q\_k$ and the $\lambda\_i$ as functions of $t$. In the matter of initial conditions we can choose arbitrarily only $n - m$ position coordinates and $n - m$ velocities, because the remaining $q\_i$ and $\dot{q}\_i$ are determined by the auxiliary conditions.
 
 </div>
 
 ### 13. Non-holonomic Conditions
 
-If the auxiliary conditions of the variational problem are not given as algebraic relations between the variables, but as differential relations --- cf. Chapter I, Section 6 and Chapter II, Section 6 --- the Lagrangian $\lambda$-method is still applicable. The only modification is that the $\frac{\partial f_i}{\partial q_k}$ are replaced by the coefficients $A_{ik}$ of the non-holonomic conditions.
+If the auxiliary conditions of the variational problem are not given as algebraic relations between the variables, but as differential relations --- cf. Chapter I, Section 6 and Chapter II, Section 6 --- the Lagrangian $\lambda$-method is still applicable. The only modification is that the $\frac{\partial f\_i}{\partial q\_k}$ are replaced by the coefficients $A\_{ik}$ of the non-holonomic conditions.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Non-holonomic Conditions in Variational Problems)</span></p>
 
-A difference exists in the matter of initial conditions. The coordinates $q_i$ are at present not restricted by any conditions, only their differentials. Hence the initial values of all the $q_i$ can now be prescribed arbitrarily. The velocities, however, are restricted on account of the given conditions
+A difference exists in the matter of initial conditions. The coordinates $q\_i$ are at present not restricted by any conditions, only their differentials. Hence the initial values of all the $q\_i$ can now be prescribed arbitrarily. The velocities, however, are restricted on account of the given conditions
 
 $$A_{i1}\dot{q}_1 + \cdots + A_{in}\dot{q}_n = 0, \quad (i = 1, \ldots, m).$$
 
@@ -917,11 +917,11 @@ We can thus assign arbitrarily $n$ initial position coordinates and $n - m$ init
 
 The $m$ equations above serve not only the purpose of eliminating $m$ of the initial velocities. They have the further function of determining the $\lambda$-factors which enter the equations of motion as undetermined multipliers.
 
-Non-holonomic auxiliary conditions which are rheonomic, i.e. time-dependent, require particular care. Here it is necessary to know what conditions exist between the $\delta q_k$ if the variation is not performed instantaneously but during the infinitesimal time $\delta t$. The auxiliary conditions now take the form
+Non-holonomic auxiliary conditions which are rheonomic, i.e. time-dependent, require particular care. Here it is necessary to know what conditions exist between the $\delta q\_k$ if the variation is not performed instantaneously but during the infinitesimal time $\delta t$. The auxiliary conditions now take the form
 
 $$A_{i1}\delta q_1 + \cdots + A_{in}\delta q_n + B_i\delta t = 0,$$
 
-with coefficients $A_{ik}$ and $B_i$ which are in general functions of the $q_i$ and the time $t$. The quantities $B_i$ do not enter into the equations of motion since the virtual displacements $\delta q_k$ are performed *without* varying the time; but they do enter into the relations which exist between the velocities:
+with coefficients $A\_{ik}$ and $B\_i$ which are in general functions of the $q\_i$ and the time $t$. The quantities $B\_i$ do not enter into the equations of motion since the virtual displacements $\delta q\_k$ are performed *without* varying the time; but they do enter into the relations which exist between the velocities:
 
 $$A_{i1}\dot{q}_1 + \cdots + A_{in}\dot{q}_n + B_i = 0.$$
 
@@ -929,7 +929,7 @@ $$A_{i1}\dot{q}_1 + \cdots + A_{in}\dot{q}_n + B_i = 0.$$
 
 ### 14. Isoperimetric Conditions
 
-It can happen that an auxiliary condition does not appear as an algebraic relation between the $q_k$, but in the form of a definite integral which must have a prescribed value $C$:
+It can happen that an auxiliary condition does not appear as an algebraic relation between the $q\_k$, but in the form of a definite integral which must have a prescribed value $C$:
 
 $$\int_{t_1}^{t_2} f(q_1, \ldots, q_n, t)\,dt = C.$$
 
@@ -938,13 +938,13 @@ Auxiliary conditions of this form are called **isoperimetric conditions**, since
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lagrangian $\lambda$-method for Isoperimetric Conditions)</span></p>
 
-Consider the variational problem of making $I = \int_{t_1}^{t_2} L\,dt$ stationary, subject to the isoperimetric condition $\int_{t_1}^{t_2} f(q_1, \ldots, q_n, t)\,dt = C$.
+Consider the variational problem of making $I = \int\_{t\_1}^{t\_2} L\,dt$ stationary, subject to the isoperimetric condition $\int\_{t\_1}^{t\_2} f(q\_1, \ldots, q\_n, t)\,dt = C$.
 
-The condition must hold not only for the actual functions $q_1, \ldots, q_n$ which make $I$ stationary, but also for the varied functions $\bar{q}_1, \ldots, \bar{q}_n$. Taking the variation of the isoperimetric condition gives the integral relation between the $\delta q_k$:
+The condition must hold not only for the actual functions $q\_1, \ldots, q\_n$ which make $I$ stationary, but also for the varied functions $\bar{q}\_1, \ldots, \bar{q}\_n$. Taking the variation of the isoperimetric condition gives the integral relation between the $\delta q\_k$:
 
 $$\int_{t_1}^{t_2} \left(\frac{\partial f}{\partial q_1}\delta q_1 + \cdots + \frac{\partial f}{\partial q_n}\delta q_n\right)dt = 0.$$
 
-It is allowable to multiply the left-hand side by some undetermined constant $\lambda$ and add it to $\delta I$. By similar reasoning as in Section 12, we can always determine $\lambda$ such that the integral shall vanish for *arbitrary* variations of the $\delta q_k$. This gives the principle that with a proper choice of $\lambda$ we have
+It is allowable to multiply the left-hand side by some undetermined constant $\lambda$ and add it to $\delta I$. By similar reasoning as in Section 12, we can always determine $\lambda$ such that the integral shall vanish for *arbitrary* variations of the $\delta q\_k$. This gives the principle that with a proper choice of $\lambda$ we have
 
 $$\delta \int_{t_1}^{t_2} (L + \lambda f)\,dt = 0,$$
 
@@ -954,7 +954,7 @@ $$L' = L + \lambda f,$$
 
 where $\lambda$ is an undetermined *constant* (not a function of $t$, in contrast to the case of algebraic auxiliary conditions). The constant can be determined by satisfying the given isoperimetric condition.
 
-The same $\lambda$-method applies if the isoperimetric condition depends not only on the $q_k$ but also on their derivatives with respect to $t$:
+The same $\lambda$-method applies if the isoperimetric condition depends not only on the $q\_k$ but also on their derivatives with respect to $t$:
 
 $$\int_{t_1}^{t_2} f(q_1, \ldots, q_n; \dot{q}_1, \ldots, \dot{q}_n; t)\,dt = C.$$
 
@@ -1033,11 +1033,11 @@ In the variational treatment of mechanics the "forces of constraint" which maint
 
 </div>
 
-Let external forces $\mathbf{F}_1, \mathbf{F}_2, \ldots, \mathbf{F}_n$ act at points $P_1, P_2, \ldots, P_n$ of the system. The virtual displacements of these points will be denoted by
+Let external forces $\mathbf{F}\_1, \mathbf{F}\_2, \ldots, \mathbf{F}\_n$ act at points $P\_1, P\_2, \ldots, P\_n$ of the system. The virtual displacements of these points will be denoted by
 
 $$\delta\mathbf{R}_1, \, \delta\mathbf{R}_2, \, \ldots, \, \delta\mathbf{R}_n.$$
 
-These virtual displacements must be in harmony with the given kinematical constraints, and we shall assume that they are *reversible*, i.e. the given constraints do not prevent us from changing an arbitrary $\delta\mathbf{R}_i$ into $-\delta\mathbf{R}_i$.
+These virtual displacements must be in harmony with the given kinematical constraints, and we shall assume that they are *reversible*, i.e. the given constraints do not prevent us from changing an arbitrary $\delta\mathbf{R}\_i$ into $-\delta\mathbf{R}\_i$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Principle of Virtual Work)</span></p>
@@ -1048,22 +1048,22 @@ $$\bar{\delta w} = \mathbf{F}_1 \cdot \delta\mathbf{R}_1 + \mathbf{F}_2 \cdot \d
 
 </div>
 
-Translating this equation into analytical language by expressing the rectangular coordinates $x_i, y_i, z_i$ as functions of the generalized coordinates $q_1, q_2, \ldots, q_n$, the virtual work takes the differential form
+Translating this equation into analytical language by expressing the rectangular coordinates $x\_i, y\_i, z\_i$ as functions of the generalized coordinates $q\_1, q\_2, \ldots, q\_n$, the virtual work takes the differential form
 
 $$\bar{\delta w} = F_1 \delta q_1 + F_2 \delta q_2 + \ldots + F_n \delta q_n,$$
 
-where $F_1, F_2, \ldots, F_n$ are the components of the **generalized force**. They form a vector of the $n$-dimensional configuration space. The principle of virtual work requires that
+where $F\_1, F\_2, \ldots, F\_n$ are the components of the **generalized force**. They form a vector of the $n$-dimensional configuration space. The principle of virtual work requires that
 
 $$F_1 \delta q_1 + F_2 \delta q_2 + \ldots + F_n \delta q_n = 0.$$
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric Interpretation)</span></p>
 
-The left-hand side of the equilibrium equation is the "scalar product" of force and virtual displacement. The vanishing of this scalar product means that *the force $F_i$ is perpendicular to any possible virtual displacement*.
+The left-hand side of the equilibrium equation is the "scalar product" of force and virtual displacement. The vanishing of this scalar product means that *the force $F\_i$ is perpendicular to any possible virtual displacement*.
 
-If the given mechanical system is free of any constraints, then the $C$-point of the configuration space can be displaced in an arbitrary direction. Then the principle requires that the force $F_i$ shall vanish, because there is no vector which can be perpendicular to all directions in space.
+If the given mechanical system is free of any constraints, then the $C$-point of the configuration space can be displaced in an arbitrary direction. Then the principle requires that the force $F\_i$ shall vanish, because there is no vector which can be perpendicular to all directions in space.
 
-If the $C$-point has to stay within a certain $(n - m)$-dimensional subspace of the configuration space, on account of $m$ given kinematical constraints, then the condition no longer requires the vanishing of the force $F_i$, but only its *perpendicularity* to that subspace. This amounts to $n - m$ equations, in conformity with the $n - m$ degrees of freedom of the mechanical system.
+If the $C$-point has to stay within a certain $(n - m)$-dimensional subspace of the configuration space, on account of $m$ given kinematical constraints, then the condition no longer requires the vanishing of the force $F\_i$, but only its *perpendicularity* to that subspace. This amounts to $n - m$ equations, in conformity with the $n - m$ degrees of freedom of the mechanical system.
 
 </div>
 
@@ -1078,7 +1078,7 @@ This postulate is not restricted to the realm of statics. It applies equally to 
 
 </div>
 
-When the impressed force $F_i$ is **monogenic**, i.e. derivable from a single scalar function, the work function $U(q_1, \ldots, q_n)$, the virtual work is equal to the variation of the work function. Since the work function can be replaced by the negative of the potential energy, the state of equilibrium of a mechanical system is distinguished by the stationary value of the potential energy, i.e. by the condition
+When the impressed force $F\_i$ is **monogenic**, i.e. derivable from a single scalar function, the work function $U(q\_1, \ldots, q\_n)$, the virtual work is equal to the variation of the work function. Since the work function can be replaced by the negative of the potential energy, the state of equilibrium of a mechanical system is distinguished by the stationary value of the potential energy, i.e. by the condition
 
 $$\delta V = 0.$$
 
@@ -1088,7 +1088,7 @@ If the equilibrium is *stable*, the potential energy must assume its minimum val
 
 A rigid body which can move freely in space has six degrees of freedom: three on account of translation and three on account of rotation. Making use of the superposition principle of infinitesimal quantities, we can apply these two types of displacements independently of one another.
 
-**(A) Translation.** An infinitesimal translation produces at each point of the rigid body the same displacement. Let $\epsilon$ be the extent of the infinitesimal displacement, and $\mathbf{B}$ a vector of unit length. We then have for the virtual displacement $\delta\mathbf{R}_k$ of the particle $P_k$:
+**(A) Translation.** An infinitesimal translation produces at each point of the rigid body the same displacement. Let $\epsilon$ be the extent of the infinitesimal displacement, and $\mathbf{B}$ a vector of unit length. We then have for the virtual displacement $\delta\mathbf{R}\_k$ of the particle $P\_k$:
 
 $$\delta\mathbf{R}_k = \epsilon\mathbf{B},$$
 
@@ -1102,11 +1102,11 @@ $$\bar{\mathbf{F}} = \Sigma\mathbf{F}_k = 0,$$
 
 which means that *the resultant force $\bar{\mathbf{F}}$ of all the impressed forces vanishes*.
 
-**(B) Rotation.** Let $\epsilon$ be the angle of an infinitesimal rotation, and $\boldsymbol{\Omega}$ a vector of unit length along the axis of rotation. The displacement of the point $P_k$ due to the rotation can be written as
+**(B) Rotation.** Let $\epsilon$ be the angle of an infinitesimal rotation, and $\boldsymbol{\Omega}$ a vector of unit length along the axis of rotation. The displacement of the point $P\_k$ due to the rotation can be written as
 
 $$\delta\mathbf{R}_k = \epsilon\boldsymbol{\Omega} \times \mathbf{R}_k,$$
 
-where $\mathbf{R}_k$ denotes the position vector of $P_k$ with respect to an origin on the axis of rotation. The work of the force $\mathbf{F}_k$ becomes
+where $\mathbf{R}\_k$ denotes the position vector of $P\_k$ with respect to an origin on the axis of rotation. The work of the force $\mathbf{F}\_k$ becomes
 
 $$\bar{\delta w}_k = \mathbf{F}_k \cdot \epsilon\boldsymbol{\Omega} \times \mathbf{R}_k = \epsilon\boldsymbol{\Omega} \cdot (\mathbf{R}_k \times \mathbf{F}_k) = \epsilon\boldsymbol{\Omega} \cdot \mathbf{M}_k,$$
 
@@ -1129,7 +1129,7 @@ Since an arbitrary virtual displacement of a rigid body can always be produced b
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Special Cases of Rigid Body Equilibrium)</span></p>
 
-1. The body may be fixed at the origin, destroying freedom of translation. Then the first condition ("the sum of all forces vanishes") no longer holds; but the second condition, the vanishing of the resultant moment, still holds. The radius vectors $\mathbf{R}_k$ are now measured from the fixed point; hence it is the resulting moment *about that point* which must vanish.
+1. The body may be fixed at the origin, destroying freedom of translation. Then the first condition ("the sum of all forces vanishes") no longer holds; but the second condition, the vanishing of the resultant moment, still holds. The radius vectors $\mathbf{R}\_k$ are now measured from the fixed point; hence it is the resulting moment *about that point* which must vanish.
 
 2. Not only one point of the body, but a whole axis may be fixed. In this case $\boldsymbol{\Omega}$ is no longer an arbitrary vector but has the direction of the given axis. The vanishing of the virtual work requires only
 
@@ -1154,7 +1154,7 @@ $$\bar{\mathbf{F}} \cdot \bar{\mathbf{M}} = 0.$$
 
 **Problem 2.** Two forces can be replaced by a single force if, and only if, the two forces are coplanar.
 
-**Problem 3.** An arbitrary *parallel* system of forces $\mathbf{F}_i = m\mathbf{G}_i$ can always be replaced by a single force $\bar{\mathbf{F}} = \bar{m}\mathbf{G}$ applied at the point
+**Problem 3.** An arbitrary *parallel* system of forces $\mathbf{F}\_i = m\mathbf{G}\_i$ can always be replaced by a single force $\bar{\mathbf{F}} = \bar{m}\mathbf{G}$ applied at the point
 
 $$\mathbf{R}_0 = \frac{\Sigma m \mathbf{R}}{\Sigma m},$$
 
@@ -1173,7 +1173,7 @@ Occasionally, equilibrium problems occur which involve one or more auxiliary con
 
 Consider a system of uniform rigid bars of constant cross-section, freely jointed at their end-points. The two free ends of the chain are suspended. Find the position of equilibrium of the system.
 
-The impressed force is gravity, which is monogenic. We determine the potential energy $V$ of the system which has to be minimized. Denoting by $x_k, y_k$ the rectangular coordinates of the end points of the bars --- the $x$-axis being chosen horizontally, the $y$-axis vertically downwards --- and the given lengths of the bars by $l_k$:
+The impressed force is gravity, which is monogenic. We determine the potential energy $V$ of the system which has to be minimized. Denoting by $x\_k, y\_k$ the rectangular coordinates of the end points of the bars --- the $x$-axis being chosen horizontally, the $y$-axis vertically downwards --- and the given lengths of the bars by $l\_k$:
 
 $$l_k^2 = (x_{k+1} - x_k)^2 + (y_{k+1} - y_k)^2 = (\Delta x_k)^2 + (\Delta y_k)^2, \quad (k = 0, 1, \ldots, n-1).$$
 
@@ -1185,15 +1185,15 @@ This is the potential energy to be minimized, considering the length equations a
 
 $$\bar{V} = \frac{1}{2}\sum_{k=0}^{n-1}(y_k + y_{k+1})l_k + \sum_{k=0}^{n-1}\lambda_k\left[(\Delta x_k)^2 + (\Delta y_k)^2\right].$$
 
-Variation with respect to $x_k$ yields the difference equation
+Variation with respect to $x\_k$ yields the difference equation
 
 $$\lambda_k \Delta x_k - \lambda_{k-1}\Delta x_{k-1} = 0,$$
 
-which is soluble in the form $\lambda_k = \frac{C}{\Delta x_k}$. Variation with respect to $y_k$ yields
+which is soluble in the form $\lambda\_k = \frac{C}{\Delta x\_k}$. Variation with respect to $y\_k$ yields
 
 $$\tfrac{1}{2}(l_k + l_{k-1}) - \lambda_k \Delta y_k + \lambda_{k-1}\Delta y_{k-1} = 0,$$
 
-and if we substitute for $\lambda_k$ its value, we obtain the following difference equation as the solution of our equilibrium problem:
+and if we substitute for $\lambda\_k$ its value, we obtain the following difference equation as the solution of our equilibrium problem:
 
 $$c\left(\frac{\Delta y_k}{\Delta x_k} - \frac{\Delta y_{k-1}}{\Delta x_{k-1}}\right) = \tfrac{1}{2}(l_k + l_{k-1}).$$
 
@@ -1232,7 +1232,7 @@ The essential difference between the two treatments is that in the first case --
 
 ### 5. Physical Interpretation of the Lagrangian Multiplier
 
-Let us assume that we have a mechanical system of $n$ degrees of freedom, characterized by the generalized coordinates $q_1, \ldots, q_n$, and that there is a kinematical condition given in the form
+Let us assume that we have a mechanical system of $n$ degrees of freedom, characterized by the generalized coordinates $q\_1, \ldots, q\_n$, and that there is a kinematical condition given in the form
 
 $$f(q_1, \ldots, q_n) = 0.$$
 
@@ -1251,13 +1251,13 @@ Once more we have the problem of finding the stationary value of a function, but
 
 The additional term $\lambda f$ is not merely a matter of mathematical method but has a very real physical significance. *The modification of the potential energy on account of the Lagrangian $\lambda$-method represents the potential energy of the forces which are responsible for the maintenance of the given auxiliary conditions.*
 
-If we do not restrict the variation of the configuration by the condition $f = 0$ but permit *arbitrary* variations of the $q_i$, then not only the impressed forces will act but also the forces which maintain the given kinematical condition. They too have a potential energy which has to be added to the potential energy of the impressed forces.
+If we do not restrict the variation of the configuration by the condition $f = 0$ but permit *arbitrary* variations of the $q\_i$, then not only the impressed forces will act but also the forces which maintain the given kinematical condition. They too have a potential energy which has to be added to the potential energy of the impressed forces.
 
-The additional potential energy is $V_1 = \lambda f$. Forming the gradient of the additional potential energy, the "force of reaction" $F_{1i}$ is
+The additional potential energy is $V\_1 = \lambda f$. Forming the gradient of the additional potential energy, the "force of reaction" $F\_{1i}$ is
 
 $$F_{1i} = -\frac{\partial V_1}{\partial x_i} = -\lambda\frac{\partial f}{\partial x_i} - \frac{\partial\lambda}{\partial x_i}f.$$
 
-At the point $C$ of the configuration space which lies on the surface $f = 0$, the second term drops out because it is multiplied by $f$ which vanishes at $C$; and thus the "force of reaction" $F_{1i}$ is reduced to
+At the point $C$ of the configuration space which lies on the surface $f = 0$, the second term drops out because it is multiplied by $f$ which vanishes at $C$; and thus the "force of reaction" $F\_{1i}$ is reduced to
 
 $$F_{1i} = -\lambda\,\frac{\partial f}{\partial x_i}.$$
 
@@ -1341,7 +1341,7 @@ This does not mean that we can actually *solve* a dynamical problem by statical 
 
 </div>
 
-We define the **effective force** $\mathbf{F}^e_k$ acting on a particle as the sum of the impressed force and the force of inertia:
+We define the **effective force** $\mathbf{F}^e\_k$ acting on a particle as the sum of the impressed force and the force of inertia:
 
 $$\mathbf{F}^e_k = \mathbf{F}_k + \mathbf{I}_k.$$
 
@@ -1354,7 +1354,7 @@ $$\sum_{k=1}^{N}\mathbf{F}^e_k \cdot \delta\mathbf{R}_k \equiv \sum_{k=1}^{N}(\m
 
 </div>
 
-Note that the impressed forces $\mathbf{F}_k$ may act at just a few points, while the effective forces $\mathbf{F}^e_k$ are present wherever a mass is in accelerated motion. A given system of impressed forces will generally not be in equilibrium on its own. The body moves in such a way that the additional inertial forces, produced by the motion, bring the balance up to zero. In this way d'Alembert's principle yields *the equations of motion of an arbitrary mechanical system*.
+Note that the impressed forces $\mathbf{F}\_k$ may act at just a few points, while the effective forces $\mathbf{F}^e\_k$ are present wherever a mass is in accelerated motion. A given system of impressed forces will generally not be in equilibrium on its own. The body moves in such a way that the additional inertial forces, produced by the motion, bring the balance up to zero. In this way d'Alembert's principle yields *the equations of motion of an arbitrary mechanical system*.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Monogenic vs. Polygenic Character)</span></p>
@@ -1408,9 +1408,9 @@ We consider the general formulation of d'Alembert's principle. Assume that the i
 
 $$\delta V + \Sigma m_k \mathbf{A}_k \cdot \delta\mathbf{R}_k = 0.$$
 
-The second term --- the negative virtual work of the forces of inertia --- cannot in general be written as the variation of anything. But now let us make a special choice: let the tentative virtual displacements $\delta\mathbf{R}_k$ coincide with the *actual* displacements $d\mathbf{R}_k$ that occur during the time $dt$. This is merely a special (but always permissible) application of the variational principle.
+The second term --- the negative virtual work of the forces of inertia --- cannot in general be written as the variation of anything. But now let us make a special choice: let the tentative virtual displacements $\delta\mathbf{R}\_k$ coincide with the *actual* displacements $d\mathbf{R}\_k$ that occur during the time $dt$. This is merely a special (but always permissible) application of the variational principle.
 
-For this special choice, $\delta V$ coincides with the actual change $dV$ that occurs during $dt$. Moreover, the second term becomes a perfect differential. Since $\mathbf{A}_k = \ddot{\mathbf{R}}_k$, we have
+For this special choice, $\delta V$ coincides with the actual change $dV$ that occurs during $dt$. Moreover, the second term becomes a perfect differential. Since $\mathbf{A}\_k = \ddot{\mathbf{R}}\_k$, we have
 
 $$\Sigma m_k \ddot{\mathbf{R}}_k \cdot d\mathbf{R}_k = \Sigma m_k \ddot{\mathbf{R}}_k \cdot \dot{\mathbf{R}}_k \, dt = \frac{d}{dt}\!\left(\tfrac{1}{2}\Sigma m_k \dot{\mathbf{R}}_k^2\right)dt = dT,$$
 
@@ -1436,11 +1436,11 @@ The sum of the kinetic and potential energies remains unchanged during the motio
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conditions for Validity)</span></p>
 
-The derivation of energy conservation requires careful attention to when $\delta\mathbf{R}_i$ can be identified with $d\mathbf{R}_i$. This identification is always permissible for free particles, but not always for systems with constraints. Letting $\delta q_i$ coincide with $dq_i$ in generalized coordinates will not always mean that the variations $\delta\mathbf{R}_i$ of the particle positions coincide with the actual displacements $d\mathbf{R}_i$. The identification holds in the **scleronomic** case --- where the kinematical conditions do not contain the time explicitly --- but fails in the **rheonomic** case --- where the kinematical conditions involve the time explicitly.
+The derivation of energy conservation requires careful attention to when $\delta\mathbf{R}\_i$ can be identified with $d\mathbf{R}\_i$. This identification is always permissible for free particles, but not always for systems with constraints. Letting $\delta q\_i$ coincide with $dq\_i$ in generalized coordinates will not always mean that the variations $\delta\mathbf{R}\_i$ of the particle positions coincide with the actual displacements $d\mathbf{R}\_i$. The identification holds in the **scleronomic** case --- where the kinematical conditions do not contain the time explicitly --- but fails in the **rheonomic** case --- where the kinematical conditions involve the time explicitly.
 
-A similar remark holds with regard to the potential energy $V$. If $V$ is a function of the $q_i$ only, then the choice $\delta q_i = dq_i$ gives $\delta V = dV$. But this would no longer be true if $V$ were rheonomic, depending on $t$ explicitly. Since $V$ was defined as $-U$, the conservation of energy requires that the work function $U$ must not depend on $t$ explicitly.
+A similar remark holds with regard to the potential energy $V$. If $V$ is a function of the $q\_i$ only, then the choice $\delta q\_i = dq\_i$ gives $\delta V = dV$. But this would no longer be true if $V$ were rheonomic, depending on $t$ explicitly. Since $V$ was defined as $-U$, the conservation of energy requires that the work function $U$ must not depend on $t$ explicitly.
 
-Thus, the law of the conservation of energy holds only for systems which are **scleronomic in both work function and kinematical conditions**. Moreover, the deduction assumed that the masses $m_k$ are *constants*.
+Thus, the law of the conservation of energy holds only for systems which are **scleronomic in both work function and kinematical conditions**. Moreover, the deduction assumed that the masses $m\_k$ are *constants*.
 
 </div>
 
@@ -1509,7 +1509,7 @@ Agreeing to stay consistently in the rotating system $S'$ (and dropping the prim
 
 1. **Centrifugal force:**
    $$\mathbf{C} = m\omega^2\mathbf{R}_\perp,$$
-   where $\mathbf{R}_\perp$ is the component of the radius vector perpendicular to the rotation axis. This force is monogenic, being derivable from the potential energy $\phi = -\frac{m}{2}\omega^2 r_\perp^2$. On the earth, the plumb-line indicates the direction of the resultant of gravity and the centrifugal force; d'Alembert's principle shows that these two forces cannot be separated by any experiment.
+   where $\mathbf{R}\_\perp$ is the component of the radius vector perpendicular to the rotation axis. This force is monogenic, being derivable from the potential energy $\phi = -\frac{m}{2}\omega^2 r\_\perp^2$. On the earth, the plumb-line indicates the direction of the resultant of gravity and the centrifugal force; d'Alembert's principle shows that these two forces cannot be separated by any experiment.
 
 2. **Coriolis force:**
    $$\mathbf{B} = -2m\,\boldsymbol{\Omega}\times\mathbf{v} = 2m\,\mathbf{v}\times\boldsymbol{\Omega},$$
@@ -1564,7 +1564,7 @@ We introduce the customary **moments of inertia**:
 
 $$A = \Sigma m(y^2+z^2), \quad B = \Sigma m(z^2+x^2), \quad C = \Sigma m(x^2+y^2).$$
 
-Denoting the components of the resultant moment of the impressed forces by $\bar{M}_x, \bar{M}_y, \bar{M}_z$, and computing the moments of the centrifugal forces and the Euler forces, the vanishing of the total resultant of the moments gives **Euler's equations**:
+Denoting the components of the resultant moment of the impressed forces by $\bar{M}\_x, \bar{M}\_y, \bar{M}\_z$, and computing the moments of the centrifugal forces and the Euler forces, the vanishing of the total resultant of the moments gives **Euler's equations**:
 
 $$A\dot{\omega}_x - (B-C)\omega_y\omega_z = \bar{M}_x,$$
 
@@ -1583,7 +1583,7 @@ These famous equations describe how the instantaneous axis of rotation $\boldsym
 
 D'Alembert's principle is not a minimum principle. It makes use of an infinitesimal quantity --- the virtual work of the impressed forces, augmented by the virtual work of the forces of inertia --- but the latter quantity is not the variation of some function. Gauss (1777–1855) gave an ingenious reinterpretation of d'Alembert's principle which changes it into a minimum principle.
 
-The idea proceeds as follows. The differential equations of motion determine the *accelerations* of the position coordinates $q_i$. At a certain time $t$ the position and velocity of all the particles of a mechanical system are given. The accelerations may be disposed of at will, though subject to the given constraints. If the actual acceleration of a particle at time $t$ is $\mathbf{A}(t)$, and we change it to $\mathbf{A} + \delta\mathbf{A}$, the position of the particle at time $t + \tau$ is given by Taylor's theorem:
+The idea proceeds as follows. The differential equations of motion determine the *accelerations* of the position coordinates $q\_i$. At a certain time $t$ the position and velocity of all the particles of a mechanical system are given. The accelerations may be disposed of at will, though subject to the given constraints. If the actual acceleration of a particle at time $t$ is $\mathbf{A}(t)$, and we change it to $\mathbf{A} + \delta\mathbf{A}$, the position of the particle at time $t + \tau$ is given by Taylor's theorem:
 
 $$\mathbf{R}(t+\tau) = \mathbf{R}(t) + \mathbf{v}(t)\tau + \tfrac{1}{2}\mathbf{A}(t)\tau^2 + \ldots$$
 
@@ -1591,7 +1591,7 @@ The variation of the acceleration causes a deviation in the path of the particle
 
 $$\delta\mathbf{R}(t+\tau) = \tfrac{1}{2}\delta\mathbf{A}(t)\cdot\tau^2.$$
 
-Now, d'Alembert's principle requires that $\sum(\mathbf{F}_i - m_i\mathbf{A}_i)\cdot\delta\mathbf{R}_i = 0$, and since the $\delta\mathbf{R}_i$ are proportional to $\delta\mathbf{A}_i$, this gives $\sum(\mathbf{F}_i - m_i\mathbf{A}_i)\cdot\delta\mathbf{A}_i = 0$. Since the impressed forces $\mathbf{F}_i$ are given and cannot be varied, this condition can be rewritten as
+Now, d'Alembert's principle requires that $\sum(\mathbf{F}\_i - m\_i\mathbf{A}\_i)\cdot\delta\mathbf{R}\_i = 0$, and since the $\delta\mathbf{R}\_i$ are proportional to $\delta\mathbf{A}\_i$, this gives $\sum(\mathbf{F}\_i - m\_i\mathbf{A}\_i)\cdot\delta\mathbf{A}\_i = 0$. Since the impressed forces $\mathbf{F}\_i$ are given and cannot be varied, this condition can be rewritten as
 
 $$\sum_{i=1}^{N}(\mathbf{F}_i - m_i\mathbf{A}_i)\cdot\delta\!\left(\frac{\mathbf{F}_i - m_i\mathbf{A}_i}{m_i}\right) = 0,$$
 
@@ -1606,14 +1606,14 @@ Define the **"constraint"** of the motion as
 
 $$Z = \sum_{i=1}^{N}\frac{1}{2m_i}(\mathbf{F}_i - m_i\mathbf{A}_i)^2.$$
 
-Then *the actual motion occurring in nature is such that under the given kinematical conditions the constraint becomes as small as possible*. If the particles are free from constraints, $Z$ can assume its absolute minimum, which is zero, giving $m_i\mathbf{A}_i = \mathbf{F}_i$ --- Newton's law. If constraints prevent the free choice of the $\mathbf{A}_i$, we can still minimize $Z$ under the given auxiliary conditions, and the solution obtained yields the actual motion realized in nature.
+Then *the actual motion occurring in nature is such that under the given kinematical conditions the constraint becomes as small as possible*. If the particles are free from constraints, $Z$ can assume its absolute minimum, which is zero, giving $m\_i\mathbf{A}\_i = \mathbf{F}\_i$ --- Newton's law. If constraints prevent the free choice of the $\mathbf{A}\_i$, we can still minimize $Z$ under the given auxiliary conditions, and the solution obtained yields the actual motion realized in nature.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Particle on a Surface)</span></p>
 
-A particle is forced to stay on the surface $z = f(x, y)$ and is acted upon by the force $\mathbf{F}$. The constraint of the surface gives the auxiliary condition $\ddot{z} = f_x\ddot{x} + f_y\ddot{y} + f_{xx}\dot{x}^2 + \ldots$ Minimizing the Gaussian constraint $Z = \frac{1}{2m}(\mathbf{F} - m\mathbf{A})^2$ subject to this auxiliary condition yields the equations of motion directly.
+A particle is forced to stay on the surface $z = f(x, y)$ and is acted upon by the force $\mathbf{F}$. The constraint of the surface gives the auxiliary condition $\ddot{z} = f\_x\ddot{x} + f\_y\ddot{y} + f\_{xx}\dot{x}^2 + \ldots$ Minimizing the Gaussian constraint $Z = \frac{1}{2m}(\mathbf{F} - m\mathbf{A})^2$ subject to this auxiliary condition yields the equations of motion directly.
 
 </div>
 
@@ -1627,7 +1627,7 @@ The various names attached to these principles --- Euler, Lagrange, Jacobi, Hami
 
 D'Alembert's principle sets an infinitesimal quantity --- the total virtual work done by impressed and inertial forces --- equal to zero at each instant. The virtual work of the impressed forces is monogenic (derivable from a single work function), but the virtual work of the inertial forces is not: it must be computed particle by particle. Hamilton's key insight is that integrating over time converts the inertial contribution into a monogenic form as well.
 
-We multiply the d'Alembert equation by $dt$ and integrate between times $t_1$ and $t_2$. Splitting the result into an impressed-force part and an inertial-force part, the impressed-force contribution gives $-\delta\int_{t_1}^{t_2}V\,dt$ (assuming the work function is velocity-independent and setting $V = -U$). For the inertial part we integrate by parts, which produces a boundary term and a bulk term involving the variation of the velocities. Using the interchangeability of variation and differentiation, the bulk term becomes the variation of the integral of the kinetic energy.
+We multiply the d'Alembert equation by $dt$ and integrate between times $t\_1$ and $t\_2$. Splitting the result into an impressed-force part and an inertial-force part, the impressed-force contribution gives $-\delta\int\_{t\_1}^{t\_2}V\,dt$ (assuming the work function is velocity-independent and setting $V = -U$). For the inertial part we integrate by parts, which produces a boundary term and a bulk term involving the variation of the velocities. Using the interchangeability of variation and differentiation, the bulk term becomes the variation of the integral of the kinetic energy.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lagrangian Function)</span></p>
@@ -1644,7 +1644,7 @@ Combining all the terms, the time-integrated virtual work becomes
 
 $$\int_{t_1}^{t_2}\overline{\delta w^e}\,dt = \delta\int_{t_1}^{t_2}L\,dt - \bigl[\Sigma\, m_i \mathbf{V}_i \cdot \delta\mathbf{R}_i\bigr]_{t_1}^{t_2}.$$
 
-So far the virtual displacements $\delta\mathbf{R}_i$ at the endpoints are arbitrary. The crucial step is to require that **the variations vanish at both time limits** $t_1$ and $t_2$:
+So far the virtual displacements $\delta\mathbf{R}\_i$ at the endpoints are arbitrary. The crucial step is to require that **the variations vanish at both time limits** $t\_1$ and $t\_2$:
 
 $$\delta\mathbf{R}_i(t_1) = 0, \qquad \delta\mathbf{R}_i(t_2) = 0.$$
 
@@ -1684,22 +1684,22 @@ The reasoning can be reversed: starting from $\delta A = 0$ one can recover $\ov
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Scope of Hamilton's Principle)</span></p>
 
-Hamilton's principle holds for arbitrary mechanical systems characterized by monogenic forces and holonomic auxiliary conditions. While d'Alembert's principle makes an independent statement at each instant of time, Hamilton's principle treats the motion *as a whole* --- the entire trajectory between $t_1$ and $t_2$ enters at once. This integral viewpoint is the hallmark of variational mechanics and extends far beyond classical mechanics: both the equations of general relativity and quantum wave mechanics are derivable from a "principle of least action," differing only in the choice of Lagrangian $L$.
+Hamilton's principle holds for arbitrary mechanical systems characterized by monogenic forces and holonomic auxiliary conditions. While d'Alembert's principle makes an independent statement at each instant of time, Hamilton's principle treats the motion *as a whole* --- the entire trajectory between $t\_1$ and $t\_2$ enters at once. This integral viewpoint is the hallmark of variational mechanics and extends far beyond classical mechanics: both the equations of general relativity and quantum wave mechanics are derivable from a "principle of least action," differing only in the choice of Lagrangian $L$.
 
 </div>
 
 ### 2. The Lagrangian Equations of Motion and Their Invariance Relative to Point Transformations
 
-In the derivation of Hamilton's principle, rectangular coordinates were used. However, a mechanical system may be subject to holonomic kinematical conditions. If these are present, the $3N$ rectangular position coordinates can be expressed in terms of $n$ generalized coordinates $q_1, \ldots, q_n$. Both the kinetic and potential energies then become functions of the $q_i$ and the generalized velocities $\dot{q}_1, \ldots, \dot{q}_n$.
+In the derivation of Hamilton's principle, rectangular coordinates were used. However, a mechanical system may be subject to holonomic kinematical conditions. If these are present, the $3N$ rectangular position coordinates can be expressed in terms of $n$ generalized coordinates $q\_1, \ldots, q\_n$. Both the kinetic and potential energies then become functions of the $q\_i$ and the generalized velocities $\dot{q}\_1, \ldots, \dot{q}\_n$.
 
-The motion of the entire system can be visualized as the trajectory of a single representative point (the *C*-point) through the $n$-dimensional configuration space of the $q_i$. Going one step further, we can add the time $t$ as an additional dimension and work in an $(n+1)$-dimensional "extended configuration space." In this picture the successive states of the system trace out a **world-line** --- a curve $C$ whose shape encodes the complete physical history.
+The motion of the entire system can be visualized as the trajectory of a single representative point (the *C*-point) through the $n$-dimensional configuration space of the $q\_i$. Going one step further, we can add the time $t$ as an additional dimension and work in an $(n+1)$-dimensional "extended configuration space." In this picture the successive states of the system trace out a **world-line** --- a curve $C$ whose shape encodes the complete physical history.
 
-Varying the world-line between fixed endpoints $A$ (at $t_1$) and $B$ (at $t_2$) and demanding that the action integral be stationary yields the **Euler--Lagrange equations** --- the necessary and sufficient conditions for stationarity.
+Varying the world-line between fixed endpoints $A$ (at $t\_1$) and $B$ (at $t\_2$) and demanding that the action integral be stationary yields the **Euler--Lagrange equations** --- the necessary and sufficient conditions for stationarity.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lagrangian Equations of Motion)</span></p>
 
-For a system described by generalized coordinates $q_1, \ldots, q_n$ and Lagrangian $L(q_i, \dot{q}_i, t)$, the equations of motion are
+For a system described by generalized coordinates $q\_1, \ldots, q\_n$ and Lagrangian $L(q\_i, \dot{q}\_i, t)$, the equations of motion are
 
 $$\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_i} - \frac{\partial L}{\partial q_i} = 0, \qquad i = 1, \ldots, n.$$
 
@@ -1707,7 +1707,7 @@ These form a system of $n$ simultaneous second-order ordinary differential equat
 
 </div>
 
-A remarkable property of these equations is their **invariance under arbitrary point transformations**. If we switch from coordinates $q_i$ to a new set $\bar{q}_i$ via any smooth invertible transformation, the Lagrangian $L$ changes its functional form but not its numerical value. Since the action integral is the same number regardless of the coordinate system, the condition $\delta A = 0$ holds in both the old and the new coordinates. Consequently the *complete set* of Lagrangian equations maps into the corresponding set in the new reference system.
+A remarkable property of these equations is their **invariance under arbitrary point transformations**. If we switch from coordinates $q\_i$ to a new set $\bar{q}\_i$ via any smooth invertible transformation, the Lagrangian $L$ changes its functional form but not its numerical value. Since the action integral is the same number regardless of the coordinate system, the condition $\delta A = 0$ holds in both the old and the new coordinates. Consequently the *complete set* of Lagrangian equations maps into the corresponding set in the new reference system.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Invariance and Moving Frames)</span></p>
@@ -1758,7 +1758,7 @@ The Lagrangian equations can be split into two sides by writing them as
 
 $$\frac{d}{dt}\frac{\partial T}{\partial \dot{q}_i} - \frac{\partial T}{\partial q_i} = -\frac{d}{dt}\frac{\partial U}{\partial \dot{q}_i} + \frac{\partial U}{\partial q_i}.$$
 
-The left-hand side represents the $n$ components of the **generalized force of inertia** in configuration space; the right-hand side represents the $n$ components of the **generalized moving (applied) force**. Ordinarily the work function $U$ depends only on the $q_i$ and the first term on the right vanishes, but there is no fundamental reason to exclude velocity-dependent potentials --- in relativistic electrodynamics the force on a charged particle is indeed derived from such a potential.
+The left-hand side represents the $n$ components of the **generalized force of inertia** in configuration space; the right-hand side represents the $n$ components of the **generalized moving (applied) force**. Ordinarily the work function $U$ depends only on the $q\_i$ and the first term on the right vanishes, but there is no fundamental reason to exclude velocity-dependent potentials --- in relativistic electrodynamics the force on a charged particle is indeed derived from such a potential.
 
 </div>
 
@@ -1773,13 +1773,13 @@ The partial derivatives of the Lagrangian with respect to the generalized veloci
 
 $$p_i = \frac{\partial L}{\partial \dot{q}_i}.$$
 
-For a single free particle in rectangular coordinates, these reduce to the ordinary momentum components $m\dot{x}, m\dot{y}, m\dot{z}$. In general, however, the $p_i$ need not have the dimensions of momentum and do not form a vector in configuration space.
+For a single free particle in rectangular coordinates, these reduce to the ordinary momentum components $m\dot{x}, m\dot{y}, m\dot{z}$. In general, however, the $p\_i$ need not have the dimensions of momentum and do not form a vector in configuration space.
 
 </div>
 
-To derive the energy theorem, we employ a special variation: at each instant, let the virtual displacement coincide with the actual displacement occurring during an infinitesimal time $dt = \epsilon$. That is, we set $\delta q_i = dq_i = \epsilon\dot{q}_i$. This variation shifts the world-line horizontally in the $(q, t)$ diagram and does *not* keep the endpoints fixed; it therefore produces a boundary term.
+To derive the energy theorem, we employ a special variation: at each instant, let the virtual displacement coincide with the actual displacement occurring during an infinitesimal time $dt = \epsilon$. That is, we set $\delta q\_i = dq\_i = \epsilon\dot{q}\_i$. This variation shifts the world-line horizontally in the $(q, t)$ diagram and does *not* keep the endpoints fixed; it therefore produces a boundary term.
 
-The boundary term takes the form $[\sum p_i\,\delta q_i]_{t_1}^{t_2}$. For a **scleronomic** system (one whose Lagrangian does not depend on $t$ explicitly), the variation $\delta L$ equals $dL = \epsilon\dot{L}$, and equating the boundary terms from both sides yields
+The boundary term takes the form $[\sum p\_i\,\delta q\_i]\_{t\_1}^{t\_2}$. For a **scleronomic** system (one whose Lagrangian does not depend on $t$ explicitly), the variation $\delta L$ equals $dL = \epsilon\dot{L}$, and equating the boundary terms from both sides yields
 
 $$\sum_{i=1}^{n} p_i\dot{q}_i - L = \text{const.}$$
 
@@ -1797,7 +1797,7 @@ is called the **total energy** of the mechanical system. Together with $L$, it i
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Energy Theorem --- General Form)</span></p>
 
-For any Lagrangian system, the quantity $\sum p_i\dot{q}_i - L$ satisfies
+For any Lagrangian system, the quantity $\sum p\_i\dot{q}\_i - L$ satisfies
 
 $$\sum_{i=1}^{n} p_i\dot{q}_i - L = \text{const.}$$
 
@@ -1809,14 +1809,14 @@ In the usual mechanical applications, the kinetic energy is a quadratic form in 
 
 $$T = \tfrac{1}{2}\sum_{i,k} a_{ik}\,\dot{q}_i\,\dot{q}_k,$$
 
-and the potential energy $V$ does not contain the velocities. Under these conditions, Euler's theorem on homogeneous functions gives $\sum p_i\dot{q}_i = 2T$, and the energy theorem assumes its familiar form:
+and the potential energy $V$ does not contain the velocities. Under these conditions, Euler's theorem on homogeneous functions gives $\sum p\_i\dot{q}\_i = 2T$, and the energy theorem assumes its familiar form:
 
 $$T + V = E = \text{const.}$$
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conditions for $T + V = E$)</span></p>
 
-The simple form $T + V = \text{const.}$ requires *two* conditions beyond what the general energy theorem demands: (1) the system must be scleronomic, and (2) the kinetic energy must be a homogeneous quadratic form in the velocities while the potential energy is velocity-independent. Systems with "gyroscopic terms" (kinetic energy terms linear in the velocities) or relativistic kinetic energies satisfy the general conservation law $\sum p_i\dot{q}_i - L = \text{const.}$ but not necessarily $T + V = \text{const.}$
+The simple form $T + V = \text{const.}$ requires *two* conditions beyond what the general energy theorem demands: (1) the system must be scleronomic, and (2) the kinetic energy must be a homogeneous quadratic form in the velocities while the potential energy is velocity-independent. Systems with "gyroscopic terms" (kinetic energy terms linear in the velocities) or relativistic kinetic energies satisfy the general conservation law $\sum p\_i\dot{q}\_i - L = \text{const.}$ but not necessarily $T + V = \text{const.}$
 
 </div>
 
@@ -1829,7 +1829,7 @@ with two constants of integration $E$ and $\tau$.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Rheonomic Systems)</span></p>
 
-When the Lagrangian depends explicitly on time --- i.e. the system is **rheonomic** --- the total energy $\Lambda = \sum p_i\dot{q}_i - L$ is no longer conserved. Instead it changes according to
+When the Lagrangian depends explicitly on time --- i.e. the system is **rheonomic** --- the total energy $\Lambda = \sum p\_i\dot{q}\_i - L$ is no longer conserved. Instead it changes according to
 
 $$\Delta\Lambda = -\int_{t_1}^{t_2}\frac{\partial L}{\partial t}\,dt.$$
 
@@ -1844,7 +1844,7 @@ A general method for integrating the Lagrangian equations does not exist, but un
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ignorable Variable)</span></p>
 
-A coordinate $q_k$ is called **ignorable** (or kinosthenic, cyclic) if it does not appear explicitly in the Lagrangian function, even though its velocity $\dot{q}_k$ does:
+A coordinate $q\_k$ is called **ignorable** (or kinosthenic, cyclic) if it does not appear explicitly in the Lagrangian function, even though its velocity $\dot{q}\_k$ does:
 
 $$\frac{\partial L}{\partial q_k} = 0.$$
 
@@ -1853,21 +1853,21 @@ $$\frac{\partial L}{\partial q_k} = 0.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Conservation of Kinosthenic Momentum)</span></p>
 
-If $q_k$ is an ignorable coordinate, the corresponding generalized momentum is a constant of the motion:
+If $q\_k$ is an ignorable coordinate, the corresponding generalized momentum is a constant of the motion:
 
 $$p_k = \frac{\partial L}{\partial \dot{q}_k} = c_k = \text{const.}$$
 
-This follows immediately from the Lagrangian equation $\dot{p}_k = \partial L / \partial q_k = 0$.
+This follows immediately from the Lagrangian equation $\dot{p}\_k = \partial L / \partial q\_k = 0$.
 
 </div>
 
-This result has many physical applications. For instance, in the Kepler problem formulated in polar coordinates, the angle $\theta$ is ignorable. The constancy of the corresponding momentum $p_\theta$ is precisely Kepler's law of areas (conservation of angular momentum). Similarly, for the spherical pendulum, the azimuthal angle $\varphi$ is ignorable and its conjugate momentum is conserved.
+This result has many physical applications. For instance, in the Kepler problem formulated in polar coordinates, the angle $\theta$ is ignorable. The constancy of the corresponding momentum $p\_\theta$ is precisely Kepler's law of areas (conservation of angular momentum). Similarly, for the spherical pendulum, the azimuthal angle $\varphi$ is ignorable and its conjugate momentum is conserved.
 
 The power of ignorable variables lies in the possibility of *eliminating* them, thereby reducing the number of degrees of freedom. The elimination proceeds in three steps:
 
-1. Write down the equation for the kinosthenic momentum: $\partial L / \partial \dot{q}_n = c_n$.
-2. Form the **modified Lagrangian function**: $\bar{L} = L - c_n\dot{q}_n$.
-3. Solve step 1 for the ignorable velocity $\dot{q}_n$ and substitute into $\bar{L}$, eliminating $\dot{q}_n$ entirely.
+1. Write down the equation for the kinosthenic momentum: $\partial L / \partial \dot{q}\_n = c\_n$.
+2. Form the **modified Lagrangian function**: $\bar{L} = L - c\_n\dot{q}\_n$.
+3. Solve step 1 for the ignorable velocity $\dot{q}\_n$ and substitute into $\bar{L}$, eliminating $\dot{q}\_n$ entirely.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Modified Lagrangian / Routhian)</span></p>
@@ -1880,16 +1880,16 @@ where the sum extends over all ignorable coordinates. After eliminating the igno
 
 </div>
 
-The elimination has interesting physical consequences for the structure of the reduced problem. When the kinetic energy is a quadratic form $T = \frac{1}{2}\sum a_{ik}\dot{q}_i\dot{q}_k$, separating out the ignorable velocity produces three types of terms:
+The elimination has interesting physical consequences for the structure of the reduced problem. When the kinetic energy is a quadratic form $T = \frac{1}{2}\sum a\_{ik}\dot{q}\_i\dot{q}\_k$, separating out the ignorable velocity produces three types of terms:
 
-- A velocity-independent term $-\frac{1}{2}c_n^2/a_{nn}$ that behaves like an **apparent potential energy** and can be combined with $V$ to give a modified potential $\bar{V} = V + \frac{1}{2}c_n^2/a_{nn}$.
-- Terms *linear* in the non-ignorable velocities, called **gyroscopic terms**, which arise whenever there is "kinetic coupling" between the ignorable and non-ignorable velocities (i.e. the cross-coefficients $a_{in}$ with $i \neq n$ do not all vanish).
+- A velocity-independent term $-\frac{1}{2}c\_n^2/a\_{nn}$ that behaves like an **apparent potential energy** and can be combined with $V$ to give a modified potential $\bar{V} = V + \frac{1}{2}c\_n^2/a\_{nn}$.
+- Terms *linear* in the non-ignorable velocities, called **gyroscopic terms**, which arise whenever there is "kinetic coupling" between the ignorable and non-ignorable velocities (i.e. the cross-coefficients $a\_{in}$ with $i \neq n$ do not all vanish).
 - The usual quadratic kinetic energy in the remaining velocities.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gyroscopic Terms and Kinetic Coupling)</span></p>
 
-Whether the reduced problem contains gyroscopic terms depends on the $a_{in}$ coefficients coupling the ignorable and non-ignorable velocities. If all such cross-coefficients vanish, the reduced kinetic energy remains a purely quadratic form and there are no gyroscopic effects. When the coupling is present, the gyroscopic terms --- being linear rather than quadratic in the velocities --- produce forces perpendicular to the velocity that do no work but can profoundly affect the motion. The Coriolis force in a rotating frame and the magnetic force on a charged particle are physical manifestations of gyroscopic terms in the Lagrangian.
+Whether the reduced problem contains gyroscopic terms depends on the $a\_{in}$ coefficients coupling the ignorable and non-ignorable velocities. If all such cross-coefficients vanish, the reduced kinetic energy remains a purely quadratic form and there are no gyroscopic effects. When the coupling is present, the gyroscopic terms --- being linear rather than quadratic in the velocities --- produce forces perpendicular to the velocity that do no work but can profoundly affect the motion. The Coriolis force in a rotating frame and the magnetic force on a charged particle are physical manifestations of gyroscopic terms in the Lagrangian.
 
 </div>
 
@@ -1913,7 +1913,7 @@ Hertz's bold hypothesis was that *all* forces in nature might ultimately arise f
 
 ### 6. The Time as a Kinosthenic Variable --- Jacobi's Principle
 
-In Hamilton's principle the time $t$ plays the role of an independent variable: we integrate the Lagrangian between fixed limits $t_1$ and $t_2$, and the time is *not* varied. However, when we pass to the extended configuration space (where $t$ is treated as just another coordinate alongside the $q_i$), a deeper viewpoint emerges. We can parametrise the world-line by an arbitrary parameter $\tau$ and let $t$ itself become a dependent variable on the same footing as the $q_i$.
+In Hamilton's principle the time $t$ plays the role of an independent variable: we integrate the Lagrangian between fixed limits $t\_1$ and $t\_2$, and the time is *not* varied. However, when we pass to the extended configuration space (where $t$ is treated as just another coordinate alongside the $q\_i$), a deeper viewpoint emerges. We can parametrise the world-line by an arbitrary parameter $\tau$ and let $t$ itself become a dependent variable on the same footing as the $q\_i$.
 
 If the system is **scleronomic** (the Lagrangian does not depend on $t$ explicitly) and **conservative** (the energy theorem $T + V = E$ holds), a remarkable simplification occurs. The time can be treated as a kinosthenic variable --- it does not appear explicitly in the parametrised action, though its "velocity" $t' = dt/d\tau$ does. We can therefore eliminate it using exactly the same procedure developed in Section 4 for ignorable coordinates.
 
@@ -1924,7 +1924,7 @@ After eliminating the time from Hamilton's action integral for a conservative sc
 
 $$A^* = \int_{P_1}^{P_2} \sqrt{2(E - V)}\;ds,$$
 
-where $ds^2 = \sum a_{ik}\,dq_i\,dq_k$ is the Riemannian line element of the configuration space derived from the kinetic energy, and the integral is taken between two fixed points in configuration space without any reference to the time.
+where $ds^2 = \sum a\_{ik}\,dq\_i\,dq\_k$ is the Riemannian line element of the configuration space derived from the kinetic energy, and the integral is taken between two fixed points in configuration space without any reference to the time.
 
 </div>
 
@@ -1939,12 +1939,12 @@ This determines the *geometry* of the trajectory (the shape of the path) but not
 
 </div>
 
-Jacobi's principle is equivalent to Hamilton's principle for conservative scleronomic systems, but it shifts the focus from the trajectory-in-time to the trajectory-in-space. The condition $\delta A^* = 0$ can be interpreted as a geodesic problem in a Riemannian space whose metric is $d\sigma^2 = 2(E - V)\,ds^2$. In other words, the mechanical system moves along the shortest (or more generally, the extremal) path with respect to this modified metric.
+Jacobi's principle is equivalent to Hamilton's principle for conservative scleronomic systems, but it shifts the focus from the trajectory-in-time to the trajectory-in-space. The condition $\delta A^\ast = 0$ can be interpreted as a geodesic problem in a Riemannian space whose metric is $d\sigma^2 = 2(E - V)\,ds^2$. In other words, the mechanical system moves along the shortest (or more generally, the extremal) path with respect to this modified metric.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geodesic Interpretation and Free Motion)</span></p>
 
-When no impressed forces act ($V = 0$ or $V = \text{const.}$), Jacobi's principle reduces to requiring that the path be a geodesic of the original Riemannian metric $ds^2 = \sum a_{ik}\,dq_i\,dq_k$. Since the energy theorem further implies that the speed $ds/dt$ is constant, the representative point traverses this geodesic with uniform velocity. This is a far-reaching generalisation of Newton's first law: a free particle moves in a straight line with constant speed, but here the "straight line" is a geodesic in an $n$-dimensional curved Riemannian manifold, and the "particle" represents an entire mechanical system subject to holonomic constraints.
+When no impressed forces act ($V = 0$ or $V = \text{const.}$), Jacobi's principle reduces to requiring that the path be a geodesic of the original Riemannian metric $ds^2 = \sum a\_{ik}\,dq\_i\,dq\_k$. Since the energy theorem further implies that the speed $ds/dt$ is constant, the representative point traverses this geodesic with uniform velocity. This is a far-reaching generalisation of Newton's first law: a free particle moves in a straight line with constant speed, but here the "straight line" is a geodesic in an $n$-dimensional curved Riemannian manifold, and the "particle" represents an entire mechanical system subject to holonomic constraints.
 
 </div>
 
@@ -1964,7 +1964,7 @@ Jacobi's geodesic principle bears a striking resemblance to Einstein's descripti
 
 ### 7. Jacobi's Principle and Riemannian Geometry
 
-Jacobi's principle opens the door to a fully geometric description of classical mechanics. The key idea is that the configuration space of a mechanical system, equipped with the metric $ds^2 = \sum a_{ik}\,dq_i\,dq_k$ derived from the kinetic energy, is naturally a Riemannian manifold. The $a_{ik}$ coefficients play the role of the metric tensor, and all the tools of Riemannian geometry --- geodesics, curvature, parallel transport --- become applicable to mechanical problems.
+Jacobi's principle opens the door to a fully geometric description of classical mechanics. The key idea is that the configuration space of a mechanical system, equipped with the metric $ds^2 = \sum a\_{ik}\,dq\_i\,dq\_k$ derived from the kinetic energy, is naturally a Riemannian manifold. The $a\_{ik}$ coefficients play the role of the metric tensor, and all the tools of Riemannian geometry --- geodesics, curvature, parallel transport --- become applicable to mechanical problems.
 
 For a conservative system with potential energy $V$, Jacobi's principle tells us to work with the conformally modified metric
 
@@ -1975,7 +1975,7 @@ The trajectories of the mechanical system are then geodesics of this modified Ri
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometry Replaces Force)</span></p>
 
-The geometric viewpoint unifies two seemingly separate aspects of a mechanical problem --- the kinematical constraints (which determine $a_{ik}$) and the dynamical forces (which determine $V$) --- into a single Riemannian metric. Rather than solving differential equations driven by forces, we can equivalently find the shortest paths in a curved space. This is not merely an analogy; it is a mathematically exact reformulation that is sometimes more powerful than the direct approach, especially for qualitative analysis of trajectories.
+The geometric viewpoint unifies two seemingly separate aspects of a mechanical problem --- the kinematical constraints (which determine $a\_{ik}$) and the dynamical forces (which determine $V$) --- into a single Riemannian metric. Rather than solving differential equations driven by forces, we can equivalently find the shortest paths in a curved space. This is not merely an analogy; it is a mathematically exact reformulation that is sometimes more powerful than the direct approach, especially for qualitative analysis of trajectories.
 
 </div>
 
@@ -2005,7 +2005,7 @@ This recovers exactly the same expressions encountered in the statics of constra
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Physical Interpretation of $\lambda$)</span></p>
 
-An important subtlety arises when the constraint equations and the potential energy are both time-independent (scleronomic conservative system). By the elimination method, the system is conservative and the constraint forces must likewise be conservative. Yet the Lagrange multipliers $\lambda_i$ typically depend on time, making the apparent potential energy of the constraint forces time-dependent. This paradox is resolved by recognising that we need the potential energy of the constraint forces only *along the actual trajectory* (the $C$-curve), not throughout all of configuration space.
+An important subtlety arises when the constraint equations and the potential energy are both time-independent (scleronomic conservative system). By the elimination method, the system is conservative and the constraint forces must likewise be conservative. Yet the Lagrange multipliers $\lambda\_i$ typically depend on time, making the apparent potential energy of the constraint forces time-dependent. This paradox is resolved by recognising that we need the potential energy of the constraint forces only *along the actual trajectory* (the $C$-curve), not throughout all of configuration space.
 
 A careful analysis shows that $\lambda$ is proportional to the "microscopic violation" of the constraint: the constraint $f = 0$ is maintained by very strong restoring forces, and $\lambda$ measures the tiny departure of the system from the constraint surface at each instant. In the idealised limit of infinitely strong restoring forces (perfect constraints), $\lambda$ becomes the ratio $f/\epsilon$ where $\epsilon \to 0$, giving the constraint force its correct finite value.
 
@@ -2020,7 +2020,7 @@ The analysis confirms an important general principle: **scleronomic holonomic au
 
 ### 9. Non-Holonomic Auxiliary Conditions and Polygenic Forces
 
-When the kinematical constraints are **non-holonomic** --- that is, they take the form of non-integrable differential relations rather than algebraic equations between the coordinates --- the situation changes fundamentally. We can no longer eliminate surplus variables by substitution, because the constraint cannot be integrated to give a relation among the $q_i$ alone.
+When the kinematical constraints are **non-holonomic** --- that is, they take the form of non-integrable differential relations rather than algebraic equations between the coordinates --- the situation changes fundamentally. We can no longer eliminate surplus variables by substitution, because the constraint cannot be integrated to give a relation among the $q\_i$ alone.
 
 The $\lambda$-method, however, continues to apply. If the non-holonomic constraints are
 
@@ -2033,11 +2033,11 @@ $$\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_k} - \frac{\partial L}{\partial
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Non-Holonomic Constraints as Polygenic Forces)</span></p>
 
-A crucial difference from the holonomic case: the forces maintaining non-holonomic constraints are **polygenic** --- they cannot be derived from a single work function. The virtual work of these forces takes the form $\delta w = \sum \rho_i\,\delta q_i$ where the $\rho_i$ are not expressible as partial derivatives of a potential. Thus non-holonomic constraints are mechanically equivalent to polygenic forces. Both produce the same effect in the Lagrangian equations: an extra "right-hand side" that cannot be absorbed into $L$.
+A crucial difference from the holonomic case: the forces maintaining non-holonomic constraints are **polygenic** --- they cannot be derived from a single work function. The virtual work of these forces takes the form $\delta w = \sum \rho\_i\,\delta q\_i$ where the $\rho\_i$ are not expressible as partial derivatives of a potential. Thus non-holonomic constraints are mechanically equivalent to polygenic forces. Both produce the same effect in the Lagrangian equations: an extra "right-hand side" that cannot be absorbed into $L$.
 
 </div>
 
-More generally, if arbitrary polygenic forces with virtual work $\overline{\delta w} = \rho_1\,\delta q_1 + \cdots + \rho_n\,\delta q_n$ act alongside the monogenic forces already contained in $L$, the Lagrangian equations generalise to
+More generally, if arbitrary polygenic forces with virtual work $\overline{\delta w} = \rho\_1\,\delta q\_1 + \cdots + \rho\_n\,\delta q\_n$ act alongside the monogenic forces already contained in $L$, the Lagrangian equations generalise to
 
 $$\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_i} - \frac{\partial L}{\partial q_i} = \rho_i.$$
 
@@ -2049,13 +2049,13 @@ One of the most impressive applications of the Lagrangian framework is the theor
 
 #### Linearisation Near Equilibrium
 
-The configuration space of a mechanical system is a Riemannian manifold with metric $ds^2 = \sum a_{ik}\,dq_i\,dq_k$ determined by the kinetic energy. In general this space is curved, but near a given point $P$ (the equilibrium configuration) it can be approximated by a flat (Euclidean) tangent space. We place the origin of our coordinate system at $P$ so that $q_i = 0$ at equilibrium.
+The configuration space of a mechanical system is a Riemannian manifold with metric $ds^2 = \sum a\_{ik}\,dq\_i\,dq\_k$ determined by the kinetic energy. In general this space is curved, but near a given point $P$ (the equilibrium configuration) it can be approximated by a flat (Euclidean) tangent space. We place the origin of our coordinate system at $P$ so that $q\_i = 0$ at equilibrium.
 
 Since $P$ is an equilibrium point, the potential energy $V$ has a stationary value there; the linear terms in the Taylor expansion vanish. Dropping the irrelevant constant, the potential energy to leading order is a quadratic form:
 
 $$V \approx \frac{1}{2}\sum_{i,k=1}^{n} b_{ik}\,q_i\,q_k, \qquad b_{ik} = \left(\frac{\partial^2 V}{\partial q_i\,\partial q_k}\right)_0.$$
 
-Similarly, the kinetic energy with the $a_{ik}$ frozen at their equilibrium values is
+Similarly, the kinetic energy with the $a\_{ik}$ frozen at their equilibrium values is
 
 $$T \approx \frac{1}{2}\sum_{i,k=1}^{n}a_{ik}\,\dot{q}_i\,\dot{q}_k.$$
 
@@ -2076,17 +2076,17 @@ to have a non-trivial solution. This requires the determinant
 
 $$\det(b_{ik} - \lambda\,a_{ik}) = 0.$$
 
-This is a polynomial equation of degree $n$ in $\lambda$, whose roots $\lambda_1, \ldots, \lambda_n$ are called the **characteristic values** (eigenvalues).
+This is a polynomial equation of degree $n$ in $\lambda$, whose roots $\lambda\_1, \ldots, \lambda\_n$ are called the **characteristic values** (eigenvalues).
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Properties of the Characteristic Values)</span></p>
 
-For the small-vibration problem with symmetric $a_{ik}$ and $b_{ik}$ (and $a_{ik}$ positive definite):
+For the small-vibration problem with symmetric $a\_{ik}$ and $b\_{ik}$ (and $a\_{ik}$ positive definite):
 
-1. **All eigenvalues $\lambda_i$ are real.** This follows from the symmetry of both matrices and the positive definiteness of $a_{ik}$.
-2. **The principal axes $\mathbf{p}_i$ are mutually orthogonal** with respect to the metric $a_{ik}$, i.e. $\sum a_{ik}\,p^{(j)}_i\,p^{(l)}_k = 0$ for $j \neq l$.
+1. **All eigenvalues $\lambda\_i$ are real.** This follows from the symmetry of both matrices and the positive definiteness of $a\_{ik}$.
+2. **The principal axes $\mathbf{p}\_i$ are mutually orthogonal** with respect to the metric $a\_{ik}$, i.e. $\sum a\_{ik}\,p^{(j)}\_i\,p^{(l)}\_k = 0$ for $j \neq l$.
 3. **The eigenvalues are invariant** under linear coordinate transformations.
 4. A single linear transformation of coordinates brings **both** $T$ and $V$ into diagonal form simultaneously.
 
@@ -2094,7 +2094,7 @@ For the small-vibration problem with symmetric $a_{ik}$ and $b_{ik}$ (and $a_{ik
 
 #### Normal Coordinates and Normal Modes
 
-By transforming to the principal axes, we obtain new coordinates $u_1, \ldots, u_n$ (called **normal coordinates**) in which the kinetic and potential energies take the simultaneously diagonal forms:
+By transforming to the principal axes, we obtain new coordinates $u\_1, \ldots, u\_n$ (called **normal coordinates**) in which the kinetic and potential energies take the simultaneously diagonal forms:
 
 $$T = \frac{1}{2}(\dot{u}_1^2 + \cdots + \dot{u}_n^2), \qquad V = \frac{1}{2}(\lambda_1 u_1^2 + \cdots + \lambda_n u_n^2).$$
 
@@ -2105,38 +2105,38 @@ $$\ddot{u}_i + \lambda_i\,u_i = 0, \qquad i = 1, \ldots, n.$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Modes and Natural Frequencies)</span></p>
 
-Each separated equation $\ddot{u}_i + \lambda_i u_i = 0$ describes a **normal mode** of vibration. If $\lambda_i > 0$, the solution is simple harmonic motion
+Each separated equation $\ddot{u}\_i + \lambda\_i u\_i = 0$ describes a **normal mode** of vibration. If $\lambda\_i > 0$, the solution is simple harmonic motion
 
 $$u_i = A_i\cos(\nu_i t) + B_i\sin(\nu_i t)$$
 
-with **natural frequency** $\nu_i = \sqrt{\lambda_i}$. The general motion near the equilibrium is a superposition of all $n$ normal modes. Each mode vibrates independently along its own principal axis with its own characteristic frequency.
+with **natural frequency** $\nu\_i = \sqrt{\lambda\_i}$. The general motion near the equilibrium is a superposition of all $n$ normal modes. Each mode vibrates independently along its own principal axis with its own characteristic frequency.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double Pendulum)</span></p>
 
-Consider two identical simple pendulums of the same length and mass, where the second is suspended from the bob of the first. Using the small-angle displacements $\theta_1, \theta_2$ as coordinates, the kinetic and potential energies are quadratic forms that can be diagonalised. The two oblique axes of the original coordinate system are at $45°$ to the principal axes. The two normal frequencies turn out to be $\nu_1 = (\sqrt{2} - \sqrt[4]{2})\,\nu$ and $\nu_2 = (\sqrt{2} + \sqrt[4]{2})\,\nu$, where $\nu$ is the natural frequency of a single pendulum. The two normal modes correspond to symmetric and antisymmetric oscillation patterns.
+Consider two identical simple pendulums of the same length and mass, where the second is suspended from the bob of the first. Using the small-angle displacements $\theta\_1, \theta\_2$ as coordinates, the kinetic and potential energies are quadratic forms that can be diagonalised. The two oblique axes of the original coordinate system are at $45°$ to the principal axes. The two normal frequencies turn out to be $\nu\_1 = (\sqrt{2} - \sqrt[4]{2})\,\nu$ and $\nu\_2 = (\sqrt{2} + \sqrt[4]{2})\,\nu$, where $\nu$ is the natural frequency of a single pendulum. The two normal modes correspond to symmetric and antisymmetric oscillation patterns.
 
 </div>
 
 #### Stability and Instability
 
-The sign of the characteristic values $\lambda_i$ determines the qualitative behaviour of the equilibrium:
+The sign of the characteristic values $\lambda\_i$ determines the qualitative behaviour of the equilibrium:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability Criterion)</span></p>
 
-- **Stable equilibrium:** All $\lambda_i > 0$. Every normal mode oscillates harmonically. The $C$-point remains near $P$ for all time. This occurs precisely when $V$ has a **local minimum** at $P$ --- the potential energy surface is bowl-shaped in every direction.
-- **Unstable equilibrium:** At least one $\lambda_i < 0$. The corresponding mode grows exponentially as $u_i = A_i e^{\nu_i t} + B_i e^{-\nu_i t}$ with $\nu_i = \sqrt{-\lambda_i}$. The slightest perturbation drives the system away from $P$.
-- **Neutral equilibrium:** No $\lambda_i$ is negative, but one or more are zero. The system neither oscillates nor diverges in those directions.
+- **Stable equilibrium:** All $\lambda\_i > 0$. Every normal mode oscillates harmonically. The $C$-point remains near $P$ for all time. This occurs precisely when $V$ has a **local minimum** at $P$ --- the potential energy surface is bowl-shaped in every direction.
+- **Unstable equilibrium:** At least one $\lambda\_i < 0$. The corresponding mode grows exponentially as $u\_i = A\_i e^{\nu\_i t} + B\_i e^{-\nu\_i t}$ with $\nu\_i = \sqrt{-\lambda\_i}$. The slightest perturbation drives the system away from $P$.
+- **Neutral equilibrium:** No $\lambda\_i$ is negative, but one or more are zero. The system neither oscillates nor diverges in those directions.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stability, the Second Variation, and Buckling)</span></p>
 
-The stability analysis connects directly with the second variation of the potential energy $\delta^2 V$. The characteristic values $\lambda_i$ are the eigenvalues of $\delta^2 V$ relative to the kinetic-energy metric, and their signs determine whether the second variation is positive definite (stable), indefinite (unstable), or semi-definite (neutral). This perspective is of central importance in the theory of elastic stability and **buckling**: a thin structure under load is stable as long as the smallest $\lambda_i$ remains positive. The critical load at which the structure buckles is precisely the load at which the smallest eigenvalue passes through zero. Beyond this point the equilibrium becomes unstable and the structure collapses --- not from a breakdown of the elastic forces, but because the equilibrium itself ceases to be a minimum of the potential energy.
+The stability analysis connects directly with the second variation of the potential energy $\delta^2 V$. The characteristic values $\lambda\_i$ are the eigenvalues of $\delta^2 V$ relative to the kinetic-energy metric, and their signs determine whether the second variation is positive definite (stable), indefinite (unstable), or semi-definite (neutral). This perspective is of central importance in the theory of elastic stability and **buckling**: a thin structure under load is stable as long as the smallest $\lambda\_i$ remains positive. The critical load at which the structure buckles is precisely the load at which the smallest eigenvalue passes through zero. Beyond this point the equilibrium becomes unstable and the structure collapses --- not from a breakdown of the elastic forces, but because the equilibrium itself ceases to be a minimum of the potential energy.
 
 </div>
 
@@ -2158,15 +2158,15 @@ The French mathematician Legendre (1752--1833) discovered an important transform
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Legendre Transformation)</span></p>
 
-Given a function $F = F(u_1, \ldots, u_n)$, introduce new variables $v_i$ via
+Given a function $F = F(u\_1, \ldots, u\_n)$, introduce new variables $v\_i$ via
 
 $$v_i = \frac{\partial F}{\partial u_i}.$$
 
-Assuming the Hessian (the determinant of the matrix of second partial derivatives of $F$) is non-zero, the $u_i$ can be solved as functions of the $v_i$. Define a new function
+Assuming the Hessian (the determinant of the matrix of second partial derivatives of $F$) is non-zero, the $u\_i$ can be solved as functions of the $v\_i$. Define a new function
 
 $$G = \sum_{i=1}^{n} u_i v_i - F.$$
 
-Expressing the $u_i$ in terms of the $v_i$ yields $G = G(v_1, \ldots, v_n)$.
+Expressing the $u\_i$ in terms of the $v\_i$ yields $G = G(v\_1, \ldots, v\_n)$.
 
 </div>
 
@@ -2184,7 +2184,7 @@ The "old" and "new" systems are completely equivalent --- applying the same proc
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Active and Passive Variables)</span></p>
 
-The transformation can be generalised to the case where $F$ depends on two sets of variables: the $u_i$ (called **active** variables, which participate in the transformation) and additional $w_i$ (called **passive** variables, which appear as mere parameters). For the passive variables, an additional relation holds:
+The transformation can be generalised to the case where $F$ depends on two sets of variables: the $u\_i$ (called **active** variables, which participate in the transformation) and additional $w\_i$ (called **passive** variables, which appear as mere parameters). For the passive variables, an additional relation holds:
 
 $$\frac{\partial F}{\partial w_i} = -\frac{\partial G}{\partial w_i}.$$
 
@@ -2194,14 +2194,14 @@ The partial derivative of $F$ with respect to any passive variable equals the ne
 
 ### 2. Legendre's Transformation Applied to the Lagrangian Function
 
-The Lagrangian function $L$ of a variational problem depends in general on $n$ position coordinates $q_i$, the $n$ velocities $\dot{q}_i$, and the time $t$. We now apply Legendre's transformation, treating the velocities $\dot{q}_i$ as the active variables and the position coordinates $q_i$ together with $t$ as passive variables.
+The Lagrangian function $L$ of a variational problem depends in general on $n$ position coordinates $q\_i$, the $n$ velocities $\dot{q}\_i$, and the time $t$. We now apply Legendre's transformation, treating the velocities $\dot{q}\_i$ as the active variables and the position coordinates $q\_i$ together with $t$ as passive variables.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Canonical Momenta and the Hamiltonian)</span></p>
 
 The transformation proceeds in three steps:
 
-1. **Introduce the momenta** $p_i$ (the new variables):
+1. **Introduce the momenta** $p\_i$ (the new variables):
 
 $$p_i = \frac{\partial L}{\partial \dot{q}_i}.$$
 
@@ -2209,7 +2209,7 @@ $$p_i = \frac{\partial L}{\partial \dot{q}_i}.$$
 
 $$H = \sum_{i=1}^{n} p_i \dot{q}_i - L.$$
 
-3. **Express $H$ in terms of the new variables** by solving the defining equations for the $\dot{q}_i$ and substituting:
+3. **Express $H$ in terms of the new variables** by solving the defining equations for the $\dot{q}\_i$ and substituting:
 
 $$H = H(q_1, \ldots, q_n;\; p_1, \ldots, p_n;\; t).$$
 
@@ -2220,8 +2220,8 @@ The dual nature of the transformation is expressed in the following scheme:
 | | Old system | New system |
 |---|---|---|
 | **Function** | Lagrangian $L$ | Hamiltonian $H$ |
-| **Active variables** | velocities $\dot{q}_i$ | momenta $p_i$ |
-| **Passive variables** | positions $q_i$, time $t$ | positions $q_i$, time $t$ |
+| **Active variables** | velocities $\dot{q}\_i$ | momenta $p\_i$ |
+| **Passive variables** | positions $q\_i$, time $t$ | positions $q\_i$, time $t$ |
 
 The duality relations give:
 
@@ -2233,7 +2233,7 @@ $$\frac{\partial L}{\partial q_i} = -\frac{\partial H}{\partial q_i}, \qquad \fr
 
 ### 3. Transformation of the Lagrangian Equations of Motion
 
-The Lagrangian equations of motion are differential equations of the second order in the position coordinates $q_i$. By introducing the momenta $p_i$, they can be rewritten as a system of first-order equations.
+The Lagrangian equations of motion are differential equations of the second order in the position coordinates $q\_i$. By introducing the momenta $p\_i$, they can be rewritten as a system of first-order equations.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Conjugate Momenta)</span></p>
@@ -2242,15 +2242,15 @@ The momenta defined by
 
 $$p_i = \frac{\partial L}{\partial \dot{q}_i}$$
 
-are called **conjugate momenta**. Each position coordinate $q_k$ is paired with its own conjugate momentum $p_k$, forming the **conjugate pairs** $(q_k, p_k)$.
+are called **conjugate momenta**. Each position coordinate $q\_k$ is paired with its own conjugate momentum $p\_k$, forming the **conjugate pairs** $(q\_k, p\_k)$.
 
 </div>
 
-Defining the momenta has the effect of replacing the original system of $n$ second-order differential equations by a system of $2n$ first-order equations. The Lagrangian equations $\dot{p}_i = \frac{\partial L}{\partial q_i}$ can be rewritten, via Legendre's transformation, as:
+Defining the momenta has the effect of replacing the original system of $n$ second-order differential equations by a system of $2n$ first-order equations. The Lagrangian equations $\dot{p}\_i = \frac{\partial L}{\partial q\_i}$ can be rewritten, via Legendre's transformation, as:
 
 $$\dot{p}_i = -\frac{\partial H}{\partial q_i}.$$
 
-Combining this with the duality relation $\dot{q}_i = \frac{\partial H}{\partial p_i}$, we arrive at Hamilton's canonical equations.
+Combining this with the duality relation $\dot{q}\_i = \frac{\partial H}{\partial p\_i}$, we arrive at Hamilton's canonical equations.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hamilton's Canonical Equations)</span></p>
@@ -2266,36 +2266,36 @@ These $2n$ first-order differential equations are called **Hamilton's canonical 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Advantages of the Canonical Form)</span></p>
 
-Although the canonical equations are mathematically equivalent to the Lagrangian equations, the new form is vastly superior. Differentiation with respect to time is cleanly separated from the algebraic operations: the Hamiltonian function does not contain any derivatives of $q_i$ or $p_i$ with respect to $t$. Furthermore, the entire set of $2n$ equations is determined by a single scalar function $H$.
+Although the canonical equations are mathematically equivalent to the Lagrangian equations, the new form is vastly superior. Differentiation with respect to time is cleanly separated from the algebraic operations: the Hamiltonian function does not contain any derivatives of $q\_i$ or $p\_i$ with respect to $t$. Furthermore, the entire set of $2n$ equations is determined by a single scalar function $H$.
 
 </div>
 
 ### 4. The Canonical Integral
 
-The canonical equations have a double origin. The first set $\dot{q}_i = \frac{\partial H}{\partial p_i}$ follows from the definition of the momenta via Legendre's transformation. The second set $\dot{p}_i = -\frac{\partial H}{\partial q_i}$ is a consequence of the variational principle. Yet the symmetry of the complete system suggests that both sets should be derivable from a single principle --- and this is indeed the case.
+The canonical equations have a double origin. The first set $\dot{q}\_i = \frac{\partial H}{\partial p\_i}$ follows from the definition of the momenta via Legendre's transformation. The second set $\dot{p}\_i = -\frac{\partial H}{\partial q\_i}$ is a consequence of the variational principle. Yet the symmetry of the complete system suggests that both sets should be derivable from a single principle --- and this is indeed the case.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Canonical Integral)</span></p>
 
-Starting from the Hamiltonian function $H$, reconstruct the Lagrangian via $L = \sum p_i \dot{q}_i - H$. The action integral becomes
+Starting from the Hamiltonian function $H$, reconstruct the Lagrangian via $L = \sum p\_i \dot{q}\_i - H$. The action integral becomes
 
 $$A = \int_{t_1}^{t_2} \left[\sum_{i=1}^{n} p_i \dot{q}_i - H(q_1, \ldots, q_n;\; p_1, \ldots, p_n;\; t)\right] dt.$$
 
-This is called the **canonical integral**. Its distinguishing feature is that the $q_i$ and $p_i$ are treated as $2n$ independent variables, all varied freely. The Euler--Lagrange equations applied to this integral reproduce exactly Hamilton's canonical equations.
+This is called the **canonical integral**. Its distinguishing feature is that the $q\_i$ and $p\_i$ are treated as $2n$ independent variables, all varied freely. The Euler--Lagrange equations applied to this integral reproduce exactly Hamilton's canonical equations.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Structure of the Canonical Integral)</span></p>
 
-An arbitrary variation of the $p_i$ has no influence on the variation of $L$, because the coefficient of $\delta p_i$ vanishes identically by Legendre's transformation. This means the variational principle remains valid even when the $p_i$ are considered as a second independent set of variables. The kinetic part of the canonical integral is now a simple linear function of the velocities $\dot{q}_i$, namely $\sum p_i \dot{q}_i$, rather than a quadratic form. This remarkable simplification is the hallmark of the Hamiltonian formulation.
+An arbitrary variation of the $p\_i$ has no influence on the variation of $L$, because the coefficient of $\delta p\_i$ vanishes identically by Legendre's transformation. This means the variational principle remains valid even when the $p\_i$ are considered as a second independent set of variables. The kinetic part of the canonical integral is now a simple linear function of the velocities $\dot{q}\_i$, namely $\sum p\_i \dot{q}\_i$, rather than a quadratic form. This remarkable simplification is the hallmark of the Hamiltonian formulation.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conjugate Pairs and Complex Canonical Equations)</span></p>
 
-Each $q_k$ is associated with its own $p_k$, and the canonical variables can be arranged in pairs $(q_k, p_k)$. A peculiar feature of the canonical equations is their appearance in pairs. If the conjugate variables $q_k$, $p_k$ are replaced by the complex variables
+Each $q\_k$ is associated with its own $p\_k$, and the canonical variables can be arranged in pairs $(q\_k, p\_k)$. A peculiar feature of the canonical equations is their appearance in pairs. If the conjugate variables $q\_k$, $p\_k$ are replaced by the complex variables
 
 $$u_k = \frac{q_k + ip_k}{\sqrt{2}}, \qquad u_k^* = \frac{q_k - ip_k}{\sqrt{2}},$$
 
@@ -2303,7 +2303,7 @@ then the double set of canonical equations can be replaced by a single set of co
 
 $$\frac{du_k}{i\,dt} = -\frac{\partial H}{\partial u_k^*}.$$
 
-Because of the duality of Legendre's transformation, every Hamiltonian problem can be associated with a corresponding Lagrangian problem (and vice versa), by expressing the $p_i$ in terms of $q_i$ and $\dot{q}_i$.
+Because of the duality of Legendre's transformation, every Hamiltonian problem can be associated with a corresponding Lagrangian problem (and vice versa), by expressing the $p\_i$ in terms of $q\_i$ and $\dot{q}\_i$.
 
 </div>
 
@@ -2312,7 +2312,7 @@ Because of the duality of Legendre's transformation, every Hamiltonian problem c
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Space and State Space)</span></p>
 
-The variables of the canonical integral are the $q_i$ and $p_i$, giving $2n$ degrees of freedom. The $2n$-dimensional space whose coordinates are the position coordinates $q_1, \ldots, q_n$ and the momenta $p_1, \ldots, p_n$ is called the **phase space** (a term introduced by Gibbs). A single point $C$ in the phase space represents the complete instantaneous state of the mechanical system.
+The variables of the canonical integral are the $q\_i$ and $p\_i$, giving $2n$ degrees of freedom. The $2n$-dimensional space whose coordinates are the position coordinates $q\_1, \ldots, q\_n$ and the momenta $p\_1, \ldots, p\_n$ is called the **phase space** (a term introduced by Gibbs). A single point $C$ in the phase space represents the complete instantaneous state of the mechanical system.
 
 If the time $t$ is included as an additional variable, we obtain a $(2n+1)$-dimensional space called the **state space** (Cartan's *espace des états*). In the state space the complete solution of the canonical equations is pictured as an infinite manifold of non-crossing curves.
 
@@ -2321,7 +2321,7 @@ If the time $t$ is included as an additional variable, we obtain a $(2n+1)$-dime
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Phase Space vs. Configuration Space)</span></p>
 
-In Lagrangian mechanics the "configuration space" includes only the $n$ position coordinates $q_i$. In configuration space the totality of paths forms a hopeless criss-cross because motion can start from every point in every direction with arbitrary initial velocity. In the phase space, by contrast, the canonical equations are of the first order: specifying the position $C$ of the system (i.e. all $q_i$ and $p_i$) uniquely determines its subsequent motion. From any point of the phase space, only one trajectory passes, and the totality of motions can be pictured in a well-ordered way without any overlapping.
+In Lagrangian mechanics the "configuration space" includes only the $n$ position coordinates $q\_i$. In configuration space the totality of paths forms a hopeless criss-cross because motion can start from every point in every direction with arbitrary initial velocity. In the phase space, by contrast, the canonical equations are of the first order: specifying the position $C$ of the system (i.e. all $q\_i$ and $p\_i$) uniquely determines its subsequent motion. From any point of the phase space, only one trajectory passes, and the totality of motions can be pictured in a well-ordered way without any overlapping.
 
 </div>
 
@@ -2346,7 +2346,7 @@ If the Lagrangian function $L$ does not depend on $t$ (a **conservative** or **s
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Energy Conservation from the Canonical Equations)</span></p>
 
-For a conservative system with $H = H(q_1, \ldots, q_n;\; p_1, \ldots, p_n)$, differentiation gives
+For a conservative system with $H = H(q\_1, \ldots, q\_n;\; p\_1, \ldots, p\_n)$, differentiation gives
 
 $$\frac{dH}{dt} = \sum_{i=1}^{n}\left(\frac{\partial H}{\partial q_i}\dot{q}_i + \frac{\partial H}{\partial p_i}\dot{p}_i\right).$$
 
@@ -2361,7 +2361,7 @@ This is the **energy theorem**: the Hamiltonian is a conserved quantity (the tot
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Energy Surfaces in Phase Space)</span></p>
 
-The equation $H(q_1, \ldots, q_n;\; p_1, \ldots, p_n) = E$ defines a surface in phase space. As $E$ takes arbitrary constant values, we obtain an infinite family of such surfaces. The energy theorem has the geometric interpretation that a fluid particle which starts its motion on a definite energy surface remains constantly on that surface, no matter how long we follow its motion.
+The equation $H(q\_1, \ldots, q\_n;\; p\_1, \ldots, p\_n) = E$ defines a surface in phase space. As $E$ takes arbitrary constant values, we obtain an infinite family of such surfaces. The energy theorem has the geometric interpretation that a fluid particle which starts its motion on a definite energy surface remains constantly on that surface, no matter how long we follow its motion.
 
 </div>
 
@@ -2381,7 +2381,7 @@ This relation holds not only for conservative systems but for any system whose m
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conservation of Phase-Space Volume)</span></p>
 
-Liouville's theorem adds a powerful conservation law. We may cut out an arbitrary $2n$-dimensional region of phase space with volume $\sigma = \int dq_1 \cdots dq_n\, dp_1 \cdots dp_n$ and follow it as the phase fluid carries it along. Although the region may become distorted, its volume remains unchanged during the motion:
+Liouville's theorem adds a powerful conservation law. We may cut out an arbitrary $2n$-dimensional region of phase space with volume $\sigma = \int dq\_1 \cdots dq\_n\, dp\_1 \cdots dp\_n$ and follow it as the phase fluid carries it along. Although the region may become distorted, its volume remains unchanged during the motion:
 
 $$\sigma = \text{const.}$$
 
@@ -2405,11 +2405,11 @@ $$\Gamma = \oint \sum_{i=1}^{n} p_i\, dq_i.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Helmholtz's Circulation Theorem for Phase Space)</span></p>
 
-The circulation $\Gamma = \oint \sum p_i\, dq_i$ is an invariant of the motion:
+The circulation $\Gamma = \oint \sum p\_i\, dq\_i$ is an invariant of the motion:
 
 $$\Gamma = \text{const.}$$
 
-This follows from the fact that the variation of the action integral for arbitrary variations of the $q_i$ (and the $p_i$) gives $\delta A = \left[\sum p_i\,\delta q_i\right]_{t_1}^{t_2}$, and for a closed curve the end-point and initial point coincide, causing the integrated contribution to vanish at both times. Since $t_1$ and $t_2$ are arbitrary, the circulation is conserved.
+This follows from the fact that the variation of the action integral for arbitrary variations of the $q\_i$ (and the $p\_i$) gives $\delta A = \left[\sum p\_i\,\delta q\_i\right]\_{t\_1}^{t\_2}$, and for a closed curve the end-point and initial point coincide, causing the integrated contribution to vanish at both times. Since $t\_1$ and $t\_2$ are arbitrary, the circulation is conserved.
 
 </div>
 
@@ -2427,15 +2427,15 @@ Although the canonical equations have a simpler structure than the original Lagr
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Ignorable Variables in the Hamiltonian Formulation)</span></p>
 
-If the Lagrangian function $L$ does not contain a certain coordinate $q_n$, then the Hamiltonian function $H$ will not contain it either. The last of the canonical equations then gives
+If the Lagrangian function $L$ does not contain a certain coordinate $q\_n$, then the Hamiltonian function $H$ will not contain it either. The last of the canonical equations then gives
 
 $$\dot{p}_n = 0, \qquad \Longrightarrow \qquad p_n = \text{const.} = C_n.$$
 
-The constancy of the kinosthenic momentum is thus re-established. The process of reduction in the Hamiltonian form is much simpler than in the Lagrangian form: we drop the contribution of the ignorable variables from the kinetic part of the canonical integral ($\sum p_i \dot{q}_i$), while in the Hamiltonian function the ignorable momenta are replaced by their constant values $C_n$. The reduced action integral becomes
+The constancy of the kinosthenic momentum is thus re-established. The process of reduction in the Hamiltonian form is much simpler than in the Lagrangian form: we drop the contribution of the ignorable variables from the kinetic part of the canonical integral ($\sum p\_i \dot{q}\_i$), while in the Hamiltonian function the ignorable momenta are replaced by their constant values $C\_n$. The reduced action integral becomes
 
 $$\bar{A} = \int_{t_1}^{t_2}\left(\sum_{i=1}^{n-1} p_i \dot{q}_i - H\right) dt.$$
 
-After solving the reduced problem, the ignorable variables are recovered by direct integration of $\dot{q}_m = \frac{\partial H}{\partial p_m}$.
+After solving the reduced problem, the ignorable variables are recovered by direct integration of $\dot{q}\_m = \frac{\partial H}{\partial p\_m}$.
 
 </div>
 
@@ -2444,14 +2444,14 @@ After solving the reduced problem, the ignorable variables are recovered by dire
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Time as a Mechanical Variable)</span></p>
 
-The state space has an odd number of dimensions: all position coordinates $q_i$ are paired with their momenta $p_i$, but the time $t$ stands alone as the independent variable with no associated momentum. Great advantage comes from promoting $t$ to a mechanical variable by setting $t = q_{n+1}$ and introducing an unspecified parameter $\tau$ as the new independent variable. The configuration space then has $n+1$ dimensions, and the phase space has $2n+2$ dimensions with $n+1$ conjugate pairs.
+The state space has an odd number of dimensions: all position coordinates $q\_i$ are paired with their momenta $p\_i$, but the time $t$ stands alone as the independent variable with no associated momentum. Great advantage comes from promoting $t$ to a mechanical variable by setting $t = q\_{n+1}$ and introducing an unspecified parameter $\tau$ as the new independent variable. The configuration space then has $n+1$ dimensions, and the phase space has $2n+2$ dimensions with $n+1$ conjugate pairs.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Extended Phase Space and Extended Hamiltonian)</span></p>
 
-Setting $q_{n+1} = t$, the momentum conjugate to $t$ has the physical interpretation of the negative of the total energy: $p_{n+1} = -H$. The canonical integral in parametric form becomes
+Setting $q\_{n+1} = t$, the momentum conjugate to $t$ has the physical interpretation of the negative of the total energy: $p\_{n+1} = -H$. The canonical integral in parametric form becomes
 
 $$A = \int_{\tau_1}^{\tau_2} \sum_{i=1}^{n+1} p_i\, q_i'\, d\tau,$$
 
@@ -2459,7 +2459,7 @@ where primes denote differentiation with respect to $\tau$. This integral is to 
 
 $$K(q_1, \ldots, q_{n+1};\; p_1, \ldots, p_{n+1}) = 0,$$
 
-where $K = p_{n+1} + H$ is the **extended Hamiltonian function**. The extended canonical equations are
+where $K = p\_{n+1} + H$ is the **extended Hamiltonian function**. The extended canonical equations are
 
 $$q_k' = \frac{\partial K}{\partial p_k}, \qquad p_k' = -\frac{\partial K}{\partial q_k}, \qquad k = 1, \ldots, n+1.$$
 
@@ -2468,14 +2468,14 @@ $$q_k' = \frac{\partial K}{\partial p_k}, \qquad p_k' = -\frac{\partial K}{\part
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal Conservatism of the Extended System)</span></p>
 
-In the extended phase space, the "extended Hamiltonian" $K$ does not depend on the parameter $\tau$, so every system --- whether originally conservative or not --- becomes conservative. The motion of the extended phase fluid is always steady, and every fluid particle remains permanently on the surface $K = \text{const.}$ The auxiliary condition $K = 0$ is permanently satisfied if the initial values of $q_i$ and $p_i$ are chosen consistently at $\tau_1$.
+In the extended phase space, the "extended Hamiltonian" $K$ does not depend on the parameter $\tau$, so every system --- whether originally conservative or not --- becomes conservative. The motion of the extended phase fluid is always steady, and every fluid particle remains permanently on the surface $K = \text{const.}$ The auxiliary condition $K = 0$ is permanently satisfied if the initial values of $q\_i$ and $p\_i$ are chosen consistently at $\tau\_1$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unification of the Minimum Principles)</span></p>
 
-The parametric formulation gives a deeper insight into the mutual relations of the various minimum principles. If the canonical integral is normalised to the form $A = \int \sum p_i q_i'\, d\tau$ with auxiliary condition $K = 0$, then the three great variational principles --- Hamilton's principle, the principle of Euler--Lagrange, and Jacobi's principle --- correspond to different interpretations of this auxiliary condition. In the extended phase space the time $t$ plays simply the role of a parameter, and the particular properties of conservative systems are generalised to arbitrary systems. This parametric formulation can be considered the most advanced form of the canonical equations.
+The parametric formulation gives a deeper insight into the mutual relations of the various minimum principles. If the canonical integral is normalised to the form $A = \int \sum p\_i q\_i'\, d\tau$ with auxiliary condition $K = 0$, then the three great variational principles --- Hamilton's principle, the principle of Euler--Lagrange, and Jacobi's principle --- correspond to different interpretations of this auxiliary condition. In the extended phase space the time $t$ plays simply the role of a parameter, and the particular properties of conservative systems are generalised to arbitrary systems. This parametric formulation can be considered the most advanced form of the canonical equations.
 
 </div>
 
@@ -2490,7 +2490,7 @@ In the Lagrangian formulation, a proper choice of coordinates can greatly facili
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Advantages of the Hamiltonian Framework for Transformations)</span></p>
 
-In Lagrangian mechanics the significant function is $L = T - V$: simplifying $V$ may complicate $T$ and vice versa. In Hamiltonian mechanics the significant function is $H$ alone, which contains no derivatives --- only the variables themselves. The kinetic part of the canonical integral, $\sum p_i \dot{q}_i$, does not participate in the transformation. Hence we can focus entirely on simplifying $H$.
+In Lagrangian mechanics the significant function is $L = T - V$: simplifying $V$ may complicate $T$ and vice versa. In Hamiltonian mechanics the significant function is $H$ alone, which contains no derivatives --- only the variables themselves. The kinetic part of the canonical integral, $\sum p\_i \dot{q}\_i$, does not participate in the transformation. Hence we can focus entirely on simplifying $H$.
 
 Furthermore, the doubling of variables from $n$ to $2n$ (positions and momenta) is actually an advantage: we have a much wider class of possible transformations at our disposal. Finally, in Hamiltonian mechanics a definite *systematic* method can be devised for the production of ignorable variables (via the generating function), whereas in Lagrangian mechanics one must rely on lucky guesses.
 
@@ -2499,7 +2499,7 @@ Furthermore, the doubling of variables from $n$ to $2n$ (positions and momenta) 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Viewpoint of Coordinate Transformations)</span></p>
 
-The method of coordinate transformations employs a viewpoint entirely different from that of the direct integration problem. We forget about the equations of motion and consider the $q_i$, $p_i$ merely as *variables* --- coordinates of a point of the phase space. The specific problem of motion is entirely eliminated. What matters is that the transformation shall preserve the canonical form of the equations. If this differential form is preserved, the whole set of canonical equations is preserved. We call such transformations **canonical transformations**.
+The method of coordinate transformations employs a viewpoint entirely different from that of the direct integration problem. We forget about the equations of motion and consider the $q\_i$, $p\_i$ merely as *variables* --- coordinates of a point of the phase space. The specific problem of motion is entirely eliminated. What matters is that the transformation shall preserve the canonical form of the equations. If this differential form is preserved, the whole set of canonical equations is preserved. We call such transformations **canonical transformations**.
 
 </div>
 
@@ -2512,25 +2512,25 @@ A **Lagrangian point transformation** is a transformation of the position coordi
 
 $$q_i = f_i(Q_1, \ldots, Q_n), \qquad i = 1, \ldots, n,$$
 
-where the new coordinates $Q_i$ replace the old $q_i$. The momenta $p_i$ are not independently transformed but follow from the invariance principle.
+where the new coordinates $Q\_i$ replace the old $q\_i$. The momenta $p\_i$ are not independently transformed but follow from the invariance principle.
 
 </div>
 
-The canonical equations arise from a Lagrangian problem whose integrand is normalised to the canonical form $\sum p_i \dot{q}_i - H$. We require this form to be preserved under the transformation. A sufficient condition is the invariance of the differential form
+The canonical equations arise from a Lagrangian problem whose integrand is normalised to the canonical form $\sum p\_i \dot{q}\_i - H$. We require this form to be preserved under the transformation. A sufficient condition is the invariance of the differential form
 
 $$\sum_{i=1}^{n} p_i\,\delta q_i = \sum_{i=1}^{n} P_i\,\delta Q_i.$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Canonical Invariance of Lagrangian Point Transformations)</span></p>
 
-A Lagrangian point transformation leaves the canonical equations invariant. The transformation of the momenta is determined entirely by the invariance of the differential form $\sum p_i\,\delta q_i$: since the $\dot{q}_i$ are linearly related to the $\dot{Q}_i$ by the same Jacobian matrix that connects the $\delta q_i$ and $\delta Q_i$, the transformation of the momenta obtained from the invariance principle agrees with the Lagrangian definition $P_i = \frac{\partial L}{\partial \dot{Q}_i}$. The Hamiltonian function $H$ is an **invariant** of the transformation --- it takes the same functional form (after re-expression) in the new variables.
+A Lagrangian point transformation leaves the canonical equations invariant. The transformation of the momenta is determined entirely by the invariance of the differential form $\sum p\_i\,\delta q\_i$: since the $\dot{q}\_i$ are linearly related to the $\dot{Q}\_i$ by the same Jacobian matrix that connects the $\delta q\_i$ and $\delta Q\_i$, the transformation of the momenta obtained from the invariance principle agrees with the Lagrangian definition $P\_i = \frac{\partial L}{\partial \dot{Q}\_i}$. The Hamiltonian function $H$ is an **invariant** of the transformation --- it takes the same functional form (after re-expression) in the new variables.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Rheonomic Point Transformations and Gyroscopic Terms)</span></p>
 
-For scleronomic (time-independent) point transformations, the Hamiltonian function is an invariant of the transformation. For rheonomic (time-dependent) transformations of the form $q_i = f_i(Q_1, \ldots, Q_n, t)$, the situation changes: the invariance principle in the extended phase space involves the extended Hamiltonian function $K = p_t + H$. Since the time $t$ is also being transformed (to $\bar{t}$), the invariance of $K$ gives the relation
+For scleronomic (time-independent) point transformations, the Hamiltonian function is an invariant of the transformation. For rheonomic (time-dependent) transformations of the form $q\_i = f\_i(Q\_1, \ldots, Q\_n, t)$, the situation changes: the invariance principle in the extended phase space involves the extended Hamiltonian function $K = p\_t + H$. Since the time $t$ is also being transformed (to $\bar{t}$), the invariance of $K$ gives the relation
 
 $$H' = H + \sum_{i=1}^{n} p_i \frac{\partial f_i}{\partial t}.$$
 
@@ -2545,26 +2545,26 @@ The Lagrangian point transformations form only a very restricted subgroup of the
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mathieu Transformation)</span></p>
 
-A **Mathieu transformation** (or contact transformation) is characterised by the requirement that the differential form $\sum p_i\,\delta q_i$ shall be an invariant of the transformation:
+A **Mathieu transformation** (or contact transformation) is characterised by the requirement that the differential form $\sum p\_i\,\delta q\_i$ shall be an invariant of the transformation:
 
 $$\sum_{i=1}^{n} p_i\,\delta q_i = \sum_{i=1}^{n} P_i\,\delta Q_i.$$
 
-Unlike the Lagrangian point transformation (where $q_i$ depends on the $Q_i$ alone), the momenta now participate in the position transformation. There must exist at least one functional relation
+Unlike the Lagrangian point transformation (where $q\_i$ depends on the $Q\_i$ alone), the momenta now participate in the position transformation. There must exist at least one functional relation
 
 $$f(q_1, \ldots, q_n;\; Q_1, \ldots, Q_n) = 0$$
 
-between the $q_i$ and $Q_i$ alone, not involving the $p_i$ and $P_i$.
+between the $q\_i$ and $Q\_i$ alone, not involving the $p\_i$ and $P\_i$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Classification of Mathieu Transformations)</span></p>
 
-Mathieu transformations can be classified according to the number $m$ of independent relations that exist between the $q_i$ and $Q_i$ alone ($1 \leq m \leq n$). These $m$ auxiliary conditions are of the form
+Mathieu transformations can be classified according to the number $m$ of independent relations that exist between the $q\_i$ and $Q\_i$ alone ($1 \leq m \leq n$). These $m$ auxiliary conditions are of the form
 
 $$\Omega_k(q_1, \ldots, q_n;\; Q_1, \ldots, Q_n) = 0, \qquad k = 1, \ldots, m.$$
 
-When $m = n$ (the maximum), the $q_i$ can be completely eliminated in terms of the $Q_i$, and we recover the Lagrangian point transformations as a special subgroup. The generating formulae are obtained using the Lagrangian $\lambda$-method:
+When $m = n$ (the maximum), the $q\_i$ can be completely eliminated in terms of the $Q\_i$, and we recover the Lagrangian point transformations as a special subgroup. The generating formulae are obtained using the Lagrangian $\lambda$-method:
 
 $$p_i = \lambda_1 \frac{\partial \Omega_1}{\partial q_i} + \cdots + \lambda_m \frac{\partial \Omega_m}{\partial q_i}, \qquad P_i = -\left(\lambda_1 \frac{\partial \Omega_1}{\partial Q_i} + \cdots + \lambda_m \frac{\partial \Omega_m}{\partial Q_i}\right).$$
 
@@ -2589,7 +2589,7 @@ The Hamiltonian function is invariant only for scleronomic transformations; for 
 
 ### 4. The General Canonical Transformation
 
-The Mathieu transformations require the invariance of the differential form $\sum p_i\,\delta q_i$ itself. The general canonical transformation relaxes this condition: the differential form need not be preserved exactly, but only up to an exact differential.
+The Mathieu transformations require the invariance of the differential form $\sum p\_i\,\delta q\_i$ itself. The general canonical transformation relaxes this condition: the differential form need not be preserved exactly, but only up to an exact differential.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generating Function of a Canonical Transformation)</span></p>
@@ -2598,7 +2598,7 @@ The most general condition for a canonical transformation is
 
 $$\sum_{i=1}^{n}\left(p_i\,\delta q_i - P_i\,\delta Q_i\right) = \delta S,$$
 
-where $S = S(q_1, \ldots, q_n;\; Q_1, \ldots, Q_n)$ is a function of the old and new position coordinates called the **generating function**. The variation of $S$ gives
+where $S = S(q\_1, \ldots, q\_n;\; Q\_1, \ldots, Q\_n)$ is a function of the old and new position coordinates called the **generating function**. The variation of $S$ gives
 
 $$\delta S = \sum_{i=1}^{n}\left(\frac{\partial S}{\partial q_i}\,\delta q_i + \frac{\partial S}{\partial Q_i}\,\delta Q_i\right).$$
 
@@ -2611,7 +2611,7 @@ $$p_i = \frac{\partial S}{\partial q_i}, \qquad P_i = -\frac{\partial S}{\partia
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mixed Representation)</span></p>
 
-The generating function equations do not give the transformation in explicit form. Instead, the old momenta $p_i$ and the new momenta $P_i$ are expressed as functions of the old and new position coordinates --- a *mixed* representation. To obtain the explicit transformation from old to new (or vice versa), one must solve one set of equations for the position coordinates. The generating function $S$ may also be combined with auxiliary conditions between the $q_i$ and $Q_i$ (as in the Mathieu transformations), producing a "conditioned" canonical transformation with $m$ prescribed conditions ($1 \leq m \leq n$). In this case the modified generating function is $\bar{S} = S + \lambda_1 \Omega_1 + \cdots + \lambda_m \Omega_m$.
+The generating function equations do not give the transformation in explicit form. Instead, the old momenta $p\_i$ and the new momenta $P\_i$ are expressed as functions of the old and new position coordinates --- a *mixed* representation. To obtain the explicit transformation from old to new (or vice versa), one must solve one set of equations for the position coordinates. The generating function $S$ may also be combined with auxiliary conditions between the $q\_i$ and $Q\_i$ (as in the Mathieu transformations), producing a "conditioned" canonical transformation with $m$ prescribed conditions ($1 \leq m \leq n$). In this case the modified generating function is $\bar{S} = S + \lambda\_1 \Omega\_1 + \cdots + \lambda\_m \Omega\_m$.
 
 </div>
 
@@ -2633,7 +2633,7 @@ The last term is a pure boundary term with no influence on the variation. Hence 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Transformation of the Hamiltonian under a General Canonical Transformation)</span></p>
 
-For a scleronomic (time-independent) generating function $S = S(q_i, Q_i)$, the Hamiltonian function is an invariant: $H' = H$. For a rheonomic (time-dependent) generating function $S = S(q_i, Q_i, t)$, the transformed Hamiltonian is
+For a scleronomic (time-independent) generating function $S = S(q\_i, Q\_i)$, the Hamiltonian function is an invariant: $H' = H$. For a rheonomic (time-dependent) generating function $S = S(q\_i, Q\_i, t)$, the transformed Hamiltonian is
 
 $$H' = H + \frac{\partial S}{\partial t}.$$
 
@@ -2654,7 +2654,7 @@ is invariant under an arbitrary canonical transformation:
 
 $$\oint \sum_{i=1}^{n} p_i\,dq_i = \oint \sum_{i=1}^{n} P_i\,dQ_i.$$
 
-This follows from integrating the defining relation $\sum p_i\,dq_i - \sum P_i\,dQ_i = dS$ around any closed curve, since the integral of an exact differential around a closed path vanishes.
+This follows from integrating the defining relation $\sum p\_i\,dq\_i - \sum P\_i\,dQ\_i = dS$ around any closed curve, since the integral of an exact differential around a closed path vanishes.
 
 </div>
 
@@ -2665,7 +2665,7 @@ The circulation can be converted from a line integral into a surface integral vi
 
 $$\oint_L \sum_{i=1}^{n} p_i\,dq_i = \int_K \sum_{i=1}^{n}\left(\frac{\partial q_i}{\partial u}\frac{\partial p_i}{\partial v} - \frac{\partial p_i}{\partial u}\frac{\partial q_i}{\partial v}\right) du\,dv.$$
 
-The integrand, evaluated for any two independent infinitesimal displacements $d'q_i, d'p_i$ and $d''q_i, d''p_i$ of the phase space, gives the **bilinear differential form**:
+The integrand, evaluated for any two independent infinitesimal displacements $d'q\_i, d'p\_i$ and $d''q\_i, d''p\_i$ of the phase space, gives the **bilinear differential form**:
 
 $$\sum_{i=1}^{n}\left(d'p_i\,d''q_i - d''p_i\,d'q_i\right).$$
 
@@ -2687,7 +2687,7 @@ Lagrange anticipated many of the results which are more systematically deducible
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lagrange Bracket)</span></p>
 
-Let the two sets of variables $q_i$ and $p_i$ be given as functions of two parameters $u$ and $v$. The **Lagrange bracket** is
+Let the two sets of variables $q\_i$ and $p\_i$ be given as functions of two parameters $u$ and $v$. The **Lagrange bracket** is
 
 $$[u, v] = \sum_{i=1}^{n}\left(\frac{\partial q_i}{\partial u}\frac{\partial p_i}{\partial v} - \frac{\partial q_i}{\partial v}\frac{\partial p_i}{\partial u}\right).$$
 
@@ -2701,7 +2701,7 @@ The Lagrange bracket is closely connected with the theory of canonical transform
 
 $$\oint_L \sum_{i=1}^{n} p_i\,dq_i = \int_K [u, v]\,du\,dv.$$
 
-Since the invariance of the circulation, taken round any closed curve $L$, is a characteristic property of a canonical transformation, the same property can also be expressed as the invariance of the Lagrange bracket: *the canonical transformations are those transformations of the variables $q_i$, $p_i$ to $Q_i$, $P_i$ which leave the Lagrange bracket invariant, no matter how $q_i$, $p_i$ depend on $u$ and $v$.*
+Since the invariance of the circulation, taken round any closed curve $L$, is a characteristic property of a canonical transformation, the same property can also be expressed as the invariance of the Lagrange bracket: *the canonical transformations are those transformations of the variables $q\_i$, $p\_i$ to $Q\_i$, $P\_i$ which leave the Lagrange bracket invariant, no matter how $q\_i$, $p\_i$ depend on $u$ and $v$.*
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Canonical Conditions via Lagrange Brackets)</span></p>
@@ -2710,18 +2710,18 @@ Let the transformation from the old coordinates to the new be given in explicit 
 
 $$q_i = f_i(Q_1, \ldots, Q_n;\, P_1, \ldots, P_n), \qquad p_i = g_i(Q_1, \ldots, Q_n;\, P_1, \ldots, P_n).$$
 
-Pick any pair of the new variables $Q_i$ and $Q_k$, or $Q_i$ and $P_k$, or $P_i$ and $P_k$, and consider them as the two parameters $u$, $v$ for which the Lagrange bracket is to be formed, holding the other variables as constants. Then the **necessary and sufficient conditions** for the transformation to be canonical are the following Lagrange bracket relations:
+Pick any pair of the new variables $Q\_i$ and $Q\_k$, or $Q\_i$ and $P\_k$, or $P\_i$ and $P\_k$, and consider them as the two parameters $u$, $v$ for which the Lagrange bracket is to be formed, holding the other variables as constants. Then the **necessary and sufficient conditions** for the transformation to be canonical are the following Lagrange bracket relations:
 
 $$[Q_i, Q_k] = 0, \qquad [P_i, P_k] = 0, \qquad [Q_i, P_k] = \delta_{ik},$$
 
-where $\delta_{ik}$ is the Kronecker delta.
+where $\delta\_{ik}$ is the Kronecker delta.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Poisson Bracket)</span></p>
 
-Soon after Lagrange's investigation, Poisson (in 1809) introduced another type of bracket expression which is the natural counterpart of the Lagrange bracket. Instead of considering the $q_i$ and $p_i$ as functions of $u$ and $v$, we consider a pair of variables $u$ and $v$ as given functions of the coordinates $q_i$, $p_i$:
+Soon after Lagrange's investigation, Poisson (in 1809) introduced another type of bracket expression which is the natural counterpart of the Lagrange bracket. Instead of considering the $q\_i$ and $p\_i$ as functions of $u$ and $v$, we consider a pair of variables $u$ and $v$ as given functions of the coordinates $q\_i$, $p\_i$:
 
 $$u = u(q_1, \ldots, q_n;\, p_1, \ldots, p_n), \qquad v = v(q_1, \ldots, q_n;\, p_1, \ldots, p_n).$$
 
@@ -2735,12 +2735,12 @@ $$(u, v) = -(v, u).$$
 
 </div>
 
-The Lagrange and Poisson brackets are closely related. Given $2n$ variables $u_1, \ldots, u_{2n}$ which are given functions of the $q_i$, $p_i$, the Poisson brackets can be formed; for the second type the Lagrange brackets can be formed. One kind of bracket determines the other. Hence, if the Lagrange brackets are invariants of a canonical transformation, so are the Poisson brackets. This gives an alternative formulation of the conditions for a canonical transformation.
+The Lagrange and Poisson brackets are closely related. Given $2n$ variables $u\_1, \ldots, u\_{2n}$ which are given functions of the $q\_i$, $p\_i$, the Poisson brackets can be formed; for the second type the Lagrange brackets can be formed. One kind of bracket determines the other. Hence, if the Lagrange brackets are invariants of a canonical transformation, so are the Poisson brackets. This gives an alternative formulation of the conditions for a canonical transformation.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Canonical Conditions via Poisson Brackets)</span></p>
 
-*The canonical transformations are those transformations which leave the Poisson bracket $(u, v)$ invariant, no matter how the functions $u$ and $v$ depend on the coordinates $q_i$, $p_i$.*
+*The canonical transformations are those transformations which leave the Poisson bracket $(u, v)$ invariant, no matter how the functions $u$ and $v$ depend on the coordinates $q\_i$, $p\_i$.*
 
 Applying this invariance principle to the inverse form of the canonical transformation, expressing the new coordinates in terms of the old:
 
@@ -2757,7 +2757,7 @@ These conditions are equivalent to the Lagrange bracket conditions.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reciprocity Between Lagrange and Poisson Brackets)</span></p>
 
-Consider $u_1, \ldots, u_{2n}$ as given functions of the $q_i$, $p_i$; then the Lagrange and the Poisson brackets satisfy the reciprocity relation:
+Consider $u\_1, \ldots, u\_{2n}$ as given functions of the $q\_i$, $p\_i$; then the Lagrange and the Poisson brackets satisfy the reciprocity relation:
 
 $$\sum_{a=1}^{2n} [u_i, u_a]\,(u_k, u_a) = \delta_{ik}.$$
 
@@ -2775,7 +2775,7 @@ then by addition
 
 $$\sum_{i=1}^{n}(p_i\,\delta q_i - \bar{p}_i\,\delta\bar{q}_i) = \delta(S + S'),$$
 
-which shows that the direct transition from $q_i$, $p_i$ to the final $\bar{q}_i$, $\bar{p}_i$ is also canonical. The canonical transformations thus form a *group* in Lie's theory of continuous transformations.
+which shows that the direct transition from $q\_i$, $p\_i$ to the final $\bar{q}\_i$, $\bar{p}\_i$ is also canonical. The canonical transformations thus form a *group* in Lie's theory of continuous transformations.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Infinitesimal Canonical Transformation)</span></p>
@@ -2788,18 +2788,18 @@ Each value of $t$ corresponds a definite canonical transformation. An **infinite
 
 $$Q_k = q_k + \Delta q_k, \qquad P_k = p_k + \Delta p_k,$$
 
-where $\Delta q_k$ and $\Delta p_k$ are small quantities whose products and squares are negligible.
+where $\Delta q\_k$ and $\Delta p\_k$ are small quantities whose products and squares are negligible.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Explicit Form of Infinitesimal Canonical Transformations)</span></p>
 
-While an arbitrary canonical transformation does not permit an explicit representation, an infinitesimal canonical transformation *can* be obtained in explicit form. The determining equations of the canonical transformation give $p_i = \frac{\partial S}{\partial q_i}$. Expanding $S$ and forming the difference of the two equations for parameters $t$ and $t + \Delta t$, one obtains:
+While an arbitrary canonical transformation does not permit an explicit representation, an infinitesimal canonical transformation *can* be obtained in explicit form. The determining equations of the canonical transformation give $p\_i = \frac{\partial S}{\partial q\_i}$. Expanding $S$ and forming the difference of the two equations for parameters $t$ and $t + \Delta t$, one obtains:
 
 $$\sum_{i=1}^{n}(\Delta p_i\,\delta q_i - \Delta q_i\,\delta p_i) = -\sum_{i=1}^{n}\left(\frac{\partial B}{\partial q_i}\,\delta q_i + \frac{\partial B}{\partial p_i}\,\delta p_i\right)\Delta t,$$
 
-where the function $B$ is constructed from the generating function $S$ by introducing $p_i$ via the canonical relation $p_i = \frac{\partial S}{\partial q_i}$ and setting
+where the function $B$ is constructed from the generating function $S$ by introducing $p\_i$ via the canonical relation $p\_i = \frac{\partial S}{\partial q\_i}$ and setting
 
 $$\frac{\partial S}{\partial t} = -B(q_1, \ldots, q_n;\, p_1, \ldots, p_n;\, t).$$
 
@@ -2812,7 +2812,7 @@ The explicit equations of an infinitesimal canonical transformation are:
 
 $$\Delta q_i = \frac{\partial B}{\partial p_i}\,\Delta t, \qquad \Delta p_i = -\frac{\partial B}{\partial q_i}\,\Delta t.$$
 
-Instead of the "absolute coordinates" $q_i + \Delta q_i$, $p_i + \Delta p_i$ of the new reference system, the "relative coordinates" $\Delta q_i$, $\Delta p_i$ can be used. These coordinates are explicitly expressed in terms of a single function $B$ which characterises the transformation, and can be chosen as an arbitrarily chosen function of the variables $q_i$ and $p_i$.
+Instead of the "absolute coordinates" $q\_i + \Delta q\_i$, $p\_i + \Delta p\_i$ of the new reference system, the "relative coordinates" $\Delta q\_i$, $\Delta p\_i$ can be used. These coordinates are explicitly expressed in terms of a single function $B$ which characterises the transformation, and can be chosen as an arbitrarily chosen function of the variables $q\_i$ and $p\_i$.
 
 </div>
 
@@ -2840,7 +2840,7 @@ The invariants of the motion are actually *invariants of any canonical transform
 
 </div>
 
-We can now proceed in the opposite direction. A given problem of motion presents us with the Hamiltonian $H$ as a function of $q_i$, $p_i$ and (possibly) $t$. We replace $p_i$ by $\frac{\partial S}{\partial q_i}$ and try to find the original function $S$ from the equation
+We can now proceed in the opposite direction. A given problem of motion presents us with the Hamiltonian $H$ as a function of $q\_i$, $p\_i$ and (possibly) $t$. We replace $p\_i$ by $\frac{\partial S}{\partial q\_i}$ and try to find the original function $S$ from the equation
 
 $$\frac{\partial S}{\partial t} = -H.$$
 
@@ -2848,7 +2848,7 @@ This means an *integration problem*. One can show that for any given $H$ a corre
 
 $$S = S(q_1, \ldots, q_n;\, Q_1, \ldots, Q_n;\, t)$$
 
-which generates an infinite family of canonical transformations. A point $Q_i$, $P_i$ is transformed into a point $q_i$, $p_i$, the position of which changes continuously with the time $t$, and this motion represents exactly the motion of the mechanical system if we let $t$ change while the $Q_i$, $P_i$ are kept constant. The motion of the entire phase fluid is nothing but *the successive evolution of a time-dependent canonical transformation*.
+which generates an infinite family of canonical transformations. A point $Q\_i$, $P\_i$ is transformed into a point $q\_i$, $p\_i$, the position of which changes continuously with the time $t$, and this motion represents exactly the motion of the mechanical system if we let $t$ change while the $Q\_i$, $P\_i$ are kept constant. The motion of the entire phase fluid is nothing but *the successive evolution of a time-dependent canonical transformation*.
 
 ### 9. Hamilton's Principal Function and the Motion of the Phase Fluid
 
@@ -2859,7 +2859,7 @@ The results of the previous discussion have a direct bearing on the integration 
 
 $$\frac{\partial S}{\partial t} + H = 0,$$
 
-where the $p_i$ of the Hamiltonian function $H$ are replaced by $\partial S / \partial q_i$. If we are able to find a generating function $S$ which satisfies this partial differential equation, then we have succeeded in obtaining the motion of the phase fluid as the successive phases of a time-dependent canonical transformation.
+where the $p\_i$ of the Hamiltonian function $H$ are replaced by $\partial S / \partial q\_i$. If we are able to find a generating function $S$ which satisfies this partial differential equation, then we have succeeded in obtaining the motion of the phase fluid as the successive phases of a time-dependent canonical transformation.
 
 </div>
 
@@ -2867,7 +2867,7 @@ The transformation equations take the form
 
 $$q_i = f_i(Q_1, \ldots, Q_n;\, P_1, \ldots, P_n;\, t), \qquad p_i = g_i(Q_1, \ldots, Q_n;\, P_1, \ldots, P_n;\, t),$$
 
-which amounts to a *complete integration* of the dynamical problem because all the mechanical variables are expressed as explicit functions of the time $t$ and $2n$ constants $Q_1, \ldots, Q_n$; $P_1, \ldots, P_n$ which can be adjusted to arbitrary initial conditions. The problem of integration is thus shifted to the problem of finding the generating function.
+which amounts to a *complete integration* of the dynamical problem because all the mechanical variables are expressed as explicit functions of the time $t$ and $2n$ constants $Q\_1, \ldots, Q\_n$; $P\_1, \ldots, P\_n$ which can be adjusted to arbitrary initial conditions. The problem of integration is thus shifted to the problem of finding the generating function.
 
 #### Conservative Systems and Hamilton's Principal Function
 
@@ -2875,7 +2875,7 @@ For a conservative system whose Lagrangian $L$ and Hamiltonian $H$ do not contai
 
 $$A = 2\int_{\tau_1}^{\tau_2} T\,dt = \int_{\tau_1}^{\tau_2}\sum_{i=1}^{n} p_i\,dq_i$$
 
-is sought under the auxiliary condition that the $C$-point of the phase space stays on the energy surface $H(q_1, \ldots, q_n, p_1, \ldots, p_n) - E = 0$. This principle can be expressed in Jacobi's form: minimise the integral
+is sought under the auxiliary condition that the $C$-point of the phase space stays on the energy surface $H(q\_1, \ldots, q\_n, p\_1, \ldots, p\_n) - E = 0$. This principle can be expressed in Jacobi's form: minimise the integral
 
 $$A = \sqrt{2}\int_{\tau_1}^{\tau_2}\sqrt{E - V}\,\overline{ds}$$
 
@@ -2888,7 +2888,7 @@ Jacobi's principle assumes a purely geometrical significance: determine the shor
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hamilton's Principal Function --- Conservative Case)</span></p>
 
-Evaluating the integral $A$ along the geodesics, the arc length of a geodesic between two points $M$ and $N$ gives the "distance" between them. This distance is a function of the coordinates $q_i$ of the two end-points $M$ and $N$. *This distance, expressed in the coordinates of the two end-points, is Hamilton's principal function*:
+Evaluating the integral $A$ along the geodesics, the arc length of a geodesic between two points $M$ and $N$ gives the "distance" between them. This distance is a function of the coordinates $q\_i$ of the two end-points $M$ and $N$. *This distance, expressed in the coordinates of the two end-points, is Hamilton's principal function*:
 
 $$W = W(q_1, \ldots, q_n;\, \bar{q}_1, \ldots, \bar{q}_n).$$
 
@@ -2896,7 +2896,7 @@ The variation of the integral $A$ vanishes between definite limits; varying the 
 
 $$\delta A = \sum_{i=1}^{n} p_i\,\delta q_i - \sum_{i=1}^{n}\bar{p}_i\,\delta\bar{q}_i,$$
 
-and since $W$ is by definition the definite integral $A$ expressed in terms of the $q_i$ and $\bar{q}_i$, we get
+and since $W$ is by definition the definite integral $A$ expressed in terms of the $q\_i$ and $\bar{q}\_i$, we get
 
 $$p_i = \frac{\partial W}{\partial q_i}, \qquad \bar{p}_i = -\frac{\partial W}{\partial \bar{q}_i}.$$
 
@@ -2907,15 +2907,15 @@ $$p_i = \frac{\partial W}{\partial q_i}, \qquad \bar{p}_i = -\frac{\partial W}{\
 
 These equations show that *two positions of the moving phase fluid are connected with each other by means of a canonical transformation*. The role of $W$ in these equations shows that Hamilton's principal function is the generating function of that particular canonical transformation which converts one state of the moving phase fluid into a later state.
 
-Notice that the generating function $S$ of a general time-dependent canonical transformation is more general than Hamilton's $W$-function: a general time-dependent canonical transformation transforms an arbitrary point $Q_i$, $P_i$ of the phase space into the moving point $q_i$, $p_i$, while Hamilton's transformation transforms the *initial position* $\bar{q}_i$, $\bar{p}_i$ of the moving fluid particle into some later position $q_i$, $p_i$.
+Notice that the generating function $S$ of a general time-dependent canonical transformation is more general than Hamilton's $W$-function: a general time-dependent canonical transformation transforms an arbitrary point $Q\_i$, $P\_i$ of the phase space into the moving point $q\_i$, $p\_i$, while Hamilton's transformation transforms the *initial position* $\bar{q}\_i$, $\bar{p}\_i$ of the moving fluid particle into some later position $q\_i$, $p\_i$.
 
 </div>
 
-Since the coordinates $q_i$, $p_i$ have never left the energy surface $H = E$, the function $W$ satisfies automatically the partial differential equation
+Since the coordinates $q\_i$, $p\_i$ have never left the energy surface $H = E$, the function $W$ satisfies automatically the partial differential equation
 
 $$H\!\left(q_1, \ldots, q_n;\, \frac{\partial W}{\partial q_1}, \ldots, \frac{\partial W}{\partial q_n}\right) - E = 0.$$
 
-The same can be said of the coordinates $\bar{q}_i$, $\bar{p}_i$ of the initial point which belongs to the same manifold. Hence $W$ satisfies a *second* partial differential equation, obtained by replacing $p_i$ by $-\frac{\partial W}{\partial \bar{q}_i}$:
+The same can be said of the coordinates $\bar{q}\_i$, $\bar{p}\_i$ of the initial point which belongs to the same manifold. Hence $W$ satisfies a *second* partial differential equation, obtained by replacing $p\_i$ by $-\frac{\partial W}{\partial \bar{q}\_i}$:
 
 $$H\!\left(\bar{q}_1, \ldots, \bar{q}_n;\, -\frac{\partial W}{\partial \bar{q}_1}, \ldots, -\frac{\partial W}{\partial \bar{q}_n}\right) - E = 0.$$
 
@@ -2927,11 +2927,11 @@ For the general (time-dependent) case, we add $t$ to the position coordinates an
 
 $$A = \int_{\tau_1}^{\tau_2}\!\left(\sum_{i=1}^{n} p_i\,\dot{q}_i + p_t\right)d\tau = \int_{\tau_1}^{\tau_2}\!\left(\sum_{i=1}^{n} p_i\,dq_i + p_t\,dt\right),$$
 
-under the auxiliary condition $K(q_1, \ldots, q_n, t;\, p_1, \ldots, p_n, p_t) = 0$, i.e. $p_t + H = 0$. A line element for the extended $(n+1)$-dimensional configuration space $q_1, \ldots, q_n, t$ is defined by
+under the auxiliary condition $K(q\_1, \ldots, q\_n, t;\, p\_1, \ldots, p\_n, p\_t) = 0$, i.e. $p\_t + H = 0$. A line element for the extended $(n+1)$-dimensional configuration space $q\_1, \ldots, q\_n, t$ is defined by
 
 $$\overline{d\sigma} = L\,dt = L'\,d\tau,$$
 
-and one again connects two points $\bar{q}_1, \ldots, \bar{q}_n, \bar{t}$ and $q_1, \ldots, q_n, t$ of the $(n+1)$-dimensional space by a shortest line and measures the arc length
+and one again connects two points $\bar{q}\_1, \ldots, \bar{q}\_n, \bar{t}$ and $q\_1, \ldots, q\_n, t$ of the $(n+1)$-dimensional space by a shortest line and measures the arc length
 
 $$A = \int_{\tau_1}^{\tau_2}\overline{d\sigma} = \int_{\tau_1}^{\tau_2} L'\,d\tau.$$
 
@@ -2948,7 +2948,7 @@ which confirm the canonical nature of the transformation.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hamilton--Jacobi Partial Differential Equation)</span></p>
 
-Expressing $K$ in terms of the Hamiltonian $K = p_t + H$, the two partial differential equations which hold for $W$ become
+Expressing $K$ in terms of the Hamiltonian $K = p\_t + H$, the two partial differential equations which hold for $W$ become
 
 $$\frac{\partial W}{\partial t} + H\!\left(q_1, \ldots, q_n;\, \frac{\partial W}{\partial q_1}, \ldots, \frac{\partial W}{\partial q_n};\, t\right) = 0,$$
 
@@ -2958,7 +2958,7 @@ The last two equations of the transformation follow from the first two and can b
 
 $$q_i = f_i(\bar{q}_1, \ldots, \bar{q}_n;\, \bar{t},\, t), \qquad p_i = g_i(\bar{q}_1, \ldots, \bar{q}_n;\, \bar{t},\, t),$$
 
-which solves the problem of motion in explicit form, giving the coordinates $q_i$, $p_i$ of the moving point at any time $t$ if the initial position at time $\bar{t}$ is given.
+which solves the problem of motion in explicit form, giving the coordinates $q\_i$, $p\_i$ of the moving point at any time $t$ if the initial position at time $\bar{t}$ is given.
 
 </div>
 
@@ -2969,7 +2969,7 @@ Hamilton's integration scheme was simplified and improved by Jacobi. Hamilton's 
 
 $$\frac{\partial S}{\partial t} + H\!\left(q_1, \ldots, q_n;\, \frac{\partial S}{\partial q_1}, \ldots, \frac{\partial S}{\partial q_n};\, t\right) = 0.$$
 
-A second differential equation is no longer necessary, since the point $Q_1, \ldots, Q_n$ need *not* lie on the extended energy surface $K = 0$. Moreover, $S$ is a function of $q_1, \ldots, q_n$; $Q_1, \ldots, Q_n$; $t$ only, while Hamilton's principal function contains in addition the surplus variable $\bar{t}$. The relation between the two theories will be discussed in greater detail in the next chapter.
+A second differential equation is no longer necessary, since the point $Q\_1, \ldots, Q\_n$ need *not* lie on the extended energy surface $K = 0$. Moreover, $S$ is a function of $q\_1, \ldots, q\_n$; $Q\_1, \ldots, Q\_n$; $t$ only, while Hamilton's principal function contains in addition the surplus variable $\bar{t}$. The relation between the two theories will be discussed in greater detail in the next chapter.
 
 </div>
 
@@ -2993,7 +2993,7 @@ From the practical viewpoint not much is gained. The solution of a partial diffe
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jacobi's Integration Method --- Conservative Systems)</span></p>
 
-Let us consider a conservative mechanical system with a given Hamiltonian function $H$ which does not depend on the time $t$. We wish to transform the mechanical variables $q_1, \ldots, q_n$; $p_1, \ldots, p_n$ into a new set of variables $Q_1, \ldots, Q_n$; $P_1, \ldots, P_n$ by a canonical transformation, except for the single condition that the Hamiltonian function $H$ shall be one of the new variables, say $Q_n$:
+Let us consider a conservative mechanical system with a given Hamiltonian function $H$ which does not depend on the time $t$. We wish to transform the mechanical variables $q\_1, \ldots, q\_n$; $p\_1, \ldots, p\_n$ into a new set of variables $Q\_1, \ldots, Q\_n$; $P\_1, \ldots, P\_n$ by a canonical transformation, except for the single condition that the Hamiltonian function $H$ shall be one of the new variables, say $Q\_n$:
 
 $$Q_n = H(q_1, \ldots, q_n;\, p_1, \ldots, p_n).$$
 
@@ -3001,7 +3001,7 @@ If such a transformation is found, then in the new system *all variables are ign
 
 $$Q_i = \text{const.} = \mathfrak{a}_i, \quad (i = 1, 2, \ldots, n-1),$$
 
-while $Q_n = \text{const.} = E$ is the energy constant. The second set yields
+while $Q\_n = \text{const.} = E$ is the energy constant. The second set yields
 
 $$P_i = \text{const.} = -\beta_i, \quad (i = 1, \ldots, n-1), \qquad P_n = \tau - t.$$
 
@@ -3010,13 +3010,13 @@ $$P_i = \text{const.} = -\beta_i, \quad (i = 1, \ldots, n-1), \qquad P_n = \tau 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric Interpretation)</span></p>
 
-This transformation can be interpreted geometrically: the original world lines of the moving phase fluid fill the state space with an infinite family of curves. By a canonical transformation a mapping of the space on itself is produced which *straightens out these world lines to an infinite bundle of parallel straight lines*, inclined at 45° to the time axis. By merely flattening out the cylindrical surfaces $H = E$ into the parallel planes $Q_n = E$ we ensure that all the previously curved world lines of the phase fluid are now straightened out to parallel straight lines.
+This transformation can be interpreted geometrically: the original world lines of the moving phase fluid fill the state space with an infinite family of curves. By a canonical transformation a mapping of the space on itself is produced which *straightens out these world lines to an infinite bundle of parallel straight lines*, inclined at 45° to the time axis. By merely flattening out the cylindrical surfaces $H = E$ into the parallel planes $Q\_n = E$ we ensure that all the previously curved world lines of the phase fluid are now straightened out to parallel straight lines.
 
 </div>
 
 #### The Hamilton--Jacobi Equation for Conservative Systems
 
-The original integration problem is reduced to that of finding a canonical transformation which satisfies the condition that $H$ becomes $Q_n$. We interject an intermediate step: first introduce the $Q_i$ only, keeping the old $q_i$ but eliminating the $p_i$ via $p_i = \frac{\partial S}{\partial q_i}$. Then the Hamiltonian function becomes a function of $q_i$ and $Q_i$, and the condition that it equals $Q_n$ gives:
+The original integration problem is reduced to that of finding a canonical transformation which satisfies the condition that $H$ becomes $Q\_n$. We interject an intermediate step: first introduce the $Q\_i$ only, keeping the old $q\_i$ but eliminating the $p\_i$ via $p\_i = \frac{\partial S}{\partial q\_i}$. Then the Hamiltonian function becomes a function of $q\_i$ and $Q\_i$, and the condition that it equals $Q\_n$ gives:
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hamilton--Jacobi Equation --- Conservative Form)</span></p>
@@ -3027,30 +3027,30 @@ This is a partial differential equation for the function $S$. It is not enough t
 
 $$S = S(q_1, \ldots, q_n;\, \mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1};\, Q_n),$$
 
-i.e. a **complete solution** containing $n - 1$ essential (non-trivial) constants of integration $\mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}$. Since $S$ itself does not appear in the differential equation, but only its partial derivatives, an additive constant is irrelevant and can be omitted.
+i.e. a **complete solution** containing $n - 1$ essential (non-trivial) constants of integration $\mathfrak{a}\_1, \ldots, \mathfrak{a}\_{n-1}$. Since $S$ itself does not appear in the differential equation, but only its partial derivatives, an additive constant is irrelevant and can be omitted.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Jacobi's Recipe for Conservative Systems)</span></p>
 
-1. Write down the energy equation: $H(q_1, \ldots, q_n, p_1, \ldots, p_n) = E$.
+1. Write down the energy equation: $H(q\_1, \ldots, q\_n, p\_1, \ldots, p\_n) = E$.
 
-2. Replace the $p_i$ by the partial derivatives of some function $S$ with respect to $q_i$:
+2. Replace the $p\_i$ by the partial derivatives of some function $S$ with respect to $q\_i$:
 
 $$H\!\left(q_1, \ldots, q_n;\, \frac{\partial S}{\partial q_1}, \ldots, \frac{\partial S}{\partial q_n}\right) = E.$$
 
-3. Find a complete solution of this equation with $n - 1$ non-trivial constants of integration: $S = S(q_1, \ldots, q_n;\, \mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1};\, E)$.
+3. Find a complete solution of this equation with $n - 1$ non-trivial constants of integration: $S = S(q\_1, \ldots, q\_n;\, \mathfrak{a}\_1, \ldots, \mathfrak{a}\_{n-1};\, E)$.
 
 4. Form the equations
 
 $$\frac{\partial S}{\partial \mathfrak{a}_i} = \beta_i, \qquad \frac{\partial S}{\partial E} = t - \tau.$$
 
-5. Solve these equations for the $q_i$, obtaining
+5. Solve these equations for the $q\_i$, obtaining
 
 $$q_i = f_i(\mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1},\, E,\, \beta_1, \ldots, \beta_{n-1},\, t - \tau).$$
 
-This completes the solution. The $q_i$ and $p_i$ are determined as explicit functions of the time $t$ and $2n$ constants of integration.
+This completes the solution. The $q\_i$ and $p\_i$ are determined as explicit functions of the time $t$ and $2n$ constants of integration.
 
 </div>
 
@@ -3067,12 +3067,12 @@ The ellipses $H = E$ of the original coordinate system are transformed into the 
 
 #### The Rheonomic (Time-Dependent) Case
 
-For a general rheonomic system which does not satisfy the law of conservation of energy, we can generalise the conclusions drawn for conservative systems by merely adding the time $t$ to the position coordinates $q_i$ and formulating our problem as a conservative problem in the extended phase space.
+For a general rheonomic system which does not satisfy the law of conservation of energy, we can generalise the conclusions drawn for conservative systems by merely adding the time $t$ to the position coordinates $q\_i$ and formulating our problem as a conservative problem in the extended phase space.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hamilton--Jacobi Equation --- General Rheonomic Form)</span></p>
 
-In the extended phase space with the auxiliary condition $K(q_i, t;\, p_i, p_t) = 0$ where $K = p_t + H$, we apply a canonical transformation such that $\bar{t} = K$. Then the auxiliary condition becomes $\bar{t} = 0$, and all $Q_i$ and $P_i$ are constants:
+In the extended phase space with the auxiliary condition $K(q\_i, t;\, p\_i, p\_t) = 0$ where $K = p\_t + H$, we apply a canonical transformation such that $\bar{t} = K$. Then the auxiliary condition becomes $\bar{t} = 0$, and all $Q\_i$ and $P\_i$ are constants:
 
 $$Q_i = \mathfrak{a}_i, \qquad P_i = \beta_i.$$
 
@@ -3080,11 +3080,11 @@ The condition $\bar{t} = K$ is equivalent to the partial differential equation
 
 $$\frac{\partial S}{\partial t} + H\!\left(q_1, \ldots, q_n, t;\, \frac{\partial S}{\partial q_1}, \ldots, \frac{\partial S}{\partial q_n}\right) = 0,$$
 
-which is the Hamilton--Jacobi equation for arbitrary rheonomic systems. A "complete solution" is now required containing $n$ essential constants of integration $\mathfrak{a}_1, \ldots, \mathfrak{a}_n$.
+which is the Hamilton--Jacobi equation for arbitrary rheonomic systems. A "complete solution" is now required containing $n$ essential constants of integration $\mathfrak{a}\_1, \ldots, \mathfrak{a}\_n$.
 
 </div>
 
-An alternative derivation remains within the ordinary phase space, considering a canonical transformation of $q_i$, $p_i$ into $Q_i$, $P_i$ *without* adding the time as a variable. The time enters merely as a parameter. Under such a time-dependent canonical transformation the Hamiltonian function $H$ is not an invariant; the new Hamiltonian is $H' = \frac{\partial S}{\partial t} + H$. We can now require $H' = 0$. This gives exactly the Hamilton--Jacobi equation, now interpreted as the condition that the Hamiltonian function be transformed into zero. If the Hamiltonian of the new coordinate system is zero, then all $Q_i$ and $P_i$ are constants during the motion.
+An alternative derivation remains within the ordinary phase space, considering a canonical transformation of $q\_i$, $p\_i$ into $Q\_i$, $P\_i$ *without* adding the time as a variable. The time enters merely as a parameter. Under such a time-dependent canonical transformation the Hamiltonian function $H$ is not an invariant; the new Hamiltonian is $H' = \frac{\partial S}{\partial t} + H$. We can now require $H' = 0$. This gives exactly the Hamilton--Jacobi equation, now interpreted as the condition that the Hamiltonian function be transformed into zero. If the Hamiltonian of the new coordinate system is zero, then all $Q\_i$ and $P\_i$ are constants during the motion.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Jacobi's Recipe for Rheonomic Systems)</span></p>
@@ -3093,7 +3093,7 @@ An alternative derivation remains within the ordinary phase space, considering a
 
 $$\frac{\partial S}{\partial t} + H\!\left(q_1, \ldots, q_n, t;\, \frac{\partial S}{\partial q_1}, \ldots, \frac{\partial S}{\partial q_n}\right) = 0,$$
 
-i.e. a solution which contains $n$ essential constants of integration $\mathfrak{a}_1, \ldots, \mathfrak{a}_n$:
+i.e. a solution which contains $n$ essential constants of integration $\mathfrak{a}\_1, \ldots, \mathfrak{a}\_n$:
 
 $$S = S(q_1, \ldots, q_n, t, \mathfrak{a}_1, \ldots, \mathfrak{a}_n).$$
 
@@ -3101,7 +3101,7 @@ $$S = S(q_1, \ldots, q_n, t, \mathfrak{a}_1, \ldots, \mathfrak{a}_n).$$
 
 $$\frac{\partial S}{\partial \mathfrak{a}_i} = \beta_i.$$
 
-3. Solve these equations for the $n$ position coordinates $q_i$, obtaining them in the form
+3. Solve these equations for the $n$ position coordinates $q\_i$, obtaining them in the form
 
 $$q_i = f_i(\mathfrak{a}_1, \ldots, \mathfrak{a}_n, \beta_1, \ldots, \beta_n, t).$$
 
@@ -3122,11 +3122,11 @@ The method of separation consists in setting $S$ equal to a sum of functions, ea
 
 $$S = S_1(q_1) + S_2(q_2) + \ldots + S_n(q_n).$$
 
-The characteristic feature is that now the momentum $p_k = \frac{\partial S}{\partial q_k} = \frac{dS_k(q_k)}{dq_k}$ *becomes a function of $q_k$ alone*. The energy equation $H - E = 0$ can then be separated, yielding $n$ relations of the form
+The characteristic feature is that now the momentum $p\_k = \frac{\partial S}{\partial q\_k} = \frac{dS\_k(q\_k)}{dq\_k}$ *becomes a function of $q\_k$ alone*. The energy equation $H - E = 0$ can then be separated, yielding $n$ relations of the form
 
 $$p_k = f_k(q_k, \mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}, E),$$
 
-where $\mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}$ are arbitrary constants obtained by the process of separation. Each $S_k$ is obtained by a straightforward quadrature:
+where $\mathfrak{a}\_1, \ldots, \mathfrak{a}\_{n-1}$ are arbitrary constants obtained by the process of separation. Each $S\_k$ is obtained by a straightforward quadrature:
 
 $$S_k = \int f_k(q_k, \mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}, E)\,dq_k + C_k.$$
 
@@ -3158,7 +3158,7 @@ $$\frac{1}{2m}\!\left(p_r^2 + \frac{\beta^2}{r^2}\right) - \frac{k^2}{r} = E.$$
 
 The separable nature of a problem constitutes no inherent feature of the physical properties of a mechanical system, but is entirely a matter of the *right system of coordinates*. A problem which is not separable in a given system of coordinates might become separable after a proper point transformation. Unfortunately, the finding of the right system of coordinates is to some extent a matter of chance, since we do not possess any systematic method of procedure.
 
-The complete solution of a separable system gives the unusual situation that the conjugate variables $q_k$, $p_k$ of each pair interact strictly with one another, without any interference from the other variables. The mechanical system of $n$ degrees of freedom can be considered as a superposition of $n$ systems of one degree of freedom. However, the actual equations of motion $\frac{\partial S}{\partial \mathfrak{a}_i} = \beta_i$, $\frac{\partial S}{\partial E} = t - \tau$ are *not* separated since generally a certain $\mathfrak{a}_i$ --- and also $E$ --- will be present in more than one of the $S_i$.
+The complete solution of a separable system gives the unusual situation that the conjugate variables $q\_k$, $p\_k$ of each pair interact strictly with one another, without any interference from the other variables. The mechanical system of $n$ degrees of freedom can be considered as a superposition of $n$ systems of one degree of freedom. However, the actual equations of motion $\frac{\partial S}{\partial \mathfrak{a}\_i} = \beta\_i$, $\frac{\partial S}{\partial E} = t - \tau$ are *not* separated since generally a certain $\mathfrak{a}\_i$ --- and also $E$ --- will be present in more than one of the $S\_i$.
 
 </div>
 
@@ -3169,32 +3169,32 @@ The method of separation --- if it is applicable --- provides us with the comple
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Action Variables)</span></p>
 
-The constants of separation $\mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}$ and the energy constant $E$ which appear as the new position coordinates $Q_i$ of a canonical transformation can be replaced by a new set of variables $J_i$, called **action variables**, since they have the dimensions of "action" --- i.e. of $p$ times $q$.
+The constants of separation $\mathfrak{a}\_1, \ldots, \mathfrak{a}\_{n-1}$ and the energy constant $E$ which appear as the new position coordinates $Q\_i$ of a canonical transformation can be replaced by a new set of variables $J\_i$, called **action variables**, since they have the dimensions of "action" --- i.e. of $p$ times $q$.
 
-Assuming that the stream lines in all the $q_k$, $p_k$ planes are closed, the action variables are defined as the line integrals extended over a complete stream line:
+Assuming that the stream lines in all the $q\_k$, $p\_k$ planes are closed, the action variables are defined as the line integrals extended over a complete stream line:
 
 $$J_k = \oint p_k\,dq_k = \oint f_k(q_k, \mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}, E)\,dq_k.$$
 
-This line integral is equal to the area enclosed by the stream line. The $J_k$ are functions of the $\mathfrak{a}_i$ and $E$:
+This line integral is equal to the area enclosed by the stream line. The $J\_k$ are functions of the $\mathfrak{a}\_i$ and $E$:
 
 $$J_k = J_k(\mathfrak{a}_1, \ldots, \mathfrak{a}_{n-1}, E).$$
 
-From these equations we can eliminate the $\mathfrak{a}_i$ and $E$, expressing them in terms of the $J_i$:
+From these equations we can eliminate the $\mathfrak{a}\_i$ and $E$, expressing them in terms of the $J\_i$:
 
 $$\mathfrak{a}_i = \mathfrak{a}_i(J_1, \ldots, J_n), \qquad E = E(J_1, \ldots, J_n).$$
 
-The generating function then becomes $S = S(q_1, \ldots, q_n, J_1, \ldots, J_n)$, and the function $E$ is actually the Hamiltonian function $H$ of the new system.
+The generating function then becomes $S = S(q\_1, \ldots, q\_n, J\_1, \ldots, J\_n)$, and the function $E$ is actually the Hamiltonian function $H$ of the new system.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Angle Variables)</span></p>
 
-The conjugate momenta $P_i$ of the action variables are called **angle variables**. They are pure numbers without physical dimensions. We prefer to use the negative $P_i$ instead of $P_i$ themselves and denote them by $\omega_1, \ldots, \omega_n$. According to the general transformation scheme:
+The conjugate momenta $P\_i$ of the action variables are called **angle variables**. They are pure numbers without physical dimensions. We prefer to use the negative $P\_i$ instead of $P\_i$ themselves and denote them by $\omega\_1, \ldots, \omega\_n$. According to the general transformation scheme:
 
 $$-P_i = \omega_i = \frac{\partial S}{\partial J_i}.$$
 
-The passage of $q_k$ through a complete cycle causes no change in the $\omega_i$, *except for the variable $\omega_k$ which changes by one*:
+The passage of $q\_k$ through a complete cycle causes no change in the $\omega\_i$, *except for the variable $\omega\_k$ which changes by one*:
 
 $$\Delta\omega_i = \frac{\partial J_k}{\partial J_i} = \delta_{ik}.$$
 
@@ -3203,32 +3203,32 @@ $$\Delta\omega_i = \frac{\partial J_k}{\partial J_i} = \delta_{ik}.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Multiply-Periodic Motion and Fundamental Frequencies)</span></p>
 
-Since changing an arbitrary $\omega_i$ by one does not change the values of the $q_i$, the $q_i$ are **periodic functions** of all the angle variables $\omega_1, \ldots, \omega_n$ *with the period one*. This means that the $q_i$ can be expressed as multiple Fourier series of sines and cosines with the arguments
+Since changing an arbitrary $\omega\_i$ by one does not change the values of the $q\_i$, the $q\_i$ are **periodic functions** of all the angle variables $\omega\_1, \ldots, \omega\_n$ *with the period one*. This means that the $q\_i$ can be expressed as multiple Fourier series of sines and cosines with the arguments
 
 $$2\pi(k_1\omega_1 + k_2\omega_2 + \ldots + k_n\omega_n),$$
 
-where $k_1, k_2, \ldots, k_n$ are arbitrary integers. The amplitudes of these terms are constants.
+where $k\_1, k\_2, \ldots, k\_n$ are arbitrary integers. The amplitudes of these terms are constants.
 
-Now solving the canonical equations in the new coordinate system of $J_i$, $\omega_i$ variables: since $H = E(J_1, \ldots, J_n)$, the first set of canonical equations gives $\dot{J}_i = -\frac{\partial E}{\partial \omega_i} = 0$, confirming $J_i = \text{const.}$ The second set gives
+Now solving the canonical equations in the new coordinate system of $J\_i$, $\omega\_i$ variables: since $H = E(J\_1, \ldots, J\_n)$, the first set of canonical equations gives $\dot{J}\_i = -\frac{\partial E}{\partial \omega\_i} = 0$, confirming $J\_i = \text{const.}$ The second set gives
 
 $$\dot{\omega}_i = \frac{\partial E}{\partial J_i} = \text{const.} = \nu_i,$$
 
-and hence $\omega_i = \nu_i t + \delta_i$. The entire motion is analytically represented as a **superposition of simple harmonic motions, with the fundamental frequencies $\nu_i$**. The frequencies are obtained from the total energy expressed in terms of the action variables: the partial derivatives of $E$ with respect to the $J_i$ give $n$ new constants which are the frequencies of the system.
+and hence $\omega\_i = \nu\_i t + \delta\_i$. The entire motion is analytically represented as a **superposition of simple harmonic motions, with the fundamental frequencies $\nu\_i$**. The frequencies are obtained from the total energy expressed in terms of the action variables: the partial derivatives of $E$ with respect to the $J\_i$ give $n$ new constants which are the frequencies of the system.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Periodicity and Degeneracy)</span></p>
 
-The path of the moving point in the $\omega$-space becomes a straight line, traversed with uniform velocity. Since the $\omega$-space is reduced to a cube of unit length (the $q_i$ are periodic in the $\omega_i$ with period one), the straight line jumps back and forth between the walls.
+The path of the moving point in the $\omega$-space becomes a straight line, traversed with uniform velocity. Since the $\omega$-space is reduced to a cube of unit length (the $q\_i$ are periodic in the $\omega\_i$ with period one), the straight line jumps back and forth between the walls.
 
 The criterion for whether or not the motion is strictly periodic is whether we can find linear relations of the form
 
 $$k_1\nu_1 + k_2\nu_2 + \ldots + k_n\nu_n = 0$$
 
-with *integral values* of the $k_i$. If $n - 1$ relations of this nature exist, the line does return after a finite time to its starting point and the motion is strictly periodic. If no such relation exists, the line *fills the entire unit-cube*, coming eventually arbitrarily near to every point of the cube. If $m$ such conditions exist, the moving point will stay on a definite $(n - m)$-dimensional subspace.
+with *integral values* of the $k\_i$. If $n - 1$ relations of this nature exist, the line does return after a finite time to its starting point and the motion is strictly periodic. If no such relation exists, the line *fills the entire unit-cube*, coming eventually arbitrarily near to every point of the cube. If $m$ such conditions exist, the moving point will stay on a definite $(n - m)$-dimensional subspace.
 
-For example, in the case of the Kepler ellipses, $E = -\frac{2\pi^2 mk^2}{(J_1 + J_2 + J_3)^2}$, which gives $\nu_1 = \nu_2 = \nu_3$, i.e. maximal degeneracy --- the motion continues along the same ellipse. The introduction of a weak magnetic field (Zeeman effect) removes one degeneracy by letting the plane of the ellipse precess slowly about the polar axis. The second degeneracy is removed by relativistic corrections which cause the perihelion of the ellipse to precess slowly in its own plane.
+For example, in the case of the Kepler ellipses, $E = -\frac{2\pi^2 mk^2}{(J\_1 + J\_2 + J\_3)^2}$, which gives $\nu\_1 = \nu\_2 = \nu\_3$, i.e. maximal degeneracy --- the motion continues along the same ellipse. The introduction of a weak magnetic field (Zeeman effect) removes one degeneracy by letting the plane of the ellipse precess slowly about the polar axis. The second degeneracy is removed by relativistic corrections which cause the perihelion of the ellipse to precess slowly in its own plane.
 
 </div>
 
@@ -3239,7 +3239,7 @@ Delaunay's method, originally developed for astronomical perturbation problems, 
 
 $$J_k = n_k h.$$
 
-The integers $n_k$ are called "quantum numbers." Einstein (in 1917) gave an invariant formulation of the quantum conditions by requiring that the multi-valuedness of $S$ shall be such that for *any* closed curve of the configuration space the change in $S$ for a complete revolution shall be a multiple of $h$:
+The integers $n\_k$ are called "quantum numbers." Einstein (in 1917) gave an invariant formulation of the quantum conditions by requiring that the multi-valuedness of $S$ shall be such that for *any* closed curve of the configuration space the change in $S$ for a complete revolution shall be a multiple of $h$:
 
 $$\sum J_k = \sum \Delta S_k = \Delta S = nh.$$
 
@@ -3254,7 +3254,7 @@ It was Hamilton who discovered the fundamental partial differential equation of 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Hamilton's Principal Function vs. Jacobi's Generating Function)</span></p>
 
-Hamilton's principal function $W$ connects the initial position $\bar{q}_i$, $\bar{p}_i$ with the final position $q_i$, $p_i$ of the moving phase fluid by a canonical transformation. The function $W$ satisfies two simultaneous partial differential equations:
+Hamilton's principal function $W$ connects the initial position $\bar{q}\_i$, $\bar{p}\_i$ with the final position $q\_i$, $p\_i$ of the moving phase fluid by a canonical transformation. The function $W$ satisfies two simultaneous partial differential equations:
 
 $$\frac{\partial W}{\partial t} + H\!\left(q_1, \ldots, q_n;\, \frac{\partial W}{\partial q_1}, \ldots, \frac{\partial W}{\partial q_n};\, t\right) = 0,$$
 
@@ -3268,11 +3268,11 @@ Jacobi's viewpoint is also more natural. Hamilton considered a very specific can
 
 #### Hamilton's $W$-Function vs. Jacobi's $S$-Function
 
-Let us concentrate on a *conservative* mechanical system. We connect the point $\bar{q}_1, \ldots, \bar{q}_n$ with the point $q_1, \ldots, q_n$ by a path which makes the integral
+Let us concentrate on a *conservative* mechanical system. We connect the point $\bar{q}\_1, \ldots, \bar{q}\_n$ with the point $q\_1, \ldots, q\_n$ by a path which makes the integral
 
 $$A = \int_{\tau_1}^{\tau_2} \sum_{k=1}^{n} p_k\,dq_k$$
 
-stationary, under the auxiliary condition that the path lies on the energy surface $H(q_1, \ldots, q_n, p_1, \ldots, p_n) - E = 0$. The value of this integral, evaluated along the stationary path, gives Hamilton's principal function $W$:
+stationary, under the auxiliary condition that the path lies on the energy surface $H(q\_1, \ldots, q\_n, p\_1, \ldots, p\_n) - E = 0$. The value of this integral, evaluated along the stationary path, gives Hamilton's principal function $W$:
 
 $$W = W(q_1, \ldots, q_n, \bar{q}_1, \ldots, \bar{q}_n).$$
 
@@ -3285,7 +3285,7 @@ So far the analogy with Jacobi's $S$-function, which satisfies the same differen
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Over-Completeness of Hamilton's $W$-Function)</span></p>
 
-A fundamental difference emerges when we compare the constants of integration. In Jacobi's theory, the energy constant $E$ was *one of the new variables* $Q_n$. Aside from $E$, the solution contained but $n - 1$ *constants of integration*. In Hamilton's theory, *all* variables are on an equal footing and the energy constant $E$ plays the role of a given constant and *not* a variable. Hamilton's solution of the partial differential equation is thus not a complete but an **over-complete** solution which contains *one more* constant of integration than a complete solution. This over-completeness is reflected in the fact that the functional determinant of the transformation vanishes:
+A fundamental difference emerges when we compare the constants of integration. In Jacobi's theory, the energy constant $E$ was *one of the new variables* $Q\_n$. Aside from $E$, the solution contained but $n - 1$ *constants of integration*. In Hamilton's theory, *all* variables are on an equal footing and the energy constant $E$ plays the role of a given constant and *not* a variable. Hamilton's solution of the partial differential equation is thus not a complete but an **over-complete** solution which contains *one more* constant of integration than a complete solution. This over-completeness is reflected in the fact that the functional determinant of the transformation vanishes:
 
 $$\left\|\frac{\partial^2 W}{\partial q_i\,\partial \bar{q}_j}\right\| = 0.$$
 
@@ -3293,18 +3293,18 @@ This is a characteristic property of the $W$-function which has no analogue in J
 
 </div>
 
-The vanishing determinant means that the canonical transformation generated by $W$ cannot be a regular point-to-point transformation. Instead, $W$ generates a **point-to-line transformation**: the equations $p_i = \frac{\partial W}{\partial q_i}$ are not solvable for the $\bar{q}_i$ because the transformation exists only if the point $q_i$, $p_i$ of the phase space is chosen somewhere on the energy surface $H = E$.
+The vanishing determinant means that the canonical transformation generated by $W$ cannot be a regular point-to-point transformation. Instead, $W$ generates a **point-to-line transformation**: the equations $p\_i = \frac{\partial W}{\partial q\_i}$ are not solvable for the $\bar{q}\_i$ because the transformation exists only if the point $q\_i$, $p\_i$ of the phase space is chosen somewhere on the energy surface $H = E$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Singular Transformations: Point-to-Line)</span></p>
 
 We can illustrate the situation by a linear transformation of ordinary three-dimensional space onto itself. If the determinant of the transformation is different from zero, we have a regular point-to-point correspondence. But if the determinant vanishes, the coordinates $x$, $y$, $z$ (expressed as linear functions of $X$, $Y$, $Z$) satisfy an identity $Ax + By + Cz = 0$, confining the point $x$, $y$, $z$ to a plane. By normalising so that $z = 0$ and setting up the transformation as $x = X + \alpha Z$, $y = Y + \beta Z$, $z = 0$, the plane $z = 0$ in Space I is mapped to the *entire* Space II. Going from Space II to Space I is point-to-point, but from Space I to Space II the foot of every straight line $L$ is mapped to the entire line --- a point-to-line transformation.
 
-*This is the picture of the transformation generated by Hamilton's principal function.* The surface $H = E$ is transformed into itself, because the points $q_k$, $p_k$ are transformed into lines lying on that surface. The second partial differential equation of Hamilton is exactly the statement that not only the point $q_k$, $p_k$ but also the point $\bar{q}_k$, $\bar{p}_k$ lies on the surface $H = E$.
+*This is the picture of the transformation generated by Hamilton's principal function.* The surface $H = E$ is transformed into itself, because the points $q\_k$, $p\_k$ are transformed into lines lying on that surface. The second partial differential equation of Hamilton is exactly the statement that not only the point $q\_k$, $p\_k$ but also the point $\bar{q}\_k$, $\bar{p}\_k$ lies on the surface $H = E$.
 
 </div>
 
-In the Jacobian theory the point-to-line transformation arises in an entirely different manner. The variable $Q_n$ is distinguished from the other variables: the point $Q_i$, $P_i$ is fixed, *except* that the coordinate $P_n$ is *not* constant. Hence we need to solve only the $n - 1$ equations $P_k = -\frac{\partial S}{\partial Q_k}$ for $k = 1, \ldots, n - 1$; this gives $n - 1$ equations between the $n$ variables $q_i$, which defines a *line*.
+In the Jacobian theory the point-to-line transformation arises in an entirely different manner. The variable $Q\_n$ is distinguished from the other variables: the point $Q\_i$, $P\_i$ is fixed, *except* that the coordinate $P\_n$ is *not* constant. Hence we need to solve only the $n - 1$ equations $P\_k = -\frac{\partial S}{\partial Q\_k}$ for $k = 1, \ldots, n - 1$; this gives $n - 1$ equations between the $n$ variables $q\_i$, which defines a *line*.
 
 #### The Rheonomic Case
 
@@ -3316,11 +3316,11 @@ be stationary, under the auxiliary condition that the $C$-point of the extended 
 
 $$p_t + H(q_1, \ldots, q_n, t, p_1, \ldots, p_n) = 0.$$
 
-Again we evaluate the integral between the two points $\bar{q}_1, \ldots, \bar{q}_n, \bar{t}$ and $q_1, \ldots, q_n, t$ of the extended configuration space:
+Again we evaluate the integral between the two points $\bar{q}\_1, \ldots, \bar{q}\_n, \bar{t}$ and $q\_1, \ldots, q\_n, t$ of the extended configuration space:
 
 $$W = W(q_1, \ldots, q_n, t;\, \bar{q}_1, \ldots, \bar{q}_n, \bar{t}).$$
 
-The transformation equations are $p_i = \frac{\partial W}{\partial q_i}$, $\bar{p}_i = -\frac{\partial W}{\partial \bar{q}_i}$, $p_t = \frac{\partial W}{\partial t}$, $\bar{p}_t = -\frac{\partial W}{\partial \bar{t}}$. Writing the auxiliary condition for both endpoints yields the two partial differential equations satisfied by the $W$-function. Here again the functional determinant of the transformation vanishes, and the singularity in one direction involves the singularity in the other. The one partial differential equation cannot exist without the other, the common tie between the two being provided by the determinantal condition.
+The transformation equations are $p\_i = \frac{\partial W}{\partial q\_i}$, $\bar{p}\_i = -\frac{\partial W}{\partial \bar{q}\_i}$, $p\_t = \frac{\partial W}{\partial t}$, $\bar{p}\_t = -\frac{\partial W}{\partial \bar{t}}$. Writing the auxiliary condition for both endpoints yields the two partial differential equations satisfied by the $W$-function. Here again the functional determinant of the transformation vanishes, and the singularity in one direction involves the singularity in the other. The one partial differential equation cannot exist without the other, the common tie between the two being provided by the determinantal condition.
 
 The number of integration constants in Hamilton's solution is not $2n$ but $2n + 1$, in agreement with the over-completeness of the $W$-function. This gives the complete solution of the problem of motion, adjustable to arbitrary initial conditions.
 
@@ -3331,28 +3331,28 @@ In spite of the different viewpoints which characterise Hamilton's and Jacobi's 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Constructing $W$ from $S$)</span></p>
 
-If we know Jacobi's $S$-function, we can construct Hamilton's principal function by differentiation and elimination. We use the *group property* of canonical transformations: the transformation from $\bar{q}_i$, $\bar{p}_i$ to $Q_i$, $P_i$ and then from $Q_i$, $P_i$ to $q_i$, $p_i$ are both canonical. The generating function of the resulting transformation from $\bar{q}_i$, $\bar{p}_i$ *directly* to $q_i$, $p_i$ is equal to the *difference* between the two generating functions. Thus the following remarkable relation holds:
+If we know Jacobi's $S$-function, we can construct Hamilton's principal function by differentiation and elimination. We use the *group property* of canonical transformations: the transformation from $\bar{q}\_i$, $\bar{p}\_i$ to $Q\_i$, $P\_i$ and then from $Q\_i$, $P\_i$ to $q\_i$, $p\_i$ are both canonical. The generating function of the resulting transformation from $\bar{q}\_i$, $\bar{p}\_i$ *directly* to $q\_i$, $p\_i$ is equal to the *difference* between the two generating functions. Thus the following remarkable relation holds:
 
 $$W = \Delta S = S(q_1, \ldots, q_n, Q_1, \ldots, Q_n, t) - S(\bar{q}_1, \ldots, \bar{q}_n, Q_1, \ldots, Q_n, \bar{t}).$$
 
 </div>
 
-We then consider the auxiliary conditions $P_i = \frac{\partial S(q, Q, t)}{\partial Q_i}$ and $P_i = \frac{\partial S(\bar{q}, Q, \bar{t})}{\partial Q_i}$. Subtracting these two equations, we obtain the $n$ conditions
+We then consider the auxiliary conditions $P\_i = \frac{\partial S(q, Q, t)}{\partial Q\_i}$ and $P\_i = \frac{\partial S(\bar{q}, Q, \bar{t})}{\partial Q\_i}$. Subtracting these two equations, we obtain the $n$ conditions
 
 $$\frac{\partial\,\Delta S}{\partial Q_i} = 0.$$
 
-These conditions can be used to eliminate the $Q_i$, so that finally $W$ appears as a function of the $q_i$, $t$ and $\bar{q}_i$, $\bar{t}$ alone.
+These conditions can be used to eliminate the $Q\_i$, so that finally $W$ appears as a function of the $q\_i$, $t$ and $\bar{q}\_i$, $\bar{t}$ alone.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Procedure for Constructing $W$ from a Complete Solution of the Hamilton--Jacobi Equation)</span></p>
 
-Given a complete solution $S(q_1, \ldots, q_n, t, a_1, \ldots, a_n)$ of the Hamilton--Jacobi partial differential equation:
+Given a complete solution $S(q\_1, \ldots, q\_n, t, a\_1, \ldots, a\_n)$ of the Hamilton--Jacobi partial differential equation:
 
-1. Take the difference $\Delta S = S(q_1, \ldots, q_n, t, a_1, \ldots, a_n) - S(\bar{q}_1, \ldots, \bar{q}_n, \bar{t}, a_1, \ldots, a_n)$.
+1. Take the difference $\Delta S = S(q\_1, \ldots, q\_n, t, a\_1, \ldots, a\_n) - S(\bar{q}\_1, \ldots, \bar{q}\_n, \bar{t}, a\_1, \ldots, a\_n)$.
 
-2. Solve the equations $\frac{\partial\,\Delta S}{\partial a_i} = 0$ for the $a_i$.
+2. Solve the equations $\frac{\partial\,\Delta S}{\partial a\_i} = 0$ for the $a\_i$.
 
-3. Substitute these $a_i$ in $\Delta S$, thus obtaining $W = \Delta S$ as a function of $q_1, \ldots, q_n, t$ and $\bar{q}_1, \ldots, \bar{q}_n, \bar{t}$. *This gives Hamilton's principal function $W$.*
+3. Substitute these $a\_i$ in $\Delta S$, thus obtaining $W = \Delta S$ as a function of $q\_1, \ldots, q\_n, t$ and $\bar{q}\_1, \ldots, \bar{q}\_n, \bar{t}$. *This gives Hamilton's principal function $W$.*
 
 </div>
 
@@ -3377,7 +3377,7 @@ In the previous considerations we assumed that we possess a *complete* solution 
 
 $$H\!\left(q_1, \ldots, q_n,\, \frac{\partial S}{\partial q_1}, \ldots, \frac{\partial S}{\partial q_n}\right) = E,$$
 
-without any constants of integration. Such a particular solution can be exploited for integrating *one half* of the complete set of canonical equations: we can express the $p_i$ by $p_i = \frac{\partial S}{\partial q_i}$ and substitute into $\dot{q}_i = \frac{\partial H}{\partial p_i}$, reducing our task to $n$ first-order differential equations instead of the original $2n$.
+without any constants of integration. Such a particular solution can be exploited for integrating *one half* of the complete set of canonical equations: we can express the $p\_i$ by $p\_i = \frac{\partial S}{\partial q\_i}$ and substitute into $\dot{q}\_i = \frac{\partial H}{\partial p\_i}$, reducing our task to $n$ first-order differential equations instead of the original $2n$.
 
 #### The Geometrical Construction
 
@@ -3470,8 +3470,8 @@ Our conclusion that Fermat's principle is a true minimum holds in the *local* se
 
 The analogy between mechanics and optics illuminates the historical debate between the *emission theory* and the *undulatory (wave) theory* of light. Both theories can explain the laws of reflection and refraction on purely mechanical grounds, but they give different predictions for the law of refraction:
 
-- The **emission theory** gives $\frac{\sin i}{\sin r} = \text{const.} = \frac{v_2}{v_1}$: light travels *faster* in optically denser media.
-- The **undulatory theory** gives $\frac{\sin i}{\sin r} = \text{const.} = \frac{v_1}{v_2}$: light travels *slower* in denser media.
+- The **emission theory** gives $\frac{\sin i}{\sin r} = \text{const.} = \frac{v\_2}{v\_1}$: light travels *faster* in optically denser media.
+- The **undulatory theory** gives $\frac{\sin i}{\sin r} = \text{const.} = \frac{v\_1}{v\_2}$: light travels *slower* in denser media.
 
 Foucault's famous experiment (1850) showed that light travels in water more slowly than in air, decisively confirming the wave theory.
 
@@ -3560,7 +3560,7 @@ $$\bar{\phi} = S/h.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(De Broglie Wavelength)</span></p>
 
-Comparing the Hamilton--Jacobi equation $|\operatorname{grad}S|^2 = 2m(E - V)$ with the phase-function equation $|\operatorname{grad}\bar{\phi}|^2 = 1/\lambda^2$, and using the correlation $\bar{\phi} = S/h$, we obtain
+Comparing the Hamilton--Jacobi equation $\lvert\operatorname{grad}S\rvert^2 = 2m(E - V)$ with the phase-function equation $\lvert\operatorname{grad}\bar{\phi}\rvert^2 = 1/\lambda^2$, and using the correlation $\bar{\phi} = S/h$, we obtain
 
 $$\frac{1}{\lambda^2} = \frac{2m(E-V)}{h^2} = \frac{m^2 v^2}{h^2}.$$
 
@@ -3621,7 +3621,7 @@ Again and again we have found how much the pictorial language of geometry helps 
 
 The advantage of a geometrical language is particularly conspicuous if the mechanical system is not subject to external forces. In that case the mechanical path can be conceived as a geodesic of the configuration space (Hertz's principle of the straightest path). Furthermore, if the potential energy does not depend on $t$, we can introduce the auxiliary line element $d\sigma = \sqrt{E - V}\,\overline{ds}$, and once more obtain all the mechanical paths which belong to the same total energy $E$ as the geodesics of this manifold.
 
-However, not all mechanical systems are conservative. Nor is it always true that the work function of the external forces is a function of the coordinates alone: the work function of an electron in an external electromagnetic field depends on the velocities $\dot{q}_i$ and may also depend on $t$. Moreover, if we change from classical to relativistic mechanics, the ordinary form of the kinetic energy responsible for the Riemannian structure of the line element can no longer be retained.
+However, not all mechanical systems are conservative. Nor is it always true that the work function of the external forces is a function of the coordinates alone: the work function of an electron in an external electromagnetic field depends on the velocities $\dot{q}\_i$ and may also depend on $t$. Moreover, if we change from classical to relativistic mechanics, the ordinary form of the kinetic energy responsible for the Riemannian structure of the line element can no longer be retained.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Beyond Riemannian Geometry)</span></p>
@@ -3632,7 +3632,7 @@ The close relation of dynamics to geometry continues to hold even under these mo
 
 #### The Lagrangian as a Line Element
 
-For the following discussion we abandon the preferred position which the time $t$ ordinarily occupies in mechanics. We add $t$ to the position coordinates $q_i$ by putting $t = q_{n+1}$ and consider all the variables $q_i$ on an equal footing. The subscript $i$ runs from $1$ to $n + 1$. The configuration space has thus $n + 1$, instead of $n$, dimensions.
+For the following discussion we abandon the preferred position which the time $t$ ordinarily occupies in mechanics. We add $t$ to the position coordinates $q\_i$ by putting $t = q\_{n+1}$ and consider all the variables $q\_i$ on an equal footing. The subscript $i$ runs from $1$ to $n + 1$. The configuration space has thus $n + 1$, instead of $n$, dimensions.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Non-Riemannian Line Element)</span></p>
@@ -3641,7 +3641,7 @@ We introduce a line element $\overline{ds}$ in the $(n + 1)$-dimensional space b
 
 $$\overline{ds} = F(q_1, \ldots, q_{n+1},\, dq_1, \ldots, dq_{n+1}).$$
 
-The function $F$ is an arbitrary function of the $2n + 2$ variables $q_i$ and $dq_i$, except for the natural restriction that it be a **homogeneous differential form of the first order** in the variables $dq_i$:
+The function $F$ is an arbitrary function of the $2n + 2$ variables $q\_i$ and $dq\_i$, except for the natural restriction that it be a **homogeneous differential form of the first order** in the variables $dq\_i$:
 
 $$F(q_1, \ldots, q_{n+1},\, a\,dq_1, \ldots, a\,dq_{n+1}) = a\,F(q_1, \ldots, q_{n+1},\, dq_1, \ldots, dq_{n+1}).$$
 
@@ -3650,11 +3650,11 @@ $$F(q_1, \ldots, q_{n+1},\, a\,dq_1, \ldots, a\,dq_{n+1}) = a\,F(q_1, \ldots, q_
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Equivalence of Dynamics and Geodesics)</span></p>
 
-Let $q_i = f_i(\tau)$ be an arbitrary curve on the $(n+1)$-dimensional manifold, parametrised by $\tau$. By the homogeneity condition, the line element along this curve can be written as $\overline{ds} = F(q_1, \ldots, q_{n+1}, q'_1, \ldots, q'_{n+1})\,d\tau$. The problem of finding the geodesic lines --- minimising the length of a curve between two points --- leads to the variational problem of minimising
+Let $q\_i = f\_i(\tau)$ be an arbitrary curve on the $(n+1)$-dimensional manifold, parametrised by $\tau$. By the homogeneity condition, the line element along this curve can be written as $\overline{ds} = F(q\_1, \ldots, q\_{n+1}, q'\_1, \ldots, q'\_{n+1})\,d\tau$. The problem of finding the geodesic lines --- minimising the length of a curve between two points --- leads to the variational problem of minimising
 
 $$A = \int_{\tau_1}^{\tau_2} F(q_1, \ldots, q_{n+1},\, q'_1, \ldots, q'_{n+1})\,d\tau.$$
 
-If we choose $q_{n+1} = t$ as the parameter $\tau$, the geodesic equations take the form $q_i = f_i(t)$ and are found by minimising
+If we choose $q\_{n+1} = t$ as the parameter $\tau$, the geodesic equations take the form $q\_i = f\_i(t)$ and are found by minimising
 
 $$A = \int_{t_1}^{t_2} F(q_1, \ldots, q_n, t,\, \dot{q}_1, \ldots, \dot{q}_n, 1)\,dt.$$
 
@@ -3667,32 +3667,32 @@ Here we recognise the standard problem of Lagrangian mechanics. **The function $
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vanishing of the Hamiltonian)</span></p>
 
-Since $F$ is a homogeneous function of the first order in the variables $q'_i$, the Legendre transformation gives
+Since $F$ is a homogeneous function of the first order in the variables $q'\_i$, the Legendre transformation gives
 
 $$H = \sum_{i=1}^{n+1} \frac{\partial F}{\partial q'_i}\,q'_i - F = 0.$$
 
-The vanishing of the Hamiltonian function is always compensated for by the existence of an identity between the $q_i$ and $p_i$:
+The vanishing of the Hamiltonian function is always compensated for by the existence of an identity between the $q\_i$ and $p\_i$:
 
 $$K(q_1, \ldots, q_{n+1},\, p_1, \ldots, p_{n+1}) = 0.$$
 
-This identity has to be considered as an auxiliary condition, and the variational problem becomes: make the integral $A = \int \sum p_i\,dq_i$ stationary under the auxiliary condition $K = 0$.
+This identity has to be considered as an auxiliary condition, and the variational problem becomes: make the integral $A = \int \sum p\_i\,dq\_i$ stationary under the auxiliary condition $K = 0$.
 
 </div>
 
 #### Hamilton's Principal Function as the Distance Function
 
-In this geometrical interpretation, Hamilton's "principal function" $W$ is particularly significant. Since the "action" is now geometrically interpreted as "arc length," and "least action" means "least length," Hamilton's $W$-function simply means *the distance between the two points $\bar{q}_i$ and $q_i$ of our manifold*.
+In this geometrical interpretation, Hamilton's "principal function" $W$ is particularly significant. Since the "action" is now geometrically interpreted as "arc length," and "least action" means "least length," Hamilton's $W$-function simply means *the distance between the two points $\bar{q}\_i$ and $q\_i$ of our manifold*.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Gradient Condition and Hamilton's Partial Differential Equation)</span></p>
 
-The surfaces $W = \text{const.}$ are by definition concentric spheres with the common centre $\bar{q}_i$. The radius vector $\mathbf{R}$ is everywhere perpendicular to the surface of the sphere. To proceed in the direction of the normal means to proceed in the direction of the radius vector, and by the definition of $W$ as the length of the radius vector:
+The surfaces $W = \text{const.}$ are by definition concentric spheres with the common centre $\bar{q}\_i$. The radius vector $\mathbf{R}$ is everywhere perpendicular to the surface of the sphere. To proceed in the direction of the normal means to proceed in the direction of the radius vector, and by the definition of $W$ as the length of the radius vector:
 
 $$|\operatorname{grad} W| = \left(\frac{dW}{\overline{ds}}\right)_{\!max} = \frac{dr}{dr} = 1.$$
 
 The perpendicularity of the radius vector to a sphere is not a characteristic property of Euclidean geometry alone --- *it is an invariant property of any kind of metrical geometry.*
 
-The condition $|\operatorname{grad} W| = 1$ is equivalent to Hamilton's partial differential equation:
+The condition $\lvert\operatorname{grad} W\rvert = 1$ is equivalent to Hamilton's partial differential equation:
 
 $$K\!\left(q_1, \ldots, q_{n+1},\, \frac{\partial W}{\partial q_1}, \ldots, \frac{\partial W}{\partial q_{n+1}}\right) = 0.$$
 
@@ -3703,7 +3703,7 @@ This differential equation, together with the boundary condition that $W$ reduce
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Complete Integration in the Homogeneous Case)</span></p>
 
-In the special case where $F$ depends on the $dq_i$ alone (without the $q_i$), we have $\overline{ds} = F(dq_1, \ldots, dq_{n+1})$, and the problem of geodesics is then completely integrable because all the $q_i$ are ignorable variables. The result is
+In the special case where $F$ depends on the $dq\_i$ alone (without the $q\_i$), we have $\overline{ds} = F(dq\_1, \ldots, dq\_{n+1})$, and the problem of geodesics is then completely integrable because all the $q\_i$ are ignorable variables. The result is
 
 $$W = F(q_1 - \bar{q}_1, \ldots, q_{n+1} - \bar{q}_{n+1}),$$
 
@@ -3720,9 +3720,9 @@ $$|\operatorname{grad} S| = 1.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parallel Surfaces and Orthogonal Trajectories)</span></p>
 
-The equation $|\operatorname{grad} S| = 1$ has a striking geometrical significance: *the surface $S = \text{const.}$ has everywhere the same constant distance from a basic surface $S = 0$*. Hence the surfaces $S = \text{const.}$ represent a family of **parallel surfaces**. The wave surfaces, which before were "surfaces of equal action," now become "surfaces of equal distance," i.e. parallel surfaces.
+The equation $\lvert\operatorname{grad} S\rvert = 1$ has a striking geometrical significance: *the surface $S = \text{const.}$ has everywhere the same constant distance from a basic surface $S = 0$*. Hence the surfaces $S = \text{const.}$ represent a family of **parallel surfaces**. The wave surfaces, which before were "surfaces of equal action," now become "surfaces of equal distance," i.e. parallel surfaces.
 
-The orthogonality of the wave surfaces $S = \text{const.}$ to the mechanical (or optical) paths can once more be established. Writing $p_i = \frac{\partial S}{\partial q_i}$, or equivalently $p_i = \frac{1}{|\operatorname{grad} S|}\frac{\partial S}{\partial q_i}$, we see that these are exactly the equations of the normals to the surfaces $S = \text{const.}$ Thus *the mechanical paths are orthogonal trajectories of the wave surfaces* --- a result that now applies in a much more general sense than before, belonging to the non-Euclidean and in general even non-Riemannian geometry which is intrinsically associated with the given mechanical problem.
+The orthogonality of the wave surfaces $S = \text{const.}$ to the mechanical (or optical) paths can once more be established. Writing $p\_i = \frac{\partial S}{\partial q\_i}$, or equivalently $p\_i = \frac{1}{\lvert\operatorname{grad} S\rvert}\frac{\partial S}{\partial q\_i}$, we see that these are exactly the equations of the normals to the surfaces $S = \text{const.}$ Thus *the mechanical paths are orthogonal trajectories of the wave surfaces* --- a result that now applies in a much more general sense than before, belonging to the non-Euclidean and in general even non-Riemannian geometry which is intrinsically associated with the given mechanical problem.
 
 </div>
 
@@ -3746,7 +3746,7 @@ where $v$ --- the velocity of light --- is obtained by solving Fresnel's equatio
 
 $$\frac{dx^2}{v^2 - v_1^2} + \frac{dy^2}{v^2 - v_2^2} + \frac{dz^2}{v^2 - v_3^2} = 0.$$
 
-The constants $v_1$, $v_2$, $v_3$ are called the "principal velocities." Since this equation is quadratic in $v$, we have a **double-valued metric** --- the coexistence of two different kinds of geometries in the same problem. As a consequence, an arbitrary light ray splits into two rays, giving rise to the phenomenon of "double refraction." The two rays have different velocities and hence obey different geometries. The Huygens construction operates here with double spheres, which in turn produce double envelopes. The intersections of the two kinds of spheres give rise to conical points and singular directions --- the "optical axes" of the crystal.
+The constants $v\_1$, $v\_2$, $v\_3$ are called the "principal velocities." Since this equation is quadratic in $v$, we have a **double-valued metric** --- the coexistence of two different kinds of geometries in the same problem. As a consequence, an arbitrary light ray splits into two rays, giving rise to the phenomenon of "double refraction." The two rays have different velocities and hence obey different geometries. The Huygens construction operates here with double spheres, which in turn produce double envelopes. The intersections of the two kinds of spheres give rise to conical points and singular directions --- the "optical axes" of the crystal.
 
 </div>
 
@@ -3854,7 +3854,7 @@ Hamilton himself called Lagrange the "Shakespeare of mathematics" on account of 
 
 Hamilton opened an entirely new world beyond Lagrange's discoveries:
 
-- **Canonical equations:** By treating positions $q_i$ and momenta $p_i$ as independent variables, Hamilton transformed the second-order Lagrangian equations into a set of *first-order* differential equations that are linear and separated in the derivatives. Jacobi named these the **canonical equations**, recognising them as the simplest and most natural form for the equations of a variational problem.
+- **Canonical equations:** By treating positions $q\_i$ and momenta $p\_i$ as independent variables, Hamilton transformed the second-order Lagrangian equations into a set of *first-order* differential equations that are linear and separated in the derivatives. Jacobi named these the **canonical equations**, recognising them as the simplest and most natural form for the equations of a variational problem.
 - **Hamilton's principle:** By transforming d'Alembert's principle, Hamilton gave the first *exact* formulation of the principle of least action, valid beyond the conservative (scleronomic) case to which Euler and Lagrange's version was restricted.
 - **The optico-mechanical analogy:** One of Hamilton's deepest insights is that problems of mechanics and geometrical optics can be handled from a unified viewpoint. He introduced a **characteristic (principal) function** that, by mere differentiation, yields both the path of a moving particle and the path of an optical ray. Moreover, in both optics and mechanics, this characteristic function satisfies the same partial differential equation --- so solving the Hamilton--Jacobi equation under appropriate boundary conditions is equivalent to solving the equations of motion.
 
