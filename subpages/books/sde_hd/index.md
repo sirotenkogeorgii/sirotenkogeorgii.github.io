@@ -3097,7 +3097,7 @@ In the context of stochastic processes we work predominantly with two specific B
 * $\mathcal{B}\_b(\mathbb{R}^d)$, the space of bounded Borel measurable functions $f : \mathbb{R}^d \to \mathbb{R}$ equipped with the uniform norm $\lVert f \rVert_\infty$;
 * $C_\infty(\mathbb{R}^d)$, the space of continuous functions vanishing at infinity, similarly equipped with the uniform norm.
 
-Unless otherwise stated, we abbreviate $\mathcal{B}\_b = \mathcal{B}_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
+Unless otherwise stated, we abbreviate $\mathcal{B}\_b = \mathcal{B}\_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.5 (Brownian Transition Operators Form a Semigroup)</span></p>
