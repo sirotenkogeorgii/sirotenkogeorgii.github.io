@@ -14,6 +14,39 @@ date: 2026-05-13
 
 ---
 
+<!-- Weak-star Convergence
+Uniform Convergence
+Hamel Basis
+Schauder Basis
+L^p_{\text{per}}
+Convoultion
+Deconvolution
+Fourier Analysis
+Fourier Multipliers
+Fourier Coefficients
+Fourier Series
+Fourier Decomposition
+Fourier Transform
+Discrete Fourier Transform
+Bounded Linear Operator
+Convolution Theorem
+Fubini's Theorem
+Diagonal Operator -->
+
+Lusin’s theorem
+Radon Measure
+Knott-Smith optimality criterion
+Covariance Operator
+Manifold
+Riemannian Manifold
+Brenier’s Theorem
+Fenchel Inequality
+Rademacher’s theorem
+Hausdorff dimension
+Semigroup
+Seminorm
+
+
 <div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Questions</span><span class="math-callout__name"></span></p>
 
@@ -24,6 +57,10 @@ date: 2026-05-13
 * Question: Why does topological boundary has the same notation as differential
 * Question: What is the difference between support and domain?
 * Question: Does a matric induce topology? Any topology?
+* Question: Why are duals important?
+* Question: Why is topology formulated in terms of open sets?
+* Question: Convolution is a Fourier Transform? No, convolution is not a Fourier Transform, but they are profoundly linked through the convolution theorem, which states that convolution in the time domain is equivalent to point-wise multiplication in the frequency domain.
+* Question: ...
 
 </div>
 
@@ -47,6 +84,56 @@ Linearity, subspaces, spans, linear independence, bases (via Zorn), quotient spa
 * **Normed space** — add a norm $\lVert \cdot \rVert$; then a metric $d(x,y) = \lVert x - y \rVert$ and a topology.
 * **Banach** — normed and complete.
 * **Hilbert** — Banach where the norm comes from an inner product.
+
+</div>
+
+### Hamel basis
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hamel basis)</span></p>
+
+A **Hamel basis** of a vector space $V$ is a subset $B \subseteq V$ such that every $v \in V$ has a unique representation as a **finite** linear combination
+
+$$
+v \;=\; \sum_{i=1}^N c_i b_i, \qquad b_i \in B, \;\; c_i \in \mathbb{K},
+$$
+
+i.e. $B$ is linearly independent and spans $V$ in the purely algebraic sense.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(facts — and why nobody uses them in infinite dimensions)</span></p>
+
+* Every vector space has a Hamel basis (Zorn's lemma) and any two have the same cardinality (the **algebraic dimension**).
+* For an infinite-dimensional Banach space, a Hamel basis is **uncountable** — concretely, $\ge \lvert\mathbb{R}\rvert$ (Baire category: a countable Hamel basis would write $X$ as a countable union of finite-dimensional, hence nowhere-dense, subspaces).
+* So Hamel bases exist but are useless for analysis: you can never write an interesting element of $L^p$ as a *finite* combination of basis vectors. They appear in pathological constructions (discontinuous linear functionals, non-measurable additive functions, Vitali sets via $\mathbb{R}/\mathbb{Q}$).
+* In functional analysis, "basis" defaults to **Schauder basis**, not Hamel.
+
+</div>
+
+### Schauder basis
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Schauder basis)</span></p>
+
+A sequence $(e_n)\_{n \in \mathbb{N}}$ in a Banach space $X$ is a **Schauder basis** if every $x \in X$ has a unique representation as a **norm-convergent** series
+
+$$
+x \;=\; \sum_{n=1}^\infty c_n(x) \, e_n,
+$$
+
+with scalars $c_n(x) \in \mathbb{K}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why this is the right notion)</span></p>
+
+* Each coordinate functional $c_n : X \to \mathbb{K}$ is automatically **continuous** (by Banach–Steinhaus / closed-graph) — the "basis projections" $P_N x = \sum_{n \le N} c_n(x) e_n$ are uniformly bounded.
+* A Banach space with a Schauder basis is **separable** (rational finite combinations are dense). The converse is false: Per Enflo (1973) built a separable Banach space with **no** Schauder basis.
+* Standard examples: $(e_n)$ in $\ell^p$ ($1 \le p < \infty$) and $c_0$; trigonometric system $\lbrace e^{ikx}\rbrace$ in $L^p(\mathbb{T})$ for $1 < p < \infty$ (fails at $p = 1, \infty$); Haar / wavelet bases in $L^p$ for $1 \le p < \infty$.
+* In a **Hilbert** space, an orthonormal basis is automatically a Schauder basis whose coefficients are $c_n(x) = \langle x, e_n\rangle$. The series converges in norm and Parseval holds.
 
 </div>
 
@@ -121,6 +208,24 @@ modulo equality $\mu$-a.e. For $p=\infty$, $\|f\|_{L^\infty} = \operatorname*{es
 * **Reflexive** and **separable** for $1 < p < \infty$ (on $\sigma$-finite measures). $L^1$ is not reflexive; $L^\infty$ is not separable.
 * **Dual:** $(L^p)^\ast \cong L^q$ with $\tfrac{1}{p}+\tfrac{1}{q}=1$ for $1 \le p < \infty$ — this is Riesz representation in $L^p$.
 * Natural home for energies of the form $\int \lvert f\rvert^p$ and for almost every theorem in analysis/PDE.
+
+</div>
+
+### $L^p_{\text{per}}$ — periodic $L^p$ spaces
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($L^p_{\text{per}}$ / $L^p(\mathbb{T}^n)$)</span></p>
+
+For $1 \le p \le \infty$ and a period $T > 0$, $L^p_{\text{per}}([0,T])$ is the space of (equivalence classes of) measurable $T$-periodic functions $f : \mathbb{R} \to \mathbb{C}$ with $f\!\restriction\_{[0,T]} \in L^p([0,T])$, normed by the $L^p([0,T])$ norm. Equivalently — and most cleanly — it is $L^p(\mathbb{T}^n)$ with $\mathbb{T}^n = \mathbb{R}^n / T\mathbb{Z}^n$ the $n$-torus.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why we package periodic functions this way)</span></p>
+
+* Identifying the domain with the **torus** $\mathbb{T}^n$ makes it **compact without boundary**: no integration-by-parts boundary terms, no need to cut off near $\partial \Omega$, every smooth periodic function is in $L^p_{\text{per}}$ automatically.
+* The natural setting for **Fourier series**: $\lbrace e^{2\pi i k\cdot x / T}\rbrace_{k \in \mathbb{Z}^n}$ is an orthonormal basis of $L^2_{\text{per}}$ (Parseval), and Sobolev spaces $H^s_{\text{per}}$ can be defined directly through decay of Fourier coefficients $\lvert k\rvert^s \widehat f(k) \in \ell^2$.
+* Standard solution / test space for **periodic PDE** (Schrödinger, KdV, wave, Navier–Stokes on $\mathbb{T}^n$) — periodicity replaces boundary conditions, so one gets a self-contained problem on a compact manifold.
 
 </div>
 
@@ -433,6 +538,31 @@ Intuition: pair against every continuous probe and check pointwise convergence o
 
 </div>
 
+### Weak-$\ast$ convergence
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(weak-$\ast$ convergence)</span></p>
+
+In the dual $X^\ast$ of a normed space $X$,
+
+$$
+x_n^\ast \;\xrightharpoonup{\ast}\; x^\ast \quad\iff\quad x_n^\ast(x) \;\to\; x^\ast(x) \qquad \forall x \in X.
+$$
+
+I.e. pointwise convergence of functionals as ordinary scalar-valued functions on $X$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(weak vs weak-$\ast$, and why this is the right notion in $X^\ast$)</span></p>
+
+* In $X^\ast$, weak convergence tests against all of $X^{\ast\ast}$ while weak-$\ast$ tests only against the canonical image $X \hookrightarrow X^{\ast\ast}$. They coincide **iff $X$ is reflexive**.
+* **Banach–Alaoglu**: the closed unit ball $B_{X^\ast}$ is weak-$\ast$ **compact**. If $X$ is separable, $B_{X^\ast}$ is weak-$\ast$ metrizable, so bounded sequences have weak-$\ast$ convergent **subsequences**.
+* The standard mode of compactness for measures, $L^\infty$-functions, and dual data: a bounded sequence in $L^\infty$ has a weak-$\ast$ subsequential limit; a tight family of probability measures has a weak-$\ast$ limit (this is exactly the [[weak-topology-of-measures entry]] and Prokhorov).
+* **Standard example**: $\delta_n \xrightharpoonup{\ast} 0$ in $C_0(\mathbb{R})^\ast$ — the Dirac at $n$ tests against $\varphi \in C_0$ as $\varphi(n) \to 0$. Total variation is $1$ for every $n$, yet the limit is $0$: weak-$\ast$ convergence allows mass to escape to infinity (not visible to $C_0$).
+
+</div>
+
 ### Strong convergence in $L^p$
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -468,6 +598,31 @@ For $p = \infty$ one typically uses **weak-$*$** convergence: test against $g \i
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(oscillation has weak limit zero)</span></p>
 
 $f_n(x) = \sin(nx) \rightharpoonup 0$ in $L^2([0, 2\pi])$ by Riemann–Lebesgue, but $\lVert f_n\rVert_{L^2} = \sqrt{\pi}$ for all $n$ — so the convergence is **not** strong. The mass is preserved; it just oscillates faster and faster and averages out against any test function.
+
+</div>
+
+### Uniform convergence
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(uniform convergence)</span></p>
+
+$f_n \to f$ **uniformly** on $X$ if
+
+$$
+\sup_{x \in X} \lvert f_n(x) - f(x)\rvert \;\xrightarrow{n \to \infty}\; 0.
+$$
+
+Equivalently, convergence in the sup-norm topology on $B(X)$ (bounded functions).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(what it preserves and what it does not)</span></p>
+
+* **Preserves continuity** — a uniform limit of continuous functions is continuous. This is the cleanest way to build continuous functions: e.g. Weierstrass M-test for series of continuous functions.
+* **Preserves integrals** on bounded sets: $\int f_n \to \int f$ on any set of finite measure.
+* **Does not preserve differentiability** by itself: even with each $f_n \in C^\infty$, the limit can fail to be differentiable (Weierstrass's nowhere-differentiable example is a uniform limit of trig polynomials).
+* The strongest of the standard convergence modes for functions: uniform $\Rightarrow$ locally uniform $\Rightarrow$ pointwise; uniform $\Rightarrow$ $L^p$ on sets of finite measure.
 
 </div>
 
@@ -568,26 +723,56 @@ Most constructions in analysis isolate the **coarsest** topology making some pre
 ### Initial topology
 
 <div class="math-callout math-callout--definition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(initial topology)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Initial Topology)</span></p>
 
-Given a family of maps $\lbrace f_i : X \to Y_i\rbrace_{i \in I}$ with each $Y_i$ already topologised, the **initial topology** on $X$ induced by the family is the **coarsest** topology making every $f_i$ continuous. Explicitly, it is generated by the subbase
+Given a set $X$, a family of topological spaces $(Y_i, \tau_i)\_{i \in I}$, and a family of maps $f_i: X \to Y_i$, the **initial topology** on $X$ induced by the family $\lbrace f_i\rbrace\_{i \in I}$ is the coarsest (smallest) topology on $X$ that makes every $f_i$ continuous.
 
-$$
-\lbrace f_i^{-1}(U) \;:\; i \in I, \; U \subseteq Y_i \text{ open} \rbrace.
-$$
+Concretely, it is generated by the subbase
+
+$$\mathcal{S} = \lbrace f_i^{-1}(U) : i \in I,\ U \in \tau_i\rbrace.$$
+
+That is, open sets in $X$ are arbitrary unions of finite intersections of preimages $f_i^{-1}(U)$. Any topology making all the $f_i$ continuous must contain $\mathcal{S}$, and the topology generated by $\mathcal{S}$ is the smallest such — hence the name "initial."
+
+**Universal property.** This is the cleanest characterization, and it's what makes the construction useful. A map $g: Z \to X$ from any topological space $Z$ is continuous if and only if $f_i \circ g: Z \to Y_i$ is continuous for every $i \in I$.
+
+In categorical terms, the initial topology is the unique topology on $X$ for which this universal property holds.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(examples and universal property)</span></p>
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__namExample">(Intiial topologies)</span></p>
 
-The initial-topology recipe specializes to almost every "abstract" topology in functional analysis:
+Here are four worked examples, going from the simplest to the most useful in your current functional-analysis context.
 
-* **Subspace** topology — single inclusion $X \hookrightarrow Y$.
-* **Product** topology on $\prod_j X_j$ — the family of projections $\pi_j$.
-* **Weak topology** on a Banach space $X$ — the family $X^\ast$ of continuous linear functionals.
-* **Weak-$\ast$ topology** on $X^\ast$ — the evaluations $\hat x : X^\ast \to \mathbb{R}$, $x^\ast \mapsto x^\ast(x)$, for $x \in X$.
-* Topology on $\mathcal{D}'$ — pairings against test functions.
+**1. Subspace topology on the circle.** Let $X = S^1 = \lbrace(x,y) \in \mathbb{R}^2 : x^2 + y^2 = 1\rbrace$ and let $\iota: S^1 \hookrightarrow \mathbb{R}^2$ be inclusion. The initial topology with respect to $\lbrace\iota\rbrace$ has as a subbase
+
+$$\lbrace\iota^{-1}(U) : U \subseteq \mathbb{R}^2 \text{ open}\rbrace = \lbrace U \cap S^1 : U \subseteq \mathbb{R}^2 \text{ open}\rbrace,$$
+
+which is already closed under finite intersections, so this is the topology itself. An open arc on $S^1$, say $\lbrace(\cos\theta, \sin\theta) : \theta \in (0, \pi/2)\rbrace$, is obtained as $B \cap S^1$ where $B$ is an open half-plane in $\mathbb{R}^2$.
+
+**2. Product topology on $\mathbb{R}^{\mathbb{N}}$.** Consider $X = \mathbb{R}^{\mathbb{N}}$ (sequences of reals) with the projections $\pi_n: X \to \mathbb{R}$, $\pi_n(x) = x_n$. A subbasic open set is
+
+$$\pi_n^{-1}(U) = \lbrace x \in \mathbb{R}^{\mathbb{N}} : x_n \in U\rbrace, \qquad U \subseteq \mathbb{R} \text{ open}.$$
+
+Basic open sets are finite intersections, restricting only finitely many coordinates:
+
+$$\lbrace x : x_{n_1} \in U_1, \ldots, x_{n_k} \in U_k\rbrace.$$
+
+A sequence $(x^{(m)})\_{m \geq 1}$ in $X$ converges to $x$ in this topology iff $x_n^{(m)} \to x_n$ for every $n$ — i.e. coordinatewise convergence. Crucially, sets like $\prod_n (-1/n, 1/n)$ (the "box") are *not* open here, because they restrict infinitely many coordinates. This is exactly the reason the product topology is initial: it puts in the minimum needed to keep projections continuous, no more.
+
+**3. Weak topology and the canonical example.** Take $E = \ell^2$ with its dual $E^\ast \cong \ell^2$ via $\varphi_y(x) = \sum_n x_n \overline{y_n}$. The weak topology $\sigma(\ell^2, \ell^2)$ is the initial topology generated by all $\varphi_y$, $y \in \ell^2$. A subbasic weak neighborhood of $0$ has the form
+
+$$V_{y, \varepsilon} = \lbrace x \in \ell^2 : |\langle x, y \rangle| < \varepsilon\rbrace.$$
+
+Now consider the standard basis $(e_n)$. For any fixed $y \in \ell^2$,
+
+$$\langle e_n, y \rangle = \overline{y_n} \to 0 \quad \text{as } n \to \infty$$
+
+because $\sum \|y_n\|^2 < \infty$. Hence $e_n \rightharpoonup 0$ weakly. But $\|e_n\| = 1$ for all $n$, so $(e_n)$ does *not* converge to $0$ in norm. This separation between weak and norm convergence is the whole reason the weak topology is interesting — and it is precisely what "initial topology" buys you: enough open sets to make every $\varphi_y$ continuous, but no more.
+
+**4. Pointwise convergence as initial topology.** Let $X$ be any set and let $F = \mathbb{R}^X$ be the set of real-valued functions on $X$. For each $x \in X$, define the evaluation $\mathrm{ev}\_x: F \to \mathbb{R}$, $\mathrm{ev}\_x(f) = f(x)$. The initial topology on $F$ induced by $\lbrace\mathrm{ev}\_x\rbrace\_{x \in X}$ is the *topology of pointwise convergence*: a net $f_\alpha \to f$ in this topology iff $f_\alpha(x) \to f(x)$ for every $x$. Notice this is literally the product topology on $\mathbb{R}^X$ under the identification $F = \prod_{x \in X} \mathbb{R}$, with $\mathrm{ev}\_x = \pi_x$. Example 2 is the special case $X = \mathbb{N}$.
+
+The pattern across all four is identical: pick the maps you want to be continuous, take preimages of open sets, generate a topology. The universal property then guarantees this is *the* right topology for studying maps *into* $X$ — continuity from any source $Z$ reduces to continuity of the compositions.
 
 **Universal property.** A map $g : Z \to X$ into a set carrying an initial topology is continuous **iff** every composition $f_i \circ g$ is continuous. Continuity into $X$ reduces to checking it "coordinatewise" — which is exactly why initial topologies are practical.
 
@@ -1354,6 +1539,29 @@ Tonelli says: "if it is $\ge 0$, you can swap the order, full stop." Fubini is t
 
 </div>
 
+### Fubini's theorem
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fubini)</span></p>
+
+Let $(\Omega_1, \mathcal{A}_1, \mu_1)$, $(\Omega_2, \mathcal{A}_2, \mu_2)$ be $\sigma$-finite measure spaces and $f \in L^1(\mu_1 \otimes \mu_2)$. Then for $\mu_1$-a.e. $x \in \Omega_1$ the slice $f(x, \cdot)$ is in $L^1(\mu_2)$, the map $x \mapsto \int f(x, y)\, d\mu_2(y)$ is in $L^1(\mu_1)$, and
+
+$$
+\int_{\Omega_1 \times \Omega_2} f \, d(\mu_1 \otimes \mu_2) \;=\; \int_{\Omega_1}\!\!\int_{\Omega_2} f(x, y) \, d\mu_2(y) \, d\mu_1(x) \;=\; \int_{\Omega_2}\!\!\int_{\Omega_1} f(x, y) \, d\mu_1(x) \, d\mu_2(y).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(role and the standard combo)</span></p>
+
+* Fubini = "you can swap the order of integration **once** $f \in L^1$." This is the *signed* (or complex) analogue of Tonelli.
+* The standard workflow when staring at an iterated integral with sign changes: apply **Tonelli** to $\lvert f\rvert$ to check $\int\!\int \lvert f\rvert < \infty$; once that is in hand, **Fubini** applies and you can swap freely.
+* Both hypotheses are sharp. The classic counterexample $f(x, y) = (x^2 - y^2)/(x^2 + y^2)^2$ on $(0,1)^2$ has both iterated integrals well-defined but **unequal** ($+\pi/4$ vs $-\pi/4$) — and indeed $\int\!\int \lvert f\rvert = \infty$, so Fubini's hypothesis fails.
+* On $\sigma$-finite measure spaces, the product $\sigma$-algebra and measure are unambiguously defined. Without $\sigma$-finiteness one needs the Bourbaki / Radon measure framework instead.
+
+</div>
+
 ### Monotone convergence theorem
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1545,6 +1753,306 @@ $$
 * The natural energy space is a **Hilbert space**, so existence follows from Lax–Milgram or direct minimization.
 * You do not need $u$ to be twice differentiable a priori.
 * **Regularity theory** then upgrades the weak solution to a classical one whenever the data is nice enough.
+
+</div>
+
+---
+
+## Linear operators
+
+### Bounded linear operator
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(bounded linear operator)</span></p>
+
+A linear map $T : X \to Y$ between normed spaces is **bounded** if its **operator norm**
+
+$$
+\lVert T \rVert \;=\; \sup_{\lVert x\rVert_X \le 1} \lVert T x \rVert_Y \;=\; \sup_{x \ne 0} \frac{\lVert Tx\rVert_Y}{\lVert x\rVert_X}
+$$
+
+is finite. The space of bounded linear operators $X \to Y$ is denoted $\mathcal{B}(X, Y)$ (or $\mathcal{L}(X, Y)$), with $\mathcal{B}(X) := \mathcal{B}(X, X)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(bounded = continuous, the linearity miracle)</span></p>
+
+* For linear maps between normed spaces, **bounded $\iff$ continuous $\iff$ continuous at $0$**. This equivalence is specific to linearity — generic continuous functions can be unbounded.
+* $\mathcal{B}(X, Y)$ is a normed space; if $Y$ is **Banach**, so is $\mathcal{B}(X, Y)$. In particular $X^\ast = \mathcal{B}(X, \mathbb{K})$ is always Banach (the scalar field is complete).
+* **Unbounded operators** (differentiation on $L^2$, multiplication by $x$ on $L^2(\mathbb{R})$) are not continuous and are only densely defined on a domain $D(T) \subsetneq X$ — the whole theory of unbounded self-adjoint operators (spectral theorem, semigroups, Stone's theorem) is the price you pay for working with PDEs.
+* The three Banach-space pillars of $\mathcal{B}(X, Y)$ — **uniform boundedness, open mapping, closed graph** — all follow from Baire category and depend on $X$, $Y$ being Banach.
+
+</div>
+
+### Diagonal operator
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(diagonal operator)</span></p>
+
+On $\ell^p$ (or any sequence space with the standard basis $\lbrace e_n\rbrace$) and a scalar sequence $\lambda = (\lambda_n)\_{n \in \mathbb{N}}$, the **diagonal operator** $T_\lambda$ is the coordinatewise multiplication
+
+$$
+T_\lambda : (x_n) \;\longmapsto\; (\lambda_n x_n), \qquad T_\lambda e_n = \lambda_n e_n.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(the universal model of self-adjoint operators)</span></p>
+
+* $T_\lambda$ is bounded on $\ell^p$ iff $(\lambda_n) \in \ell^\infty$, and then $\lVert T_\lambda\rVert = \sup_n \lvert \lambda_n\rvert$.
+* Spectrum: $\sigma(T_\lambda) = \overline{\lbrace \lambda_n\rbrace}$. The point spectrum is $\lbrace \lambda_n\rbrace$, with $e_n$ as the eigenvector for $\lambda_n$.
+* **Operator-ideal characterization:** $T_\lambda$ is compact iff $\lambda_n \to 0$; Hilbert–Schmidt iff $(\lambda_n) \in \ell^2$; trace class iff $(\lambda_n) \in \ell^1$.
+* The **spectral theorem** for a self-adjoint bounded operator $A$ on a Hilbert space says exactly: $A$ is **unitarily equivalent to a multiplication-by-$\lambda(\cdot)$ operator** on $L^2$ of its spectrum (the "diagonalization"). So "diagonal operator on a basis" is the canonical model of self-adjointness.
+* Fourier multipliers $T_m$ (see below) are diagonal operators on the Fourier basis: they multiply each frequency component $\widehat f(\xi)$ by $m(\xi)$.
+
+</div>
+
+---
+
+## Fourier and harmonic analysis
+
+### Fourier analysis (overview)
+
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(what Fourier analysis is)</span></p>
+
+The general project: decompose a function $f$ as a superposition of **simple waves** (eigenfunctions of translation / differentiation) and study $f$ via its **frequency content** $\widehat f$.
+
+By domain — the three standard incarnations:
+
+| Domain | Decomposition | Frequency index |
+|---|---|---|
+| $\mathbb{T}^n = \mathbb{R}^n / \mathbb{Z}^n$ (compact, periodic) | **Fourier series** | discrete $k \in \mathbb{Z}^n$ |
+| $\mathbb{R}^n$ (non-compact) | **Fourier transform** | continuous $\xi \in \mathbb{R}^n$ |
+| $\mathbb{Z}_N$ (finite cyclic) | **Discrete Fourier transform** (DFT) | finite $k \in \mathbb{Z}_N$ |
+
+In each case the transform **diagonalizes the translation operator** $T_a f(x) = f(x - a)$, and hence diagonalizes every constant-coefficient differential operator. On the Fourier side, $\partial_j$ becomes "multiply by $2\pi i \xi_j$" — differential equations turn into algebraic ones.
+
+</div>
+
+### Fourier coefficients
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier coefficients on $\mathbb{T}^n$)</span></p>
+
+For $f \in L^1(\mathbb{T}^n)$ (period $2\pi$ in each variable),
+
+$$
+\widehat f(k) \;=\; \frac{1}{(2\pi)^n} \int_{\mathbb{T}^n} f(x) \, e^{-i k \cdot x} \, dx, \qquad k \in \mathbb{Z}^n.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(facts — boundedness, Plancherel, smoothness ↔ decay)</span></p>
+
+* $\lvert \widehat f(k)\rvert \le \lVert f\rVert_{L^1}$, so $\widehat f \in \ell^\infty$.
+* **Riemann–Lebesgue lemma**: $\widehat f(k) \to 0$ as $\lvert k\rvert \to \infty$ for $f \in L^1$.
+* **Plancherel / Parseval**: $f \in L^2(\mathbb{T}^n) \iff (\widehat f(k)) \in \ell^2(\mathbb{Z}^n)$, with $\lVert f\rVert_{L^2}^2 = \sum_k \lvert \widehat f(k)\rvert^2$.
+* **Smoothness ↔ decay**: $f \in C^\infty(\mathbb{T}^n)$ iff $\widehat f(k)$ decays **faster than any polynomial** in $\lvert k\rvert$. Sobolev $H^s$ is exactly $\sum_k (1 + \lvert k\rvert^2)^s \lvert \widehat f(k)\rvert^2 < \infty$ — Sobolev spaces on the torus are *defined* via Fourier decay.
+
+</div>
+
+### Fourier series
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier series)</span></p>
+
+For $f \in L^2(\mathbb{T}^n)$,
+
+$$
+f(x) \;=\; \sum_{k \in \mathbb{Z}^n} \widehat f(k) \, e^{i k \cdot x},
+$$
+
+with convergence in the $L^2$ norm. The partial sums $S_N f(x) = \sum_{\lvert k\rvert \le N} \widehat f(k) e^{ik\cdot x}$ are the orthogonal projections onto trig polynomials of degree $\le N$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(modes of convergence — Carleson, Hunt, Kolmogorov)</span></p>
+
+* In $L^2$: $S_N f \to f$ **always** (Parseval / Riesz–Fischer applied to the o.n. basis $\lbrace (2\pi)^{-n/2} e^{ik\cdot x}\rbrace$).
+* In $L^p$ for $1 < p < \infty$: $S_N f \to f$ in $L^p$ — this is a non-trivial theorem (M. Riesz, via boundedness of the Hilbert transform / conjugate function on $L^p$). **Fails at $p = 1$ and $p = \infty$.**
+* **Pointwise**: Carleson (1966) — $S_N f \to f$ a.e. for $f \in L^2(\mathbb{T})$. Hunt (1968) extends to $L^p$ with $1 < p \le \infty$. **Kolmogorov (1923)**: there exists $f \in L^1$ with $S_N f \to \infty$ everywhere.
+* **Uniform** convergence requires absolute summability $\sum \lvert \widehat f(k)\rvert < \infty$ (e.g. $f \in C^{1+\varepsilon}$ on $\mathbb{T}$ via Bernstein).
+
+</div>
+
+### Fourier decomposition
+
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Fourier decomposition — the umbrella term)</span></p>
+
+"Fourier decomposition" is a loose synonym for **expanding a function in an orthonormal basis of eigenfunctions of a self-adjoint operator** — usually the Laplacian. The three concrete cases above (series, transform, DFT) are special cases corresponding to $-\Delta$ on $\mathbb{T}^n$, $\mathbb{R}^n$, $\mathbb{Z}_N^n$ respectively. The eigenfunctions are the **characters of the underlying abelian group**: $e^{ik\cdot x}$ on $\mathbb{T}^n$, $e^{i\xi \cdot x}$ on $\mathbb{R}^n$, $e^{2\pi i kn/N}$ on $\mathbb{Z}_N$.
+
+Generalizations under the same umbrella:
+
+* Expansions in **spherical harmonics** on $S^{n-1}$ (eigenfunctions of $-\Delta_{S^{n-1}}$).
+* **Hermite expansions** on $\mathbb{R}^n$ (eigenfunctions of the quantum harmonic oscillator $-\Delta + \lvert x\rvert^2$).
+* **Wavelet decomposition** — replaces frequency with frequency $\times$ location.
+* **Peter–Weyl** on a compact Lie group, **Pontryagin duality** on a locally compact abelian group.
+
+In each case the "Fourier transform" is the change of basis from the spatial side to the spectral side, and it diagonalizes the operator the basis comes from.
+
+</div>
+
+### Fourier transform
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier transform on $\mathbb{R}^n$)</span></p>
+
+For $f \in L^1(\mathbb{R}^n)$,
+
+$$
+\widehat f(\xi) \;=\; \int_{\mathbb{R}^n} f(x) \, e^{-2\pi i \xi \cdot x} \, dx \qquad (\xi \in \mathbb{R}^n),
+$$
+
+with formal inverse $f(x) = \int_{\mathbb{R}^n} \widehat f(\xi) e^{+2\pi i \xi \cdot x} \, d\xi$. (Conventions vary; the factor $e^{-i\xi \cdot x}$ with normalization $(2\pi)^{-n/2}$ or $(2\pi)^{-n}$ is also standard.)
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Plancherel, Schwartz, tempered distributions)</span></p>
+
+* **Hausdorff–Young**: $\widehat f \in L^q$ for $f \in L^p$, $1 \le p \le 2$, $\tfrac{1}{p} + \tfrac{1}{q} = 1$, with $\lVert \widehat f\rVert_q \le \lVert f\rVert_p$. Does **not** extend to $p > 2$.
+* **Plancherel**: $\mathcal{F}$ extends uniquely from $L^1 \cap L^2$ to an **isometric isomorphism** $L^2(\mathbb{R}^n) \to L^2(\mathbb{R}^n)$.
+* **Diagonalization of differentiation**: $\widehat{\partial_j f}(\xi) = 2\pi i \xi_j \widehat f(\xi)$, $\widehat{x_j f}(\xi) = -\tfrac{1}{2\pi i} \partial_{\xi_j} \widehat f(\xi)$. So $\mathcal{F}$ swaps differentiation $\leftrightarrow$ multiplication-by-coordinate.
+* **Schwartz space $\mathcal{S}$**: rapidly decreasing $C^\infty$ functions. $\mathcal{F} : \mathcal{S} \to \mathcal{S}$ is a topological isomorphism with $\mathcal{F}^4 = \mathrm{id}$ (with the symmetric convention). By duality, $\mathcal{F}$ acts on **tempered distributions** $\mathcal{S}'$ — so $\widehat{\delta} = 1$, $\widehat{1} = \delta$, $\widehat{e^{2\pi i a \cdot x}} = \delta_a$, etc.
+
+</div>
+
+### Discrete Fourier transform (DFT)
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DFT)</span></p>
+
+For $f = (f_0, f_1, \dots, f_{N-1}) \in \mathbb{C}^N$,
+
+$$
+\widehat f(k) \;=\; \sum_{n=0}^{N-1} f_n \, e^{-2\pi i k n / N}, \qquad k = 0, 1, \dots, N-1,
+$$
+
+with inverse $f_n = \tfrac{1}{N} \sum_{k=0}^{N-1} \widehat f(k) e^{+2\pi i k n / N}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(role — change of basis and the FFT)</span></p>
+
+* The DFT is the change of basis on $\mathbb{C}^N$ from the standard basis to the basis of **characters** $\chi_k(n) = e^{2\pi i k n / N}$ of the cyclic group $\mathbb{Z}_N$. Up to $1/\sqrt N$ scaling it is a **unitary** matrix.
+* The **Fast Fourier Transform (FFT)** computes the DFT in $O(N \log N)$ operations (Cooley–Tukey, 1965). This is what makes Fourier methods practical for signals, polynomial multiplication, and numerical PDE on periodic grids.
+* Same algebraic structure as the continuous Fourier transform: $\widehat{f \ast g} = \widehat f \cdot \widehat g$ where $\ast$ is **cyclic convolution** on $\mathbb{Z}_N$.
+* Discretization of a periodic signal $f$ on $[0, T]$ at $N$ equispaced samples gives the DFT as a numerical approximation to its Fourier series — with the famous **aliasing** caveat: frequencies above the **Nyquist** $N/2$ alias to lower frequencies.
+
+</div>
+
+### Fourier multipliers
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier multiplier)</span></p>
+
+A **Fourier multiplier** is a linear operator $T_m$ defined on a suitable function space by
+
+$$
+\widehat{T_m f}(\xi) \;=\; m(\xi) \, \widehat f(\xi),
+$$
+
+for a fixed function $m : \mathbb{R}^n \to \mathbb{C}$ called the **symbol** (or the **multiplier function**).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(canonical examples and boundedness on $L^p$)</span></p>
+
+* **Constant-coefficient differential operators are multipliers**: $\partial_j \leftrightarrow 2\pi i \xi_j$, $-\Delta \leftrightarrow 4\pi^2 \lvert \xi\rvert^2$, the fractional Laplacian $(-\Delta)^{s/2} \leftrightarrow (2\pi \lvert \xi\rvert)^s$.
+* **Hilbert transform** on $\mathbb{R}$: $m(\xi) = -i \, \mathrm{sgn}(\xi)$. **Riesz transforms** on $\mathbb{R}^n$: $m_j(\xi) = -i \xi_j / \lvert \xi\rvert$. These are the building blocks of Calderón–Zygmund theory.
+* **$L^2$ boundedness** is trivial: $T_m$ is bounded on $L^2$ iff $m \in L^\infty$, with $\lVert T_m\rVert_{L^2 \to L^2} = \lVert m\rVert_{L^\infty}$.
+* **$L^p$ boundedness ($p \ne 2$) is subtle**: Marcinkiewicz / Mihlin / Hörmander multiplier theorems give sufficient smoothness/decay conditions on $m$ (e.g. $\lvert \partial^\alpha m(\xi)\rvert \lesssim \lvert \xi\rvert^{-\lvert \alpha\rvert}$ for $\lvert \alpha\rvert \le \lfloor n/2\rfloor + 1$).
+* **Pseudo-differential operators** generalize multipliers to $m = m(x, \xi)$ — symbols depending on both space and frequency — and form the variable-coefficient counterpart used in microlocal analysis.
+
+</div>
+
+### Convolution
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(convolution)</span></p>
+
+For $f, g$ measurable on $\mathbb{R}^n$ (whenever the integral exists),
+
+$$
+(f \ast g)(x) \;=\; \int_{\mathbb{R}^n} f(y) \, g(x - y) \, dy \;=\; \int_{\mathbb{R}^n} f(x - y) \, g(y) \, dy.
+$$
+
+Commutative, associative, distributive over addition.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(role — smoothing, Banach algebra, translation invariance)</span></p>
+
+* **Existence**: Young's inequality $\lVert f \ast g\rVert_{L^r} \le \lVert f\rVert_{L^p} \lVert g\rVert_{L^q}$ for $\tfrac{1}{p} + \tfrac{1}{q} = 1 + \tfrac{1}{r}$ — in particular $L^1 \ast L^p \subseteq L^p$ for every $p$.
+* **$L^1$ is a Banach algebra under $\ast$**, but with **no unit**: the would-be identity $\delta$ lives in $\mathcal{D}'$, not in $L^1$.
+* **Smoothing**: $f \ast g$ inherits the regularity of the smoother factor. Convolving with a mollifier $\rho_\varepsilon \in C_c^\infty$ produces $f_\varepsilon = f \ast \rho_\varepsilon \in C^\infty$ approximating $f$ in $L^p$ — this is the standard tool for density of $C_c^\infty$ in $L^p$, and for regularization of weak solutions.
+* **Translation invariance**: $T_a (f \ast g) = (T_a f) \ast g$, and conversely the bounded translation-invariant operators on $L^p(\mathbb{R}^n)$ are **exactly the Fourier multipliers**, which by the convolution theorem are exactly convolution-with-a-distribution operators. So
+    
+    $$
+    \text{convolution operators} \;=\; \text{translation-invariant operators} \;=\; \text{Fourier multipliers}.
+    $$
+* Periodic / discrete versions: convolution on $\mathbb{T}^n$ (integrate over the torus), cyclic convolution on $\mathbb{Z}_N$, convolution on any locally compact group.
+
+</div>
+
+### Convolution theorem
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(convolution theorem)</span></p>
+
+For $f, g \in L^1(\mathbb{R}^n)$,
+
+$$
+\widehat{f \ast g} \;=\; \widehat f \cdot \widehat g.
+$$
+
+Conversely, under appropriate hypotheses (e.g. $f, g \in L^1 \cap L^2$),
+
+$$
+\widehat{f \cdot g} \;=\; \widehat f \ast \widehat g.
+$$
+
+The same identity holds in the periodic, discrete, and tempered-distribution settings (replacing $\ast$ by the appropriate convolution and $\widehat{\cdot}$ by the corresponding Fourier map).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why this single identity does so much work)</span></p>
+
+* **It is the reason Fourier analysis is useful for PDE / signal processing**: a constant-coefficient linear PDE $L u = f$ becomes $\widehat L(\xi) \widehat u(\xi) = \widehat f(\xi)$, solved algebraically as $\widehat u = \widehat f / \widehat L$, and $u = \mathcal{F}^{-1}(\widehat f / \widehat L) = f \ast G$ where $G = \mathcal{F}^{-1}(1/\widehat L)$ is the **fundamental solution**.
+* It identifies convolution operators with Fourier multipliers (see the [[Fourier-multipliers entry]]).
+* The product side is what makes the **uncertainty principle** clean: localization of $f$ implies spreading of $\widehat f$, because pointwise products on one side correspond to convolutions on the other.
+
+</div>
+
+### Deconvolution
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(deconvolution problem)</span></p>
+
+Given an observed signal $g = f \ast k$ and a **known** kernel $k$, the **deconvolution problem** is to recover $f$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(ill-posedness and regularization)</span></p>
+
+* On the Fourier side the problem is algebraic: $\widehat g = \widehat f \cdot \widehat k$ gives $\widehat f = \widehat g / \widehat k$. But division blows up at zeros of $\widehat k$, and is unstable wherever $\widehat k$ is small.
+* Smoothing kernels (Gaussian, mollifier, box average) have **rapidly decaying $\widehat k$** — so naive inversion massively amplifies high frequencies, and any noise in $g$ is amplified catastrophically. This is the **archetypal ill-posed inverse problem**.
+* Standard fixes:
+    * **Tikhonov regularization**: replace $\widehat g / \widehat k$ by $\overline{\widehat k}\, \widehat g / (\lvert \widehat k\rvert^2 + \alpha)$ for small $\alpha > 0$. Trades bias for stability.
+    * **Wiener filter**: chooses $\alpha = \alpha(\xi)$ optimally from the signal-to-noise power spectrum — minimum mean-square-error linear estimator.
+    * **Sparsity / total-variation priors**: replace least-squares fit by $\arg\min \tfrac{1}{2}\lVert k \ast f - g\rVert^2 + \lambda \lVert f\rVert_{\mathrm{TV}}$ (or $\ell^1$ on a wavelet basis) — modern image deblurring, compressed sensing.
+* Application domains: image deblurring, seismic inversion, microscopy, single-particle cryo-EM, channel equalization in communications.
 
 </div>
 
@@ -2197,3 +2705,119 @@ Stop thinking of points as positions. Think of points as functions.
 [13] [https://faculty.etsu.edu](https://faculty.etsu.edu/gardnerr/vs/maa01.pdf)
 [14] [https://www.reddit.com](https://www.reddit.com/r/askscience/comments/45wb50/has_the_banachtarski_paradox_been_generalized_to/)
 [15] [https://www.reddit.com](https://www.reddit.com/r/AskScienceDiscussion/comments/qtxqcp/actual_space_with_imaginary_axes/)
+
+---
+
+> Is not Parseval's identity just a Bessel inequality, where the orthonormal subset forms a basis?
+
+Yes — **that is exactly the right intuition**, with one important nuance.
+
+For an orthonormal subset ((e_i)_{i \in I}) in a Hilbert space (H), **Bessel’s inequality** says
+
+[
+\sum_{i \in I} |\langle x,e_i\rangle|^2 \le |x|^2.
+]
+
+It says: the squared lengths of the “shadows” of (x) onto the orthonormal directions cannot exceed the full squared length of (x).
+
+Now, if ((e_i)_{i \in I}) is not just an orthonormal subset but a **complete orthonormal basis** of (H), then no part of (x) is left outside those directions. Therefore the inequality becomes equality:
+
+[
+\sum_{i \in I} |\langle x,e_i\rangle|^2 = |x|^2.
+]
+
+That equality is **Parseval’s identity**.
+
+So yes:
+
+[
+\boxed{\text{Parseval's identity = Bessel's inequality with a complete orthonormal basis.}}
+]
+
+The geometric reason is this. For any orthonormal family, you can decompose (x) as
+
+[
+x = \sum_i \langle x,e_i\rangle e_i + r,
+]
+
+where (r) is the part of (x) orthogonal to all the chosen (e_i)'s. Then
+
+[
+|x|^2
+=====
+
+\sum_i |\langle x,e_i\rangle|^2 + |r|^2.
+]
+
+Since (|r|^2 \ge 0), you get Bessel’s inequality.
+
+If the orthonormal family is complete, then there is no leftover orthogonal part:
+
+[
+r = 0.
+]
+
+So you get Parseval:
+
+[
+|x|^2
+=====
+
+\sum_i |\langle x,e_i\rangle|^2.
+]
+
+One subtlety: here “basis” means **orthonormal/Hilbert basis**, meaning its closed linear span is all of (H). It does **not** mean a Hamel basis, where every vector is a finite linear combination. In infinite-dimensional Hilbert spaces, orthonormal expansions are usually infinite series.
+
+> you mean orthonormal basis, which expansion converges for every x?
+
+Yes. By **orthonormal basis** here I mean a **complete orthonormal system** ((e_i)_{i\in I}) such that every (x\in H) can be recovered as the Hilbert-space limit
+
+[
+x=\sum_{i\in I} \langle x,e_i\rangle e_i.
+]
+
+So in a separable Hilbert space, with a countable orthonormal basis ((e_n)_{n\ge 1}), this means
+
+[
+x = \lim_{N\to\infty} \sum_{n=1}^N \langle x,e_n\rangle e_n.
+]
+
+The convergence is in the **norm of (H)**:
+
+[
+\left|x-\sum_{n=1}^N \langle x,e_n\rangle e_n\right|\to 0.
+]
+
+Then Parseval says
+
+[
+|x|^2=\sum_{n=1}^\infty |\langle x,e_n\rangle|^2.
+]
+
+So yes: **an orthonormal basis is an orthonormal family whose Fourier expansion converges to every vector (x\in H)**.
+
+The important distinction is:
+
+[
+\text{orthonormal set}
+\quad \Rightarrow \quad
+\sum_n |\langle x,e_n\rangle|^2 \le |x|^2
+]
+
+but
+
+[
+\text{complete orthonormal basis}
+\quad \Rightarrow \quad
+x=\sum_n \langle x,e_n\rangle e_n
+\quad \text{and} \quad
+\sum_n |\langle x,e_n\rangle|^2=|x|^2.
+]
+
+So the missing condition is **completeness**: the closed span of the (e_n)'s is all of (H),
+
+[
+\overline{\operatorname{span}{e_n:n\in\mathbb N}}=H.
+]
+
+That is exactly what guarantees that the expansion converges for every (x).
