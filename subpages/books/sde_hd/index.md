@@ -899,10 +899,12 @@ For the rest of this section, let $\mathbb{F} := (\mathcal{F}\_t)\_{t \in I}$ be
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.14 ($\mathbb{F}$-Brownian Motion)</span></p>
 
-The stochastic process $(W_t, \mathcal{F}\_t)\_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) (TODO: wdit do be Brownian motion wrt some measure?) iff, additionally:
+The stochastic process $(W_t, \mathcal{F}\_t)\_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) iff, additionally:
 
 * $W_t$ is $\mathcal{F}\_t$-measurable for every $t \in I$;
 * the process $(W_{t+s} - W_t)\_{s \in I}$ is independent of $\mathcal{F}\_t$.
+  * future increment is independent of the past.
+  * it says the future Brownian noise is independent of **all information available up to time $t$**.
 
 </div>
 
@@ -2902,8 +2904,8 @@ where the coordinate processes $B^{(1)}, \dots, B^{(d)}$ are independent one-dim
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Immediate Consequences and Renewal Property)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Multidimensional Standard Brownian Motion)</span></p>
 
 * **Multivariate increments.** As an immediate consequence of component-wise independence, the spatial increments are independent of the past and multivariate normal: for any $s < t$,
 
@@ -2965,7 +2967,7 @@ $$
 
 </div>
 
-This property allows us to systematically construct the finite-dimensional distributions of the process by chaining together independent transitions.
+This property allows us to systematically construct the finite-dimensional distributions of the process by chaining together independent transitions. Below we demonstrate this rigorously for three points in time.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Three-Time Marginal via Iterated Conditioning)</span></p>
@@ -3016,7 +3018,7 @@ The probability of moving from $x$ to a set $A$ over a time interval $s + t$ mus
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Proof of Theorem 2.3</summary>
 
 Let $A \in \mathcal{B}(\mathbb{R}^d)$ and consider the indicator $\mathbf{1}_A$. Taking the expectation under $\mathbb{P}_x$ and conditioning on the intermediate time $s$, the tower property and the Markov property (Proposition 2.2) yield
 
@@ -3061,7 +3063,7 @@ $$
   p_{s+t}(x, y) = \int_{\mathbb{R}^d} p_s(x, z)\, p_t(z, y)\, \mathrm{d}z.
   $$
 
-* Convolving two Gaussian densities yields another Gaussian whose variance is the sum of the variances — the familiar accumulation of variance under independent Brownian increments.
+* Convolving two Gaussian densities yields another Gaussian whose variance is the sum of the variances — the familiar accumulation of variance under independent Brownian increments, reflecting the continuous spatial diffusion over time.
 
 </div>
 
@@ -3078,6 +3080,9 @@ By translating "time" into the application of a linear operator $P_t$ that maps 
 
 ### 2.2 The Transition Semigroup
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Brownian Transition Operator)</span></p>
+
 To formalise this intuition, we associate a family of linear operators with a given Brownian motion. For $t \ge 0$, define the **transition operator** $P_t$ acting on a function $u$ by
 
 $$
@@ -3086,11 +3091,21 @@ $$
 
 Throughout this chapter, we work under the standing assumption that $(B_t)\_{t \ge 0}$ is a $d$-dimensional Brownian motion adapted to a *right-continuous* filtration $(\mathcal{F}\_t)\_{t \ge 0}$, meaning $\mathcal{F}\_t = \mathcal{F}\_{t+}$ for all $t \ge 0$.
 
-In functional analysis, an *operator semigroup* $(P_t)\_{t \ge 0}$ on a Banach space $(\mathbf{B}, \lVert \cdot \rVert)$ is a family of linear operators $P_t : \mathbf{B} \to \mathbf{B}$, $t \ge 0$, satisfying the two algebraic conditions
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Operator Semigroup)</span></p>
+
+In functional analysis, an **operator semigroup** $(P_t)\_{t \ge 0}$ on a Banach space $(\mathbf{B}, \lVert \cdot \rVert)$ is a family of linear operators $P_t : \mathbf{B} \to \mathbf{B}$, $t \ge 0$, satisfying the two algebraic conditions
 
 $$
 P_t P_s = P_{t+s} \quad \text{and} \quad P_0 = \mathrm{id}. \tag{2.2}
 $$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">(Used Stochastic Processes)</span></p>
 
 In the context of stochastic processes we work predominantly with two specific Banach spaces:
 
@@ -3098,6 +3113,8 @@ In the context of stochastic processes we work predominantly with two specific B
 * $C_\infty(\mathbb{R}^d)$, the space of continuous functions vanishing at infinity, similarly equipped with the uniform norm.
 
 Unless otherwise stated, we abbreviate $\mathcal{B}\_b = \mathcal{B}\_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.5 (Brownian Transition Operators Form a Semigroup)</span></p>
@@ -3116,7 +3133,7 @@ $$
 P_t u(x) = \int_{\mathbb{R}^d} u(y)\, \mathbb{P}_x(B_t \in \mathrm{d}y) = \frac{1}{(2\pi t)^{d/2}} \int_{\mathbb{R}^d} u(y)\, e^{-\lvert x - y \rvert^2 / (2t)}\, \mathrm{d}y.
 $$
 
-This integral representation is a convolution with a smooth Gaussian kernel, and so $P_t u$ is again bounded and Borel measurable: $P_t : \mathcal{B}_b \to \mathcal{B}_b$. The semigroup property (2.2) is a direct implication of the Markov property: for $s, t \ge 0$ and $u \in \mathcal{B}_b(\mathbb{R}^d)$, the tower property of conditional expectation gives
+This integral representation is a convolution with a smooth Gaussian kernel, and so $P_t u$ is again bounded and Borel measurable: $P_t : \mathcal{B}_b \to \mathcal{B}_b$. The semigroup property (2.2) is a direct implication of the Markov property: for $s, t \ge 0$ and $u \in \mathcal{B}\_b(\mathbb{R}^d)$, the tower property of conditional expectation gives
 
 $$
 \begin{aligned}
