@@ -3020,31 +3020,339 @@ $$
 
 the optimal Kantorovich plan is in fact concentrated on the graph of a **transport map** — and that map is the **gradient of a convex function**.
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Brenier — to be stated and proved in the next part)</span></p>
-
-*[Statement to follow in the next part of the manuscript.]*
-
-</div>
-
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/ot_brenier_preview.png' | relative_url }}" alt="Three-panel preview of Brenier's theorem in 1D. Panel (a) shows a smooth convex potential phi(x) (purple) with a dashed grey tangent line at x=-0.8 illustrating the supporting hyperplane characterisation of convexity. Panel (b) shows its derivative T(x) = phi'(x) (teal), a non-decreasing curve that is steep where phi is curved and flat where phi is nearly linear; orange step-arrows on two pairs (x_1 < x_2) demonstrate that T(x_1) <= T(x_2). Panel (c) shows source density mu (blue, single Gaussian centred at 0) and target density nu (red, bimodal mixture); curved grey arrows from sample x to T(x) show how the unimodal source is rearranged into a bimodal target by following the monotone gradient" loading="lazy">
   <figcaption>Brenier's theorem in pictures (1D preview). <strong>(a)</strong> A convex potential $\varphi$. Convexity is exactly the existence at every $x$ of a supporting tangent line lying entirely below the graph (dashed grey). <strong>(b)</strong> Its derivative $T=\varphi'$ is automatically *monotone non-decreasing*: $x_1\le x_2$ implies $T(x_1)\le T(x_2)$ (orange step-arrows). <strong>(c)</strong> The map $T=\varphi'$ pushes the source density $f$ (blue) onto the target density $g$ (red): each source point $x$ is sent to the unique $T(x)$ such that the cumulative source mass to the left of $x$ equals the cumulative target mass to the left of $T(x)$ (the **monotone rearrangement** / quantile transform). Brenier's theorem says this is the unique optimal map for the quadratic cost $c(x,y)=\tfrac12\|x-y\|^2$ — and the analogous statement holds in any dimension, with $T=\nabla\varphi$ for a convex $\varphi:\mathbb R^d\to\mathbb R$.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What to expect from Brenier — a preview)</span></p>
+#### Preparation: exploiting the quadratic structure
 
-Brenier's theorem is the optimal-transport analogue of "Riesz representation" for the quadratic cost: it identifies a *canonical object* underlying every optimal coupling.
+To prepare the ground for Brenier's theorem, we first rewrite the dual admissibility condition $\varphi+\psi\le c$ in a way that makes the role of convex duality manifest. Expanding $c(x,y)=\tfrac12\\|x-y\\|^2=\tfrac12\\|x\\|^2-x\cdot y+\tfrac12\\|y\\|^2$, the condition
 
-* **Existence of a map.** When $\mu$ is absolutely continuous (no atoms) and $c=\tfrac12\|x-y\|^2$, the optimal Kantorovich plan $\pi_\ast$ is concentrated on the graph of a map $T$ — i.e. $\pi_\ast=(\mathrm{id},T)_\\#\mu$ — so the relaxation is *not* strict for nice $\mu$.
-* **Convex potential.** Moreover, $T=\nabla\varphi$ for some convex function $\varphi:\mathbb R^d\to\mathbb R$. The map is a **gradient**, hence (in particular) **monotone**: $\langle T(x_1)-T(x_2),x_1-x_2\rangle\ge 0$.
-* **Why convexity?** Heuristically, "optimal" under the cost $\tfrac12\|x-y\|^2$ means "minimising mean-squared displacement subject to the marginal constraint", and by a cyclic-monotonicity argument the support of $\pi_\ast$ has to be **monotone** in the sense above. The extension theorem (Rockafellar) then says monotone sets are contained in subdifferentials of convex functions.
-* **Connection to PDE.** Combining $T=\nabla\varphi$ with the Jacobian equation (2.2) yields the **Monge–Ampère equation** $\det D^2\varphi=f/(g\circ\nabla\varphi)$ — which is the entry point to the regularity theory of optimal transport (Caffarelli, Figalli, …) and the analytic foundation for Wasserstein gradient flows.
+$$
+\varphi(x)+\psi(y) \;\le\; \tfrac12\|x-y\|^2 \quad\text{for $\mu$-a.e. $x$ and $\nu$-a.e. $y$}
+$$
 
-The next part of the manuscript will state the theorem rigorously and walk through its proof.
+is equivalent — after rearrangement — to
+
+$$
+x\cdot y \;\le\; \bigl(\tfrac12\|x\|^2-\varphi(x)\bigr) + \bigl(\tfrac12\|y\|^2-\psi(y)\bigr). \tag{2.4}
+$$
+
+The right-hand side begs to be read as the Fenchel inequality for the conjugate of *something*. So define
+
+$$
+\tilde\varphi(x) \;:=\; \tfrac12\|x\|^2-\varphi(x), \qquad \tilde\psi(y) \;:=\; \tfrac12\|y\|^2-\psi(y),
+$$
+
+and, abusing notation, *drop the tildes* — from here on $\varphi,\psi$ refer to these shifted potentials, and (2.4) reads simply $x\cdot y\le\varphi(x)+\psi(y)$.
+
+Recall the **convex conjugate** (or Legendre–Fenchel transform) of a function $\varphi:\mathbb R^d\to\mathbb R\cup\\{+\infty\\}$:
+
+$$
+\varphi^\ast(y) \;:=\; \sup_{x\in\mathbb R^d}\bigl\{\,x\cdot y-\varphi(x)\,\bigr\}.
+$$
+
+Assume now that $\mu,\nu$ have **finite second moments**, i.e.
+
+$$
+M_2 \;:=\; \int_{\mathbb R^d}\|x\|^2\,d\mu(x) + \int_{\mathbb R^d}\|y\|^2\,d\nu(y) \;<\; +\infty.
+$$
+
+Then both Kantorovich's primal and dual problems become equivalent to **inner-product problems**:
+
+$$
+\inf_{\pi\in\Pi(\mu,\nu)} I(\pi) \;=\; \tfrac12 M_2 \;-\; \sup_{\pi\in\Pi(\mu,\nu)}\int_{\mathbb R^d\times\mathbb R^d} x\cdot y\,d\pi(x,y),
+$$
+
+$$
+\sup_{\varphi+\psi\le c} J(\varphi,\psi) \;=\; \tfrac12 M_2 \;-\; \inf_{x\cdot y\le\varphi+\psi} J(\varphi,\psi),
+$$
+
+so Kantorovich duality reads, in this rewritten form,
+
+$$
+\boxed{\;\sup_{\pi\in\Pi(\mu,\nu)}\int_{\mathbb R^d\times\mathbb R^d}x\cdot y\,d\pi(x,y) \;=\; \inf_{x\cdot y\le\varphi+\psi} J(\varphi,\psi).\;}
+$$
+
+The whole problem is now phrased in terms of the **bilinear pairing** $x\cdot y$ and the **Fenchel-type constraint** $x\cdot y\le\varphi(x)+\psi(y)$. This is the natural arena for convex duality.
+
+#### The double convexification trick
+
+In the rewritten dual, any admissible pair $(\varphi,\psi)$ can be **systematically improved**, in two steps, until it consists of a *convex function and its conjugate*. The trick is built directly into the constraint $x\cdot y\le\varphi(x)+\psi(y)$.
+
+*Step 1.* Fixing $\varphi$, the constraint forces $\psi(y)\ge x\cdot y-\varphi(x)$ for $\mu$-a.e. $x$. Taking the supremum over $x$,
+
+$$
+\psi(y) \;\ge\; \sup_{x\in\mathbb R^d}\bigl\{\,x\cdot y-\varphi(x)\,\bigr\} \;=\; \varphi^\ast(y) \qquad\text{for }\nu\text{-a.e. }y.
+$$
+
+So replacing $\psi$ by the *smaller* function $\varphi^\ast$ preserves admissibility and **lowers** $J$: $J(\varphi,\varphi^\ast)\le J(\varphi,\psi)$.
+
+*Step 2.* Now run the same trick on $\varphi$: by definition of $\varphi^\ast$, we always have $\varphi(x)\ge\sup_y\\{x\cdot y-\varphi^\ast(y)\\}=\varphi^{\ast\ast}(x)$, so $(\varphi^{\ast\ast},\varphi^\ast)$ is admissible and
+
+$$
+J(\varphi^{\ast\ast},\varphi^\ast) \;\le\; J(\varphi,\varphi^\ast) \;\le\; J(\varphi,\psi).
+$$
+
+The function $\varphi^{\ast\ast}$ is automatically a **lower semi-continuous proper convex** function (the biconjugate is always the largest l.s.c. convex minorant). The upshot:
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Reduction</span><span class="math-callout__name">(It suffices to optimise over conjugate pairs)</span></p>
+
+In the rewritten dual, one may restrict attention to admissible pairs of the form $(\varphi,\varphi^\ast)$ with $\varphi$ a lower semi-continuous proper convex function. Every other admissible pair can be improved to one of this form without raising $J$.
 
 </div>
+
+#### A reminder from convex analysis
+
+For the proofs ahead, we collect — without proofs — the facts about convex functions that we will need.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definitions</span><span class="math-callout__name">(Proper / convex / subdifferential / conjugate)</span></p>
+
+Let $\varphi:\mathbb R^d\to\mathbb R\cup\\{+\infty\\}$.
+
+1. $\varphi$ is **proper** if it is not identically $+\infty$.
+2. $\varphi$ is **convex** if $\varphi(tx+(1-t)y)\le t\varphi(x)+(1-t)\varphi(y)$ for all $x,y\in\mathbb R^d$ and all $t\in[0,1]$.
+3. The **subdifferential** of a convex $\varphi$ at $x$ is
+
+$$
+\partial\varphi(x) \;=\; \bigl\{\,p\in\mathbb R^d \,:\, \varphi(y)\ge\varphi(x)+p\cdot(y-x)\;\text{for all }y\in\mathbb R^d\,\bigr\}.
+$$
+
+   It is the set of *supporting affine functions* to $\varphi$ at $x$. If $\varphi$ is differentiable at $x$, then $\partial\varphi(x)=\\{\nabla\varphi(x)\\}$ (cf. Chapter 1).
+4. The **convex conjugate** $\varphi^\ast(y)=\sup_x\\{x\cdot y-\varphi(x)\\}$ is automatically a proper l.s.c. convex function. **Biconjugation theorem:** $\varphi^{\ast\ast}=\varphi$ iff $\varphi$ is a proper l.s.c. convex function. The **Fenchel inequality** $x\cdot y\le\varphi(x)+\varphi^\ast(y)$ holds for all $x,y\in\mathbb R^d$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Regularity of convex functions — Rademacher)</span></p>
+
+A convex function $\varphi:\mathbb R^d\to\mathbb R\cup\\{+\infty\\}$ is **locally Lipschitz** on the interior of its domain $\\{\varphi<+\infty\\}$. By **Rademacher's theorem**, every locally Lipschitz function is differentiable almost everywhere (with respect to Lebesgue measure). Hence on the interior of its domain, $\varphi$ is differentiable a.e., and the *exceptional* set on which it is not differentiable is small — it has Hausdorff dimension at most $d-1$.
+
+This is exactly the property that will let us upgrade "the optimal plan lives in $\partial\varphi$" to "the optimal plan lives on the graph of $\nabla\varphi$", under a mild assumption on $\mu$.
+
+</div>
+
+The single most useful fact about conjugates — and the engine behind Brenier — is that the Fenchel inequality has an **equality case** characterising the subdifferential.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Characterisation of the subdifferential)</span></p>
+
+Let $\varphi:\mathbb R^d\to\mathbb R\cup\\{+\infty\\}$ be a proper lower semi-continuous convex function. Then for any $x,y\in\mathbb R^d$,
+
+$$
+x\cdot y \;=\; \varphi(x)+\varphi^\ast(y) \;\;\Longleftrightarrow\;\; y\in\partial\varphi(x) \;\;\Longleftrightarrow\;\; x\in\partial\varphi^\ast(y). \tag{2.5}
+$$
+
+<details class="proof" markdown="1">
+<summary>Proof of (2.5) — Fenchel equality unpacked</summary>
+
+Fix $x,y\in\mathbb R^d$. By the Fenchel inequality the "$\le$" direction is automatic, so equality in $x\cdot y\le\varphi(x)+\varphi^\ast(y)$ is equivalent to "$\ge$":
+
+$$
+x\cdot y \;\ge\; \varphi(x)+\varphi^\ast(y).
+$$
+
+Now unfold $\varphi^\ast(y)=\sup_z\\{y\cdot z-\varphi(z)\\}$: the inequality above holds iff for **every** $z\in\mathbb R^d$,
+
+$$
+x\cdot y \;\ge\; \varphi(x)+y\cdot z-\varphi(z),
+$$
+
+which rearranges to
+
+$$
+\varphi(z) \;\ge\; \varphi(x)+y\cdot(z-x) \qquad\text{for all }z\in\mathbb R^d.
+$$
+
+This is precisely the definition of $y\in\partial\varphi(x)$. The second equivalence $y\in\partial\varphi(x)\Leftrightarrow x\in\partial\varphi^\ast(y)$ follows by symmetry: since $\varphi^{\ast\ast}=\varphi$ in our setting, swapping $\varphi$ and $\varphi^\ast$ runs the same argument. $\square$
+
+</details>
+
+</div>
+
+This *bookkeeping identity* (2.5) is what converts the dual constraint $x\cdot y\le\varphi+\varphi^\ast$, holding with equality on the support of the optimal plan, into the geometric statement "the optimal plan is supported on the graph of $\partial\varphi$".
+
+#### Existence of dual minimisers
+
+Before stating Brenier's theorem we record that the rewritten dual — now restricted to conjugate pairs — actually attains its minimum.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 13</span><span class="math-callout__name">(Existence of dual minimisers among convex conjugate pairs)</span></p>
+
+Let $\mu,\nu$ be probability measures on $\mathbb R^d$ with finite second moments and set
+
+$$
+\Phi(\mu,\nu) \;:=\; \bigl\{\,(\varphi,\psi)\in L^1(\mu)\times L^1(\nu) \,:\, x\cdot y\le\varphi(x)+\psi(y)\;\text{for }\mu\text{-a.e. }x\text{ and }\nu\text{-a.e. }y\,\bigr\}.
+$$
+
+Then there exists a minimiser of $J$ over $\Phi(\mu,\nu)$, and one may choose it to be a pair of **convex conjugates**: more precisely, there is a pair $(\varphi,\varphi^\ast)\in\Phi(\mu,\nu)$ of lower semi-continuous proper convex functions such that
+
+$$
+J(\varphi,\varphi^\ast) \;=\; \inf_{\Phi(\mu,\nu)} J.
+$$
+
+</div>
+
+We omit the proof — it combines the double-convexification reduction with a standard direct-method/lower-semicontinuity argument à la Proposition 12.
+
+#### The main theorem
+
+Brenier's theorem really comes in two layers: a *general optimality criterion* (due to **Knott–Smith**, valid for arbitrary $\mu$ with finite second moment), and a *refined structure theorem* (due to **Brenier**) under the additional assumption that $\mu$ does not give mass to small sets. Both layers, plus the symmetry, are usually packaged into a single theorem.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Brenier / Knott–Smith)</span></p>
+
+Let $\mu,\nu$ be probability measures on $\mathbb R^d$ with finite second moments, and let $c(x,y)=\tfrac12\\|x-y\\|^2$.
+
+**(i) Knott–Smith optimality criterion.** A transference plan $\pi\in\Pi(\mu,\nu)$ is optimal **if and only if** there exists a lower semi-continuous convex function $\varphi$ such that
+
+$$
+\operatorname{supp}\pi \;\subset\; \operatorname{graph}\partial\varphi, \tag{2.6}
+$$
+
+i.e.
+
+$$
+y\in\partial\varphi(x) \qquad\text{for }\pi\text{-a.e. }(x,y)\in\mathbb R^d\times\mathbb R^d. \tag{2.7}
+$$
+
+In that case, the pair $(\varphi,\varphi^\ast)$ is a minimiser of the rewritten dual problem $\inf\\{J(\tilde\varphi,\tilde\psi):x\cdot y\le\tilde\varphi+\tilde\psi\\}$, and the pair $\bigl(\tfrac12\\|x\\|^2-\varphi(x),\,\tfrac12\\|y\\|^2-\varphi^\ast(y)\bigr)$ solves the original dual Kantorovich problem $\inf_{\tilde\varphi+\tilde\psi\le c}J(\tilde\varphi,\tilde\psi)$.
+
+**(ii) Brenier's theorem (uniqueness and gradient structure).** If $\mu$ **does not give mass to small sets** (cf. Remark 14), then the optimal transference plan $\pi$ is **unique** and is of the form
+
+$$
+d\pi(x,y) \;=\; d\mu(x)\otimes\delta_{\nabla\varphi(x)}, \qquad\text{or equivalently}\qquad \pi \;=\; (\mathrm{id},\nabla\varphi)_\\#\mu, \tag{2.8}
+$$
+
+where $\nabla\varphi$ is the **unique** (up to $\mu$-null sets) gradient of a convex function such that $(\nabla\varphi)_\\#\mu=\nu$.
+
+**(iii) Solution to Monge's problem.** Under the assumption of (ii), $\nabla\varphi$ is the unique solution to Monge's problem for the quadratic cost:
+
+$$
+\int_{\mathbb R^d}\|x-\nabla\varphi(x)\|^2\,d\mu(x) \;=\; \inf_{T_\\#\mu=\nu}\int_{\mathbb R^d}\|x-T(x)\|^2\,d\mu(x).
+$$
+
+**(iv) Symmetry.** If in addition $\nu$ does not give mass to small sets, then $\nabla\varphi^\ast$ is the optimal map from $\nu$ to $\mu$, and the two are *inverses of each other* in the a.e. sense:
+
+$$
+\nabla\varphi^\ast\circ\nabla\varphi(x) \;=\; x \;\;\text{for }\mu\text{-a.e. }x, \qquad \nabla\varphi\circ\nabla\varphi^\ast(y) \;=\; y \;\;\text{for }\nu\text{-a.e. }y.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 14</span><span class="math-callout__name">("Does not give mass to small sets")</span></p>
+
+A measure $\mu$ on $\mathbb R^d$ **does not give mass to small sets** if $\mu(N)=0$ for every Borel set $N\subset\mathbb R^d$ of Hausdorff dimension at most $d-1$. In particular, any measure that is *absolutely continuous with respect to Lebesgue* satisfies this — Lebesgue itself gives zero mass to lower-dimensional sets, and absolute continuity inherits the property. The condition is *exactly* what we need to pair with Rademacher's theorem: it forces the set where $\varphi$ fails to be differentiable to be $\mu$-null, so that $\partial\varphi(x)=\\{\nabla\varphi(x)\\}$ is a single vector for $\mu$-a.e. $x$.
+
+</div>
+
+#### Geometric interpretation
+
+Let us pause on what $T=\nabla\varphi$ *means*, since the formulation is geometrically curious. The statement is: every point $x\in\mathbb R^d$ is transported to $T(x)=\nabla\varphi(x)\in\mathbb R^d$. To the geometrically minded this is odd — $\nabla\varphi(x)$ is by nature a *tangent vector at $x$*, not a point of the manifold. In flat $\mathbb R^d$ we identify tangent vectors and points without comment, but on a Riemannian manifold $M$ one would have to write
+
+$$
+x \;\longmapsto\; T(x) \;=\; \exp_x\!\Bigl(\nabla\bigl(\varphi-\tfrac12\|\cdot\|^2\bigr)\Big|_x\Bigr),
+$$
+
+where $\exp_x$ is the exponential map at $x$, which converts a tangent vector at $x$ into a point of $M$. Then $T:M\to M$ really is a map between points.
+
+Two geometric features of $T=\nabla\varphi$ are worth highlighting:
+
+* **Curl-free transport.** A gradient field has zero curl: the transport plan moves mass *radially* with respect to the potential $\varphi$, never in circular swirls. Circular transport is geometrically wasteful — you have moved mass without making net progress — and Brenier says the optimal plan rules it out.
+* **Monotone transport.** The convexity of $\varphi$ translates into **monotonicity** of its gradient: $\langle\nabla\varphi(x_1)-\nabla\varphi(x_2),x_1-x_2\rangle\ge 0$ for all $x_1,x_2$. Mass closer in source space stays closer in target space, in the inner-product sense. In 1D this is just the statement that $\varphi'$ is non-decreasing — the *quantile rearrangement* of Figure (c) above.
+
+These are the geometric and PDE-side reasons Brenier's theorem is the entry point to Wasserstein geometry: the optimal map is *the canonical irrotational, monotone rearrangement* between two measures, and combining $T=\nabla\varphi$ with the Jacobian/pushforward equation (2.2) yields the **Monge–Ampère equation** $\det D^2\varphi=f/(g\circ\nabla\varphi)$ — the analytic foundation for regularity theory and Wasserstein gradient flows.
+
+#### Proof of Theorem 13
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 13 — three steps</summary>
+
+**Step 1: Argument for (i) (Knott–Smith).** By Proposition 12 there exists an optimal transference plan $\pi\in\Pi(\mu,\nu)$, and by Proposition 13 there exists a pair of l.s.c. proper convex functions $(\varphi,\varphi^\ast)\in\Phi(\mu,\nu)$ minimising $J$. By the (rewritten) duality identity at optimum,
+
+$$
+\int_{\mathbb R^d\times\mathbb R^d} x\cdot y\,d\pi(x,y) \;=\; \int_{\mathbb R^d}\varphi(x)\,d\mu(x)+\int_{\mathbb R^d}\varphi^\ast(y)\,d\nu(y) \;=\; \int_{\mathbb R^d\times\mathbb R^d}\bigl(\varphi(x)+\varphi^\ast(y)\bigr)d\pi(x,y),
+$$
+
+where the last step uses that $\pi$ has marginals $\mu,\nu$. Rearranging,
+
+$$
+\int_{\mathbb R^d\times\mathbb R^d}\underbrace{\bigl(\varphi(x)+\varphi^\ast(y)-x\cdot y\bigr)}_{\ge\,0\text{ by Fenchel}}d\pi(x,y) \;=\; 0.
+$$
+
+A non-negative integrand whose integral vanishes is zero $\pi$-a.e. So $\varphi(x)+\varphi^\ast(y)=x\cdot y$ for $\pi$-a.e. $(x,y)$, and by (2.5) this is exactly $y\in\partial\varphi(x)$ for $\pi$-a.e. $(x,y)$. That is the forward direction in (i).
+
+Conversely, suppose $\pi\in\Pi(\mu,\nu)$ satisfies (2.7) for some l.s.c. convex $\varphi$. Then (2.5) gives $\varphi(x)+\varphi^\ast(y)=x\cdot y$ on $\operatorname{supp}\pi$, and integrating against $\pi$,
+
+$$
+\int_{\mathbb R^d\times\mathbb R^d} x\cdot y\,d\pi(x,y) \;=\; \int_{\mathbb R^d}\varphi\,d\mu + \int_{\mathbb R^d}\varphi^\ast\,d\nu. \tag{2.9}
+$$
+
+Weak duality bounds the left side from below by the dual minimum and the right side from above by it — so both inequalities are equalities, and both $\pi$ and $(\varphi,\varphi^\ast)$ are optimal.
+
+**Step 2: Argument for (2.8) in (ii) (the map structure).** Assume now that $\mu$ does not give mass to small sets, and take $\varphi$ from Step 1. Since $\varphi\in L^1(\mu)$, it is finite $\mu$-a.e., so $\mu(\\{\varphi=+\infty\\})=0$. The boundary $\partial\\{\varphi<+\infty\\}$ of a convex set has Hausdorff dimension $\le d-1$, so by hypothesis $\mu(\partial\\{\varphi<+\infty\\})=0$; combined,
+
+$$
+\mu\bigl(\operatorname{Int}\{\varphi<+\infty\}\bigr) \;=\; 1.
+$$
+
+On the interior of its domain, the convex function $\varphi$ is locally Lipschitz, hence by Rademacher differentiable a.e. with respect to Lebesgue — and the non-differentiability set has Hausdorff dimension $\le d-1$, hence (again by hypothesis) is $\mu$-null. So $\partial\varphi(x)=\\{\nabla\varphi(x)\\}$ for $\mu$-a.e. $x$, and the Knott–Smith condition (2.7) collapses to $y=\nabla\varphi(x)$ for $\pi$-a.e. $(x,y)$. This is exactly $\pi=(\mathrm{id},\nabla\varphi)_\\#\mu$, proving (2.8). The pushforward identity $(\nabla\varphi)_\\#\mu=\nu$ follows because the second marginal of $\pi$ is $\nu$.
+
+**Step 3: Uniqueness of the gradient field.** Suppose $\tilde\varphi$ is another l.s.c. proper convex function with $(\nabla\tilde\varphi)_\\#\mu=\nu$. By (i) applied to the plan $(\mathrm{id},\nabla\tilde\varphi)_\\#\mu$ (which is admissible and supported on $\operatorname{graph}\partial\tilde\varphi$), this plan is also optimal, so $(\tilde\varphi,\tilde\varphi^\ast)$ minimises the dual. In particular,
+
+$$
+J(\tilde\varphi,\tilde\varphi^\ast) \;=\; J(\varphi,\varphi^\ast) \;=\; \inf_{\Phi(\mu,\nu)}J \;=\; \sup_{\Pi(\mu,\nu)}\int x\cdot y\,d\pi \;=\; \int x\cdot y\,d\pi.
+$$
+
+Spelling out the leftmost and rightmost expressions in terms of *the* optimal $\pi=(\mathrm{id},\nabla\varphi)_\\#\mu$ from Step 2,
+
+$$
+\int_{\mathbb R^d\times\mathbb R^d}\bigl(\tilde\varphi(x)+\tilde\varphi^\ast(y)\bigr)d\pi(x,y) \;=\; \int_{\mathbb R^d\times\mathbb R^d} x\cdot y\,d\pi(x,y),
+$$
+
+and using the explicit form of $\pi$ to push everything onto $\mu$,
+
+$$
+\int_{\mathbb R^d}\underbrace{\bigl(\tilde\varphi(x)+\tilde\varphi^\ast(\nabla\varphi(x))-x\cdot\nabla\varphi(x)\bigr)}_{\ge\,0\text{ by Fenchel}}d\mu(x) \;=\; 0.
+$$
+
+Once more, a non-negative integrand integrating to zero vanishes — this time $\mu$-a.e. By (2.5),
+
+$$
+\nabla\varphi(x) \;\in\; \partial\tilde\varphi(x) \qquad\text{for }\mu\text{-a.e. }x.
+$$
+
+But $\tilde\varphi$ is also differentiable $\mu$-a.e. (same Rademacher + small-sets argument), so $\partial\tilde\varphi(x)=\\{\nabla\tilde\varphi(x)\\}$ at $\mu$-a.e. $x$, and we conclude $\nabla\varphi(x)=\nabla\tilde\varphi(x)$ for $\mu$-a.e. $x$. This proves uniqueness in (ii).
+
+The remaining items (iii) and (iv) follow easily: (iii) because any $T$ with $T_\\#\mu=\nu$ yields an admissible plan $(\mathrm{id},T)_\\#\mu\in\Pi(\mu,\nu)$ with cost $\int\\|x-T(x)\\|^2d\mu$, and the optimal one is $T=\nabla\varphi$ by (ii); (iv) by applying (ii) symmetrically to the inverse problem from $\nu$ to $\mu$, and using $\varphi^{\ast\ast}=\varphi$. $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 15</span><span class="math-callout__name">(Step 3 proves more than uniqueness of the plan)</span></p>
+
+The uniqueness argument in Step 3 of the proof yields a strictly stronger statement than "the optimal plan is unique": it proves that **any gradient field $\nabla\tilde\varphi$ (of an l.s.c. proper convex function) transporting $\mu$ to $\nu$ must coincide $\mu$-a.e. with $\nabla\varphi$**, regardless of whether one knew a priori that $(\mathrm{id},\nabla\tilde\varphi)_\\#\mu$ was optimal.
+
+In other words: under the "no mass on small sets" assumption, **there is essentially a single gradient of a convex function pushing $\mu$ forward to $\nu$**. The whole optimal-transport question, in the quadratic case, reduces to finding that one convex potential.
+
+</div>
+
+#### Where this leaves us
+
+Brenier's theorem hands us, for the quadratic cost, **three coupled objects**:
+
+| Primal | Dual | Map |
+|---|---|---|
+| optimal coupling $\pi_\ast\in\Pi(\mu,\nu)$ | optimal potential pair $(\varphi,\varphi^\ast)$ | optimal map $T=\nabla\varphi$ |
+| supported on $\operatorname{graph}\partial\varphi$ | conjugate pair, $\mu$-a.e. equality in Fenchel | curl-free, monotone |
+
+The Kantorovich relaxation, which a priori is *strictly* more general than Monge, turns out to be **non-strict** for absolutely continuous $\mu$ — every quadratic-cost optimal plan is concentrated on a single-valued map. Strictly speaking, this is true whenever $\mu$ does not charge $(d-1)$-dimensional sets; absolute continuity with respect to Lebesgue is the standard sufficient condition.
+
+This closes the loop of the chapter: Monge's hard problem $\to$ Kantorovich's tractable relaxation $\to$ Brenier's identification of the optimum as $\nabla\varphi$. The Monge–Ampère equation $\det D^2\varphi=f/(g\circ\nabla\varphi)$ is the corresponding **PDE characterisation** of $\varphi$, and is the starting point for the regularity theory of optimal transport, the Otto calculus on Wasserstein space, and Wasserstein gradient flows — all topics that fit naturally on top of what we have built.
 
 ## Appendix A: Desingularizing Functions and the Kurdyka–Łojasiewicz Framework {#appendix-a}
 
