@@ -3117,9 +3117,7 @@ Let $\varphi:\mathbb R^d\to\mathbb R\cup\\{+\infty\\}$.
 2. $\varphi$ is **convex** if $\varphi(tx+(1-t)y)\le t\varphi(x)+(1-t)\varphi(y)$ for all $x,y\in\mathbb R^d$ and all $t\in[0,1]$.
 3. The **subdifferential** of a convex $\varphi$ at $x$ is
 
-$$
-\partial\varphi(x) \;=\; \bigl\{\,p\in\mathbb R^d \,:\, \varphi(y)\ge\varphi(x)+p\cdot(y-x)\;\text{for all }y\in\mathbb R^d\,\bigr\}.
-$$
+   $$\partial\varphi(x) \;=\; \bigl\{\,p\in\mathbb R^d \,:\, \varphi(y)\ge\varphi(x)+p\cdot(y-x)\;\text{for all }y\in\mathbb R^d\,\bigr\}$$
 
    It is the set of *supporting affine functions* to $\varphi$ at $x$. If $\varphi$ is differentiable at $x$, then $\partial\varphi(x)=\\{\nabla\varphi(x)\\}$ (cf. Chapter 1).
 4. The **convex conjugate** $\varphi^\ast(y)=\sup_x\\{x\cdot y-\varphi(x)\\}$ is automatically a proper l.s.c. convex function. **Biconjugation theorem:** $\varphi^{\ast\ast}=\varphi$ iff $\varphi$ is a proper l.s.c. convex function. The **Fenchel inequality** $x\cdot y\le\varphi(x)+\varphi^\ast(y)$ holds for all $x,y\in\mathbb R^d$.
@@ -3224,7 +3222,7 @@ In that case, the pair $(\varphi,\varphi^\ast)$ is a minimiser of the rewritten 
 **(ii) Brenier's theorem (uniqueness and gradient structure).** If $\mu$ **does not give mass to small sets** (cf. Remark 14), then the optimal transference plan $\pi$ is **unique** and is of the form
 
 $$
-d\pi(x,y) \;=\; d\mu(x)\otimes\delta_{\nabla\varphi(x)}, \qquad\text{or equivalently}\qquad \pi \;=\; (\mathrm{id},\nabla\varphi)_\\#\mu, \tag{2.8}
+d\pi(x,y) \;=\; d\mu(x)\otimes\delta_{\nabla\varphi(x)}, \qquad\text{or equivalently}\qquad \pi \;=\; (\mathrm{id},\nabla\varphi)_\sharp\mu, \tag{2.8}
 $$
 
 where $\nabla\varphi$ is the **unique** (up to $\mu$-null sets) gradient of a convex function such that $(\nabla\varphi)_\\#\mu=\nu$.
@@ -3232,7 +3230,7 @@ where $\nabla\varphi$ is the **unique** (up to $\mu$-null sets) gradient of a co
 **(iii) Solution to Monge's problem.** Under the assumption of (ii), $\nabla\varphi$ is the unique solution to Monge's problem for the quadratic cost:
 
 $$
-\int_{\mathbb R^d}\|x-\nabla\varphi(x)\|^2\,d\mu(x) \;=\; \inf_{T_\\#\mu=\nu}\int_{\mathbb R^d}\|x-T(x)\|^2\,d\mu(x).
+\int_{\mathbb R^d}\|x-\nabla\varphi(x)\|^2\,d\mu(x) \;=\; \inf_{T_\sharp\mu=\nu}\int_{\mathbb R^d}\|x-T(x)\|^2\,d\mu(x).
 $$
 
 **(iv) Symmetry.** If in addition $\nu$ does not give mass to small sets, then $\nabla\varphi^\ast$ is the optimal map from $\nu$ to $\mu$, and the two are *inverses of each other* in the a.e. sense:
@@ -3300,9 +3298,9 @@ $$
 \mu\bigl(\operatorname{Int}\{\varphi<+\infty\}\bigr) \;=\; 1.
 $$
 
-On the interior of its domain, the convex function $\varphi$ is locally Lipschitz, hence by Rademacher differentiable a.e. with respect to Lebesgue — and the non-differentiability set has Hausdorff dimension $\le d-1$, hence (again by hypothesis) is $\mu$-null. So $\partial\varphi(x)=\\{\nabla\varphi(x)\\}$ for $\mu$-a.e. $x$, and the Knott–Smith condition (2.7) collapses to $y=\nabla\varphi(x)$ for $\pi$-a.e. $(x,y)$. This is exactly $\pi=(\mathrm{id},\nabla\varphi)_\\#\mu$, proving (2.8). The pushforward identity $(\nabla\varphi)_\\#\mu=\nu$ follows because the second marginal of $\pi$ is $\nu$.
+On the interior of its domain, the convex function $\varphi$ is locally Lipschitz, hence by Rademacher differentiable a.e. with respect to Lebesgue — and the non-differentiability set has Hausdorff dimension $\le d-1$, hence (again by hypothesis) is $\mu$-null. So $\partial\varphi(x)=\lbrace\nabla\varphi(x)\rbrace$ for $\mu$-a.e. $x$, and the Knott–Smith condition (2.7) collapses to $y=\nabla\varphi(x)$ for $\pi$-a.e. $(x,y)$. This is exactly $\pi=(\mathrm{id},\nabla\varphi)\_\\#\mu$, proving (2.8). The pushforward identity $(\nabla\varphi)\_\\#\mu=\nu$ follows because the second marginal of $\pi$ is $\nu$.
 
-**Step 3: Uniqueness of the gradient field.** Suppose $\tilde\varphi$ is another l.s.c. proper convex function with $(\nabla\tilde\varphi)_\\#\mu=\nu$. By (i) applied to the plan $(\mathrm{id},\nabla\tilde\varphi)_\\#\mu$ (which is admissible and supported on $\operatorname{graph}\partial\tilde\varphi$), this plan is also optimal, so $(\tilde\varphi,\tilde\varphi^\ast)$ minimises the dual. In particular,
+**Step 3: Uniqueness of the gradient field.** Suppose $\tilde\varphi$ is another l.s.c. proper convex function with $(\nabla\tilde\varphi)\_\\#\mu=\nu$. By (i) applied to the plan $(\mathrm{id},\nabla\tilde\varphi)\_\\#\mu$ (which is admissible and supported on $\operatorname{graph}\partial\tilde\varphi$), this plan is also optimal, so $(\tilde\varphi,\tilde\varphi^\ast)$ minimises the dual. In particular,
 
 $$
 J(\tilde\varphi,\tilde\varphi^\ast) \;=\; J(\varphi,\varphi^\ast) \;=\; \inf_{\Phi(\mu,\nu)}J \;=\; \sup_{\Pi(\mu,\nu)}\int x\cdot y\,d\pi \;=\; \int x\cdot y\,d\pi.
@@ -3326,7 +3324,7 @@ $$
 \nabla\varphi(x) \;\in\; \partial\tilde\varphi(x) \qquad\text{for }\mu\text{-a.e. }x.
 $$
 
-But $\tilde\varphi$ is also differentiable $\mu$-a.e. (same Rademacher + small-sets argument), so $\partial\tilde\varphi(x)=\\{\nabla\tilde\varphi(x)\\}$ at $\mu$-a.e. $x$, and we conclude $\nabla\varphi(x)=\nabla\tilde\varphi(x)$ for $\mu$-a.e. $x$. This proves uniqueness in (ii).
+But $\tilde\varphi$ is also differentiable $\mu$-a.e. (same Rademacher + small-sets argument), so $\partial\tilde\varphi(x)=\lbrace\nabla\tilde\varphi(x)\rbace$ at $\mu$-a.e. $x$, and we conclude $\nabla\varphi(x)=\nabla\tilde\varphi(x)$ for $\mu$-a.e. $x$. This proves uniqueness in (ii).
 
 The remaining items (iii) and (iv) follow easily: (iii) because any $T$ with $T_\\#\mu=\nu$ yields an admissible plan $(\mathrm{id},T)_\\#\mu\in\Pi(\mu,\nu)$ with cost $\int\\|x-T(x)\\|^2d\mu$, and the optimal one is $T=\nabla\varphi$ by (ii); (iv) by applying (ii) symmetrically to the inverse problem from $\nu$ to $\mu$, and using $\varphi^{\ast\ast}=\varphi$. $\square$
 
