@@ -3324,7 +3324,7 @@ $$
 \nabla\varphi(x) \;\in\; \partial\tilde\varphi(x) \qquad\text{for }\mu\text{-a.e. }x.
 $$
 
-But $\tilde\varphi$ is also differentiable $\mu$-a.e. (same Rademacher + small-sets argument), so $\partial\tilde\varphi(x)=\lbrace\nabla\tilde\varphi(x)\rbace$ at $\mu$-a.e. $x$, and we conclude $\nabla\varphi(x)=\nabla\tilde\varphi(x)$ for $\mu$-a.e. $x$. This proves uniqueness in (ii).
+But $\tilde\varphi$ is also differentiable $\mu$-a.e. (same Rademacher + small-sets argument), so $\partial\tilde\varphi(x)=\lbrace\nabla\tilde\varphi(x)\rbrace$ at $\mu$-a.e. $x$, and we conclude $\nabla\varphi(x)=\nabla\tilde\varphi(x)$ for $\mu$-a.e. $x$. This proves uniqueness in (ii).
 
 The remaining items (iii) and (iv) follow easily: (iii) because any $T$ with $T_\\#\mu=\nu$ yields an admissible plan $(\mathrm{id},T)_\\#\mu\in\Pi(\mu,\nu)$ with cost $\int\\|x-T(x)\\|^2d\mu$, and the optimal one is $T=\nabla\varphi$ by (ii); (iv) by applying (ii) symmetrically to the inverse problem from $\nu$ to $\mu$, and using $\varphi^{\ast\ast}=\varphi$. $\square$
 

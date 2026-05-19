@@ -57,7 +57,7 @@ $$
 
 Let $e_1, e_2$ be any basis.
 
-**(a)** Determine the dual basis $\{\check e^1, \check e^2\} \subset \widecheck{\mathcal X}$ such that $\langle \check e^i, e_j\rangle = \delta^i_j$. *Hint.* Lemma A.2.
+**(a)** Determine the dual basis $\lbrace \check e^1, \check e^2\rbrace \subset \widecheck{\mathcal X}$ such that $\langle \check e^i, e_j\rangle = \delta^i_j$. *Hint.* Lemma A.2.
 
 **(b)** Apply (a) and compute the basis that is dual to the basis $e_1 = \binom{1}{0}$, $e_2 = \binom{1}{1}$.
 
@@ -68,56 +68,68 @@ Let $e_1, e_2$ be any basis.
 <details class="accordion" markdown="1">
 <summary>Solution 1 (a) — dual basis from the basis-change matrix</summary>
 
-**Setup via Lemma A.2.** Pack the basis $(e_1, e_2)$ into the linear map
+**What we want, in words.** The defining condition $\langle \check e^i, e_j\rangle = \delta^i_j$ says: the covector $\check e^i$ "reads off the $i$-th coordinate of a vector in the basis $(e_1, e_2)$." Indeed, if $x = x^j e_j$ then by linearity $\langle \check e^i, x\rangle = x^j \langle \check e^i, e_j\rangle = x^j \delta^i_j = x^i$. So **the dual basis is the coordinate-extraction functional in the given primal basis**. With this in mind, finding $\check e^i$ is just the algebra of inverting a coordinate change.
+
+**Strategy.** Encode the basis as a single matrix $B$, recognise that the coordinate map $x \mapsto (x^1, x^2)$ is $B^{-1}$, then read the dual basis off the rows of $B^{-1}$.
+
+**Step 1 — Encode the basis as a matrix.** Following Lemma A.2, pack the basis $(e_1, e_2)$ into the linear map
 
 $$
 B : \mathbb R^2 \to \mathcal X, \qquad B v = v^i e_i,
 \tag{$\star$}
 $$
 
-so that $B$ sends the canonical basis $\hat e_1 = \binom{1}{0},\ \hat e_2 = \binom{0}{1}$ of $\mathbb R^2$ to $e_1, e_2$. As a matrix, the columns of $B$ are exactly $e_1, e_2$.
+so that $B$ sends the canonical basis $\hat e_1 = \binom{1}{0},\ \hat e_2 = \binom{0}{1}$ of $\mathbb R^2$ to $e_1, e_2$. **As a matrix, the columns of $B$ are exactly the basis vectors $e_1, e_2$.** Conversely, $B^{-1} x$ returns the column of coordinates $(x^1, x^2)^T$ of $x$ in the basis $(e_1, e_2)$.
 
-**Defining property of the dual basis.** We seek $\check e^i \in \widecheck{\mathcal X}$ with
+**Step 2 — Defining condition as a matrix equation.** Identify covectors $\check e^i \in \widecheck{\mathbb R^2}$ with **row vectors** (so that the pairing $\langle \check e^i, x\rangle$ is just the row-times-column product $\check e^i \cdot x$). Stack the two rows into a matrix $E^\vee \in \mathbb R^{2 \times 2}$ whose $i$-th *row* is $\check e^i$.
 
-$$
-\langle \check e^i, e_j\rangle = \delta^i_j, \qquad i, j \in \{1, 2\}.
-\tag{0.2}
-$$
-
-Read covectors as row-vectors and use the matrix realisation. If we write $\check e^i$ as the $i$-th *row* of a matrix $E^\vee \in \mathbb R^{2 \times 2}$, then (0.2) says
+Then the $(i,j)$-entry of $E^\vee B$ is
 
 $$
-(E^\vee\, B)^i_{\ j} = \delta^i_j \qquad \Longleftrightarrow \qquad E^\vee\, B = I_2,
+(E^\vee B)^i_{\ j} \;=\; (i\text{-th row of }E^\vee)\cdot(j\text{-th column of }B) \;=\; \check e^i \cdot e_j \;=\; \langle \check e^i, e_j\rangle.
 $$
 
-so $E^\vee = B^{-1}$ and the dual basis is given by the **rows of $B^{-1}$**. Equivalently, viewed as column vectors via the canonical identification $\widecheck{\mathbb R^2} \cong \mathbb R^2$,
+So the biorthogonality condition (0.2) is the single matrix equation
 
 $$
-\boxed{\ \check e^i \;=\; i\text{-th column of }B^{-T}.\ }
+E^\vee\, B = I_2 \qquad \Longleftrightarrow \qquad E^\vee = B^{-1}.
 $$
 
-This is exactly Lemma A.2: the relation $L = (B \widecheck{B})^{-1}$ translates the basis-change matrix $B$ into the duality mapping, and the dual basis is read off as the rows of $B^{-1}$. $\blacksquare$
+**Step 3 — Read off the dual basis.** The dual covectors are the **rows of $B^{-1}$**. Viewed as column vectors via the canonical identification $\widecheck{\mathbb R^2} \cong \mathbb R^2$, this is the same as taking the columns of $(B^{-1})^T = B^{-T}$:
+
+$$
+\boxed{\ \check e^i \;=\; i\text{-th row of }B^{-1} \;=\; i\text{-th column of }B^{-T}.\ }
+$$
+
+**Why this matches Lemma A.2.** Lemma A.2 states $L = (B \widecheck B)^{-1}$ — the duality mapping is determined by the basis-change matrix. Solving for the dual basis is then just the matrix inversion $B \mapsto B^{-1}$, and reading the rows of $B^{-1}$ extracts each individual dual covector. $\blacksquare$
 
 </details>
 
 <details class="accordion" markdown="1">
 <summary>Solution 1 (b) — explicit computation for $e_1=(1,0),\ e_2=(1,1)$</summary>
 
-**Form $B$ and invert.** With $e_1 = \binom{1}{0}$, $e_2 = \binom{1}{1}$,
+We just apply the recipe from (a): form $B$ with the basis vectors as columns, invert, and read off the rows.
+
+**Step 1 — Form $B$.** With $e_1 = \binom{1}{0}$, $e_2 = \binom{1}{1}$, putting the basis vectors as columns gives
 
 $$
-B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}, \qquad
+B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}.
+$$
+
+**Step 2 — Invert $B$.** For a $2 \times 2$ matrix $\begin{pmatrix} a & b \\ c & d\end{pmatrix}$ with $\det = ad - bc$, the inverse is $\frac{1}{\det}\begin{pmatrix} d & -b \\ -c & a\end{pmatrix}$. Here $\det B = 1\cdot 1 - 1\cdot 0 = 1$, so
+
+$$
 B^{-1} = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}.
 $$
 
-**Read off the dual basis.** The rows of $B^{-1}$ give the dual covectors; identifying $\widecheck{\mathbb R^2} \cong \mathbb R^2$,
+**Step 3 — Read off the dual basis from the rows.** The rows of $B^{-1}$ are $(1, -1)$ and $(0, 1)$. Identifying $\widecheck{\mathbb R^2} \cong \mathbb R^2$ (writing the row $(a, b)$ as the column $\binom{a}{b}$):
 
 $$
 \check e^1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}, \qquad
 \check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}.
 $$
 
-**Sanity check via biorthogonality.**
+**Step 4 — Sanity check via biorthogonality.** All four pairings must give the corresponding $\delta^i_j$:
 
 $$
 \begin{aligned}
@@ -128,42 +140,48 @@ $$
 \end{aligned}
 $$
 
-All four pairings equal the corresponding $\delta^i_j$, so $\{\check e^1, \check e^2\}$ is the dual basis. $\blacksquare$
+So $\lbrace\check e^1, \check e^2\rbrace$ is indeed the dual basis. $\blacksquare$
 
-**Geometric reading.** The covector $\check e^1$ has level sets $\{x : x^1 - x^2 = c\}$ — these are the diagonal lines parallel to $e_2$. So $\check e^1$ "measures the $e_1$-component" of $x$ in the *oblique* coordinate system $(e_1, e_2)$, *not* in the canonical one. This is why $\check e^1 \ne e_1$ even though we use the canonical inner product to evaluate the pairing — the dual basis depends on the *primal* basis, not on the inner product alone.
+**Geometric reading — why $\check e^1 \ne e_1$.** A subtle point students often miss: even though we are using the canonical Euclidean dot product to evaluate the pairing, the dual basis $\check e^1$ is **not** equal to $e_1$. Look at the level set of $\check e^1$ as a linear functional: $\check e^1(x) = x^1 - x^2 = c$ are diagonal lines parallel to $e_2 = (1,1)$. The reason this is geometrically right: to "read off the $e_1$-component" of $x = x^1 e_1 + x^2 e_2$, you must travel *parallel to $e_2$* (the other basis vector) until you hit the $e_1$-axis — that's exactly what the diagonal level sets do.
+
+The lesson: the dual basis depends on the **whole** primal basis $(e_1, e_2)$ together, not just on $e_1$ alone — because $\check e^1$ has to kill $e_2$ as well as evaluate to 1 on $e_1$.
 
 </details>
 
 <details class="accordion" markdown="1">
 <summary>Solution 1 (c) — canonical Euclidean inner product and self-dual standard basis</summary>
 
-**Identify $\widecheck{\mathcal X} = \mathcal X = \mathbb R^2$ via the canonical inner product.** Under the canonical inner product $\ell(x, x') = (x)_i (x')^i$ (the dot product), the duality mapping $L : \mathcal X \to \widecheck{\mathcal X}$ is the identity in coordinates: $L = I$.
+**Reading the question carefully.** Part (c) keeps the *recipe* of (a), but adds a new structural piece: we equip $\widecheck{\mathcal X} = \mathcal X = \mathbb R^2$ with the **canonical** Euclidean inner product. Under this identification, every covector $p \in \widecheck{\mathcal X}$ corresponds to a unique vector $p^\sharp \in \mathcal X$ via Riesz: $\langle p, x\rangle = p^\sharp \cdot x$. The question is then: what does the dual basis look like as *vectors* in $\mathbb R^2$? We split this into two natural sub-cases.
 
-**Case 1 — basis $(e_1, e_2) = (\hat e_1, \hat e_2)$.** Then $B = I$, $B^{-1} = I$, and the rows of $I$ give
+**Setup — what the canonical inner product buys us.** Under $\ell(x, x') = x \cdot x'$ (the dot product), the duality mapping $L : \mathcal X \to \widecheck{\mathcal X}$ acts as the identity in coordinates: $L = I$. So the Riesz isomorphism $L^{-1}$ between covectors and vectors is trivial — coordinates of a covector and of its representing vector are literally the same.
+
+**Case 1 — standard basis $(e_1, e_2) = (\hat e_1, \hat e_2)$.** Here $B = I$, so $B^{-1} = I$ and the rows of $I$ give
 
 $$
 \check e^1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix} = e_1, \qquad
 \check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix} = e_2.
 $$
 
-The standard basis is **self-dual** under the canonical inner product: an orthonormal basis (under $\ell$) coincides with its own dual basis.
+The standard basis is **self-dual** under the canonical inner product. This is the general principle: any basis that is *orthonormal* under $\ell$ coincides with its own dual basis, because $\ell(e_i, e_j) = \delta_{ij}$ is precisely the biorthogonality condition.
 
-**Case 2 — same basis as in (b), but read as column vectors after identification.** If we keep the basis $e_1 = \binom{1}{0}$, $e_2 = \binom{1}{1}$ from part (b) and now view its dual basis as elements of $\mathcal X = \mathbb R^2$ via the Riesz isomorphism $L^{-1}$, the coordinate answer is unchanged because $L = I$:
+**Case 2 — keep the basis from (b), reinterpret the dual as vectors.** If we keep $e_1 = \binom{1}{0},\ e_2 = \binom{1}{1}$ from part (b) but now view $\check e^i$ as living in $\mathcal X = \mathbb R^2$ via $L^{-1}$, then because $L = I$ the *coordinates are unchanged*:
 
 $$
 \check e^1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix} \in \mathbb R^2, \qquad
 \check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix} \in \mathbb R^2.
 $$
 
-What *did* change is the interpretation: $\check e^i$ is now an honest *vector* in $\mathbb R^2$ (the unique vector representing the linear functional $x \mapsto \langle \check e^i, x\rangle$ via the canonical dot product). Biorthogonality then reads
+What changes is the **interpretation**: $\check e^i$ is now an honest *vector* in $\mathbb R^2$ (the unique vector representing the linear functional $x \mapsto \langle \check e^i, x\rangle$ via the canonical dot product). Biorthogonality reads as a dot-product identity:
 
 $$
-\check e^i \cdot e_j = \delta^i_j,
+\check e^i \cdot e_j = \delta^i_j.
 $$
 
-which is exactly the same numerics as in (b).
+Numerically identical to (b); conceptually, we have **promoted** each row of $B^{-1}$ from a covector (functional on $\mathcal X$) to a vector (element of $\mathcal X$).
 
-**Punchline.** The dual basis depends on the primal basis through $B^{-1}$, *not* on the inner product (once we use the Euclidean identification). The inner product enters only when we want to *identify* covectors with vectors — which it does here trivially, because the canonical Riesz iso is the identity. $\blacksquare$
+**Punchline — what depends on what.** The dual basis depends on the primal basis through $B^{-1}$, *not* on the choice of inner product (the formula $\check e^i = $ rows of $B^{-1}$ involves only $B$). The inner product enters only when we want to *identify* covectors with vectors via Riesz — and under the canonical inner product, that identification is the identity in coordinates. With a different inner product $\ell$ on $\mathcal X$, the same primal basis would yield the same dual *covectors* (same row vectors), but the *vectors* representing them would shift by $L^{-1}$.
+
+This separation — "primal basis $\leftrightarrow$ dual basis" is purely algebraic via $B^{-1}$; "covectors $\leftrightarrow$ vectors" is metric via $L$ — is the heart of Lemma A.2. $\blacksquare$
 
 </details>
 
@@ -197,7 +215,7 @@ $$
 \begin{aligned}
 n = \dim(\mathcal X) &= \dim(\ker(A)) + \dim(\mathrm{rge}(A)) &&\text{(0.3a)} \\
 &= \dim(\ker(A)) + \mathrm{rank}(A), &&\text{(0.3b)} \\
-\mathrm{rank}(A) &\le \min\{m, n\}. &&\text{(0.3c)}
+\mathrm{rank}(A) &\le \min\brace m, n\rbrace. &&\text{(0.3c)}
 \end{aligned}
 $$
 
@@ -212,125 +230,209 @@ Assume throughout that $A$ has *full rank*, i.e. equality in (0.3c).
 <details class="accordion" markdown="1">
 <summary>Solution 2 (i) — projection onto $\mathrm{rge}(A)$ and the meaning of $A^-$</summary>
 
-**Setup.** $A : \mathcal X \to \mathcal Y$ injective and full rank, so $m \ge n$, $\mathrm{rge}(A) \subset \mathcal Y$ is an $n$-dimensional subspace, and $\mathrm{rge}(A) \ne \mathcal Y$ in general. Given $y \in \mathcal Y$, we want the closest point $\hat y \in \mathrm{rge}(A)$ in the $m$-norm $\mu(\cdot) = \sqrt{m(\cdot,\cdot)}$.
+**The picture first.** $A : \mathcal X \to \mathcal Y$ is injective with full rank, so $m \ge n$ and $\mathrm{rge}(A) \subset \mathcal Y$ is an $n$-dimensional subspace that is generally a *strict* subspace of $\mathcal Y$. Given an arbitrary $y \in \mathcal Y$, the equation $Ax = y$ has no solution unless $y$ already happens to live in $\mathrm{rge}(A)$. The natural "best replacement" is the closest point $\hat y \in \mathrm{rge}(A)$ to $y$, measured by the inner product $m$. The orthogonal projection onto $\mathrm{rge}(A)$ is the map $y \mapsto \hat y$. We will *derive* it from the least-squares problem and then *read off* $A^-$ from the formula.
 
-**Variational formulation.** Every $\hat y \in \mathrm{rge}(A)$ has a unique preimage $x \in \mathcal X$ (since $A$ is injective). Minimise
+**Why least squares finds the projection.** A classical fact: the orthogonal projection of $y$ onto a subspace $V$ (with respect to an inner product) is the unique minimiser of $v \mapsto \|v - y\|$ over $v \in V$. Since $A$ is injective, every $v \in \mathrm{rge}(A)$ has a unique pre-image $x \in \mathcal X$ with $v = Ax$, so parametrising by $x$ is harmless. This motivates:
+
+**Step 1 — Variational formulation.** Minimise the squared $m$-distance from $Ax$ to $y$:
 
 $$
 J(x) \;:=\; \tfrac{1}{2}\,m(Ax - y, Ax - y) \qquad \text{over } x \in \mathcal X.
 \tag{0.4}
 $$
 
-The first-order condition is found by computing the directional derivative in any direction $h \in \mathcal X$:
+The factor $\tfrac12$ is cosmetic — it makes the derivative cleaner.
+
+**Step 2 — First-order condition via directional derivative.** At a minimiser $x^\ast$, $J$ must be stationary in every direction $h \in \mathcal X$. Compute
 
 $$
-\frac{d}{dt}\bigg|_{t=0} J(x + th) \;=\; m(Ax - y, Ah) \;=\; \langle M(Ax - y), Ah\rangle.
+\frac{d}{dt}\bigg|_{t=0} J(x + th)
+\;=\; \frac{d}{dt}\bigg|_{t=0} \tfrac12\, m(Ax - y + t Ah,\; Ax - y + t Ah)
+\;=\; m(Ax - y,\, Ah)
 $$
 
-Using the transpose $\widecheck A : \widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ characterised by $\langle \widecheck A p, x\rangle = \langle p, Ax\rangle$ for all $x, p$,
+(the cross-term from bilinearity at $t = 0$).
+
+**Step 3 — Convert $m(\cdot, \cdot)$ to a duality pairing, then move $A$ to the other side.** Using $m(u, v) = \langle Mu, v\rangle$,
 
 $$
-\frac{d}{dt}\bigg|_{t=0} J(x + th) \;=\; \langle \widecheck A M(Ax - y), h\rangle.
+m(Ax - y, Ah) \;=\; \langle M(Ax - y),\, Ah\rangle.
 $$
 
-**Critical point.** Setting this to zero for every $h$ gives the **normal equations**
+To remove $A$ from $Ah$ (which is in $\mathcal Y$) and have everything tested on $h$ (which is in $\mathcal X$), use the **transpose** $\widecheck A : \widecheck{\mathcal Y} \to \widecheck{\mathcal X}$, defined exactly by the property
+
+$$
+\langle p, Ax\rangle \;=\; \langle \widecheck A p, x\rangle \qquad \text{for all } p \in \widecheck{\mathcal Y},\ x \in \mathcal X.
+$$
+
+Applied with $p = M(Ax - y)$:
+
+$$
+\frac{d}{dt}\bigg|_{t=0} J(x + th) \;=\; \langle M(Ax - y),\, Ah\rangle \;=\; \langle \widecheck A M(Ax - y),\, h\rangle.
+$$
+
+**Step 4 — Setting the derivative to zero gives the normal equations.** This must hold for *every* $h$, which is equivalent to the covector itself being zero (a covector that pairs to $0$ with every $h \in \mathcal X$ is the zero covector). Hence
 
 $$
 \widecheck A M A\, x \;=\; \widecheck A M y.
 \tag{0.5}
 $$
 
-Now $A$ injective and $M$ positive definite imply $\widecheck A M A : \mathcal X \to \widecheck{\mathcal X}$ is invertible (it is the Gramian of $A$ in the metric $m$, and is symmetric positive definite). So
+**Step 5 — Solve the normal equations.** We claim the operator $\widecheck A M A : \mathcal X \to \widecheck{\mathcal X}$ is invertible. To see this, note it is the "Gramian" of $A$ in the $m$-metric: for any $x \in \mathcal X$,
+
+$$
+\langle \widecheck A M A\,x,\, x\rangle \;=\; \langle M (Ax),\, Ax\rangle \;=\; m(Ax, Ax) \;\ge\; 0,
+$$
+
+with equality iff $Ax = 0$ iff $x = 0$ (since $A$ is injective). So $\widecheck A M A$ is symmetric positive-definite, hence invertible. Therefore
 
 $$
 x^\ast \;=\; (\widecheck A M A)^{-1}\, \widecheck A M\, y.
 $$
 
-**Reading off $A^-$ and the projection.** Comparing with (A.11),
+**Step 6 — Read off $A^-$ and the projection.** Comparing with (A.11) in the appendix,
 
 $$
 \boxed{\ A^- \;=\; (\widecheck A M A)^{-1}\, \widecheck A M \;\in\; \mathcal L(\mathcal Y, \mathcal X),\qquad x^\ast \;=\; A^- y.\ }
 $$
 
-Substituting back, $\hat y = A x^\ast = A A^- y$, so
+Then the closest point in the range is $\hat y = Ax^\ast = A A^- y$, so
 
 $$
 \boxed{\ A A^- \;=\; \Pi_{\mathrm{rge}(A)} \quad\text{(orthogonal projection onto $\mathrm{rge}(A)$ in the $m$-metric)}.\ }
 $$
 
-**Sanity properties.**
+**Sanity properties.** A projection has to satisfy three conditions: idempotence, self-adjointness (in the relevant metric), and the appropriate left/right inverse identity. Let's check all three.
 
-  • *Idempotence.* $\widecheck A M A x^\ast = \widecheck A M y$ and re-applying gives $A A^- (A A^- y) = A x^\ast = A A^- y$, so $(AA^-)^2 = AA^-$.
+  • *Idempotence.* The normal equations at $y$ and at $AA^- y$ give the same $x^\ast$: indeed $\widecheck A M A x^\ast = \widecheck A M y = \widecheck A M (AA^- y)$ (the second equality because $\widecheck A M A x^\ast = \widecheck A M y$ by definition), so $A^-(AA^- y) = A^- y$ and hence $(AA^-)^2 = AA^-$.
 
-  • *Self-adjointness in the $m$-metric.* For any $y, y'$, $m(AA^- y, y') = \langle M y', A x^\ast\rangle = \langle \widecheck A M y', x^\ast\rangle = \langle (\widecheck A M A) x^{\ast\prime}, x^\ast\rangle = \langle (\widecheck A M A) x^\ast, x^{\ast\prime}\rangle = m(y, AA^- y')$, where $x^{\ast\prime} = A^- y'$. So $AA^-$ is $m$-symmetric, hence an orthogonal projector.
+  • *$m$-self-adjointness.* For any $y, y' \in \mathcal Y$, write $x^\ast = A^- y$ and $x^{\ast\prime} = A^- y'$. Then
+  
+  $$
+  m(AA^- y, y') = \langle M y', AA^- y\rangle = \langle M y', A x^\ast\rangle = \langle \widecheck A M y', x^\ast\rangle.
+  $$
+  
+  Since $\widecheck A M y' = \widecheck A M A x^{\ast\prime}$ (normal equation at $y'$), this equals $\langle \widecheck A M A x^{\ast\prime}, x^\ast\rangle$, which is symmetric in $x^\ast, x^{\ast\prime}$ (because $\widecheck A M A$ is symmetric). Tracing back, this equals $m(y, AA^- y')$. So $AA^-$ is $m$-symmetric.
 
-  • *Identity on $\mathrm{rge}(A)$.* $A^- A x = (\widecheck A M A)^{-1}(\widecheck A M A) x = x$ — the left-inverse property (A.12a).
+  Idempotence + self-adjointness in $m$ $\Longrightarrow$ orthogonal projection in the $m$-metric.
 
-**Interpretation of $A^-$.** $A^-$ is the **least-squares solver** for the over-determined system $Ax = y$. For $y \in \mathrm{rge}(A)$, $A^- y$ is the unique exact pre-image. For general $y \in \mathcal Y$, $A^- y$ is the unique minimiser of $\mu(Ax - y)$. The orthogonal projection $AA^-$ "snaps" $y$ onto $\mathrm{rge}(A)$ before reading off the pre-image.
+  • *Left-inverse.* For any $x \in \mathcal X$, $A^- A x = (\widecheck A M A)^{-1}(\widecheck A M A) x = x$. This is property (A.12a): if $y = Ax$ is already in the range, the least-squares solver returns the exact pre-image.
 
-In matrix terms, with $M = I$ (canonical inner product), this is the textbook formula $A^- = (A^T A)^{-1} A^T$ and $\Pi_{\mathrm{rge}(A)} = A(A^T A)^{-1}A^T$. The general $M$ replaces $A^T$ by $\widecheck A M$, weighting the residual by the metric $m$. $\blacksquare$
+**Interpretation of $A^-$.** $A^-$ is the **least-squares solver** for the (generically over-determined) system $Ax = y$:
+
+  - If $y \in \mathrm{rge}(A)$, then $A^- y$ is the unique exact pre-image.
+  - If $y \notin \mathrm{rge}(A)$, then $A^- y$ is the unique $x$ minimising $\mu(Ax - y)$ — equivalently, the pre-image of the projection $\hat y = AA^- y$ of $y$ onto the range.
+
+In matrix terms with $M = I$ (canonical inner product on $\mathcal Y$), the transpose $\widecheck A$ is just the matrix transpose $A^T$, and the boxed formula reduces to the textbook least-squares solution
+
+$$
+A^- = (A^T A)^{-1} A^T, \qquad \Pi_{\mathrm{rge}(A)} = A(A^T A)^{-1}A^T.
+$$
+
+The general $M$ replaces $A^T$ by $\widecheck A M$, which is the "$m$-weighted" transpose — the residual $Ax - y$ is measured by the metric $m$, so the metric enters the formula symmetrically through $M$. $\blacksquare$
 
 </details>
 
 <details class="accordion" markdown="1">
 <summary>Solution 2 (ii) — projection onto $\ker(A)$ and the meaning of $A^+$</summary>
 
-**Setup.** $A : \mathcal X \to \mathcal Y$ surjective and full rank, so $m \le n$, $\ker(A) \subset \mathcal X$ has dimension $n - m$, and $\mathcal X = \ker(A) \oplus \ker(A)^{\perp_\ell}$ where the orthogonal complement is taken in the $\ell$-inner product.
+**The picture first.** Now $A : \mathcal X \to \mathcal Y$ is surjective with full rank, so $m \le n$ and the equation $Ax = y$ has *many* solutions: the solution set is an affine subspace $x_p + \ker(A)$ of dimension $n - m$. The kernel $\ker(A) \subset \mathcal X$ is now the "non-uniqueness" subspace, and we want the orthogonal projection onto it in the $\ell$-metric. The clever trick is to **find the orthogonal complement first** (it has a nice characterisation via duality) and then take the complement.
 
-**Strategy.** Decompose $x = x_\perp + x_K$ with $x_\perp \in \ker(A)^{\perp_\ell}$ and $x_K \in \ker(A)$, and find $x_\perp$ first. Then $\Pi_{\ker(A)} x = x_K = x - x_\perp$.
+**Strategy.** Use the $\ell$-orthogonal decomposition $\mathcal X = \ker(A) \oplus \ker(A)^{\perp_\ell}$. Write $x = x_K + x_\perp$. Find a formula for $x_\perp$, then $\Pi_{\ker(A)} x = x - x_\perp$.
 
-**Identifying $\ker(A)^{\perp_\ell}$.** A vector $z \in \mathcal X$ lies in $\ker(A)^{\perp_\ell}$ iff $\ell(z, n) = 0$ for all $n \in \ker(A)$. Using $\ell(z, n) = \langle Lz, n\rangle$ and the rank-nullity duality
-
-$$
-\ker(A)^{\circ} \;=\; \mathrm{rge}(\widecheck A) \;\subset\; \widecheck{\mathcal X},
-$$
-
-(every covector annihilating $\ker(A)$ is of the form $\widecheck A p$ for some $p \in \widecheck{\mathcal Y}$), we get
+**Step 1 — Identify $\ker(A)^{\perp_\ell}$ via the annihilator.** A vector $z \in \mathcal X$ lies in $\ker(A)^{\perp_\ell}$ iff $\ell(z, n) = 0$ for every $n \in \ker(A)$. Using $\ell(z, n) = \langle Lz, n\rangle$, this says
 
 $$
-\ker(A)^{\perp_\ell} \;=\; L^{-1}\bigl(\mathrm{rge}(\widecheck A)\bigr) \;=\; \{L^{-1} \widecheck A p : p \in \widecheck{\mathcal Y}\}.
+Lz \in \ker(A)^\circ \;:=\; \lbrace p \in \widecheck{\mathcal X} : \langle p, n\rangle = 0\ \forall n \in \ker(A)\rbrace
 $$
 
-So $x_\perp = L^{-1} \widecheck A\, p$ for some $p \in \widecheck{\mathcal Y}$.
+— the **annihilator** of $\ker(A)$, i.e. the space of covectors that vanish on the kernel.
 
-**Determining $p$.** Since $x_K \in \ker(A)$, $A x = A x_\perp$, so
+**Step 2 — Annihilator $=$ range of transpose.** A classical duality result (rank-nullity in dual form):
+
+$$
+\ker(A)^\circ \;=\; \mathrm{rge}(\widecheck A) \;\subset\; \widecheck{\mathcal X}.
+$$
+
+*Why:* The inclusion "⊇" is immediate: if $q = \widecheck A p$ then for $n \in \ker(A)$, $\langle q, n\rangle = \langle \widecheck A p, n\rangle = \langle p, An\rangle = \langle p, 0\rangle = 0$. The reverse inclusion follows by counting dimensions: $A$ surjective $\Rightarrow \widecheck A$ injective $\Rightarrow \dim \mathrm{rge}(\widecheck A) = m$, while $\dim \ker(A)^\circ = n - \dim \ker(A) = n - (n - m) = m$ by rank-nullity for annihilators. Two subspaces of equal dimension, one inside the other, are equal.
+
+Plugging this into Step 1:
+
+$$
+\ker(A)^{\perp_\ell} \;=\; L^{-1}\bigl(\mathrm{rge}(\widecheck A)\bigr) \;=\; \lbrace L^{-1} \widecheck A p : p \in \widecheck{\mathcal Y}\rbrace.
+$$
+
+So every $x_\perp \in \ker(A)^{\perp_\ell}$ is of the form $x_\perp = L^{-1} \widecheck A\, p$ for **some** $p \in \widecheck{\mathcal Y}$. We've reduced finding $x_\perp \in \mathcal X$ (an $m$-dimensional ambient unknown) to finding $p \in \widecheck{\mathcal Y}$ (a genuinely $m$-dimensional unknown).
+
+**Step 3 — Determine $p$ from $A x_\perp = A x$.** Since $x = x_K + x_\perp$ with $x_K \in \ker(A)$, applying $A$ gives $A x = A x_\perp$ (the kernel part is killed). Substituting $x_\perp = L^{-1}\widecheck A p$:
 
 $$
 A L^{-1} \widecheck A\, p \;=\; A x.
 $$
 
-The operator $A L^{-1} \widecheck A : \widecheck{\mathcal Y} \to \mathcal Y$ is invertible — it is symmetric positive definite as a "Gramian-of-the-transpose" computation, using $A$ surjective and $L$ positive definite. Hence
+**Step 4 — Invert the operator $A L^{-1} \widecheck A$.** This operator $\widecheck{\mathcal Y} \to \mathcal Y$ is invertible: it is the "Gramian" of $\widecheck A$ in the $\ell^{-1}$-pairing,
+
+$$
+\langle p, A L^{-1} \widecheck A\, p\rangle \;=\; \langle \widecheck A p,\, L^{-1} \widecheck A p\rangle \;=\; \ell^{\ast}(\widecheck A p, \widecheck A p),
+$$
+
+(positive unless $\widecheck A p = 0$). And $\widecheck A p = 0$ iff $p \in \ker(\widecheck A)$, but $A$ surjective makes $\widecheck A$ injective, so $\widecheck A p = 0$ forces $p = 0$. Hence $A L^{-1} \widecheck A$ is symmetric positive-definite, hence invertible.
+
+Therefore
 
 $$
 p \;=\; (A L^{-1} \widecheck A)^{-1}\, A x, \qquad
 x_\perp \;=\; L^{-1} \widecheck A\, (A L^{-1} \widecheck A)^{-1}\, A x.
 $$
 
-**Reading off $A^+$ and the projection.** Comparing with (A.13),
+**Step 5 — Read off $A^+$ and the projection.** Comparing with (A.13),
 
 $$
 \boxed{\ A^+ \;=\; L^{-1} \widecheck A\, (A L^{-1} \widecheck A)^{-1} \;\in\; \mathcal L(\mathcal Y, \mathcal X),\qquad x_\perp \;=\; A^+ A\, x.\ }
 $$
 
-Therefore
+So $A^+ A$ is the orthogonal projection onto $\ker(A)^{\perp_\ell}$, and the complementary projection is onto $\ker(A)$:
 
 $$
 \boxed{\ \Pi_{\ker(A)} \;=\; I - A^+ A \quad\text{(orthogonal projection onto $\ker(A)$ in the $\ell$-metric)}.\ }
 $$
 
-**Sanity properties.**
+**Sanity properties.** The three projection conditions, again:
 
-  • *Right-inverse.* $A A^+ y = A L^{-1}\widecheck A (A L^{-1}\widecheck A)^{-1} y = y$ for all $y \in \mathcal Y$ — formula (A.14a).
+  • *Right-inverse.* For any $y \in \mathcal Y$, $A A^+ y = A L^{-1}\widecheck A (A L^{-1}\widecheck A)^{-1} y = y$ — formula (A.14a). So $A^+ y$ is a genuine solution of $Ax = y$.
 
-  • *Idempotence on $\ker(A)^{\perp_\ell}$.* $A^+ A$ projects onto $\ker(A)^{\perp_\ell}$, so $(A^+ A)^2 = A^+ A$. Equivalently $(I - A^+ A)^2 = I - A^+ A$.
+  • *Idempotence.* $A^+ A$ takes $x \in \mathcal X$ to $x_\perp \in \ker(A)^{\perp_\ell}$. If we then apply $A^+ A$ again, $x_\perp$ is already in $\ker(A)^{\perp_\ell}$, so its "$\perp$-part" is itself: $(A^+ A)^2 = A^+ A$. Equivalently $(I - A^+ A)^2 = I - A^+ A$.
 
-  • *$\ell$-self-adjointness of $A^+ A$.* Using $\widecheck{(L^{-1})} = L^{-1}$ and $\widecheck{(A^+ A)} = \widecheck A \widecheck{A^+}$, one checks $\ell(A^+ A x, x') = \ell(x, A^+ A x')$ — so the projection is orthogonal in the $\ell$-metric.
+  • *$\ell$-self-adjointness of $A^+ A$.* Using $\widecheck{L^{-1}} = L^{-1}$ (since $L$ is symmetric) and unfolding the definition, one checks $\ell(A^+ A x, x') = \ell(x, A^+ A x')$. So the projection is orthogonal *in the $\ell$-metric* (not just in the canonical inner product), as required.
 
-**Interpretation of $A^+$.** $A^+$ is the **minimum-norm solver** for the under-determined system $Ax = y$. The set $A^{-1}(\{y\}) = x_p + \ker(A)$ is an affine subspace of dimension $n - m$, and among all solutions, $A^+ y$ is the unique one orthogonal to $\ker(A)$ in $\ell$ — equivalently, the one with smallest $\lambda$-norm. The orthogonal projection $A^+ A$ takes any $x$ to its "essential part" $x_\perp$ that determines $Ax$, while $I - A^+ A$ extracts the kernel component which contributes nothing to $Ax$.
+**Interpretation of $A^+$.** $A^+$ is the **minimum-norm solver** for the under-determined system $Ax = y$:
 
-In matrix terms with $L = I$, $A^+ = A^T (A A^T)^{-1}$ and $\Pi_{\ker(A)} = I - A^T(AA^T)^{-1}A$. $\blacksquare$
+  - The full solution set is the affine subspace $A^{-1}(\lbrace y\rbrace) = x_p + \ker(A)$, of dimension $n - m$.
+  - Among all solutions, $A^+ y$ is the unique one orthogonal to $\ker(A)$ in the $\ell$-metric — equivalently, the one with smallest $\ell$-norm $\sqrt{\ell(x, x)}$ (because adding any kernel component, $\ell$-orthogonal to $A^+ y$, can only increase the norm by Pythagoras).
 
-**Duality between (i) and (ii).** Comparing the two cases, $A^-$ kills the part of $y$ orthogonal to $\mathrm{rge}(A)$ and $A^+$ kills the part of $x$ inside $\ker(A)$ — they are dual constructions, and the sheet's pseudo-inverse $C^\dagger = A^+ B^-$ glues them together for the rank-deficient case.
+The decomposition $x = (I - A^+A)x + A^+A x$ then splits any $x$ into:
+  - $A^+ A x \in \ker(A)^{\perp_\ell}$, the "essential part" that fully determines $Ax$ (since $A(A^+ A x) = Ax$);
+  - $(I - A^+ A) x \in \ker(A)$, the kernel component that contributes nothing to $Ax$.
+
+In matrix terms with $L = I$, the transpose $\widecheck A$ is $A^T$ and the formulas become the textbook
+
+$$
+A^+ = A^T (A A^T)^{-1}, \qquad \Pi_{\ker(A)} = I - A^T(AA^T)^{-1}A.
+$$
+
+$\blacksquare$
+
+**Duality between (i) and (ii).** Compare the two cases at a glance:
+
+| | $A^-$ (injective case) | $A^+$ (surjective case) |
+|---|---|---|
+| Problem | over-determined $Ax = y$ | under-determined $Ax = y$ |
+| Strategy | minimise residual in $\mathcal Y$ | minimise solution norm in $\mathcal X$ |
+| Formula | $(\widecheck A M A)^{-1} \widecheck A M$ | $L^{-1}\widecheck A (A L^{-1} \widecheck A)^{-1}$ |
+| Projection | $AA^- = \Pi_{\mathrm{rge}(A)}$ (in $\mathcal Y$) | $I - A^+ A = \Pi_{\ker(A)}$ (in $\mathcal X$) |
+| Kills | the component of $y$ orthogonal to $\mathrm{rge}(A)$ | the kernel component of $x$ |
+
+The two cases are dual constructions, and the sheet's pseudo-inverse $C^\dagger = A^+ B^-$ glues them together for the rank-deficient case (factor $C = AB$ with $B$ injective and $A$ surjective, then invert each half via the appropriate one-sided inverse).
 
 </details>
 
@@ -363,7 +465,7 @@ $$
 \tag{0.4b}
 $$
 
-where $\mathbb D = \{\binom{u}{v} : u^2 + v^2 < 1\}$. Show that
+where $\mathbb D = \lbrace\binom{u}{v} : u^2 + v^2 < 1\rbrace$. Show that
 
 $$
 T_{\tau(1/\sqrt 3,\,1/\sqrt 3)} S^2 \;=\; T_{\gamma(1/\sqrt 3,\,1/\sqrt 3)} S^2.
@@ -375,35 +477,39 @@ $$
 <details class="accordion" markdown="1">
 <summary>Solution 3 — same point, same tangent plane</summary>
 
-**Step 1 — both charts hit the same point of $S^2$.** Evaluate $\gamma$ and $\tau$ at $(u, v) = (1/\sqrt 3, 1/\sqrt 3)$. The hidden coordinate is $\sqrt{1 - 1/3 - 1/3} = \sqrt{1/3} = 1/\sqrt 3$. Hence
+**Strategy.** The claim is that two charts of $S^2$ give the *same* tangent space at a common point. We do this in four steps: (1) confirm both charts hit the same point $p$; (2) compute the tangent space as $\mathrm{span}\lbrace\partial_u, \partial_v\rbrace$ for each chart; (3) show both spans equal a single 2-plane (the one orthogonal to $p$); (4) make the chart-change explicit. The takeaway: the tangent plane is **intrinsic** — it depends on the point $p$, not on which chart we used to land there.
+
+**What does "tangent space from a chart" mean?** If $\gamma : U \subset \mathbb R^2 \to S^2$ is a chart with $\gamma(u_0, v_0) = p$, the differential $D\gamma_{(u_0, v_0)} : \mathbb R^2 \to \mathbb R^3$ is a linear map whose image is, by definition, the tangent space $T_p S^2$. In a basis, this image is the span of the column vectors $\partial_u \gamma$ and $\partial_v \gamma$ evaluated at $(u_0, v_0)$.
+
+**Step 1 — Both charts hit the same point.** Evaluate $\gamma$ and $\tau$ at $(u, v) = (1/\sqrt 3, 1/\sqrt 3)$. The "hidden" third coordinate is $\sqrt{1 - 1/3 - 1/3} = \sqrt{1/3} = 1/\sqrt 3$. So
 
 $$
 p \;:=\; \gamma\!\left(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\right) \;=\; \begin{pmatrix} 1/\sqrt 3 \\ 1/\sqrt 3 \\ 1/\sqrt 3\end{pmatrix} \;=\; \tau\!\left(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\right).
 $$
 
-So both tangent spaces are taken at the **same point** $p \in S^2$ — only the *parametrisations* of the chart differ.
+So both tangent spaces are taken at the **same point** $p \in S^2$ — only the *parametrisations* of the patch differ.
 
-**Step 2 — tangent space from $\gamma$.** By definition, $T_p S^2$ from the chart $\gamma$ is the image of the differential $D\gamma$ at $(1/\sqrt 3, 1/\sqrt 3)$, i.e. the span of the partial derivatives:
+**Step 2 — Tangent space from $\gamma$.** Differentiate componentwise; the only non-trivial derivative is of the third entry $\sqrt{1 - u^2 - v^2}$:
 
 $$
 \partial_u \gamma(u, v) = \begin{pmatrix} 1 \\ 0 \\ -u/\sqrt{1 - u^2 - v^2} \end{pmatrix}, \qquad
 \partial_v \gamma(u, v) = \begin{pmatrix} 0 \\ 1 \\ -v/\sqrt{1 - u^2 - v^2} \end{pmatrix}.
 $$
 
-At $(1/\sqrt 3, 1/\sqrt 3)$, $u/\sqrt{1 - u^2 - v^2} = (1/\sqrt 3)/(1/\sqrt 3) = 1$, so
+At $(1/\sqrt 3, 1/\sqrt 3)$, the denominator $\sqrt{1 - u^2 - v^2} = 1/\sqrt 3$, so the ratio $u/\sqrt{1 - u^2 - v^2} = (1/\sqrt 3)/(1/\sqrt 3) = 1$. Hence
 
 $$
 \partial_u \gamma\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 1 \\ 0 \\ -1\end{pmatrix},\qquad
-\partial_v \gamma\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 0 \\ 1 \\ -1\end{pmatrix}.
+\partial_v \gamma\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 0 \\ 1 \\ -1\end{pmatrix},
 $$
 
-Hence
+and therefore
 
 $$
-T_{\gamma(1/\sqrt 3,\,1/\sqrt 3)} S^2 \;=\; \mathrm{span}\!\left\{(1, 0, -1)^T,\, (0, 1, -1)^T\right\}.
+T_{\gamma(1/\sqrt 3,\,1/\sqrt 3)} S^2 \;=\; \mathrm{span}\!\left\lbrace(1, 0, -1)^T,\, (0, 1, -1)^T\right\rbrace.
 $$
 
-**Step 3 — tangent space from $\tau$.** Similarly,
+**Step 3 — Tangent space from $\tau$.** The chart $\tau$ stuffs the square-root into the *second* slot instead of the third, so the non-trivial derivative shifts accordingly:
 
 $$
 \partial_u \tau(u, v) = \begin{pmatrix} 1 \\ -u/\sqrt{1 - u^2 - v^2} \\ 0\end{pmatrix},\qquad
@@ -414,16 +520,18 @@ At $(1/\sqrt 3, 1/\sqrt 3)$,
 
 $$
 \partial_u \tau\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 1 \\ -1 \\ 0\end{pmatrix},\qquad
-\partial_v \tau\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 0 \\ -1 \\ 1\end{pmatrix}.
+\partial_v \tau\bigl(\tfrac{1}{\sqrt 3}, \tfrac{1}{\sqrt 3}\bigr) = \begin{pmatrix} 0 \\ -1 \\ 1\end{pmatrix},
 $$
 
-So
+and
 
 $$
-T_{\tau(1/\sqrt 3,\,1/\sqrt 3)} S^2 \;=\; \mathrm{span}\!\left\{(1, -1, 0)^T,\, (0, -1, 1)^T\right\}.
+T_{\tau(1/\sqrt 3,\,1/\sqrt 3)} S^2 \;=\; \mathrm{span}\!\left\lbrace(1, -1, 0)^T,\, (0, -1, 1)^T\right\rbrace.
 $$
 
-**Step 4 — both spans equal the plane $\{v : v \cdot p = 0\}$.** All four vectors are orthogonal to $p = (1/\sqrt 3, 1/\sqrt 3, 1/\sqrt 3)^T$:
+**Step 4 — Both spans equal the plane $\lbrace v : v \cdot p = 0\rbrace$.** Here is the clean geometric reason both spans must be equal:
+
+$S^2$ is the level set $\lbrace x \in \mathbb R^3 : \|x\|^2 = 1\rbrace$. The gradient of $\|x\|^2$ at $p$ is $2p$, so the tangent space to $S^2$ at $p$ is **the plane through the origin orthogonal to $p$** — this is independent of any chart. Let us verify that both spans land inside this plane (call it $H_p := \lbrace v \in \mathbb R^3 : v \cdot p = 0\rbrace$):
 
 $$
 \begin{aligned}
@@ -434,9 +542,9 @@ $$
 \end{aligned}
 $$
 
-So both spans lie inside the 2-dimensional hyperplane $H_p := \{v \in \mathbb R^3 : v \cdot p = 0\}$. Each pair is linearly independent (the $\gamma$-pair has a $2\times 2$ minor with determinant $1$; same for the $\tau$-pair). A 2D subspace of a 2D space equals the whole space, so both spans equal $H_p$.
+So both spans lie inside $H_p$. Each pair is linearly independent (e.g. the $\gamma$-pair has the $2 \times 2$ minor $\begin{pmatrix}1 & 0\\0 & 1\end{pmatrix}$ with determinant $1$; same for the $\tau$-pair). A 2-dimensional subspace of a 2-dimensional space is the whole space, so both spans equal $H_p$. In particular they are equal to each other — this proves (0.5).
 
-**Step 5 — explicit change-of-basis between the two pairs.** A direct check:
+**Step 5 — Explicit change-of-basis between the two pairs.** It's instructive to write down the linear relation explicitly. By inspection:
 
 $$
 \begin{aligned}
@@ -448,12 +556,32 @@ $$
 So
 
 $$
-\begin{pmatrix} \partial_u \tau \\ \partial_v \tau\end{pmatrix} \;=\; \begin{pmatrix} 1 & -1 \\ 0 & -1\end{pmatrix} \begin{pmatrix} \partial_u \gamma \\ \partial_v \gamma\end{pmatrix},
+\begin{pmatrix} \partial_u \tau \\ \partial_v \tau\end{pmatrix} \;=\; \begin{pmatrix} 1 & -1 \\ 0 & -1\end{pmatrix} \begin{pmatrix} \partial_u \gamma \\ \partial_v \gamma\end{pmatrix}.
 $$
 
-with the change-of-basis matrix being exactly the Jacobian of the transition map $\tau^{-1} \circ \gamma$ at $(1/\sqrt 3, 1/\sqrt 3)$. This is the standard manifold-theoretic statement: tangent spaces are chart-independent because the Jacobian of any transition map is invertible. $\blacksquare$
+**What is this matrix?** This is the standard "basis vectors transform contravariantly" story, but the conventions are worth checking carefully. Let $\psi := \gamma^{-1} \circ \tau$ be the transition map from $\tau$-coordinates $(u', v')$ to $\gamma$-coordinates $(u, v)$. Concretely, solving $\gamma(u, v) = \tau(u', v')$ gives $u = u'$, $v = \sqrt{1 - u'^2 - v'^2}$, so
 
-**Geometric reading.** $S^2$ is a 2-sphere in $\mathbb R^3$, and at $p = (1/\sqrt 3, 1/\sqrt 3, 1/\sqrt 3)$ the tangent plane is the affine plane through $p$ normal to $p$ itself (since the sphere is the unit level set of $x \mapsto \|x\|^2$, and the gradient of $\|x\|^2$ at $p$ is $2p$). The two charts $\gamma$ and $\tau$ produce *different* coordinate bases of this same plane, but the plane itself is intrinsic.
+$$
+\psi(u', v') \;=\; \bigl(u',\ \sqrt{1 - u'^2 - v'^2}\bigr).
+$$
+
+Its Jacobian at $(1/\sqrt 3, 1/\sqrt 3)$ is
+
+$$
+J_\psi \;=\; \begin{pmatrix} 1 & 0 \\ -u'/\sqrt{1 - u'^2 - v'^2} & -v'/\sqrt{1 - u'^2 - v'^2}\end{pmatrix}\bigg|_{(1/\sqrt 3, 1/\sqrt 3)} \;=\; \begin{pmatrix} 1 & 0 \\ -1 & -1\end{pmatrix}.
+$$
+
+The standard chain-rule identity (basis vectors transform by the Jacobian of the transition map between the corresponding coordinates) reads $\partial/\partial u'^i = (\partial u^j / \partial u'^i)\, \partial/\partial u^j = (J_\psi)^j_{\ i}\, \partial/\partial u^j$. Written as a matrix equation with basis vectors stacked as a *column of rows*, this becomes
+
+$$
+\begin{pmatrix} \partial_u \tau \\ \partial_v \tau\end{pmatrix}
+= J_\psi^T \begin{pmatrix} \partial_u \gamma \\ \partial_v \gamma\end{pmatrix}
+= \begin{pmatrix} 1 & -1 \\ 0 & -1\end{pmatrix}\begin{pmatrix} \partial_u \gamma \\ \partial_v \gamma\end{pmatrix},
+$$
+
+so the matrix is **the transpose of the Jacobian of the transition map $\psi = \gamma^{-1} \circ \tau$**. This is the standard manifold-theoretic statement: tangent spaces are chart-independent because the Jacobian of any transition map is invertible (hence so is its transpose). $\blacksquare$
+
+**Geometric reading.** At $p = (1/\sqrt 3, 1/\sqrt 3, 1/\sqrt 3)$, the tangent plane is the affine plane through $p$ normal to $p$ itself — a feature of the *sphere*, not of any chart. The two charts $\gamma$ and $\tau$ produce *different* coordinate bases of this same plane (compare $\lbrace(1,0,-1), (0,1,-1)\rbrace$ vs. $\lbrace(1,-1,0), (0,-1,1)\rbrace$), but the plane itself is intrinsic. This is the prototypical example of why manifolds are interesting: the same geometric object admits many charts, and the meaningful structures (tangent spaces, vector fields, metrics) live independently of any choice.
 
 </details>
 
@@ -462,7 +590,7 @@ with the change-of-basis matrix being exactly the Jacobian of the transition map
 
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/sheet1_sphere_charts.png' | relative_url }}" alt="The unit sphere with two coloured chart patches (top hemisphere via γ, front hemisphere via τ) overlapping at p=(1/√3, 1/√3, 1/√3). Four tangent vectors emanate from p: two from γ, two from τ, all lying in the same yellow tangent plane normal to p." loading="lazy">
-  <figcaption>The two charts $\gamma$ (blue patch, projects onto $z = \sqrt{1 - u^2 - v^2}$) and $\tau$ (green patch, projects onto $y = \sqrt{1 - u^2 - v^2}$) both contain the point $p = (1/\sqrt 3, 1/\sqrt 3, 1/\sqrt 3)$. The four partial-derivative vectors all lie in the yellow tangent plane $T_p S^2 = \{v \cdot p = 0\}$, and span it.</figcaption>
+  <figcaption>The two charts $\gamma$ (blue patch, projects onto $z = \sqrt{1 - u^2 - v^2}$) and $\tau$ (green patch, projects onto $y = \sqrt{1 - u^2 - v^2}$) both contain the point $p = (1/\sqrt 3, 1/\sqrt 3, 1/\sqrt 3)$. The four partial-derivative vectors all lie in the yellow tangent plane $T_p S^2 = \lbrace v \cdot p = 0\rbrace$, and span it.</figcaption>
 </figure>
 
 </details>
@@ -484,13 +612,18 @@ Show that all such vectors $v$ form a vector space.
 <details class="accordion" markdown="1">
 <summary>Solution 4 — the set of derivations is a real vector subspace of $\mathrm{Hom}_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$</summary>
 
+**Why we care.** On an abstract manifold there is no ambient $\mathbb R^N$, so a "tangent vector at $x$" cannot be defined as a velocity in some surrounding space. The derivation definition replaces "a direction at $x$" with "a linear map on smooth functions that obeys Leibniz" — and *this* definition makes sense without any embedding. To use this as a *tangent space* in linear algebra, we need it to be a vector space. That is what this exercise establishes.
+
+**Strategy.** The space of *all* $\mathbb R$-linear maps $v : \mathcal F(\mathcal M) \to \mathbb R$ is automatically a real vector space (linear maps to $\mathbb R$ always form a vector space under pointwise operations — this is just the dual space $\mathrm{Hom}_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$). Our $\mathcal D_x$ is the *subset* of those linear maps satisfying the Leibniz rule (0.6). So instead of re-proving the eight vector space axioms from scratch, we use the **subspace criterion**: a subset of a vector space is itself a vector space iff it contains $0$ and is closed under addition and scalar multiplication.
+
 **Setup.** Let
 
 $$
-\mathcal D_x \;:=\; \bigl\{\, v : \mathcal F(\mathcal M) \to \mathbb R \;\big|\; v\ \text{is}\ \mathbb R\text{-linear and satisfies (0.6)}\,\bigr\}.
+\mathcal D_x \;:=\; \bigl\lbrace\, v : \mathcal F(\mathcal M) \to \mathbb R \;\big|\; v\ \text{is}\ \mathbb R\text{-linear and satisfies (0.6)}\,\bigr\rbrace
+\;\subset\; \mathrm{Hom}_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R).
 $$
 
-We want to show that $\mathcal D_x$ is a vector space over $\mathbb R$. The slick path: $\mathcal D_x \subset \mathrm{Hom}_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$, which is itself a vector space (functions to $\mathbb R$ form a vector space pointwise). It then suffices to show $\mathcal D_x$ is a *subspace* — i.e. it contains $0$ and is closed under addition and scalar multiplication.
+We will check three things: $0 \in \mathcal D_x$, $\mathcal D_x$ is closed under addition, $\mathcal D_x$ is closed under scalar multiplication. Crucially, both linearity and Leibniz are *linear* conditions on $v$, so they get preserved under linear combinations — this is the underlying reason the proof works.
 
 **Step 1 — the zero map is a derivation.** Define $0 : \mathcal F(\mathcal M) \to \mathbb R$ by $0(f) = 0$. It is $\mathbb R$-linear trivially. Leibniz:
 
@@ -538,9 +671,15 @@ So $v + w \in \mathcal D_x$.
 
 So $\alpha v \in \mathcal D_x$.
 
-**Step 4 — vector-space axioms inherited.** Associativity and commutativity of $+$, distributivity, the unit law $1 \cdot v = v$, and existence of inverses $(-1) \cdot v = -v$ all hold in $\mathrm{Hom}\_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$ pointwise; since $\mathcal D_x$ is a subset closed under these operations and contains $0$, all axioms transfer. $\blacksquare$
+**Step 4 — vector-space axioms inherited.** This is the heart of the subspace criterion: associativity and commutativity of $+$, distributivity, the unit law $1 \cdot v = v$, and existence of inverses $(-1) \cdot v = -v$ all hold in $\mathrm{Hom}\_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$ pointwise (linear maps to $\mathbb R$ form a vector space under pointwise operations). Steps 1–3 showed that $\mathcal D_x$ contains $0$ and is closed under addition and scalar multiplication, so all these axioms automatically restrict from the ambient space — no separate verification needed. Hence $\mathcal D_x$ is a real vector space. $\blacksquare$
 
-**Why this matters.** This abstract definition of $T_x \mathcal M$ via derivations is exactly the one that lifts to manifolds without an ambient $\mathbb R^n$ — there is no notion of "velocity vector in $\mathbb R^3$" on an abstract manifold, so the definition through Leibniz is what survives. The vector-space structure shown here is what makes $T_x \mathcal M$ a *linear* tangent space, which in turn is what makes the differential $df_x : T_x \mathcal M \to T_{f(x)} \mathcal N$ a linear map and gives the chain rule its tensorial form. A coordinate basis of $T_x \mathcal M$ is then provided by the partial derivatives $\partial_{u^i}\|_x$ in any chart — exactly the four vectors that appeared in Exercise 3.
+**Why this matters — connection to Exercise 3.** The vector-space structure proved here is what makes $T_x \mathcal M$ a *linear* tangent space, which in turn:
+
+  - makes the differential $df_x : T_x \mathcal M \to T_{f(x)} \mathcal N$ a linear map (not just a set-theoretic function), giving the chain rule its tensorial form;
+  - admits a coordinate basis: the partial-derivative derivations $\partial_{u^i}\bigr\rvert_x$ in any chart span $T_x \mathcal M$;
+  - matches Exercise 3 perfectly — the four vectors $\partial_u \gamma, \partial_v \gamma, \partial_u \tau, \partial_v \tau$ are concrete instances of such basis derivations, and Step 5 of that exercise was exactly the change-of-basis formula between two such coordinate frames.
+
+So the abstract construction here (Leibniz $\Rightarrow$ vector space) and the concrete computation there (two charts of $S^2$) are two sides of the same coin: the tangent space is a vector space, charts give bases, transition maps give change-of-basis matrices.
 
 </details>
 

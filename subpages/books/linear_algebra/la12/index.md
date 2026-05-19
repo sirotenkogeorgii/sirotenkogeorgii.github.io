@@ -4316,12 +4316,19 @@ Let $V$ be a vector space over $\mathbb{R}$ or $\mathbb{C}$. Then a *norm* is a 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.12)</span></p>
 
-*The norm induced by an inner product is a norm.*
+The norm induced by an inner product is a norm.
 
-*Proof.* Property (1) is satisfied by the definition of the norm induced by an inner product. Property (3) is shown in Corollary 8.10. It remains to verify property (2):
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Property (1) is satisfied by the definition of the norm induced by an inner product. Property (3) is shown in Corollary 8.10. It remains to verify property (2):
 
 $$\|\alpha x\| = \sqrt{\langle \alpha x, \alpha x \rangle} = \sqrt{\alpha \overline{\alpha} \langle x, x \rangle} = \sqrt{\alpha \overline{\alpha}} \sqrt{\langle x, x \rangle} = |\alpha| \cdot \|x\|.$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -4369,10 +4376,17 @@ For the norm induced by an inner product, the so-called *parallelogram law* hold
 
 $$\|x - y\|^2 + \|x + y\|^2 = 2\|x\|^2 + 2\|y\|^2.$$
 
-*Proof.* $\|x - y\|^2 + \|x + y\|^2 = \langle x - y, x - y \rangle + \langle x + y, x + y \rangle = 2\langle x, x \rangle + 2\langle y, y \rangle = 2\|x\|^2 + 2\|y\|^2$.
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$\|x - y\|^2 + \|x + y\|^2 = \langle x - y, x - y \rangle + \langle x + y, x + y \rangle = 2\langle x, x \rangle + 2\langle y, y \rangle = 2\|x\|^2 + 2\|y\|^2$.
 
 Using this, we can easily see that the sum norm and the maximum norm are not induced by any inner product. An even stronger statement holds: if the parallelogram law holds for a norm, then it is induced by some inner product; see Horn and Johnson [1985].
 
+</details>
 </div>
 
 The norm allows us to introduce distance (or metric) between vectors $x, y$ as $\|x - y\|$. And once we have distance, we can introduce limits, etc. Moreover, to define a metric we do not even need a vector space; any set suffices.
@@ -4426,12 +4440,19 @@ In the space $\mathbb{R}^n$ with the standard inner product, an example of an or
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.21)</span></p>
 
-*If a system of vectors $z_1, \ldots, z_n$ is orthonormal, then it is linearly independent.*
+If a system of vectors $z_1, \ldots, z_n$ is orthonormal, then it is linearly independent.
 
-*Proof.* Consider a linear combination $\sum_{i=1}^{n} \alpha_i z_i = o$. Then for every $k = 1, \ldots, n$:
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Consider a linear combination $\sum_{i=1}^{n} \alpha_i z_i = o$. Then for every $k = 1, \ldots, n$:
 
 $$0 = \langle o, z_k \rangle = \left\langle \sum_{i=1}^{n} \alpha_i z_i, z_k \right\rangle = \sum_{i=1}^{n} \alpha_i \langle z_i, z_k \rangle = \alpha_k \langle z_k, z_k \rangle = \alpha_k.$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -4439,10 +4460,17 @@ $$0 = \langle o, z_k \rangle = \left\langle \sum_{i=1}^{n} \alpha_i z_i, z_k \ri
 
 Let $z_1, \ldots, z_n$ be an orthonormal basis of the space $V$. Then for every $x \in V$, $x = \sum_{i=1}^{n} \langle x, z_i \rangle z_i$.
 
-*Proof.* We know that $x = \sum_{i=1}^{n} \alpha_i z_i$ and the coordinates $\alpha_1, \ldots, \alpha_n$ are unique (Theorem 5.33). Now for every $k = 1, \ldots, n$:
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We know that $x = \sum_{i=1}^{n} \alpha_i z_i$ and the coordinates $\alpha_1, \ldots, \alpha_n$ are unique (Theorem 5.33). Now for every $k = 1, \ldots, n$:
 
 $$\langle x, z_k \rangle = \left\langle \sum_{i=1}^{n} \alpha_i z_i, z_k \right\rangle = \sum_{i=1}^{n} \alpha_i \langle z_i, z_k \rangle = \alpha_k \langle z_k, z_k \rangle = \alpha_k.$$
 
+</details>
 </div>
 
 The expression $x = \sum_{i=1}^{n} \langle x, z_i \rangle z_i$ is called the *Fourier expansion*, and the scalars $\langle x, z_i \rangle$, $i = 1, \ldots, n$ are called *Fourier coefficients*. The geometric meaning of the Fourier coefficient $\langle x, z_i \rangle$ is that $\langle x, z_i \rangle z_i$ gives the projection of the vector $x$ onto the line $\operatorname{span}\lbrace z_i \rbrace$. The vector $x$ can then be composed from these partial projections by simple summation $x = \sum_{i=1}^{n} \langle x, z_i \rangle z_i$ (we will discuss projections further in Section 8.3). If the basis $z_1, \ldots, z_n$ were not orthonormal, then this property would no longer hold in general.
@@ -4459,7 +4487,13 @@ Input: linearly independent vectors $x_1, \ldots, x_n \in V$.
 
 Output: $z_1, \ldots, z_n$ orthonormal basis of the space $\operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$.
 
-*Proof.* (Correctness of Gram–Schmidt orthogonalization.) By mathematical induction on $n$ we prove that $z_1, \ldots, z_n$ is an orthonormal basis of the space $\operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$. For $n = 1$, $y_1 = x_1 \neq o$, the vector $z_1 = \frac{1}{\|x_1\|} x_1$ is well-defined and $\operatorname{span}\lbrace x_1 \rbrace = \operatorname{span}\lbrace z_1 \rbrace$.
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(Correctness of Gram–Schmidt orthogonalization.) By mathematical induction on $n$ we prove that $z_1, \ldots, z_n$ is an orthonormal basis of the space $\operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$. For $n = 1$, $y_1 = x_1 \neq o$, the vector $z_1 = \frac{1}{\|x_1\|} x_1$ is well-defined and $\operatorname{span}\lbrace x_1 \rbrace = \operatorname{span}\lbrace z_1 \rbrace$.
 
 Induction step $n \leftarrow n - 1$. Assume that $z_1, \ldots, z_{n-1}$ is an orthonormal basis of the space $\operatorname{span}\lbrace x_1, \ldots, x_{n-1} \rbrace$. If $y_n = o$, then $x_n = \sum_{j=1}^{n-1} \langle x_n, z_j \rangle z_j$ and $x_n \in \operatorname{span}\lbrace z_1, \ldots, z_{n-1} \rbrace = \operatorname{span}\lbrace x_1, \ldots, x_{n-1} \rbrace$, which would be a contradiction with the linear independence of the vectors $x_1, \ldots, x_n$. Therefore $y_n \neq o$ and $z_n = \frac{1}{\|y_n\|} y_n$ is well-defined and has unit norm.
 
@@ -4469,6 +4503,7 @@ $$\langle z_n, z_i \rangle = \frac{1}{\|y_n\|} \langle y_n, z_i \rangle = \frac{
 
 It remains to verify $\operatorname{span}\lbrace z_1, \ldots, z_n \rbrace = \operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$. From the algorithm it is clear that $z_n \in \operatorname{span}\lbrace z_1, \ldots, z_{n-1}, x_n \rbrace \subseteq \operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$, and therefore $\operatorname{span}\lbrace z_1, \ldots, z_n \rbrace \subseteq \operatorname{span}\lbrace x_1, \ldots, x_n \rbrace$. Since both spaces have the same dimension, equality holds (Theorem 5.50).
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -4508,30 +4543,48 @@ which gives a computational complexity of order $2mn^2$.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.26 — Existence of an orthonormal basis)</span></p>
 
-*Every finitely generated space (with an inner product) has an orthonormal basis.*
+Every finitely generated space (with an inner product) has an orthonormal basis.
 
-*Proof.* We know (Theorem 5.41) that every finitely generated space has a basis, and we can orthogonalize it using the Gram–Schmidt method.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We know (Theorem 5.41) that every finitely generated space has a basis, and we can orthogonalize it using the Gram–Schmidt method.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.27 — Extension of an orthonormal system to an orthonormal basis)</span></p>
 
-*Every orthonormal system of vectors in a finitely generated space can be extended to an orthonormal basis.*
+Every orthonormal system of vectors in a finitely generated space can be extended to an orthonormal basis.
 
-*Proof.* We know (Theorem 5.49) that every orthonormal system of vectors $z_1, \ldots, z_m$ can be extended to a basis $z_1, \ldots, z_m, x_{m+1}, \ldots, x_n$, and we can orthogonalize it using the Gram–Schmidt method to obtain $z_1, \ldots, z_m, z_{m+1}, \ldots, z_n$. The orthogonalization does not change the first $m$ vectors.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We know (Theorem 5.49) that every orthonormal system of vectors $z_1, \ldots, z_m$ can be extended to a basis $z_1, \ldots, z_m, x_{m+1}, \ldots, x_n$, and we can orthogonalize it using the Gram–Schmidt method to obtain $z_1, \ldots, z_m, z_{m+1}, \ldots, z_n$. The orthogonalization does not change the first $m$ vectors.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.28 — Bessel's inequality and Parseval's equality)</span></p>
 
-*Let $z_1, \ldots, z_n$ be an orthonormal system in $V$ and let $x \in V$. Then:*
+Let $z_1, \ldots, z_n$ be an orthonormal system in $V$ and let $x \in V$. Then:
 
-1. *Bessel's inequality:* $\|x\|^2 \ge \sum_{j=1}^{n} \|\langle x, z_j \rangle\|^2$,
-2. *Parseval's equality:* $\|x\|^2 = \sum_{j=1}^{n} \|\langle x, z_j \rangle\|^2$ *if and only if $x \in \operatorname{span}\lbrace z_1, \ldots, z_n \rbrace$.*
+1. **Bessel's inequality:** $\|x\|^2 \ge \sum_{j=1}^{n} \|\langle x, z_j \rangle\|^2$,
+2. **Parseval's equality:** $\|x\|^2 = \sum_{j=1}^{n} \|\langle x, z_j \rangle\|^2$ if and only if $x \in \operatorname{span}\lbrace z_1, \ldots, z_n \rbrace$.
 
-*Proof.*
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 (1) Follows from the computation
 
@@ -4539,6 +4592,7 @@ $$0 \le \left\langle x - \sum_{j=1}^{n} \langle x, z_j \rangle z_j, \, x - \sum_
 
 (2) Follows from the above, since equality holds if and only if $x = \sum_{j=1}^{n} \langle x, z_j \rangle z_j$.
 
+</details>
 </div>
 
 Bessel's inequality says that the norm of a vector $x$ can never be smaller than the norm of its projection into any subspace, here expressed as $\operatorname{span}\lbrace z_1, \ldots, z_n \rbrace$.
@@ -4554,12 +4608,19 @@ where $B$ is an orthonormal basis of $V$.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.29)</span></p>
 
-*Let $B$ be an orthonormal basis of the space $V$ and let $x, y \in V$. Then $\langle x, y \rangle = [x]_B^\top \overline{[y]_B}$.*
+Let $B$ be an orthonormal basis of the space $V$ and let $x, y \in V$. Then $\langle x, y \rangle = [x]_B^\top \overline{[y]_B}$.
 
-*Proof.* Let $B = \lbrace z_1, \ldots, z_n \rbrace$. By Theorem 8.22, $[x]_B = (\langle x, z_1 \rangle, \ldots, \langle x, z_n \rangle)^\top$. Now
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $B = \lbrace z_1, \ldots, z_n \rbrace$. By Theorem 8.22, $[x]_B = (\langle x, z_1 \rangle, \ldots, \langle x, z_n \rangle)^\top$. Now
 
 $$\langle x, y \rangle = \left\langle \sum_{j=1}^{n} \langle x, z_j \rangle z_j, y \right\rangle = \sum_{j=1}^{n} \langle x, z_j \rangle \overline{\langle y, z_j \rangle} = [x]_B^\top \overline{[y]_B}.$$
 
+</details>
 </div>
 
 It is not hard to see that this theorem also holds in the converse direction. Thus we obtain that the mapping $\langle \cdot, \cdot \rangle$ is an inner product on the space $V$ if and only if it can be expressed as $\langle x, y \rangle = [x]_B^\top \overline{[y]_B}$ for some (or for any) orthonormal basis $B$. Every inner product is therefore the standard inner product when viewed from any orthonormal basis.
@@ -7047,7 +7108,7 @@ $$f(u) = [u]_B^\top A [u]_B.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Denote $x \coloneqq [u]\_B$, $y \coloneqq [v]\_B$, and let $B$ consist of vectors $w_1, \ldots, w_n$. If $A$ is the matrix of the form $b$, then
+Denote $x \coloneqq [u]\_B$, $y \coloneqq [v]\_B$, and let $B$ consist of vectors $w_1, \ldots, w_n$. If $A$ is the matrix of the form $b$, then
 
 $$b(u, v) = b\!\left(\sum_{i=1}^n x_i w_i, \sum_{j=1}^n y_j w_j\right) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j b(w_i, w_j) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
@@ -7072,7 +7133,7 @@ Let $B = \lbrace w_1, \ldots, w_n \rbrace$ be a basis of a vector space $V$ over
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* "Existence." It suffices to verify that the mapping $b \colon V^2 \to \mathbb{T}$ given by $b(u, v) = [u]\_B^\top A [v]_B$ satisfies the conditions of a bilinear form. This is easy to see, since the mapping $u \mapsto [u]\_B$ is linear (cf. Proposition 6.38). "Uniqueness." From (12.1) it follows that for every $u, v \in V$ we have $b(u, v) = [u]\_B^\top A [v]\_B$, so the images are uniquely determined.
+"Existence." It suffices to verify that the mapping $b \colon V^2 \to \mathbb{T}$ given by $b(u, v) = [u]\_B^\top A [v]_B$ satisfies the conditions of a bilinear form. This is easy to see, since the mapping $u \mapsto [u]\_B$ is linear (cf. Proposition 6.38). "Uniqueness." From (12.1) it follows that for every $u, v \in V$ we have $b(u, v) = [u]\_B^\top A [v]\_B$, so the images are uniquely determined.
 
 Let $B$ be a fixed basis of a space $V$ of dimension $n$. Each bilinear form thus uniquely corresponds to a matrix $A \in \mathbb{T}^{n \times n}$, and conversely each matrix $A \in \mathbb{T}^{n \times n}$ uniquely corresponds to a bilinear form. There is therefore a bijective correspondence between the set of bilinear forms and the space of matrices $\mathbb{T}^{n \times n}$. Moreover, this is an isomorphism, since bilinear forms form a vector space with naturally defined addition and scalar multiples (cf. the space $\mathcal{F}$ from p. 79).
 
