@@ -374,7 +374,12 @@ A normed vector space $V$ is a Banach space if and only if every absolutely summ
 
 ## Linear Operators
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(From Matrices to Linear Operators)</span></p>
+
 Now that we have characterized our vector spaces, we want to find the analog of **matrices** from linear algebra, which leads us to **operators** and **functionals**.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integral Operator)</span></p>
@@ -399,7 +404,7 @@ We often use the phrase **linear operator** instead of "linear map" or "linear t
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear Operator are not continuous in general)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear Operators are not continuous in general)</span></p>
 
 In finite-dimensional vector spaces, all linear transformations are continuous. This is **not** always true when we have a map between two Banach spaces.
 
@@ -478,9 +483,14 @@ The operator norm is a norm, so $\mathcal{B}(V, W)$ is a normed space.
   </details>
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Operator norm gives a bound)</span></p>
+
 In general, the operator norm gives a bound: for all $v \in V$,
 
 $$\left\lVert T\!\left(\frac{v}{\lVert v \rVert}\right) \right\rVert \le \lVert T \rVert \implies \lVert Tv \rVert \le \lVert T \rVert \lVert v \rVert.$$
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($\mathcal{B}(V, W)$ is Banach when $W$ is Banach)</span></p>
@@ -513,11 +523,16 @@ Let $V$ be a normed space (over $\mathbb{K}$). The **dual space** $V' = \mathcal
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Dual space for all $\ell^p$ spaces)</span></p>
+
 We can identify the dual space for all $\ell^p$ spaces: it turns out that
 
 $$(\ell^p)' = \ell^{p'},$$
 
 where $p, p'$ satisfy $\frac{1}{p} + \frac{1}{p'} = 1$. So the dual of $\ell^1$ is $\ell^\infty$, and the dual of $\ell^2$ is itself (this is the only $\ell^p$ space for which this is true). However, the dual of $\ell^\infty$ is **not** $\ell^1$.
+
+</div>
 
 ## Subspaces and Quotients
 
@@ -651,7 +666,7 @@ Let $B_1, B_2$ be two Banach spaces, and let $T \in \mathcal{B}(B_1, B_2)$ be a 
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Bounded Inverse Theorem)</span></p>
 
 If $B_1, B_2$ are two Banach spaces and $T \in \mathcal{B}(B_1, B_2)$ is a bijective map, then $T^{-1} \in \mathcal{B}(B_2, B_1)$.
@@ -781,7 +796,7 @@ Let $V$ be a normed space, and let $M \subset V$ be a subspace. If $u : M \to \m
 
 The key intermediate step is extending by one dimension at a time:
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(One-Dimensional Extension)</span></p>
 
 Let $V$ be a normed space, $M \subset V$ a subspace, and $u : M \to \mathbb{C}$ linear with $\lvert u(t) \rvert \le C \lVert t \rVert$ for all $t \in M$. If $x \notin M$, then there exists $u' : M' \to \mathbb{C}$ linear on $M' = M + \mathbb{C}x = \lbrace t + ax : t \in M, a \in \mathbb{C} \rbrace$, with $u'\vert_M = u$ and $\lvert u'(t') \rvert \le C \lVert t' \rVert$ for all $t' \in M'$.
@@ -1055,7 +1070,7 @@ In other words, $E$ is well-behaved in that it always cuts any set $A$ into reas
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Basic Measurability Facts)</span></p>
 
 The empty set $\varnothing$ and $\mathbb{R}$ are measurable. A set $E$ is measurable if and only if $E^c$ is measurable.
@@ -1092,7 +1107,7 @@ If $E_1$ and $E_2$ are measurable sets, then $E_1 \cup E_2$ is measurable.
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Finite Unions are Measurable)</span></p>
 
 If $E_1, \dots, E_n$ are measurable, then $\bigcup_{k=1}^{n} E_k$ is measurable.
@@ -1130,7 +1145,7 @@ is the smallest $\sigma$-algebra containing all open subsets of $\mathbb{R}$, ca
 
 ### The Measurable Sets Form a $\sigma$-Algebra
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Disjointification)</span></p>
 
 Let $\mathcal{A}$ be an algebra, and let $\lbrace E_n \rbrace$ be a countable collection of elements of $\mathcal{A}$. Then there exists a disjoint countable collection $\lbrace F_n \rbrace$ of elements of $\mathcal{A}$ such that $\bigcup_n E_n = \bigcup_n F_n$.
@@ -1361,7 +1376,7 @@ are all measurable.
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Pointwise Limits of Measurable Functions)</span></p>
 
 If $f_n : E \to [-\infty, \infty]$ are measurable for all $n$ and $\lim_{n \to \infty} f_n(x) = f(x)$ for all $x \in E$, then $f$ is measurable.
@@ -1642,14 +1657,14 @@ The assumption of pointwise convergence here is much weaker than the uniform con
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Computing Integrals via Simple Approximations)</span></p>
 
 Let $f \in L^+(E)$, and let $\lbrace \phi_n \rbrace$ be a sequence of simple functions with $0 \le \phi_1 \le \phi_2 \le \cdots \le f$ and $\phi_n \to f$ pointwise. Then $\int_E f = \lim_{n \to \infty} \int_E \phi_n$.
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Additivity of the Nonnegative Integral)</span></p>
 
 If $f, g \in L^+(E)$, then $\int_E (f + g) = \int_E f + \int_E g$.
@@ -1950,7 +1965,7 @@ $$\lim_{n \to \infty} \int_{[-n,n] \cap E} \lvert f \rvert^p < \infty.$$
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 137</span></p>
 
 If $f : \mathbb{R} \to \mathbb{C}$ is measurable and there exist $C \ge 0$ and $q > 1$ such that for almost every $x \in \mathbb{R}$,
@@ -2007,7 +2022,12 @@ A **pre-Hilbert space** $H$ is a vector space over $\mathbb{C}$ with a **Hermiti
 
 </div>
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Pre-Hilbert Space)</span></p>
+
 We should think of pre-Hilbert spaces as **normed vector spaces where the norm comes from an inner product**. The inner product is linear in the first variable but conjugate-linear in the second: $\langle v, \lambda w \rangle = \overline{\lambda} \langle v, w \rangle$.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 141</span><span class="math-callout__name">(Norm from Inner Product)</span></p>
@@ -2278,7 +2298,7 @@ $$\lim_{m \to \infty} \sum_{n=1}^{m} \langle u, e_n \rangle e_n = \sum_{n=1}^{\i
 
 Every separable Hilbert space has an orthonormal basis, and the converse is also true:
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 163</span></p>
 
 If a Hilbert space $H$ has an orthonormal basis, then $H$ is separable.
@@ -3211,7 +3231,7 @@ If $A = A^* \in \mathcal{B}(H)$ is a self-adjoint bounded linear operator, and w
   </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 225</span></p>
 
 Let $A = A^* \in \mathcal{B}(H)$ be a self-adjoint linear operator. Then $\langle Au, u \rangle \ge 0$ for all $u$ if and only if $\operatorname{Spec}(A) \subset [0, \infty)$.

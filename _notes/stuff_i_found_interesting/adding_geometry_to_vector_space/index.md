@@ -6,9 +6,13 @@ permalink: /notes/stuff_i_found_interesting/adding_geometry_to_vector_space/
 math: true
 ---
 
-From Hladik's book, section "Orthogonalization, Gram-Schmidt orthogonalization":
+From the Hladik's book, section "Orthogonalization, Gram-Schmidt orthogonalization":
 
 > Every vector space has a basis. For a space with an inner product, it is natural to ask whether there exists a basis consisting of mutually orthogonal vectors. In this section we show that this is indeed true, that such a basis has a number of remarkable properties, and we also derive an algorithm for finding it.
+
+From the book "Mathematical Background for GDL", section "Geometric and Analytical Structures":
+
+> Geometric structures bring life to abstract mathematical objects by introducing familiar concepts like distance, size, and angles. While groups and vector spaces give us powerful ways to study relationships and transformations, they lack the geometric intuition we often need in real-world applications.
 
 > Does the inner product change after changing the basis
 

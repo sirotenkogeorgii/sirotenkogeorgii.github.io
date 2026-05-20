@@ -906,7 +906,7 @@ $$
 W_{\mathcal{D}} = U - (Lx_k) \otimes \frac{Ux_k-y_k}{\lambda(x_k)^2}. \tag{1.7}
 $$
 
-If $\mathcal{D} = \mathcal{D}_n = \mathcal{D}_{n-1} \cup \{(x_n,y_n)\}$ and $U = W_{\mathcal{D}_{n-1}}$ satisfies the constraints (1.4b) for $\mathcal{D}_{n-1}$, then
+If $\mathcal{D} = \mathcal{D}\_n = \mathcal{D}\_{n-1} \cup \lbrace (x_n,y_n)\rbrace$ and $U = W_{\mathcal{D}\_{n-1}}$ satisfies the constraints (1.4b) for $\mathcal{D}\_{n-1}$, then
 
 $$
 W_{\mathcal{D}_n} = W_{\mathcal{D}_{n-1}} - G^{nl}(Lx_l) \otimes (W_{\mathcal{D}_{n-1}}x_n - y_n) \qquad \text{(with } n \text{ fixed).} \tag{1.8}

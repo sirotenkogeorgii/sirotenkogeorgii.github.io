@@ -1177,6 +1177,62 @@ after absorbing fixed additive constants into $c$.
 </details>
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Plain concatenation requires an encoded boundary">
+    <g font-family="serif" font-size="13" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Plain concatenation: the boundary must be encoded</text>
+
+      <g>
+        <rect x="35" y="58" width="160" height="42" fill="rgba(168,111,0,0.12)" stroke="#a86f00" stroke-width="1.5" />
+        <text x="115" y="83" text-anchor="middle">bin(l(τₓ))</text>
+        <text x="115" y="118" text-anchor="middle" font-size="11" fill="#5b6270">about log C(x) bits</text>
+      </g>
+
+      <g>
+        <rect x="195" y="58" width="48" height="42" fill="rgba(239,68,68,0.14)" stroke="#b91c1c" stroke-width="1.5" />
+        <text x="219" y="83" text-anchor="middle" font-family="monospace">01</text>
+        <text x="219" y="118" text-anchor="middle" font-size="11" fill="#5b6270">separator</text>
+      </g>
+
+      <g>
+        <rect x="243" y="58" width="170" height="42" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+        <text x="328" y="83" text-anchor="middle">τₓ</text>
+        <text x="328" y="118" text-anchor="middle" font-size="11" fill="#5b6270">C(x) bits</text>
+      </g>
+
+      <g>
+        <rect x="413" y="58" width="210" height="42" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+        <text x="518" y="83" text-anchor="middle">τᵧ</text>
+        <text x="518" y="118" text-anchor="middle" font-size="11" fill="#5b6270">C(y) bits</text>
+      </g>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 328 105 C 328 140, 250 148, 250 176" />
+        <path d="M 518 105 C 518 140, 410 148, 410 176" />
+      </g>
+      <polygon points="250,176 245,166 255,166" fill="#5b6270" />
+      <polygon points="410,176 405,166 415,166" fill="#5b6270" />
+
+      <g>
+        <rect x="175" y="178" width="150" height="38" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+        <text x="250" y="202" text-anchor="middle">U(τₓ) = x</text>
+        <rect x="335" y="178" width="150" height="38" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+        <text x="410" y="202" text-anchor="middle">U(τᵧ) = y</text>
+      </g>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 250 218 C 250 244, 298 248, 330 258" />
+        <path d="M 410 218 C 410 244, 362 248, 330 258" />
+      </g>
+      <polygon points="330,258 322,250 334,247" fill="#5b6270" />
+
+      <rect x="252" y="258" width="156" height="30" rx="2" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1.2" />
+      <text x="330" y="278" text-anchor="middle" font-weight="600">output xy</text>
+    </g>
+  </svg>
+  <figcaption>Why Proposition 2.14 has an overhead term: a plain code $\tau_x\tau_y$ is not automatically parseable. The machine first reads a self-delimiting description of $l(\tau_x)$, then uses that length to split the rest into the code for $x$ and the code for $y$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(2.15 — Sharper iterated-log upper bound)</span></p>
 
@@ -1258,6 +1314,59 @@ but this expression actually tends to $0$. The surrounding argument clearly aims
 ### 2.3 Prefix-Free Turing Machines
 
 Plain Kolmogorov complexity has an awkward concatenation behavior because plain programs are not self-delimiting. Prefix-free complexity fixes this by allowing only domains in which no valid program is a proper prefix of another valid program.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Prefix-free words as leaves of a binary tree">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Prefix-free domains are antichains in the binary tree</text>
+
+      <g stroke="#5b6270" stroke-width="1" fill="none">
+        <line x1="330" y1="48" x2="210" y2="92" />
+        <line x1="330" y1="48" x2="450" y2="92" />
+        <line x1="210" y1="108" x2="135" y2="152" />
+        <line x1="210" y1="108" x2="285" y2="152" />
+        <line x1="450" y1="108" x2="375" y2="152" />
+        <line x1="450" y1="108" x2="525" y2="152" />
+        <line x1="135" y1="168" x2="95" y2="212" />
+        <line x1="135" y1="168" x2="175" y2="212" />
+        <line x1="285" y1="168" x2="245" y2="212" />
+        <line x1="285" y1="168" x2="325" y2="212" />
+      </g>
+
+      <g>
+        <circle cx="330" cy="42" r="15" fill="#fff7e0" stroke="#a86f00" />
+        <text x="330" y="47" text-anchor="middle">λ</text>
+        <circle cx="210" cy="100" r="15" fill="#fff7e0" stroke="#a86f00" />
+        <text x="210" y="105" text-anchor="middle">0</text>
+        <circle cx="450" cy="100" r="15" fill="#fff7e0" stroke="#a86f00" />
+        <text x="450" y="105" text-anchor="middle">1</text>
+
+        <circle cx="135" cy="160" r="16" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="2" />
+        <text x="135" y="165" text-anchor="middle">00</text>
+        <circle cx="285" cy="160" r="16" fill="#fff7e0" stroke="#a86f00" />
+        <text x="285" y="165" text-anchor="middle">01</text>
+        <circle cx="375" cy="160" r="16" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="2" />
+        <text x="375" y="165" text-anchor="middle">10</text>
+        <circle cx="525" cy="160" r="16" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="2" />
+        <text x="525" y="165" text-anchor="middle">11</text>
+
+        <circle cx="95" cy="220" r="17" fill="rgba(239,68,68,0.13)" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 3" />
+        <text x="95" y="225" text-anchor="middle">000</text>
+        <circle cx="175" cy="220" r="17" fill="rgba(239,68,68,0.13)" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 3" />
+        <text x="175" y="225" text-anchor="middle">001</text>
+        <circle cx="245" cy="220" r="17" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="2" />
+        <text x="245" y="225" text-anchor="middle">010</text>
+        <circle cx="325" cy="220" r="17" fill="#fff7e0" stroke="#a86f00" />
+        <text x="325" y="225" text-anchor="middle">011</text>
+      </g>
+
+      <text x="330" y="265" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        Valid programs may be leaves like 00, 10, 11, 010; descendants of a valid program, such as 000 and 001 below 00, are forbidden.
+      </text>
+    </g>
+  </svg>
+  <figcaption>A prefix-free domain is an antichain in the full binary tree: once a word is accepted as a program, no extension of it can also be accepted. This is the structural reason prefix-free programs are self-delimiting.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.17 — Prefix and comparability)</span></p>
@@ -1385,6 +1494,49 @@ $$K(vw) \le C_M(vw) + c_M \le K(v) + K(w) + c_M.$$
 </details>
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Prefix-free concatenation has an automatic boundary">
+    <g font-family="serif" font-size="13" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Prefix-free concatenation: the first halt marks the boundary</text>
+
+      <rect x="80" y="64" width="245" height="42" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="202" y="89" text-anchor="middle">σᵥ</text>
+      <text x="202" y="123" text-anchor="middle" font-size="11" fill="#5b6270">prefix-free code for v</text>
+
+      <rect x="325" y="64" width="255" height="42" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="452" y="89" text-anchor="middle">σ_w</text>
+      <text x="452" y="123" text-anchor="middle" font-size="11" fill="#5b6270">remaining code for w</text>
+
+      <line x1="325" y1="54" x2="325" y2="134" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 4" />
+      <text x="325" y="150" text-anchor="middle" fill="#7f1d1d" font-size="12">unique split</text>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 202 108 C 202 152, 240 164, 280 178" />
+        <path d="M 452 108 C 452 152, 420 164, 380 178" />
+      </g>
+      <polygon points="280,178 270,172 281,168" fill="#5b6270" />
+      <polygon points="380,178 389,172 378,168" fill="#5b6270" />
+
+      <rect x="205" y="180" width="150" height="38" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="280" y="204" text-anchor="middle">Ũ(σᵥ) = v</text>
+      <rect x="365" y="180" width="150" height="38" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="440" y="204" text-anchor="middle">Ũ(σ_w) = w</text>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 280 220 C 280 245, 315 250, 350 258" />
+        <path d="M 440 220 C 440 245, 395 250, 350 258" />
+      </g>
+      <polygon points="350,258 342,250 354,247" fill="#5b6270" />
+
+      <rect x="272" y="258" width="156" height="30" rx="2" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1.2" />
+      <text x="350" y="278" text-anchor="middle" font-weight="600">output vw</text>
+
+      <text x="330" y="282" text-anchor="middle" font-size="0">.</text>
+    </g>
+  </svg>
+  <figcaption>Theorem 2.21 removes the plain-complexity parsing overhead. Since $\widetilde U$ is prefix-free, there is at most one prefix of the input on which $\widetilde U$ halts; that halting prefix is exactly the first code, so the rest is the second code.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.22 — Computable processes do not increase $K$)</span></p>
 
@@ -1467,6 +1619,51 @@ For large $n$, (11) and (12) contradict each other.
 </div>
 
 Prefix-free complexity obeys a strong summability principle. The reason is geometric: a prefix-free set of words corresponds to a disjoint family of basic open cylinders in Cantor space.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 290" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Kraft inequality as disjoint cylinders">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Kraft inequality: prefix-free cylinders fit inside measure 1</text>
+
+      <rect x="40" y="62" width="580" height="34" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1.2" />
+      <text x="330" y="84" text-anchor="middle">Cantor space, total measure 1</text>
+
+      <rect x="40" y="126" width="290" height="42" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="185" y="151" text-anchor="middle">[[0]], measure 2⁻¹</text>
+
+      <rect x="330" y="126" width="145" height="42" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="402" y="151" text-anchor="middle">[[10]], 2⁻²</text>
+
+      <rect x="475" y="126" width="72.5" height="42" fill="rgba(168,111,0,0.14)" stroke="#a86f00" stroke-width="1.5" />
+      <text x="511" y="151" text-anchor="middle">[[110]]</text>
+      <text x="511" y="166" text-anchor="middle" font-size="10">2⁻³</text>
+
+      <rect x="547.5" y="126" width="36.25" height="42" fill="rgba(239,68,68,0.14)" stroke="#b91c1c" stroke-width="1.5" />
+      <text x="566" y="151" text-anchor="middle" font-size="10">1110</text>
+      <text x="566" y="166" text-anchor="middle" font-size="9">2⁻⁴</text>
+
+      <rect x="583.75" y="126" width="36.25" height="42" fill="rgba(94,96,96,0.06)" stroke="#cbd2e0" stroke-width="1" />
+      <text x="602" y="151" text-anchor="middle" font-size="10">free</text>
+
+      <g stroke="#5b6270" stroke-width="1">
+        <line x1="40" y1="116" x2="40" y2="178" />
+        <line x1="330" y1="116" x2="330" y2="178" />
+        <line x1="475" y1="116" x2="475" y2="178" />
+        <line x1="547.5" y1="116" x2="547.5" y2="178" />
+        <line x1="583.75" y1="116" x2="583.75" y2="178" />
+        <line x1="620" y1="116" x2="620" y2="178" />
+      </g>
+
+      <text x="330" y="218" text-anchor="middle" font-size="13">
+        2⁻¹ + 2⁻² + 2⁻³ + 2⁻⁴ + ··· ≤ 1
+      </text>
+      <text x="330" y="248" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        Prefix-freeness means these cylinders are disjoint; a non-prefix-free domain would create nested, overlapping intervals.
+      </text>
+    </g>
+  </svg>
+  <figcaption>Proposition 2.25 as a measure statement. Every program $\tau$ occupies the cylinder $[\![\tau]\!]$ of measure $2^{-l(\tau)}$. Prefix-freeness makes these cylinders pairwise disjoint, so their total measure is at most $1$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.25 — Kraft inequality for prefix-free domains)</span></p>
@@ -1552,6 +1749,55 @@ contradicting Theorem 2.26. Hence no fixed $d$ can bound all $K(w)$ by $l(w)+\lo
 </div>
 
 The next result is the constructive converse to Kraft's inequality: if a computably enumerable list of requested code lengths satisfies the Kraft sum bound, then one can effectively assign prefix-free codewords of exactly those lengths.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Kraft-Chaitin allocation by splitting free placeholders">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Kraft-Chaitin allocation: requests consume free dyadic space</text>
+
+      <text x="45" y="58" font-weight="600">Before request dₛ = 4</text>
+      <rect x="45" y="72" width="560" height="34" fill="rgba(94,96,96,0.07)" stroke="#1f2430" stroke-width="1" />
+      <rect x="45" y="72" width="140" height="34" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="115" y="94" text-anchor="middle">used</text>
+      <rect x="185" y="72" width="140" height="34" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="255" y="94" text-anchor="middle">placeholder v₂</text>
+      <rect x="325" y="72" width="70" height="34" fill="rgba(168,111,0,0.14)" stroke="#a86f00" stroke-width="1.5" />
+      <text x="360" y="94" text-anchor="middle">v₃</text>
+      <rect x="395" y="72" width="35" height="34" fill="rgba(168,111,0,0.10)" stroke="#a86f00" stroke-width="1.2" />
+      <text x="412" y="94" text-anchor="middle">v₄</text>
+      <text x="500" y="94" text-anchor="middle" fill="#5b6270">free tail</text>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 255 112 C 255 142, 225 150, 210 172" />
+        <path d="M 255 112 C 255 142, 285 150, 300 172" />
+      </g>
+      <polygon points="210,172 207,162 217,166" fill="#5b6270" />
+      <polygon points="300,172 292,166 302,162" fill="#5b6270" />
+      <text x="255" y="150" text-anchor="middle" font-size="11" fill="#5b6270">split v₂ into descendants</text>
+
+      <text x="45" y="202" font-weight="600">After assigning σₛ of length 4</text>
+      <rect x="45" y="216" width="560" height="34" fill="rgba(94,96,96,0.07)" stroke="#1f2430" stroke-width="1" />
+      <rect x="45" y="216" width="140" height="34" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="115" y="238" text-anchor="middle">used</text>
+      <rect x="185" y="216" width="35" height="34" fill="rgba(239,68,68,0.14)" stroke="#b91c1c" stroke-width="1.7" />
+      <text x="202" y="238" text-anchor="middle">σₛ</text>
+      <rect x="220" y="216" width="35" height="34" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="237" y="238" text-anchor="middle">v₄</text>
+      <rect x="255" y="216" width="70" height="34" fill="rgba(18,177,124,0.12)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="290" y="238" text-anchor="middle">v₃</text>
+      <rect x="325" y="216" width="70" height="34" fill="rgba(168,111,0,0.14)" stroke="#a86f00" stroke-width="1.5" />
+      <text x="360" y="238" text-anchor="middle">v₃</text>
+      <rect x="395" y="216" width="35" height="34" fill="rgba(168,111,0,0.10)" stroke="#a86f00" stroke-width="1.2" />
+      <text x="412" y="238" text-anchor="middle">v₄</text>
+      <text x="500" y="238" text-anchor="middle" fill="#5b6270">free tail</text>
+
+      <text x="330" y="292" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        A larger free placeholder can be subdivided until one descendant has exactly the requested length.
+      </text>
+    </g>
+  </svg>
+  <figcaption>The constructive idea behind Theorem 2.28. The remainder $R_s$ is represented by available placeholders. When a request of length $d_s$ arrives, the algorithm either uses an existing length-$d_s$ placeholder or splits a larger free placeholder into descendants, assigning one codeword and keeping the rest for later requests.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.28 — Kraft-Chaitin Theorem)</span></p>
