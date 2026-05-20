@@ -1131,3 +1131,481 @@ respectively.
   </svg>
   <figcaption>The construction behind Proposition 2.13(i): from the highly compressible base word $w_n = (01)^{2^n}$ (complexity $\le \log(n) + c_M$), inserting a single "1" at any of the $2^n + 1$ positions produces a family $W_n^{+}$. Since at most $2^n - 1$ words have Kolmogorov complexity $< n$, *some* member of $W_n^{+}$ has complexity $\ge n$ — a single inserted bit can therefore raise complexity by at least $n - \log(n) - c_M \to \infty$.</figcaption>
 </figure>
+
+The previous examples show that plain Kolmogorov complexity is stable under some very local edits, but can also be violently unstable under one-bit changes in the middle of a word. The next question is different: how much information is needed to describe a *concatenation* $xy$ if we already know how to describe $x$ and $y$ separately?
+
+The main obstruction is parsing. If a program contains first a code for $x$ and then a code for $y$, the decoding machine must know where the first code ends. This forces an extra self-delimiting description of the length of the first code.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.14 — Upper bound for concatenation)</span></p>
+
+There exists a constant $c$ such that, for all binary words $x$ and $y$,
+
+$$C(xy) \le C(x) + 2 \log C(x) + C(y) + c.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $\tau_x$ and $\tau_y$ be optimal plain codes for $x$ and $y$, so
+
+$$U(\tau_x) = x, \qquad l(\tau_x) = C(x), \qquad U(\tau_y) = y, \qquad l(\tau_y) = C(y).$$
+
+Construct a Turing machine $M$ that expects inputs of the form
+
+$$\mathrm{bin}(l(\tau_x))\,01\,\tau_x\tau_y.$$
+
+The separator $01$ makes the binary description of $l(\tau_x)$ parseable. Once $M$ has recovered $l(\tau_x)$, it splits the remaining word into the first $l(\tau_x)$ bits and the rest:
+
+$$\tau = \tau_1\tau_2, \qquad l(\tau_1) = l(\tau_x).$$
+
+It then returns $U(\tau_1)U(\tau_2)$ whenever both computations halt. For the specific input $\mathrm{bin}(l(\tau_x))01\tau_x\tau_y$, this gives $xy$. Hence
+
+$$
+\begin{aligned}
+C(xy)
+&\le C_M(xy) + c_M \\
+&\le l(\mathrm{bin}(l(\tau_x))) + 2 + l(\tau_x) + l(\tau_y) + c_M \\
+&\le 2\log C(x) + C(x) + C(y) + c
+\end{aligned}
+$$
+
+after absorbing fixed additive constants into $c$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(2.15 — Sharper iterated-log upper bound)</span></p>
+
+For every fixed $n$, prove that there exists a constant $c_n$ such that, for all binary words $x$ and $y$,
+
+$$
+C(xy)
+\le
+C(x)
++ \log C(x)
++ \log\log C(x)
++ \cdots
++ \underbrace{\log \cdots \log}_{n-1} C(x)
++ 2\underbrace{\log \cdots \log}_{n} C(x)
++ C(y)
++ c_n.
+$$
+
+The idea is to encode the length of the first code more efficiently by repeatedly encoding lengths of lengths.
+
+</div>
+
+The preceding upper bound is not merely an artifact of a clumsy construction. Some overhead for parsing the first description is unavoidable.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.16 — Additive parsing overhead cannot be eliminated)</span></p>
+
+For every $n$, there exist binary words $x$ and $y$ such that
+
+$$C(xy) > C(x) + \log C(x) + C(y) + n.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof sketch</summary>
+
+The proof reuses the computable sequence $S$ from the proof of Theorem 1.3. The machine $M_S$ enumerates special words $\sigma \in S$ which are relatively compressible compared with their length. In particular, for all such prefixes,
+
+$$C(\sigma) \le l(\sigma) - \log l(\sigma) + O(1). \tag{5}$$
+
+Choose a long word $w$ with high plain complexity, say $C(w) \ge l(w)$, which exists by the counting bound. Let $x$ be a long prefix of $w$ that belongs to $S$, and write $w = xy$. Then
+
+$$C(y) \le l(y) + O(1),$$
+
+and by (5),
+
+$$C(x) + C(y) \le l(x) - \log l(x) + l(y) + O(1). \tag{6}$$
+
+Since $xy = w$,
+
+$$
+\begin{aligned}
+C(xy)
+&= C(w) \\
+&\ge l(w) \\
+&= l(x) + l(y) \\
+&= \bigl(l(x) - \log l(x)\bigr) + l(y) + \log l(x) \\
+&\ge C(x) + C(y) + \log l(x) + O(1),
+\end{aligned}
+$$
+
+where the last step uses (6). The intended conclusion is that the extra logarithmic overhead cannot be removed uniformly.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A typo to check in Proposition 2.16)</span></p>
+
+The PDF's final displayed asymptotic line in the proof of Proposition 2.16 reads like
+
+$$\log l(x) - \log\bigl(l(x) - \log l(x)\bigr) \to \infty,$$
+
+but this expression actually tends to $0$. The surrounding argument clearly aims to show that a logarithmic additive term is necessary, so this proof should be checked against the lecturer's intended version before relying on the final inequality as written.
+
+</div>
+
+### 2.3 Prefix-Free Turing Machines
+
+Plain Kolmogorov complexity has an awkward concatenation behavior because plain programs are not self-delimiting. Prefix-free complexity fixes this by allowing only domains in which no valid program is a proper prefix of another valid program.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.17 — Prefix and comparability)</span></p>
+
+A word $x$ is a **prefix** of a word $w$, written $x \sqsubseteq w$, if there exists a word $y$ such that
+
+$$w = xy.$$
+
+It is a **proper prefix**, written $x \sqsubset w$, if $x \sqsubseteq w$ and $x \ne w$.
+
+We also write
+
+$$w \sim v \quad :\Longleftrightarrow \quad w \sqsubseteq v \text{ or } v \sqsubseteq w.$$
+
+Thus $w \sim v$ means that the two words are prefix-comparable.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.18 — Basic prefix properties)</span></p>
+
+The prefix relation $\sqsubseteq$ is reflexive and transitive.
+
+The comparability relation $\sim$ is reflexive and transitive, and satisfies the cancellation property
+
+$$vw \sim v'w' \Longrightarrow v \sim v'$$
+
+for all words $v, v', w, w' \in \lbrace 0,1\rbrace^{\ast}$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.19 — Prefix-free machines and prefix-free complexity)</span></p>
+
+A Turing machine $M$ is **prefix-free** if its domain is prefix-free:
+
+$$x,w \in \mathrm{dom}(M),\ x \sqsubset w \quad \text{never occurs}.$$
+
+A Turing machine $\widetilde U$ is a **universal prefix-free machine** if it is prefix-free and, for every prefix-free machine $M$, there is a code $i_M$ such that
+
+$$\widetilde U(i_M, w) = M(w)$$
+
+for every binary word $w$.
+
+After fixing a universal prefix-free machine $\widetilde U$, the **prefix-free Kolmogorov complexity** of $w$ is
+
+$$K(w) := \min \lbrace l(\sigma) : \widetilde U(\sigma) = w \rbrace.$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.20 — Existence of a universal prefix-free machine)</span></p>
+
+There exists a universal prefix-free Turing machine $\widetilde U$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof idea</summary>
+
+The difficulty is that we cannot effectively decide whether an arbitrary machine $M_i$ is prefix-free. So instead of testing $M_i$ directly, we effectively transform each machine into a prefix-free submachine.
+
+Given an index $i$, build a machine $M_{T(i)}$ by running
+
+$$M_i(\lambda),\ M_i(0),\ M_i(1),\ M_i(00),\dots$$
+
+in parallel. Whenever $M_i(w)$ halts at stage $s$, enumerate $(w, M_i(w))$ into the graph of $M_{T(i)}$ only if no distinct comparable input $v \sim w$ has already halted at an earlier stage.
+
+This construction has two key properties:
+
+* $M_{T(i)}$ is always prefix-free, because the first comparable conflict blocks the later one.
+* If $M_i$ was already prefix-free, then no conflict ever appears, so $M_{T(i)} = M_i$.
+
+Now define
+
+$$\widetilde U(i,w) := M_{T(i)}(w).$$
+
+If $M_i$ is prefix-free, then $\widetilde U(i,w) = M_i(w)$, so $\widetilde U$ simulates every prefix-free machine. Prefix-freeness of $\widetilde U$ follows from the cancellation property in Proposition 2.18 together with the prefix-freeness of each $M_{T(i)}$ and the self-delimiting choice of machine codes $i$.
+
+</details>
+</div>
+
+The central technical advantage of prefix-free complexity is that valid programs can be concatenated without separately encoding the boundary between them. The first program ends exactly when the first prefix-free computation accepts.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.21 — Concatenation for prefix-free complexity)</span></p>
+
+There exists a constant $c$ such that, for all binary words $v$ and $w$,
+
+$$K(vw) \le K(v) + K(w) + c.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Construct a prefix-free machine $M$ which, on input $\sigma$, tries all splits
+
+$$\sigma = \sigma_1\sigma_2$$
+
+and runs $\widetilde U(\sigma_1)$ and $\widetilde U(\sigma_2)$ in parallel. If it finds a split for which both computations halt, say
+
+$$\widetilde U(\sigma_1) = v, \qquad \widetilde U(\sigma_2) = w,$$
+
+then $M(\sigma)$ returns $vw$.
+
+Because $\widetilde U$ is prefix-free, at most one prefix $\sigma_1$ of a fixed input $\sigma$ can be a valid $\widetilde U$-program. This makes the split unambiguous.
+
+The machine $M$ is prefix-free. Indeed, if $M(\sigma)$ halts using the split $\sigma = \sigma_1\sigma_2$, then for a proper extension $\sigma\tau$ the only possible first component is still $\sigma_1$. The second component would have to be $\sigma_2\tau$, but $\widetilde U(\sigma_2)$ already halts, contradicting prefix-freeness of $\widetilde U$.
+
+Let $\sigma_v$ and $\sigma_w$ be optimal prefix-free codes for $v$ and $w$. Then
+
+$$M(\sigma_v\sigma_w) = vw,$$
+
+so
+
+$$C_M(vw) \le l(\sigma_v\sigma_w) = K(v) + K(w).$$
+
+Since $M$ is prefix-free, it is simulated by $\widetilde U$ with only a constant overhead:
+
+$$K(vw) \le C_M(vw) + c_M \le K(v) + K(w) + c_M.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.22 — Computable processes do not increase $K$)</span></p>
+
+For every computable function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to \lbrace 0,1\rbrace^{\ast}$, there exists a constant $c_f$ such that
+
+$$K(f(w)) < K(w) + c_f$$
+
+for every $w \in \mathrm{dom}(f)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $M$ be the machine that computes $f(\widetilde U(\sigma))$ from input $\sigma$. If $w \in \mathrm{dom}(f)$ and $\sigma_w$ is an optimal prefix-free code for $w$, then
+
+$$M(\sigma_w) = f(\widetilde U(\sigma_w)) = f(w), \qquad l(\sigma_w) = K(w).$$
+
+Moreover, $\mathrm{dom}(M) \subseteq \mathrm{dom}(\widetilde U)$, so $M$ is prefix-free. Therefore $\widetilde U$ simulates $M$ with constant overhead:
+
+$$K(f(w)) \le C_M(f(w)) + c_M \le K(w) + c_M.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.23 — Upper-semicomputability of $K$)</span></p>
+
+The prefix-free Kolmogorov complexity $K$ is upper-semicomputable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof idea</summary>
+
+Run the universal prefix-free machine $\widetilde U$ for longer and longer finite times. Define
+
+$$F(w,t) := \min \lbrace l(\sigma) : \widetilde U(\sigma)[t] \downarrow = w \rbrace.$$
+
+As $t$ increases, the value $F(w,t)$ can only decrease, and it converges to $K(w)$. This is exactly the approximation characterization of upper-semicomputability from Proposition 2.9.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.24 — No computable unbounded lower bound for $K$)</span></p>
+
+There exists no computable function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ such that:
+
+* $f$ is unbounded;
+* $K(w) > f(w)$ for every $w \in \mathrm{dom}(f)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Suppose such an $f$ exists. Construct a prefix-free machine $M$ with inputs of the form
+
+$$0,\ 10,\ 110,\ 1110,\dots, 1^n0,\dots$$
+
+On input $1^n0$, the machine runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ with
+
+$$f(\sigma) \downarrow > 2n.$$
+
+The input set $\lbrace 1^n0 : n \in \mathbb{N} \rbrace$ is prefix-free, so $M$ is prefix-free. Since $f$ is unbounded, $M$ is total on this input set. By the assumed lower bound,
+
+$$K(M(1^n0)) > 2n. \tag{11}$$
+
+But $M$ is prefix-free and computable, so it is simulated by $\widetilde U$:
+
+$$K(M(1^n0)) \le C_M(M(1^n0)) + c_M \le l(1^n0) + c_M = n + 1 + c_M. \tag{12}$$
+
+For large $n$, (11) and (12) contradict each other.
+
+</details>
+</div>
+
+Prefix-free complexity obeys a strong summability principle. The reason is geometric: a prefix-free set of words corresponds to a disjoint family of basic open cylinders in Cantor space.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.25 — Kraft inequality for prefix-free domains)</span></p>
+
+For every prefix-free machine $M$,
+
+$$\sum_{\tau \in \mathrm{dom}(M)} 2^{-l(\tau)} \le 1.$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Proof of Proposition 2.25)</span></p>
+
+Show that the cylinders $[\![\tau]\!]$ for $\tau \in \mathrm{dom}(M)$ are pairwise disjoint. Since each has measure $2^{-l(\tau)}$ and all are contained in Cantor space of total measure $1$, the inequality follows.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.26 — Summability of prefix-free complexity)</span></p>
+
+The prefix-free complexity satisfies
+
+$$\sum_{\sigma \in \lbrace 0,1\rbrace^{\ast}} 2^{-K(\sigma)} \le 1.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* For every word $\sigma$, choose an optimal prefix-free code $\tau_\sigma$ with
+
+$$\widetilde U(\tau_\sigma) = \sigma, \qquad l(\tau_\sigma) = K(\sigma).$$
+
+The set $\lbrace \tau_\sigma : \sigma \in \lbrace 0,1\rbrace^{\ast} \rbrace$ is a subset of $\mathrm{dom}(\widetilde U)$, hence prefix-free. Therefore, by Kraft's inequality,
+
+$$
+\sum_{\sigma \in \lbrace 0,1\rbrace^{\ast}} 2^{-K(\sigma)}
+=
+\sum_{\sigma \in \lbrace 0,1\rbrace^{\ast}} 2^{-l(\tau_\sigma)}
+\le
+\sum_{\tau \in \mathrm{dom}(\widetilde U)} 2^{-l(\tau)}
+\le 1.
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.27 — Prefix-free complexity can exceed length by logarithmic overhead)</span></p>
+
+For every fixed constant $c$, there exists a word $w$ such that
+
+$$K(w) > l(w) + \log l(w) + c.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Suppose, toward a contradiction, that there is a constant $d$ such that
+
+$$K(w) \le l(w) + \log l(w) + d$$
+
+for every nonempty word $w$. Then
+
+$$
+\begin{aligned}
+1
+&\ge \sum_{w \in \lbrace 0,1\rbrace^{\ast}} 2^{-K(w)} \\
+&\ge \sum_{w \in \lbrace 0,1\rbrace^{\ast}} 2^{-l(w)-\log l(w)-d} \\
+&= 2^{-d} \sum_{n \ge 1} \sum_{l(w)=n} 2^{-n}\frac{1}{n} \\
+&= 2^{-d} \sum_{n \ge 1} 2^n \cdot 2^{-n}\frac{1}{n} \\
+&= 2^{-d} \sum_{n \ge 1} \frac{1}{n}
+= \infty,
+\end{aligned}
+$$
+
+contradicting Theorem 2.26. Hence no fixed $d$ can bound all $K(w)$ by $l(w)+\log l(w)+d$.
+
+</details>
+</div>
+
+The next result is the constructive converse to Kraft's inequality: if a computably enumerable list of requested code lengths satisfies the Kraft sum bound, then one can effectively assign prefix-free codewords of exactly those lengths.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.28 — Kraft-Chaitin Theorem)</span></p>
+
+Let
+
+$$(d_0,\tau_0), (d_1,\tau_1), \dots$$
+
+be a computably enumerable sequence of pairs with $d_i \in \mathbb{N}$ and $\tau_i \in \lbrace 0,1\rbrace^{\ast}$ such that
+
+$$\sum_{i \in \mathbb{N}} 2^{-d_i} \le 1. \tag{13}$$
+
+Then there exists a computable prefix-free machine $M$ and codewords $\sigma_i$ such that
+
+$$l(\sigma_i) = d_i, \qquad M(\sigma_i) = \tau_i$$
+
+for all $i$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof idea</summary>
+
+Think of each requested codeword of length $d_i$ as asking for a dyadic interval of measure $2^{-d_i}$. Condition (13) says that the total requested measure fits inside the unit interval. The proof gives an effective way to place these intervals so that none is nested inside another.
+
+At stage $s$, after assigning $\sigma_0,\dots,\sigma_{s-1}$, keep track of the remaining free measure
+
+$$R_s = 1 - \sum_{i<s} 2^{-d_i}.$$
+
+The binary expansion of $R_s$ records which placeholder intervals are still available. For every position $n$ where the $n$-th bit of $R_s$ is $1$, maintain a placeholder word $v_n^{(s)}$ of length $n$. The invariant is:
+
+* $l(v_n^{(s)}) = n$ whenever $v_n^{(s)}$ is defined;
+* the already assigned codes together with all placeholders form a prefix-free set.
+
+For the next request $(d_s,\tau_s)$, there are two cases.
+
+If the bit $R_s(d_s)$ is $1$, use the existing placeholder:
+
+$$\sigma_s := v_{d_s}^{(s)}, \qquad M(\sigma_s) := \tau_s.$$
+
+This subtracts $2^{-d_s}$ from the remaining measure and preserves the invariant.
+
+If $R_s(d_s)=0$, take the largest $d' < d_s$ with $R_s(d')=1$. Such a $d'$ must exist, otherwise the Kraft bound would already be violated. Split the larger placeholder $v_{d'}^{(s)}$ into smaller descendants, choose one descendant of length $d_s$ as $\sigma_s$, and keep the other descendants as new placeholders:
+
+$$\sigma_s := v_{d'}^{(s)}0^{d_s-d'}, \qquad M(\sigma_s) := \tau_s.$$
+
+The remaining descendants
+
+$$v_{d'}^{(s)}0,\ v_{d'}^{(s)}00,\ \dots,\ v_{d'}^{(s)}0^{d_s-d'}$$
+
+are assigned to the positions whose bits in the new remainder become $1$. Each update preserves prefix-freeness because all new words live below the single old placeholder that was removed.
+
+Proceeding effectively through the computably enumerable request list defines the desired computable prefix-free machine.
+
+</details>
+</div>
