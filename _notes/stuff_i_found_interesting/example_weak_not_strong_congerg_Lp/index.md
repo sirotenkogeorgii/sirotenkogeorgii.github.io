@@ -226,7 +226,7 @@ Hence
 
 $$\sin(nt)\not\to 0 \quad\text{strongly in }L^p((0,1))$$
 
-For (p=\infty), also no, because
+For $p=\infty$, also no, because
 
 $$|\sin(nt)|_{L^\infty((0,1))}\to 1,$$
 
@@ -236,256 +236,180 @@ so it definitely does not go to $0$.
 
 The **Riemann–Lebesgue lemma** says:
 
-If (f\in L^1((a,b))), then
+If $f\in L^1((a,b))$, then
 
-[
-\int_a^b f(t)\sin(nt),dt \to 0
-]
+$$\int_a^b f(t)\sin(nt),dt \to 0$$
 
 and
 
-[
-\int_a^b f(t)\cos(nt),dt \to 0
-]
+$$\int_a^b f(t)\cos(nt),dt \to 0$$
 
 as (n\to\infty).
 
 Equivalently, using complex exponentials,
 
-[
-\int_a^b f(t)e^{int},dt \to 0.
-]
+$$\int_a^b f(t)e^{int},dt \to 0.$$
 
-So the high-frequency oscillations of (\sin(nt)), (\cos(nt)), or (e^{int}) “average out” against any integrable function (f).
+So the high-frequency oscillations of $\sin(nt)$, $\cos(nt)$, or $e^{int}$ “average out” against any integrable function $f$.
 
-For example, if (f(t)=1), then
+For example, if $f(t)=1$, then
 
-[
-\int_0^1 \sin(nt),dt
-====================
+$$\int_0^1 \sin(nt)dt = \left[-\frac{\cos(nt)}{n}\right]_0^1 = \frac{1-\cos n}{n}\to 0$$
 
-# \left[-\frac{\cos(nt)}{n}\right]_0^1
-
-\frac{1-\cos n}{n}\to 0.
-]
-
-The lemma says that this remains true even for any (f\in L^1), not just smooth or constant (f).
+The lemma says that this remains true even for any $f\in L^1$, not just smooth or constant $f$.
 
 In your earlier question, we used it with
 
-[
-f(t)=g(t),
-]
+$$f(t)=g(t),$$
 
-where (g\in L^q((0,1))). Since ((0,1)) has finite measure, (g\in L^q) implies (g\in L^1) for (q\ge 1). Therefore
+where $g\in L^q((0,1))$. Since $(0,1)$ has finite measure, $g\in L^q$ implies $g\in L^1$ for $q\ge 1$. Therefore
 
-[
-\int_0^1 g(t)\sin(nt),dt \to 0.
-]
+$$\int_0^1 g(t)\sin(nt),dt \to 0.$$
 
 That is exactly why
 
-[
-\sin(nt)\rightharpoonup 0
-]
+$$\sin(nt)\rightharpoonup 0$$
 
-weakly in (L^p((0,1))) for (1\le p<\infty).
+weakly in $L^p((0,1))$ for $1\le p<\infty$.
 
+> it suggests the functions $\cos(nt)$ and $\sin(nt)$ cross ox axes totally in points of total measure zero?
 
-> it suggests the functions cos(nt) and sin(nt) cross ox axes totally in points of total measure zero?
-
-Yes, for each fixed (n), the zeros of (\sin(nt)) and (\cos(nt)) in ((0,1)) form a finite set, hence a set of Lebesgue measure zero.
+Yes, for each fixed $n$, the zeros of $\sin(nt)$ and $\cos(nt)$ in $(0,1)$ form a finite set, hence a set of Lebesgue measure zero.
 
 For example,
 
-[
-\sin(nt)=0
-]
+$$\sin(nt)=0$$
 
 when
 
-[
-nt=k\pi,
-]
+$$nt=k\pi,$$
 
 so
 
-[
-t=\frac{k\pi}{n}.
-]
+$$t=\frac{k\pi}{n}.$$
 
-There are only finitely many such points inside ((0,1)). Therefore
+There are only finitely many such points inside $(0,1)$. Therefore
 
-[
-{t\in(0,1):\sin(nt)=0}
-]
+$$\lbrace t\in(0,1):\sin(nt)=0\rbrace$$
 
 has measure zero.
 
 Similarly,
 
-[
-\cos(nt)=0
-]
+$$\cos(nt)=0$$
 
 when
 
-[
-nt=\frac{\pi}{2}+k\pi,
-]
+$$nt=\frac{\pi}{2}+k\pi,$$
 
 so
 
-[
-t=\frac{\frac{\pi}{2}+k\pi}{n}.
-]
+$$t=\frac{\frac{\pi}{2}+k\pi}{n}.$$
 
 Again, finitely many points, hence measure zero.
 
 But this is **not** the main reason behind the Riemann–Lebesgue lemma.
 
-The important point is not that the functions cross the (x)-axis at measure-zero sets. The important point is that they oscillate faster and faster, so positive and negative parts cancel out in the integral:
+The important point is not that the functions cross the $x$-axis at measure-zero sets. The important point is that they oscillate faster and faster, so positive and negative parts cancel out in the integral:
 
-[
-\int_0^1 f(t)\sin(nt),dt \to 0.
-]
+$$\int_0^1 f(t)\sin(nt),dt \to 0.$$
 
-The zero-crossing points themselves do not contribute anything to the integral, because points have measure zero. What matters are the intervals between the zeros, where (\sin(nt)) is positive or negative.
+The zero-crossing points themselves do not contribute anything to the integral, because points have measure zero. What matters are the intervals between the zeros, where $\sin(nt)$ is positive or negative.
 
 So:
 
-[
-\text{zeros have measure zero} \quad \neq \quad \text{weak convergence to }0.
-]
+$$\text{zeros have measure zero} \quad \neq \quad \text{weak convergence to }0.$$
 
 Weak convergence comes from **oscillatory cancellation**, not from the fact that the function is zero at some points. This is also why
 
-[
-\sin(nt)\not\to 0
-]
+$$\sin(nt)\not\to 0$$
 
-strongly in (L^p): its magnitude does not disappear; it only oscillates faster.
+strongly in $L^p$: its magnitude does not disappear; it only oscillates faster.
 
-> I am new to functional analysis, could you explain to me, why you take a test function from L^q((0,1)) to test weak convergence in L^p((0,1))? Why not in the same space?
+> I am new to functional analysis, could you explain to me, why you take a test function from $L^q((0,1))$ to test weak convergence in $L^p((0,1))$? Why not in the same space?
 
 Because **weak convergence is tested by continuous linear functionals**, not by arbitrary elements of the same space.
 
-For a normed space (X),
+For a normed space $X$,
 
-[
-x_n \rightharpoonup x
-]
+$$x_n \rightharpoonup x$$
 
 means:
 
-[
-\ell(x_n)\to \ell(x)
-\quad\text{for every continuous linear functional } \ell\in X^*.
-]
+$$\ell(x_n)\to \ell(x) \quad\text{for every continuous linear functional } \ell\in X^*.$$
 
 So if
 
-[
-X=L^p((0,1)),
-]
+$$X=L^p((0,1)),$$
 
-then we need to know what the dual space ((L^p)^*) is.
+then we need to know what the dual space $(L^p)^*$ is.
 
 For
 
-[
-1\le p<\infty,
-]
+$$1\le p<\infty,$$
 
 the dual is
 
-[
-(L^p)^* \cong L^q,
-]
+$$(L^p)^* \cong L^q,$$
 
 where
 
-[
-\frac1p+\frac1q=1.
-]
+$$\frac1p+\frac1q=1.$$
 
-This means: every continuous linear functional on (L^p) can be written as
+This means: every continuous linear functional on $L^p$ can be written as
 
-[
-\ell_g(f)=\int_0^1 f(t)g(t),dt
-]
+$$\ell_g(f)=\int_0^1 f(t)g(t),dt$$
 
-for some (g\in L^q((0,1))).
+for some $g\in L^q((0,1))$.
 
 So to test whether
 
-[
-f_n \rightharpoonup 0
-\quad\text{in }L^p,
-]
+$$f_n \rightharpoonup 0 \quad\text{in }L^p,$$
 
 we check whether
 
-[
-\ell_g(f_n)\to 0
-]
+$$\ell_g(f_n)\to 0$$
 
-for all (g\in L^q), i.e.
+for all $g\in L^q$, i.e.
 
-[
-\int_0^1 f_n(t)g(t),dt\to 0
-\quad\text{for all }g\in L^q.
-]
+$$\int_0^1 f_n(t)g(t)dt\to 0 \quad\text{for all }g\in L^q.$$
 
 In your example,
 
-[
-f_n(t)=\sin(nt),
-]
+$$f_n(t)=\sin(nt),$$
 
-so weak convergence to (0) means
+so weak convergence to $0$ means
 
-[
-\int_0^1 \sin(nt)g(t),dt\to 0
-\quad\text{for all }g\in L^q.
-]
+$$\int_0^1 \sin(nt)g(t)dt\to 0 \quad\text{for all }g\in L^q.$$
 
-That is why the test function is from (L^q), not generally from (L^p).
+That is why the test function is from $L^q$, not generally from $L^p$.
 
-The reason (L^q) appears is **Hölder’s inequality**:
+The reason $L^q$ appears is **Hölder’s inequality**:
 
-[
-\left|\int_0^1 f(t)g(t),dt\right|
+$$
+\left|\int_0^1 f(t)g(t)dt\right|
 \le
-|f|*{L^p}|g|*{L^q}.
-]
+|f|_{L^p}|g|_{L^q}.
+$$
 
 This guarantees that
 
-[
-f\mapsto \int_0^1 f(t)g(t),dt
-]
+$$f\mapsto \int_0^1 f(t)g(t)dt$$
 
-is a continuous linear functional on (L^p).
+is a continuous linear functional on $L^p$.
 
-In a Hilbert space, for example (L^2), we do test using the same space because
+In a Hilbert space, for example $L^2$, we do test using the same space because
 
-[
-(L^2)^*\cong L^2.
-]
+$$(L^2)^*\cong L^2.$$
 
-Indeed, for (p=2), we have (q=2). So weak convergence in (L^2) is tested by
+Indeed, for $p=2$, we have $q=2$. So weak convergence in $L^2$ is tested by
 
-[
-\int_0^1 f_n(t)g(t),dt
-]
+$$\int_0^1 f_n(t)g(t)dt$$
 
-with (g\in L^2).
+with $g\in L^2$.
 
 But for (p\neq 2), the dual space is different:
 
-[
-(L^p)^* \cong L^q,
-]
+$$(L^p)^* \cong L^q,$$
 
-so we test using (L^q), not (L^p).
+so we test using $L^q$, not $L^p$.
