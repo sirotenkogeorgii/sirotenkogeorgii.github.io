@@ -1,3 +1,11 @@
+---
+layout: note
+title: "Weak but Not Strong Convergence in Lp: sin(nt)"
+date: 2024-10-20
+permalink: /notes/stuff_i_found_interesting/example_weak_not_strong_congerg_Lp/
+math: true
+---
+
 <div style="margin: 1.2rem 0 1.5rem;">
 
 <p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: slide to increase $n$ and watch $t \mapsto \sin(nt)$ on $[0,1]$. The graph oscillates faster, while its amplitude stays between $-1$ and $1$.</p>
