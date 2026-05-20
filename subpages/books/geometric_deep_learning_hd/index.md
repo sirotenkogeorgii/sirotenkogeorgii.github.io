@@ -41,10 +41,10 @@ Sums are taken "automatically" over repeated indices, without the $\sum$ symbol,
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">A.1 (Summation convention)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Summation convention)</span></p>
 
 $$
-\langle L\cdot, \cdot\rangle = \langle \cdot, \cdot\rangle_{\widecheck{\mathcal X} \times \mathcal X}
+\ell(x, x') \equiv \langle L x, x'\rangle \equiv (Lx)(x') \equiv (Lx)_i\,(x')^i \qquad \text{(summation convention)}.
 $$
 
 </div>
@@ -802,5 +802,146 @@ A \text{ right-invertible (surjective)},\ B \text{ left-invertible (injective)} 
 A \text{ and } B \text{ are projections} &\;\Longrightarrow\; \widecheck{A} \otimes B \text{ is a projection.} &&\text{(A.73f)}
 \end{aligned}
 $$
+
+</div>
+
+## 1. Multilayer Networks on Euclidean Spaces, Associative Memories
+
+### 1.1. Minimizing Quadratic Functionals over Affine Subspaces
+
+This section applies the Euclidean-space machinery from Appendix A.1. The basic object is a constrained least-distance problem: given $u \in \mathcal{X}$, $y \in \mathcal{Y}$, and a linear map $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$, minimize the quadratic distance to $u$ over the affine subspace of points satisfying $Ax = y$:
+
+$$
+\min_{x:\, Ax = y} \frac{1}{2}\lambda(x-u)^2. \tag{1.1}
+$$
+
+Here $\lambda$ is the norm induced by the scalar product on $\mathcal{X}$, and $L : \mathcal{X} \to \widecheck{\mathcal{X}}$ is the corresponding duality mapping from Appendix A.1.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">1.1 (Minimizer of a quadratic functional over an affine subspace)</span></p>
+
+Assume that $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ is **surjective**. Then the unique solution of (1.1) is
+
+$$
+\begin{aligned}
+x^* &= u - L^{-1}A^{\vee}\widecheck{y}^* &&\text{(1.2a)} \\
+&= u - A^+(Au-y), &&\text{(1.2b)}
+\end{aligned}
+$$
+
+where the optimal multiplier vector is
+
+$$
+\widecheck{y}^* = (A L^{-1} A^{\vee})^{-1}(Au-y). \tag{1.2c}
+$$
+
+Equivalently, $\widecheck{y}^*$ solves the dual problem
+
+$$
+\min_{\widecheck{y} \in \widecheck{\mathcal{Y}}}
+\left\{
+\frac{1}{2}\widecheck{\lambda}\!\left(A^{\vee}\widecheck{y} - Lu\right)^2
++ \langle \widecheck{y}, y\rangle
+\right\}. \tag{1.2d}
+$$
+
+</div>
+
+The proposition says that the nearest feasible point is obtained by correcting $u$ in the directions controlled by $A$. Since $A$ is surjective, the affine constraint $Ax=y$ is always feasible, and the pseudo-inverse $A^+$ gives the minimum-norm correction that changes $Au$ into $y$.
+
+In the sequel, Proposition 1.1 is reused in three scenarios. Each scenario keeps the same optimization template, but changes the concrete choices of the spaces $\mathcal{X}$ and $\mathcal{Y}$ and of the duality mapping $L$.
+
+### 1.2. Single Linear Associative Memory
+
+We begin with the simplest neural network architecture: a single linear map trained on input-output pairs. Given data, the operator is selected as the minimizer of a constrained quadratic functional: it must map the training inputs to the prescribed outputs while staying as close as possible to a reference operator. This lets the map **recall** outputs associated with known inputs and generalize, to some degree, to perturbed inputs. This function is called **associative memory**.
+
+The mathematical background is the operator-space scalar product (A.25) and induced norm (A.27) on $\mathcal{L}(\mathcal{X}, \mathcal{Y})$. Let
+
+$$
+\mathcal{D}_n = \{(x_1,y_1), \ldots, (x_n,y_n)\} \subset \mathcal{X} \times \mathcal{Y} \tag{1.3}
+$$
+
+be a collection of input-output pairs. We want to determine a linear map
+
+$$
+W \in \mathcal{L}(\mathcal{X}, \mathcal{Y}) \tag{1.4a}
+$$
+
+such that
+
+$$
+W x_k = y_k, \qquad \forall\, k \in [n]. \tag{1.4b}
+$$
+
+The Gramian matrix of the input data is
+
+$$
+G = (G_{kl})_{k,l \in [n]}, \qquad G_{kl} := \ell(x_k,x_l), \tag{1.5a}
+$$
+
+and its inverse is denoted by
+
+$$
+G^{-1} = (G^{kl})_{k,l \in [n]}, \qquad G_{jk}G^{kl} = \delta^l_j, \qquad j,l \in [n]. \tag{1.5b}
+$$
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.2 (Linear associative memory)</span></p>
+
+Assume that the input vectors $(x_k)_{k \in [n]}$ are linearly independent, and let $U \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be given. Then there exists a unique operator
+
+$$
+W_{\mathcal{D}} := U - G^{kl}(Lx_l) \otimes (Ux_k - y_k) \in \mathcal{L}(\mathcal{X}, \mathcal{Y}) \tag{1.6}
+$$
+
+satisfying the interpolation constraints (1.4b) and minimizing the distance
+
+$$
+(\widecheck{\lambda} \otimes \mu)(W-U)
+$$
+
+from $W$ to $U$. If, in addition, the input vectors $(x_k)_{k \in [n]}$ are $\ell$-orthogonal, then
+
+$$
+W_{\mathcal{D}} = U - (Lx_k) \otimes \frac{Ux_k-y_k}{\lambda(x_k)^2}. \tag{1.7}
+$$
+
+If $\mathcal{D} = \mathcal{D}_n = \mathcal{D}_{n-1} \cup \{(x_n,y_n)\}$ and $U = W_{\mathcal{D}_{n-1}}$ satisfies the constraints (1.4b) for $\mathcal{D}_{n-1}$, then
+
+$$
+W_{\mathcal{D}_n} = W_{\mathcal{D}_{n-1}} - G^{nl}(Lx_l) \otimes (W_{\mathcal{D}_{n-1}}x_n - y_n) \qquad \text{(with } n \text{ fixed).} \tag{1.8}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">1.3 (Structure of the learning rule, generalization)</span></p>
+
+**(a)** The variational problem determines $W_{\mathcal{D}}$ as a correction of the reference operator $U$. Consequently, formula (1.7) specifies how $W_{\mathcal{D}}$ can be decomposed into an iterative learning rule (1.8), which extends to storing novel input-output pairs in the associative memory.
+
+**(b)** The iterative learning rule (1.8) corrects a given operator by adjusting the wiring from inputs to outputs: it correlates all input vectors with the residual vector of the current input-output pair. This mirrors mechanisms known from the research literature on natural neural systems, often called **Hebbian learning**.
+
+**(c)** Although the architecture is only a single linear layer, there are still additional degrees of freedom for learning. In particular, the scalar product of the input space determines its geometry and therefore affects how the network generalizes to unseen data.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">1.4 (Linear Associative Memory)</span></p>
+
+We apply Theorem 1.2 to the data depicted in Figure 1.1(a) and (b). From a few thousand samples of the digit $0$, with $\dim = 784$, representative vectors were selected by unsupervised clustering. The goal is to compute a data-specific inner product $\ell(x,x')$ according to Lemma A.2.
+
+Panel (c) shows the transformed input vectors
+
+$$
+W_{\mathcal{D}}x_k \approx y_k, \qquad k \in [n].
+$$
+
+The approximation is not very good, but improves substantially after binarization.
+
+The example suggests three lessons:
+
+* Treating discrete, here binary, data as real-valued data is not a good idea.
+* Almost linearly dependent input vectors cause numerically ill-conditioned evaluations of data-specific inner products. Regularization is needed for the numerical computation, and the predicted outputs are sensitive to spurious numerical errors, as revealed by the varying backgrounds in panel (c).
+* Panel (d) suggests that respecting the discrete nature of the data during inference and learning should improve prediction.
 
 </div>
