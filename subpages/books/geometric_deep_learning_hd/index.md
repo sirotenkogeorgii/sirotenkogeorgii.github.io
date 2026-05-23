@@ -91,7 +91,7 @@ $$
 
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_scalar_product_geometry.png' | relative_url }}" alt="Three side-by-side panels of R² with the same canonical basis δ₁, δ₂ but three different scalar products: a circle for G = I, a horizontally-stretched ellipse for G = diag(1, 4), and a tilted ellipse for an oblique G with off-diagonal entries. Inset heatmaps show each Gramian." loading="lazy">
-  <figcaption>The same vector space $\mathcal X = \mathbb R^2$ acquires entirely different geometries depending on which scalar product $\ell$ we install on it. Concretely, the unit ball $\{x : \ell(x,x) \le 1\}$ is the level-1 set of the quadratic form $x^\top G x$, where $G = (\ell(\delta_i, \delta_j))_{ij}$ is the Gramian. For $G = I$ it is the round disc; for $G = \mathrm{diag}(1, 4)$ it is squashed along $\delta_2$ (lengths in that direction are now twice as expensive); for the oblique $G$ it tilts away from the axes because $\delta_1, \delta_2$ are no longer $\ell$-orthogonal. The basis arrows themselves do not move — only the geometry painted on top of them.</figcaption>
+  <figcaption>The same vector space $\mathcal X = \mathbb R^2$ acquires entirely different geometries depending on which scalar product $\ell$ we install on it. Concretely, the unit ball $\lbrace x : \ell(x,x) \le 1\rbrace $ is the level-1 set of the quadratic form $x^\top G x$, where $G = (\ell(\delta_i, \delta_j))_{ij}$ is the Gramian. For $G = I$ it is the round disc; for $G = \mathrm{diag}(1, 4)$ it is squashed along $\delta_2$ (lengths in that direction are now twice as expensive); for the oblique $G$ it tilts away from the axes because $\delta_1, \delta_2$ are no longer $\ell$-orthogonal. The basis arrows themselves do not move — only the geometry painted on top of them.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -651,7 +651,7 @@ $$
 
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_outer_product_rank1.png' | relative_url }}" alt="Three panels left-to-right. Left: input space E with the covector x̌ drawn as a family of equally-spaced parallel level lines, and an input vector x crossing several of them. Middle: an arrow indicating the scalar value ⟨x̌, x⟩ multiplies the direction y. Right: output space F showing the direction y (faded) and the scaled output ⟨x̌, x⟩ y along the same line. A small heatmap on the far right shows the rank-1 matrix W = y x̌^⊤." loading="lazy">
-  <figcaption>The outer product $\widecheck x \otimes y$ acting on a vector $x \in E$, in three steps. <em>Left:</em> the covector $\widecheck x \in \widecheck E$ is drawn as the family of its level lines $\{x : \langle\widecheck x, x\rangle = c\}$ — equally-spaced parallel lines in $E$, with the dark line being the kernel ($c = 0$). The number $\langle\widecheck x, x\rangle$ counts how many level lines $x$ has crossed past zero. <em>Middle:</em> that scalar then scales the fixed direction $y \in F$ to produce the output $\langle\widecheck x, x\rangle\, y$, always lying along the same ray through $y$. <em>Right:</em> in matrix form (A.53), $W = y\,\widecheck x^\top$ is a rank-$1$ matrix — every column is a scalar multiple of $y$, so the image of $E$ collapses onto the one-dimensional subspace $\mathbb R\cdot y \subset F$.</figcaption>
+  <figcaption>The outer product $\widecheck x \otimes y$ acting on a vector $x \in E$, in three steps. <em>Left:</em> the covector $\widecheck x \in \widecheck E$ is drawn as the family of its level lines $\lbrace x : \langle\widecheck x, x\rangle = c\rbrace $ — equally-spaced parallel lines in $E$, with the dark line being the kernel ($c = 0$). The number $\langle\widecheck x, x\rangle$ counts how many level lines $x$ has crossed past zero. <em>Middle:</em> that scalar then scales the fixed direction $y \in F$ to produce the output $\langle\widecheck x, x\rangle\, y$, always lying along the same ray through $y$. <em>Right:</em> in matrix form (A.53), $W = y\,\widecheck x^\top$ is a rank-$1$ matrix — every column is a scalar multiple of $y$, so the image of $E$ collapses onto the one-dimensional subspace $\mathbb R\cdot y \subset F$.</figcaption>
 </figure>
 
 <figure>
@@ -839,12 +839,21 @@ Equivalently, $\widecheck{y}^*$ solves the dual problem
 
 $$
 \min_{\widecheck{y} \in \widecheck{\mathcal{Y}}}
-\left\{
+\left\lbrace 
 \frac{1}{2}\widecheck{\lambda}\!\left(A^{\vee}\widecheck{y} - Lu\right)^2
 + \langle \widecheck{y}, y\rangle
-\right\}. \tag{1.2d}
+\right\rbrace . \tag{1.2d}
 $$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+TODO:
+
+</details>
 </div>
 
 The proposition says that the nearest feasible point is obtained by correcting $u$ in the directions controlled by $A$. Since $A$ is surjective, the affine constraint $Ax=y$ is always feasible, and the pseudo-inverse $A^+$ gives the minimum-norm correction that changes $Au$ into $y$.
@@ -858,7 +867,7 @@ We begin with the simplest neural network architecture: a single linear map trai
 The mathematical background is the operator-space scalar product (A.25) and induced norm (A.27) on $\mathcal{L}(\mathcal{X}, \mathcal{Y})$. Let
 
 $$
-\mathcal{D}_n = \{(x_1,y_1), \ldots, (x_n,y_n)\} \subset \mathcal{X} \times \mathcal{Y} \tag{1.3}
+\mathcal{D}_n = \lbrace (x_1,y_1), \ldots, (x_n,y_n)\rbrace  \subset \mathcal{X} \times \mathcal{Y} \tag{1.3}
 $$
 
 be a collection of input-output pairs. We want to determine a linear map

@@ -3362,7 +3362,7 @@ $$\bigl(T_n^{f,b}(x)\bigr)' = T_{n-1}^{f',b}(x).$$
 
 To prove Theorem 1 we need the following lemma.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 2</span><span class="math-callout__name">(On the Zero Polynomial)</span></p>
 
 For any numbers $b \in \mathbb{R}$ and $n \in \mathbb{N}\_0$ and any polynomial $p(x) = \sum\_{j=0}^{n} a\_j x^n$ with $a\_j \in \mathbb{R}$ one has the implication
@@ -3394,7 +3394,7 @@ Thus, according to Lemma 2, $p(x) = T\_n^{f,b}(x)$. $\square$
 
 We state concisely the strengthened approximation.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3</span><span class="math-callout__name">(Taylor Approximation)</span></p>
 
 If $n \in \mathbb{N}\_0$ and $f\colon U(b, \delta) \to \mathbb{R}$ is a function with finite $f^{(n)}(b) \in \mathbb{R}$ (i.e., $f$ is continuous at $b$ for $n = 0$), then for $x \in U(b, \delta)$ and $x \to b$,
@@ -3517,7 +3517,7 @@ Some of these expansions hold in larger domains. Expansion 4 with $a \in \mathbb
 
 Coefficients in Taylor series can often be interpreted combinatorially. We give without proof one example of many.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 7</span><span class="math-callout__name">(Bell Numbers $B\_n$)</span></p>
 
 For any $x \in (-1, 1)$ it is true that
@@ -3843,7 +3843,7 @@ $$F(b) - F(a) = \sum_{i=1}^{k}(F(a_i) - F(a_{i-1})) = \sum_{i=1}^{k}(a_i - a_{i-
 
 with the test points $\bar{c} = (c\_1, \dots, c\_k)$ of $P$. In view of Proposition 1 we get the following equality.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 4</span><span class="math-callout__name">(Riemann = Newton)</span></p>
 
 Let $a < b$ be real numbers, let $f\colon [a, b] \to \mathbb{R}$ be a continuous function and let $F\colon [a, b] \to \mathbb{R}$ be a primitive of $f$. Then
@@ -3904,7 +3904,7 @@ The situation in Definition 6 is strictly more general than the former one with 
 
 If for a function $f\colon (a, b) \to \mathbb{R}$, where $a < b$ are real numbers, the Newton integral $\text{(N)} \int\_a^b f$ exists, we say that the function $f$ is **Newton-integrable** (on $(a, b)$) and write that $f \in \mathrm{N}(a, b)$. It is easy too see that if $f \in \mathrm{N}(a, b)$ then $f \in \mathrm{N}(c, d)$ for any numbers $c < d$ in the interval $(a, b)$.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 7</span><span class="math-callout__name">(Monotonicity of the Newton Integral)</span></p>
 
 If $f, g \in \mathrm{N}(a, b)$ and $f \le g$ on $(a, b)$ then

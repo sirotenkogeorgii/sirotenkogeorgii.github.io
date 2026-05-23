@@ -3352,6 +3352,506 @@ The Kantorovich relaxation, which a priori is *strictly* more general than Monge
 
 This closes the loop of the chapter: Monge's hard problem $\to$ Kantorovich's tractable relaxation $\to$ Brenier's identification of the optimum as $\nabla\varphi$. The Monge–Ampère equation $\det D^2\varphi=f/(g\circ\nabla\varphi)$ is the corresponding **PDE characterisation** of $\varphi$, and is the starting point for the regularity theory of optimal transport, the Otto calculus on Wasserstein space, and Wasserstein gradient flows — all topics that fit naturally on top of what we have built.
 
+### 2.4 Brenier's polar factorization
+
+Brenier's theorem in §2.3 takes *two probability measures* $(\mu,\nu)$ and singles out the optimal map from one to the other as the gradient of a convex function. **Polar factorization** is the parallel statement at the level of *maps*: any sufficiently non-degenerate vector-valued map $h\colon\Omega\to\mathbb R^d$ admits a unique decomposition
+
+$$
+h \;=\; \nabla\psi\circ s, \qquad s\in S(\Omega), \quad \psi\text{ convex},
+$$
+
+where $s$ is **measure-preserving** and $\nabla\psi$ is the gradient of a convex function. The name is borrowed from linear algebra:
+
+| Matrices: $A=UP$ | Maps: $h=\nabla\psi\circ s$ |
+|---|---|
+| $U$ orthogonal (rotation) | $s$ measure-preserving (volume-rotation) |
+| $P=\sqrt{A^\top A}$ symmetric positive (stretch) | $\nabla\psi$ gradient of convex $\psi$ (irrotational stretch) |
+
+A real matrix decomposes uniquely (modulo non-invertibility) as an isometry composed with a symmetric positive-semidefinite stretch; a non-degenerate $L^2$ map decomposes uniquely as a measure-preserving rearrangement composed with a convex-gradient stretch. The "rotation" part now lives on the infinite-dimensional sphere $S(\Omega)\subset L^2(\Omega;\mathbb R^d)$, and the "stretch" is the optimal transport map from §2.3.
+
+Before stating the theorem, we set up the two building blocks: rearrangements and measure-preserving maps.
+
+#### Rearrangements and measure-preserving maps
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 17</span><span class="math-callout__name">(Rearrangement)</span></p>
+
+Let $(W,\lambda)$ and $(X,\mu)$ be measure spaces and let $m\colon W\to X$ be a measurable map. We call $\tilde m\colon W\to X$ a **rearrangement** of $m$ if
+
+$$
+\int_W F\circ m\,d\lambda \;=\; \int_W F\circ\tilde m\,d\lambda
+$$
+
+for every measurable function $F\colon X\to\mathbb R$ such that $F\circ m,\;F\circ\tilde m\in L^1(\lambda)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the definition)</span></p>
+
+The condition is best understood through its consequence: testing against every $F$ pins down the **push-forward**. Indeed, $\tilde m$ is a rearrangement of $m$ if and only if $\tilde m_\sharp\lambda = m_\sharp\lambda$. The two maps may be wildly different point-by-point, but they distribute mass on $X$ identically.
+
+* **Why call it a "rearrangement"?** Picture $\lambda$ as a pile of unit mass on $W$ and $m$ as the instructions for where each speck of mass ends up in $X$. A rearrangement gives different instructions that pile the mass the same way in $X$. The mass distribution at the destination is preserved; the labelling of which speck went where is not.
+* **Special case.** In 1D, the "monotone rearrangement" of a function is the unique increasing rearrangement — the quantile function of the push-forward measure. This is exactly the same construction.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 18</span><span class="math-callout__name">(Measure-preserving maps)</span></p>
+
+Let $(W,\lambda)$ be a measure space and $s\colon W\to W$ a measurable map. We call $s$ **measure-preserving** if $s_\sharp\lambda=\lambda$, i.e.
+
+$$
+\int_W F\circ s\,d\lambda \;=\; \int_W F\,d\lambda
+$$
+
+for every measurable $F\colon W\to\mathbb R$ with $F\circ s,\,F\in L^1(\lambda)$. The space of all measure-preserving maps on $(W,\lambda)$ is denoted $S(W)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The unit-Jacobian characterisation)</span></p>
+
+In the cases relevant to us, $W=\Omega\subset\mathbb R^d$ is a bounded domain and $\lambda$ is Lebesgue measure. For $C^1$-diffeomorphisms there is a clean pointwise criterion:
+
+$$
+s\colon\Omega\to\Omega \text{ is a }C^1\text{-diffeo and measure-preserving} \;\iff\; \bigl|\det\nabla s(x)\bigr|=1 \;\text{ for all }x\in\Omega.
+$$
+
+This is the change-of-variables formula in disguise. For any smooth $F$,
+
+$$
+\int_\Omega F(s(x))\,dx \;=\; \int_\Omega F(y)\,\frac{1}{|\det\nabla s(s^{-1}(y))|}\,dy,
+$$
+
+so identity with $\int F\,dy$ forces $\lvert\det\nabla s\rvert=1$ a.e. The **absolute value** is essential: measure preservation only cares about *volume*, not *orientation*. Orientation-reversing diffeomorphisms with $\det\nabla s=-1$ are still measure-preserving.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 19</span><span class="math-callout__name">(Diffeomorphism groups)</span></p>
+
+The group of diffeomorphisms on $\Omega$ is denoted by $\operatorname{Diff}(\Omega)$. The subgroup of **measure-preserving** diffeomorphisms (those with $\lvert\det\nabla s\rvert=1$) is denoted by $\operatorname{SDiff}(\Omega)$, and the subgroup of diffeomorphisms with $\det\nabla s=1$ (orientation- *and* volume-preserving) is denoted by $G(\Omega)$.
+
+The chain of inclusions is
+
+$$
+G(\Omega) \;\subset\; \operatorname{SDiff}(\Omega) \;\subset\; \operatorname{Diff}(\Omega).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why three groups, not two)</span></p>
+
+The distinction $G(\Omega)\subsetneq\operatorname{SDiff}(\Omega)$ matters in fluid mechanics. The flow of an incompressible Euler equation is a curve in $G(\Omega)$ — the determinant is $+1$ all the way from the identity, not just $\pm 1$ — because it is a *continuous deformation from* $\mathrm{id}$, and identifying $\det\nabla\phi(0,\cdot)=1$ rules out a jump to $-1$ along the way. So while $\operatorname{SDiff}(\Omega)$ is the right algebraic object (closed under composition, contains all volume-preserving diffeomorphisms), $G(\Omega)$ is the right *topological component* for trajectories of incompressible flows. The Arnold geodesic interpretation later in this section will live in $G(\Omega)$, not in $\operatorname{SDiff}(\Omega)$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 20</span><span class="math-callout__name">(Measure-preserving maps and rearrangements)</span></p>
+
+Let $(W,\lambda)$ and $(X,\mu)$ be measure spaces and $m\colon W\to X$ a measurable map. Then:
+
+**(i)** If $s\in S(W)$ and $m\colon W\to X$ is measurable, then $\tilde m:=m\circ s$ is a rearrangement of $m$.
+
+**(ii)** If $\tilde m$ is a rearrangement of $m$ and $\tilde m\colon W\to X$ is *invertible*, then $\tilde m^{-1}\circ m\in S(W)$.
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 20 — direct calculation</summary>
+
+**(i)** For any test function $F\colon X\to\mathbb R$,
+
+$$
+\int_W F\circ\tilde m\,d\lambda \;=\; \int_W F\circ m\circ s\,d\lambda \;=\; \int_W F\circ m\,d\lambda,
+$$
+
+where the second equality uses $s_\sharp\lambda=\lambda$ applied to $F\circ m$ in place of $F$.
+
+**(ii)** Set $\sigma:=\tilde m^{-1}\circ m$. For any test function $G\colon W\to\mathbb R$ such that $G,\;G\circ\sigma\in L^1(\lambda)$, apply the rearrangement identity to $F:=G\circ\tilde m^{-1}$ (defined on $X$ wherever $\tilde m^{-1}$ exists):
+
+$$
+\int_W F\circ\tilde m\,d\lambda \;=\; \int_W F\circ m\,d\lambda
+\;\Longleftrightarrow\; \int_W G\,d\lambda \;=\; \int_W G\circ\sigma\,d\lambda.
+$$
+
+That is the defining identity $\sigma_\sharp\lambda=\lambda$, so $\sigma\in S(W)$. $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this is an "almost" equivalence)</span></p>
+
+Proposition 20 says rearrangements and measure-preserving maps are *two sides of the same coin* — but only almost. Direction (i) is unconditional: composing with an MP map on the source always gives a rearrangement. Direction (ii) requires **invertibility** of $\tilde m$.
+
+* Without invertibility (ii) fails. Two rearrangements of the same $m$ can differ in genuinely non-MP ways: e.g., on $W=[0,1]$ with $m(x)=0$ identically, *every* map $\tilde m\colon W\to X$ with image $\\{0\\}$ is trivially a rearrangement of $m$, and these can certainly fail to be related by an MP map of $W$.
+* With invertibility (ii) is sharp. Polar factorization, which we are heading toward, will produce a rearrangement of the form $\tilde m=\nabla\psi$. Whether $\nabla\psi$ is invertible is exactly the question of whether the convex potential $\psi$ is strictly convex — a question of regularity, not algebra.
+
+The takeaway: the rearrangement concept is the *primary* one in optimal transport. Measure-preserving maps are how rearrangements are *generated* when one has enough invertibility — but this is not automatic.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 21</span><span class="math-callout__name">($S(W)$ is curved, not linear)</span></p>
+
+Assume the second moment $\int_X\\|x\\|^2\,d\lambda(x)<+\infty$. Then every measure-preserving map $s\in S(W)$ automatically sits in $L^2(\lambda)$, and they **all have the same $L^2$-norm**:
+
+$$
+\|s\|_{L^2(\lambda)}^2 \;=\; \int_W |s(w)|^2\,d\lambda(w) \;=\; \int_W |w|^2\,d\lambda(w) \;=\; \|\mathrm{id}\|_{L^2(\lambda)}^2,
+$$
+
+the second equality by the definition $s_\sharp\lambda=\lambda$ applied to $F(w)=\\|w\\|^2$. So $S(W)\subset L^2(\lambda)$ lies on a single **sphere** centred at the origin.
+
+In particular, $S(W)$ is a **curved subset** of $L^2(\lambda)$, not a linear subspace. The convex combination $\tfrac12(s_1+s_2)$ of two MP maps is generally *not* MP — it lies strictly inside the sphere. This is why Brenier's theorem produces an $L^2$-projection onto $S(W)$ rather than a linear projection: the geometry is that of a sphere in Hilbert space.
+
+</div>
+
+#### The polar factorization theorem
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 22</span><span class="math-callout__name">(Brenier's polar factorization)</span></p>
+
+Let $\Omega\subset\mathbb R^d$ be a bounded domain and $\lambda$ Lebesgue measure on $\Omega$. Let $h\in L^2(\Omega;\mathbb R^d)$ be **non-degenerate** in the sense that
+
+$$
+\lambda\bigl(h^{-1}(N)\bigr) \;=\; 0 \qquad\text{for every small set }N\subset\mathbb R^d, \tag{2.16}
+$$
+
+i.e. the push-forward $\mu:=h_\sharp\lambda$ does not give mass to small sets (cf. Remark 14).
+
+Then there exists a unique pair $(s,\nabla\psi)$ such that
+
+* $\nabla\psi$ is a rearrangement of $h$ in the class of $L^2$ gradients of convex functions,
+* $s\in S(\Omega)$ is a measure-preserving map,
+* $h \;=\; \nabla\psi\circ s$.
+
+Moreover, **$s$ is the unique $L^2$-projection of $h$ onto $S(\Omega)$**:
+
+$$
+\|h-s\|_{L^2}^2 \;=\; \inf_{s'\in S(\Omega)}\|h-s'\|_{L^2}^2. \tag{2.17}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Three facets of the same statement)</span></p>
+
+Theorem 22 packages three statements that deserve to be separated:
+
+1. **Existence of a polar decomposition.** Any non-degenerate $h$ factors as $h=\nabla\psi\circ s$ with $\nabla\psi$ a convex-gradient and $s$ measure-preserving.
+2. **Uniqueness.** Both factors $\nabla\psi$ and $s$ are uniquely determined ($\lambda$-a.e.) by $h$.
+3. **Variational characterisation of $s$.** Among all measure-preserving maps, $s$ is the one closest to $h$ in $L^2$.
+
+Statement (3) is the geometric content — it says the polar decomposition computes the **orthogonal projection** of the map $h$ onto the (curved) set $S(\Omega)$. The convex potential $\psi$ is then the residual "stretch" needed to reach $h$ from its closest MP approximation.
+
+Compare to matrices: for an invertible matrix $A$, the polar factor $U$ from $A=UP$ is the closest orthogonal matrix to $A$ in Frobenius norm. The analogy is exact: the rotation part is the closest isometry, in both finite and infinite dimensions.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why "non-degenerate")</span></p>
+
+The hypothesis (2.16) is exactly what makes Brenier's theorem applicable to $\mu=h_\sharp\lambda$: it says $\mu$ does not give mass to small sets, which is the assumption under which the optimal plan from $\mu$ to $\nu$ is single-valued (cf. Remark 14, Theorem 13).
+
+Concretely: a $C^1$-diffeomorphism $h$ with $\det\nabla h\neq 0$ a.e. has Jacobian-bounded push-forward, hence $\mu=h_\sharp\lambda$ is absolutely continuous, and (2.16) holds automatically. Conversely, a map $h$ that collapses positive-volume regions to lower-dimensional sets — e.g. $h(x)=(x_1,0)$ on $\Omega\subset\mathbb R^2$ — fails (2.16) and cannot be polar-factored in the strong sense above.
+
+</div>
+
+#### Motivation: incompressible Euler and projection onto $G(\Omega)$
+
+A key motivation for Brenier was **fluid mechanics**, where projection onto measure-preserving diffeomorphisms is the natural way to enforce the incompressibility constraint. The following formal discussion shows why.
+
+The simplest model of an incompressible fluid is the **incompressible Euler equation** for the velocity field $v\colon [0,T)\times\Omega\to\mathbb R^d$ in a container $\Omega\subset\mathbb R^d$ (a bounded open set with smooth boundary). Starting from initial data $v_0\colon\Omega\to\mathbb R^d$ with $\nabla\cdot v_0=0$ and $v_0\cdot n=0$ on $\partial\Omega$, the equations read
+
+$$
+\partial_t v + (v\cdot\nabla)v \;=\; -\nabla p, \tag{2.10}
+$$
+
+$$
+\nabla\cdot v \;=\; 0, \tag{2.11}
+$$
+
+with **free-slip** boundary condition $v\cdot n=0$ on $\partial\Omega$. The pressure $p\colon\Omega\times[0,T)\to\mathbb R$ is an *unknown* of the system, acting as a **Lagrange multiplier** for the incompressibility constraint (2.11).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 23</span><span class="math-callout__name">(Energy conservation for smooth solutions to Euler)</span></p>
+
+Let $v$ be a smooth solution to the incompressible Euler equations (2.10)–(2.11) on $[0,T)\times\Omega$. Then the kinetic energy is conserved in time:
+
+$$
+\int_\Omega \tfrac12 |v(x,t)|^2\,dx \;=\; \int_\Omega \tfrac12 |v_0(x)|^2\,dx \qquad\text{for all }t\in[0,T).
+$$
+
+<details class="proof" markdown="1">
+<summary>Proof — momentum equation, IBP, boundary &amp; incompressibility</summary>
+
+Differentiate the kinetic energy and use (2.10):
+
+$$
+\begin{aligned}
+\frac{d}{dt}\int_\Omega\tfrac12|v|^2\,dx
+&= \int_\Omega v\cdot\partial_t v\,dx \\
+&= -\int_\Omega v\cdot\bigl((v\cdot\nabla)v+\nabla p\bigr)\,dx.
+\end{aligned}
+$$
+
+The convective term is a perfect gradient: using $v\cdot(v\cdot\nabla)v = v\_j\partial\_j v\_i\cdot v\_i = \tfrac12 v\_j\partial\_j\\|v\\|^2 = v\cdot\nabla(\tfrac12\\|v\\|^2)$,
+
+$$
+\frac{d}{dt}\int_\Omega\tfrac12|v|^2\,dx \;=\; -\int_\Omega v\cdot\nabla\bigl(\tfrac12|v|^2+p\bigr)\,dx.
+$$
+
+Integrate by parts:
+
+$$
+\frac{d}{dt}\int_\Omega\tfrac12|v|^2\,dx \;=\; -\int_{\partial\Omega}(v\cdot n)\bigl(\tfrac12|v|^2+p\bigr)\,dS \;+\; \int_\Omega (\nabla\cdot v)\bigl(\tfrac12|v|^2+p\bigr)\,dx.
+$$
+
+The boundary integral vanishes by the free-slip condition $v\cdot n=0$; the bulk integral vanishes by incompressibility $\nabla\cdot v=0$. Hence kinetic energy is conserved. $\square$
+
+</details>
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Failure for weak solutions — Onsager's conjecture)</span></p>
+
+Energy conservation in Proposition 23 is **not** true for *weak* solutions of Euler. The celebrated work of **De Lellis–Székelyhidi** and **Isett** constructs weak solutions that dissipate energy — and this dissipation can even be prescribed. The threshold is the **Onsager conjecture**: $C^{0,\alpha}$ regularity with $\alpha>1/3$ implies energy conservation (proved); $\alpha<1/3$ allows dissipation (proved via convex integration). The case $\alpha=1/3$ is the borderline. The relevance here is that *smoothness is essential* to the proof above — the integration-by-parts manipulations break down without it.
+
+</div>
+
+##### Eulerian vs Lagrangian, and the flow map
+
+Fluids (and physical systems generally) admit two complementary descriptions:
+
+* **Eulerian:** record the velocity $v(x,t)$ at each fixed point $x\in\Omega$. The unknown is a *field*.
+* **Lagrangian:** track each individual particle along its trajectory $x(t)$ starting from $x(0)=x_0$. The unknown is a *flow*.
+
+The link between the two pictures is the **flow map**
+
+$$
+\phi\colon[0,T)\times\Omega\to\Omega, \qquad \phi(t,x_0):=x(t),
+$$
+
+where $x(t)$ solves $\dot x(t)=v(t,x(t))$ with $x(0)=x_0$.
+
+The incompressibility constraint (2.11) translates exactly into a constraint on $\phi$:
+
+$$
+\nabla\cdot v \;=\; 0 \;\iff\; \phi(t,\cdot)\colon\Omega\to\Omega \text{ is measure-preserving for all }t\in[0,T). \tag{2.12}
+$$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why (2.12) is the right translation)</span></p>
+
+The mechanical content of "incompressible" is that *no volume gets created or destroyed* as the fluid moves. Eulerian-side that says the velocity field has zero divergence; Lagrangian-side it says the flow map preserves volumes. These are the same statement viewed from two coordinate systems.
+
+Sketch of (2.12): for sufficiently smooth $v$, the Jacobian $J(t,x_0):=\det\nabla_{x_0}\phi(t,x_0)$ satisfies $\partial_t J = (\nabla\cdot v)(\phi(t,x_0),t)\cdot J$ (Liouville's formula). With $J(0,\cdot)=1$, the equation $\partial_t J=0$ is equivalent to $\nabla\cdot v=0$, giving $J\equiv 1$, i.e. $\phi(t,\cdot)\in G(\Omega)$.
+
+</div>
+
+##### The Lagrangian form of Euler
+
+The first Euler equation (2.10) is **Newton's second law** for the fluid: the only force on a parcel is $-\nabla p$, so
+
+$$
+-(\nabla p)(x(t),t) \;=\; \rho\,\frac{d^2}{dt^2}x(t).
+$$
+
+Differentiating the trajectory identity $\frac{d}{dt}\phi(t,x_0)=v(\phi(t,x_0),t)$ once more in time gives, by the chain rule,
+
+$$
+\frac{d^2}{dt^2}\phi(t,x_0) \;=\; \partial_t v + (v\cdot\nabla)v,
+$$
+
+so the Lagrangian form of (2.10) is simply
+
+$$
+\boxed{\;\frac{d^2}{dt^2}\phi \;=\; -\nabla p\circ\phi,\qquad \phi\colon[0,T)\to G(\Omega).\;} \tag{2.10'}
+$$
+
+The two equations have a clean correspondence:
+
+| Eulerian | Lagrangian |
+|---|---|
+| (2.10) momentum balance | (2.10') $\ddot\phi=-\nabla p\circ\phi$ |
+| (2.11) $\nabla\cdot v=0$ | $\phi(t,\cdot)\in G(\Omega)$ |
+| (free-slip) $v\cdot n=0$ on $\partial\Omega$ | $\phi(t,\Omega)=\Omega$ |
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Arnold's interpretation</span><span class="math-callout__name">(Euler = geodesic on $G(\Omega)$)</span></p>
+
+Equation (2.10') can be read as the **geodesic equation** on the (infinite-dimensional) manifold $G(\Omega)$, with respect to the $L^2$-metric on velocities. Heuristically:
+
+* The "manifold" is $G(\Omega)\subset\operatorname{Diff}(\Omega)$ — orientation- and volume-preserving diffeomorphisms.
+* The "tangent space" at $\phi$ consists of vector fields $w$ on $\Omega$ with $\nabla\cdot w=0$ (the linearisation of the incompressibility constraint).
+* The "metric" is the $L^2$ inner product $\langle w_1,w_2\rangle=\int_\Omega w_1\cdot w_2\,dx$ — that is, kinetic energy.
+* The "Christoffel symbol" — the curvature-correction needed to keep $\phi$ on $G(\Omega)$ — comes from the **pressure gradient** $-\nabla p\circ\phi$. The pressure is precisely the Lagrange multiplier projecting the unconstrained acceleration $\partial_t v+(v\cdot\nabla)v$ back onto the tangent space of $G(\Omega)$.
+
+This is **Arnold's observation** (1966). It reframes Euler from "PDE for a vector field" to "geodesic flow on an infinite-dimensional Lie group", which:
+
+* explains energy conservation as constant-speed geodesic motion;
+* connects fluid stability to sectional curvature (Arnold's stability theorem);
+* sets the stage for Brenier: *projecting* a non-MP map onto $G(\Omega)$ is exactly the polar factorization problem, and it is the discretized analogue of the constraint projection that produces $-\nabla p\circ\phi$ in the continuous flow.
+
+</div>
+
+#### A more general statement
+
+Theorem 22 is the convenient form where source and target both live on $\Omega$ with Lebesgue measure. The general statement allows different domains and reference measures.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 24</span><span class="math-callout__name">(Brenier's polar factorization, general version)</span></p>
+
+Let $W,X,Y\subset\mathbb R^d$ be measurable, $\lambda\in\mathcal P(W)$, $\nu\in\mathcal P(Y)$ with $\int_Y\\|y\\|^2\,d\nu(y)<+\infty$. Assume both $\mu:=h_\sharp\lambda$ and $\nu$ do not give mass to small sets, and let $h\colon W\to X$ with $h\in L^2(\lambda)$.
+
+Then there exists a unique pair $(s,\nabla\psi)$ such that
+
+**(i)** $s\colon W\to Y$ pushes $\lambda$ forward to $\nu$: $s_\sharp\lambda=\nu$,
+
+**(ii)** $\psi\colon Y\to X$ is the restriction of a convex function on $\mathbb R^d$, and
+
+**(iii)** $h \;=\; \nabla\psi\circ s$ $\lambda$-a.e.
+
+Moreover, $s$ is the unique $L^2(\lambda)$-orthogonal projection of $h$ onto
+
+$$
+S(W,Y) \;:=\; \{\sigma\colon W\to Y : \sigma_\sharp\lambda=\nu\}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What's the role of $\nu$?)</span></p>
+
+Two extra knobs distinguish Theorem 24 from Theorem 22:
+
+* The target domain $Y$ may differ from the source $W$.
+* The reference measure $\nu$ on $Y$ is **not** taken to be the push-forward $h_\sharp\lambda$; it is supplied separately.
+
+Concretely, $S(W,Y)=\\{\sigma\colon\sigma_\sharp\lambda=\nu\\}$ is the set of "$\lambda$-to-$\nu$ rearrangements" — and the projection of $h$ onto this set is the part of $h$ that respects the target's mass distribution. The convex-gradient $\nabla\psi$ then transports $\nu$ to $\mu=h_\sharp\lambda$, which closes the diagram
+
+$$
+\lambda \xrightarrow{\;s\;} \nu \xrightarrow{\;\nabla\psi\;} \mu \quad=\quad \lambda \xrightarrow{\;h\;} \mu.
+$$
+
+In Theorem 22, by contrast, $W=Y=\Omega$ and $\nu=\lambda$, so $S(W,Y)=S(\Omega)$ — the "rotation part" is a self-map of $\Omega$.
+
+Also, $\sigma\in S(W,Y)$ all share the same $L^2$-norm (since $\\|\sigma\\|^2\_{L^2(\lambda)}=\int_Y\\|y\\|^2\,d\nu<\infty$ depends only on $\nu$), so $S(W,Y)$ lies on a sphere in $L^2(\lambda)$, generalising Remark 21.
+
+</div>
+
+#### Proof of Theorem 22
+
+The proof has a beautiful structural idea: **reduce the $L^2$-projection problem onto the curved set $S(W,Y)$ to the standard linear OT problem from §2.3, then read off the polar factorization from Brenier's theorem.**
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 22 — four steps</summary>
+
+**Step 1: Reformulation as an OT problem.** We want the $s\in S(W,Y)$ that minimises the $L^2$-distance to $h$:
+
+$$
+\min_{\sigma\in S(W,Y)} \int |h(w)-\sigma(w)|^2\,d\lambda(w). \tag{2.13}
+$$
+
+For any candidate $\sigma$, define the transference plan $\pi:=(h,\sigma)_\sharp\lambda$. By construction $\pi$ has marginals $\mu=h_\sharp\lambda$ (first coordinate) and $\nu=\sigma_\sharp\lambda$ (second coordinate), so $\pi\in\Pi(\mu,\nu)$. Pushing forward the integrand,
+
+$$
+\int_W |h(w)-\sigma(w)|^2\,d\lambda(w) \;=\; \int_{X\times Y}|x-y|^2\,d\pi(x,y),
+$$
+
+so (2.13) becomes
+
+$$
+\min\Bigl\{\int_{X\times Y}|x-y|^2\,d\pi(x,y)\colon \pi=(h,\sigma)_\sharp\lambda,\ \sigma_\sharp\lambda=\nu\Bigr\}. \tag{2.14}
+$$
+
+This is *almost* a standard OT problem — except the plan is constrained to come from a single $\sigma$. We relax this constraint:
+
+$$
+\min\Bigl\{\int_{X\times Y}|x-y|^2\,d\pi(x,y)\colon \pi\in\Pi(\mu,\nu)\Bigr\}. \tag{2.15}
+$$
+
+The relaxed problem (2.15) is the standard quadratic-cost Kantorovich problem from §2.3. Any minimiser of (2.14) is admissible in (2.15), so
+
+$$
+\min(2.15) \;\le\; \min(2.14).
+$$
+
+The plan of attack — explained in the bracketed comment of the manuscript — is: solve (2.15) using Brenier, recover an *admissible plan for (2.14)* from the Brenier map, and observe that this plan attains the lower bound, hence is optimal for *both* problems.
+
+**Step 2: Existence and uniqueness of the OT map.** Both hypotheses of Theorem 13 hold:
+
+* Finite second moments: $\int_Y \\|y\\|^2\,d\nu<+\infty$ is assumed, and $\int_X\\|x\\|^2\,d\mu=\int_X\\|x\\|^2\,d(h_\sharp\lambda)=\int_W\\|h(w)\\|^2\,d\lambda(w)<+\infty$ because $h\in L^2(\lambda)$.
+* Neither $\mu$ nor $\nu$ gives mass to small sets (by assumption).
+
+So Theorem 13 (in its symmetric form) yields a pair $(\varphi,\varphi^\ast)$ of convex conjugates, uniquely determined $\mu$- and $\nu$-a.e., with **mutually inverse gradients** ($\nabla\varphi^\ast\circ\nabla\varphi=\mathrm{id}$ $\mu$-a.e. and $\nabla\varphi\circ\nabla\varphi^\ast=\mathrm{id}$ $\nu$-a.e.), solving the dual Kantorovich problem and satisfying
+
+$$
+\nu \;=\; (\nabla\varphi)_\sharp\mu \;=\; (\nabla\varphi)_\sharp(h_\sharp\lambda) \;=\; (\nabla\varphi\circ h)_\sharp\lambda.
+$$
+
+**Step 3: Existence of the polar decomposition.** Define
+
+$$
+s \;:=\; \nabla\varphi\circ h.
+$$
+
+The pushforward identity in Step 2 gives $s_\sharp\lambda=\nu$, so $s\in S(W,Y)$. Set $\pi:=(h,s)_\sharp\lambda$. By construction $\pi=(\mathrm{id},\nabla\varphi)_\sharp\mu$ is concentrated on the graph of $\nabla\varphi$, so by Brenier (Theorem 13(ii)) $\pi$ is the **unique** solution of (2.15). It is admissible for (2.14), so it solves (2.14), so $s$ solves the projection problem (2.13).
+
+Now define $\psi:=\varphi^\ast$ — a convex function — and check that $\psi$ rebuilds $h$ from $s$. Since $\nabla\psi\circ\nabla\varphi=\nabla\varphi^\ast\circ\nabla\varphi=\mathrm{id}$ $\mu$-a.e., and $h_\sharp\lambda=\mu$,
+
+$$
+\nabla\psi\circ s \;=\; \nabla\psi\circ\nabla\varphi\circ h \;=\; h \qquad \lambda\text{-a.e.}
+$$
+
+Hence $(s,\psi)$ is a polar factorization of $h$.
+
+**Step 4: Uniqueness of the polar decomposition.** Uniqueness of $\nabla\psi$ (as a gradient of a convex function rearrangement of $h$) is direct from Brenier's uniqueness in Step 2. It remains to show **uniqueness of the projection $s$**.
+
+Let $s'$ be another $L^2$-projection of $h$ onto $S(W,Y)$. Both $s$ and $s'$ realise the minimum in (2.13), so the plans $(h,s)_\sharp\lambda$ and $(h,s')_\sharp\lambda$ both minimise (2.14), hence both are admissible for (2.15) at the same cost — and by uniqueness in Step 2,
+
+$$
+(h,s)_\sharp\lambda \;=\; (h,s')_\sharp\lambda. \tag{$\dagger$}
+$$
+
+*(Equality of joint pushforwards does **not** imply $s=s'$ $\lambda$-a.e. directly — two different $W\to Y$ maps can produce identical $X\times Y$ pushforwards if $h$ collapses regions where $s$ and $s'$ differ.)*
+
+To upgrade ($\dagger$) to $s=s'$ $\lambda$-a.e., test against the bilinear form $F(x,y):=\nabla\varphi(x)\cdot y$:
+
+$$
+\int_W F(h(w),s(w))\,d\lambda(w) \;=\; \int_W F(h(w),s'(w))\,d\lambda(w).
+$$
+
+The left integrand evaluates to $(\nabla\varphi\circ h)\cdot s = s\cdot s = \\|s\\|^2$ $\lambda$-a.e. (using the definition $s=\nabla\varphi\circ h$). The right integrand evaluates to $(\nabla\varphi\circ h)\cdot s' = s\cdot s'$ $\lambda$-a.e. So
+
+$$
+\int_W |s|^2\,d\lambda \;=\; \int_W s\cdot s'\,d\lambda. \tag{$\ddagger$}
+$$
+
+But by Remark 21 (or its analogue in $S(W,Y)$), $\int_W \\|s\\|^2\,d\lambda = \int_W \\|s'\\|^2\,d\lambda$, so ($\ddagger$) gives
+
+$$
+0 \;=\; \int_W |s|^2 - s\cdot s'\,d\lambda \;=\; \tfrac12\int_W \bigl(|s|^2 + |s'|^2 - 2s\cdot s'\bigr)\,d\lambda \;=\; \tfrac12\int_W |s-s'|^2\,d\lambda,
+$$
+
+forcing $s=s'$ $\lambda$-a.e. $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "Curiously…" of Step 4)</span></p>
+
+The parenthetical aside in Step 4 — "this does not in general imply that $s=s'$ $\lambda$-a.e." — is more than a technicality. It points to the fact that *equal joint distributions on $X\times Y$ do not pin down a $W\to Y$ map* if $h$ has degeneracies.
+
+Concrete obstruction: suppose $h$ is constant on a set $A\subset W$ of positive measure. Then on $A$, any reshuffling of $s$ leaves $(h,s)\_\sharp\lambda$ unchanged (the first coordinate is constant, so only the marginal distribution of $s\rvert\_A$ matters, not the pointwise values). So degeneracy of $h$ creates a *gauge symmetry* of plans-to-maps that ($\dagger$) cannot detect.
+
+The non-degeneracy hypothesis (2.16) suppresses exactly this gauge: by Brenier's $\mu$-a.e. uniqueness, $\nabla\varphi$ has a well-defined inverse $\nabla\varphi^\ast$, and the test against $F=\nabla\varphi\cdot y$ in Step 4 *uses* this inverse to pull the $X$-side information back down to $W$, eliminating the gauge ambiguity. Geometrically, the test function $F$ is the **unique** bilinear form for which the Step 4 identity collapses cleanly — it is built precisely to convert the (degenerate-looking) equality of plans into the (non-degenerate) equality of $L^2$ norms.
+
+</div>
+
 ## Appendix A: Desingularizing Functions and the Kurdyka–Łojasiewicz Framework {#appendix-a}
 
 In §1.6, the proof of long-term asymptotics via Łojasiewicz uses an unusual move: rather than tracking the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ along the gradient flow, it tracks the **concave power** $\mathcal E^{1-\theta}(t)$. Why this exact exponent, and not $\mathcal E$ itself, or $\sqrt{\mathcal E}$, or anything else? The answer is *not* a technicality — it points to a deep recurring template in analysis, often called **desingularization** or the **Kurdyka–Łojasiewicz (KL) framework**.

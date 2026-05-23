@@ -1493,8 +1493,15 @@ The decomposition into transpositions is not unique, not even the number of tran
 
 We have $\operatorname{sgn}(p) = (-1)^r$, where $r$ is the number of transpositions in the decomposition of $p$ into transpositions.
 
-*Proof.* This is a consequence of Theorem 4.15. We start from the identity, which is even. Each transposition changes the sign, so the resulting sign is $(-1)^r$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+This is a consequence of Theorem 4.15. We start from the identity, which is even. Each transposition changes the sign, so the resulting sign is $(-1)^r$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1502,8 +1509,15 @@ We have $\operatorname{sgn}(p) = (-1)^r$, where $r$ is the number of transpositi
 
 Let $p, q \in S_n$. Then $\operatorname{sgn}(p \circ q) = \operatorname{sgn}(p) \operatorname{sgn}(q)$.
 
-*Proof.* Let $p$ be decomposable into $r_1$ transpositions and $q$ into $r_2$ transpositions. Then $p \circ q$ can be composed of $r_1 + r_2$ transpositions. Hence $\operatorname{sgn}(p \circ q) = (-1)^{r_1 + r_2} = (-1)^{r_1}(-1)^{r_2} = \operatorname{sgn}(p)\operatorname{sgn}(q)$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $p$ be decomposable into $r_1$ transpositions and $q$ into $r_2$ transpositions. Then $p \circ q$ can be composed of $r_1 + r_2$ transpositions. Hence $\operatorname{sgn}(p \circ q) = (-1)^{r_1 + r_2} = (-1)^{r_1}(-1)^{r_2} = \operatorname{sgn}(p)\operatorname{sgn}(q)$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1511,8 +1525,15 @@ Let $p, q \in S_n$. Then $\operatorname{sgn}(p \circ q) = \operatorname{sgn}(p) 
 
 Let $p \in S_n$. Then $\operatorname{sgn}(p) = \operatorname{sgn}(p^{-1})$.
 
-*Proof.* We have $1 = \operatorname{sgn}(id) = \operatorname{sgn}(p \circ p^{-1}) = \operatorname{sgn}(p)\operatorname{sgn}(p^{-1})$, so $p$ and $p^{-1}$ must have the same sign.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We have $1 = \operatorname{sgn}(id) = \operatorname{sgn}(p \circ p^{-1}) = \operatorname{sgn}(p)\operatorname{sgn}(p^{-1})$, so $p$ and $p^{-1}$ must have the same sign.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1608,19 +1629,33 @@ $$\lbrace 0, 1, \ldots, n - 1 \rbrace = \lbrace 0a, 1a, \ldots, (n - 1)a \rbrace
 
 *Note.* In the set $\lbrace 0a, 1a, \ldots, (n - 1)a \rbrace$, all numbers $0, 1, \ldots, n - 1$ appear (not necessarily in this order), each exactly once.
 
-*Proof.* For contradiction, suppose $ak = a\ell$ for some $k, \ell \in \mathbb{Z}_n$, $k \neq \ell$. Then we get $a(k - \ell) = 0$, so either $a$ or $k - \ell$ is divisible by $n$. This means either $a = 0$ or $k - \ell = 0$. But neither can occur, which is a contradiction.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For contradiction, suppose $ak = a\ell$ for some $k, \ell \in \mathbb{Z}_n$, $k \neq \ell$. Then we get $a(k - \ell) = 0$, so either $a$ or $k - \ell$ is divisible by $n$. This means either $a = 0$ or $k - \ell = 0$. But neither can occur, which is a contradiction.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 4.29)</span></p>
 
-$\mathbb{Z}_n$ is a field if and only if $n$ is a prime.
+$\mathbb{Z}\_n$ is a field if and only if $n$ is a prime.
 
-*Proof.* If $n$ is composite, then $n = pq$, where $1 < p, q < n$. If $\mathbb{Z}_n$ were a field, then $pq = 0$ would imply by Proposition 4.27 that either $p = 0$ or $q = 0$, but neither holds.
+</div>
 
-If $n$ is prime, then all axioms from the definition of a field are easily verified. The only one that may require more work is the existence of the inverse $a^{-1}$ for any $a \neq 0$. But this follows easily from Lemma 4.28. Since $\lbrace 0, 1, \ldots, n - 1 \rbrace = \lbrace 0a, 1a, \ldots, (n - 1)a \rbrace$, the element $1$ must appear in the set on the right, and therefore there exists $b \in \mathbb{Z}_n \setminus \lbrace 0 \rbrace$ such that $ba = 1$. Hence $b = a^{-1}$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
+If $n$ is composite, then $n = pq$, where $1 < p, q < n$. If $\mathbb{Z}\_n$ were a field, then $pq = 0$ would imply by Proposition 4.27 that either $p = 0$ or $q = 0$, but neither holds.
+
+If $n$ is prime, then all axioms from the definition of a field are easily verified. The only one that may require more work is the existence of the inverse $a^{-1}$ for any $a \neq 0$. But this follows easily from Lemma 4.28. Since $\lbrace 0, 1, \ldots, n - 1 \rbrace = \lbrace 0a, 1a, \ldots, (n - 1)a \rbrace$, the element $1$ must appear in the set on the right, and therefore there exists $b \in \mathbb{Z}\_n \setminus \lbrace 0 \rbrace$ such that $ba = 1$. Hence $b = a^{-1}$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1734,12 +1769,19 @@ For example, the infinite fields $\mathbb{Q}$, $\mathbb{R}$, or $\mathbb{C}$ hav
 
 The characteristic of a field is either zero or a prime.
 
-*Proof.* Since $0 \neq 1$, the characteristic cannot be $1$. If the characteristic were a composite number $n = pq$, then
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Since $0 \neq 1$, the characteristic cannot be $1$. If the characteristic were a composite number $n = pq$, then
 
 $$0 = \underbrace{1 + 1 + \ldots + 1}\_{n = pq} = (\underbrace{1 + \ldots + 1}\_{p})(\underbrace{1 + \ldots + 1}\_{q}),$$
 
 so the sum of $p$ or $q$ ones equals zero, which contradicts the minimality of $n$.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1758,8 +1800,15 @@ A field with characteristic $2$ is $\mathbb{Z}_2$ or more generally any field $\
 
 Let $p$ be a prime and let $0 \neq a \in \mathbb{Z}_p$. Then $a^{p-1} = 1$ in the field $\mathbb{Z}_p$.
 
-*Proof.* By Lemma 4.28, $\lbrace 0, 1, \ldots, p - 1 \rbrace = \lbrace 0a, 1a, \ldots, (p - 1)a \rbrace$. Since $0 = 0a$, we obtain $\lbrace 1, \ldots, p - 1 \rbrace = \lbrace 1a, \ldots, (p - 1)a \rbrace$. Therefore $1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) = (1a) \cdot (2a) \cdot (3a) \cdot \ldots \cdot (p - 1)a$. Canceling both sides by $1, 2, \ldots, p - 1$ yields the desired equality $1 = a \cdot \ldots \cdot a = a^{p-1}$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By Lemma 4.28, $\lbrace 0, 1, \ldots, p - 1 \rbrace = \lbrace 0a, 1a, \ldots, (p - 1)a \rbrace$. Since $0 = 0a$, we obtain $\lbrace 1, \ldots, p - 1 \rbrace = \lbrace 1a, \ldots, (p - 1)a \rbrace$. Therefore $1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) = (1a) \cdot (2a) \cdot (3a) \cdot \ldots \cdot (p - 1)a$. Canceling both sides by $1, 2, \ldots, p - 1$ yields the desired equality $1 = a \cdot \ldots \cdot a = a^{p-1}$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1852,8 +1901,15 @@ In a space $V$ over a field $\mathbb{T}$, the following hold for every scalar $\
 3. $\alpha v = o$ implies that $\alpha = 0$ or $v = o$,
 4. $(-1)v = -v$.
 
-*Proof.* Analogous to the properties in a field.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Analogous to the properties in a field.
+
+</details>
 </div>
 
 ### 5.2 Subspaces and Linear Combinations
@@ -1876,8 +1932,15 @@ Let $U$ be a subset of a vector space $V$ over $\mathbb{T}$. Then $U$ is a subsp
 2. $\forall u, v \in U: u + v \in U$,
 3. $\forall \alpha \in \mathbb{T}\ \forall u \in U: \alpha u \in U$.
 
-*Proof.* If $U$ is a subspace of $V$, then it must satisfy the required three properties from the definition of a vector space. Conversely, suppose that $U$ satisfies the given three properties. The remaining properties from the definition of a vector space (such as commutativity, associativity, distributivity) also hold, because they hold for the set $V$, and therefore automatically hold for any of its subsets. The fact that $U$ is closed under additive inverses follows from closure under scalar multiples, since by Proposition 5.4 we have $-v = (-1)v$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+If $U$ is a subspace of $V$, then it must satisfy the required three properties from the definition of a vector space. Conversely, suppose that $U$ satisfies the given three properties. The remaining properties from the definition of a vector space (such as commutativity, associativity, distributivity) also hold, because they hold for the set $V$, and therefore automatically hold for any of its subsets. The fact that $U$ is closed under additive inverses follows from closure under scalar multiples, since by Proposition 5.4 we have $-v = (-1)v$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1901,8 +1964,15 @@ Some properties of vector subspaces:
 
 Let $V$ be a vector space over $\mathbb{T}$, and let $V_i$, $i \in I$, be an arbitrary system of subspaces of $V$. Then $\bigcap_{i \in I} V_i$ is again a subspace of $V$.
 
-*Proof.* By Proposition 5.6 it suffices to verify three properties: Since $o \in V_i$ for every $i \in I$, it must also be in their intersection. Closure under addition: Let $u, v \in \bigcap_{i \in I} V_i$, i.e., for every $i \in I$ we have $u, v \in V_i$, hence also $u + v \in V_i$. Therefore $u + v \in \bigcap_{i \in I} V_i$. Closure under scalar multiples is analogous.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By Proposition 5.6 it suffices to verify three properties: Since $o \in V_i$ for every $i \in I$, it must also be in their intersection. Closure under addition: Let $u, v \in \bigcap_{i \in I} V_i$, i.e., for every $i \in I$ we have $u, v \in V_i$, hence also $u + v \in V_i$. Therefore $u + v \in \bigcap_{i \in I} V_i$. Closure under scalar multiples is analogous.
+
+</details>
 </div>
 
 #### Linear Span
@@ -1972,10 +2042,17 @@ Let $V$ be a vector space over $\mathbb{T}$, and let $v_1, \ldots, v_n \in V$. T
 
 $$\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace = \lbrace \sum_{i=1}^{n} \alpha_i v_i ;\ \alpha_1, \ldots, \alpha_n \in \mathbb{T} \rbrace.$$
 
-*Proof.* Inclusion "$\supseteq$". The linear span $\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace$ is a subspace of $V$ containing the vectors $v_1, \ldots, v_n$, so it must be closed under scalar multiples and sums. Hence it also contains the multiples $\alpha_i v_i$, $i = 1, \ldots, n$, and also their sum $\sum_{i=1}^{n} \alpha_i v_i$.
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Inclusion "$\supseteq$". The linear span $\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace$ is a subspace of $V$ containing the vectors $v_1, \ldots, v_n$, so it must be closed under scalar multiples and sums. Hence it also contains the multiples $\alpha_i v_i$, $i = 1, \ldots, n$, and also their sum $\sum_{i=1}^{n} \alpha_i v_i$.
 
 Inclusion "$\subseteq$". It suffices to show that the set of linear combinations $M := \lbrace \sum_{i=1}^{n} \alpha_i v_i ;\ \alpha_1, \ldots, \alpha_n \in \mathbb{T} \rbrace$ is a vector subspace of $V$ containing the vectors $v_1, \ldots, v_n$, and therefore it is one of the sets whose intersection is $\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace$. Each $v_i$ is contained in $M$; it suffices to take the linear combination with $\alpha_i = 1$ and $\alpha_j = 0$, $j \neq i$. The zero vector is also contained; take the linear combination with zero coefficients. Closure under sums: Take any two vectors $u = \sum_{i=1}^{n} \beta_i v_i$, $u' = \sum_{i=1}^{n} \beta_i' v_i$ from $M$. Then $u + u' = \sum_{i=1}^{n} (\beta_i + \beta_i') v_i$, which is an element of $M$. Similarly for scalar multiples.
 
+</details>
 </div>
 
 The linear span of a single vector $v$ is given by the set of all its linear combinations, i.e., its scalar multiples. The linear span of two vectors $u, v$ (with different directions) in $\mathbb{R}^3$ represents a plane.
@@ -1985,8 +2062,15 @@ The linear span of a single vector $v$ is given by the set of all its linear com
 
 Let $V$ be a vector space over $\mathbb{T}$ and let $M \subseteq V$. Then $\operatorname{span}(M)$ consists of all linear combinations of every finite system of vectors from $M$.
 
-*Proof.* Analogous to the proof of Theorem 5.17; left as an exercise.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Analogous to the proof of Theorem 5.17; left as an exercise.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2079,7 +2163,7 @@ Let $V$ be a vector space over $\mathbb{T}$, and let $v_1, \ldots, v_n \in V$. T
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Implication "$\Rightarrow$". If the vectors are linearly dependent, then there exists a nontrivial linear combination equal to zero, i.e., $\sum_{i=1}^{n} \beta_i v_i = o$ for $\beta_1, \ldots, \beta_n \in \mathbb{T}$ with $\beta_k \neq 0$ for some $k \in \lbrace 1, \ldots, n \rbrace$. Here we may choose any $k$ such that $\beta_k \neq 0$. We express the $k$-th term $\beta_k v_k = -\sum_{i \neq k} \beta_i v_i$ and after dividing we obtain the required formula $v_k = \sum_{i \neq k} (-\beta_k^{-1}\beta_i)v_i$.
+Implication "$\Rightarrow$". If the vectors are linearly dependent, then there exists a nontrivial linear combination equal to zero, i.e., $\sum_{i=1}^{n} \beta_i v_i = o$ for $\beta_1, \ldots, \beta_n \in \mathbb{T}$ with $\beta_k \neq 0$ for some $k \in \lbrace 1, \ldots, n \rbrace$. Here we may choose any $k$ such that $\beta_k \neq 0$. We express the $k$-th term $\beta_k v_k = -\sum_{i \neq k} \beta_i v_i$ and after dividing we obtain the required formula $v_k = \sum_{i \neq k} (-\beta_k^{-1}\beta_i)v_i$.
 
 Implication "$\Leftarrow$". If $v_k = \sum_{i \neq k} \alpha_i v_i$, then $v_k - \sum_{i \neq k} \alpha_i v_i = o$, which is the required nontrivial combination equal to zero, since the coefficient of $v_k$ is $1 \neq 0$.
 
@@ -2650,7 +2734,7 @@ Let $Q \in \mathbb{T}^{m \times m}$ be regular and $A \in \mathbb{T}^{m \times n
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* (1) By Proposition 5.64 we have $\mathcal{R}(QA) \subseteq \mathcal{R}(A)$. Applying Proposition 5.64 to the matrix $(QA)$ multiplied on the left by $Q^{-1}$, we get $\mathcal{R}(Q^{-1}QA) \subseteq \mathcal{R}(QA)$, i.e., $\mathcal{R}(A) \subseteq \mathcal{R}(QA)$. Together we have $\mathcal{R}(QA) = \mathcal{R}(A)$. (2) The left-to-right implication follows from Proposition 5.64. The reverse implication follows from Proposition 5.64 applied to the matrix $(QA)$ multiplied on the left by $Q^{-1}$.
+(1) By Proposition 5.64 we have $\mathcal{R}(QA) \subseteq \mathcal{R}(A)$. Applying Proposition 5.64 to the matrix $(QA)$ multiplied on the left by $Q^{-1}$, we get $\mathcal{R}(Q^{-1}QA) \subseteq \mathcal{R}(QA)$, i.e., $\mathcal{R}(A) \subseteq \mathcal{R}(QA)$. Together we have $\mathcal{R}(QA) = \mathcal{R}(A)$. (2) The left-to-right implication follows from Proposition 5.64. The reverse implication follows from Proposition 5.64 applied to the matrix $(QA)$ multiplied on the left by $Q^{-1}$.
 
 </details>
 </div>
@@ -2687,7 +2771,7 @@ Let $A \in \mathbb{T}^{m \times n}$ and let $A^R$ be its RREF form with pivots a
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* We know from Theorem 3.31 that $A^R = QA$ for some regular matrix $Q$. (1) By Proposition 5.66 we have $\mathcal{R}(A) = \mathcal{R}(QA) = \mathcal{R}(A^R)$. The nonzero rows of $A^R$ are linearly independent, so they form a basis of both $\mathcal{R}(A^R)$ and $\mathcal{R}(A)$. (2) The vectors $A^R_{\ast p_1}, \ldots, A^R_{\ast p_r}$ form a basis of $\mathcal{S}(A^R)$. These vectors are certainly linearly independent (they are unit vectors). They generate $\mathcal{S}(A^R)$, since any non-pivot column can be expressed as a linear combination of the pivot ones: $A^R_{\ast j} = \sum_{i=1}^{r} a^R_{ij} e_i = \sum_{i=1}^{r} a^R_{ij} A^R_{\ast p_i}$. Now we use Proposition 5.66, which guarantees that $A_{\ast p_1}, \ldots, A_{\ast p_r}$ are also linearly independent and generate $\mathcal{S}(A)$, thus forming a basis of $\mathcal{S}(A)$. (3) The value $\dim \mathcal{R}(A)$ is the size of the basis of $\mathcal{R}(A)$, i.e., $r$, and similarly $\dim \mathcal{S}(A)$ is also $r$. Moreover $r = \operatorname{rank}(A)$.
+We know from Theorem 3.31 that $A^R = QA$ for some regular matrix $Q$. (1) By Proposition 5.66 we have $\mathcal{R}(A) = \mathcal{R}(QA) = \mathcal{R}(A^R)$. The nonzero rows of $A^R$ are linearly independent, so they form a basis of both $\mathcal{R}(A^R)$ and $\mathcal{R}(A)$. (2) The vectors $A^R_{\ast p_1}, \ldots, A^R_{\ast p_r}$ form a basis of $\mathcal{S}(A^R)$. These vectors are certainly linearly independent (they are unit vectors). They generate $\mathcal{S}(A^R)$, since any non-pivot column can be expressed as a linear combination of the pivot ones: $A^R_{\ast j} = \sum_{i=1}^{r} a^R_{ij} e_i = \sum_{i=1}^{r} a^R_{ij} A^R_{\ast p_i}$. Now we use Proposition 5.66, which guarantees that $A_{\ast p_1}, \ldots, A_{\ast p_r}$ are also linearly independent and generate $\mathcal{S}(A)$, thus forming a basis of $\mathcal{S}(A)$. (3) The value $\dim \mathcal{R}(A)$ is the size of the basis of $\mathcal{R}(A)$, i.e., $r$, and similarly $\dim \mathcal{S}(A)$ is also $r$. Moreover $r = \operatorname{rank}(A)$.
 
 </details>
 </div>
@@ -2734,12 +2818,20 @@ For every matrix $A \in \mathbb{T}^{m \times n}$ the following holds
 
 $$\dim \operatorname{Ker}(A) + \operatorname{rank}(A) = n.$$
 
-*Proof.* Let $\dim \operatorname{Ker}(A) = k$. Let the vectors $v_1, \ldots, v_k$ form a basis of $\operatorname{Ker}(A)$, which means in particular that $Av_1 = \ldots = Av_k = o$. We extend the vectors $v_1, \ldots, v_k$ to a basis of the entire space $\mathbb{T}^n$ by adding vectors $v_{k+1}, \ldots, v_n$. It suffices to show that the vectors $Av_{k+1}, \ldots, Av_n$ form a basis of $\mathcal{S}(A)$, since then $\operatorname{rank}(A) = \dim \mathcal{S}(A) = n - k$ and the equality from the theorem is satisfied.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $\dim \operatorname{Ker}(A) = k$. Let the vectors $v_1, \ldots, v_k$ form a basis of $\operatorname{Ker}(A)$, which means in particular that $Av_1 = \ldots = Av_k = o$. We extend the vectors $v_1, \ldots, v_k$ to a basis of the entire space $\mathbb{T}^n$ by adding vectors $v_{k+1}, \ldots, v_n$. It suffices to show that the vectors $Av_{k+1}, \ldots, Av_n$ form a basis of $\mathcal{S}(A)$, since then $\operatorname{rank}(A) = \dim \mathcal{S}(A) = n - k$ and the equality from the theorem is satisfied.
 
 "Generating property." Let $y \in \mathcal{S}(A)$, then $y = Ax$ for some $x \in \mathbb{T}^n$. This $x$ can be expressed as $x = \sum_{i=1}^{n} \alpha_i v_i$. Substituting, $y = Ax = A(\sum_{i=1}^{n} \alpha_i v_i) = \sum_{i=1}^{n} \alpha_i A v_i = \sum_{i=k+1}^{n} \alpha_i (Av_i)$.
 
 "Linear independence." Let $\sum_{i=k+1}^{n} \alpha_i Av_i = o$. Then $A(\sum_{i=k+1}^{n} \alpha_i v_i) = o$, so $\sum_{i=k+1}^{n} \alpha_i v_i$ belongs to the kernel of matrix $A$. Therefore $\sum_{i=k+1}^{n} \alpha_i v_i = \sum_{i=1}^{k} \beta_i v_i$ for some scalars $\beta_1, \ldots, \beta_k$. Rewriting the equation as $\sum_{i=k+1}^{n} \alpha_i v_i + \sum_{i=1}^{k} (-\beta_i) v_i = o$ and using the linear independence of the vectors $v_1, \ldots, v_n$, we get $\alpha_{k+1} = \ldots = \alpha_n = \beta_1 = \ldots = \beta_k = 0$.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2961,11 +3053,18 @@ Let $f \colon U \to V$ be a linear map. Then the following are equivalent:
 
 </div>
 
-*Proof.* We prove the implications $(1) \Rightarrow (2) \Rightarrow (3) \Rightarrow (1)$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We prove the implications $(1) \Rightarrow (2) \Rightarrow (3) \Rightarrow (1)$.
 
 - Implication $(1) \Rightarrow (2)$: Since $f(o) = o$, we have $o \in \operatorname{Ker}(f)$. But since $f$ is injective, the kernel contains no other element.
 - Implication $(2) \Rightarrow (3)$: Let $x_1, \ldots, x_n \in U$ be linearly independent and suppose $\sum_{i=1}^{n} \alpha_i f(x_i) = o$. Then $f(\sum_{i=1}^{n} \alpha_i x_i) = o$, so $\sum_{i=1}^{n} \alpha_i x_i$ belongs to the kernel $\operatorname{Ker}(f) = \lbrace o \rbrace$. Therefore $\sum_{i=1}^{n} \alpha_i x_i = o$, and by linear independence of the vectors we have $\alpha_i = 0$ for all $i$.
 - Implication $(3) \Rightarrow (1)$: For contradiction, assume there exist two distinct vectors $x, y \in U$ such that $f(x) = f(y)$. Then $o = f(x) - f(y) = f(x - y)$. The vector $o$ represents a linearly dependent set of vectors, so $x - y$ must also be a linearly dependent set by assumption (3), and therefore $x - y = o$, i.e., $x = y$. This is a contradiction.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.13 — Injective Linear Map)</span></p>
@@ -2997,9 +3096,16 @@ Let $U, V$ be spaces over $\mathbb{T}$ and $x_1, \ldots, x_n$ a basis of $U$. Fo
 
 </div>
 
-*Proof.* "Existence." Let $x \in U$ be arbitrary. Then $x = \sum_{i=1}^{n} \alpha_i x_i$ for some scalars $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$. We define the image of $x$ as $f(x) = \sum_{i=1}^{n} \alpha_i y_i$, because a linear map must satisfy $f(x) = f\!\left(\sum_{i=1}^{n} \alpha_i x_i\right) = \sum_{i=1}^{n} \alpha_i f(x_i) = \sum_{i=1}^{n} \alpha_i y_i$. That the map defined in this way is indeed linear is then easy to verify.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+"Existence." Let $x \in U$ be arbitrary. Then $x = \sum_{i=1}^{n} \alpha_i x_i$ for some scalars $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$. We define the image of $x$ as $f(x) = \sum_{i=1}^{n} \alpha_i y_i$, because a linear map must satisfy $f(x) = f\!\left(\sum_{i=1}^{n} \alpha_i x_i\right) = \sum_{i=1}^{n} \alpha_i f(x_i) = \sum_{i=1}^{n} \alpha_i y_i$. That the map defined in this way is indeed linear is then easy to verify.
 
 "Uniqueness." Suppose we have two distinct linear maps $f$ and $g$ satisfying $f(x_i) = g(x_i) = y_i$ for all $i = 1, \ldots, n$. Then for arbitrary $x \in U$, expressed as $x = \sum_{i=1}^{n} \alpha_i x_i$, we have $f(x) = \sum_{i=1}^{n} \alpha_i f(x_i) = \sum_{i=1}^{n} \alpha_i y_i = \sum_{i=1}^{n} \alpha_i g(x_i) = g(x)$. Thus $f(x) = g(x)$ $\forall x \in U$, which contradicts the assumption that they are distinct maps.
+
+</details>
+</div>
 
 ### 6.2 Matrix Representation of a Linear Map
 
@@ -3065,11 +3171,18 @@ $$[f(x)]_{B_V} = {}_{B_V}[f]_{B_U} \cdot [x]_{B_U}. \tag{6.1}$$
 
 </div>
 
-*Proof.* Denote $A := {}\_{B_V}[f]\_{B_U}$. Let $x \in U$, so $x = \sum_{i=1}^{n} \alpha_i x_i$, i.e., $[x]\_{B_U} = (\alpha_1, \ldots, \alpha_n)^\top$. Then
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Denote $A := {}\_{B_V}[f]\_{B_U}$. Let $x \in U$, so $x = \sum_{i=1}^{n} \alpha_i x_i$, i.e., $[x]\_{B_U} = (\alpha_1, \ldots, \alpha_n)^\top$. Then
 
 $$f(x) = f\!\left(\sum_{j=1}^{n} \alpha_j x_j\right) = \sum_{j=1}^{n} \alpha_j f(x_j) = \sum_{j=1}^{n} \alpha_j \left(\sum_{i=1}^{m} a_{ij} y_i\right) = \sum_{i=1}^{m} \left(\sum_{j=1}^{n} \alpha_j a_{ij}\right) y_i.$$
 
 Thus the expression $\sum_{j=1}^{n} \alpha_j a_{ij}$ represents the $i$-th coordinate of the vector $[f(x)]\_{B_V}$, and its value is $\sum_{j=1}^{n} \alpha_j a_{ij} = (A \cdot [x]\_{B_U})\_i$, which is the $i$-th component of the vector ${}\_{B_V}[f]\_{B_U} \cdot [x]\_{B_U}$.
+
+</details>
+</div>
 
 The matrix of a linear map thus converts the coordinates of a vector with respect to a given basis into the coordinates of its image, and moreover, the image of any vector can be expressed simply as matrix multiplication.
 
@@ -3080,7 +3193,14 @@ Every linear map $f \colon \mathbb{T}^n \to \mathbb{T}^m$ can be expressed as $f
 
 </div>
 
-*Proof.* For every $x \in \mathbb{T}^n$ we have $f(x) = [f(x)]_{\text{kan}} = {}_{\text{kan}}[f]_{\text{kan}} \cdot [x]_{\text{kan}} = {}_{\text{kan}}[f]_{\text{kan}} \cdot x$. Thus $f(x) = Ax$, where $A = {}_{\text{kan}}[f]_{\text{kan}}$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For every $x \in \mathbb{T}^n$ we have $f(x) = [f(x)]_{\text{kan}} = {}_{\text{kan}}[f]_{\text{kan}} \cdot [x]_{\text{kan}} = {}_{\text{kan}}[f]_{\text{kan}} \cdot x$. Thus $f(x) = Ax$, where $A = {}_{\text{kan}}[f]_{\text{kan}}$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 6.21 — Uniqueness of the Matrix of a Linear Map)</span></p>
@@ -3089,7 +3209,14 @@ Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V
 
 </div>
 
-*Proof.* Let the basis $B_U$ consist of vectors $z_1, \ldots, z_n$. For contradiction, assume that the linear map $f$ has two matrix representations (6.1) via matrices $A \neq A'$. Then there exists a vector $s \in \mathbb{T}^n$ such that $As \neq A's$; such a vector can be chosen, for example, as the unit vector with a one in the position where the columns of the matrices $A, A'$ differ. Define the vector $x := \sum_{i=1}^{n} s_i z_i$. Then $[f(x)]\_{B_V} = As \neq A's = [f(x)]\_{B_V}$, which contradicts the uniqueness of coordinates (Theorem 5.33).
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let the basis $B_U$ consist of vectors $z_1, \ldots, z_n$. For contradiction, assume that the linear map $f$ has two matrix representations (6.1) via matrices $A \neq A'$. Then there exists a vector $s \in \mathbb{T}^n$ such that $As \neq A's$; such a vector can be chosen, for example, as the unit vector with a one in the position where the columns of the matrices $A, A'$ differ. Define the vector $x := \sum_{i=1}^{n} s_i z_i$. Then $[f(x)]\_{B_V} = As \neq A's = [f(x)]\_{B_V}$, which contradicts the uniqueness of coordinates (Theorem 5.33).
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 6.22)</span></p>
@@ -3277,12 +3404,17 @@ The vector space $\mathbb{C}^n$ over $\mathbb{R}$ is isomorphic to the space $\m
 
 </div>
 
-*Proof.*
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 1. The map $f$ is bijective, so $f^{-1}$ exists and is also bijective. It remains to prove linearity. Let $v_1, v_2 \in V$ and let $f^{-1}(v_1) = u_1$ and $f^{-1}(v_2) = u_2$. Then $f(u_1 + u_2) = f(u_1) + f(u_2) = v_1 + v_2$, so $f^{-1}(v_1 + v_2) = u_1 + u_2 = f^{-1}(v_1) + f^{-1}(v_2)$. Similarly for scalar multiples: Let $v \in V$ and $f^{-1}(v) = u$, then $f(\alpha u) = \alpha f(u) = \alpha v$, so $f^{-1}(\alpha v) = \alpha u = \alpha f^{-1}(v)$.
 2. Easy from Proposition 6.26.
 3. Let $x_1, \ldots, x_n$ be a basis of $U$. Since $f$ is injective, by Theorem 6.12(3) the images $f(x_1), \ldots, f(x_n)$ are linearly independent. Since $f$ is surjective, the vectors $f(x_1), \ldots, f(x_n)$ generate the space $f(U) = V$ by Proposition 6.10(3). Thus the vectors $f(x_1), \ldots, f(x_n)$ form a basis of $V$. — Conversely, let $x_1, \ldots, x_n$ be a basis of $U$ and $f(x_1), \ldots, f(x_n)$ a basis of $V$. Then the map $f$ is clearly surjective. That the map $f$ is injective can be seen by contradiction: Suppose the kernel $\operatorname{Ker}(f)$ contains a nonzero vector. Then for some nontrivial linear combination we have $f(\sum_{i=1}^{n} \alpha_i x_i) = o$. By linearity of the map we get $\sum_{i=1}^{n} \alpha_i f(x_i) = o$, which contradicts the linear independence of the vectors $f(x_1), \ldots, f(x_n)$.
 4. Follows from the previous part.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 6.35)</span></p>
@@ -3334,7 +3466,14 @@ Let $V$ be a vector space over a field $\mathbb{T}$ of dimension $n$ with basis 
 
 </div>
 
-*Proof.* Let the basis $B$ consist of vectors $v_1, \ldots, v_n$. It is easy to see that the map $x \mapsto [x]\_B$ is linear, injective, and surjective, because every $n$-tuple $(\alpha_1, \ldots, \alpha_n) \in \mathbb{T}^n$ represents the coordinates of a specific vector $\sum_{i=1}^{n} \alpha_i v_i$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let the basis $B$ consist of vectors $v_1, \ldots, v_n$. It is easy to see that the map $x \mapsto [x]\_B$ is linear, injective, and surjective, because every $n$-tuple $(\alpha_1, \ldots, \alpha_n) \in \mathbb{T}^n$ represents the coordinates of a specific vector $\sum_{i=1}^{n} \alpha_i v_i$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 6.39 — Isomorphism of $n$-dimensional Spaces)</span></p>
@@ -3370,10 +3509,15 @@ Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V
 
 </div>
 
-*Proof.*
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 1. By Theorem 6.34(4), it suffices to construct an isomorphism between the spaces $\operatorname{Ker}(f)$ and $\operatorname{Ker}(A)$. An isomorphism can be, for example, the map $x \in \operatorname{Ker}(f) \mapsto [x]\_{B_U}$. From Proposition 6.38, we know it is linear and injective. It remains to show that $[x]\_{B_U} \in \operatorname{Ker}(A)$ and that the map is surjective. Let $x \in \operatorname{Ker}(f)$, then $o = [f(x)]\_{B_V} = {}\_{B_V}[f]\_{B_U} \cdot [x]\_{B_U}$, so $[x]\_{B_U} \in \operatorname{Ker}(A)$. Conversely, for every $[x]\_{B_U} \in \operatorname{Ker}(A)$ we have $f(x) = o$.
 2. Denote $\dim U = n$, $\dim V = m$. Again we construct an isomorphism, now between $f(U)$ and $\mathcal{S}(A)$, namely $y \in f(U) \mapsto [y]\_{B_V}$. Again, the map is linear and injective. Furthermore, for $y \in f(U)$ there exists $x \in U$ such that $f(x) = y$. Now $[y]\_{B_V} = [f(x)]\_{B_V} = A \cdot [x]\_{B_U}$, so $[y]\_{B_V}$ belongs to the column space $\mathcal{S}(A)$. Conversely, for every $b \in \mathcal{S}(A)$ there exists $a \in \mathbb{T}^n$ such that $b = Aa$. So for the vector $x \in U$ such that $[x]\_{B_U} = a$, we have $y := f(x) \in f(U)$ and at the same time $[y]\_{B_V} = [f(x)]\_{B_V} = A \cdot [x]\_{B_U} = Aa = b \in \mathcal{S}(A)$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 6.42)</span></p>
@@ -3856,7 +4000,14 @@ Let $V$ be a vector space over $\mathbb{T}$ and let $\emptyset \neq M \subseteq 
 
 </div>
 
-*Proof.* Analogous to the proof of Theorem 7.4. The proof of closure of the set $U$ under sums follows directly from the fact that $x + x' - a \in M$, because this is an affine combination of three vectors $x, x', a$ (their coefficients sum to $1 + 1 - 1 = 1$). Therefore, there is no need to divide by two anywhere, and one can consider an arbitrary field.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Analogous to the proof of Theorem 7.4. The proof of closure of the set $U$ under sums follows directly from the fact that $x + x' - a \in M$, because this is an affine combination of three vectors $x, x', a$ (their coefficients sum to $1 + 1 - 1 = 1$). Therefore, there is no need to divide by two anywhere, and one can consider an arbitrary field.
+
+</details>
+</div>
 
 From the proof, we see that it suffices for the set $M$ to be closed under affine combinations of three vectors. Then it is already closed under affine combinations of any finite number of vectors.
 
@@ -3939,7 +4090,14 @@ Let $A \in \mathbb{T}^{m \times n}$, $b \in \mathbb{T}^m$. If the solution set o
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* By Proposition 7.6, the solution set can be expressed in the form $\operatorname{Ker}(A) + x_0$, where $x_0$ is any particular solution of the system. Its dimension therefore equals the dimension of the kernel, which by Theorem 5.72 equals $\dim \operatorname{Ker}(A) = n - \operatorname{rank}(A)$.
+
+</details>
+</div>
 
 #### Affine Independence
 
@@ -4244,8 +4402,15 @@ Vectors $x, y \in V$ are *orthogonal* if $\langle x, y \rangle = 0$. Notation: $
 
 If $x, y \in V$ are orthogonal, then $\|x + y\|^2 = \|x\|^2 + \|y\|^2$.
 
-*Proof.* $\|x + y\|^2 = \langle x + y, x + y \rangle = \langle x, x \rangle + \underbrace{\langle x, y \rangle}\_{=0} + \underbrace{\langle y, x \rangle}\_{=0} + \langle y, y \rangle = \|x\|^2 + \|y\|^2$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$\|x + y\|^2 = \langle x + y, x + y \rangle = \langle x, x \rangle + \underbrace{\langle x, y \rangle}\_{=0} + \underbrace{\langle y, x \rangle}\_{=0} + \langle y, y \rangle = \|x\|^2 + \|y\|^2$.
+
+</details>
 </div>
 
 Note that over $\mathbb{R}$ the converse implication also holds, but over $\mathbb{C}$ it generally does not (see Problem 8.2).
@@ -4253,7 +4418,13 @@ Note that over $\mathbb{R}$ the converse implication also holds, but over $\math
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.9 — Cauchy–Schwarz inequality)</span></p>
 
-For every $x, y \in V$, $\|\langle x, y \rangle\| \le \|x\| \cdot \|y\|$.
+$$\forall x, y \in V \qquad \|\langle x, y \rangle\| \le \|x\| \cdot \|y\|$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* (Real version) We first show the real version. For $y = o$ the inequality holds trivially, so assume $y \neq o$. Consider the real function $f(t) = \langle x + ty, x + ty \rangle \ge 0$ of the variable $t \in \mathbb{R}$. Then
 
@@ -4275,6 +4446,7 @@ $$0 \le \langle x, x \rangle - |\alpha|^2 = \langle x, x \rangle - |\langle x, y
 
 Thus $\|\alpha\|^2 \le \langle x, x \rangle$ and taking square roots of both sides we have $\|\langle x, y \rangle\| \le \|x\|$.
 
+</details>
 </div>
 
 Sometimes the Cauchy–Schwarz inequality is stated in the equivalent form
@@ -4290,12 +4462,19 @@ $$\left(\sum_{i=1}^{n} x_i y_i\right)^2 \le \left(\sum_{i=1}^{n} x_i^2\right) \l
 
 For every $x, y \in V$, $\|x + y\| \le \|x\| + \|y\|$.
 
-*Proof.* First recall that for every complex number $z = a + bi$: $z + \overline{z} = 2a = 2\operatorname{Re}(z)$, and furthermore $a \le \|z\|$. Now we can derive:
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+First recall that for every complex number $z = a + bi$: $z + \overline{z} = 2a = 2\operatorname{Re}(z)$, and furthermore $a \le \|z\|$. Now we can derive:
 
 $$\|x + y\|^2 = \langle x + y, x + y \rangle = \langle x, x \rangle + \langle y, y \rangle + 2\operatorname{Re}(\langle x, y \rangle) \le \|x\|^2 + \|y\|^2 + 2|\langle x, y \rangle| \le (\|x\| + \|y\|)^2,$$
 
 where the last inequality follows from the Cauchy–Schwarz inequality.
 
+</details>
 </div>
 
 #### Norm in general
@@ -4654,7 +4833,11 @@ The orthogonal complement of the vector $(2, 5)^\top$ is the line $\operatorname
 2. *if $M \subseteq N$ then $M^\perp \supseteq N^\perp$,*
 3. *$M^\perp = \operatorname{span}(M)^\perp$.*
 
-*Proof.*
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 (1) We verify the subspace properties: $o \in M^\perp$ trivially. Now let $x_1, x_2 \in M^\perp$. Then $\langle x_1, y \rangle = \langle x_2, y \rangle = 0$ $\forall y \in M$, so also $\langle x_1 + x_2, y \rangle = \langle x_1, y \rangle + \langle x_2, y \rangle = 0$. Finally, let $x \in M^\perp$. Then for every scalar $\alpha$, $\langle \alpha x, y \rangle = \alpha \langle x, y \rangle = 0$.
 
@@ -4662,6 +4845,7 @@ The orthogonal complement of the vector $(2, 5)^\top$ is the line $\operatorname
 
 (3) $M \subseteq \operatorname{span}(M)$, so by the previous part $M^\perp \supseteq \operatorname{span}(M)^\perp$. The proof of the second inclusion relies on the fact that if a vector $x$ is orthogonal to certain vectors, then it is orthogonal to their linear combinations, and hence to their linear span.
 
+</details>
 </div>
 
 Property (3) says that the orthogonal complement of a space or of its basis is the same. This simplifies the practical task of finding the orthogonal complement, because it suffices to verify orthogonality only against the basis vectors.
@@ -4847,10 +5031,17 @@ From the previous section we know how to compute the orthogonal complement and p
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.45 — Orthogonal complement in $\mathbb{R}^n$)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$. Then $\mathcal{R}(A)^\perp = \operatorname{Ker}(A)$.*
+Let $A \in \mathbb{R}^{m \times n}$. Then $\mathcal{R}(A)^\perp = \operatorname{Ker}(A)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* From the properties of the orthogonal complement (Proposition 8.32(3)) we know $\mathcal{R}(A)^\perp = \lbrace A_{1*}, \ldots, A_{m*} \rbrace^\perp$. Thus $x \in \mathcal{R}(A)^\perp$ if and only if $x$ is orthogonal to the rows of the matrix $A$, i.e., $A_{i*} x = 0$ for all $i = 1, \ldots, m$. Equivalently, $Ax = o$, that is $x \in \operatorname{Ker}(A)$.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -4869,13 +5060,17 @@ The characterization of the orthogonal complement also has theoretical consequen
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.47)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$. Then*
+Let $A \in \mathbb{R}^{m \times n}$. Then
 
 1. *$\operatorname{Ker}(A^\top A) = \operatorname{Ker}(A)$,*
 2. *$\mathcal{R}(A^\top A) = \mathcal{R}(A)$,*
 3. *$\operatorname{rank}(A^\top A) = \operatorname{rank}(A)$.*
 
-*Proof.*
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 (1) If $x \in \operatorname{Ker}(A)$, then $Ax = o$, and therefore also $A^\top Ax = A^\top o = o$, so $x \in \operatorname{Ker}(A^\top A)$. Conversely, if $x \in \operatorname{Ker}(A^\top A)$, then $A^\top Ax = o$. Multiplying by $x^\top$ we get $x^\top A^\top Ax = o$, i.e., $\|Ax\|^2 = 0$. By the property of the norm, $Ax = o$ and therefore $x \in \operatorname{Ker}(A)$.
 
@@ -4883,6 +5078,7 @@ The characterization of the orthogonal complement also has theoretical consequen
 
 (3) Trivially from the previous point.
 
+</details>
 </div>
 
 #### Matrix spaces and linear maps
@@ -4894,14 +5090,21 @@ If the linear map $f(x)$ is not injective, then $\dim f(\mathbb{R}^n) < n$. The 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.48)</span></p>
 
-*Consider the linear map $f(x) = Ax$, where $A \in \mathbb{R}^{m \times n}$. If we restrict the domain of $f(x)$ to the space $\mathcal{R}(A)$ only, we obtain an isomorphism between $\mathcal{R}(A)$ and $f(\mathbb{R}^n)$.*
+Consider the linear map $f(x) = Ax$, where $A \in \mathbb{R}^{m \times n}$. If we restrict the domain of $f(x)$ to the space $\mathcal{R}(A)$ only, we obtain an isomorphism between $\mathcal{R}(A)$ and $f(\mathbb{R}^n)$.
 
-*Proof.* Let $x \in \mathbb{R}^n$. Since $\mathcal{R}(A)^\perp = \operatorname{Ker}(A)$, by Remark 8.40 the vector $x$ can be decomposed as $x = x^R + x^K$, where $x^R \in \mathcal{R}(A)$ and $x^K \in \operatorname{Ker}(A)$. Then
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $x \in \mathbb{R}^n$. Since $\mathcal{R}(A)^\perp = \operatorname{Ker}(A)$, by Remark 8.40 the vector $x$ can be decomposed as $x = x^R + x^K$, where $x^R \in \mathcal{R}(A)$ and $x^K \in \operatorname{Ker}(A)$. Then
 
 $$f(x) = Ax = A(x^R + x^K) = Ax^R + Ax^K = Ax^R.$$
 
 Every vector from $f(\mathbb{R}^n)$ is therefore the image of some vector from $\mathcal{R}(A)$, i.e., $f(\mathcal{R}(A)) = f(\mathbb{R}^n)$. Since both spaces $\mathcal{R}(A)$ and $f(\mathbb{R}^n)$ have the same dimension (equal to $\operatorname{rank}(A)$), the map $f(x)$ represents an isomorphism.
 
+</details>
 </div>
 
 #### Orthogonal projection
@@ -4950,9 +5153,16 @@ A matrix $P \in \mathbb{R}^{n \times n}$ is a projection matrix if and only if i
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* One direction has already been observed. Now assume that $P$ is symmetric and satisfies $P = P^2$, and we want to show that it is the projection matrix onto the space $\mathcal{S}(A)$. In other words, we want to show that for every vector $x \in \mathbb{R}^n$, $Px$ is its projection into $\mathcal{S}(A)$. By Proposition 8.41 it suffices to show that $x - Px \in \mathcal{S}(A)^\perp$. That is, $x - Px$ must be orthogonal to all vectors from $\mathcal{S}(A)$, and these have the form $Py$, where $y \in \mathbb{R}^n$. But this is easily verified by expanding their inner product
 
 $$((I_n - P)x)^\top Py = x^\top(I_n - P)^\top Py = x^\top(P - P^2)y = 0.$$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.51)</span></p>
@@ -5059,7 +5269,14 @@ Let $A \in \mathbb{R}^{m \times n}$. Then the set of approximate solutions of th
 
 </div>
 
-*Proof.* We are essentially looking for the projection of the vector $b$ into the subspace $\mathcal{S}(A)$, and this projection is a vector of the form $Ax$, where $x \in \mathbb{R}^n$. By Proposition 8.41, $Ax$ is the projection if and only if $Ax - b \in \mathcal{S}(A)^\perp = \operatorname{Ker}(A^\top)$. In other words, $A^\top(Ax - b) = 0$ must hold, i.e., $A^\top Ax = A^\top b$. This system has a solution because the projection must exist.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We are essentially looking for the projection of the vector $b$ into the subspace $\mathcal{S}(A)$, and this projection is a vector of the form $Ax$, where $x \in \mathbb{R}^n$. By Proposition 8.41, $Ax$ is the projection if and only if $Ax - b \in \mathcal{S}(A)^\perp = \operatorname{Ker}(A^\top)$. In other words, $A^\top(Ax - b) = 0$ must hold, i.e., $A^\top Ax = A^\top b$. This system has a solution because the projection must exist.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.60)</span></p>
@@ -5273,21 +5490,33 @@ Computing determinants from the definition for larger matrices is generally very
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 9.3 — Determinant of a triangular matrix)</span></p>
 
-*Let $A \in \mathbb{T}^{n \times n}$ be an upper triangular matrix. Then $\det(A) = a_{1,p(1)} \ldots a_{n,p(n)}$.*
+Let $A \in \mathbb{T}^{n \times n}$ be an upper triangular matrix. Then $\det(A) = a_{1,p(1)} \ldots a_{n,p(n)}$.
 
-*Proof.* Since the matrix $A$ is upper triangular, the factor $a_{n,p(n)}$ is nonzero only if $p(n) = n$. For the factor $a_{n-1,p(n-1)}$ to be nonzero, either $p(n-1) = n$ or $p(n-1) = n-1$. The first option is excluded since $p(n) = n$, so $p(n-1) = n-1$. By repeating this procedure, we conclude that the term (9.1) is nonzero only for the identity permutation. Therefore $\det(A) = a_{1,1} \ldots a_{n,n}$, i.e., the determinant equals the product of the diagonal entries. As a consequence, in particular $\det(I_n) = 1$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Since the matrix $A$ is upper triangular, the factor $a_{n,p(n)}$ is nonzero only if $p(n) = n$. For the factor $a_{n-1,p(n-1)}$ to be nonzero, either $p(n-1) = n$ or $p(n-1) = n-1$. The first option is excluded since $p(n) = n$, so $p(n-1) = n-1$. By repeating this procedure, we conclude that the term (9.1) is nonzero only for the identity permutation. Therefore $\det(A) = a_{1,1} \ldots a_{n,n}$, i.e., the determinant equals the product of the diagonal entries. As a consequence, in particular $\det(I_n) = 1$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 9.4 — Determinant of the transpose)</span></p>
 
-*Let $A \in \mathbb{T}^{n \times n}$. Then $\det(A^\top) = \det(A)$.*
+Let $A \in \mathbb{T}^{n \times n}$. Then $\det(A^\top) = \det(A)$.
 
-*Proof.*
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 $$\det(A^\top) = \sum_{p \in S_n} \operatorname{sgn}(p) \prod_{i=1}^{n} A^\top_{i,p(i)} = \sum_{p \in S_n} \operatorname{sgn}(p) \prod_{i=1}^{n} a_{p(i),i} = \sum_{p \in S_n} \operatorname{sgn}(p^{-1}) \prod_{i=1}^{n} a_{i,p^{-1}(i)} = \sum_{q \in S_n} \operatorname{sgn}(q) \prod_{i=1}^{n} a_{i,q(i)} = \det(A).$$
 
+</details>
 </div>
 
 For determinants, in general $\det(A + B) \neq \det(A) + \det(B)$, nor is there a known simple formula for the determinant of a sum of matrices. The exception is the following special case of row linearity.
@@ -5295,7 +5524,7 @@ For determinants, in general $\det(A + B) \neq \det(A) + \det(B)$, nor is there 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.5 — Row linearity of the determinant)</span></p>
 
-*Let $A \in \mathbb{T}^{n \times n}$, $b \in \mathbb{T}^n$. Then for any $i = 1, \ldots, n$ it holds that:*
+Let $A \in \mathbb{T}^{n \times n}$, $b \in \mathbb{T}^n$. Then for any $i = 1, \ldots, n$ it holds that:
 
 $$\det(A + e_i b^\top) = \det(A) + \det(A + e_i(b^\top - A_{i*})).$$
 
@@ -5317,7 +5546,9 @@ Our plan is to use Gaussian elimination to compute the determinant. For this, we
 
 3. **Adding $\alpha$ times the $j$-th row to the $i$-th row, where $i \neq j$:** $\det(A') = \det(A)$.
 
-*Proofs.*
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 (1) Follows directly from the definition — we factor out $\alpha$ from the $i$-th row.
 
@@ -5325,10 +5556,19 @@ Our plan is to use Gaussian elimination to compute the determinant. For this, we
 
 (3) From the row linearity of the determinant and Corollary 9.6 (a matrix with two identical rows has zero determinant), we get $\det(A') = \det(A) + \alpha \cdot 0 = \det(A)$.
 
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(9.6)</span></p>
 
-*If the matrix $A \in \mathbb{T}^{n \times n}$ has two identical rows, then $\det(A) = 0$.*
+If the matrix $A \in \mathbb{T}^{n \times n}$ has two identical rows, then $\det(A) = 0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof (for fields of characteristic $\neq 2$).* By swapping these two identical rows, we get $\det(A) = -\det(A)$, and therefore $\det(A) = 0$.
 
@@ -5336,6 +5576,7 @@ Our plan is to use Gaussian elimination to compute the determinant. For this, we
 
 $$\det(A) = \sum_{p \in S'_n} \operatorname{sgn}(p) \prod_{i=1}^{n} a_{i,p(i)} + \sum_{p \in S'_n} \operatorname{sgn}(p \circ t) \prod_{i=1}^{n} a_{i,p \circ t(i)} = \sum_{p \in S'_n} \operatorname{sgn}(p) \prod_{i=1}^{n} a_{i,p(i)} - \sum_{p \in S'_n} \operatorname{sgn}(p) \prod_{i=1}^{n} a_{i,p(i)} = 0.$$
 
+</details>
 </div>
 
 The above observations have several consequences: For any matrix $A \in \mathbb{T}^{n \times n}$, we have $\det(\alpha A) = \alpha^n \det(A)$. Furthermore, if $A$ contains a zero row or column, then $\det(A) = 0$.
@@ -5363,10 +5604,17 @@ $$= -\begin{vmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & -1 & -3 \\ 0 & 0 & -2 & -1 \\ 0 & 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.9 — Regularity criterion)</span></p>
 
-*A matrix $A \in \mathbb{T}^{n \times n}$ is nonsingular if and only if $\det(A) \neq 0$.*
+A matrix $A \in \mathbb{T}^{n \times n}$ is nonsingular if and only if $\det(A) \neq 0$.
 
-*Proof.* We reduce the matrix $A$ to row echelon form $A'$ using elementary operations; these may change the value of the determinant, but not its (non)zeroness. Then $A$ is nonsingular if and only if $A'$ has nonzero entries on the diagonal.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We reduce the matrix $A$ to row echelon form $A'$ using elementary operations; these may change the value of the determinant, but not its (non)zeroness. Then $A$ is nonsingular if and only if $A'$ has nonzero entries on the diagonal.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -5407,10 +5655,17 @@ $$\det(AB) = \det(E_1(E_2 \ldots E_k B)) = \det(E_1) \det((E_2 \ldots E_k) B) = 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 9.12)</span></p>
 
-*Let $A \in \mathbb{T}^{n \times n}$ be nonsingular. Then $\det(A^{-1}) = \det(A)^{-1}$.*
+Let $A \in \mathbb{T}^{n \times n}$ be nonsingular. Then $\det(A^{-1}) = \det(A)^{-1}$.
 
-*Proof.* $1 = \det(I_n) = \det(A A^{-1}) = \det(A) \det(A^{-1})$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$1 = \det(I_n) = \det(A A^{-1}) = \det(A) \det(A^{-1})$.
+
+</details>
 </div>
 
 We now present a recursive formula for computing the determinant.
@@ -5446,7 +5701,13 @@ $$= 0 + 2 \cdot 4 + 4 \cdot 2 - 4 \cdot 2 = 8.$$
 
 $$x_i = \frac{\det(A + (b - A_{*i}) e_i^\top)}{\det(A)}, \quad i = 1, \ldots, n.$$
 
-*Proof.* Let $x$ be the solution of the system $Ax = b$; due to the nonsingularity of $A$, the solution exists and is unique. We expand the equation as $\sum_{j=1}^{n} A_{*j} x_j = b$. From the column linearity of the determinant, we get
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $x$ be the solution of the system $Ax = b$; due to the nonsingularity of $A$, the solution exists and is unique. We expand the equation as $\sum_{j=1}^{n} A_{*j} x_j = b$. From the column linearity of the determinant, we get
 
 $$\det(A + (b - A_{*i}) e_i^\top) = \det(A_{*1} | \ldots | b | \ldots | A_{*n}) = \det(A_{*1} | \ldots | \sum_{j=1}^{n} A_{*j} x_j | \ldots | A_{*n})$$
 
@@ -5454,6 +5715,7 @@ $$= \sum_{j=1}^{n} \det(A_{*1} | \ldots | A_{*j} | \ldots | A_{*n}) x_j = \det(A
 
 It now suffices to divide both sides by $\det(A) \neq 0$.
 
+</details>
 </div>
 
 Cramer's rule from 1750 is named after the Swiss mathematician Gabriel Cramer. In its time, it was a popular tool for solving systems of linear equations. Today, it is no longer used for practical computations, because computing the solution of a system using $n + 1$ determinants is not very efficient in terms of computational time. Moreover, it has worse numerical properties. The significance of the determinant is rather theoretical; among other things, it shows and provides:
@@ -5495,14 +5757,21 @@ where $A^{ji}$ again denotes the matrix obtained from $A$ by deleting the $j$-th
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.18 — On the adjugate matrix)</span></p>
 
-*For every matrix $A \in \mathbb{T}^{n \times n}$ it holds that $A \operatorname{adj}(A) = \det(A) I_n$.*
+For every matrix $A \in \mathbb{T}^{n \times n}$ it holds that $A \operatorname{adj}(A) = \det(A) I_n$.
 
-*Proof.* We derive
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We derive
 
 $$(A \operatorname{adj}(A))_{ij} = \sum_{k=1}^{n} A_{ik} \operatorname{adj}(A)_{kj} = \sum_{k=1}^{n} A_{ik} (-1)^{k+j} \det(A^{jk}) = \begin{cases} \det(A), & \text{pro } i = j, \\ 0, & \text{pro } i \neq j. \end{cases}$$
 
 The justification of the last equality is that for $i = j$, this is the Laplace expansion of $\det(A)$ along the $j$-th row. For $i \neq j$, this is the expansion along the $j$-th row of matrix $A$, but with the $j$-th row first replaced by the $i$-th row. This matrix will have two identical rows and hence zero determinant.
 
+</details>
 </div>
 
 For a nonsingular matrix $A$, we have $\det(A) \neq 0$, and dividing by $\det(A)$ yields an explicit formula for the inverse matrix $A^{-1}$.
@@ -5817,7 +6086,14 @@ Let $A \in \mathbb{C}^{n \times n}$ with eigenvalues $\lambda_1, \ldots, \lambda
 
 </div>
 
-*Proof.* (1) We know that $p_A(\lambda) = (-1)^n(\lambda - \lambda_1) \ldots (\lambda - \lambda_n)$. Substituting $\lambda = 0$ we get $\det(A) = (-1)^n(-\lambda_1) \ldots (-\lambda_n) = \lambda_1 \ldots \lambda_n$. (2) By comparing the coefficients of $\lambda^{n-1}$ in different expressions of the characteristic polynomial.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) We know that $p_A(\lambda) = (-1)^n(\lambda - \lambda_1) \ldots (\lambda - \lambda_n)$. Substituting $\lambda = 0$ we get $\det(A) = (-1)^n(-\lambda_1) \ldots (-\lambda_n) = \lambda_1 \ldots \lambda_n$. (2) By comparing the coefficients of $\lambda^{n-1}$ in different expressions of the characteristic polynomial.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 10.12 — Properties of eigenvalues)</span></p>
@@ -5833,7 +6109,14 @@ Let $A \in \mathbb{C}^{n \times n}$ have eigenvalues $\lambda_1, \ldots, \lambda
 
 </div>
 
-*Proof.* (1) $A$ has eigenvalue 0 if and only if $0 = \det(A - 0 \cdot I_n) = \det(A)$, that is, when $A$ is singular. (2) For each $i$ we have $Ax_i = \lambda_i x_i$. Multiplying by $A^{-1}$ we get $x_i = \lambda_i A^{-1} x_i$ and dividing by $\lambda_i \neq 0$ we obtain $A^{-1} x_i = \lambda_i^{-1} x_i$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) $A$ has eigenvalue 0 if and only if $0 = \det(A - 0 \cdot I_n) = \det(A)$, that is, when $A$ is singular. (2) For each $i$ we have $Ax_i = \lambda_i x_i$. Multiplying by $A^{-1}$ we get $x_i = \lambda_i A^{-1} x_i$ and dividing by $\lambda_i \neq 0$ we obtain $A^{-1} x_i = \lambda_i^{-1} x_i$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.13)</span></p>
@@ -5872,7 +6155,14 @@ If $\lambda \in \mathbb{C}$ is an eigenvalue of a matrix $A \in \mathbb{R}^{n \t
 
 </div>
 
-*Proof.* We know that $\lambda$ is a root of $p_A(\lambda) = (-1)^n \lambda^n + a_{n-1}\lambda^{n-1} + \ldots + a_1\lambda + a_0 = 0$. Taking the complex conjugate of both sides we get $(-1)^n \overline{\lambda}^n + a_{n-1}\overline{\lambda}^{n-1} + \ldots + a_1\overline{\lambda} + a_0 = 0$, so $\overline{\lambda}$ is also a root of $p_A(\lambda)$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We know that $\lambda$ is a root of $p_A(\lambda) = (-1)^n \lambda^n + a_{n-1}\lambda^{n-1} + \ldots + a_1\lambda + a_0 = 0$. Taking the complex conjugate of both sides we get $(-1)^n \overline{\lambda}^n + a_{n-1}\overline{\lambda}^{n-1} + \ldots + a_1\overline{\lambda} + a_0 = 0$, so $\overline{\lambda}$ is also a root of $p_A(\lambda)$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.16)</span></p>
@@ -6549,7 +6839,6 @@ where $v_1$ is the eigenvector with the largest absolute eigenvalue:
 
 $$|\lambda_1| > |\lambda_2| \ge \cdots$$
 
-
 After applying $A$ once,
 
 $$Ax_0 = c_1 \lambda_1 v_1 + c_2 \lambda_2 v_2 + \cdots$$
@@ -6922,7 +7211,7 @@ The operation $\langle x, y \rangle$ is an inner product on $\mathbb{R}^n$ if an
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Implication "$\Rightarrow$": Define the matrix $A \in \mathbb{R}^{n \times n}$ by $a_{ij} = \langle e_i, e_j \rangle$, where $e_i, e_j$ are the standard unit vectors. The matrix $A$ is obviously symmetric. Now, by linearity of the inner product in both the first and second argument, we can write
+Implication "$\Rightarrow$": Define the matrix $A \in \mathbb{R}^{n \times n}$ by $a_{ij} = \langle e_i, e_j \rangle$, where $e_i, e_j$ are the standard unit vectors. The matrix $A$ is obviously symmetric. Now, by linearity of the inner product in both the first and second argument, we can write
 
 $$\langle x, y \rangle = \left\langle \sum_{i=1}^n x_i e_i, \sum_{j=1}^n y_j e_j \right\rangle = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \langle e_i, e_j \rangle = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
@@ -6957,7 +7246,7 @@ For every positive semidefinite matrix $A \in \mathbb{R}^{n \times n}$, there ex
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $A$ have the spectral decomposition 
+Let $A$ have the spectral decomposition 
 
 $$A = Q\Lambda Q^\top, \quad\text{where}\quad \Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n) \quad \lambda_1, \ldots, \lambda_n \ge 0$$
 
@@ -7449,7 +7738,14 @@ Then $Hx = \|x\|_2 e_1$.
 
 </div>
 
-*Proof.* The case $x = \|x\|_2 e_1$ is obvious. Otherwise we apply Theorem 13.1; the vectors $x$, $\|x\|_2 e_1$ have the same norm.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The case $x = \|x\|_2 e_1$ is obvious. Otherwise we apply Theorem 13.1; the vectors $x$, $\|x\|_2 e_1$ have the same norm.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.3)</span></p>
@@ -7927,11 +8223,16 @@ Let $A \in \mathbb{R}^{m \times n}$. Then the projection matrix onto the
 
 </div>
 
-*Proof.*
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 1. Using the reduced SVD decomposition $A = U_1 SV_1^\top$ we compute $AA^\dagger = U_1 SV_1^\top V_1 S^{-1}U_1^\top = U_1 U_1^\top$. By Theorem 13.21, this is the desired projection matrix.
 2. Analogously to the previous part, $A^\dagger A = V_1 V_1^\top$, which is the projection matrix onto $\mathcal{R}(A)$.
 3. Follows from Theorem 8.54 and the property $\operatorname{Ker}(A) = \mathcal{R}(A)^\perp$ (Theorem 8.45).
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 13.27 — Pseudoinverse Matrix and Linear Mappings)</span></p>

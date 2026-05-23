@@ -692,7 +692,7 @@ The polytope $\Delta^n := \lbrace x \in \mathbb{R}^n_+ \colon \sum_{i=1}^{n} x_i
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.23</span></p>
 
-Let us show that vectors $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$ such that $x^i_j = \llbracket i = j \rrbracket$ are vertices of the simplex $\Delta^n$. Indeed, for $c = x^i$ the maximum $\max_{x \in \Delta^n} \langle c, x \rangle$ is attained in a single point $x^i$. Therefore, $x^i \in \operatorname{vrtx}(\Delta^n)$.
+Let us show that vectors $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$ such that $x^i_j = \lbracket i = j \rbracket$ are vertices of the simplex $\Delta^n$. Indeed, for $c = x^i$ the maximum $\max_{x \in \Delta^n} \langle c, x \rangle$ is attained in a single point $x^i$. Therefore, $x^i \in \operatorname{vrtx}(\Delta^n)$.
 
 Note also that $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$, are the only binary (with coordinates 0 and 1) vectors in $\Delta^n$. In other words, $\lbrace x^i \in \mathbb{R}^n \mid i = 1, \ldots, n \rbrace = \Delta^n \cap \lbrace 0,1 \rbrace^n$. This implies that $\Delta^n \cap \lbrace 0,1 \rbrace^n \subseteq \operatorname{vrtx}(\Delta^n)$. Moreover, later we will show that $\Delta^n \cap \lbrace 0,1 \rbrace^n = \operatorname{vrtx}(\Delta^n)$.
 
@@ -842,7 +842,7 @@ Any $x \in \operatorname{conv}(X)$ is representable as $\sum_{i=1}^{N} p_i x^i$ 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.33</span></p>
 
-Let us show that simplex $\Delta^n$ is a convex hull of vectors $\lbrace x^i \in \mathbb{R}^n \mid i = 1, \ldots, n, \ x^i_j = \llbracket i = j \rrbracket \rbrace = \Delta^n \cap \lbrace 0,1 \rbrace^n$. Indeed, any vector $p \in \Delta^n$ is representable as $\sum_{i=1}^{n} p_i x^i$. The other way around, all vectors of the form $\sum_{i=1}^{n} p_i x^i$ belong to $\Delta^n$.
+Let us show that simplex $\Delta^n$ is a convex hull of vectors $\lbrace x^i \in \mathbb{R}^n \mid i = 1, \ldots, n, \ x^i_j = \lbracket i = j \rbracket \rbrace = \Delta^n \cap \lbrace 0,1 \rbrace^n$. Indeed, any vector $p \in \Delta^n$ is representable as $\sum_{i=1}^{n} p_i x^i$. The other way around, all vectors of the form $\sum_{i=1}^{n} p_i x^i$ belong to $\Delta^n$.
 
 </div>
 
@@ -3437,9 +3437,9 @@ $$\theta_u^\phi(s) := \theta_u(s) - \sum_{v \in \mathcal{N}(u)} \phi_{u,v}(s), \
 
 $$\theta_{uv}^\phi(s,t) := \theta_{uv}(s,t) + \phi_{u,v}(s) + \phi_{v,u}(t), \quad uv \in \mathcal{E},\; (s,t) \in \mathcal{Y}_{uv} \,.$$
 
-Due to the linearity of the subgradient we can compute it for each term of $\mathcal{D}\_{u,v}$ separately. Subgradients of the first term $\min_{s' \in \mathcal{Y}\_u} \theta_u^\phi(s')$ are by virtue of Lemma 4.32 equal to the convex hull of the vectors $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)}$ for all minimizers $s'$ of (6.28). Since the numerator is a linear and, therefore, differentiable function of $\boldsymbol{\phi}$, we can apply the standard differentiation rules, yielding $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)} = -\llbracket s = s' \rrbracket$.
+Due to the linearity of the subgradient we can compute it for each term of $\mathcal{D}\_{u,v}$ separately. Subgradients of the first term $\min_{s' \in \mathcal{Y}\_u} \theta_u^\phi(s')$ are by virtue of Lemma 4.32 equal to the convex hull of the vectors $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)}$ for all minimizers $s'$ of (6.28). Since the numerator is a linear and, therefore, differentiable function of $\boldsymbol{\phi}$, we can apply the standard differentiation rules, yielding $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)} = -\lbracket s = s' \rbracket$.
 
-Similarly, subgradients of the second term in (6.26) can be computed as $\frac{\partial \theta_{uv}^\phi(s'', t'')}{\partial \phi_{u,v}(s)} = \llbracket s = s'' \rrbracket$ for each minimizer $(s'', t'')$ of the second term. Note that if $s' = s'' = s$ the subgradients of both terms cancel out.
+Similarly, subgradients of the second term in (6.26) can be computed as $\frac{\partial \theta_{uv}^\phi(s'', t'')}{\partial \phi_{u,v}(s)} = \lbracket s = s'' \rbracket$ for each minimizer $(s'', t'')$ of the second term. Note that if $s' = s'' = s$ the subgradients of both terms cancel out.
 
 We now combine our observations to construct a subgradient of $\mathcal{D}$. Let
 

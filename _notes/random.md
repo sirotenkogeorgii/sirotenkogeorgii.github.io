@@ -4080,18 +4080,26 @@ Eigenvalues are **intrinsic** to the linear operator, while diagonal entries are
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Analytic function)</span></p>
 
-A function $f:U\to\mathcal{R}$ is **analytic** at the point $p\in U$ if there exists an open neighborhood $V$ of $p$ (inside $U$) and a power series $\sum_n a_n z^n$ such that 
+Let $U \subseteq \mathbb{R}$ be open. A function $f:U\to\mathbb{R}$ is **analytic** at the point $p\in U$ if there exists an open neighborhood $V\subseteq U$ of $p$ and coefficients $a_n\in\mathbb{R}$ such that
 
-$$f(x)=\sum_n a_n (z-p)^n$$
+$$
+f(x)=\sum_{n=0}^{\infty} a_n (x-p)^n
+$$
 
-for any $x\in V$. As usual, the whole function is analytic if it is analytic at each point.
+for every $x\in V$, where the power series converges on $V$. The function $f$ is **analytic on** $U$ if it is analytic at every point of $U$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Taylor series)</span></p>
 
-For smooth $f$, the power series $\sum_n \frac{f^{(n)}(p)}{n!}z^n$ is called **Taylor series** of $f$ at $p$.
+For a smooth function $f$, the power series
+
+$$
+\sum_{n=0}^{\infty} \frac{f^{(n)}(p)}{n!}(x-p)^n
+$$
+
+is called the **Taylor series** of $f$ at $p$.
 
 </div>
 
@@ -4099,9 +4107,13 @@ For smooth $f$, the power series $\sum_n \frac{f^{(n)}(p)}{n!}z^n$ is called **T
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analytic functions)</span></p>
 
 * $e^x$, $\sin x$, $\cos x$, and polynomials are analytic.
-* $\frac{1}{1-x}$ is analytic for $\lvert x\rvert <1$, because
-  
-  $$\frac{1}{1-x}=\sum_{n=0}^\infty x^n$$
+* $\frac{1}{1-x}$ is analytic on $\mathbb R\setminus\{1\}$. Around $0$, we have
+
+  $$
+  \frac{1}{1-x}=\sum_{n=0}^{\infty}x^n
+  $$
+
+  for $\lvert x\rvert<1$.
 
 </div>
 
@@ -4128,14 +4140,14 @@ e^{-1/x^2}, & x\neq 0 \\
 \end{cases}
 $$
 
-This function is infinitely differentiable at $0$, but its Taylor series at $0$ is just $0$, which does not equal the function for $x\neq 0$.
+This function is infinitely differentiable at $0$, and all its derivatives at $0$ are $0$. Therefore its Taylor series at $0$ is identically $0$, but the function itself is nonzero for $x\neq 0$. Hence it is smooth but not analytic at $0$.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(All your usual closure properties for analytic functions)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Closure properties of analytic functions)</span></p>
 
-The sums, products, compositions, nonzero quotients of analytic functions are analytic.
+Sums, products, scalar multiples, and compositions of analytic functions are analytic. Also, if $f$ and $g$ are analytic and $g$ is nonzero on the relevant domain, then $f/g$ is analytic.
 
 </div>
 
