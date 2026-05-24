@@ -2,7 +2,7 @@
 layout: note
 title: "A sum-of-squares proof of the $\ell^1$–$\ell^2$ comparison inequality"
 date: 2024-10-20
-permalink: /notes/stuff_i_found_interesting/example_weak_not_strong_congerg_Lp/
+permalink: /notes/stuff_i_found_interesting/l1-l2-proof-without-inner-product/
 math: true
 ---
 
