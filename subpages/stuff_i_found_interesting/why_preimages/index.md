@@ -1,0 +1,9 @@
+* https://www.quora.com/Why-is-the-definition-of-a-continuous-function-in-real-analysis-defined-using-the-preimage-of-open-sets-instead-of-simply-the-image
+* https://mathoverflow.net/questions/22658/why-are-inverse-images-more-important-than-images-in-mathematics
+* https://www.reddit.com/r/learnmath/comments/2kqjyg/topology_intuition_behind_definition_of/
+* https://www.reddit.com/r/math/comments/9u00ku/are_there_intuitive_reasons_for_preimages_of/
+* https://www.reddit.com/r/math/comments/7v9nag/why_arent_images_of_measurable_sets_required_to/
+* https://math.stackexchange.com/questions/3501034/understanding-measurable-functions-and-their-definition-based-on-pre-images
+* https://math.stackexchange.com/questions/4137060/why-do-we-define-measurable-functions-by-their-pre-image
+* https://terrytao.wordpress.com/wp-content/uploads/2011/06/blog-book.pdf
+* https://www.mathematik.hu-berlin.de/~wendl/Sommer2022/Diffgeo2/lecturenotes.pdf

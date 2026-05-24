@@ -3756,7 +3756,7 @@ $$
 \min_{\sigma\in S(W,Y)} \int |h(w)-\sigma(w)|^2\,d\lambda(w). \tag{2.13}
 $$
 
-For any candidate $\sigma$, define the transference plan $\pi:=(h,\sigma)_\sharp\lambda$. By construction $\pi$ has marginals $\mu=h_\sharp\lambda$ (first coordinate) and $\nu=\sigma_\sharp\lambda$ (second coordinate), so $\pi\in\Pi(\mu,\nu)$. Pushing forward the integrand,
+For any candidate $\sigma$, define the transference plan $\pi:=(h,\sigma)\_\sharp\lambda$. By construction $\pi$ has marginals $\mu=h_\sharp\lambda$ (first coordinate) and $\nu=\sigma_\sharp\lambda$ (second coordinate), so $\pi\in\Pi(\mu,\nu)$. Pushing forward the integrand,
 
 $$
 \int_W |h(w)-\sigma(w)|^2\,d\lambda(w) \;=\; \int_{X\times Y}|x-y|^2\,d\pi(x,y),
@@ -3799,7 +3799,7 @@ $$
 s \;:=\; \nabla\varphi\circ h.
 $$
 
-The pushforward identity in Step 2 gives $s_\sharp\lambda=\nu$, so $s\in S(W,Y)$. Set $\pi:=(h,s)_\sharp\lambda$. By construction $\pi=(\mathrm{id},\nabla\varphi)_\sharp\mu$ is concentrated on the graph of $\nabla\varphi$, so by Brenier (Theorem 13(ii)) $\pi$ is the **unique** solution of (2.15). It is admissible for (2.14), so it solves (2.14), so $s$ solves the projection problem (2.13).
+The pushforward identity in Step 2 gives $s_\sharp\lambda=\nu$, so $s\in S(W,Y)$. Set $\pi:=(h,s)\_\sharp\lambda$. By construction $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ is concentrated on the graph of $\nabla\varphi$, so by Brenier (Theorem 13(ii)) $\pi$ is the **unique** solution of (2.15). It is admissible for (2.14), so it solves (2.14), so $s$ solves the projection problem (2.13).
 
 Now define $\psi:=\varphi^\ast$ — a convex function — and check that $\psi$ rebuilds $h$ from $s$. Since $\nabla\psi\circ\nabla\varphi=\nabla\varphi^\ast\circ\nabla\varphi=\mathrm{id}$ $\mu$-a.e., and $h_\sharp\lambda=\mu$,
 
@@ -3811,7 +3811,7 @@ Hence $(s,\psi)$ is a polar factorization of $h$.
 
 **Step 4: Uniqueness of the polar decomposition.** Uniqueness of $\nabla\psi$ (as a gradient of a convex function rearrangement of $h$) is direct from Brenier's uniqueness in Step 2. It remains to show **uniqueness of the projection $s$**.
 
-Let $s'$ be another $L^2$-projection of $h$ onto $S(W,Y)$. Both $s$ and $s'$ realise the minimum in (2.13), so the plans $(h,s)_\sharp\lambda$ and $(h,s')_\sharp\lambda$ both minimise (2.14), hence both are admissible for (2.15) at the same cost — and by uniqueness in Step 2,
+Let $s'$ be another $L^2$-projection of $h$ onto $S(W,Y)$. Both $s$ and $s'$ realise the minimum in (2.13), so the plans $(h,s)\_\sharp\lambda$ and $(h,s')\_\sharp\lambda$ both minimise (2.14), hence both are admissible for (2.15) at the same cost — and by uniqueness in Step 2,
 
 $$
 (h,s)_\sharp\lambda \;=\; (h,s')_\sharp\lambda. \tag{$\dagger$}
