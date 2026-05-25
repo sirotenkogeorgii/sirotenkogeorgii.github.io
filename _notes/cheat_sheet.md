@@ -33,6 +33,7 @@ Convolution Theorem
 Fubini's Theorem
 Diagonal Operator -->
 
+Fourier basis
 Lusin’s theorem
 Radon Measure
 Knott-Smith optimality criterion
@@ -41,10 +42,26 @@ Manifold
 Riemannian Manifold
 Brenier’s Theorem
 Fenchel Inequality
-Rademacher’s theorem
+Rademacher’s Theorem
 Hausdorff dimension
 Semigroup
 Seminorm
+Basel Problem
+Rellich–Kondrachov Theorem
+Kolmogorov–Riesz Theorem
+Riesz's Lemma
+"Riesz's lemma gives a clean characterization: a normed space is finite-dimensional iff its closed unit ball is compact. So "closed and bounded $\implies$ compact" is exactly the finite-dimensional case.
+Kakutani's Reflexivity Theorem
+Finite rank approximation of a compact operator
+Picard-condition
+\ell^2 space and L^2 space difference
+Inverse DFT
+Discrete Convolution Theorem
+Spectral Decomposition
+Double Convexification Trick
+
+
+> The existence theory of Monge problem was not fully understood until 1995
 
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -60,7 +77,7 @@ Seminorm
 * Question: Why are duals important?
 * Question: Why is topology formulated in terms of open sets?
 * Question: Convolution is a Fourier Transform? No, convolution is not a Fourier Transform, but they are profoundly linked through the convolution theorem, which states that convolution in the time domain is equivalent to point-wise multiplication in the frequency domain.
-* Question: ...
+* Question: In infinite dimensions, compactness is much more restrictive — you typically need extra structure (equicontinuity for Arzelà–Ascoli in C(K), tightness in measure-theoretic settings, decay conditions for subsets of ℓ², etc.).
 
 </div>
 
@@ -224,7 +241,7 @@ For $1 \le p \le \infty$ and a period $T > 0$, $L^p_{\text{per}}([0,T])$ is the 
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why we package periodic functions this way)</span></p>
 
 * Identifying the domain with the **torus** $\mathbb{T}^n$ makes it **compact without boundary**: no integration-by-parts boundary terms, no need to cut off near $\partial \Omega$, every smooth periodic function is in $L^p_{\text{per}}$ automatically.
-* The natural setting for **Fourier series**: $\lbrace e^{2\pi i k\cdot x / T}\rbrace_{k \in \mathbb{Z}^n}$ is an orthonormal basis of $L^2_{\text{per}}$ (Parseval), and Sobolev spaces $H^s_{\text{per}}$ can be defined directly through decay of Fourier coefficients $\lvert k\rvert^s \widehat f(k) \in \ell^2$.
+* The natural setting for **Fourier series**: $\lbrace e^{2\pi i k\cdot x / T}\rbrace_{k \in \mathbb{Z}^n}$ is an orthonormal basis of $L^2\_{\text{per}}$ (Parseval), and Sobolev spaces $H^s\_{\text{per}}$ can be defined directly through decay of Fourier coefficients $\lvert k\rvert^s \widehat f(k) \in \ell^2$.
 * Standard solution / test space for **periodic PDE** (Schrödinger, KdV, wave, Navier–Stokes on $\mathbb{T}^n$) — periodicity replaces boundary conditions, so one gets a self-contained problem on a compact manifold.
 
 </div>
@@ -278,7 +295,7 @@ The Schwartz space $\mathcal{S}(\mathbb{R}^n)$ (rapidly decreasing smooth functi
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hölder space)</span></p>
 
-For $k \in \mathbb{N}_0$ and $\alpha \in (0,1]$, $C^{k,\alpha}(\overline{\Omega})$ is the set of $C^k$ functions whose $k$-th derivatives are **$\alpha$-Hölder continuous**:
+For $k \in \mathbb{N}\_0$ and $\alpha \in (0,1]$, $C^{k,\alpha}(\overline{\Omega})$ is the set of $C^k$ functions whose $k$-th derivatives are **$\alpha$-Hölder continuous**:
 
 $$
 [D^k f]_\alpha := \sup_{x \ne y} \frac{\lvert D^k f(x) - D^k f(y) \rvert}{\lvert x - y \rvert^\alpha} < \infty,
@@ -383,7 +400,7 @@ $$
 \mu^\ast(E) \;=\; \mu^\ast(E \cap A) + \mu^\ast(E \setminus A) \qquad \forall E \subseteq X.
 $$
 
-The collection $\mathcal{M}$ of measurable sets is a **$\sigma$-algebra**, and the restriction $\mu := \mu^\ast \!\restriction\_{\mathcal{M}}$ is a **complete countably additive measure**.
+The collection $\mathcal{M}$ of measurable sets is a **$\sigma$-algebra**, and the restriction $\mu := \mu^\ast \restriction\_{\mathcal{M}}$ is a **complete countably additive measure**.
 
 </div>
 
@@ -1544,11 +1561,15 @@ Tonelli says: "if it is $\ge 0$, you can swap the order, full stop." Fubini is t
 <div class="math-callout math-callout--theorem" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fubini)</span></p>
 
-Let $(\Omega_1, \mathcal{A}_1, \mu_1)$, $(\Omega_2, \mathcal{A}_2, \mu_2)$ be $\sigma$-finite measure spaces and $f \in L^1(\mu_1 \otimes \mu_2)$. Then for $\mu_1$-a.e. $x \in \Omega_1$ the slice $f(x, \cdot)$ is in $L^1(\mu_2)$, the map $x \mapsto \int f(x, y)\, d\mu_2(y)$ is in $L^1(\mu_1)$, and
+Let $(\Omega_1, \mathcal{A}_1, \mu_1)$, $(\Omega_2, \mathcal{A}_2, \mu_2)$ be $\sigma$-finite measure spaces and $f \in L^1(\mu_1 \otimes \mu_2)$. Then for $\mu_1$-a.e. $x \in \Omega_1$ 
+1. the slice $f(x, \cdot)$ is in $L^1(\mu_2)$,
+2. the map $x \mapsto \int f(x, y)\, d\mu_2(y)$ is in $L^1(\mu_1)$,
 
-$$
-\int_{\Omega_1 \times \Omega_2} f \, d(\mu_1 \otimes \mu_2) \;=\; \int_{\Omega_1}\!\!\int_{\Omega_2} f(x, y) \, d\mu_2(y) \, d\mu_1(x) \;=\; \int_{\Omega_2}\!\!\int_{\Omega_1} f(x, y) \, d\mu_1(x) \, d\mu_2(y).
-$$
+3. the integral could split and exchange the order
+   
+   $$
+   \int_{\Omega_1 \times \Omega_2} f \, d(\mu_1 \otimes \mu_2) \;=\; \int_{\Omega_1}\!\!\int_{\Omega_2} f(x, y) \, d\mu_2(y) \, d\mu_1(x) \;=\; \int_{\Omega_2}\!\!\int_{\Omega_1} f(x, y) \, d\mu_1(x) \, d\mu_2(y).
+   $$
 
 </div>
 
@@ -1556,8 +1577,8 @@ $$
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(role and the standard combo)</span></p>
 
 * Fubini = "you can swap the order of integration **once** $f \in L^1$." This is the *signed* (or complex) analogue of Tonelli.
-* The standard workflow when staring at an iterated integral with sign changes: apply **Tonelli** to $\lvert f\rvert$ to check $\int\!\int \lvert f\rvert < \infty$; once that is in hand, **Fubini** applies and you can swap freely.
-* Both hypotheses are sharp. The classic counterexample $f(x, y) = (x^2 - y^2)/(x^2 + y^2)^2$ on $(0,1)^2$ has both iterated integrals well-defined but **unequal** ($+\pi/4$ vs $-\pi/4$) — and indeed $\int\!\int \lvert f\rvert = \infty$, so Fubini's hypothesis fails.
+* The standard workflow when staring at an iterated integral with sign changes: apply **Tonelli** to $\lvert f\rvert$ to check $\int\int \lvert f\rvert < \infty$; once that is in hand, **Fubini** applies and you can swap freely.
+* Both hypotheses are sharp. The classic counterexample $f(x, y) = (x^2 - y^2)/(x^2 + y^2)^2$ on $(0,1)^2$ has both iterated integrals well-defined but **unequal** ($+\pi/4$ vs $-\pi/4$) — and indeed $\int\int \lvert f\rvert = \infty$, so Fubini's hypothesis fails.
 * On $\sigma$-finite measure spaces, the product $\sigma$-algebra and measure are unambiguously defined. Without $\sigma$-finiteness one needs the Bourbaki / Radon measure framework instead.
 
 </div>
@@ -1851,7 +1872,7 @@ $$
 * $\lvert \widehat f(k)\rvert \le \lVert f\rVert_{L^1}$, so $\widehat f \in \ell^\infty$.
 * **Riemann–Lebesgue lemma**: $\widehat f(k) \to 0$ as $\lvert k\rvert \to \infty$ for $f \in L^1$.
 * **Plancherel / Parseval**: $f \in L^2(\mathbb{T}^n) \iff (\widehat f(k)) \in \ell^2(\mathbb{Z}^n)$, with $\lVert f\rVert_{L^2}^2 = \sum_k \lvert \widehat f(k)\rvert^2$.
-* **Smoothness ↔ decay**: $f \in C^\infty(\mathbb{T}^n)$ iff $\widehat f(k)$ decays **faster than any polynomial** in $\lvert k\rvert$. Sobolev $H^s$ is exactly $\sum_k (1 + \lvert k\rvert^2)^s \lvert \widehat f(k)\rvert^2 < \infty$ — Sobolev spaces on the torus are *defined* via Fourier decay.
+* **Smoothness $\iff$ decay**: $f \in C^\infty(\mathbb{T}^n)$ iff $\widehat f(k)$ decays **faster than any polynomial** in $\lvert k\rvert$. Sobolev $H^s$ is exactly $\sum_k (1 + \lvert k\rvert^2)^s \lvert \widehat f(k)\rvert^2 < \infty$ — Sobolev spaces on the torus are *defined* via Fourier decay.
 
 </div>
 
@@ -1918,7 +1939,10 @@ with formal inverse $f(x) = \int_{\mathbb{R}^n} \widehat f(\xi) e^{+2\pi i \xi \
 
 * **Hausdorff–Young**: $\widehat f \in L^q$ for $f \in L^p$, $1 \le p \le 2$, $\tfrac{1}{p} + \tfrac{1}{q} = 1$, with $\lVert \widehat f\rVert_q \le \lVert f\rVert_p$. Does **not** extend to $p > 2$.
 * **Plancherel**: $\mathcal{F}$ extends uniquely from $L^1 \cap L^2$ to an **isometric isomorphism** $L^2(\mathbb{R}^n) \to L^2(\mathbb{R}^n)$.
-* **Diagonalization of differentiation**: $\widehat{\partial_j f}(\xi) = 2\pi i \xi_j \widehat f(\xi)$, $\widehat{x_j f}(\xi) = -\tfrac{1}{2\pi i} \partial_{\xi_j} \widehat f(\xi)$. So $\mathcal{F}$ swaps differentiation $\leftrightarrow$ multiplication-by-coordinate.
+* **Diagonalization of differentiation**: 
+  * $\widehat{\partial_j f}(\xi) = 2\pi i \xi_j \widehat f(\xi)$, 
+  * $\widehat{x_j f}(\xi) = -\tfrac{1}{2\pi i} \partial_{\xi_j} \widehat f(\xi)$. 
+  * So $\mathcal{F}$ swaps differentiation $\leftrightarrow$ multiplication-by-coordinate.
 * **Schwartz space $\mathcal{S}$**: rapidly decreasing $C^\infty$ functions. $\mathcal{F} : \mathcal{S} \to \mathcal{S}$ is a topological isomorphism with $\mathcal{F}^4 = \mathrm{id}$ (with the symmetric convention). By duality, $\mathcal{F}$ acts on **tempered distributions** $\mathcal{S}'$ — so $\widehat{\delta} = 1$, $\widehat{1} = \delta$, $\widehat{e^{2\pi i a \cdot x}} = \delta_a$, etc.
 
 </div>
@@ -1941,9 +1965,9 @@ with inverse $f_n = \tfrac{1}{N} \sum_{k=0}^{N-1} \widehat f(k) e^{+2\pi i k n /
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(role — change of basis and the FFT)</span></p>
 
-* The DFT is the change of basis on $\mathbb{C}^N$ from the standard basis to the basis of **characters** $\chi_k(n) = e^{2\pi i k n / N}$ of the cyclic group $\mathbb{Z}_N$. Up to $1/\sqrt N$ scaling it is a **unitary** matrix.
+* The DFT is the change of basis on $\mathbb{C}^N$ from the standard basis to the basis of **characters** $\chi_k(n) = e^{2\pi i k n / N}$ of the cyclic group $\mathbb{Z}\_N$. Up to $1/\sqrt N$ scaling it is a **unitary** matrix.
 * The **Fast Fourier Transform (FFT)** computes the DFT in $O(N \log N)$ operations (Cooley–Tukey, 1965). This is what makes Fourier methods practical for signals, polynomial multiplication, and numerical PDE on periodic grids.
-* Same algebraic structure as the continuous Fourier transform: $\widehat{f \ast g} = \widehat f \cdot \widehat g$ where $\ast$ is **cyclic convolution** on $\mathbb{Z}_N$.
+* Same algebraic structure as the continuous Fourier transform: $\widehat{f \ast g} = \widehat f \cdot \widehat g$ where $\ast$ is **cyclic convolution** on $\mathbb{Z}\_N$.
 * Discretization of a periodic signal $f$ on $[0, T]$ at $N$ equispaced samples gives the DFT as a numerical approximation to its Fourier series — with the famous **aliasing** caveat: frequencies above the **Nyquist** $N/2$ alias to lower frequencies.
 
 </div>
@@ -2000,7 +2024,7 @@ Commutative, associative, distributive over addition.
     $$
     \text{convolution operators} \;=\; \text{translation-invariant operators} \;=\; \text{Fourier multipliers}.
     $$
-* Periodic / discrete versions: convolution on $\mathbb{T}^n$ (integrate over the torus), cyclic convolution on $\mathbb{Z}_N$, convolution on any locally compact group.
+* Periodic / discrete versions: convolution on $\mathbb{T}^n$ (integrate over the torus), cyclic convolution on $\mathbb{Z}\_N$, convolution on any locally compact group.
 
 </div>
 
@@ -2821,3 +2845,27 @@ So the missing condition is **completeness**: the closed span of the (e_n)'s is 
 ]
 
 That is exactly what guarantees that the expansion converges for every (x).
+
+---
+
+> Different views on continuous maps and why do we have different views (because of different settings)
+
+A **continuous map** (or function) is a mapping between mathematical spaces where small changes in the input result in small changes in the output. Depending on the context, it is formally defined in one of three primary ways:
+
+## 1. The Topological Definition (Most General)
+In general topology, a function $f: X \rightarrow Y$ between two topological spaces is continuous if and only if the preimage of every open set in $Y$ is an open set in $X$.
+
+* That is, for every open set $U \subseteq Y$, the set $f^{-1}(U) = \lbrace x \in X \mid f(x) \in U\rbrace$ is open.
+
+## 2. The Metric Space Definition ($\epsilon-\delta$)
+
+In metric spaces (where a precise distance $d$ can be measured), a map $f: X \rightarrow Y$ is continuous if for every point $x \in X$ and every $\epsilon > 0$, there exists a $\delta > 0$ such that:
+
+* If $d(x, x_0) < \delta$, then $d(f(x), f(x_0)) < \epsilon$.
+(Intuitively, you can keep the output within a tiny "target" distance $\epsilon$ by restricting the input to a small enough "zone" $\delta$.)
+
+## 3. The Real Analysis Definition (Limits)
+
+For everyday functions of real numbers ($f: \mathbb{R} \rightarrow \mathbb{R}$), a map is continuous at a specific point $c$ if the limit of the function as $x$ approaches $c$ is exactly equal to the function's value at $c$:
+
+* $\lim_{x \to c} f(x) = f(c)$

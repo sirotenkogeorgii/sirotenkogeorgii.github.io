@@ -14,6 +14,67 @@ math: true
     border-left: 3px solid var(--accent-strong, #2c3e94);
     border-radius: 0.25rem;
   }
+
+  .rl-diagram {
+    max-width: 860px;
+    margin: 2.5rem auto;
+  }
+
+  .rl-diagram svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line, #dbe1ee);
+    border-radius: 0.75rem;
+    background: var(--surface, #ffffff);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  .rl-diagram text {
+    font-family: inherit;
+    fill: var(--text, #172033);
+  }
+
+  .rl-diagram .muted {
+    fill: var(--muted, #64748b);
+  }
+
+  .rl-diagram .box {
+    fill: var(--surface-muted, #f8fafc);
+    stroke: var(--line, #dbe1ee);
+  }
+
+  .rl-diagram .accent {
+    fill: var(--accent-soft, #eef2ff);
+    stroke: var(--accent-strong, #2c3e94);
+  }
+
+  .rl-diagram .green {
+    fill: #ecfdf5;
+    stroke: #047857;
+  }
+
+  .rl-diagram .amber {
+    fill: #fffbeb;
+    stroke: #b45309;
+  }
+
+  .rl-diagram .red {
+    fill: #fef2f2;
+    stroke: #b91c1c;
+  }
+
+  .rl-diagram .line {
+    stroke: var(--muted, #64748b);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .rl-diagram .strong-line {
+    stroke: var(--accent-strong, #2c3e94);
+    stroke-width: 3;
+    fill: none;
+  }
 </style>
 
 **Table of Contents**
@@ -2144,5 +2205,1205 @@ Every algorithm in the rest of the course (Monte Carlo control, SARSA, Q-learnin
 * The unifying view is **generalised policy iteration**: every later RL algorithm replaces one of the two arrows (evaluation or improvement) with a sample-based, model-free surrogate, but the alternation structure is preserved.
 
 **Final message.** DP is the *exact* version of the picture: an oracle environment, full sweeps, expected backups. The rest of the course is a long answer to a single question — **how do we approximate the DP arrows when the model is unknown and the state space is too large to sweep?**
+
+</div>
+
+## Lecture 5: Monte Carlo Methods
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Model-free prediction and control from sampled episodes)</span></p>
+
+The previous lecture closed with the question "how do we approximate the DP arrows when the model is unknown?". **Monte Carlo (MC) methods are the first honest answer.** They drop the strongest assumption of DP — that we have $p(s', r \mid s, a)$ in closed form — and replace expected backups with *sample averages of complete returns*. The agent now interacts with the environment (or a simulator) and learns from what actually happens, not from what the dynamics say should happen on average.
+
+The methods we develop in this lecture share four defining features:
+
+1. **Model-free.** No transition kernel is ever consulted; estimates come from sampled experience only.
+2. **Episodic.** Updates are made *after the episode ends*, using the full sampled return $G_t$ from a state onward.
+3. **No bootstrapping.** Unlike DP (and unlike TD in the next lecture), an MC update does **not** use the value estimate of another state — it uses the realised return.
+4. **GPI-shaped.** The skeleton is still policy evaluation $\to$ policy improvement, only with samples replacing expectations.
+
+The guiding question of this lecture is:
+
+> *How do we evaluate and improve a policy when we have **no model** of the environment, only sampled trajectories?*
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Where MC sits in the RL taxonomy)</span></p>
+
+It helps to keep the broader map in view. Methods in this course split along two axes:
+
+* **Model-based vs. model-free.** DP and optimal control assume a known $p(s', r \mid s, a)$. MC, TD, and everything after them do not.
+* **Bootstrapping vs. not.** DP and TD update one value estimate using another; MC does not — it waits for the actual return.
+
+MC therefore occupies a *unique* corner of the taxonomy: **model-free but non-bootstrapping**. TD is the other model-free family; it adds bootstrapping back in to enable online updates. The pedagogical reason to develop MC first is that, by ruling out bootstrapping, every estimate is an honest sample mean of a well-defined target — convergence proofs reduce to the strong law of large numbers, with no fixed-point machinery needed.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 430" role="img" aria-label="Taxonomy of reinforcement learning methods by model use and bootstrapping">
+    <defs>
+      <marker id="mc-arrow-taxonomy" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+    <line x1="140" y1="355" x2="685" y2="355" class="line" marker-end="url(#mc-arrow-taxonomy)"></line>
+    <line x1="140" y1="355" x2="140" y2="70" class="line" marker-end="url(#mc-arrow-taxonomy)"></line>
+    <text x="672" y="361" text-anchor="end" font-size="15" class="muted">uses model</text>
+    <text x="45" y="68" font-size="15" class="muted">bootstraps</text>
+    <text x="145" y="385" font-size="14" class="muted">model-free</text>
+    <text x="575" y="385" font-size="14" class="muted">model-based</text>
+    <text x="54" y="350" font-size="14" class="muted">no</text>
+    <text x="58" y="115" font-size="14" class="muted">yes</text>
+
+    <rect x="180" y="95" width="200" height="105" rx="8" class="box"></rect>
+    <text x="280" y="135" text-anchor="middle" font-size="22" font-weight="700">TD</text>
+    <text x="280" y="164" text-anchor="middle" font-size="14" class="muted">model-free</text>
+    <text x="280" y="184" text-anchor="middle" font-size="14" class="muted">bootstrapping</text>
+
+    <rect x="455" y="95" width="200" height="105" rx="8" class="box"></rect>
+    <text x="555" y="135" text-anchor="middle" font-size="22" font-weight="700">DP</text>
+    <text x="555" y="164" text-anchor="middle" font-size="14" class="muted">model-based</text>
+    <text x="555" y="184" text-anchor="middle" font-size="14" class="muted">bootstrapping</text>
+
+    <rect x="180" y="235" width="200" height="105" rx="8" class="accent"></rect>
+    <text x="280" y="275" text-anchor="middle" font-size="22" font-weight="700">MC</text>
+    <text x="280" y="304" text-anchor="middle" font-size="14" class="muted">model-free</text>
+    <text x="280" y="324" text-anchor="middle" font-size="14" class="muted">complete returns</text>
+
+    <rect x="455" y="235" width="200" height="105" rx="8" class="box"></rect>
+    <text x="555" y="275" text-anchor="middle" font-size="20" font-weight="700">Rollouts</text>
+    <text x="555" y="304" text-anchor="middle" font-size="14" class="muted">model-based</text>
+    <text x="555" y="324" text-anchor="middle" font-size="14" class="muted">sampled trajectories</text>
+  </svg>
+  <figcaption>MC is the model-free, non-bootstrapping corner: it does not know the transition model and it does not update from another value estimate. It waits for full sampled returns.</figcaption>
+</figure>
+
+### Monte Carlo: Big Picture
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From expectation backups to sample averages)</span></p>
+
+The Bellman expectation equation says
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;=\; \sum_{a, s', r} \pi(a \mid s)\, p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+$$
+
+DP evaluates the right-hand sum *exactly* because $p$ is known. **MC instead estimates the left-hand expectation directly by averaging samples:**
+
+$$
+v_\pi(s) \;\approx\; \frac{1}{n}\sum_{i=1}^{n} G^{(i)},
+$$
+
+where each $G^{(i)}$ is the return of an episode that passed through $s$ under $\pi$. The model never appears — and that is exactly the point.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Core Ingredients of Monte Carlo)</span></p>
+
+MC methods are built from three primitives.
+
+* **Sampled experience.** A finite trajectory generated by interacting with the environment under some policy:
+
+  $$
+  (S_0,\, A_0,\, R_1,\, S_1,\, A_1,\, R_2,\, \dots,\, S_T).
+  $$
+
+* **Episodic structure.** Every episode terminates in finite time with probability $1$ (so $T < \infty$ a.s.). This is what makes the return well-defined as a *realised number*, not just an expectation.
+
+* **Return from time $t$:**
+
+  $$
+  G_t \;\doteq\; \sum_{k=0}^{T-t-1} \gamma^{k}\, R_{t+k+1}.
+  $$
+
+The MC estimate of $v_\pi(s)$ is then literally a sample average of returns observed from visits to $s$:
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;\approx\; \frac{1}{n}\sum_{i=1}^{n} G_i(s).
+$$
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 300" role="img" aria-label="Monte Carlo return as a discounted sum along one sampled episode">
+    <defs>
+      <marker id="mc-arrow-episode" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">One sampled episode</text>
+    <text x="32" y="68" font-size="14" class="muted">The update target for a visit is the realised future from that point onward.</text>
+
+    <g transform="translate(54 122)">
+      <circle cx="0" cy="0" r="24" class="box"></circle>
+      <text x="0" y="5" text-anchor="middle" font-size="16">S0</text>
+      <line x1="24" y1="0" x2="112" y2="0" class="strong-line" marker-end="url(#mc-arrow-episode)"></line>
+      <text x="68" y="-18" text-anchor="middle" font-size="14" class="muted">R1</text>
+
+      <circle cx="140" cy="0" r="24" class="accent"></circle>
+      <text x="140" y="5" text-anchor="middle" font-size="16">St</text>
+      <line x1="164" y1="0" x2="252" y2="0" class="strong-line" marker-end="url(#mc-arrow-episode)"></line>
+      <text x="208" y="-18" text-anchor="middle" font-size="14" font-weight="700">R<tspan baseline-shift="sub" font-size="10">t+1</tspan></text>
+
+      <circle cx="280" cy="0" r="24" class="box"></circle>
+      <text x="280" y="5" text-anchor="middle" font-size="16">S<tspan baseline-shift="sub" font-size="10">t+1</tspan></text>
+      <line x1="304" y1="0" x2="392" y2="0" class="strong-line" marker-end="url(#mc-arrow-episode)"></line>
+      <text x="348" y="-18" text-anchor="middle" font-size="14" font-weight="700">R<tspan baseline-shift="sub" font-size="10">t+2</tspan></text>
+
+      <circle cx="420" cy="0" r="24" class="box"></circle>
+      <text x="420" y="5" text-anchor="middle" font-size="16">S<tspan baseline-shift="sub" font-size="10">t+2</tspan></text>
+      <line x1="444" y1="0" x2="532" y2="0" class="strong-line" marker-end="url(#mc-arrow-episode)"></line>
+      <text x="488" y="-18" text-anchor="middle" font-size="14" class="muted">...</text>
+
+      <circle cx="560" cy="0" r="24" class="box"></circle>
+      <text x="560" y="5" text-anchor="middle" font-size="16">S<tspan baseline-shift="sub" font-size="10">T-1</tspan></text>
+      <line x1="584" y1="0" x2="672" y2="0" class="strong-line" marker-end="url(#mc-arrow-episode)"></line>
+      <text x="628" y="-18" text-anchor="middle" font-size="14" font-weight="700">R<tspan baseline-shift="sub" font-size="10">T</tspan></text>
+
+      <circle cx="700" cy="0" r="26" class="green"></circle>
+      <text x="700" y="5" text-anchor="middle" font-size="16">terminal</text>
+    </g>
+
+    <path d="M195 160 C260 230, 555 230, 756 160" class="strong-line"></path>
+    <text x="475" y="245" text-anchor="middle" font-size="18" font-weight="700">G<tspan baseline-shift="sub" font-size="12">t</tspan> = R<tspan baseline-shift="sub" font-size="12">t+1</tspan> + gamma R<tspan baseline-shift="sub" font-size="12">t+2</tspan> + gamma<tspan baseline-shift="super" font-size="11">2</tspan> R<tspan baseline-shift="sub" font-size="12">t+3</tspan> + ...</text>
+  </svg>
+  <figcaption>A Monte Carlo target is not a one-step lookahead. Once a visit to $S_t$ occurs, the episode is followed to termination and the whole realised discounted tail becomes $G_t$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backup diagrams — one trajectory, not one expectation)</span></p>
+
+The visual difference between DP and MC is striking. A DP backup is a *shallow, wide* diagram: from $s$ it fans out to every successor $(s', r)$, weighted by $p(s', r \mid s, a)$ and $\pi(a \mid s)$, and combines the results in one expectation. **An MC backup is the opposite — narrow and deep:** from $s$ a *single sampled trajectory* runs all the way to the terminal state, and the entire realised return $G_t$ is used as the update target.
+
+Two consequences follow immediately.
+
+* **MC does not propagate value information laterally.** Each state learns *purely from its own returns*; the estimate at $s'$ never enters the update for $s$. This is the precise statement of "no bootstrapping".
+* **MC updates are local in the trajectory.** A single episode contributes information to *each* state it visited, but only via the realised future of that episode — nothing else.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/mc_backup_diagram.png' | relative_url }}" alt="Monte Carlo backup diagram: a single trajectory from a state runs all the way to a terminal leaf, contrasted with a shallow expectation backup over all one-step successors" loading="lazy">
+  <figcaption>Backup diagrams contrasted. <strong>Left (DP):</strong> shallow and wide — one-step expectation over <em>all</em> successors, weighted by the model. <strong>Right (MC):</strong> narrow and deep — one sampled trajectory followed all the way to termination, the realised $G_t$ used as the update target. The DP diagram averages over what <em>could</em> happen; the MC diagram uses what <em>did</em> happen.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Key property — no bootstrapping)</span></p>
+
+MC methods estimate values **directly from complete returns**. They do *not* use other value estimates in their updates. This single design choice is the source of both their strengths and their weaknesses.
+
+**Pros.**
+
+* **Unbiased.** The update target $G_t$ is an honest sample of the random variable whose expectation is $v_\pi(s)$.
+* **Conceptually simple.** A sample mean is all there is to the estimator.
+* **No model required.** Only the ability to *generate* episodes is assumed.
+
+**Cons.**
+
+* **Delayed updates.** Nothing can be learned until the episode terminates.
+* **High variance.** A single realised return can deviate wildly from its expectation, especially in long episodes.
+
+The contrast with TD methods next lecture is exact: TD trades a little bias (because it bootstraps) for much lower variance and the ability to update online.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(DP vs. MC vs. TD — taxonomy preview)</span></p>
+
+| Method | Model needed? | Bootstraps? | Updates when? |
+| :----- | :-----------: | :---------: | :------------ |
+| DP     | yes           | yes         | planning sweeps; expected one-step backups |
+| MC     | no            | no          | after the episode ends |
+| TD     | no            | yes         | after each sampled step |
+
+MC sits in the unique "model-free, non-bootstrapping" corner; TD will occupy the "model-free, bootstrapping" corner; DP is the "model-based, bootstrapping" corner. The fourth corner (model-based, non-bootstrapping) corresponds essentially to plain trajectory-rollout planning.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Running example — Blackjack)</span></p>
+
+Throughout this lecture we use **Blackjack** as a recurring concrete example because it has exactly the structure MC needs.
+
+* **State.** $s = (\text{player sum},\, \text{dealer's showing card},\, \text{usable ace})$.
+* **Actions.** *hit* or *stick*.
+* **Reward.** $+1$ for a win, $0$ for a draw, $-1$ for a loss.
+* **Episodes.** Each game is a single episode that terminates with probability $1$.
+
+The fit with MC is unusually clean. The transition dynamics $p(s', r \mid s, a)$ are *technically* available (one can sum over all card sequences) but combinatorially nasty, while *sampling* games is trivial. And the return from any state is just the final game outcome:
+
+$$
+G_0 = \text{game result} \in \lbrace +1,\, 0,\, -1 \rbrace.
+$$
+
+So Blackjack lets us see MC prediction and MC control work end-to-end without the model ever being touched.
+
+</div>
+
+### MC Prediction
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Goal</span><span class="math-callout__name">(MC Prediction Problem)</span></p>
+
+Given a **fixed** policy $\pi$, estimate
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \qquad \text{for all } s \in \mathcal{S},
+$$
+
+using only sampled episodes generated under $\pi$.
+
+**Monte Carlo answer.**
+
+* Generate many episodes following $\pi$.
+* For each state $s$, average the returns that followed visits to $s$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Visit, First-visit vs. Every-visit)</span></p>
+
+A **visit** to state $s$ in an episode is an occurrence of $s$ as $S_t$ for some $t$. States can repeat within an episode, so a single episode may provide *several* returns for the same $s$.
+
+For a fixed state $s$ and one sampled episode $S_0, A_0, R_1, S_1, \dots, S_T$, define the set of visit times
+
+$$
+\mathcal{T}(s) \;=\; \lbrace\, t \in \lbrace 0, \dots, T-1 \rbrace : S_t = s \,\rbrace \;=\; \lbrace t_1 < t_2 < \cdots < t_m \rbrace.
+$$
+
+The return from visit time $t_i$ is
+
+$$
+G_{t_i} \;=\; \sum_{k=0}^{T - t_i - 1} \gamma^{k}\, R_{t_i + k + 1}.
+$$
+
+Two natural estimators arise:
+
+* **First-visit MC.** If $\mathcal{T}(s) \neq \emptyset$, update $V(s)$ using only $G_{t_1}$.
+* **Every-visit MC.** Update $V(s)$ using the average of $G_{t_1}, G_{t_2}, \dots, G_{t_m}$.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 300" role="img" aria-label="First-visit and every-visit Monte Carlo updates on an episode with repeated states">
+    <defs>
+      <marker id="mc-arrow-visits" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">Repeated state in one episode</text>
+    <text x="32" y="68" font-size="14" class="muted">The same state can occur more than once, giving several possible returns from the same episode.</text>
+
+    <g transform="translate(72 122)">
+      <circle cx="0" cy="0" r="25" class="accent"></circle>
+      <text x="0" y="5" text-anchor="middle" font-size="16">s</text>
+      <line x1="25" y1="0" x2="115" y2="0" class="line" marker-end="url(#mc-arrow-visits)"></line>
+      <text x="70" y="-18" text-anchor="middle" font-size="14" class="muted">R1</text>
+
+      <circle cx="145" cy="0" r="25" class="box"></circle>
+      <text x="145" y="5" text-anchor="middle" font-size="16">x</text>
+      <line x1="170" y1="0" x2="260" y2="0" class="line" marker-end="url(#mc-arrow-visits)"></line>
+      <text x="215" y="-18" text-anchor="middle" font-size="14" class="muted">R2</text>
+
+      <circle cx="290" cy="0" r="25" class="accent"></circle>
+      <text x="290" y="5" text-anchor="middle" font-size="16">s</text>
+      <line x1="315" y1="0" x2="405" y2="0" class="line" marker-end="url(#mc-arrow-visits)"></line>
+      <text x="360" y="-18" text-anchor="middle" font-size="14" class="muted">R3</text>
+
+      <circle cx="435" cy="0" r="25" class="box"></circle>
+      <text x="435" y="5" text-anchor="middle" font-size="16">y</text>
+      <line x1="460" y1="0" x2="550" y2="0" class="line" marker-end="url(#mc-arrow-visits)"></line>
+      <text x="505" y="-18" text-anchor="middle" font-size="14" class="muted">R4</text>
+
+      <circle cx="580" cy="0" r="26" class="green"></circle>
+      <text x="580" y="5" text-anchor="middle" font-size="15">terminal</text>
+    </g>
+
+    <path d="M72 162 C110 220, 435 220, 652 162" class="strong-line"></path>
+    <text x="350" y="238" text-anchor="middle" font-size="15" font-weight="700">first-visit uses only this first tail</text>
+
+    <path d="M362 151 C410 185, 530 185, 652 151" stroke="#047857" stroke-width="3" fill="none"></path>
+    <text x="520" y="203" text-anchor="middle" font-size="15" font-weight="700">every-visit also uses this tail</text>
+
+    <rect x="680" y="100" width="145" height="90" rx="8" class="box"></rect>
+    <text x="752" y="130" text-anchor="middle" font-size="14" font-weight="700">Estimator choice</text>
+    <text x="752" y="154" text-anchor="middle" font-size="13" class="muted">first-visit: 1 return</text>
+    <text x="752" y="174" text-anchor="middle" font-size="13" class="muted">every-visit: 2 returns</text>
+  </svg>
+  <figcaption>First-visit and every-visit MC differ only in which realised tails are added to the sample average. First-visit keeps one return per state per episode; every-visit uses all repeated occurrences.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why two variants exist)</span></p>
+
+The split looks pedantic but it has real statistical content.
+
+* **First-visit returns are i.i.d. across episodes.** Each episode contributes at most one return for $s$, and different episodes are independent — so we are averaging an i.i.d. sample of the random variable whose mean *is* $v_\pi(s)$. The classical LLN applies directly.
+* **Every-visit returns within the same episode are *not* independent.** Two visits to $s$ within one episode share a common future tail, so their returns are correlated. The estimator is still consistent, but the convergence proof is more delicate (it has finite-sample bias that vanishes as $n \to \infty$).
+
+Both estimators converge to $v_\pi(s)$. First-visit is the *theoretically* cleaner one; every-visit is sometimes preferred in practice because it uses more data per episode.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First-visit vs. Every-visit on a tiny episode)</span></p>
+
+Take $\gamma = 0.5$ and one sampled episode
+
+$$
+S_0 = s,\quad S_1 = x,\quad S_2 = s,\quad S_3 = \text{terminal}, \qquad R_1 = 2,\; R_2 = 1,\; R_3 = 4.
+$$
+
+The state $s$ is visited at times $\mathcal{T}(s) = \lbrace 0, 2 \rbrace$.
+
+* **First-visit MC.** Use only the return from the first visit:
+
+  $$
+  G_0 \;=\; R_1 + \gamma R_2 + \gamma^2 R_3 \;=\; 2 + 0.5 \cdot 1 + 0.25 \cdot 4 \;=\; 3.5, \qquad V(s) \leftarrow 3.5.
+  $$
+
+* **Every-visit MC.** Average the returns from both visits:
+
+  $$
+  G_0 = 3.5, \qquad G_2 = R_3 = 4, \qquad V(s) \leftarrow \frac{3.5 + 4}{2} \;=\; 3.75.
+  $$
+
+The numerical disagreement on a single episode is expected; both estimators agree in the limit as the number of episodes goes to infinity.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(First-Visit MC Prediction)</span></p>
+
+Initialise $V(s)$ arbitrarily for all $s \in \mathcal{S}$, and maintain a sample list `Returns(s)` for each state.
+
+Repeat for each episode:
+
+1. Generate an episode following $\pi$: $S_0, A_0, R_1, \dots, S_T$.
+2. For each state $s$ that appears in the episode:
+   * Let $G$ be the return after the **first** visit to $s$.
+   * Append $G$ to `Returns(s)`.
+   * $V(s) \leftarrow \text{average}(\texttt{Returns}(s))$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(In practice — incremental mean)</span></p>
+
+Storing the full list `Returns(s)` is wasteful. Replacing the explicit average by the **incremental mean update**
+
+$$
+V(s) \;\leftarrow\; V(s) + \frac{1}{N(s)}\bigl(\, G - V(s) \,\bigr),
+$$
+
+where $N(s)$ counts how many returns have been seen for $s$, gives an *exactly equivalent* estimator with constant memory. This formula is also the template all later sample-based RL updates inherit — the only thing that changes is *what is plugged in for $G$* (a sampled return for MC, a bootstrapped target for TD, an importance-weighted return for off-policy MC, $\dots$).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One sampled Blackjack episode)</span></p>
+
+A single Blackjack episode might be
+
+$$
+(\text{player 13, dealer 10}) \to \textbf{hit}, \quad (\text{player 18, dealer 10}) \to \textbf{stick}, \quad \text{dealer plays} \to \text{player wins.}
+$$
+
+The final return is $G = +1$, so this *one* episode contributes to two state estimates:
+
+* the return after the first visit to $(13, 10, \cdot)$ is $G = +1$,
+* the return after the first visit to $(18, 10, \cdot)$ is $G = +1$.
+
+The MC update rule is just
+
+$$
+V(s) \;\leftarrow\; \text{average of all observed first-visit returns to } s.
+$$
+
+After many games this average concentrates around the true $v_\pi(s)$ for each player-sum/dealer-showing state.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Convergence of First-Visit MC)</span></p>
+
+Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely to $v_\pi(s)$ as the number of first visits to $s$ goes to infinity.
+
+**Proof idea.**
+
+* Across independently generated episodes, the first-visit returns to $s$ are i.i.d. samples of a random variable with mean $v_\pi(s)$.
+* By the strong law of large numbers,
+
+  $$
+  \frac{1}{n}\sum_{i=1}^{n} G^{(i)} \xrightarrow{\text{a.s.}} \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;=\; v_\pi(s).
+  $$
+
+* The key point is that "the return after the first visit to $s$" is *exactly* the random quantity whose expectation defines $v_\pi(s)$ — no model, no Bellman fixed point, no operator contraction is needed.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/blackjack_mc_value.png' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
+  <figcaption>MC prediction on Blackjack. The 3D surfaces show estimated state-values for a policy that sticks only on 20 or 21, split by whether the player holds a usable ace. <strong>Left:</strong> after 10,000 episodes the surfaces are jagged; many states have few samples. <strong>Right:</strong> after 500,000 episodes they have settled into smooth functions of (player sum, dealer showing). No model of the dealer's strategy was ever used — only sampled game outcomes.</figcaption>
+</figure>
+
+### From Prediction to Control
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Why state-values are no longer enough)</span></p>
+
+In DP, policy improvement was a one-step lookahead using the *model*:
+
+$$
+\pi'(s) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v(s')\,\bigr].
+$$
+
+The model $p(s', r \mid s, a)$ was the bridge that let us turn a *state*-value function into a *better policy*. **Without $p$, that bridge collapses.** Knowing $v_\pi(s)$ alone tells us nothing about which action to take in $s$, because we cannot evaluate the one-step lookahead any more.
+
+The fix is to estimate **action-values** $q_\pi(s, a)$ instead — and to estimate them in the same MC way we estimated $v_\pi$, by averaging returns.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MC Action-Value Estimation)</span></p>
+
+For each state-action pair $(s, a)$, define the MC estimate
+
+$$
+q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,] \;\approx\; \frac{1}{n}\sum_{i=1}^{n} G_i(s, a),
+$$
+
+where each $G_i(s, a)$ is the return following a visit to the *pair* $(s, a)$ in some sampled episode. Once $q_\pi(s, a)$ is available, policy improvement becomes a one-line, *model-free* operation:
+
+$$
+\pi'(s) \;=\; \arg\max_{a} q_\pi(s, a).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The exploration problem MC inherits)</span></p>
+
+There is one new obstacle that DP did not have. If $\pi$ is **deterministic**, then in each state $s$ only one action is ever taken, so only that one $q_\pi(s, a)$ is ever sampled. All other actions remain unestimated $\Longrightarrow$ no informed improvement is possible.
+
+This is the **same dilemma** that drove the bandit lecture:
+
+> *If you never try an action, you can never learn whether it is good.*
+
+So MC control inherits an inescapable need for **exploration**: we must keep playing some non-greedy actions just to keep all $q$-values estimable. The question is not *whether* to explore but **how to enforce it while still improving the policy**.
+
+</div>
+
+### On-Policy MC Control
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\varepsilon$-Soft Policies, $\varepsilon$-Greedy)</span></p>
+
+A policy $\pi$ is **$\varepsilon$-soft** for some $\varepsilon > 0$ if it always assigns *at least* a uniform-exploration probability to every action:
+
+$$
+\pi(a \mid s) \;\geq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \qquad \forall s,\, \forall a \in \mathcal{A}(s).
+$$
+
+The simplest $\varepsilon$-soft policy is **$\varepsilon$-greedy with respect to $Q$**:
+
+$$
+\pi(a \mid s) \;=\;
+\begin{cases}
+1 - \varepsilon + \dfrac{\varepsilon}{\lvert \mathcal{A}(s) \rvert}, & a = \arg\max_{a'} Q(s, a'), \\[4pt]
+\dfrac{\varepsilon}{\lvert \mathcal{A}(s) \rvert}, & \text{otherwise.}
+\end{cases}
+$$
+
+Restricting attention to $\varepsilon$-soft policies guarantees that every $q(s, a)$ keeps being sampled — so MC estimation never starves.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The tension in MC control)</span></p>
+
+Model-free control under MC needs two things at the same time:
+
+* estimate **action-values** $q(s, a)$ (no model is available for the lookahead),
+* keep **exploring** to discover better actions.
+
+So we restrict attention to $\varepsilon$-soft policies. But this raises a worry: forcing exploration means we are *deliberately* sometimes taking suboptimal actions. Can policy improvement still work under this constraint, or do we get stuck oscillating around a sub-optimal policy?
+
+**Key question.** *If we are forced to keep taking suboptimal exploratory actions, can policy improvement still be guaranteed?*
+
+The next three callouts prove that the answer is **yes** — within the class of $\varepsilon$-soft policies, $\varepsilon$-greedy improvement is monotone.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Policy Improvement for $\varepsilon$-Soft Policies — Step 1)</span></p>
+
+Let $\pi$ be any $\varepsilon$-soft policy with action-value function $q_\pi(s, a)$. Define $\pi'$ as the **$\varepsilon$-greedy policy with respect to $q_\pi$**: it picks the greedy action with probability $1 - \varepsilon$ and explores uniformly with probability $\varepsilon$.
+
+Write
+
+$$
+q_\pi(s, \pi') \;\doteq\; \sum_{a} \pi'(a \mid s)\, q_\pi(s, a),
+$$
+
+the expected $q_\pi$-value obtained by choosing the first action according to $\pi'$ and then following $\pi$. Because $\pi'$ is $\varepsilon$-greedy,
+
+$$
+q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).
+$$
+
+So $\pi'$ is a *mixture*: mostly the best action, plus a small uniform-exploration average.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Policy Improvement for $\varepsilon$-Soft Policies — Step 2)</span></p>
+
+Now compare with the value of the *old* policy $\pi$,
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).
+$$
+
+Since $\pi$ is $\varepsilon$-soft, $\pi(a \mid s) \geq \varepsilon / \lvert \mathcal{A}(s) \rvert$ for every action, so we can split
+
+$$
+\pi(a \mid s) \;=\; \underbrace{\tfrac{\varepsilon}{\lvert \mathcal{A}(s) \rvert}}_{\text{forced exploration}} \;+\; \underbrace{(1 - \varepsilon)\,\tilde{\pi}(a \mid s)}_{\text{remaining mass}},
+$$
+
+where $\tilde{\pi}(\cdot \mid s)$ is another probability distribution. Plugging into $v_\pi(s)$,
+
+$$
+v_\pi(s) \;=\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\sum_{a} \tilde{\pi}(a \mid s)\, q_\pi(s, a).
+$$
+
+The second sum is an average of $q_\pi(s, a)$ under $\tilde{\pi}$, so it cannot exceed $\max_{a} q_\pi(s, a)$. Therefore
+
+$$
+v_\pi(s) \;\leq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a).
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Policy Improvement for $\varepsilon$-Soft Policies — Step 3)</span></p>
+
+Comparing the two expressions side by side:
+
+$$
+q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a),
+$$
+
+$$
+v_\pi(s) \;\leq\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).
+$$
+
+The right-hand sides are *identical*. Hence
+
+$$
+q_\pi(s, \pi') \;\geq\; v_\pi(s) \qquad \forall s.
+$$
+
+Choosing the first action according to $\pi'$ and then following $\pi$ has expected return at least as large as following $\pi$ from the start. By the **policy improvement theorem** (DP lecture),
+
+$$
+\boxed{\, v_{\pi'}(s) \;\geq\; v_\pi(s) \qquad \forall s. \,}
+$$
+
+**Conclusion.** Even with forced exploration, the $\varepsilon$-greedy policy improves — or at least does not worsen — the old $\varepsilon$-soft policy. The argument is robust: the $\varepsilon/\lvert \mathcal{A}(s) \rvert$ "forced exploration" term cancels exactly on both sides, leaving the improvement entirely to the $(1 - \varepsilon)\max_a q_\pi(s, a)$ contribution.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\varepsilon$-Greedy improvement on two actions)</span></p>
+
+Take a single state $s$ with two actions and action-values
+
+$$
+q_\pi(s, a_1) = 10, \qquad q_\pi(s, a_2) = 0.
+$$
+
+Suppose the old $\varepsilon$-soft policy is
+
+$$
+\pi(a_1 \mid s) = 0.6, \qquad \pi(a_2 \mid s) = 0.4, \qquad v_\pi(s) = 0.6 \cdot 10 + 0.4 \cdot 0 = 6.
+$$
+
+The new **$\varepsilon$-greedy policy** with $\varepsilon = 0.2$ assigns
+
+$$
+\pi'(a_1 \mid s) = 0.9, \qquad \pi'(a_2 \mid s) = 0.1, \qquad q_\pi(s, \pi') = 0.9 \cdot 10 + 0.1 \cdot 0 = 9.
+$$
+
+So $q_\pi(s, \pi'(s)) = 9 \geq 6 = v_\pi(s)$, confirming the theorem on this single example.
+
+The mechanism is intuitive: **$\varepsilon$-greedy shifts probability mass toward the best action, increasing expected value**, while the small forced exploration mass is the *same* on both sides of the comparison and cancels.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(On-Policy First-Visit MC Control)</span></p>
+
+Initialise action-value estimates $Q(s, a)$ arbitrarily, and pick any initial $\varepsilon$-soft policy $\pi$ so that every action can be sampled.
+
+Repeat for each episode:
+
+1. **Generate** an episode using the current policy $\pi$.
+2. **Policy evaluation.** For each first visit to a pair $(s, a)$ in the episode, update
+
+   $$
+   Q(s, a) \;\leftarrow\; \text{average of observed returns after } (s, a).
+   $$
+
+3. **Policy improvement.** For every visited state $s$, replace the action probabilities by
+
+   $$
+   \pi(\cdot \mid s) \;\leftarrow\; \varepsilon\text{-greedy w.r.t. } Q(s, \cdot).
+   $$
+
+The same policy that *generates* the data is the one being *improved* — hence the name **on-policy**. By the previous theorem, each improvement step is guaranteed to be monotone within the class of $\varepsilon$-soft policies.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 360" role="img" aria-label="On-policy Monte Carlo control loop with episode generation, return averaging, and epsilon-greedy improvement">
+    <defs>
+      <marker id="mc-arrow-onpolicy" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">On-policy MC control loop</text>
+    <text x="32" y="68" font-size="14" class="muted">The same epsilon-soft policy collects data and is then improved from that data.</text>
+
+    <rect x="78" y="130" width="185" height="88" rx="8" class="accent"></rect>
+    <text x="170" y="163" text-anchor="middle" font-size="17" font-weight="700">policy pi</text>
+    <text x="170" y="188" text-anchor="middle" font-size="14" class="muted">epsilon-soft</text>
+
+    <rect x="338" y="130" width="185" height="88" rx="8" class="box"></rect>
+    <text x="430" y="163" text-anchor="middle" font-size="17" font-weight="700">episode</text>
+    <text x="430" y="188" text-anchor="middle" font-size="14" class="muted">S, A, R, ..., terminal</text>
+
+    <rect x="598" y="130" width="185" height="88" rx="8" class="green"></rect>
+    <text x="690" y="163" text-anchor="middle" font-size="17" font-weight="700">Q(s,a)</text>
+    <text x="690" y="188" text-anchor="middle" font-size="14" class="muted">average returns</text>
+
+    <line x1="263" y1="174" x2="338" y2="174" class="strong-line" marker-end="url(#mc-arrow-onpolicy)"></line>
+    <text x="300" y="154" text-anchor="middle" font-size="13" class="muted">generate</text>
+
+    <line x1="523" y1="174" x2="598" y2="174" class="strong-line" marker-end="url(#mc-arrow-onpolicy)"></line>
+    <text x="560" y="154" text-anchor="middle" font-size="13" class="muted">evaluate</text>
+
+    <path d="M690 218 C690 288, 170 288, 170 220" class="strong-line" marker-end="url(#mc-arrow-onpolicy)"></path>
+    <text x="430" y="306" text-anchor="middle" font-size="15" font-weight="700">improve: make pi epsilon-greedy with respect to Q</text>
+
+    <rect x="295" y="88" width="270" height="26" rx="13" class="amber"></rect>
+    <text x="430" y="106" text-anchor="middle" font-size="13" font-weight="700">Generalised Policy Iteration, implemented with sampled returns</text>
+  </svg>
+  <figcaption>On-policy MC control is GPI with sampling: generate an episode under the current exploratory policy, average returns into $Q$, then move the same policy toward $\varepsilon$-greedy behaviour.</figcaption>
+</figure>
+
+### Off-Policy MC Learning
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Why off-policy)</span></p>
+
+In **on-policy** learning a single policy plays two roles at once: it generates the data *and* is the policy being improved. The price is that the learned policy must remain exploratory forever — we cannot turn $\varepsilon$ down to $0$ without losing the exploration channel.
+
+**Off-policy** learning separates these two roles.
+
+* The **behavior policy** $\mu$ is the one that actually interacts with the environment. It is *exploratory* by design — for example $\varepsilon$-soft.
+* The **target policy** $\pi$ is the one we want to evaluate or improve. It can be *greedy*, even deterministic, and need not match $\mu$.
+
+**Key advantage.** Off-policy learning lets us **explore with one policy and learn about another** — we can collect richly diverse data with $\mu$ while training $\pi$ toward the nearly-deterministic policy we actually intend to deploy.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 330" role="img" aria-label="Off-policy Monte Carlo separates the behavior policy from the target policy">
+    <defs>
+      <marker id="mc-arrow-offpolicy" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#2c3e94"></path>
+      </marker>
+      <marker id="mc-arrow-offpolicy-muted" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">Two policies, two roles</text>
+    <text x="32" y="68" font-size="14" class="muted">The behaviour policy supplies data; the target policy is the object being evaluated or improved.</text>
+
+    <rect x="70" y="115" width="185" height="88" rx="8" class="amber"></rect>
+    <text x="162" y="148" text-anchor="middle" font-size="17" font-weight="700">behaviour mu</text>
+    <text x="162" y="173" text-anchor="middle" font-size="14" class="muted">exploratory data</text>
+
+    <rect x="338" y="115" width="185" height="88" rx="8" class="box"></rect>
+    <text x="430" y="148" text-anchor="middle" font-size="17" font-weight="700">episodes</text>
+    <text x="430" y="173" text-anchor="middle" font-size="14" class="muted">sampled under mu</text>
+
+    <rect x="606" y="115" width="185" height="88" rx="8" class="accent"></rect>
+    <text x="698" y="148" text-anchor="middle" font-size="17" font-weight="700">target pi</text>
+    <text x="698" y="173" text-anchor="middle" font-size="14" class="muted">policy we learn about</text>
+
+    <line x1="255" y1="159" x2="338" y2="159" class="strong-line" marker-end="url(#mc-arrow-offpolicy)"></line>
+    <text x="296" y="139" text-anchor="middle" font-size="13" class="muted">acts</text>
+
+    <line x1="523" y1="159" x2="606" y2="159" class="strong-line" marker-end="url(#mc-arrow-offpolicy)"></line>
+    <text x="565" y="139" text-anchor="middle" font-size="13" class="muted">reweight</text>
+
+    <path d="M698 204 C698 260, 430 276, 162 204" class="line" marker-end="url(#mc-arrow-offpolicy-muted)"></path>
+    <text x="430" y="285" text-anchor="middle" font-size="14" class="muted">coverage: if pi can choose an action, mu must sometimes choose it too</text>
+  </svg>
+  <figcaption>Off-policy MC is not "learning from the wrong policy" naively. It uses behaviour-policy samples and corrects their distribution so they estimate target-policy quantities.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Off-Policy Prediction Problem)</span></p>
+
+We want the target-policy expectation
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,],
+$$
+
+but the returns we observe come from episodes generated by $\mu$:
+
+$$
+G_t^{(1)}, G_t^{(2)}, \dots \;\sim\; \mu, \qquad \text{not } \pi.
+$$
+
+**Core difficulty.** We need to compute an expectation under one distribution ($\mathbb{E}_\pi[\cdot]$) while observing samples from another ($\mathbb{E}_\mu[\cdot]$). Naively averaging the observed $G_t^{(i)}$ would estimate $v_\mu$, not $v_\pi$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coverage Assumption)</span></p>
+
+For off-policy learning to be possible at all, the behavior policy must "see" every action the target policy might take:
+
+$$
+\pi(a \mid s) > 0 \quad \Longrightarrow \quad \mu(a \mid s) > 0.
+$$
+
+That is, if the target policy would ever choose action $a$ in state $s$, the behavior policy must sometimes choose it too. Otherwise there are entire pieces of target-policy experience that *never* appear in the data — and no statistical trick can recover them.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Importance sampling — the statistical idea)</span></p>
+
+Suppose we want $\mathbb{E}_\pi[f(X)] = \sum_x \pi(x) f(x)$, but our samples come from a *different* distribution $\mu$. Whenever coverage holds ($\mu(x) > 0$ whenever $\pi(x) > 0$), multiply and divide by $\mu(x)$:
+
+$$
+\mathbb{E}_\pi[f(X)] \;=\; \sum_{x} \pi(x) f(x) \;=\; \sum_{x} \mu(x) \frac{\pi(x)}{\mu(x)} f(x) \;=\; \mathbb{E}_\mu\!\left[\, \frac{\pi(X)}{\mu(X)}\, f(X) \,\right].
+$$
+
+So samples drawn from $\mu$, after being **reweighted by the ratio $\pi(X)/\mu(X)$**, have the same expectation as if they had come from $\pi$. The ratio
+
+$$
+\frac{\pi(X)}{\mu(X)} \;=\; \frac{\text{target probability}}{\text{behavior probability}}
+$$
+
+is called the **importance sampling ratio**.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Importance sampling in RL — trajectories, not single variables)</span></p>
+
+In RL the random variable is not a single $X$ but an entire **trajectory** generated by a policy. So the correction factor is
+
+$$
+\frac{\Pr\nolimits_\pi(\text{trajectory})}{\Pr\nolimits_\mu(\text{trajectory})}.
+$$
+
+**Intuition.** Trajectories that are more likely under the target policy $\pi$ than under the behavior policy $\mu$ receive **larger weight**; trajectories less typical of $\pi$ receive **smaller weight**. Importance sampling thus *re-emphasises* the parts of $\mu$'s experience that are typical of $\pi$ and *down-weights* the rest.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The IS Ratio Depends Only on the Policies)</span></p>
+
+For a trajectory $S_t, A_t, S_{t+1}, \dots, S_T$ generated under policy $\pi$ versus under $\mu$,
+
+$$
+\frac{\Pr\nolimits_\pi(\text{trajectory})}{\Pr\nolimits_\mu(\text{trajectory})} \;=\; \frac{\prod_{k=t}^{T-1} \pi(A_k \mid S_k)\, P(S_{k+1} \mid S_k, A_k)}{\prod_{k=t}^{T-1} \mu(A_k \mid S_k)\, P(S_{k+1} \mid S_k, A_k)} \;=\; \prod_{k=t}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=:\; \rho_{t}^{T}.
+$$
+
+The environment transition probabilities $P(S_{k+1} \mid S_k, A_k)$ **cancel** — they are the same under either policy.
+
+**Takeaway.** The importance sampling ratio $\rho_{t}^{T}$ can be computed *from the policies alone*. **No model of the environment is needed.** This is the structural reason IS is usable in model-free RL.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 360" role="img" aria-label="Importance sampling ratio cancels environment probabilities and keeps policy ratios">
+    <defs>
+      <marker id="mc-arrow-is" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">Why the model cancels</text>
+    <text x="32" y="68" font-size="14" class="muted">The same environment probabilities appear under both policies; only the action probabilities differ.</text>
+
+    <g transform="translate(70 120)">
+      <rect x="0" y="0" width="150" height="58" rx="8" class="accent"></rect>
+      <text x="75" y="24" text-anchor="middle" font-size="14" font-weight="700">pi(A<tspan baseline-shift="sub" font-size="10">k</tspan>|S<tspan baseline-shift="sub" font-size="10">k</tspan>)</text>
+      <text x="75" y="44" text-anchor="middle" font-size="13" class="muted">target action</text>
+      <line x1="150" y1="29" x2="238" y2="29" class="line" marker-end="url(#mc-arrow-is)"></line>
+
+      <rect x="248" y="0" width="150" height="58" rx="8" class="green"></rect>
+      <text x="323" y="24" text-anchor="middle" font-size="14" font-weight="700">P environment</text>
+      <text x="323" y="44" text-anchor="middle" font-size="13" class="muted">environment</text>
+      <line x1="398" y1="29" x2="486" y2="29" class="line" marker-end="url(#mc-arrow-is)"></line>
+
+      <rect x="496" y="0" width="150" height="58" rx="8" class="accent"></rect>
+      <text x="571" y="24" text-anchor="middle" font-size="14" font-weight="700">pi(A<tspan baseline-shift="sub" font-size="10">k+1</tspan>|S<tspan baseline-shift="sub" font-size="10">k+1</tspan>)</text>
+      <text x="571" y="44" text-anchor="middle" font-size="13" class="muted">target action</text>
+    </g>
+
+    <line x1="92" y1="210" x2="748" y2="210" stroke="#dbe1ee" stroke-width="2"></line>
+
+    <g transform="translate(70 235)">
+      <rect x="0" y="0" width="150" height="58" rx="8" class="amber"></rect>
+      <text x="75" y="24" text-anchor="middle" font-size="14" font-weight="700">mu(A<tspan baseline-shift="sub" font-size="10">k</tspan>|S<tspan baseline-shift="sub" font-size="10">k</tspan>)</text>
+      <text x="75" y="44" text-anchor="middle" font-size="13" class="muted">behaviour action</text>
+      <line x1="150" y1="29" x2="238" y2="29" class="line" marker-end="url(#mc-arrow-is)"></line>
+
+      <rect x="248" y="0" width="150" height="58" rx="8" class="green"></rect>
+      <text x="323" y="24" text-anchor="middle" font-size="14" font-weight="700">P environment</text>
+      <text x="323" y="44" text-anchor="middle" font-size="13" class="muted">same environment</text>
+      <line x1="398" y1="29" x2="486" y2="29" class="line" marker-end="url(#mc-arrow-is)"></line>
+
+      <rect x="496" y="0" width="150" height="58" rx="8" class="amber"></rect>
+      <text x="571" y="24" text-anchor="middle" font-size="14" font-weight="700">mu(A<tspan baseline-shift="sub" font-size="10">k+1</tspan>|S<tspan baseline-shift="sub" font-size="10">k+1</tspan>)</text>
+      <text x="571" y="44" text-anchor="middle" font-size="13" class="muted">behaviour action</text>
+    </g>
+
+    <text x="742" y="218" text-anchor="middle" font-size="22" font-weight="700">=</text>
+    <text x="742" y="242" text-anchor="middle" font-size="13" class="muted">cancel P terms</text>
+    <text x="430" y="330" text-anchor="middle" font-size="16" font-weight="700">rho = product of target-probability / behaviour-probability factors</text>
+  </svg>
+  <figcaption>The likelihood ratio looks like a trajectory-model ratio, but the transition model appears in numerator and denominator. The only surviving factors are $\pi(A_k \mid S_k) / \mu(A_k \mid S_k)$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(IS-Corrected Off-Policy MC Estimate)</span></p>
+
+The goal is to estimate the target-policy value
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,]
+$$
+
+from episodes generated by $\mu$. Importance sampling rewrites this as an expectation under $\mu$:
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\mu\!\bigl[\, \rho_{t}^{T}\, G_t \mid S_t = s \,\bigr], \qquad \rho_{t}^{T} = \prod_{k=t}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)}.
+$$
+
+Replacing the expectation by an empirical average over the set $\mathcal{T}(s)$ of sampled visit times to $s$ gives the **ordinary off-policy MC estimator**
+
+$$
+V(s) \;\approx\; \frac{1}{\lvert \mathcal{T}(s) \rvert} \sum_{t \in \mathcal{T}(s)} \rho_{t}^{T}\, G_t.
+$$
+
+**Takeaway.** Off-policy MC $=$ ordinary MC averaging $+$ importance weights.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Importance sampling on Blackjack)</span></p>
+
+Take
+
+* target policy $\pi$: **stick whenever player sum $\geq 20$** (otherwise hit);
+* behavior policy $\mu$: exploratory, picks both actions with non-zero probability everywhere.
+
+Observe the *tail* of an episode starting at player sum 18:
+
+$$
+(18, \cdot) : \text{hit} \;\to\; (20, \cdot) : \text{stick}.
+$$
+
+The importance weight for this tail is
+
+$$
+\rho \;=\; \frac{\pi(\text{hit} \mid 18)}{\mu(\text{hit} \mid 18)} \cdot \frac{\pi(\text{stick} \mid 20)}{\mu(\text{stick} \mid 20)}.
+$$
+
+If $\pi$ would also hit on 18, the first factor is positive. If $\pi$ would *never* hit on 18, then $\pi(\text{hit} \mid 18) = 0$ and so $\rho = 0$.
+
+**Interpretation.** Behaviour trajectories *incompatible* with the target policy receive zero weight; they contribute nothing to the estimate. Only the parts of $\mu$'s experience that "look like" $\pi$ count.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why importance weights become unstable — toy model)</span></p>
+
+Suppose an episode has length $H$, and at each step the per-step ratio
+
+$$
+X_k \;=\; \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=\;
+\begin{cases}
+3,         & \text{with probability } 0.25, \\[2pt]
+\tfrac{1}{3}, & \text{with probability } 0.75.
+\end{cases}
+$$
+
+The total importance weight is
+
+$$
+\rho \;=\; \prod_{k=1}^{H} X_k.
+$$
+
+**Question.** What typically happens to $\rho$ as $H$ grows? Do most trajectories carry large weight, small weight, or moderate weight? Which trajectories dominate MC averages?
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Working out the instability for $H = 4$)</span></p>
+
+Each step multiplies the weight by either $3$ or $1/3$. With $H = 4$ the possible total weights are:
+
+| Sequence of ratios | $\rho$ |
+| :----------------- | :----- |
+| $3, 3, 3, 3$ | $81$ |
+| $3, 3, 3, 1/3$ | $9$ |
+| $3, 1/3, 1/3, 1/3$ | $1/9$ |
+| $1/3, 1/3, 1/3, 1/3$ | $1/81$ |
+
+Two facts follow.
+
+* The possible weights span the range $\tfrac{1}{81}$ to $81$, so the **variance** of $\rho$ is huge.
+* The shrinking factor $1/3$ occurs three times more often than $3$, so most trajectories receive **very small weight**, while a few rare trajectories (many factors of $3$) receive **enormous weight**.
+
+Even when $\mathbb{E}_\mu[\rho] = 1$ (the likelihood ratio is correctly normalised on average), products of likelihood ratios become **very spread out** as $H$ grows. A handful of rare trajectories can therefore *dominate* the MC average. This is the structural reason ordinary IS becomes unreliable on long episodes.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 340" role="img" aria-label="Importance sampling weights spread out multiplicatively over episode length">
+    <text x="32" y="42" font-size="18" font-weight="700">Multiplicative weights spread out</text>
+    <text x="32" y="68" font-size="14" class="muted">After only four steps, products of per-step ratios already span several orders of magnitude.</text>
+
+    <line x1="105" y1="270" x2="760" y2="270" class="line"></line>
+    <line x1="105" y1="90" x2="105" y2="270" class="line"></line>
+    <text x="80" y="94" text-anchor="end" font-size="13" class="muted">large</text>
+    <text x="80" y="270" text-anchor="end" font-size="13" class="muted">small</text>
+
+    <rect x="145" y="92" width="95" height="178" class="red"></rect>
+    <text x="192" y="84" text-anchor="middle" font-size="16" font-weight="700">81</text>
+    <text x="192" y="295" text-anchor="middle" font-size="13" class="muted">3,3,3,3</text>
+
+    <rect x="295" y="196" width="95" height="74" class="amber"></rect>
+    <text x="342" y="188" text-anchor="middle" font-size="16" font-weight="700">9</text>
+    <text x="342" y="295" text-anchor="middle" font-size="13" class="muted">three 3s</text>
+
+    <rect x="445" y="252" width="95" height="18" class="box"></rect>
+    <text x="492" y="244" text-anchor="middle" font-size="16" font-weight="700">1/9</text>
+    <text x="492" y="295" text-anchor="middle" font-size="13" class="muted">one 3</text>
+
+    <rect x="595" y="266" width="95" height="4" class="box"></rect>
+    <text x="642" y="258" text-anchor="middle" font-size="16" font-weight="700">1/81</text>
+    <text x="642" y="295" text-anchor="middle" font-size="13" class="muted">no 3s</text>
+
+    <path d="M210 112 C360 42, 520 44, 666 248" stroke="#b91c1c" stroke-width="3" fill="none" stroke-dasharray="8 8"></path>
+    <text x="510" y="106" font-size="14" class="muted">rare high-weight tails can dominate the average</text>
+  </svg>
+  <figcaption>Ordinary importance sampling is unbiased, but the product form can make a few trajectories carry enormous weight while most carry almost none. Weighted IS trades finite-sample bias for much lower variance.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ordinary vs. Weighted Importance Sampling)</span></p>
+
+Two estimators are standard.
+
+* **Ordinary importance sampling.**
+
+  $$
+  V(s) \;=\; \frac{1}{\lvert \mathcal{T}(s) \rvert} \sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t.
+  $$
+
+* **Weighted importance sampling.**
+
+  $$
+  V(s) \;=\; \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}}.
+  $$
+
+| Estimator       | Bias                  | Variance                         |
+| :-------------- | :-------------------- | :------------------------------- |
+| Ordinary IS     | none (unbiased)       | often enormous                   |
+| Weighted IS     | finite-sample bias    | dramatically smaller             |
+
+**Reading.** Ordinary IS is unbiased but its variance explodes with episode length (as the toy example just showed). Weighted IS introduces a small finite-sample bias — the normaliser is itself a random variable — but the bias vanishes as $\lvert \mathcal{T}(s) \rvert \to \infty$, and its variance is much better behaved. In practice **weighted IS is almost always preferred**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Incremental Weighted IS for First-Visit Off-Policy MC Prediction)</span></p>
+
+For each state $s$ maintain two scalars:
+
+$$
+V(s) \;\approx\; v_\pi(s), \qquad C(s) \;=\; \text{cumulative sum of importance weights for } s.
+$$
+
+For each episode generated by the behaviour policy $\mu$:
+
+1. Compute the returns $G_t$ for all time steps.
+2. For each state $s$ that appears in the episode, let
+
+   $$
+   t_s = \min\lbrace\, t : S_t = s \,\rbrace
+   $$
+
+   be its first visit time.
+
+3. Compute the importance weight from that first visit onward:
+
+   $$
+   \rho_{t_s}^{T} \;=\; \prod_{k=t_s}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)}.
+   $$
+
+4. **Update:**
+
+   $$
+   C(s) \;\leftarrow\; C(s) + \rho_{t_s}^{T},
+   $$
+
+   $$
+   V(s) \;\leftarrow\; V(s) + \frac{\rho_{t_s}^{T}}{C(s)}\bigl(\, G_{t_s} - V(s)\,\bigr).
+   $$
+
+**Meaning.** Each state is updated once per episode, using its first observed return and its first-visit importance weight. The update is a *weighted* incremental mean: weights $\rho_{t_s}^{T}$ accumulate in $C(s)$ and form the denominator of an effective sample average.
+
+</div>
+
+### Off-Policy MC Control
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From $V$ to $Q$ in the off-policy setting)</span></p>
+
+Off-policy *prediction* estimated $V(s)$. Off-policy *control* must estimate $Q(s, a)$ — because, as in the on-policy case, policy improvement without a model requires comparing actions:
+
+$$
+v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \quad\Longrightarrow\quad q_\pi(s, a) = \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,].
+$$
+
+Episodes are generated by a soft exploratory behaviour policy $\mu$, while the target policy $\pi$ is improved **greedily**:
+
+$$
+Q(s, a) \;\approx\; \frac{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}}, \qquad \rho_{t+1}^{T} = \prod_{k = t+1}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)},
+$$
+
+$$
+\pi(s) \;=\; \arg\max_{a} Q(s, a).
+$$
+
+Note that the ratio starts at $k = t+1$, not $k = t$: the action $A_t$ at the visited pair $(s, a)$ is *given* (we are conditioning on it), so only the *subsequent* actions need to be re-weighted. The rest is the same off-policy machinery as before: coverage, importance weights, weighted averaging, greedy improvement.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A fundamental weakness of off-policy MC control)</span></p>
+
+Off-policy MC control can learn a *greedy* target policy $\pi$ from exploratory data generated by $\mu$, but MC updates only use trajectory tails **consistent with $\pi$**.
+
+If the target policy is **deterministic greedy**, then any non-greedy behaviour action has zero probability under $\pi$,
+
+$$
+A_t \neq \pi(S_t) \quad\Longrightarrow\quad \pi(A_t \mid S_t) = 0,
+$$
+
+and the importance weight becomes
+
+$$
+\rho \;=\; \prod_{k} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=\; 0.
+$$
+
+**Consequence.** In long episodes, *many* MC updates receive zero or unstable weights. As soon as the behaviour policy takes even one non-greedy action, the entire remaining trajectory is discarded. Off-policy MC control is therefore notoriously **sample-inefficient**: episodes that *almost* match the greedy target policy contribute nothing past their first divergence.
+
+This is one of the main motivations to move on to **off-policy TD methods** (Q-learning), where bootstrapping bypasses the multiplicative explosion of importance weights by replacing the full return with a one-step backup.
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Method map — Monte Carlo at a glance)</span></p>
+
+| Object | Meaning | Key idea |
+| :----- | :------ | :------- |
+| $G_t$ | discounted return | actual sum of future rewards |
+| $V(s)$ | MC estimate of $v_\pi(s)$ | average of first-visit returns |
+| $Q(s, a)$ | MC estimate of $q_\pi(s, a)$ | needed for model-free control |
+| $\pi_\varepsilon$ | $\varepsilon$-soft policy | exploration guarantee |
+| $\rho_{t}^{T}$ | IS ratio | corrects for off-policy distribution |
+
+Reading the table top to bottom recapitulates the whole lecture: average returns to get $V$, average returns conditioned on actions to get $Q$, force exploration via $\pi_\varepsilon$ to keep $Q$ estimable, and use $\rho_{t}^{T}$ when the data was generated by a *different* policy from the one you want to learn.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 370" role="img" aria-label="Monte Carlo method map from sampled returns to prediction, control, and off-policy correction">
+    <defs>
+      <marker id="mc-arrow-map" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+    <text x="32" y="42" font-size="18" font-weight="700">Monte Carlo method map</text>
+    <text x="32" y="68" font-size="14" class="muted">Almost every MC variant is obtained by changing what is averaged and which policy generated the episode.</text>
+
+    <rect x="50" y="135" width="145" height="70" rx="8" class="box"></rect>
+    <text x="122" y="164" text-anchor="middle" font-size="16" font-weight="700">episodes</text>
+    <text x="122" y="186" text-anchor="middle" font-size="13" class="muted">sampled data</text>
+
+    <rect x="260" y="70" width="160" height="70" rx="8" class="accent"></rect>
+    <text x="340" y="99" text-anchor="middle" font-size="16" font-weight="700">average G<tspan baseline-shift="sub" font-size="10">t</tspan></text>
+    <text x="340" y="121" text-anchor="middle" font-size="13" class="muted">prediction: V(s)</text>
+
+    <rect x="260" y="200" width="160" height="70" rx="8" class="green"></rect>
+    <text x="340" y="224" text-anchor="middle" font-size="16" font-weight="700">average G<tspan baseline-shift="sub" font-size="10">t</tspan></text>
+    <text x="340" y="246" text-anchor="middle" font-size="13" class="muted">after (s,a): Q(s,a)</text>
+
+    <rect x="500" y="200" width="160" height="70" rx="8" class="amber"></rect>
+    <text x="580" y="229" text-anchor="middle" font-size="16" font-weight="700">epsilon-greedy</text>
+    <text x="580" y="251" text-anchor="middle" font-size="13" class="muted">keeps exploring</text>
+
+    <rect x="500" y="70" width="160" height="70" rx="8" class="box"></rect>
+    <text x="580" y="99" text-anchor="middle" font-size="16" font-weight="700">multiply by rho</text>
+    <text x="580" y="121" text-anchor="middle" font-size="13" class="muted">off-policy correction</text>
+
+    <rect x="705" y="135" width="110" height="70" rx="8" class="accent"></rect>
+    <text x="760" y="164" text-anchor="middle" font-size="16" font-weight="700">target pi</text>
+    <text x="760" y="186" text-anchor="middle" font-size="13" class="muted">evaluate or improve</text>
+
+    <line x1="195" y1="155" x2="260" y2="113" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+    <line x1="195" y1="185" x2="260" y2="223" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+    <line x1="420" y1="235" x2="500" y2="235" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+    <line x1="420" y1="105" x2="500" y2="105" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+    <line x1="660" y1="105" x2="730" y2="135" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+    <line x1="660" y1="235" x2="730" y2="205" class="strong-line" marker-end="url(#mc-arrow-map)"></line>
+
+    <text x="340" y="318" text-anchor="middle" font-size="14" class="muted">on-policy: behaviour policy = target policy</text>
+    <text x="580" y="318" text-anchor="middle" font-size="14" class="muted">off-policy: behaviour policy differs, so use rho</text>
+  </svg>
+  <figcaption>The lecture can be read as a sequence of small modifications: average complete returns for prediction, condition on actions for control, enforce exploration for on-policy control, and add importance weights when data comes from a different policy.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core Takeaways — Monte Carlo)</span></p>
+
+* **Model-free.** MC methods learn directly from sampled episodes; the transition kernel $p(s', r \mid s, a)$ is never consulted.
+* **Complete returns, no bootstrapping.** Updates use the realised $G_t$ as the target, not another value estimate.
+* **Action-values are required for control.** State-values alone are not enough without a model, because improvement is otherwise impossible.
+* **$\varepsilon$-greedy improvement within the $\varepsilon$-soft class is monotone.** Forced exploration does not break policy improvement — the proof shows the $\varepsilon$ term cancels exactly.
+* **Off-policy = separate exploration from optimisation.** The behaviour policy $\mu$ collects diverse data; the target policy $\pi$ is the one we evaluate or improve.
+* **Importance sampling makes off-policy MC possible.** The ratio $\rho_{t}^{T}$ depends only on $\pi$ and $\mu$ (the environment cancels). **Weighted IS is preferred in practice** because its variance is dramatically smaller than ordinary IS.
+* **Off-policy MC control has a fundamental weakness.** In long episodes, only the *tails* consistent with $\pi$ contribute — most data is wasted.
+
+**Bridge to TD.** Monte Carlo waits for the final outcome of each episode before updating. **Temporal-difference methods** in the next lecture learn while the episode is *still unfolding* — they combine the model-free advantage of MC with the online efficiency (and bootstrapping bias) of DP. That combination is the cornerstone of modern RL.
 
 </div>
