@@ -809,6 +809,9 @@ $$
 
 ### 1.1. Minimizing Quadratic Functionals over Affine Subspaces
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Minimizer of a quadratic functional over an affine subspace)</span></p>
+
 This section applies the Euclidean-space machinery from Appendix A.1. The basic object is a constrained least-distance problem: given $u \in \mathcal{X}$, $y \in \mathcal{Y}$, and a linear map $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$, minimize the quadratic distance to $u$ over the affine subspace of points satisfying $Ax = y$:
 
 $$
@@ -817,6 +820,8 @@ $$
 
 Here $\lambda$ is the norm induced by the scalar product on $\mathcal{X}$, and $L : \mathcal{X} \to \widecheck{\mathcal{X}}$ is the corresponding duality mapping from Appendix A.1.
 
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">1.1 (Minimizer of a quadratic functional over an affine subspace)</span></p>
 
@@ -824,7 +829,7 @@ Assume that $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ is **surjective**. The
 
 $$
 \begin{aligned}
-x^* &= u - L^{-1}A^{\vee}\widecheck{y}^* &&\text{(1.2a)} \\
+x^* &= u - L^{-1}\widecheck{A}\widecheck{y}^* &&\text{(1.2a)} \\
 &= u - A^+(Au-y), &&\text{(1.2b)}
 \end{aligned}
 $$
@@ -832,7 +837,7 @@ $$
 where the optimal multiplier vector is
 
 $$
-\widecheck{y}^* = (A L^{-1} A^{\vee})^{-1}(Au-y). \tag{1.2c}
+\widecheck{y}^* = (A L^{-1} \widecheck{A})^{-1}(Au-y). \tag{1.2c}
 $$
 
 Equivalently, $\widecheck{y}^*$ solves the dual problem
@@ -840,7 +845,7 @@ Equivalently, $\widecheck{y}^*$ solves the dual problem
 $$
 \min_{\widecheck{y} \in \widecheck{\mathcal{Y}}}
 \left\lbrace 
-\frac{1}{2}\widecheck{\lambda}\!\left(A^{\vee}\widecheck{y} - Lu\right)^2
+\frac{1}{2}\widecheck{\lambda}\!\left(\widecheck{A}\widecheck{y} - Lu\right)^2
 + \langle \widecheck{y}, y\rangle
 \right\rbrace . \tag{1.2d}
 $$
@@ -851,7 +856,84 @@ $$
 <details markdown="1">
 <summary>Proof</summary>
 
-TODO:
+Since $A$ is surjective, the affine subspace $\lbrace x \in \mathcal{X} : Ax = y\rbrace$ is non-empty. The functional $\frac{1}{2}\lambda(x-u)^2$ is strictly convex, so its restriction to this affine subspace has at most one minimizer.
+
+Introduce the Lagrangian
+
+$$
+\mathscr{L}(x,\widecheck{y})
+= \frac{1}{2}\lambda(x-u)^2
++ \langle \widecheck{y}, Ax-y\rangle .
+$$
+
+The first variation in the $x$-variable gives, for all $h \in \mathcal{X}$,
+
+$$
+0
+= \left.\frac{d}{dt}\right|_{t=0}\mathscr{L}(x+th,\widecheck{y})
+= \langle L(x-u), h\rangle + \langle \widecheck{A}\widecheck{y}, h\rangle .
+$$
+
+Hence
+
+$$
+L(x-u) + \widecheck{A}\widecheck{y}=0,
+\qquad
+x = u - L^{-1}\widecheck{A}\widecheck{y}. \tag{1.2e}
+$$
+
+Imposing the constraint $Ax=y$ gives
+
+$$
+A L^{-1}\widecheck{A}\widecheck{y} = Au-y. \tag{1.2f}
+$$
+
+The operator $A L^{-1}\widecheck{A} : \widecheck{\mathcal{Y}} \to \mathcal{Y}$ is invertible. Indeed, if $\widecheck{y}\ne 0$, then surjectivity of $A$ implies $\widecheck{A}\widecheck{y}\ne 0$, and therefore
+
+$$
+\langle \widecheck{y}, A L^{-1}\widecheck{A}\widecheck{y}\rangle
+= \langle \widecheck{A}\widecheck{y}, L^{-1}\widecheck{A}\widecheck{y}\rangle
+= \widecheck{\lambda}(\widecheck{A}\widecheck{y})^2
+> 0.
+$$
+
+Thus
+
+$$
+\widecheck{y}^* = (A L^{-1}\widecheck{A})^{-1}(Au-y),
+$$
+
+and substitution into $x = u - L^{-1}\widecheck{A}\widecheck{y}$ gives (1.2a). By the definition of the orthogonal right-inverse (A.13),
+
+$$
+L^{-1}\widecheck{A}(A L^{-1}\widecheck{A})^{-1} = A^+,
+$$
+
+so (1.2b) follows.
+
+It remains to check the dual formulation. Let
+
+$$
+\Phi(\widecheck{y})
+=
+\frac{1}{2}\widecheck{\lambda}(\widecheck{A}\widecheck{y}-Lu)^2
++ \langle \widecheck{y}, y\rangle .
+$$
+
+For every $\widecheck{z}\in \widecheck{\mathcal{Y}}$,
+
+$$
+\begin{aligned}
+D\Phi(\widecheck{y})[\widecheck{z}]
+&= \left\langle \widecheck{A}\widecheck{z}, L^{-1}(\widecheck{A}\widecheck{y}-Lu)\right\rangle
++ \langle \widecheck{z}, y\rangle \\
+&= \left\langle \widecheck{z},
+A L^{-1}\widecheck{A}\widecheck{y} - Au + y
+\right\rangle .
+\end{aligned}
+$$
+
+The critical point condition is exactly (1.2f). Since the quadratic part is strictly convex by the same positivity argument above, this critical point is the unique minimizer of (1.2d), namely $\widecheck{y}^*$.
 
 </details>
 </div>
@@ -863,6 +945,9 @@ In the sequel, Proposition 1.1 is reused in three scenarios. Each scenario keeps
 ### 1.2. Single Linear Associative Memory
 
 We begin with the simplest neural network architecture: a single linear map trained on input-output pairs. Given data, the operator is selected as the minimizer of a constrained quadratic functional: it must map the training inputs to the prescribed outputs while staying as close as possible to a reference operator. This lets the map **recall** outputs associated with known inputs and generalize, to some degree, to perturbed inputs. This function is called **associative memory**.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Single Linear Associative Memory)</span></p>
 
 The mathematical background is the operator-space scalar product (A.25) and induced norm (A.27) on $\mathcal{L}(\mathcal{X}, \mathcal{Y})$. Let
 
@@ -894,6 +979,8 @@ $$
 G^{-1} = (G^{kl})_{k,l \in [n]}, \qquad G_{jk}G^{kl} = \delta^l_j, \qquad j,l \in [n]. \tag{1.5b}
 $$
 
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.2 (Linear associative memory)</span></p>
 
@@ -921,6 +1008,105 @@ $$
 W_{\mathcal{D}_n} = W_{\mathcal{D}_{n-1}} - G^{nl}(Lx_l) \otimes (W_{\mathcal{D}_{n-1}}x_n - y_n) \qquad \text{(with } n \text{ fixed).} \tag{1.8}
 $$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $E = \mathbb{R}^n$ with canonical basis $(\delta_k)_{k \in [n]}$, and define
+
+$$
+A \in \mathcal{L}(E,\mathcal{X}), \qquad A\delta_k := x_k,
+\qquad
+Y \in \mathcal{L}(E,\mathcal{Y}), \qquad Y\delta_k := y_k .
+$$
+
+The interpolation constraints are equivalent to
+
+$$
+WA = Y.
+$$
+
+Since the vectors $(x_k)_{k \in [n]}$ are linearly independent, $A$ is injective. Thus Corollary A.9 applies to the correction $V := W-U$: among all $V$ satisfying
+
+$$
+VA = Y-UA,
+$$
+
+the unique minimal $(\widecheck{\lambda}\otimes\mu)$-norm correction is
+
+$$
+V = (Y-UA)A^{-}.
+$$
+
+The orthogonal left-inverse of $A$ is
+
+$$
+A^{-} = (\widecheck{A}LA)^{-1}\widecheck{A}L.
+$$
+
+In the basis $(\delta_k)$, the operator $\widecheck{A}LA$ has matrix
+
+$$
+(\widecheck{A}LA)_{kl}
+= \langle Lx_l,x_k\rangle
+= \ell(x_l,x_k)
+= G_{kl},
+$$
+
+and therefore
+
+$$
+A^{-}x
+= G^{kl}\langle Lx_l,x\rangle\,\delta_k .
+$$
+
+Consequently,
+
+$$
+\begin{aligned}
+Vx
+&= (Y-UA)A^{-}x \\
+&= G^{kl}\langle Lx_l,x\rangle\,(y_k-Ux_k),
+\end{aligned}
+$$
+
+or, as an operator,
+
+$$
+V = -G^{kl}(Lx_l)\otimes(Ux_k-y_k).
+$$
+
+Hence
+
+$$
+W = U+V
+= U - G^{kl}(Lx_l)\otimes(Ux_k-y_k),
+$$
+
+which is (1.6). Since it was obtained from the minimal-norm solution of $VA=Y-UA$, it satisfies $WA=Y$, i.e. $Wx_k=y_k$ for all $k$, and is the unique minimizer of $(\widecheck{\lambda}\otimes\mu)(W-U)$ under these constraints.
+
+If the input vectors are $\ell$-orthogonal, then $G_{kl}=0$ for $k\ne l$ and $G_{kk}=\lambda(x_k)^2$. Hence
+
+$$
+G^{kl}(Lx_l)\otimes(Ux_k-y_k)
+= (Lx_k)\otimes\frac{Ux_k-y_k}{\lambda(x_k)^2},
+$$
+
+which gives (1.7).
+
+Finally, suppose $\mathcal{D}_n=\mathcal{D}_{n-1}\cup\lbrace(x_n,y_n)\rbrace$ and take $U=W_{\mathcal{D}_{n-1}}$. Then $Ux_k=y_k$ for all $k<n$, so in (1.6) all residuals $Ux_k-y_k$ vanish except the one with $k=n$. Therefore
+
+$$
+W_{\mathcal{D}_n}
+= W_{\mathcal{D}_{n-1}}
+- G^{nl}(Lx_l)\otimes(W_{\mathcal{D}_{n-1}}x_n-y_n),
+$$
+
+which is (1.8).
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">

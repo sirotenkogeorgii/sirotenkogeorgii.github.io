@@ -1,7 +1,7 @@
 ---
 layout: note
 title: "Why the exponential function is everywhere"
-date: 2024-10-20
+date: 2026-05-26
 math: true
 ---
 
