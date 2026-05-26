@@ -11,7 +11,7 @@ math: true
 
 **Conventions.** $\exp$ denotes the function; $\lambda$ a scalar that may be real, complex, or an operator; $t$ the additive parameter we usually call time. *Continuity* (in fact mere measurability) is the standing regularity assumption throughout — it is the minimal hypothesis that removes the pathologies, and every genuine application supplies it for free.
 
-**The thesis in one line.** The exponential is the unique continuous bridge between *additive* structure and *multiplicative* structure. Whenever a local, additive parameter — time, angle, translation, energy, log-probability — drives a global object by composition, normalization, or repeated action, the exponential is the map that performs the conversion. It is not a special function that happens to recur; it is the unique solution to a structural problem that recurs.
+**The thesis in one line.** The exponential is the unique bridge between *additive* structure and *multiplicative* structure; "something that grows or decays continuously" is exactly a process whose multiplicative behavior is driven by an additive parameter (time). It is not a special function that happens to recur; it is the unique solution to a structural problem that recurs.
 
 ## The structural fact
 
@@ -24,7 +24,7 @@ $$
 which says exactly that $\exp$ is a homomorphism $(\mathbb{R},+)\to(\mathbb{R}\_{>0},\times)$: it converts addition into multiplication.
 
 <figure>
-  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/additive_multiplicative_bridge.svg' | relative_url }}" alt="Diagram showing additive increments becoming multiplicative exponential factors" loading="lazy">
+  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/additive_multiplicative_bridge.png' | relative_url }}" alt="Diagram showing additive increments becoming multiplicative exponential factors" loading="lazy">
   <figcaption>The whole story in one picture: splitting an additive input into $a+b$ is the same as splitting the corresponding exponential effect into two multiplicative factors.</figcaption>
 </figure>
 
@@ -33,7 +33,7 @@ The sharp statement is **Cauchy's theorem**:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Cauchy's theorem)</span></p>
 
-The maps $f:\mathbb R\to\mathbb R_{>0}$ satisfying $f(x+y)=f(x)f(y)$, together with any standard regularity hypothesis — continuity, measurability, or boundedness on a set of positive measure — are exactly
+The only positive solutions of $f(x+y)=f(x)f(y)$ that are continuous — equivalently, measurable, or bounded on a set of positive measure — are
 
 $$
 f(x) = \exp(\lambda x), \qquad \lambda = f'(0). \tag{2}
@@ -44,7 +44,8 @@ $$
 <details class="proof" markdown="1">
 <summary>Proof</summary>
 
-In the homomorphism setting above take $f:\mathbb R\to\mathbb R_{>0}$. Then
+Assume first that $f$ is not the identically zero solution, and in the
+homomorphism setting above take $f:\mathbb R\to\mathbb R_{>0}$. Then
 
 $$
 f(0)=f(0+0)=f(0)^2,
@@ -88,55 +89,32 @@ regularity theorem for the additive Cauchy equation applied to $g=\log f$.
 
 </details>
 
-**The regularity is doing real work.** Drop it entirely and the axiom of choice manufactures monstrous non-measurable solutions of (1). So continuity is not a technicality glossing the statement; it is *precisely* the hypothesis that pins $\exp$ down as the unique additive-to-multiplicative map. Everything below is (2) read in a different category: the same equation, with a different target for multiplication.
+**The regularity is doing real work.** Drop it entirely and the axiom of choice manufactures monstrous non-measurable solutions of (1). So continuity is not a technicality glossing the statement; it is *precisely* the hypothesis that pins $\exp$ down as the unique additive-to-multiplicative map. Everything below is (2) read in a different category.
 
 ## Four doors into the same room
 
 **The dynamical law $f' = \lambda f$.** The most local thing one can say about a quantity is that its rate of change now is proportional to its value now — no memory, no preferred scale. Differentiating (1) at $b=0$ gives $f'=\lambda f$, so this law and the homomorphism property are the same statement. $\exp$ is the function compiled by the simplest feedback rule, which is why it is the leading-order model for decay, interest, cooling, chemical reaction rates, and unconstrained population.
 
-$$
-dx \approx \lambda x(t)\,dt,
-\qquad
-\frac{dx}{dt} = \lambda x,
-\qquad
-x(t) = x(0)e^{\lambda t}.
-$$
+$$dx \approx \lambda x(t)\,dt$$
 
-So exponentials appear whenever the **rate of change is proportional to the current state**. The real invariant is the relative rate:
+$$\frac{dx}{dt} = \lambda x$$
 
-$$
-\frac{x'(t)}{x(t)} = \lambda.
-$$
+$$x(t) = x(0)e^{\lambda t}$$
 
-Equivalently, $\log x(t)$ grows linearly:
+So exponentials appear whenever the **rate of change is proportional to the current state**: Population growth, radioactive decay, compound interest, cooling near equilibrium, chemical reaction rates, and linearized dynamical systems all have this form, at least approximately.
+
+The important point is not “growth” itself, but **self-referential growth**:
+
+$$\text{change of }x\propto x$$
+
+The current state value can be described as a continuous accumulation of infinitesimal changes. For the multiplicative statement, it is cleanest to normalize by the initial value. If $r(t)=x(t)/x(0)$, then
 
 $$
-\frac{d}{dt}\log x(t)=\lambda
-\quad\Longrightarrow\quad
-\log x(t)-\log x(0)=\lambda t.
-$$
-
-This is the clean bridge. Additive increments in time add in log-space, and after exponentiating they become multiplicative factors:
-
-$$
-\frac{x(t+\Delta t)}{x(t)}=e^{\lambda\Delta t}.
-$$
-
-For two successive intervals, the correct semigroup statement is
-
-$$
-x(t_1+t_2)=x(0)e^{\lambda(t_1+t_2)}
-          =\frac{x(t_1)x(t_2)}{x(0)}.
-$$
-
-After normalising by the initial value, $r(t)=x(t)/x(0)$, this becomes exactly
-
-$$
-r(t_1+t_2)=r(t_1)r(t_2).
+r(t_1+t_2)=e^{\lambda(t_1+t_2)}=e^{\lambda t_1}e^{\lambda t_2}=r(t_1)r(t_2).
 $$
 
 <figure>
-  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/exponential_growth_decay.svg' | relative_url }}" alt="Plot of exponential growth and decay with equal time steps marked as equal multiplicative factors" loading="lazy">
+  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/exponential_growth_decay.png' | relative_url }}" alt="Plot of exponential growth and decay with equal time steps marked as equal multiplicative factors" loading="lazy">
   <figcaption>Growth and decay are the same mechanism with different signs of $\lambda$. Equal time increments multiply the current value by the same factor; that is what a constant relative rate means.</figcaption>
 </figure>
 
@@ -148,42 +126,29 @@ $$
 T(t)=\exp(tA), \qquad A=T'(0). \tag{3}
 $$
 
-Linear systems $\dot x=Ax$, the matrix exponential, Markov and heat semigroups are all (3) with different generators $A$. The derivative at the identity is the local rule; exponentiation is the act of integrating that local rule into a global flow. Restricting (3) to the imaginary axis sends $(\mathbb{R},+)$ onto the circle group: $t\mapsto e^{it}$ is the unique one-parameter family of rotations, *adding angles = multiplying unit complex numbers*. Thus $e^{i\pi}=-1$ records nothing more mystical than a half-turn; the generator $i$ is the infinitesimal $90^\circ$ rotation.
+Linear systems $\dot x=Ax$, the matrix exponential, Markov and heat semigroups are all (3) with different generators $A$. Restricting (3) to the imaginary axis sends $(\mathbb{R},+)$ onto the circle group: $t\mapsto e^{it}$ is the unique one-parameter family of rotations, *adding angles = multiplying unit complex numbers*. Thus $e^{i\pi}=-1$ records nothing more mystical than a half-turn; the generator $i$ is the infinitesimal $90^\circ$ rotation.
 
 Euler’s formula $e^{it}=\cos t+i\sin t$ is not a coincidence. It says that exponential also converts additive time/angle into multiplicative rotations. Angles add: $\theta+\phi$. Rotations compose multiplicatively: $e^{i\theta}e^{i\phi}=e^{i(\theta+\phi)}$. So $e^{it}$ is the same additive-to-multiplicative bridge, but now the target is the unit circle: $(\mathbb R,+)\longrightarrow S^1$.
 
 The differential equation viewpoint also says the same thing: $z'(t)=iz(t), \qquad z(0)=1$. The solution is $z(t)=e^{it}$. Multiplication by $i$ means “rotate by $90^\circ$.” Therefore the flow of the equation $z'=iz$ is uniform circular motion. Euler’s identity is the exponential function describing rotation.
 
 <figure>
-  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/rotation_exponential.svg' | relative_url }}" alt="Unit circle diagram showing addition of angles as multiplication of complex exponentials" loading="lazy">
+  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/rotation_exponential.png' | relative_url }}" alt="Unit circle diagram showing addition of angles as multiplication of complex exponentials" loading="lazy">
   <figcaption>The complex exponential is the same homomorphism, but now the multiplicative target is the unit circle. Euler's identity is the value at a half-turn.</figcaption>
 </figure>
 
-**Eigenfunctions and symmetry.** Exponentials are the eigenfunctions of $d/dx$, hence they simultaneously diagonalise every translation-invariant linear operator (every convolution). This is the real content of Fourier analysis: $e^{i\omega t}$ are the characters of the translation group, the coordinates in which "shift" becomes "multiply by a phase". Indeed, if $\tau_a$ shifts a signal by $a$, then
+**Eigenfunctions and symmetry.** Exponentials are the eigenfunctions of $d/dx$, hence they simultaneously diagonalise every translation-invariant linear operator (every convolution). This is the real content of Fourier analysis: $e^{i\omega t}$ are the characters of the translation group, the coordinates in which "shift" becomes "multiply by a phase". A system with a translation symmetry — in time or space — is therefore one whose dynamics go diagonal in the exponential basis. Same bridge: the symmetry is additive, its action is multiplicative.
 
-$$
-(\tau_a e^{i\omega x})(x)=e^{i\omega(x+a)}
-=e^{i\omega a}e^{i\omega x}.
-$$
-
-A translation, which is additive in $a$, acts on each exponential mode by multiplication by the scalar phase $e^{i\omega a}$. A system with a translation symmetry — in time or space — is therefore one whose dynamics go diagonal in the exponential basis. Same bridge: the symmetry is additive, its action is multiplicative.
-
-**Entropy and information.** Probabilities of independent events multiply; we prefer additive bookkeeping, so we pass to logs, and information is $-\log p$. The function inverting $\log$ is $\exp$, and it reappears the moment we optimise. Maximising entropy $-\int p\log p$ under *linear* constraints (fixed mean, variance, expected features) is a short Lagrange-multiplier calculation. The Euler-Lagrange stationarity condition has the form
-
-$$
--(1+\log p(x))-\alpha-\langle\theta,T(x)\rangle=0,
-$$
-
-so $\log p$ is affine in the constrained features. Exponentiating gives the exponential family:
+**Entropy and information.** Probabilities of independent events multiply; we prefer additive bookkeeping, so we pass to logs, and information is $-\log p$. The function inverting $\log$ is $\exp$, and it reappears the moment we optimise. Maximising entropy $-\int p\log p$ under *linear* constraints (fixed mean, variance, expected features) gives, by Lagrange multipliers,
 
 $$
 p(x)\;\propto\;\exp\!\big(\langle\theta,\,T(x)\rangle\big). \tag{4}
 $$
 
-From this single source: the **Gaussian** is the maximum-entropy law at fixed mean and variance (and, not coincidentally, the heat kernel and a Fourier fixed point — three doors, one room); **softmax** $p_i\propto e^{s_i}$ is the Gibbs distribution at fixed expected score; and the **sigmoid** $1/(1+e^{-x})$ is two-class softmax, the posterior of a model with linear log-odds — not an *ad hoc* squashing nonlinearity.
+the exponential family — because stationarity reads "$\log p$ is linear". From the single source (4): the **Gaussian** is the maximum-entropy law at fixed variance (and, not coincidentally, the heat kernel and a Fourier fixed point — three doors, one room); **softmax** $p_i\propto e^{s_i}$ is the Gibbs distribution at fixed expected score; and the **sigmoid** $1/(1+e^{-x})$ is two-class softmax, the posterior of a model with linear log-odds — not an *ad hoc* squashing nonlinearity.
 
 <figure>
-  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/logits_probabilities.svg' | relative_url }}" alt="Plot showing linear log odds becoming sigmoid probabilities through exponentiation and normalization" loading="lazy">
+  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/logits_probabilities.png' | relative_url }}" alt="Plot showing linear log odds becoming sigmoid probabilities through exponentiation and normalization" loading="lazy">
   <figcaption>In probabilistic models the additive object is usually a score, energy, or log-odds. Exponentiation makes it positive; normalization makes it a probability distribution.</figcaption>
 </figure>
 
@@ -193,7 +158,6 @@ These are not four reuses of one symbol but four instances of one phenomenon. In
 
 | setting | additive side | multiplicative side |
 |---|---|---|
-| scalar exponential | input $a+b$ | factors $e^a e^b$ |
 | dynamics / Lie theory | time, or a generator $A$ | states, group elements $\exp(tA)$ |
 | symmetry / Fourier | translations, frequencies | phases $e^{i\omega t}$ |
 | information | log-likelihood, energy, information | probabilities |
@@ -230,30 +194,20 @@ The exponential is not merely a function. It is the canonical passage from **lin
 
 ## But exponentials are not literally everywhere
 
-They dominate when the underlying structure is linear, memoryless, multiplicative, or governed by constant relative rates. Other patterns produce other functions. A good diagnostic is the logarithmic derivative:
-
-$$
-\frac{d}{dt}\log x(t)=\frac{x'(t)}{x(t)}.
-$$
-
-If this is constant, $x$ is exponential. If it changes with $t$ or with $x$, the structural reason for $\exp$ has disappeared.
+They dominate when the underlying structure is linear, memoryless, multiplicative, or governed by constant relative rates. Other patterns produce other functions.
 
 For example, $x'(t)=cx(t)$ gives exponentials, but
 
 $$x'(t)=cx(t)^2$$
 
-does not. It gives finite-time blow-up of rational type:
-
-$$
-x(t)=\frac{x(0)}{1-cx(0)t}.
-$$
+does not. It gives finite-time blow-up of rational type.
 
 Similarly, scale invariance often gives power laws, not exponentials:
 
 $$f(\lambda x)=\lambda^\alpha f(x) \quad\Rightarrow\quad f(x)=Cx^\alpha.$$
 
 <figure>
-  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/not_everywhere_counterexamples.svg' | relative_url }}" alt="Plots of finite-time blow-up and a power law as non-exponential counterexamples" loading="lazy">
+  <img src="{{ '/assets/images/notes/stuff_i_found_interesting/exponential/not_everywhere_counterexamples.png' | relative_url }}" alt="Plots of finite-time blow-up and a power law as non-exponential counterexamples" loading="lazy">
   <figcaption>Change the structural law and the canonical function changes. Nonlinear feedback gives rational blow-up; scale invariance gives power laws.</figcaption>
 </figure>
 
@@ -285,6 +239,4 @@ A continuous homomorphism out of $\mathbb{R}$ is *forced* to be an exponential �
 **Where the leftover freedom lives.** Even when the answer is "exponential," an isomorphism is never *canonical*: the isomorphisms $G\to H$ form a torsor under $\operatorname{Aut}(H)$. The continuous automorphisms of $(\mathbb{R}\_{>0},\times)$ are exactly $x\mapsto x^{c}$ with $c\neq 0$, so the family $\exp(\lambda x)$ is precisely the orbit of $\exp$ under continuous automorphisms — *which exponential* is *which base*. Drop continuity and $\operatorname{Aut}(\mathbb{R},+)$ swells to $GL$ of an infinite-dimensional $\mathbb{Q}$-vector space, and the orbit explodes back into the monster sea.
 
 **The moral, sharply.** What makes $\exp$ the definite article is never the additive-versus-multiplicative *labels* — those are interchangeable bookkeeping — but the demand that the map respect the *analytic structure* of the real line. The exponential is the unique homomorphism compatible with that structure; strip the structure and one strips the uniqueness with it. This is exactly why the thesis leaned on continuity: it is not decoration but the entire reason "the exponential" is a definite article rather than an indefinite one. The algebraic isomorphisms see only the $\mathbb{Q}$-vector-space skeleton — its dimension — while the continuous ones see $\mathbb{R}$ as a one-dimensional Lie group, where the generator is the lone surviving coordinate. The bridge of the title is real, but it is a bridge between *structured* worlds; between bare groups there is either a chaos of bridges or none.
-
-
 
