@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 520" role="img" aria-labelledby="title desc">
+  <title id="title">The complex exponential turns angle addition into rotation composition</title>
+  <desc id="desc">A unit circle diagram showing vectors at angles theta, phi, and theta plus phi, with the equation exp(i theta) exp(i phi) equals exp(i(theta plus phi)).</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#477998"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#c25257"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .panel { fill: #ffffff; stroke: #ded8ca; stroke-width: 2; }
+      .circle { fill: none; stroke: #d5cec1; stroke-width: 3; }
+      .axis { stroke: #8a8f98; stroke-width: 2; }
+      .theta { stroke: #477998; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .phi { stroke: #e08e45; stroke-width: 4; fill: none; }
+      .sum { stroke: #c25257; stroke-width: 4; fill: none; marker-end: url(#arrow-red); }
+      .vec { stroke-width: 4; stroke-linecap: round; }
+      .label { fill: #24313d; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .muted { fill: #667085; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .formula { fill: #263238; font-family: "Times New Roman", serif; font-style: italic; }
+    </style>
+  </defs>
+
+  <rect width="980" height="520" rx="18" class="bg"/>
+  <text x="490" y="50" text-anchor="middle" class="label" font-size="30" font-weight="700">Euler's formula is the same bridge on the circle</text>
+
+  <rect x="55" y="82" width="455" height="360" rx="14" class="panel"/>
+  <g transform="translate(282 262)">
+    <circle cx="0" cy="0" r="132" class="circle"/>
+    <line x1="-160" y1="0" x2="160" y2="0" class="axis"/>
+    <line x1="0" y1="160" x2="0" y2="-160" class="axis"/>
+    <line x1="0" y1="0" x2="91" y2="-95" stroke="#477998" class="vec"/>
+    <line x1="0" y1="0" x2="126" y2="-39" stroke="#e08e45" class="vec"/>
+    <line x1="0" y1="0" x2="-28" y2="-129" stroke="#c25257" class="vec"/>
+    <path d="M48 0 A48 48 0 0 0 33 -35" class="theta"/>
+    <path d="M64 -66 A92 92 0 0 0 -19 -90" class="sum"/>
+    <text x="29" y="-16" class="label" font-size="17">theta</text>
+    <text x="18" y="-89" class="label" font-size="17">theta + phi</text>
+    <text x="116" y="-51" class="label" font-size="17">e^(i phi)</text>
+    <text x="82" y="-110" class="label" font-size="17">e^(i theta)</text>
+    <text x="-85" y="-135" class="label" font-size="17">e^(i(theta+phi))</text>
+    <text x="166" y="6" class="muted" font-size="16">1</text>
+    <text x="6" y="-166" class="muted" font-size="16">i</text>
+  </g>
+
+  <rect x="560" y="122" width="360" height="260" rx="14" class="panel"/>
+  <text x="740" y="170" text-anchor="middle" class="label" font-size="22" font-weight="650">composition rule</text>
+  <text x="740" y="225" text-anchor="middle" class="formula" font-size="28">R_theta R_phi = R_(theta+phi)</text>
+  <text x="740" y="279" text-anchor="middle" class="formula" font-size="28">e^(i theta)e^(i phi) = e^(i(theta+phi))</text>
+  <text x="740" y="334" text-anchor="middle" class="muted" font-size="17">adding angles becomes multiplying phases</text>
+</svg>

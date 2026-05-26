@@ -2386,7 +2386,7 @@ Two consequences follow immediately.
 </div>
 
 <figure>
-  <img src="{{ '/assets/images/notes/rl_hd/mc_backup_diagram.png' | relative_url }}" alt="Monte Carlo backup diagram: a single trajectory from a state runs all the way to a terminal leaf, contrasted with a shallow expectation backup over all one-step successors" loading="lazy">
+  <img src="{{ '/assets/images/notes/rl_hd/mc_backup_diagram.svg' | relative_url }}" alt="Monte Carlo backup diagram: a single trajectory from a state runs all the way to a terminal leaf, contrasted with a shallow expectation backup over all one-step successors" loading="lazy">
   <figcaption>Backup diagrams contrasted. <strong>Left (DP):</strong> shallow and wide — one-step expectation over <em>all</em> successors, weighted by the model. <strong>Right (MC):</strong> narrow and deep — one sampled trajectory followed all the way to termination, the realised $G_t$ used as the update target. The DP diagram averages over what <em>could</em> happen; the MC diagram uses what <em>did</em> happen.</figcaption>
 </figure>
 
@@ -2646,7 +2646,7 @@ Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely t
 </div>
 
 <figure>
-  <img src="{{ '/assets/images/notes/rl_hd/blackjack_mc_value.png' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
+  <img src="{{ '/assets/images/notes/rl_hd/blackjack_mc_value.svg' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
   <figcaption>MC prediction on Blackjack. The 3D surfaces show estimated state-values for a policy that sticks only on 20 or 21, split by whether the player holds a usable ace. <strong>Left:</strong> after 10,000 episodes the surfaces are jagged; many states have few samples. <strong>Right:</strong> after 500,000 episodes they have settled into smooth functions of (player sum, dealer showing). No model of the dealer's strategy was ever used — only sampled game outcomes.</figcaption>
 </figure>
 
