@@ -8,5 +8,6 @@ date: 2024-10-20
 
 - [In progress: Adding Geometry to a Vector Space](/subpages/stuff_i_found_interesting/adding_geometry_to_vector_space/)
 - [In progress: Weak but Not Strong Convergence in $L^p$: $\sin(nt)$](/subpages/stuff_i_found_interesting/example_weak_not_strong_congerg_Lp/)
-- Uniform convergence
+<!-- - Uniform convergence -->
 - [A sum-of-squares proof of the $\ell^1$–$\ell^2$ comparison inequality](/subpages/stuff_i_found_interesting/l1-l2-proof-without-inner-product/)
+- [Why the exponential function is everywhere](/subpages/stuff_i_found_interesting/exponential/)

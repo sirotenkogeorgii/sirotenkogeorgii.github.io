@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 420" role="img" aria-labelledby="title desc">
+  <title id="title">Dynamic programming and Monte Carlo backup diagrams</title>
+  <desc id="desc">Dynamic programming uses a shallow expectation backup over all one-step successors. Monte Carlo uses one sampled trajectory all the way to a terminal state.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2c3e94"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#047857"/>
+    </marker>
+    <style>
+      .bg{fill:#fff}.panel{fill:#f8fafc;stroke:#dbe1ee;stroke-width:1.5}.state{fill:#eef2ff;stroke:#2c3e94;stroke-width:2}.pair{fill:#fffbeb;stroke:#b45309;stroke-width:2}.terminal{fill:#ecfdf5;stroke:#047857;stroke-width:2}.blue{stroke:#2c3e94;stroke-width:2.5;fill:none}.green{stroke:#047857;stroke-width:2.5;fill:none}.muted{fill:#64748b}.label{fill:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.small{font-size:15px}.normal{font-size:18px}.title{font-size:24px;font-weight:700}.mono{font-family:"SFMono-Regular",Menlo,Consolas,monospace}
+    </style>
+  </defs>
+  <rect class="bg" width="980" height="420"/>
+  <rect class="panel" x="35" y="40" width="430" height="330" rx="14"/>
+  <rect class="panel" x="515" y="40" width="430" height="330" rx="14"/>
+
+  <text class="label title" x="250" y="82" text-anchor="middle">DP backup</text>
+  <text class="label muted small" x="250" y="108" text-anchor="middle">shallow and wide: average all one-step successors</text>
+
+  <circle class="state" cx="250" cy="155" r="24"/>
+  <text class="label normal mono" x="250" y="161" text-anchor="middle">s</text>
+
+  <circle class="pair" cx="130" cy="238" r="21"/>
+  <circle class="pair" cx="250" cy="238" r="21"/>
+  <circle class="pair" cx="370" cy="238" r="21"/>
+  <text class="label small mono" x="130" y="243" text-anchor="middle">a1</text>
+  <text class="label small mono" x="250" y="243" text-anchor="middle">a2</text>
+  <text class="label small mono" x="370" y="243" text-anchor="middle">a3</text>
+
+  <path class="blue" d="M233 172 L150 222" marker-end="url(#arrow-blue)"/>
+  <path class="blue" d="M250 180 L250 214" marker-end="url(#arrow-blue)"/>
+  <path class="blue" d="M267 172 L350 222" marker-end="url(#arrow-blue)"/>
+  <text class="label muted small" x="165" y="185">pi(a|s)</text>
+
+  <circle class="state" cx="95" cy="318" r="18"/>
+  <circle class="state" cx="165" cy="318" r="18"/>
+  <circle class="state" cx="250" cy="318" r="18"/>
+  <circle class="state" cx="335" cy="318" r="18"/>
+  <circle class="state" cx="405" cy="318" r="18"/>
+  <text class="label small mono" x="95" y="323" text-anchor="middle">s'</text>
+  <text class="label small mono" x="165" y="323" text-anchor="middle">s'</text>
+  <text class="label small mono" x="250" y="323" text-anchor="middle">s'</text>
+  <text class="label small mono" x="335" y="323" text-anchor="middle">s'</text>
+  <text class="label small mono" x="405" y="323" text-anchor="middle">s'</text>
+  <path class="green" d="M122 253 L101 296" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M138 256 L159 296" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M250 260 L250 296" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M362 256 L341 296" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M378 253 L399 296" marker-end="url(#arrow-green)"/>
+  <text class="label muted small" x="312" y="286">p(s',r|s,a)</text>
+
+  <text class="label title" x="730" y="82" text-anchor="middle">MC backup</text>
+  <text class="label muted small" x="730" y="108" text-anchor="middle">narrow and deep: one sampled episode to termination</text>
+
+  <circle class="state" cx="590" cy="210" r="24"/>
+  <circle class="state" cx="690" cy="210" r="24"/>
+  <circle class="state" cx="790" cy="210" r="24"/>
+  <circle class="terminal" cx="890" cy="210" r="27"/>
+  <text class="label normal mono" x="590" y="216" text-anchor="middle">s</text>
+  <text class="label normal mono" x="690" y="216" text-anchor="middle">s1</text>
+  <text class="label normal mono" x="790" y="216" text-anchor="middle">s2</text>
+  <text class="label small" x="890" y="216" text-anchor="middle">terminal</text>
+
+  <path class="green" d="M614 210 L666 210" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M714 210 L766 210" marker-end="url(#arrow-green)"/>
+  <path class="green" d="M814 210 L860 210" marker-end="url(#arrow-green)"/>
+  <text class="label muted small" x="640" y="190" text-anchor="middle">R1</text>
+  <text class="label muted small" x="740" y="190" text-anchor="middle">R2</text>
+  <text class="label muted small" x="835" y="190" text-anchor="middle">R3</text>
+
+  <path class="blue" d="M590 245 C650 330, 820 330, 890 245"/>
+  <text class="label normal mono" x="740" y="340" text-anchor="middle">G_t = R1 + gamma R2 + gamma^2 R3 + ...</text>
+  <text class="label muted small" x="730" y="292" text-anchor="middle">update target is the realised return</text>
+</svg>

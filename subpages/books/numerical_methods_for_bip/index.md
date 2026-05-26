@@ -612,7 +612,16 @@ If in addition $x \in \mathcal{N}(A)^\perp$, then $x = x^\dagger$.
 
 </div>
 
-TODO: put a proof here of the theorem above.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 2.2.5</summary>
+
+By Theorem 2.2.4, $x \in X$ is a least-squares solution of $Ax = y$ iff $Ax = P_{\overline{\mathcal{R}}} y$, which is equivalent to $Ax \in \overline{\mathcal{R}(A)}$ and $Ax - y \in \overline{\mathcal{R}(A)}^\perp = \mathcal{N}(A^\ast)$. This in turn is equivalent to $A^\ast(Ax - y) = 0$, i.e. to the normal equations $A^\ast A x = A^\ast y$.
+
+The final part — that $x \in \mathcal{N}(A)^\perp$ implies $x = x^\dagger$ — was already established in the proof of Theorem 2.2.4: among all least-squares solutions $x^\dagger + \mathcal{N}(A)$, the unique one in $\mathcal{N}(A)^\perp$ is $x^\dagger = A^\dagger y$.
+
+</details>
+</div>
 
 The minimum-norm solution $x^\dagger$ of $Ax = y$ is the solution of the normal equations with minimum norm, i.e.,
 
@@ -1685,6 +1694,19 @@ $$\left\langle \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangl
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 3.2.19</summary>
+
+For a $\mu$-simple function $f_n = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j$, due to the linearity of the dual product
+
+$$\left\langle \int_\Omega f_n(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangle = \left\langle \sum_{j=1}^{n} v_j \mu(A_j),\, v' \right\rangle = \sum_{j=1}^{n} \langle v_j, v' \rangle \, \mu(A_j) = \int_\Omega \langle f_n(\omega), v' \rangle \, \mathrm{d}\mu(\omega). \tag{3.2.6a}$$
+
+Now let $(f_n)_{n \in \mathbb{N}}$ be as in Def. 3.2.17 (the Bochner integral definition). Taking the limit $n \to \infty$ on both sides of (3.2.6a) yields (3.2.6). Here we use that $v' : V \to \mathbb{R}$ is continuous and that $\int_\Omega f_n \, \mathrm{d}\mu \to \int_\Omega f \, \mathrm{d}\mu$ in $V$ by assumption (which shows that the left-hand side of (3.2.6a) converges to the left-hand side of (3.2.6)), and Def. 3.2.17(ii) (which shows that the right-hand side of (3.2.6a) converges to the right-hand side of (3.2.6)).
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.20</span><span class="math-callout__name">(Bochner Integrability Criterion)</span></p>
 
@@ -1698,19 +1720,57 @@ $$\left\lVert \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega) \right\rVert \le \i
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.2.20</summary>
+
+**($\Rightarrow$)** If $f$ is $\mu$-Bochner integrable, then for the simple functions $(f_n)_{n \in \mathbb{N}}$ as in Def. 3.2.17
+
+$$\int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega) \le \int_\Omega \lVert f(\omega) - f_n(\omega) \rVert \, \mathrm{d}\mu(\omega) + \int_\Omega \lVert f_n(\omega) \rVert \, \mathrm{d}\mu(\omega).$$
+
+Due to assumption (ii) of Def. 3.2.17 the first term is finite for $n$ large enough. The second term is finite since each $f_n$ is a $\mu$-simple function.
+
+**($\Leftarrow$)** Let $f$ be strongly $\mu$-measurable such that $\int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega) < \infty$, and let $g_n$ be $\mu$-simple functions satisfying $\lim_{n \to \infty} g_n = f$ $\mu$-a.e. Set
+
+$$f_n := g_n \mathbb{1}_{\lbrace \lVert g_n \rVert \le 2 \lVert f \rVert \rbrace}.$$
+
+Then $f_n$ is $\mu$-simple and $\lim_{n \to \infty} f_n = f$ $\mu$-a.e. Since $\lVert f_n \rVert \le 2 \lVert f \rVert$ pointwise for every $n$, by the dominated convergence theorem
+
+$$\lim_{n \to \infty} \int_\Omega \lVert f - f_n \rVert \, \mathrm{d}\mu = 0.$$
+
+The inequality (3.2.8) is trivial for $\mu$-simple functions, and follows by approximation in the general case.
+
+</details>
+</div>
+
 #### 3.2.4 $L^p$-Spaces
 
-Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. For $1 \le p < \infty$ we define $L^p(\Omega, \mu; V)$ to be the space of all strongly $\mu$-measurable functions $f : \Omega \to V$ for which
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($L^p$-Spaces)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. For $1 \le p < \infty$ we define $L^p(\Omega, \mu; V)$ to be the **space of all strongly $\mu$-measurable functions** $f : \Omega \to V$ for which
 
 $$\lVert f \rVert_{L^p(\Omega, \mu; V)} := \left( \int_\Omega \lVert f(\omega) \rVert^p \, \mathrm{d}\mu(\omega) \right)^{1/p} < \infty$$
 
 and identifying $\mu$-a.e. equal functions (i.e. elements of $L^p(\Omega, \mu; V)$ are equivalence classes of $\mu$-a.e. equal functions).
 
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($L^\infty$-Space)</span></p>
+
 Similarly, $L^\infty(\Omega; V)$ consists of all equivalence classes of strongly measurable $\mu$-a.e. equal functions endowed with the norm
 
 $$\lVert f \rVert_{L^\infty(\Omega; V)} := \inf \lbrace r \ge 0 : \mu(\lbrace \omega \in \Omega : \lVert f(\omega) \rVert \ge r \rbrace) = 0 \rbrace. \tag{3.2.9}$$
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(...)</span></p>
+
 Without proof we mention that $L^p(\Omega; V) = L^p(\Omega, \mathcal{A}, \mu; V)$ is a Banach space for all $1 \le p \le \infty$. Note that $L^1(\Omega; V)$ consists of all equivalence classes of Bochner-integrable functions.
+
+</div>
 
 #### 3.2.5 Radon-Nikodym Derivative
 
@@ -1870,6 +1930,9 @@ is the **expectation** of $X$.
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Covariance operator)</span></p>
+
 For two separable Hilbert spaces $(H_1, \langle \cdot, \cdot \rangle_{H_1})$, $(H_2, \langle \cdot, \cdot \rangle_{H_2})$ and two random variables $X : \Omega \to H_1$, $Y : \Omega \to H_2$ with finite second moments, we define the **covariance operator** $\mathrm{cov}(X, Y) = C : H_2 \to H_1$ by
 
 $$\langle v, Cw \rangle_{H_1} = \int_\Omega \langle X - \mathbb{E}[X], v \rangle_{H_1} \langle Y - \mathbb{E}[Y], w \rangle_{H_2} \, \mathrm{d}\mathbb{P} \qquad \forall v \in H_1, \ w \in H_2.$$
@@ -1879,6 +1942,8 @@ We also set $\mathrm{cov}(X) := \mathrm{cov}(X, X)$. One can show that $\mathrm{
 In case $H = \mathbb{R}$ the **variance** of $X : \Omega \to \mathbb{R}$ is defined as
 
 $$\mathbb{V}(X) := \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - \mathbb{E}[X]^2.$$
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4.2</span><span class="math-callout__name">(Covariance Matrix)</span></p>
@@ -1983,6 +2048,25 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a measure space and $V$ a Banach spac
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 3.5.8</summary>
+
+**($\Rightarrow$)** Assume that the $X_j$ are independent. Then for all $A_j \in \mathcal{A}$
+
+$$\mathbb{P}_{X_1, \ldots, X_n}[A_1 \times \cdots \times A_n] = \mathbb{P}[X_1 \in A_1, \ldots, X_n \in A_n] = \mathbb{P}[X_1 \in A_1] \cdots \mathbb{P}[X_n \in A_n] = \mathbb{P}_{X_1}[A_1] \cdots \mathbb{P}_{X_n}[A_n].$$
+
+By the uniqueness of the product measure (Thm. 3.1.13), this implies $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$.
+
+**($\Leftarrow$)** Conversely, by definition of the product measure, $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$ implies for all $A_j \in \mathcal{A}$ that
+
+$$\mathbb{P}_{X_1, \ldots, X_n}[A_1 \times \cdots \times A_n] = \mathbb{P}_{X_1}[A_1] \cdots \mathbb{P}_{X_n}[A_n],$$
+
+which is exactly the independence condition.
+
+</details>
+</div>
+
 For real valued RVs, independence is equivalent to saying that the distribution functions and densities factor.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1995,6 +2079,23 @@ Let $X_i : \Omega \to \mathbb{R}^m$ be $n$ RVs for $i = 1, \ldots, n$.
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of Proof of Theorem 3.5.9</summary>
+
+**($\Rightarrow$)** If the $X_j$ are independent, then
+
+$$F_{X_1, \ldots, X_n}(x_1, \ldots, x_n) = \mathbb{P}[X_1 \le x_1, \ldots, X_n \le x_n] = \mathbb{P}[X_1 \le x_1] \cdots \mathbb{P}[X_n \le x_n] = F_{X_1}(x_1) \cdots F_{X_n}(x_n).$$
+
+**($\Leftarrow$)** Conversely, let $A_i = X_i^{-1}(B_i)$ for $B_i \in \mathcal{B}(\mathbb{R}^m)$. Then using Fubini's Theorem
+
+$$\mathbb{P}[A_1 \cap \cdots \cap A_n] = \mathbb{P}[X_1 \in B_1, \ldots, X_n \in B_n] = \int_{B_1 \times \cdots \times B_n} f_{X_1, \ldots, X_n}(x_1, \ldots, x_n) \, \mathrm{d}x_1 \cdots \mathrm{d}x_n$$
+
+$$= \prod_{j=1}^{n} \int_{B_j} f_{X_j}(x_j) \, \mathrm{d}x_j = \prod_{j=1}^{n} \mathbb{P}[X_j \in B_j] = \prod_{j=1}^{n} \mathbb{P}[A_j].$$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.10</span><span class="math-callout__name">(Expectation of Independent Products)</span></p>
 
@@ -2002,6 +2103,15 @@ Let $X_1, \ldots, X_n : \Omega \to \mathbb{R}$ be independent RVs and such that 
 
 $$\mathbb{E}[X_1 \cdots X_n] = \mathbb{E}[X_1] \cdots \mathbb{E}[X_n] < \infty.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.5.10</summary>
+
+Follows from Thm. 3.4.3 (change of variables for expectations) and Fubini's theorem applied to the product measure $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$ guaranteed by Proposition 3.5.8.
+
+</details>
 </div>
 
 #### 3.5.2 Conditional Expectations
@@ -2100,11 +2210,43 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $X$ and $Y$ two 
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of Proof of Theorem 3.5.15 (linearity and monotonicity)</summary>
+
+**(i) (linearity):** For $\alpha \in \mathbb{R}$ and $X, Y \in L^1(\Omega, \mathbb{P}; \mathbb{R})$, the function $\mathbb{E}[X\mid\mathcal{F}] + \alpha \mathbb{E}[Y\mid\mathcal{F}]$ is $\mathcal{F}$-measurable, and satisfies for every $A \in \mathcal{F}$
+
+$$\mathbb{E}\bigl[\mathbb{1}_A (\mathbb{E}[X\mid\mathcal{F}] + \alpha \mathbb{E}[Y\mid\mathcal{F}])\bigr] = \mathbb{E}[\mathbb{1}_A \mathbb{E}[X\mid\mathcal{F}]] + \alpha \mathbb{E}[\mathbb{1}_A \mathbb{E}[Y\mid\mathcal{F}]] = \mathbb{E}[\mathbb{1}_A X] + \alpha \mathbb{E}[\mathbb{1}_A Y] = \mathbb{E}[\mathbb{1}_A (X + \alpha Y)].$$
+
+By uniqueness, this equals $\mathbb{E}[X + \alpha Y\mid\mathcal{F}]$.
+
+**(ii) (monotonicity):** Let $A := \lbrace \mathbb{E}[X\mid\mathcal{F}] < \mathbb{E}[Y\mid\mathcal{F}] \rbrace \in \mathcal{F}$. Due to $X \ge Y$, $\mathbb{E}[\mathbb{1}_A(X - Y)] \ge 0$, and thus $\mathbb{P}[A] = 0$.
+
+**(iv) (triangle inequality):** Set $X^+ := \max\lbrace 0, X \rbrace$ and $X^- := -\min\lbrace 0, X \rbrace$, so that $X = X^+ - X^-$. By (i) and (ii)
+
+$$\mathbb{E}[\|X\|\mid\mathcal{F}] = \mathbb{E}[X^+\mid\mathcal{F}] + \mathbb{E}[X^-\mid\mathcal{F}] \ge \mathbb{E}[-X^+\mid\mathcal{F}] + \mathbb{E}[X^-\mid\mathcal{F}] = -\mathbb{E}[X\mid\mathcal{F}] \qquad \mathbb{P}\text{-a.e.}$$
+
+and similarly $\mathbb{E}[\|X\|\mid\mathcal{F}] \ge \mathbb{E}[X\mid\mathcal{F}]$, so $\mathbb{E}[\|X\|\mid\mathcal{F}] \ge \|\mathbb{E}[X\mid\mathcal{F}]\|$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5.16</span><span class="math-callout__name">(Conditional Expectation is a Contraction)</span></p>
 
 In the setting of Thm. 3.5.12 denote $T(X) = \mathbb{E}[X\mid\mathcal{F}]$. Then $T : L^1(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R}) \to L^1(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$ is linear and $\lVert T \rVert_{\mathcal{L}(L^1; L^1)} \le 1$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 3.5.16</summary>
+
+According to Thm. 3.5.15(i), $T$ is linear. The bound on the norm of the operator follows from Thm. 3.5.15(iv) (triangle inequality) and the tower property (or Exercise 3.5.14, $\mathbb{E}[\mathbb{E}[X\mid\mathcal{F}]] = \mathbb{E}[X]$):
+
+$$\lVert \mathbb{E}[X\mid\mathcal{F}] \rVert_{L^1} = \mathbb{E}\bigl[\|\mathbb{E}[X\mid\mathcal{F}]\|\bigr] \le \mathbb{E}\bigl[\mathbb{E}[\|X\|\mid\mathcal{F}]\bigr] = \mathbb{E}[\|X\|] = \lVert X \rVert_{L^1}.$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2144,6 +2286,27 @@ $$\mathbb{E}[X|Y](\omega) = \begin{cases} 1/3 & \omega \in \lbrace 1, 2, 3 \rbra
 #### 3.5.3 Regular Conditional Distribution
 
 So far we have defined $\mathbb{P}[A\mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$ in case $\mathbb{P}[B] > 0$. The goal of this section is to define the conditional probability $\mathbb{P}[A\mid X = x]$ even if $\mathbb{P}[X = x] = 0$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why $\mathbb{P}[X=1\mid p=1/2]$ needs care)</span></p>
+
+Let $p$ be a uniformly distributed RV on $[0, 1]$ and let $X$ be a Bernoulli RV, i.e. $X$ takes the value 1 with probability $p$ and the value 0 with probability $1 - p$. What is $\mathbb{P}[X = 1 \mid p = 1/2]$? Our previous definition of conditional probabilities doesn't lead to a meaningful result here since $[p = 1/2]$ is an event of probability 0. Intuitively we expect $\mathbb{P}[X = 1 \mid p = 1/2] = 1/2$, but how to make this rigorous?
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.21</span><span class="math-callout__name">(Transition/Markov Kernel)</span></p>
+
+Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces. A map $\kappa : \Omega_1 \times \mathcal{A}_2 \to [0, \infty]$ is called a **transition kernel** from $\Omega_1$ to $\Omega_2$, if
+
+1. $\omega \mapsto \kappa(\omega, A_2)$ is $\mathcal{A}_1$-measurable for each $A_2 \in \mathcal{A}_2$,
+2. $A_2 \mapsto \kappa(\omega, A_2)$ is a $\sigma$-finite measure on $(\Omega_2, \mathcal{A}_2)$ for each $\omega \in \Omega_1$.
+
+If the measure in (ii) is a probability measure for each $\omega \in \Omega_1$ then $\kappa$ is called a **Markov kernel**.
+
+</div>
+
+Using a Markov kernel we can now define a more "robust" notion of conditional distributions:
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.22</span><span class="math-callout__name">(Regular Conditional Distribution I)</span></p>
@@ -2244,11 +2407,50 @@ Let $\Omega$ be a set and $(\tilde{\Omega}, \tilde{\mathcal{A}})$ a measurable s
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 3.5.33 ("$\Leftarrow$" direction)</summary>
+
+**($\Leftarrow$)** If such $\tau$ exists, then $\tau \circ Y = \kappa$ is measurable as a composition of measurable functions.
+
+The other direction can be proved as follows: First assume $\kappa : \Omega \to [0, \infty)$ (i.e. $\kappa$ is nonnegative) and $\kappa$ is $\sigma(Y)/\mathcal{B}(\mathbb{R})$-measurable.
+
+- Define $\kappa_n := \min\lbrace n, 2^{-n} \lfloor 2^n \kappa \rfloor \rbrace$ and observe that $\kappa_n$ is a simple function and $\kappa_n \nearrow \kappa$.
+- Use the $\kappa_n$ to construct sets $A_j \in \mathcal{A}$ and numbers $\alpha_j \ge 0$ such that $\kappa = \sum_{j \in \mathbb{N}} \alpha_j \mathbb{1}_{A_j}$.
+- By definition of $\sigma(Y)$ there exist sets $B_n \in \tilde{\mathcal{A}}$ such that $Y^{-1}(B_n) = A_n$. Use the $B_n$ to define $\tau$ such that $\tau \circ Y = \kappa$.
+- Conclude that $\tau$ also exists under the assumption that $\kappa : \Omega \to \mathbb{R}$ is $\sigma(Y)/\mathcal{B}(\mathbb{R})$-measurable (i.e. is not necessarily nonnegative) by decomposing $\kappa = \kappa^+ - \kappa^-$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.35</span><span class="math-callout__name">(Existence of Conditional Distribution Given $Y$)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $X : \Omega \to V$, $Y : \Omega \to W$ two RVs for two separable Banach spaces $V$ and $W$. Then there exists a regular version of the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ (in the sense of Def. 3.5.22). It is unique in the sense of Lemma 3.5.23.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.5.35 (Existence)</summary>
+
+By Corollary 3.5.32 there exists a regular version $\kappa_{X\mid\sigma(Y)}(\omega, B)$ of the conditional distribution. By the Doob-Dynkin Lemma (Lemma 3.5.33, with $(\tilde{\Omega}, \tilde{\mathcal{A}}) = (W, \mathcal{B}(W))$), for every $B \in \mathcal{B}(V)$, there exists $\tau(\cdot, B) : W \to \mathbb{R}$ such that
+
+$$\kappa(\omega, B) = \tau(Y(\omega), B) \qquad \forall \omega \in \Omega.$$
+
+Then $\tau$ satisfies
+
+(i) $y \mapsto \tau(y, B)$ is $\mathcal{B}(W)/\mathcal{B}(\mathbb{R})$-measurable for every $B \in \mathcal{B}(V)$ by definition of $\tau$ in Lemma 3.5.33,
+
+(ii) $B \mapsto \tau(y, B)$ is a probability measure on $(V, \mathcal{B}(V))$ for every $y \in \lbrace Y(\omega) : \omega \in \Omega \rbrace$, since this is true for $B \mapsto \kappa(\omega, B) = \tau(Y(\omega), B) = \tau(y, B)$ and $\omega \in Y^{-1}(y)$,
+
+(iii) for any $B \in \mathcal{B}(V)$ and any $A \in \mathcal{B}(W)$, by Thm. 3.2.24 and the definition condition Def. 3.5.26(iii) with $\mathcal{F} = \sigma(Y)$ and $[Y \in A] \in \sigma(Y)$
+
+$$\int_W \mathbb{1}_A(y) \tau(y, B) \, \mathrm{d}\mathbb{P}_Y = \int_\Omega \mathbb{1}_A(Y(\omega)) \tau(Y(\omega), B) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(Y(\omega)) \kappa(\omega, B) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \mathbb{P}[X \in B, Y \in A].$$
+
+This proves the existence of a regular version of the conditional distribution as in Def. 3.5.22(ii). Uniqueness in the sense of Lemma 3.5.23 follows by a separate argument using denseness of a countable basis in $V$.
+
+</details>
 </div>
 
 #### Conditional Densities
@@ -2276,6 +2478,29 @@ $$f_{X|Y}(x|y) = \begin{cases} \frac{f_{X,Y}(x, y)}{f_Y(y)} & \text{if } f_Y(y) 
 
 for some fixed probability density $f_0$ on $\mathbb{R}^n$, is a density of (a version of) $\mathbb{P}[X \in \cdot \mid Y = y]$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 3.5.36</summary>
+
+The measure $\mathbb{P}[X \in \cdot \mid Y = y]$ on $(\mathbb{R}^m, \mathcal{B}(\mathbb{R}^m))$ exists due to Thm. 3.5.35. For $y \in \mathbb{R}^n$ and $B \in \mathcal{B}(\mathbb{R}^m)$ set
+
+$$\tau(y, B) := \int_B f_{X|Y}(x|y) \, \mathrm{d}x.$$
+
+Then
+
+(i) $y \mapsto \tau(y, B)$ is measurable for every $B \in \mathcal{B}(\mathbb{R})$ (this is a consequence of Fubini's theorem),
+
+(ii) $B \mapsto \tau(y, B)$ is a probability measure for every $y \in \mathbb{R}^n$ since $\int_{\mathbb{R}^m} f_{X\mid Y}(x|y) \, \mathrm{d}x = 1$,
+
+(iii) for every $B \in \mathcal{B}(\mathbb{R}^m)$ and every $A \in \mathcal{B}(\mathbb{R}^n)$, with the $\mathbb{P}_Y$-null set $N := \lbrace y : f_Y(y) \in \lbrace 0, \infty \rbrace \rbrace$,
+
+$$\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) = \int_{A \setminus N} \int_B f_Y(y) f_{X|Y}(x|y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \setminus N} \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \times B} f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y + \int_N \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[X \in A, Y \in B],$$
+
+where we used $\int_N \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y \le \int_N f_Y(y) \, \mathrm{d}y = \mathbb{P}_Y[N] = 0$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2444,6 +2669,27 @@ $$\lVert \mathbb{E}_{\mathbb{P}}[f] - \mathbb{E}_{\mathbb{Q}}[f] \rVert \le 2(\m
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 3.7.7</summary>
+
+Let $\mathbb{P} \ll \mu$ and $\mathbb{Q} \ll \mu$ (such $\mu$ always exists, e.g. $\mu = \frac{1}{2}(\mathbb{P} + \mathbb{Q})$). Then
+
+$$\lVert \mathbb{E}_{\mathbb{P}}[f] - \mathbb{E}_{\mathbb{Q}}[f] \rVert \le \int_\Omega \lVert f \rVert \left| \frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu} - \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu} \right| \mathrm{d}\mu$$
+
+$$= \int_\Omega \left( \frac{1}{\sqrt{2}} \left| \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right| \right) \left( \sqrt{2} \lVert f \rVert \left| \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} + \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right| \right) \mathrm{d}\mu$$
+
+$$\le \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \mathrm{d}\mu \right)^{1/2} \left( 2 \int_\Omega \lVert f \rVert^2 \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} + \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \mathrm{d}\mu \right)^{1/2}$$
+
+$$\le \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \mathrm{d}\mu \right)^{1/2} \left( 4 \int_\Omega \lVert f \rVert^2 \left( \frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu} + \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu} \right) \mathrm{d}\mu \right)^{1/2}$$
+
+$$= 2 (\mathbb{E}_{\mathbb{P}}[\lVert f \rVert^2] + \mathbb{E}_{\mathbb{Q}}[\lVert f \rVert^2])^{1/2} D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}).$$
+
+Here we used the Cauchy-Schwarz inequality, the factorisation $a^2 - b^2 = (a-b)(a+b)$ applied to $a = \sqrt{\mathrm{d}\mathbb{P}/\mathrm{d}\mu}$ and $b = \sqrt{\mathrm{d}\mathbb{Q}/\mathrm{d}\mu}$, and $(a+b)^2 \le 2(a^2 + b^2)$.
+
+</details>
+</div>
+
 ## Chapter 4: Bayesian Inversion
 
 In this chapter we discuss the Bayesian approach towards inverse problems. In contrast to the methods of Chapter 2, in the Bayesian setting all involved quantities are modelled as random variables. As such, the question to be answered is not *what is the value of the unknown variable?*, but rather *what is the distribution of the unknown variable?* It turns out that this is a very powerful viewpoint, leading to a host of numerical methods with broad applications in statistics, applied mathematics and machine learning. Additionally, it has the mathematical advantage of yielding a well-posed inverse problem, as will be discussed in this chapter.
@@ -2570,6 +2816,33 @@ $$\mu_{Y|x} = S_\sharp^{\Phi(x)} \mu_E.$$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.3.2</summary>
+
+Define for $A \in \mathcal{B}(W)$ and $x \in V$
+
+$$\tau(x, A) := (S_\sharp^{\Phi(x)} \mu_E)(A).$$
+
+Since $\mu_E$ and consequently $S_\sharp^{\Phi(x)} \mu_E$ are probability measures, $A \mapsto \tau(x, A) = S_\sharp^{\Phi(x)} \mu_E(A)$ defines a probability measure on $W$ for every $x$. Measurability of $x \mapsto \tau(x, A)$ holds by assumption.
+
+Next, let $B \in \mathcal{B}(V)$. Then
+
+$$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \underbrace{\mathbb{1}_A(\Phi(X(\omega)) + E(\omega)) \mathbb{1}_B(X(\omega))}_{=:\,\varphi(X, E)} \, \mathrm{d}\mathbb{P}(\omega),$$
+
+where we have defined the function $\varphi : V \times W \to \mathbb{R}$ via $\varphi(x, e) := \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x)$. Then $\varphi$ is measurable as a composition of measurable functions. The independence of the RVs $X$ and $E$ implies that $(X, E)_\sharp \mathbb{P} = \mathbb{P}_{X, E} = \mu_X \otimes \mu_E$, and thus it follows from Thm. 3.2.10 that
+
+$$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \varphi(X(\omega), E(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_{V \times W} \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x) \, \mathrm{d}(\mathbb{P}_X \otimes \mathbb{P}_E)(x, e) = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A\bigl(S^{\Phi(x)}(e)\bigr) \, \mathrm{d}\mu_E(e) \, \mathrm{d}\mu_X(x).$$
+
+By a change of variables (again Thm. 3.2.10)
+
+$$\mathbb{P}[Y \in A, X \in B] = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A(e) \, \mathrm{d}S_\sharp^{\Phi(x)} \mu_E(e) \, \mathrm{d}\mu_X(x) = \int_V \mathbb{1}_B(x) \tau(x, A) \, \mathrm{d}\mathbb{P}_X(x).$$
+
+Thus $\tau(x, A)$ is a regular conditional distribution of $Y$ given $X$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 4.3.3</span><span class="math-callout__name">(Posterior for Additive Noise, Finite Dimensional)</span></p>
 
@@ -2581,6 +2854,25 @@ where
 
 $$Z(y) = \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \, \pi_X(x) \, \mathrm{d}x.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 4.3.3</summary>
+
+By definition of the shift operator $S^{\Phi(x)}(y) = y + \Phi(x)$, we have for any $A \in \mathcal{B}(\mathbb{R}^m)$
+
+$$S_\sharp^{\Phi(x)} \mu_E(A) = \mu_E\bigl(\lbrace y \in \mathbb{R}^m : y + \Phi(x) \in A \rbrace\bigr) = \int_{\mathbb{R}^m} \mathbb{1}_A(y + \Phi(x)) \pi_E(y) \, \mathrm{d}y = \int_{\mathbb{R}^m} \mathbb{1}_A(y) \pi_E(y - \Phi(x)) \, \mathrm{d}y,$$
+
+and thus $S_\sharp^{\Phi(x)} \mu_E$ has density $y \mapsto \pi_E(y - \Phi(x))$. Hence by Lemma 4.3.2 the conditional density $\pi_{Y\mid X}(y\mid x)$ is equal to $\pi_E(y - \Phi(x))$ for $\mu_X$-a.e. $x \in V$.
+
+The second statement then follows by Thm. 4.3.1 (Bayes' Theorem, finite dimensional) and the observation that by definition of the conditional density, for every $A \in \mathcal{B}(\mathbb{R}^m)$
+
+$$\mathbb{P}[Y \in A, X \in \mathbb{R}^n] = \int_{\mathbb{R}^n} \int_A \pi_{Y|X}(y|x) \, \mathrm{d}y \, \pi_X(x) \, \mathrm{d}x = \int_A \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y,$$
+
+so that — except on the $\mu_Y$-null set $\lbrace y \in \mathbb{R}^m : Z(y) = \pi_Y(y) = 0 \rbrace$ — $Z(y)$ is equal to the marginal density $\pi_Y(y)$ of $Y$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -2651,6 +2943,41 @@ where
 
 $$Z(y) = \int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_X(x). \tag{4.3.5}$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.3.8</summary>
+
+By definition of a conditional density and due to Lemma 4.3.2 (Likelihood via Pushforward), for every $A \in \mathcal{B}(W)$,
+
+$$\mathbb{P}[Y \in A, X \in V] = \int_V \mu_{Y|x}(A) \, \mathrm{d}\mu_X(x) = \int_V (S_\sharp^{\Phi(x)} \mu_E)(A) \, \mathrm{d}\mu_X(x) = \int_V \int_W \mathbb{1}_A(e) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(e) \, \mathrm{d}\mu_X(x)$$
+
+$$= \int_V \int_W \mathbb{1}_A(e) \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\nu(e) \, \mathrm{d}\mu_X(x) = \int_W \mathbb{1}_A(e) \underbrace{\int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\mu_X(x)}_{=\,Z(e)} \, \mathrm{d}\nu(e).$$
+
+Here we used that $\frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e)$ is jointly measurable in $(x, e)$, which allowed to use Fubini's theorem. This calculation shows that $Z(y)$ is equal to the Radon-Nikodym derivative $\frac{\mathrm{d}\mu_Y}{\mathrm{d}\nu}(y)$ of $\mu_Y$ w.r.t. $\nu$. In particular $N := \lbrace y \in W : Z(y) = 0 \rbrace$ is a $\mu_Y$-null set since $\mu_Y[N] = \int_{[Z(y) = 0]} Z(y) \, \mathrm{d}\nu(y) = 0$.
+
+Define
+
+$$r(x, y) := \begin{cases} \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) & \text{if } y \in N^c \\ 1 & \text{if } y \in N. \end{cases}$$
+
+By (ii) and the fact that $y \mapsto Z_Y(y)$ is measurable as a consequence of the Fubini-Tonelli Theorem, we find that $r$ is measurable. Set for $B \in \mathcal{B}(V)$
+
+$$\tau(y, B) := \int_V \mathbb{1}_B(x) r(x, y) \, \mathrm{d}\mu_X(x).$$
+
+By definition of $r$ the map $B \mapsto \tau(y, B)$ is a probability measure for every $y \in W$ (trivially if $y \in N$, and due to the definition of the normalizing factor $Z(y)$ otherwise). Moreover, $y \mapsto \tau(y, B)$ is measurable as a consequence of Fubini-Tonelli. Since $Z(y) = \frac{\mathrm{d}\mu_Y}{\mathrm{d}\nu}(y)$, for each $B \in \mathcal{B}(V)$, $A \in \mathcal{B}(W)$,
+
+$$\int_W \mathbb{1}_A(y) \tau(y, B) \, \mathrm{d}\mu_Y(y) = \int_{W \times V} \mathbb{1}_B(x) \mathbb{1}_A(y) r(x, y) \, \mathrm{d}\mu_X(x) \, \mathrm{d}\mu_Y(y)$$
+
+$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_Y(y) \, \mathrm{d}\mu_X(x)$$
+
+$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) Z(y) \, \mathrm{d}\nu(y) \, \mathrm{d}\mu_X(x)$$
+
+$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(y) \, \mathrm{d}\mu_X(x) = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_{A \setminus N}(y) \, \mathrm{d}\mu_{Y|x}(y) \, \mathrm{d}\mu_X(x) = \mathbb{P}[X \in B, Y \in A \setminus N] = \mathbb{P}[X \in B, Y \in A],$$
+
+where we have used Lemma 4.2.5 and the fact that $\mathbb{P}[Y \in N] = 0$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
