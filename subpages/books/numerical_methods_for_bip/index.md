@@ -1803,13 +1803,21 @@ In this case $\frac{\mathrm{d}\nu}{\mathrm{d}\mu}$ is $\mathcal{A}$-measurable a
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.23</span><span class="math-callout__name">(Pushforward Measure)</span></p>
 
-Let $(\Omega_1, \mathcal{A}_1, \mu)$ be a measure space and $(\Omega_2, \mathcal{A}_2)$ a measurable space. Let $T : \Omega_1 \to \Omega_2$ be measurable. Then
+Let $(\Omega_1, \mathcal{A}\_1, \mu)$ be a measure space and $(\Omega_2, \mathcal{A}\_2)$ a measurable space. Let $T : \Omega_1 \to \Omega_2$ be measurable. Then
 
 $$T_\sharp \mu(A_2) := \mu(\underbrace{\lbrace \omega \in \Omega_1 : T(\omega) \in A_2 \rbrace}_{= T^{-1}(A_2)}) \qquad \forall A_2 \in \mathcal{A}_2$$
 
 defines a measure on $(\Omega_2, \mathcal{A}_2)$.
 
 We call $T_\sharp \mu$ the **pushforward measure**.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Comment</span><span class="math-callout__name">(Pushforward Measure)</span></p>
+
+* We can say that a pushforward measure is a measure induced by a **source measure space** and a **measurable funtion** to another measurable space.
+* Because the **measurable function does not necessarily preserve the measure**, i.e. the preimage could have different measure from the target measure, to make the integration compatible on pairs (preimage, image), allowing change of variables, we take into account the local change of measure (a.k.a.) the determinant of the jacobian of the inverse.
 
 </div>
 

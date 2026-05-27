@@ -122,6 +122,8 @@ $$
 \widecheck{\lambda}(p) := \sqrt{\widecheck{\ell}(p, p)}. \tag{A.5b}
 $$
 
+#TODO: what is the motivation for dual inner product?
+
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -358,10 +360,10 @@ and independent of the choice of the bases.
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_tensor_scalar_product.png' | relative_url }}" alt="A single R² panel with four arrows from the origin: two blue arrows Ue₁ and Ue₂ representing U applied to the orthonormal basis vectors, and two orange arrows Ve₁ and Ve₂ representing V applied to the same basis. Annotations show the per-index inner products m(Ue_j, Ve_j) and their sum equal to (ℓ̌ ⊗ m)(U, V)." loading="lazy">
   <figcaption>How the tensor scalar product (A.22) / (A.25b) really works. Pick an $\ell$-orthonormal frame $(e_j)$ of $\mathcal X$ and apply $U$ and $V$ to each frame vector — this produces two "image frames" $(Ue_j), (Ve_j) \subset \mathcal Y$ (here in $\mathbb R^2$ with $e_1, e_2$ canonical). The scalar product of $U$ and $V$ as elements of $\mathcal L(\mathcal X, \mathcal Y) \cong \widecheck{\mathcal X} \otimes \mathcal Y$ is then the sum of the pointwise $m$-inner products $m(Ue_j, Ve_j)$, evaluated index-by-index. The basis-independence proposition (A.24) says this sum does not depend on which orthonormal frame we picked — a clean way to see why $\widecheck\ell \otimes m$ is intrinsically defined on operators rather than on matrices.</figcaption>
-</figure>
+</figure> -->
 
 Recall from (A.63) that $\mathcal{L}(\widecheck{\mathcal{X}}, \widecheck{\mathcal{Y}}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
 
@@ -644,7 +646,7 @@ $$
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_22tensor_reshape.png' | relative_url }}" alt="A 4×4 heatmap divided by heavy lines into a 2×2 grid of 2×2 blocks. Each cell shows a numeric value and an index label f^{i₁i₂}_{j₁j₂}. The outer block rows and columns are labelled by i₁ and i₂; the inner cell rows and columns by j₁ and j₂." loading="lazy">
   <figcaption>The $(2,2)$-tensor $f \in T^{2,2}(E)$ from Example A.10(1) made tangible. With $\dim E = 2$, the coefficients $f^{i_1 i_2}_{j_1 j_2}$ form a $2 \times 2 \times 2 \times 2$ array of $16$ real numbers — too many dimensions to display directly. The trick used in Example A.10(1) is to read the upper indices $(i_1, i_2)$ as the address of an outer $2 \times 2$ <em>block</em>, and the lower indices $(j_1, j_2)$ as the address of a <em>cell</em> within that block. The four coloured outer blocks (separated by the heavy grid lines) are themselves $2 \times 2$ matrices indexed by $(j_1, j_2)$. This nested layout is exactly the matrix-of-matrices arrangement printed in the original definition.</figcaption>
 </figure>
@@ -657,7 +659,7 @@ $$
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_transpose_duality.png' | relative_url }}" alt="Two-row layout. Top: side-by-side schematic diagrams. Left shows an arrow E → F labelled x̌ ⊗ y; right shows an arrow F̌ → Ě labelled (x̌ ⊗ y)^v ≅ y ⊗ x̌. Bottom: two heatmaps — left, the 2×3 matrix W = y x̌^⊤; right, the 3×2 transposed matrix W^⊤ = x̌ y^⊤." loading="lazy">
   <figcaption>The transpose identity $(\widecheck x \otimes y)^\vee \cong y \otimes \widecheck x$ from (A.55)–(A.58). <em>Top:</em> the original map sends $x \in E$ to $\langle\widecheck x, x\rangle\,y \in F$ along the direction $y$; its transpose sends $\widecheck y \in \widecheck F$ to $\langle y, \widecheck y\rangle\,\widecheck x \in \widecheck E$ — the roles of "vector direction" and "covector measurement" swap between the two spaces. <em>Bottom:</em> the same statement at the matrix level — taking the transpose of $W = y\,\widecheck x^\top \in \mathbb R^{m\times n}$ gives $W^\top = \widecheck x\,y^\top \in \mathbb R^{n \times m}$, with rows and columns simply swapped.</figcaption>
-</figure>
+</figure> -->
 
 We focus on *linear* mappings
 
@@ -690,10 +692,10 @@ $$
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_isomorphism_currying.png' | relative_url }}" alt="Two side-by-side block diagrams. Left: a single arrow from a large box labelled L(E, F) (containing the element W = x̌ ⊗ y) to a smaller box labelled G, with the arrow labelled 𝒜 and W ↦ 𝒜(W). Right: a chain of three boxes — Ě, then L(F, G), then G — connected by two arrows; the first labelled 𝒜 with x̌ ↦, the second labelled eval_y, and the middle box noting y ↦ 𝒜(x̌)(y)." loading="lazy">
   <figcaption>Theorem A.11 in pictures: the same operator $\mathcal A$ admits two equivalent readings. <em>Left:</em> as a single map $\mathcal L(E, F) \to G$, eating an entire linear map $W = \widecheck x \otimes y$ and returning an element of $G$. <em>Right:</em> in curried form, $\mathcal A$ is a map $\widecheck E \to \mathcal L(F, G)$: feed it just the covector part $\widecheck x$, get back another linear map $\mathcal A(\widecheck x) : F \to G$, then evaluate that on the vector part $y$. The defining identity $\mathcal A(\widecheck x \otimes y) = \mathcal A(\widecheck x)(y)$ from (A.62) is precisely the assertion that these two readings produce the same answer, so the two function spaces are isomorphic via uncurrying / currying.</figcaption>
-</figure>
+</figure> -->
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.12 (Mapping $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$)</span></p>
@@ -761,10 +763,10 @@ $$
 (\widecheck{A} \otimes B)(\widecheck{x} \otimes y) = \underbrace{\widecheck{A}\widecheck{x}}_{\in\, \widecheck{E}'} \otimes\, By \in \mathcal{L}(E', F'). \tag{A.70}
 $$
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_tensor_product_operators.png' | relative_url }}" alt="A four-stage horizontal pipeline: rounded boxes labelled E', E, F, F' connected by arrows labelled A (purple), W (red), and B (purple) in turn. Below, the formula (Ǎ ⊗ B)(W) := BWA ∈ L(E', F') and the action on outer products (Ǎ ⊗ B)(x̌ ⊗ y) = (Ǎx̌) ⊗ (By)." loading="lazy">
   <figcaption>The tensor product of operators $\widecheck A \otimes B$ from (A.69) as a four-stage pipeline. Given $W \in \mathcal L(E, F)$ — an arbitrary linear map between the "inner" spaces — the operator $\widecheck A \otimes B$ pre-composes with $A$ on the input side and post-composes with $B$ on the output side, producing $BWA \in \mathcal L(E', F')$. The pipeline view makes clear why $\widecheck A \otimes B$ acts on the entire space of operators $\mathcal L(E, F)$ rather than on individual vectors. On rank-$1$ operators it factors as in (A.70): $(\widecheck A \otimes B)(\widecheck x \otimes y) = (\widecheck A\widecheck x) \otimes (By)$, with $A$ pulling back the covector and $B$ pushing forward the vector.</figcaption>
-</figure>
+</figure> -->
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.14 (Transposed tensor products of Linear Operators)</span></p>
@@ -850,6 +852,8 @@ $$
 \right\rbrace . \tag{1.2d}
 $$
 
+TODO: What is the interpretation of the result of the proposition?
+
 </div>
 
 <div class="accordion" markdown="1">
@@ -865,6 +869,8 @@ $$
 = \frac{1}{2}\lambda(x-u)^2
 + \langle \widecheck{y}, Ax-y\rangle .
 $$
+
+**Note:** we use $\langle \widecheck{y}, Ax-y\rangle$, because it is duality pairing (covector+vector). In ACO we used (vector+vector).
 
 The first variation in the $x$-variable gives, for all $h \in \mathcal{X}$,
 
@@ -888,7 +894,11 @@ $$
 A L^{-1}\widecheck{A}\widecheck{y} = Au-y. \tag{1.2f}
 $$
 
-The operator $A L^{-1}\widecheck{A} : \widecheck{\mathcal{Y}} \to \mathcal{Y}$ is invertible. Indeed, if $\widecheck{y}\ne 0$, then surjectivity of $A$ implies $\widecheck{A}\widecheck{y}\ne 0$, and therefore
+**It is the moment, where whe the strength of the argument increases significantly:** 
+
+> the operator $A L^{-1}\widecheck{A} : \widecheck{\mathcal{Y}} \to \mathcal{Y}$ is invertible. 
+
+Indeed, if $\widecheck{y}\ne 0$, then surjectivity of $A$ implies $\widecheck{A}\widecheck{y}\ne 0$, and therefore
 
 $$
 \langle \widecheck{y}, A L^{-1}\widecheck{A}\widecheck{y}\rangle
@@ -897,7 +907,7 @@ $$
 > 0.
 $$
 
-Thus
+which means for non-zero $\widecheck{y}$ is never in the kernel of $A L^{-1}\widecheck{A}$. Thus
 
 $$
 \widecheck{y}^* = (A L^{-1}\widecheck{A})^{-1}(Au-y),
@@ -933,7 +943,121 @@ A L^{-1}\widecheck{A}\widecheck{y} - Au + y
 \end{aligned}
 $$
 
-The critical point condition is exactly (1.2f). Since the quadratic part is strictly convex by the same positivity argument above, this critical point is the unique minimizer of (1.2d), namely $\widecheck{y}^*$.
+The critical point condition is exactly (1.2f). Since the quadratic part is strictly convex by the same positivity argument above, this critical point is the unique minimizer of (1.2d), namely $\widecheck{y}^\ast$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Note on the Proof I: Will the lagrangian solution give us the optimal solution of the initial problem?</summary>
+
+Introduce the Lagrangian
+
+$$
+\mathscr{L}(x,\widecheck{y})
+= \frac{1}{2}\lambda(x-u)^2
++ \langle \widecheck{y}, Ax-y\rangle .
+$$
+
+In the present problem the Lagrange equations are not merely necessary conditions. Since the objective is strictly convex and the constraint set $\lbrace x:Ax=y\rbrace$ is affine, any feasible $x^\ast$ for which there exists $\widecheck{y}^\ast\in\widecheck{\mathcal Y}$ satisfying
+
+$$L(x^*-u)+\widecheck A\widecheck y^*=0$$
+
+is automatically the unique global minimizer. Indeed, for every feasible $z$, one has $A(z-x^\ast)=0$, and hence
+
+$$
+\begin{aligned}
+\frac12\lambda(z-u)^2
+&=
+\frac12\lambda(x^*-u)^2
++
+\langle L(x^*-u),z-x^*\rangle
++
+\frac12\lambda(z-x^*)^2 \\
+&=
+\frac12\lambda(x^*-u)^2
+-
+\langle \widecheck A\widecheck y^*,z-x^*\rangle
++
+\frac12\lambda(z-x^*)^2 \\
+&=
+\frac12\lambda(x^*-u)^2
+-
+\langle \widecheck y^*,A(z-x^*)\rangle
++
+\frac12\lambda(z-x^*)^2 \\
+&=
+\frac12\lambda(x^*-u)^2
++
+\frac12\lambda(z-x^*)^2.
+\end{aligned}
+$$
+
+Therefore $x^\ast$ is the unique minimizer.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Note on the Proof II: but what is the global optimum of the strictly convex function not in the feasible set? Could not we in this case have multiple minimizers (which are not globally optimal)?</summary>
+
+Yes, the **unconstrained** global optimum may be outside the feasible set. That is exactly why we need a **constrained** optimum.
+
+For your functional
+
+$$f(x)=\frac12\lambda(x-u)^2$$,
+
+the unconstrained global minimizer is clearly $x=u$. If $Au=y$, then $u$ is feasible and the constrained minimizer is just $x^\ast=u$. But if $Au\neq y$, then $u$ is not allowed. The constrained problem is then:
+
+$$\min_{x\in C} f(x), \qquad C:=\lbrace x\in\mathcal X:Ax=y\rbrace.$$
+
+So the question becomes:
+
+> Among the feasible points $x\in C$, which one is closest to $u$?
+
+That is a different minimization problem. Its global optimum is the **projection of $u$ onto the affine subspace $C$**.
+
+---
+
+**Strict convexity still prevents multiple constrained minimizers.**
+
+The feasible set $C=\lbrace x:Ax=y\rbrace$ is affine, hence convex. Since $f$ is strictly convex on $\mathcal X$, its restriction to $C$ is also strictly convex.
+
+So if $x_1,x_2\in C$, $x_1\neq x_2$, and both were constrained minimizers, then their midpoint $\frac{x_1+x_2}{2}\in C$ would also be feasible. But strict convexity gives
+
+$$f\left(\frac{x_1+x_2}{2}\right) < \frac12 f(x_1)+\frac12 f(x_2).$$
+
+If both $x_1$ and $x_2$ had the same minimal value, this would produce an even smaller feasible value, contradiction.
+
+Therefore there can be **at most one constrained minimizer**.
+
+---
+
+**There are no non-global local minimizers either.**
+
+For a convex function on a convex feasible set, any local minimizer is already global. Indeed, suppose $x\in C$ is a local minimizer but not a global minimizer. Then there exists $z\in C$ with $f(z)<f(x)$. Because $C$ is convex, the whole segment $x_t=(1-t)x+tz,\qquad t\in[0,1],$ lies in $C$. By convexity,
+
+$$f(x_t) \leq (1-t)f(x)+tf(z) < f(x)$$
+
+for every $t>0$. For small $t$, $x_t$ is arbitrarily close to $x$, contradicting local minimality.
+
+So in this affine-constrained strictly convex problem, you cannot have “bad” local constrained minimizers.
+
+---
+
+**What the Lagrange multiplier condition says geometrically.**
+
+If $u\notin C$, then the constrained minimizer $x^\ast$ does **not** satisfy $Df(x^\ast)=0.$ That would only happen at $x^\ast=u$. Instead, it satisfies
+
+$$Df(x^*)[h]=0 \qquad \text{for every feasible direction } h\in\ker A.$$
+
+Equivalently, $L(x^\ast-u)$ is orthogonal, in the duality-pairing sense, to all feasible directions. That means $x^\ast-u$ is normal to the affine constraint set.
+
+The Lagrange multiplier equation $L(x^\ast-u)+\widecheck A\widecheck y^\ast=0$ expresses exactly this: the gradient of the objective lies in the normal space generated by the constraint.
+
+So the unconstrained minimizer $u$ may be infeasible, but the constrained minimizer is still unique and global because the feasible set is convex and the objective is strictly convex.
 
 </details>
 </div>
@@ -984,7 +1108,7 @@ $$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.2 (Linear associative memory)</span></p>
 
-Assume that the input vectors $(x_k)_{k \in [n]}$ are linearly independent, and let $U \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be given. Then there exists a unique operator
+Assume that the input vectors $(x_k)\_{k \in [n]}$ are linearly independent, and let $U \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be given. Then there exists a unique operator
 
 $$
 W_{\mathcal{D}} := U - G^{kl}(Lx_l) \otimes (Ux_k - y_k) \in \mathcal{L}(\mathcal{X}, \mathcal{Y}) \tag{1.6}
@@ -996,7 +1120,7 @@ $$
 (\widecheck{\lambda} \otimes \mu)(W-U)
 $$
 
-from $W$ to $U$. If, in addition, the input vectors $(x_k)_{k \in [n]}$ are $\ell$-orthogonal, then
+from $W$ to $U$. If, in addition, the input vectors $(x_k)\_{k \in [n]}$ are $\ell$-orthogonal, then
 
 $$
 W_{\mathcal{D}} = U - (Lx_k) \otimes \frac{Ux_k-y_k}{\lambda(x_k)^2}. \tag{1.7}
@@ -1014,7 +1138,7 @@ $$
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $E = \mathbb{R}^n$ with canonical basis $(\delta_k)_{k \in [n]}$, and define
+Let $E = \mathbb{R}^n$ with canonical basis $(\delta_k)\_{k \in [n]}$, and define
 
 $$
 A \in \mathcal{L}(E,\mathcal{X}), \qquad A\delta_k := x_k,
@@ -1028,7 +1152,7 @@ $$
 WA = Y.
 $$
 
-Since the vectors $(x_k)_{k \in [n]}$ are linearly independent, $A$ is injective. Thus Corollary A.9 applies to the correction $V := W-U$: among all $V$ satisfying
+Since the vectors $(x_k)\_{k \in [n]}$ are linearly independent, $A$ is injective. Thus Corollary A.9 applies to the correction $V := W-U$: among all $V$ satisfying
 
 $$
 VA = Y-UA,
@@ -1096,7 +1220,7 @@ $$
 
 which gives (1.7).
 
-Finally, suppose $\mathcal{D}_n=\mathcal{D}_{n-1}\cup\lbrace(x_n,y_n)\rbrace$ and take $U=W_{\mathcal{D}_{n-1}}$. Then $Ux_k=y_k$ for all $k<n$, so in (1.6) all residuals $Ux_k-y_k$ vanish except the one with $k=n$. Therefore
+Finally, suppose $\mathcal{D}\_n=\mathcal{D}\_{n-1}\cup\lbrace(x_n,y_n)\rbrace$ and take $U=W_{\mathcal{D}\_{n-1}}$. Then $Ux_k=y_k$ for all $k<n$, so in (1.6) all residuals $Ux_k-y_k$ vanish except the one with $k=n$. Therefore
 
 $$
 W_{\mathcal{D}_n}
@@ -1138,5 +1262,1068 @@ The example suggests three lessons:
 * Treating discrete, here binary, data as real-valued data is not a good idea.
 * Almost linearly dependent input vectors cause numerically ill-conditioned evaluations of data-specific inner products. Regularization is needed for the numerical computation, and the predicted outputs are sensitive to spurious numerical errors, as revealed by the varying backgrounds in panel (c).
 * Panel (d) suggests that respecting the discrete nature of the data during inference and learning should improve prediction.
+
+</div>
+
+### 1.3. Two Auto-Associative Settings, Linear Auto-Associative Memory
+
+Section 1.2 treated the case where the *operator itself* is the unknown that is trained on input-output pairs. We now turn to a complementary family of networks: the operator class is *fixed in form*, but the operator depends on a **control vector** $u \in \mathcal{U}$ that is to be learned. The same data-interpolation principle of Proposition 1.1 will still apply, only the parameter space changes.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Affine-in-control network family)</span></p>
+
+The network is the parametric mapping
+
+$$
+F : \mathcal{X} \times \mathcal{U} \to \mathcal{Y}, \qquad F(x,u) = c(x) + G(x)\,u, \tag{1.9a}
+$$
+
+assuming that
+
+$$
+c : \mathcal{X} \to \mathcal{Y} \qquad \text{is continuous,} \tag{1.9b}
+$$
+
+$$
+G : \mathcal{X} \to \mathcal{L}(\mathcal{U}, \mathcal{Y}) \qquad \text{is continuous,} \tag{1.9c}
+$$
+
+$$
+G(x) \in \mathcal{L}(\mathcal{U}, \mathcal{Y}) \qquad \text{is surjective}, \quad \forall x \in \mathcal{X}. \tag{1.9d}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation: control-theoretic view)</span></p>
+
+The structure (1.9) is motivated by the control theory of *nonlinear* systems, where more generally *dynamical* rather than *static* systems like (1.9) -- which depend **affinely** on the control input vector $u$ -- form a (more) tractable class of systems. Three structural observations:
+
+* The network mapping $F$ given by (1.9a) is **nonlinear** in the input $x$. Linearity is reserved only for the dependence on the control $u$; this is precisely what makes the learning problem analytically tractable.
+* The maps $c$ and $G$ may involve **component-wise activation functions**, provided the assumptions (1.9b)-(1.9d) are satisfied. The nonlinearity is therefore not just decorative -- it can absorb the usual elementwise activations one would put inside a layer.
+* The network realized by $F$ is **adaptive**, since both the offset $c(x)$ and the input-to-output coupling $G(x)$ depend on $x$. Different inputs are routed through different linear maps acting on the control.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control-input space)</span></p>
+
+We complement the basic Euclidean set-up of Appendix A.1.1 by the finite-dimensional
+
+$$
+\mathcal{U} \qquad \text{vector space of \textbf{control inputs}}, \tag{1.10}
+$$
+
+supplied with the scalar product and duality mapping
+
+$$
+\nu(u, u') := \langle Nu, u' \rangle, \qquad N \in \mathcal{L}(\mathcal{U}, \widecheck{\mathcal{U}}). \tag{1.11}
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Learning problem with control inputs)</span></p>
+
+Given a training set
+
+$$
+\mathcal{D}_n = \lbrace (x_1, y_1), \ldots, (x_n, y_n) \rbrace \subset \mathcal{X} \times \mathcal{Y}, \tag{1.12}
+$$
+
+we wish to find a single control vector $u_{\mathcal{D}} \in \mathcal{U}$ such that
+
+$$
+F(x_k, u_{\mathcal{D}}) = y_k, \qquad \forall\, k \in [n]. \tag{1.13}
+$$
+
+</div>
+
+Thus the entire dataset is to be explained by **one** control vector $u_{\mathcal{D}} \in \mathcal{U}$ which, plugged into the affine-in-control family (1.9a), reproduces every prescribed output. By assumption (1.9d), the transposed mappings
+
+$$
+\widecheck{G}(x) := \widetilde{G(x)} \in \mathcal{L}\!\left(\widecheck{\mathcal{Y}}, \underbrace{\mathrm{rge}(\widecheck{G}(x))}_{\subseteq\, \widecheck{\mathcal{U}}}\right) = \mathcal{L}\!\left(\widecheck{\mathcal{Y}}, \underbrace{(\ker G(x))^{\perp}}_{\subseteq\, \widecheck{\mathcal{U}}}\right) \tag{1.14}
+$$
+
+are one-to-one -- a duality reflection of $G(x)$ being surjective. To ensure that the per-pattern learning increments are non-interfering, we impose the following structural condition on the training inputs.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Orthogonality condition)</span></p>
+
+$$
+G(x_k)\, N^{-1}\, \widecheck{G}(x_{k'}) = 0, \qquad \forall\, k \neq k' \in [n]. \tag{1.15}
+$$
+
+Equivalently, the subspaces $\mathrm{rge}(\widecheck{G}(x_k))$, $k \in [n]$, are **mutually orthogonal** in $\widecheck{\mathcal{U}}$ with respect to the inner product induced by $N^{-1}$.
+
+</div>
+
+The following result specifies how the control vector $u\_{\mathcal{D}}$ in (1.13) can be iteratively determined by processing in turn each pair of training patterns in $\mathcal{D}_n$. Recall Definition A.3(b).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.5 (Learning algorithm)</span></p>
+
+Assume (1.9) and (1.15). Then $u_{\mathcal{D}}$ solving (1.13) is determined by
+
+$$
+u_{\mathcal{D}} = u_n, \tag{1.16a}
+$$
+
+$$
+u_k = u_{k-1} - G(x_k)^{+} \big( c(x_k) + G(x_k)\, u_{k-1} - y_k \big), \qquad k \in [n], \tag{1.16b}
+$$
+
+$$
+u_0 = 0, \tag{1.16c}
+$$
+
+with the orthogonal right-inverse
+
+$$
+G(x)^{+} = N^{-1}\, \widecheck{G}(x)\, \big( G(x)\, N^{-1}\, \widecheck{G}(x) \big)^{-1}. \tag{1.16d}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the iterates (1.16))</span></p>
+
+The update (1.16b) is exactly the constrained-least-distance correction of Proposition 1.1, transported from the operator setting of Section 1.2 to the control-vector setting. Three things are worth flagging:
+
+* **The residual.** The quantity $c(x_k) + G(x_k)\, u_{k-1} - y_k = F(x_k, u_{k-1}) - y_k$ is the prediction error at step $k$ when the network uses the current control $u_{k-1}$. The iterate moves $u_{k-1}$ in the direction that *kills this residual* on the next forward pass at $x_k$.
+* **The right-inverse $G(x_k)^{+}$.** Surjectivity of $G(x_k)$ (assumption (1.9d)) makes the operator $G(x)\, N^{-1}\, \widecheck{G}(x) \in \mathcal{L}(\widecheck{\mathcal{Y}}, \mathcal{Y})$ invertible, so (1.16d) is well-defined. The map $G(x_k)^{+}$ is exactly the minimum-$\nu$-norm correction that achieves $G(x_k)\,(u_k - u_{k-1}) = -(F(x_k, u_{k-1}) - y_k)$, in direct analogy with (1.2b).
+* **Why orthogonality.** The condition (1.15) guarantees that the correction made at step $k$ lies in a subspace of $\mathcal{U}$ that is $\nu$-orthogonal to all *previous* correction directions. As a result, fitting pattern $k$ does not destroy the fits obtained for patterns $1, \ldots, k-1$, so the single sweep (1.16b) is enough -- no outer loop is required.
+
+</div>
+
+### 1.4. Extension to Latent Spaces
+
+We now generalize the affine-in-control family (1.9) of §1.3 by interposing two **latent spaces** $\mathcal{Z}_1, \mathcal{Z}_2$ between input and output, and by replacing the fixed control vector $u \in \mathcal{U}$ with an input-dependent latent vector $W\psi(x) \in \mathcal{Z}_2$. The free parameter to be learned is now the linear operator $W$ between the two latent spaces, while the nonlinear embeddings $c, \psi, \Phi$ are taken as given.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Latent-space network family)</span></p>
+
+The network is the parametric mapping
+
+$$
+F : \mathcal{X} \to \mathcal{Y}, \qquad F(x) = y_1 + y_2 := c(x) + \Phi(x)\, W\, \psi(x), \tag{1.17a}
+$$
+
+assuming that
+
+$$
+c : \mathcal{X} \to \mathcal{Y} \qquad \text{is continuous,} \tag{1.17b}
+$$
+
+$$
+\psi : \mathcal{X} \to \mathcal{Z}_1 \qquad \text{is continuous,} \tag{1.17c}
+$$
+
+$$
+\Phi : \mathcal{X} \to \mathcal{L}(\mathcal{Z}_2, \mathcal{Y}) \qquad \text{is continuous,} \tag{1.17d}
+$$
+
+$$
+\forall x \in \mathcal{X}, \qquad \Phi(x) \in \mathcal{L}(\mathcal{Z}_2, \mathcal{Y}) \quad \text{is surjective,} \tag{1.17e}
+$$
+
+and, for a given data set (1.12), that the input vectors transformed to the first latent space
+
+$$
+\bigl(\psi(x)\bigr)_{x \in \mathcal{D}_n} \qquad \text{are mutually orthonormal,} \tag{1.17f}
+$$
+
+and that the subsequent transformation to the second latent space
+
+$$
+W \in \mathcal{L}(\mathcal{Z}_1, \mathcal{Z}_2) \tag{1.17g}
+$$
+
+has been determined ('trained') as specified below.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading (1.17a))</span></p>
+
+Note the similarity of the network (1.17a) to (1.9a), with the control input $u$ replaced by a more expressive linear mapping $W$ between two latent spaces $\mathcal{Z}_1, \mathcal{Z}_2$. The input flows through the architecture as
+
+$$
+x \;\xrightarrow{\psi}\; \mathcal{Z}_1 \;\xrightarrow{W}\; \mathcal{Z}_2 \;\xrightarrow{\Phi(x)}\; \mathcal{Y}, \qquad \text{plus the offset } c(x).
+$$
+
+* $\psi$ is a fixed nonlinear **embedding** of the input into a first latent space. The orthonormality condition (1.17f) plays the same role as the orthogonality condition (1.15) of §1.3: it guarantees that the per-pattern updates do not interfere.
+* $W$ is the linear operator to be **learned** from data, playing the role that the control vector $u$ played in (1.9a) -- but now living in the operator space $\mathcal{L}(\mathcal{Z}_1, \mathcal{Z}_2)$, hence carrying many more parameters.
+* $\Phi(x)$ is an input-adaptive linear **read-out** mapping the second latent space back to the output. Its dependence on $x$ is what makes the family strictly more expressive than (1.9a): even though the trainable piece $W$ is linear, it is sandwiched between $x$-dependent maps $\psi$ and $\Phi(x)$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.6 (Learning algorithm)</span></p>
+
+Assume (1.17b)-(1.17f). Then the linear latent-layer operator
+
+$$
+W_{\mathcal{D}} = W_n \tag{1.18}
+$$
+
+that achieves the input-output data correspondence (1.13) for the network mapping (1.17a) is determined by
+
+$$
+W_k = W_{k-1} - \bigl( (L_1 \psi(x_k)) \otimes \Phi(x_k)^{+} \bigr) \bigl( c(x_k) + \Phi(x_k)\, W_{k-1}\, \psi(x_k) - y_k \bigr), \qquad W_0 = 0. \tag{1.19}
+$$
+
+Here $L_1 : \mathcal{Z}_1 \to \widecheck{\mathcal{Z}}_1$ denotes the duality mapping on the first latent space, and $\Phi(x_k)^{+}$ is the orthogonal right-inverse of $\Phi(x_k)$, defined as in (1.16d).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Three theorems, one template)</span></p>
+
+The mathematical similarity of the approaches leading to the increasingly expressive learning rules and corresponding architectures (**Theorems 1.2, 1.5 and 1.6**) is by design. Each theorem instantiates Proposition 1.1 in a different choice of parameter space:
+
+* **Theorem 1.2** -- the unknown is the operator $W \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ itself, regularized toward a reference operator $U$.
+* **Theorem 1.5** -- the unknown is a control vector $u_{\mathcal{D}} \in \mathcal{U}$ entering the network affinely through $F(x,u) = c(x) + G(x)\,u$.
+* **Theorem 1.6** -- the unknown is a latent linear map $W \in \mathcal{L}(\mathcal{Z}_1, \mathcal{Z}_2)$ acting between two embedded spaces, with input-dependent read-out $\Phi(x)$.
+
+In particular, since nonlinearities ('*activation functions*') only act componentwise, *linear analysis and algebra on tensor spaces* suffice to determine the linear layer operators in closed form and to learn them through a sequential process.
+
+The residual $c(x_k) + \Phi(x_k)\, W_{k-1}\, \psi(x_k) - y_k = F\_{W_{k-1}}(x_k) - y_k$ is exactly the prediction error of the current network at pattern $k$. The tensor factor $(L_1 \psi(x_k)) \otimes \Phi(x_k)^{+}$ converts that $\mathcal{Y}$-valued error into a rank-one operator in $\mathcal{L}(\mathcal{Z}_1, \mathcal{Z}_2)$: pull the error back through $\Phi(x_k)^{+}$ to land in $\mathcal{Z}_2$, and tensor it with the dual covector $L_1 \psi(x_k) \in \widecheck{\mathcal{Z}}_1$ so the resulting operator activates only along the direction $\psi(x_k)$.
+
+</div>
+
+The class of networks (1.17) already contains many degrees of freedom that can be additionally learned from data, besides the linear latent-space transformation $W \in \mathcal{L}(\mathcal{Z}_1, \mathcal{Z}_2)$: the nonlinear functions $c, \psi$ and the linear-operator-valued function $\Phi$ that adapts to the input. Using the general approach above, this architecture can be straightforwardly extended to the composition of multiple such transformations -- '**stacking layers**'.
+
+### 1.5. Continuous Linear Associative Memories
+
+In this section we study a linear *continuous-time* version of the class of networks from Section 1.4. The discrete sweep (1.19) over training patterns is replaced by the **flow of a linear ODE**, and the trained operator is no longer determined by an iterative correction but by the closed-form solution of the underlying dynamical system.
+
+#### 1.5.1. Linear Time-Invariant Associative Memories
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Linear time-invariant dynamical system)</span></p>
+
+We consider linear continuous-time *time-invariant* dynamical systems
+
+$$
+\dot{x}(t) = A\, x(t) + f(t), \qquad x(t_0) = x_0. \tag{1.20}
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.7 (Variation of constants formula)</span></p>
+
+The solution of (1.20) is given by
+
+$$
+x(t) = e^{A(t - t_0)}\, x_0 + \int_{t_0}^{t} e^{A(t - \tau)}\, f(\tau)\, d\tau, \tag{1.21}
+$$
+
+where
+
+$$
+\exp_m(A) = e^A := \sum_{k=0}^{\infty} \frac{1}{k!}\, A^k \tag{1.22}
+$$
+
+is the **matrix exponential**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">1.8 (Time-variant systems, transition matrix)</span></p>
+
+The solution formula (1.21) is an important special case of the more general *variation of constants formula*
+
+$$
+x(t) = \Phi(t, t_0)\, x_0 + \int_{t_0}^{t} \Phi(t, \tau)\, f(\tau)\, d\tau \tag{1.23a}
+$$
+
+that applies to time-*variant* systems
+
+$$
+\dot{x}(t) = A(t)\, x(t) + f(t), \qquad x(t_0) = x_0, \tag{1.23b}
+$$
+
+where $\Phi(t, t_0)$ is the **transition matrix** for the *homogeneous* time-variant system
+
+$$
+\dot{x}(t) = A(t)\, x(t), \qquad x(t_0) = x_0. \tag{1.24}
+$$
+
+The transition matrix expresses, in closed form, the solution
+
+$$
+x(t) = \Phi(t, t_0)\, x_0, \qquad t \geq t_0, \tag{1.25}
+$$
+
+of (1.24) that passes through $x_0$ at time $t_0$. It satisfies the *composition rule*
+
+$$
+\Phi(t, t_0) = \Phi(t, t_1)\, \Phi(t_1, t_0), \qquad t \geq t_1 \geq t_0. \tag{1.26}
+$$
+
+Since the computation of $\Phi$ is intractable in almost all cases of interest, we consider numerically the time-invariant case only. The time-variant case is tractable only in a discrete-time fashion, as outlined at the end of Section 1.4. Even in the time-invariant case, the computation of the transition matrix
+
+$$
+\Phi(t, t_0) = \exp_m\!\bigl( A(t - t_0) \bigr) \tag{1.27}
+$$
+
+is numerically involved for large dimensions $d$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">1.9 (Adjoint transformation, commutator)</span></p>
+
+We define the mappings
+
+$$
+\mathrm{ad} : \mathbb{R}^{d \times d} \to \mathcal{L}(\mathbb{R}^{d \times d}, \mathbb{R}^{d \times d}), \qquad \mathrm{ad}_A = \mathrm{ad}(A), \qquad \mathrm{ad}_A^0 := \mathrm{id}_{\mathbb{R}^{d \times d}}, \tag{1.28a}
+$$
+
+$$
+\mathrm{ad}_A(B) = \mathrm{ad}(A)\, B := [A, B], \qquad [A, B] := AB - BA \quad \textbf{(commutator).} \tag{1.28b}
+$$
+
+The actual role of $\mathrm{ad}(\cdot)$ (adjoint representation of a Lie algebra) will be introduced later.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.10 (Matrix exponential: properties)</span></p>
+
+The matrix exponential (1.22) has the following properties. For any $A \in \mathbb{C}^{d \times d}$ (and in particular for any $A \in \mathbb{R}^{d \times d}$):
+
+$$
+e^{0} = I, \tag{1.29a}
+$$
+
+$$
+(e^A)^{\ast} = e^{A^{\ast}}, \qquad A^{\ast} := \overline{A}^{\top} = \overline{A^{\top}}, \tag{1.29b}
+$$
+
+$$
+(e^A)^{-1} = e^{A^{-1}}, \qquad \text{if } A \in \mathrm{GL}(d; \mathbb{C}), \tag{1.29c}
+$$
+
+$$
+e^{(\alpha + \beta) A} = e^{\alpha A}\, e^{\beta A}, \qquad \forall\, \alpha, \beta \in \mathbb{C}, \tag{1.29d}
+$$
+
+$$
+AB = BA \quad \Longrightarrow \quad e^{A + B} = e^{A}\, e^{B} = e^{B}\, e^{A}, \tag{1.29e}
+$$
+
+$$
+e^{B A B^{-1}} = B\, e^{A}\, B^{-1}, \qquad \text{if } B \in \mathrm{GL}(d; \mathbb{C}), \tag{1.29f}
+$$
+
+$$
+\frac{d}{dt}\, e^{tA} = A\, e^{tA} = e^{tA}\, A, \tag{1.29g}
+$$
+
+$$
+e^{A}\, e^{B} = e^{C}, \qquad \text{where} \tag{1.29h}
+$$
+
+$$
+C = A + B + \frac{1}{2}[A, B] + \frac{1}{12}\bigl( [[A, B], A] + [[B, A], B] \bigr) + \cdots \qquad \textbf{(BCH formula)}\ \text{(Baker, Campbell, Hausdorff).} \tag{1.29i}
+$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">1.11 (Two matrix-valued matrix functions)</span></p>
+
+For any $A \in \mathbb{R}^{d \times d}$, one defines
+
+$$
+\varphi(A) := \sum_{k=0}^{\infty} \frac{1}{(k+1)!}\, A^{k}, \tag{1.30a}
+$$
+
+which is the matrix-valued matrix function generated by the analytical function
+
+$$
+\varphi(z) = \frac{e^{z} - 1}{z} = \int_{0}^{1} e^{(1 - t) z}\, dt. \tag{1.30b}
+$$
+
+The series defining $\varphi$ converges for any matrix argument $A$ and in turn defines
+
+$$
+\psi : \mathbb{R}^{d \times d} \times \mathbb{R}^{d \times d} \to \mathbb{R}^{d \times d}, \qquad \psi_{A}(B) := \varphi(\mathrm{ad}_{A})\, B = \sum_{k=0}^{\infty} \frac{1}{(k+1)!}\, \mathrm{ad}_{A}^{k}\, B \tag{1.31a}
+$$
+
+$$
+\phantom{\psi_{A}(B)} = B + \frac{1}{2}[A, B] + \frac{1}{6}\, [A, [A, B]] + \cdots \tag{1.31b}
+$$
+
+This series converges for any $A$.
+
+</div>
+
+The significance of the function (1.30) is due to the special case of a *constant* vector in (1.20),
+
+$$
+f(t) = f, \qquad \forall\, t, \tag{1.32}
+$$
+
+in which case the variation of constants formula (1.21) takes the form
+
+$$
+x(t) = t\, \varphi(t A)\, (f + A x_0) + x_0. \tag{1.33}
+$$
+
+The matrix-valued function $\varphi(\cdot)$ also defines the matrix-valued function (1.31) which in turn yields an expression for the matrix exponential (Proposition 1.13).
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">1.12 (Formula for computing $\varphi(A)$)</span></p>
+
+A simple (yet not efficient) way for evaluating the matrix function $\varphi$ is to embed the argument as a block of a larger matrix and to compute the matrix exponential:
+
+$$
+B = \begin{pmatrix} A & I \\ 0 & 0 \end{pmatrix} \qquad \Longrightarrow \qquad \exp_{m}(B) = \begin{pmatrix} e^{A} & \varphi(A) \\ 0 & I \end{pmatrix}. \tag{1.34}
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">1.13 (Differential of the matrix exponential)</span></p>
+
+One has
+
+$$
+d\!\exp_{m}(A)\, B = \psi_{A}(B)\, \exp_{m}(A). \tag{1.35}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">1.14 (Formula for computing $d\!\exp_{m}(A) B$)</span></p>
+
+Similar to the simple method for evaluating the matrix function $\varphi$ (Remark 1.12), the differential of the matrix exponential can be computed as the matrix exponential of a larger matrix:
+
+$$
+\exp_{m}\!\begin{pmatrix} A & B \\ 0 & A \end{pmatrix} = \begin{pmatrix} e^{A} & d\!\exp_{m}(A)\, B \\ 0 & e^{A} \end{pmatrix}. \tag{1.36}
+$$
+
+</div>
+
+The following result is relevant for computing the inverse $(d\!\exp_{m}(A))^{-1}$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">1.15 (Inverse of $\psi_{A}$)</span></p>
+
+Suppose the eigenvalues $\lambda_j = \lambda_j(\mathrm{ad}_A)$ of the linear operator $\mathrm{ad}_A$ do not take values in the set $\lbrace i 2\pi z : z \in \mathbb{Z} \setminus \lbrace 0 \rbrace \rbrace$. If $\|A\|_2 < \pi$, then one has
+
+$$
+\psi_{A}^{-1}(B) = \sum_{k=0}^{\infty} \frac{B_{k}}{k!}\, \mathrm{ad}_{A}^{k}\, B \tag{1.37a}
+$$
+
+$$
+\phantom{\psi_{A}^{-1}(B)} = B - \frac{1}{2}[A, B] + \frac{1}{12}\, [A, [A, B]] \mp \cdots \tag{1.37b}
+$$
+
+where the **Bernoulli numbers** $B_{k}$ are defined by
+
+$$
+\frac{z}{e^{z} - 1} = 1 - \frac{z}{2} + \frac{z^{2}}{12} - \frac{z^{4}}{720} + \cdots = \sum_{k=0}^{\infty} \frac{B_{k}}{k!}\, z^{k}. \tag{1.37c}
+$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">1.16 (Adjoint equation)</span></p>
+
+Given a linear *homogeneous* dynamical system in $x \in \mathcal{X}$, another linear homogeneous dynamical system in $p \in \widecheck{\mathcal{X}}$ is said to be the *adjoint equation* if, for any initial point, the duality product
+
+$$
+\langle p(t),\, x(t) \rangle_{\widecheck{\mathcal{X}}, \mathcal{X}} \tag{1.38}
+$$
+
+is **constant**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.17 (Adjoint equation)</span></p>
+
+Let $\Phi(T, t_0)$ be the transition matrix for the homogeneous time-variant linear system (1.24) with $t \in [t_0, T]$. Then the solution to the *adjoint equation*
+
+$$
+\dot{p}(t) = -\widetilde{A}(t)\, p(t), \qquad p_{T} := p(T), \tag{1.39a}
+$$
+
+to be integrated *backwards* in time, is given by
+
+$$
+p(t) = \widetilde{\Phi}(T, t)\, p_{T}, \qquad t \in [t_0, T]. \tag{1.39b}
+$$
+
+</div>
+
+Recall also in this context that for time-*invariant* systems, the transition matrix is given by (1.27).
+
+#### 1.5.2. Continuous-Time Linear Associative Memory
+
+Recall once more the set-up of Section A.1.1, the scalar product (A.25) and the induced norm (A.27) on the space $\mathcal{L}(\mathcal{X}, \mathcal{Y})$.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Time-variant linear dynamical system with latent control)</span></p>
+
+We consider the time-variant linear dynamical system
+
+$$
+\dot{x}(t) = A(t)\, x(t) + B(t)\, W(t)\, y(t), \qquad x(0) = x_{0}, \qquad t \in [0, T], \tag{1.40a}
+$$
+
+with input and output spaces $\mathcal{X}, \mathcal{Y}$, a latent space $\mathcal{Z}$ and the operators
+
+$$
+A(t) \in \mathcal{L}(\mathcal{X}, \mathcal{X}), \qquad B(t) \in \mathcal{L}(\mathcal{Z}, \mathcal{X}), \qquad W(t) \in \mathcal{L}(\mathcal{Y}, \mathcal{Z}). \tag{1.40b}
+$$
+
+</div>
+
+Note that the application of any numerical integration scheme yields a network with corresponding parameters indexed by the discrete points of time. By (1.23), the solution is given by
+
+$$
+x(T) = \Phi(T, 0)\, x_{0} + \int_{0}^{T} \Phi(T, t)\, B(t)\, W(t)\, y(t)\, dt. \tag{1.41}
+$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Learning problem -- continuous-time)</span></p>
+
+Given a target state $x_{T}^{\ast}$, we consider the problem to determine the function $t \mapsto W(t)$ such that
+
+$$
+x(T) = x_{T}^{\ast}. \tag{1.42}
+$$
+
+Since there are many trajectories $t \mapsto x(t)$ which achieve this, we adopt the strategy from the previous sections and look for a minimal-norm solution in the space
+
+$$
+L^{2}\bigl( 0, T;\, \mathcal{L}(\mathcal{Y}, \mathcal{Z}) \bigr), \tag{1.43}
+$$
+
+equipped with the scalar product
+
+$$
+\langle U, V \rangle_{[0, T]} := \int_{0}^{T} (\widetilde{\ell} \otimes m)\bigl( U(t),\, V(t) \bigr)\, dt \tag{1.44a}
+$$
+
+and the corresponding duality mapping
+
+$$
+\mathcal{J} := U(\cdot) \;\mapsto\; (L^{-1} \otimes M)\bigl( U(\cdot) \bigr). \tag{1.44b}
+$$
+
+</div>
+
+By (1.41), any operator-valued function $U(\cdot)$ achieving (1.42) has to satisfy the equation
+
+$$
+\int_{0}^{T} \Phi(T, t)\, B(t)\, U(t)\, y(t)\, dt = x_{T}^{\ast} - \Phi(T, 0)\, x_{0}. \tag{1.45}
+$$
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.18 (Solution to the learning problem)</span></p>
+
+Suppose that the operator
+
+$$
+\int_{0}^{T} \lambda\bigl( y(t) \bigr)^{2}\, \Phi(T, t)\, B(t)\, M^{-1}\, \widetilde{B}(t)\, \widetilde{\Phi}(T, t)\, dt \tag{1.46}
+$$
+
+is invertible and that $p_{T} \in \mathcal{X}$ solves the equation
+
+$$
+\left( \int_{0}^{T} \lambda\bigl( y(t) \bigr)^{2}\, \Phi(T, t)\, B(t)\, M^{-1}\, \widetilde{B}(t)\, \widetilde{\Phi}(T, t)\, dt \right) p_{T} = x_{T}^{\ast} - \Phi(T, 0)\, x_{0}. \tag{1.47}
+$$
+
+Then the linear operator-valued function $t \mapsto W(t)$ of minimal norm $\|W\|_{[0, T]}$ mapping $x_0$ to $x_T^{\ast}$ via (1.41) is given by
+
+$$
+W(t) = \bigl( L\, y(t) \bigr) \otimes \bigl( M^{-1}\, \widetilde{B}(t)\, p(t) \bigr), \tag{1.48}
+$$
+
+where $p(\cdot)$ solves the adjoint problem
+
+$$
+\dot{p}(t) = -\widetilde{A}(t)\, p(t), \qquad p(T) = p_{T}. \tag{1.49}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">1.19 (Time-invariant systems)</span></p>
+
+For the simpler case of a time-*invariant* system matrix $A$,
+
+$$
+\dot{x}(t) = A\, x(t) + B(t)\, W(t)\, y(t), \tag{1.50}
+$$
+
+the result of Theorem 1.18 directly applies without any change, except for the transition matrix corresponding to $A$ which then takes the simpler form (1.27).
+
+On the other hand, even if both $B(t) = B$ and $y(t) = y$ were constant too, the function $W(\cdot)$ would not be constant due to the solution $p(\cdot)$ of the adjoint equation (1.48), which is the **continuous-time analogue of gradient backpropagation**.
+
+</div>
+
+## 2. Geometry on Smooth Manifolds
+
+### 2.1. Geometry of a Manifold
+
+We compare a Euclidean space, represented by $\mathbb{R}^N$, with a smooth manifold $\mathcal{M}$. Like any Euclidean space, $\mathbb{R}^N$ is equipped *per point* with three pieces of geometric structure that we shall now isolate, so that — in the rest of this chapter — we can generalize them, one at a time, to the manifold setting.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(The three Euclidean structures on $\mathbb{R}^N$)</span></p>
+
+For every point $p \in \mathbb{R}^N$:
+
+- **with identification** of the tangent space at $p$ with the ambient vector space itself,
+
+$$
+T_{p}\mathbb{R}^{N} \;\cong\; \mathbb{R}^{N}, \tag{2.1}
+$$
+
+- **with the standard inner product** on the tangent space,
+
+$$
+T_{p}\mathbb{R}^{N} \ni v, w \;\mapsto\; v^{\top} w \;\in\; \mathbb{R}, \qquad \forall\, v, w \in T_{p}\mathbb{R}^{N}, \tag{2.2}
+$$
+
+- **and with length** measured along the straight-line path
+
+$$
+\gamma_{a, b}(t) \;=\; a + t\,(b - a), \qquad t \in [0, 1], \qquad a, b \in \mathbb{R}^{N}, \tag{2.3}
+$$
+
+connecting any two points $a, b \in \mathbb{R}^{N}$.
+
+</div>
+
+Our goal is to generalize this concrete scenario by incorporating more generic geometry, in a gradual manner. To this end — and to organise the plan of this chapter — it will be helpful to consider the differences (and similarities) between geometric quantities in $\mathbb{R}^N$ and on $\mathcal{M}$, gradually.
+
+To keep the discussion concrete, two running examples will accompany us throughout the chapter: one *flat* and Abelian, the other *curved* and non-Abelian.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two running Lie groups)</span></p>
+
+We consider the two Lie groups
+
+- $\mathbb{R}^{N}$ with the *additive group* structure, and
+- $\mathrm{GL}^{+}(N)$ of *invertible matrices of order $N$ with positive determinant*.
+
+Like $\mathbb{R}^{N}$, the matrix Lie group $\mathrm{GL}^{+}(N)$ is connected and forms its own *embedded* manifold inside $\mathbb{R}^{N \times N}$, but unlike $\mathbb{R}^{N}$, the group $\mathrm{GL}^{+}(N)$ is **non-Abelian**.
+
+</div>
+
+We now make precise what we mean by *(Riemannian) metric* on a smooth manifold. The basic idea is that, since the tangent spaces $T_{p}\mathcal{M}$ at different points $p \in \mathcal{M}$ are *a priori* unrelated vector spaces, we must equip each one of them with its own inner product — and do so *smoothly* in $p$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.1 (Riemannian metric, Riemannian manifold)</span></p>
+
+A **(Riemannian) metric** on a smooth manifold $\mathcal{M}$ assigns to each point $p \in \mathcal{M}$ a (positive definite) symmetric bilinear form
+
+$$
+g_{p} : T_{p}\mathcal{M} \times T_{p}\mathcal{M} \to \mathbb{R}, \qquad g_{p}(v, w) := \langle v, w\rangle_{T_{p}\mathcal{M}}, \qquad \forall\, v, w \in T_{p}\mathcal{M}, \tag{2.4}
+$$
+
+equivalently identified with a homomorphism $g_{p} \in \mathcal{L}\bigl(T_{p}\mathcal{M},\, T_{p}^{\ast}\mathcal{M}\bigr)$. Therefore, every (Riemannian) metric induces a norm
+
+$$
+\|v\|_{T_{p}\mathcal{M}} := \sqrt{g_{p}(v, v)}, \qquad \forall\, v \in T_{p}\mathcal{M}, \tag{2.5}
+$$
+
+such that the mapping
+
+$$
+G : \mathcal{M} \ni p \;\mapsto\; g_{p} \;\in\; \mathcal{L}\bigl(T\mathcal{M},\, T^{\ast}\mathcal{M}\bigr) \tag{2.6}
+$$
+
+is a homomorphism of vector bundles. The pair $(\mathcal{M}, g)$ is then called a **Riemannian manifold**, and $g$ is its **(Riemannian) metric (tensor)**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the three layers of Definition 2.1)</span></p>
+
+Definition 2.1 packs three layers of structure into a single object — it is worth peeling them apart:
+
+- **Pointwise layer.** At each fixed $p \in \mathcal{M}$, $g_{p}$ is just a scalar product on the finite-dimensional vector space $T_{p}\mathcal{M}$, in exactly the sense of Appendix A.1. So locally, *every* tangent space looks like the Euclidean set-up we have been working with so far.
+- **Algebraic layer.** Via the duality mapping construction (cf. (A.2)), the bilinear form $g_{p}$ is the same datum as the linear isomorphism $T_{p}\mathcal{M} \to T_{p}^{\ast}\mathcal{M}$ — this is precisely what the codomain $\mathcal{L}(T_{p}\mathcal{M}, T_{p}^{\ast}\mathcal{M})$ in (2.6) is recording.
+- **Global / bundle layer.** Letting $p$ vary, $G$ in (2.6) is a section of the bundle of bilinear forms over $\mathcal{M}$. The qualifier *vector-bundle homomorphism* enforces that $g_{p}$ varies *smoothly* with $p$ — without this, one could choose a wildly discontinuous metric at every point and the resulting geometry would be useless.
+
+</div>
+
+We now apply Definition 2.1 to our first running example, the Euclidean space $\mathbb{R}^N$ regarded as a Riemannian manifold.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^{N}$ as Riemannian manifold)</span></p>
+
+With respect to the geometry of $\mathbb{R}^{N}$ as a Riemannian manifold, the metric is
+
+$$
+g_{p}(v, w) \;:=\; \langle v, w\rangle_{T_{p}\mathbb{R}^{N}} \;=\; v^{\top} w, \qquad \forall\, v, w \in T_{p}\mathbb{R}^{N} \cong \mathbb{R}^{N}, \tag{2.7}
+$$
+
+i.e. the standard inner product (2.2) is the *same* at every point $p$ under the canonical identification (2.1). Informally, $G \in \mathcal{L}(T\mathbb{R}^{N}, T^{\ast}\mathbb{R}^{N})$ is constant along $\mathbb{R}^{N}$ — the curvature carried by $G$ vanishes, which is what makes $\mathbb{R}^{N}$ *flat* among Riemannian manifolds.
+
+</div>
+
+Having fixed the *pointwise* geometric data via $g$, we now bring in the second protagonist: **Lie groups acting on $\mathcal{M}$**. The reason is that, in the running examples, the manifolds $\mathbb{R}^{N}$ and $\mathrm{GL}^{+}(N)$ each act on themselves (by translation and by left-multiplication respectively), and combining the two will yield the rigid-motion group of $\mathbb{R}^{N}$. We single out the conditions on a smooth action $\Phi : G \times \mathcal{M} \to \mathcal{M}$, $\Phi(g, x) =: g \cdot x$, which together guarantee that the quotient $\mathcal{M} / G$ is again a manifold.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Free, transitive, and proper actions)</span></p>
+
+Let $G$ be a Lie group acting smoothly on a smooth manifold $\mathcal{M}$. The action is called:
+
+- **free**, if the *stabilizer (isotropy) group*
+
+$$
+G_{x} := \lbrace g \in G : g \cdot x = x \rbrace = \lbrace e \rbrace, \qquad \forall\, x \in \mathcal{M}, \tag{2.10}
+$$
+
+is *trivial* at every point, i.e. $G$ acts without fixed points. Informally: every element $g \in G \setminus \lbrace e \rbrace$ moves every point of $\mathcal{M}$.
+
+- **transitive**, if any two points of $\mathcal{M}$ can be connected by some $g \in G$, equivalently, if $\mathcal{M}$ consists of a single *orbit*
+
+$$
+G \cdot x := \lbrace g \cdot x : g \in G \rbrace \subset \mathcal{M} \qquad (\text{orbit of } x \text{ under } G), \tag{2.11}
+$$
+
+namely $G \cdot x = \mathcal{M}$ for some (equivalently every) $x \in \mathcal{M}$.
+
+- **proper**, if each orbit $G \cdot x$ is a closed subset of $\mathcal{M}$ and each isotropy group $G_{x}$ is compact. Equivalently, the map $G \times \mathcal{M} \ni (g, x) \mapsto (g \cdot x, x) \in \mathcal{M} \times \mathcal{M}$ is a proper map of topological spaces.
+
+</div>
+
+One associates with the action $\Phi$ of $G$ on $\mathcal{M}$ the
+
+$$
+\mathcal{M} / G, \qquad (\text{orbit space}) \tag{2.12}
+$$
+
+that is, the set of orbits $\lbrace G \cdot x : x \in \mathcal{M} \rbrace$ equipped with the quotient topology. In general, $\mathcal{M} / G$ may be a poorly behaved topological space; the next theorem identifies the right hypotheses to guarantee that it is again a smooth manifold.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.1 (Quotient Manifold Theorem)</span></p>
+
+Suppose a Lie group $G$ acts smoothly, freely and properly on a smooth manifold $\mathcal{M}$. Then the orbit space $\mathcal{M} / G$ is a topological manifold of dimension $\dim \mathcal{M} - \dim G$ and has a unique smooth structure with respect to which the
+
+$$
+\pi : \mathcal{M} \to \mathcal{M} / G \qquad (\text{quotient map, canonical projection}) \tag{2.13}
+$$
+
+is a smooth submersion.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the three hypotheses of Theorem 2.1?)</span></p>
+
+The hypotheses on the action $\Phi$ of $G$ on $\mathcal{M}$ play three complementary roles:
+
+- **smooth** makes the action compatible with the differentiable structure on both factors, so that any quotient structure inherits *some* differential geometry rather than only a topology;
+- **free** prevents non-trivial isotropies, so that distinct orbits do not collapse at fixed points — this is what makes the orbit space *Hausdorff* and ultimately a manifold;
+- **proper** is the global control: it ensures orbits do not "accumulate" in $\mathcal{M}$ (each orbit is closed) and that isotropies do not blow up to non-compact subgroups, so that $\mathcal{M} / G$ remains *second countable* and locally Euclidean.
+
+The dimension formula $\dim(\mathcal{M} / G) = \dim \mathcal{M} - \dim G$ is the manifold analogue of the orbit-stabilizer relation in finite group theory.
+
+</div>
+
+We next define an operation which constructs a new Lie group from two given Lie groups. Recall that a Lie group is both a group and a smooth manifold; the construction we now introduce is what turns the running pair $\bigl(\mathbb{R}^{N}, \mathrm{GL}^{+}(N)\bigr)$ — together with the natural matrix-on-vector action — into a single rigid-motion group.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.2 (Semidirect product)</span></p>
+
+Let $H$ and $N$ be Lie groups and let $\theta : H \times N \to N$ be a smooth left action of $H$ on $N$ by automorphisms — that is, for each fixed $h \in H$, the map $\theta_{h} : N \to N$ is a Lie-group automorphism of $N$. Then the **semidirect product** of $H$ and $N$ is the Lie group
+
+$$
+N \rtimes_{\theta} H, \qquad (\text{semidirect product}) \tag{2.14}
+$$
+
+defined as the smooth manifold $N \times H$ endowed with the product (group operation)
+
+$$
+(n, h) \cdot (n', h') := \bigl(n \cdot \theta_{h}(n'),\; h \cdot h'\bigr). \tag{2.15}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the semidirect product formula)</span></p>
+
+The formula (2.15) splits cleanly into two parts:
+
+- **The $H$-coordinate** multiplies independently of $N$: $(h, h') \mapsto h \cdot h'$. So $H$ embeds as a closed subgroup of $N \rtimes_{\theta} H$ via $h \mapsto (e_{N}, h)$.
+- **The $N$-coordinate** would have been $n \cdot n'$ in the direct product, but in the *semi*-direct product it is *twisted* by $\theta_{h}$ acting on $n'$. Setting $\theta \equiv \mathrm{id}_{N}$ recovers the direct product $N \times H$ as a special case — the prefix "semi" measures precisely the failure of $H$ to commute with $N$.
+
+This twisting is exactly what we need to encode that, when a rotation $h$ is performed *after* a translation $n'$, the translation looks rotated.[^auto]
+
+[^auto]: A map $\varphi$ between two groups $H, K$ is called an **isomorphism** (resp. **automorphism** if $H = K$) if it is a bijective group homomorphism.
+
+</div>
+
+We apply this operation to the two running Lie groups and obtain a *single* Lie group $G$ that acts on $\mathcal{M} = \mathbb{R}^{N}$ by rigid motions. This will serve as a simple yet representative scenario which exemplifies generic geometric objects on $\mathcal{M}$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Special Euclidean group $E^{+}(N)$)</span></p>
+
+We set $H := \mathrm{SO}(N)$ and $N := \mathbb{R}^{N}$. The group $H$ acts on $N$ by automorphisms in the obvious way (a rotation matrix times a vector). Applying Definition 2.2 yields the
+
+$$
+E^{+}(N) := \mathbb{R}^{N} \rtimes_{\theta} \mathrm{SO}(N), \qquad (\text{special Euclidean group}) \tag{2.16}
+$$
+
+which represents all *rigid motions* of $\mathbb{R}^{N}$ (translations composed with proper rotations). The multiplication is given by
+
+$$
+(b, A) \cdot (b', A') := \bigl(b + A\, b',\; A\, A'\bigr), \tag{2.17}
+$$
+
+and the action of $G = E^{+}(N)$ on $\mathcal{M} = \mathbb{R}^{N}$ is given as
+
+$$
+\Phi_{(b, A)}(p) := A\, p + b, \qquad b \in \mathbb{R}^{N},\; A \in \mathrm{SO}(N),\; p \in \mathbb{R}^{N}. \tag{2.18}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading $E^{+}(N)$ against the three conditions)</span></p>
+
+Why is $E^{+}(N)$ a useful test case? Because, against the three properties of Definition above:
+
+- the action (2.18) of $E^{+}(N)$ on $\mathbb{R}^{N}$ is **transitive** — any point can be sent to any other by a translation alone, so $G \cdot p = \mathbb{R}^{N}$;
+- it is **not free**, because for any non-zero rotation $A \in \mathrm{SO}(N)$ with $A p + b = p$ (e.g. fixing the axis of $A$) the stabilizer $G_{p}$ is non-trivial;
+- but it is **proper**, since $\mathrm{SO}(N)$ is compact and translations are proper.
+
+Hence $\mathbb{R}^{N} \cong E^{+}(N) / \mathrm{SO}(N)$ — exhibiting $\mathbb{R}^{N}$ as a *homogeneous space* under the rigid-motion group, the simplest setting in which the Quotient Manifold Theorem 2.1 applies to the stabilizer of a point.
+
+</div>
+
+We now repackage the special Euclidean group — denoted from here on by $\mathrm{SE}(N) \equiv E^{+}(N)$ — as a closed matrix Lie group sitting inside $\mathrm{GL}^{+}(N + 1)$. The trick is to identify a point $x \in \mathbb{R}^{N}$ with its *homogeneous coordinates*
+
+$$
+x \;\mapsto\; \binom{x}{1} \;\in\; \mathbb{R}^{N} \times \lbrace 1 \rbrace \;\subset\; \mathbb{R}^{N + 1},
+$$
+
+which trades the *affine* action $p \mapsto A p + b$ on $\mathbb{R}^{N}$ for an honest *linear* representation on the hyperplane $\lbrace x_{N+1} = 1 \rbrace$ — i.e. a chart of projective space $\mathbb{RP}^{N}$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Matrix representation of $\mathrm{SE}(N)$)</span></p>
+
+Under the homogeneous-coordinate identification above, one has the linear representation
+
+$$
+\mathrm{SE}(N) \;\cong\; \left\lbrace
+\begin{pmatrix} A & b \\ 0 & 1 \end{pmatrix}
+\;:\; A \in \mathrm{SO}(N),\; b \in \mathbb{R}^{N}
+\right\rbrace, \tag{2.19}
+$$
+
+with the multiplication law (2.17) reproduced by ordinary matrix multiplication of these block matrices.
+
+</div>
+
+We specialize to $N = 3$, where $\mathrm{SE}(3) = G$ is the rigid-motion group of physical space. Its Lie algebra $\mathfrak{se}(3)$ — the tangent space at the identity, which we shall meet formally in the next section — has the analogous block description
+
+$$
+\mathfrak{se}(3) \;=\; \left\lbrace
+\begin{pmatrix} \widehat{\omega} & v \\ 0 & 0 \end{pmatrix}
+\;:\; \omega, v \in \mathbb{R}^{3}
+\right\rbrace, \tag{2.20}
+$$
+
+where the **hat map** $\widehat{(\cdot)} : \mathbb{R}^{3} \to \mathfrak{so}(3)$ sends a vector to a skew-symmetric matrix:
+
+$$
+\widehat{\omega} \;=\;
+\begin{pmatrix}
+0 & -\omega_{3} & \omega_{2} \\
+\omega_{3} & 0 & -\omega_{1} \\
+-\omega_{2} & \omega_{1} & 0
+\end{pmatrix}, \qquad \omega \in \mathbb{R}^{3}. \tag{2.21}
+$$
+
+The hat map is characterized intrinsically by the identity
+
+$$
+\widehat{\omega}\, v \;=\; \omega \times v, \qquad \forall\, v \in \mathbb{R}^{3}, \quad (\text{cross product in } \mathbb{R}^{3}) \tag{2.22}
+$$
+
+so that $\mathfrak{se}(3) \cong \mathbb{R}^{6}$ canonically via $(\omega, v) \leftrightarrow \bigl(\begin{smallmatrix}\widehat{\omega} & v \\ 0 & 0\end{smallmatrix}\bigr)$ — three parameters $\omega$ for the rotational part, three for the translational part $v$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Rodrigues' formula)</span></p>
+
+The rotation of $\mathbb{R}^{3}$ by an angle $\alpha \in [0, 2\pi)$ around a unit axis $n \in S^{2} \subset \mathbb{R}^{3}$ is given by
+
+$$
+\begin{aligned}
+\exp(\alpha\, \widehat{n}) &\;=\; \cos(\alpha)\, I_{3} \;+\; \sin(\alpha)\, \widehat{n} \;+\; \bigl(1 - \cos(\alpha)\bigr)\, n\, n^{\top} &&\text{(2.23a)} \\
+&\;=\; I_{3} \;+\; \sin(\alpha)\, \widehat{n} \;+\; \bigl(1 - \cos(\alpha)\bigr)\, \widehat{n}^{\,2}, \qquad (\text{Rodrigues' formula}) &&\text{(2.23b)}
+\end{aligned}
+$$
+
+where the unit axis and angle are recovered from a general $\omega \in \mathbb{R}^{3}$ via
+
+$$
+n \;=\; \omega \,/\, \lVert \omega \rVert \;\in\; S^{2}, \qquad \alpha \;=\; \lVert \omega \rVert. \tag{2.24}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why two forms of (2.23)?)</span></p>
+
+Forms (2.23a) and (2.23b) are equivalent via the identity $n n^{\top} = I_{3} + \widehat{n}^{\,2}$ valid for unit $n$ (a direct computation using $\widehat{n}\,v = n \times v$ and the BAC-CAB rule). The two presentations emphasize different geometries:
+
+- **(2.23a)** decomposes a rotation into its action on the rotation axis (the $n n^{\top}$ projector fixes vectors along $n$) and on the orthogonal plane (rotated by $\cos\alpha\, I + \sin\alpha\, \widehat{n}$).
+- **(2.23b)** is the Taylor-series form obtained by exponentiating $\alpha\,\widehat{n}$ and using $\widehat{n}^{\,3} = -\widehat{n}$ to collapse the series into three terms. This is the form that generalises cleanly to other matrix Lie groups.
+
+</div>
+
+With $\mathrm{SE}(N)$ realised concretely, we now have all the language we need to encode the picture *"$\mathbb{R}^{N}$ together with the action by rigid motions"* in a single intrinsic definition.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.3 (Homogeneous space, $G$-space)</span></p>
+
+A smooth manifold $\mathcal{M}$ endowed with a *transitive* smooth action $\Phi$ by a Lie group $G$ is called a **homogeneous space**, or a $G$**-space**. In particular, $\mathbb{R}^{N}$ is a homogeneous $\mathrm{SE}(N)$-space.
+
+</div>
+
+This is a specific instance of the following general situation, characterized by the next two theorems. We first introduce some further notation around **cosets**, which will let us describe $\mathcal{M}$ as a quotient $G / H$ in terms of an isotropy subgroup.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Left and right cosets)</span></p>
+
+Let $H \subseteq G$ be a Lie subgroup. Fix $g \in G$ and consider the
+
+$$
+g H \;:=\; \lbrace g \cdot h : h \in H \rbrace \;\subseteq\; G, \qquad (\text{left coset of } H \text{ in } G) \tag{2.25}
+$$
+
+$$
+H g \;:=\; \lbrace h \cdot g : h \in H \rbrace \;\subseteq\; G, \qquad (\text{right coset of } H \text{ in } G) \tag{2.26}
+$$
+
+Two left (resp. right) cosets are either disjoint or coincide. In particular, the cosets *partition* $G$.
+
+</div>
+
+We write
+
+$$
+G / H \;:=\; \lbrace g H : g \in G \rbrace \tag{2.27}
+$$
+
+for the **left coset space**, i.e. the set of left cosets of $H$ in $G$, equipped with the quotient topology induced by the canonical projection $g \mapsto g H$. When $H$ is *closed* in $G$, the next theorem upgrades this set-theoretic quotient to a bona fide smooth manifold.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.2 (Homogeneous Space Construction Theorem)</span></p>
+
+Let $H \subseteq G$ be a *closed* Lie subgroup of $G$. The left coset space $G / H$ is a topological manifold of dimension $\dim G - \dim H$, and has a unique smooth structure such that the
+
+$$
+\pi : G \to G / H \qquad (\text{canonical projection, quotient map}) \tag{2.28}
+$$
+
+is a smooth submersion. The left action of $G$ on $G / H$ given by
+
+$$
+g \cdot g' H \;:=\; (g g') H, \qquad g, g' \in G \qquad (\text{natural action}) \tag{2.29}
+$$
+
+turns $G / H$ into a homogeneous $G$-space.
+
+</div>
+
+The following theorem provides the converse: whenever one has a smooth manifold $\mathcal{M}$ with a transitive $G$-action, then $\mathcal{M}$ — regarded as a homogeneous $G$-space — can be **equivariantly** identified with a coset space of the form (2.28), namely $G / G_{x}$ where $G_{x}$ is the isotropy group of any chosen base point $x$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.3 (Homogeneous Space Characterization Theorem)</span></p>
+
+Let $G$ be a Lie group, let $\mathcal{M}$ be a homogeneous $G$-space, and let $x \in \mathcal{M}$ be any point. The isotropy group $G_{x} \subseteq G$ from (2.10) is a closed subgroup of $G$ and the map
+
+$$
+F : G / G_{x} \to \mathcal{M}, \qquad F(g G_{x}) := g \cdot x, \qquad g \in G, \tag{2.30a}
+$$
+
+is an *equivariant* diffeomorphism, i.e.
+
+$$
+F\bigl( g \cdot (g_{0} G_{x}) \bigr) \;=\; g \cdot F(g_{0} G_{x}), \qquad g, g_{0} \in G. \tag{2.30b}
+$$
+
+</div>
+
+In view of the last statement, we recall the following general definition.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.4 (Equivariant maps, intertwining maps)</span></p>
+
+Let $\mathcal{M}, \mathcal{N}$ be smooth manifolds, each carrying a smooth action $\Phi$ of a Lie group $G$. A map $F : \mathcal{M} \to \mathcal{N}$ is said to be **equivariant** with respect to the given $G$-actions if
+
+$$
+F\bigl( \Phi_{g}(x) \bigr) \;=\; \Phi_{g}\bigl( F(x) \bigr), \qquad g \in G,\; x \in \mathcal{M}, \qquad (\text{for left actions}) \tag{2.31a}
+$$
+
+$$
+F\bigl( \Phi_{g}(x) \bigr) \;=\; \Phi_{g^{-1}}\bigl( F(x) \bigr), \qquad g \in G,\; x \in \mathcal{M}, \qquad (\text{for right actions}) \tag{2.31b}
+$$
+
+Either equation says that the diagram
+
+$$
+\begin{array}{ccc}
+\mathcal{M} & \xrightarrow{\;\;\Phi_{g}\;\;} & \mathcal{M} \\
+\phantom{F}\Big\downarrow F & & \Big\downarrow F\phantom{F} \\
+\mathcal{N} & \xrightarrow{\;\;\Phi_{g}\;\;} & \mathcal{N}
+\end{array}
+$$
+
+commutes. One also says that $F$ **intertwines** $\Phi$ on $\mathcal{M}$ and $\mathcal{N}$.
+
+</div>
+
+In the situation of Theorem 2.3, the roles of $\mathcal{M}, \mathcal{N}$ in Definition 2.4 are played by $G / G_{x}$ and $\mathcal{M}$ respectively, and the equivariance condition (2.30b) is exactly (2.31a) — the natural action (2.29) on the source corresponds to the original action $\Phi$ on the target.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How Theorems 2.2 and 2.3 fit together)</span></p>
+
+The two theorems are converses of each other and together yield a *bijection* between two perspectives on a homogeneous space:
+
+- **Theorem 2.2 (construction):** start with the data of a closed subgroup $H \subseteq G$, and *produce* a homogeneous $G$-space $G / H$.
+- **Theorem 2.3 (characterization):** start with an *abstract* homogeneous $G$-space $\mathcal{M}$, pick a base point $x \in \mathcal{M}$, and *recover* the closed subgroup $G_{x} \subseteq G$ such that $\mathcal{M} \cong G / G_{x}$ equivariantly.
+
+The choice of base point $x$ in Theorem 2.3 is harmless: two different choices give *conjugate* isotropy subgroups (since $G_{g \cdot x} = g G_{x} g^{-1}$), so the resulting coset space is the same up to a canonical diffeomorphism.
+
+</div>
+
+We return to the running example (2.16). For $\mathcal{M} = \mathbb{R}^{N}$ and $G = \mathrm{SE}(N)$, we have to identify the isotropy $G_{x}$ in order to apply Theorem 2.3. Choosing $x = 0$ as the base point of $\mathbb{R}^{N}$, the elements $(b, A) \in \mathrm{SE}(N)$ fixing the origin are exactly those with $b = 0$, so
+
+$$
+G_{0} \;=\; \mathrm{SO}(N) \;\subset\; \mathrm{SE}(N). \tag{2.32}
+$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^{N} \cong \mathrm{SE}(N)/\mathrm{SO}(N)$ as a homogeneous $G$-space)</span></p>
+
+We unfold the map $F$ of Theorem 2.3 in this case. With $x_{0} := 0 \in \mathbb{R}^{N} = \mathcal{M}$, $g_{0} := (b_{0}, A_{0}) \in \mathrm{SE}(N)$ and $h := (0, A') \in \mathrm{SO}(N) = G_{0}$, the map (2.30a) becomes
+
+$$
+F\bigl( g_{0}\, G_{0} \bigr) \;=\; \Phi_{g_{0}}(x_{0}) \;=\; A_{0} \cdot 0 + b_{0} \;=\; b_{0}, \tag{2.33a}
+$$
+
+so each coset $(b_{0}, A_{0})\, \mathrm{SO}(N)$ is uniquely labelled by its translation part $b_{0} \in \mathbb{R}^{N}$ — exactly what Theorem 2.3 predicts. Equivariance (2.30b) reduces here to the direct computation
+
+$$
+F\bigl( g \cdot g_{0} G_{0} \bigr) \;=\; \Phi_{g}\bigl( F(g_{0} G_{0}) \bigr) \;=\; \Phi_{(b, A)}(b_{0}) \;=\; b + A\, b_{0}, \qquad g = (b, A) \in \mathrm{SE}(N), \tag{2.33b}
+$$
+
+which is consistent both with the rigid-motion action (2.18) on $\mathbb{R}^{N}$ and with the group law (2.17) on $\mathrm{SE}(N)$.
 
 </div>
