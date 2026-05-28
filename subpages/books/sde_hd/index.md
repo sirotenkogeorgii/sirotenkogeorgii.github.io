@@ -470,7 +470,7 @@ Note that **indistinguishability is strictly stronger**: it requires $\mathbb{P}
 Take $(\Omega, \mathcal{A}, \mathbb{P}) := ([0,1], \mathcal{B}([0,1]), \mathrm{Leb})$ and let $T(\omega) := \omega$, so $T \sim \mathrm{Unif}([0,1])$. On $I := [0,1]$ define
 
 $$
-X_t(\omega) := 0, \qquad Y_t(\omega) := \mathbf{1}_{\{t \,=\, T(\omega)\}} = \mathbf{1}_{\{t \,=\, \omega\}}.
+X_t(\omega) := 0, \qquad Y_t(\omega) := \mathbf{1}_{\lbrace t \,=\, T(\omega)\rbrace} = \mathbf{1}_{\lbrace t \,=\, \omega\rbrace}.
 $$
 
 * **Versions** *(pointwise in $t$).* For every fixed $t \in I$ the bad set $\lbrace \omega : Y_t(\omega) \neq 0 \rbrace = \lbrace t \rbrace$ is a single point, hence Lebesgue-null:

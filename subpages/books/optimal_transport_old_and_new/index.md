@@ -853,7 +853,7 @@ If $\mathcal{X}$ is a Polish space, then a set $\mathcal{P} \subset P(\mathcal{X
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 4.3</span><span class="math-callout__name">(Lower Semicontinuity of the Cost Functional)</span></p>
 
 Let $\mathcal{X}$ and $\mathcal{Y}$ be two Polish spaces, and $c : \mathcal{X} \times \mathcal{Y} \to \mathbb{R} \cup \lbrace +\infty \rbrace$ a lower semicontinuous cost function. Let $h : \mathcal{X} \times \mathcal{Y} \to \mathbb{R} \cup \lbrace -\infty \rbrace$ be an upper semicontinuous function such that $c \ge h$. Let $(\pi\_k)\_{k \in \mathbb{N}}$ be a sequence of probability measures on $\mathcal{X} \times \mathcal{Y}$, converging weakly to some $\pi \in P(\mathcal{X} \times \mathcal{Y})$, in such a way that $h \in L^1(\pi\_k)$, $h \in L^1(\pi)$, and
@@ -868,7 +868,7 @@ In particular, if $c$ is nonnegative, then $F : \pi \mapsto \int c\, d\pi$ is lo
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 4.4</span><span class="math-callout__name">(Tightness of Transference Plans)</span></p>
 
 Let $\mathcal{X}$ and $\mathcal{Y}$ be two Polish spaces. Let $\mathcal{P} \subset P(\mathcal{X})$ and $\mathcal{Q} \subset P(\mathcal{Y})$ be tight subsets of $P(\mathcal{X})$ and $P(\mathcal{Y})$ respectively. Then the set $\Pi(\mathcal{P}, \mathcal{Q})$ of all transference plans whose marginals lie in $\mathcal{P}$ and $\mathcal{Q}$ respectively, is itself tight in $P(\mathcal{X} \times \mathcal{Y})$.
