@@ -1327,13 +1327,13 @@ A group is a very abstract algebraic structure. It consists of a set with a bina
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.1 — Group)</span></p>
 
-Let $\circ \colon G^2 \to G$ be a binary operation on a set $G$. Then a *group* is a pair $(G, \circ)$ satisfying:
+Let $\circ \colon G^2 \to G$ be a binary operation on a set $G$. Then a **group** is a pair $(G, \circ)$ satisfying:
 
 1. $\forall a, b, c \in G: a \circ (b \circ c) = (a \circ b) \circ c$ &emsp; (associativity),
 2. $\exists e \in G\ \forall a \in G: e \circ a = a \circ e = a$ &emsp; (existence of an identity element),
 3. $\forall a \in G\ \exists b \in G: a \circ b = b \circ a = e$ &emsp; (existence of an inverse element).
 
-An **Abelian (commutative) group** is a group that additionally satisfies:
+   An **Abelian (commutative) group** is a group that additionally satisfies:
 
 4. $\forall a, b \in G: a \circ b = b \circ a$ &emsp; (commutativity).
 
@@ -1375,14 +1375,21 @@ For elements of a group $(G, \circ)$, the following properties hold:
 5. $(a^{-1})^{-1} = a$,
 6. $(a \circ b)^{-1} = b^{-1} \circ a^{-1}$.
 
-*Proof.* (1) From $a \circ c = b \circ c$ we compose with $c^{-1}$ on the right: $a \circ (c \circ c^{-1}) = b \circ (c \circ c^{-1})$, so $a \circ e = b \circ e$, i.e. $a = b$. (2) If there exist two distinct identity elements $e_1, e_2$, then $e_1 = e_1 \circ e_2 = e_2$, a contradiction. (3) If there exist two distinct inverse elements $a_1, a_2$, then $a \circ a_1 = e = a \circ a_2$ and by the cancellation law $a_1 = a_2$, a contradiction. (4) We multiply $a \circ x = b$ on the left by $a^{-1}$ and obtain $x = a^{-1} \circ b$. Substituting back verifies that the equality holds.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) From $a \circ c = b \circ c$ we compose with $c^{-1}$ on the right: $a \circ (c \circ c^{-1}) = b \circ (c \circ c^{-1})$, so $a \circ e = b \circ e$, i.e. $a = b$. (2) If there exist two distinct identity elements $e_1, e_2$, then $e_1 = e_1 \circ e_2 = e_2$, a contradiction. (3) If there exist two distinct inverse elements $a_1, a_2$, then $a \circ a_1 = e = a \circ a_2$ and by the cancellation law $a_1 = a_2$, a contradiction. (4) We multiply $a \circ x = b$ on the left by $a^{-1}$ and obtain $x = a^{-1} \circ b$. Substituting back verifies that the equality holds.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.5 — Subgroup)</span></p>
 
-A *subgroup* of a group $(G, \circ)$ is a group $(H, \diamond)$ such that $H \subseteq G$ and for all $a, b \in H$ we have $a \circ b = a \diamond b$. Notation: $(H, \circ) \le (G, \circ)$.
+A **subgroup** of a group $(G, \circ)$ is a group $(H, \diamond)$ such that $H \subseteq G$ and for all $a, b \in H$ we have $a \circ b = a \diamond b$. Notation: $(H, \circ) \le (G, \circ)$.
 
 In other words, with the same operation, $H$ satisfies the properties of closure and existence of the identity and inverse elements. That is, for every $a, b \in H$ we have $a \circ b \in H$, furthermore $e \in H$, and for every $a \in H$ we have $a^{-1} \in H$.
 
@@ -1420,12 +1427,12 @@ We will mostly consider $X = \lbrace 1, \ldots, n \rbrace$. The set of all permu
 - A **graph** indicating where each element maps to.
 - **Decomposition into cycles**: $p = (1, 2)(3)(4, 5, 6)$, where each parenthesized expression $(a_1, \ldots, a_k)$ means that $a_1$ maps to $a_2$, $a_2$ maps to $a_3$, etc., up to $a_{k-1}$ maps to $a_k$ and $a_k$ maps to $a_1$. From the definition it is clear that every permutation can be decomposed into disjoint cycles. In the following text we will most often use the reduced notation, in which we omit cycles of length $1$.
 
-An example of a simple but nontrivial permutation is a *transposition* $t = (i, j)$ — a permutation with a single cycle of length $2$ that swaps two elements. The simplest permutation is the identity $id$ mapping every element to itself.
+An example of a simple but nontrivial permutation is a **transposition** $t = (i, j)$ — a permutation with a single cycle of length $2$ that swaps two elements. The simplest permutation is the identity $id$ mapping every element to itself.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.9 — Inverse permutation)</span></p>
 
-Let $p \in S_n$. The *inverse permutation* of $p$ is the permutation $p^{-1}$ defined by $p^{-1}(i) = j$ if $p(j) = i$.
+Let $p \in S_n$. The **inverse permutation** of $p$ is the permutation $p^{-1}$ defined by $p^{-1}(i) = j$ if $p(j) = i$.
 
 </div>
 
@@ -1439,7 +1446,7 @@ $(i, j)^{-1} = (i, j)$, $(i, j, k)^{-1} = (k, j, i)$, ...
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.11 — Composition of permutations)</span></p>
 
-Let $p, q \in S_n$. The *composed permutation* $p \circ q$ is the permutation defined by $(p \circ q)(i) = p(q(i))$.
+Let $p, q \in S_n$. The **composed permutation** $p \circ q$ is the permutation defined by $(p \circ q)(i) = p(q(i))$.
 
 </div>
 
@@ -1457,7 +1464,7 @@ Composition of permutations is associative (as is any mapping), but it is not co
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.13 — Sign of a permutation)</span></p>
 
-Let a permutation $p \in S_n$ consist of $k$ cycles. Then the *sign of the permutation* is the number $\operatorname{sgn}(p) = (-1)^{n-k}$.
+Let a permutation $p \in S_n$ consist of $k$ cycles. Then the **sign of the permutation** is the number $\operatorname{sgn}(p) = (-1)^{n-k}$.
 
 </div>
 
@@ -1468,13 +1475,20 @@ The sign is always $1$ or $-1$. Accordingly, permutations are classified as *eve
 
 Let $p \in S_n$ and let $t = (i, j)$ be a transposition. Then $\operatorname{sgn}(p) = -\operatorname{sgn}(t \circ p) = -\operatorname{sgn}(p \circ t)$.
 
-*Proof.* We prove $\operatorname{sgn}(p) = -\operatorname{sgn}(t \circ p)$; the second equality is analogous. The permutation $p$ consists of several cycles. We distinguish two cases:
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We prove $\operatorname{sgn}(p) = -\operatorname{sgn}(t \circ p)$; the second equality is analogous. The permutation $p$ consists of several cycles. We distinguish two cases:
 
 - Suppose $i, j$ belong to the same cycle, denoted $(i, u_1, \ldots, u_r, j, v_1, \ldots, v_s)$. Then $(i, j) \circ (i, u_1, \ldots, u_r, j, v_1, \ldots, v_s) = (i, u_1, \ldots, u_r)(j, v_1, \ldots, v_s)$, so the number of cycles increases by one.
 - Suppose $i, j$ belong to two different cycles, e.g. $(i, u_1, \ldots, u_r)(j, v_1, \ldots, v_s)$. Then $(i, j) \circ (i, u_1, \ldots, u_r)(j, v_1, \ldots, v_s) = (i, u_1, \ldots, u_r, j, v_1, \ldots, v_s)$, so the number of cycles decreases by one.
 
 In either case, the number of cycles changes by one, and consequently so does the resulting sign.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1546,7 +1560,7 @@ Besides the number of cycles and the number of transpositions, the sign of a per
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 4.21 — Symmetric group)</span></p>
 
-The set of permutations $S_n$ with the composition operation $\circ$ forms a non-commutative group $(S_n, \circ)$, called the *symmetric group*. It can be shown that every group is isomorphic to some subgroup of a symmetric group (the so-called Cayley representation, which even generalizes to infinite groups). A similar role is played by matrix groups, since every finite group is isomorphic to some matrix subgroup (linear representation).
+The set of permutations $S_n$ with the composition operation $\circ$ forms a non-commutative group $(S_n, \circ)$, called the **symmetric group**. It can be shown that every group is isomorphic to some subgroup of a symmetric group (the so-called Cayley representation, which even generalizes to infinite groups). A similar role is played by matrix groups, since every finite group is isomorphic to some matrix subgroup (linear representation).
 
 The group $(S_n, \circ)$ is called symmetric because it and its subgroups describe symmetries of various objects. For instance, an isosceles triangle is symmetric about its vertical axis, and this symmetry corresponds to the permutation $(2, 3)$. The symmetries of an equilateral triangle are reflections about the medians (corresponding to transpositions $(1, 2)$, $(2, 3)$, and $(1, 3)$) as well as rotations by $0°$, $120°$, and $240°$ (corresponding to permutations $id$, $(1, 2, 3)$, and $(1, 3, 2)$). All symmetries thus constitute the entire group $(S_3, \circ)$.
 
@@ -1575,7 +1589,7 @@ Consider a system of linear equations $Ax = b$ with an invertible matrix $A$. Th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 4.24 — Field)</span></p>
 
-A *field* is a set $\mathbb{T}$ together with two commutative binary operations $+$ and $\cdot$ satisfying
+A **field** is a set $\mathbb{T}$ together with two commutative binary operations $+$ and $\cdot$ satisfying
 
 1. $(\mathbb{T}, +)$ is an Abelian group, whose identity element we denote $0$ and the inverse of $a$ by $-a$,
 2. $(\mathbb{T} \setminus \lbrace 0 \rbrace, \cdot)$ is an Abelian group, whose identity element we denote $1$ and the inverse of $a$ by $a^{-1}$,
@@ -1597,7 +1611,7 @@ Examples of infinite fields include $\mathbb{Q}$, $\mathbb{R}$, and $\mathbb{C}$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.26 — Quaternions)</span></p>
 
-Another example of fields are *quaternions*. They are a generalization of complex numbers by adding two more imaginary units $j$ and $k$, whose squares equal $-1$ and which are additionally linked by the relation $ijk = -1$. While addition is defined naturally, multiplication is somewhat more complicated and commutativity no longer holds. Quaternions therefore form a non-commutative field. Quaternions are well suited for describing rotations in three-dimensional space and have found applications in robotics and quantum physics.
+Another example of fields are **quaternions**. They are a generalization of complex numbers by adding two more imaginary units $j$ and $k$, whose squares equal $-1$ and which are additionally linked by the relation $ijk = -1$. While addition is defined naturally, multiplication is somewhat more complicated and commutativity no longer holds. Quaternions therefore form a non-commutative field. Quaternions are well suited for describing rotations in three-dimensional space and have found applications in robotics and quantum physics.
 
 </div>
 
@@ -1610,8 +1624,15 @@ For elements of a field, the following properties hold:
 2. $ab = 0$ implies that $a = 0$ or $b = 0$,
 3. $-a = (-1)a$.
 
-*Proof.* (1) We derive $0a = (0 + 0)a = 0a + 0a$; adding $(-0a)$ yields $0 = 0a$. (2) If $a = 0$, the statement holds. If $a \neq 0$, then $a^{-1}$ exists. Multiplying both sides of $ab = 0$ on the left by $a^{-1}$ gives $a^{-1}ab = a^{-1}0$, i.e. $1b = 0$, so $b = 0$. (3) We have $0 = 0a = (1 - 1)a = 1a + (-1)a = a + (-1)a$, hence $-a = (-1)a$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) We derive $0a = (0 + 0)a = 0a + 0a$; adding $(-0a)$ yields $0 = 0a$. (2) If $a = 0$, the statement holds. If $a \neq 0$, then $a^{-1}$ exists. Multiplying both sides of $ab = 0$ on the left by $a^{-1}$ gives $a^{-1}ab = a^{-1}0$, i.e. $1b = 0$, so $b = 0$. (3) We have $0 = 0a = (1 - 1)a = 1a + (-1)a = a + (-1)a$, hence $-a = (-1)a$.
+
+</details>
 </div>
 
 The second property (and its proof) also tell us that when determining whether a structure forms a field, we do not need to verify closure of multiplication on the set $\mathbb{T} \setminus \lbrace 0 \rbrace$ — this property follows from the others.
@@ -5636,9 +5657,15 @@ However, this measure is not ideal (a better one uses, e.g., eigenvalues or sing
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.11 — Multiplicativity of the determinant)</span></p>
 
-*For every $A, B \in \mathbb{T}^{n \times n}$ it holds that $\det(AB) = \det(A) \det(B)$.*
+For every $A, B \in \mathbb{T}^{n \times n}$ it holds that $\det(AB) = \det(A) \det(B)$.
 
-*Proof.* (1) First consider the special case when $A$ is an elementary operation matrix:
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) First consider the special case when $A$ is an elementary operation matrix:
 
 1. $A = E_i(\alpha)$, multiplying the $i$-th row by the scalar $\alpha$. Then $\det(AB) = \alpha \det(B)$ and $\det(A) \det(B) = \alpha \det(B)$.
 2. $A = E_{ij}$, swapping the $i$-th and $j$-th rows. Then $\det(AB) = -\det(B)$ and $\det(A) \det(B) = -1 \det(B)$.
@@ -5650,6 +5677,7 @@ Thus the equality holds in all cases.
 
 $$\det(AB) = \det(E_1(E_2 \ldots E_k B)) = \det(E_1) \det((E_2 \ldots E_k) B) = \det(E_1) \det(E_2 \ldots E_k) \det(B) = \det(A) \det(B).$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -5697,7 +5725,7 @@ $$= 0 + 2 \cdot 4 + 4 \cdot 2 - 4 \cdot 2 = 8.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.15 — Cramer's rule)</span></p>
 
-*Let $A \in \mathbb{T}^{n \times n}$ be nonsingular, $b \in \mathbb{T}^n$. Then the solution of the system $Ax = b$ is given by the formula*
+Let $A \in \mathbb{T}^{n \times n}$ be nonsingular, $b \in \mathbb{T}^n$. Then the solution of the system $Ax = b$ is given by the formula
 
 $$x_i = \frac{\det(A + (b - A_{*i}) e_i^\top)}{\det(A)}, \quad i = 1, \ldots, n.$$
 
@@ -5779,7 +5807,7 @@ For a nonsingular matrix $A$, we have $\det(A) \neq 0$, and dividing by $\det(A)
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 9.19)</span></p>
 
-*If $A \in \mathbb{T}^{n \times n}$ is nonsingular, then $A^{-1} = \frac{1}{\det(A)} \operatorname{adj}(A)$.*
+If $A \in \mathbb{T}^{n \times n}$ is nonsingular, then $A^{-1} = \frac{1}{\det(A)} \operatorname{adj}(A)$.
 
 </div>
 
@@ -5826,12 +5854,19 @@ The theorem on the adjugate matrix gives the following characterization of when 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 9.22)</span></p>
 
-*Let $A \in \mathbb{Z}^{n \times n}$. Then $A^{-1}$ has integer entries if and only if $\det(A) = \pm 1$.*
+Let $A \in \mathbb{Z}^{n \times n}$. Then $A^{-1}$ has integer entries if and only if $\det(A) = \pm 1$.
 
-*Proof.* Implication "$\Rightarrow$". We know $1 = \det(A) \det(A^{-1})$. If the matrices $A, A^{-1}$ are integer, then their determinants are also integers and therefore must equal $\pm 1$.
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Implication "$\Rightarrow$". We know $1 = \det(A) \det(A^{-1})$. If the matrices $A, A^{-1}$ are integer, then their determinants are also integers and therefore must equal $\pm 1$.
 
 Implication "$\Leftarrow$". We know $A^{-1}_{ij} = \frac{1}{\det(A)} (-1)^{i+j} \det(A^{ji})$. This is an integer value provided that $\det(A) = \pm 1$ and $\det(A^{ji})$ is an integer.
 
+</details>
 </div>
 
 Another example of the use of the determinant is in polynomials. The determinant from the following proposition is called the *resultant* and is used, for example, for solving nonlinear equations.
@@ -5839,7 +5874,7 @@ Another example of the use of the determinant is in polynomials. The determinant
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 9.23 — Resultant)</span></p>
 
-*The polynomials $p(x) = a_n x^n + \ldots + a_1 x + a_0$, $q(x) = b_m x^m + \ldots + b_1 x + b_0$ have a common root if and only if*
+The polynomials $p(x) = a_n x^n + \ldots + a_1 x + a_0$, $q(x) = b_m x^m + \ldots + b_1 x + b_0$ have a common root if and only if
 
 $$\begin{vmatrix} a_n & a_{n-1} & \ldots & & a_0 & & \\ & a_n & a_{n-1} & \ldots & a_0 & & \\ & & \ddots & \ddots & & \ddots & \\ & & & a_n & a_{n-1} & \ldots & a_0 \\ b_m & b_{m-1} & \ldots & b_1 & b_0 & & \\ & \ddots & \ddots & & & \ddots & \\ & & b_m & b_{m-1} & \ldots & & b_1 & b_0 \end{vmatrix} = 0.$$
 
@@ -5854,9 +5889,15 @@ We first consider the special case of a parallelepiped. A *parallelepiped* with 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 9.24 — Volume of a parallelepiped)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$ and consider the parallelepiped with edges given by the rows of matrix $A$. Then its volume (as an $m$-dimensional object) is $\sqrt{\det(AA^\top)}$. In particular, for $m = n$ the volume is $|\det(A)|$.*
+Let $A \in \mathbb{R}^{m \times n}$ and consider the parallelepiped with edges given by the rows of matrix $A$. Then its volume (as an $m$-dimensional object) is $\sqrt{\det(AA^\top)}$. In particular, for $m = n$ the volume is $|\det(A)|$.
 
-*Proof.* By mathematical induction on $m$. For $m = 1$ this is obvious; let us proceed to the induction step. Denote the $i$-th row of matrix $A$ as the vector $a_i^\top$ and define the matrix $D$ obtained from $A$ by removing the last row. Decompose $a_m = b_m + c_m$, where $c_m \in \mathcal{R}(D)$ and $b_m \in \mathcal{R}(D)^\perp$ according to Remark 8.40. The rows of matrix $D$ generate a parallelepiped of lower dimension, which forms the base of the overall parallelepiped. By the induction hypothesis, the content of the base is $\sqrt{\det(DD^\top)}$. The vector $b_m$ is perpendicular to the base and its length corresponds to the height $\|b_m\|$ of the parallelepiped.
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By mathematical induction on $m$. For $m = 1$ this is obvious; let us proceed to the induction step. Denote the $i$-th row of matrix $A$ as the vector $a_i^\top$ and define the matrix $D$ obtained from $A$ by removing the last row. Decompose $a_m = b_m + c_m$, where $c_m \in \mathcal{R}(D)$ and $b_m \in \mathcal{R}(D)^\perp$ according to Remark 8.40. The rows of matrix $D$ generate a parallelepiped of lower dimension, which forms the base of the overall parallelepiped. By the induction hypothesis, the content of the base is $\sqrt{\det(DD^\top)}$. The vector $b_m$ is perpendicular to the base and its length corresponds to the height $\|b_m\|$ of the parallelepiped.
 
 Furthermore,
 
@@ -5874,6 +5915,7 @@ This corresponds to the intuitive notion of volume as height times the content o
 
 $$\det(AA^\top) = \det(E_1 \ldots E_k A' A'^\top E_k^\top \ldots E_1^\top) = \det(A' A'^\top).$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -6258,11 +6300,18 @@ Similar matrices have the same eigenvalues.
 
 </div>
 
-*Proof.* From the similarity of the matrices, there exists a nonsingular $S$ such that $A = SBS^{-1}$. Then
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+From the similarity of the matrices, there exists a nonsingular $S$ such that $A = SBS^{-1}$. Then
 
 $$p_A(\lambda) = \det(A - \lambda I_n) = \det(SBS^{-1} - \lambda S I_n S^{-1}) = \det(S(B - \lambda I_n)S^{-1}) = \det(S)\det(B - \lambda I_n)\det(S^{-1}) = \det(B - \lambda I_n) = p_B(\lambda).$$
 
 Both matrices have the same characteristic polynomials, and hence the same eigenvalues.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.25)</span></p>
@@ -6311,7 +6360,11 @@ A matrix $A \in \mathbb{C}^{n \times n}$ is diagonalizable if and only if it has
 
 </div>
 
-*Proof.* Implication "$\Rightarrow$": If $A$ is diagonalizable, then it has the spectral decomposition $A = S \Lambda S^{-1}$, where $S$ is nonsingular and $\Lambda$ is diagonal. From the equality $AS = S\Lambda$ and comparing $j$-th columns we get 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Implication "$\Rightarrow$": If $A$ is diagonalizable, then it has the spectral decomposition $A = S \Lambda S^{-1}$, where $S$ is nonsingular and $\Lambda$ is diagonal. From the equality $AS = S\Lambda$ and comparing $j$-th columns we get 
 
 $$AS_{\ast j} = (S\Lambda)_{\ast j} = S\Lambda_{jj}e_j = \Lambda_{jj}S_{\ast j}$$
 
@@ -6322,6 +6375,9 @@ Implication "$\Leftarrow$": Let $A$ have eigenvalues $\lambda_1, \ldots, \lambda
 $$(AS)_{\ast j} = Ax_j = \lambda_j x_j = \Lambda_{jj} S_{\ast j} = (S\Lambda)_{\ast j}$$
 
 Thus $AS = S\Lambda$, from which $A = S\Lambda S^{-1}$.
+
+</details>
+</div>
 
 Non-diagonalizable matrices are those for which certain pathological situations arise, but diagonalizable matrices have a whole range of natural properties. If a matrix $A$ is diagonalizable, then:
 
@@ -6359,7 +6415,14 @@ Let $\lambda_1, \ldots, \lambda_k$ be pairwise distinct eigenvalues (not necessa
 
 </div>
 
-*Proof.* By mathematical induction on $k$. For $k = 1$ obvious, since an eigenvector is nonzero. Induction step $k \leftarrow k - 1$. Consider the linear combination $\alpha_1 x_1 + \ldots + \alpha_k x_k = o$. Multiplying by matrix $A$ we get $\alpha_1 \lambda_1 x_1 + \ldots + \alpha_k \lambda_k x_k = o$. Subtracting $\lambda_k$ times the first equation from the second we get $\alpha_1(\lambda_1 - \lambda_k) x_1 + \ldots + \alpha_{k-1}(\lambda_{k-1} - \lambda_k) x_{k-1} = o$. By the induction hypothesis, $x_1, \ldots, x_{k-1}$ are linearly independent, so $\alpha_1 = \ldots = \alpha_{k-1} = 0$. Substituting back we have $\alpha_k x_k = o$, i.e., $\alpha_k = 0$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By mathematical induction on $k$. For $k = 1$ obvious, since an eigenvector is nonzero. Induction step $k \leftarrow k - 1$. Consider the linear combination $\alpha_1 x_1 + \ldots + \alpha_k x_k = o$. Multiplying by matrix $A$ we get $\alpha_1 \lambda_1 x_1 + \ldots + \alpha_k \lambda_k x_k = o$. Subtracting $\lambda_k$ times the first equation from the second we get $\alpha_1(\lambda_1 - \lambda_k) x_1 + \ldots + \alpha_{k-1}(\lambda_{k-1} - \lambda_k) x_{k-1} = o$. By the induction hypothesis, $x_1, \ldots, x_{k-1}$ are linearly independent, so $\alpha_1 = \ldots = \alpha_{k-1} = 0$. Substituting back we have $\alpha_k x_k = o$, i.e., $\alpha_k = 0$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 10.33)</span></p>
@@ -6375,7 +6438,14 @@ Let $A, B \in \mathbb{C}^{n \times n}$. Then the matrices $AB$ and $BA$ have the
 
 </div>
 
-*Proof.* The matrices $\begin{pmatrix} AB & 0 \\ B & 0 \end{pmatrix}$ and $\begin{pmatrix} 0 & 0 \\ B & BA \end{pmatrix}$ are block triangular, so they have the same eigenvalues as $AB$ and $BA$, respectively, plus an additional eigenvalue 0 of multiplicity $n$. These matrices are similar via the matrix $S = \begin{pmatrix} I & A \\ 0 & I \end{pmatrix}$. The above proposition also holds for rectangular matrices $A, B^\top \in \mathbb{R}^{m \times n}$, but the statement holds only for nonzero eigenvalues; the multiplicity of zero eigenvalues may be (and typically is) different.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The matrices $\begin{pmatrix} AB & 0 \\\ B & 0 \end{pmatrix}$ and $\begin{pmatrix} 0 & 0 \\\ B & BA \end{pmatrix}$ are block triangular, so they have the same eigenvalues as $AB$ and $BA$, respectively, plus an additional eigenvalue 0 of multiplicity $n$. These matrices are similar via the matrix $S = \begin{pmatrix} I & A \\\ 0 & I \end{pmatrix}$. The above proposition also holds for rectangular matrices $A, B^\top \in \mathbb{R}^{m \times n}$, but the statement holds only for nonzero eigenvalues; the multiplicity of zero eigenvalues may be (and typically is) different.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.35 — Matrix power)</span></p>
@@ -6388,7 +6458,7 @@ We can also study the asymptotic behavior. In simplified form:
 
 $$\lim_{k \to \infty} A^k = \begin{cases} 0, & \text{if } \rho(A) < 1, \\ \text{diverges}, & \text{if } \rho(A) > 1, \\ \text{converges / diverges}, & \text{if } \rho(A) = 1. \end{cases}$$
 
-Geometrically: Raising the matrix $A$ to a power corresponds to composing the map with itself. If all eigenvalues are less than 1 in absolute value, the linear map contracts distances and therefore converges to zero. If at least one eigenvalue is greater than 1 in absolute value, the linear map stretches distances in the direction of the corresponding eigenvector, and therefore diverges.
+**Geometrically:** Raising the matrix $A$ to a power corresponds to composing the map with itself. If all eigenvalues are less than 1 in absolute value, the linear map contracts distances and therefore converges to zero. If at least one eigenvalue is greater than 1 in absolute value, the linear map stretches distances in the direction of the corresponding eigenvector, and therefore diverges.
 
 </div>
 

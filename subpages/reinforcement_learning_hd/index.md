@@ -2973,7 +2973,7 @@ $$
 G_t^{(1)}, G_t^{(2)}, \dots \;\sim\; \mu, \qquad \text{not } \pi.
 $$
 
-**Core difficulty.** We need to compute an expectation under one distribution ($\mathbb{E}_\pi[\cdot]$) while observing samples from another ($\mathbb{E}_\mu[\cdot]$). Naively averaging the observed $G_t^{(i)}$ would estimate $v_\mu$, not $v_\pi$.
+**Core difficulty.** We need to compute an expectation under one distribution ($\mathbb{E}\_\pi[\cdot]$) while observing samples from another ($\mathbb{E}\_\mu[\cdot]$). Naively averaging the observed $G_t^{(i)}$ would estimate $v_\mu$, not $v_\pi$.
 
 </div>
 
@@ -3405,5 +3405,1095 @@ Reading the table top to bottom recapitulates the whole lecture: average returns
 * **Off-policy MC control has a fundamental weakness.** In long episodes, only the *tails* consistent with $\pi$ contribute — most data is wasted.
 
 **Bridge to TD.** Monte Carlo waits for the final outcome of each episode before updating. **Temporal-difference methods** in the next lecture learn while the episode is *still unfolding* — they combine the model-free advantage of MC with the online efficiency (and bootstrapping bias) of DP. That combination is the cornerstone of modern RL.
+
+</div>
+
+## Lecture 6: Temporal-Difference Learning
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Sampling experience, bootstrapping predictions)</span></p>
+
+The previous lecture left us with a clean but expensive idea: estimate values by averaging **complete returns** $G\_t$, which forces us to wait until the episode ends. **Temporal-difference (TD) learning** is the hybrid that removes that wait. It is *the* central idea of model-free RL, and almost every algorithm in the rest of the course is best read as "define a TD error, then take a step on it."
+
+The lecture builds up in the following order:
+
+1. **The central idea.** TD = *sampling* (like Monte Carlo) + *bootstrapping* (like Dynamic Programming).
+2. **Prediction.** The TD(0) update, the TD error, and where the TD target comes from (the Bellman expectation equation).
+3. **Why bootstrap?** Computational advantages over DP and MC, soundness (convergence), and what TD converges to (certainty equivalence).
+4. **Control.** Moving from $v\_\pi$ to $q\_\pi$: **Sarsa** (on-policy), **Q-learning** (off-policy), and **Double Q-learning** (bias correction).
+
+The guiding question of the lecture is:
+
+> *Can we update our value estimates using our **own current estimates** as targets? If yes, why does it work, and when does it work better than waiting for actual returns?*
+
+</div>
+
+### The Big Picture
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(TD is sampling **and** bootstrapping)</span></p>
+
+Temporal-difference learning combines two ideas we have already met separately:
+
+* **Monte Carlo idea:** learn from *raw experience*, with no model of the environment needed.
+* **DP idea:** *bootstrap* — update an estimate toward a target that is itself built from other estimates.
+
+The behavioural contrast is the cleanest way to remember it:
+
+* **MC** uses the **complete return** $G\_t$ as its target — and must wait until the episode ends to know it.
+* **TD** uses the **one-step prediction** $R\_{t+1} + \gamma V(S\_{t+1})$ as its target — and can update *immediately*, after a single transition.
+
+In one phrase: **TD learning is learning a prediction from another prediction.**
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 300" role="img" aria-label="Temporal-difference learning combines one sampled transition with bootstrapping from the next state's current value estimate">
+    <defs>
+      <marker id="td-hybrid-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-hybrid-arrow-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <rect x="35" y="70" width="190" height="105" rx="8" class="green"></rect>
+    <text x="130" y="107" text-anchor="middle" font-size="17" font-weight="700">Sampling</text>
+    <text x="130" y="133" text-anchor="middle" font-size="13" class="muted">observe one transition</text>
+    <text x="130" y="155" text-anchor="middle" font-size="13">S_t, R_{t+1}, S_{t+1}</text>
+
+    <rect x="35" y="200" width="190" height="62" rx="8" class="accent"></rect>
+    <text x="130" y="228" text-anchor="middle" font-size="17" font-weight="700">Bootstrapping</text>
+    <text x="130" y="250" text-anchor="middle" font-size="13" class="muted">reuse current next-state guess</text>
+
+    <circle cx="355" cy="122" r="30" class="box"></circle>
+    <text x="355" y="128" text-anchor="middle" font-size="16" font-weight="700">S_t</text>
+    <circle cx="525" cy="122" r="30" class="box"></circle>
+    <text x="525" y="128" text-anchor="middle" font-size="16" font-weight="700">S_{t+1}</text>
+    <path d="M386 122 L494 122" class="strong-line" marker-end="url(#td-hybrid-arrow-strong)"></path>
+    <rect x="424" y="80" width="60" height="27" rx="5" class="amber"></rect>
+    <text x="454" y="99" text-anchor="middle" font-size="12">R_{t+1}</text>
+
+    <rect x="445" y="198" width="160" height="52" rx="8" class="accent"></rect>
+    <text x="525" y="229" text-anchor="middle" font-size="15" font-weight="700">V(S_{t+1})</text>
+    <path d="M525 153 L525 197" class="line" marker-end="url(#td-hybrid-arrow)"></path>
+
+    <rect x="665" y="110" width="160" height="94" rx="8" class="green"></rect>
+    <text x="745" y="142" text-anchor="middle" font-size="15" font-weight="700">TD target</text>
+    <text x="745" y="169" text-anchor="middle" font-size="14">R_{t+1} + gamma</text>
+    <text x="745" y="190" text-anchor="middle" font-size="14">V(S_{t+1})</text>
+
+    <path d="M555 122 C600 122 615 132 660 145" class="strong-line" marker-end="url(#td-hybrid-arrow-strong)"></path>
+    <path d="M605 224 C630 218 645 194 664 177" class="line" marker-end="url(#td-hybrid-arrow)"></path>
+    <path d="M225 122 L324 122" class="line" marker-end="url(#td-hybrid-arrow)"></path>
+    <path d="M225 231 C300 231 350 225 444 225" class="line" marker-end="url(#td-hybrid-arrow)"></path>
+  </svg>
+  <figcaption>TD(0) builds its target from two ingredients at once: a <em>sampled</em> reward and successor state, plus a <em>bootstrapped</em> current estimate of the successor value. This is the concrete meaning of "sampling + bootstrapping".</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The DP / MC / TD taxonomy)</span></p>
+
+All three methods estimate the *same object* — the value $v\_\pi(s) = \mathbb{E}\_\pi[\, G\_t \mid S\_t = s\,]$. They differ only in **how the expectation is approximated**.
+
+| Method | Source of estimate | Backup type |
+| :----- | :----------------- | :---------- |
+| **DP** | model $+$ bootstrap | full expectation backup |
+| **MC** | samples, no bootstrap | complete return |
+| **TD** | samples $+$ bootstrap | one-step sample backup |
+
+DP needs a model and averages over *all* successors; MC needs samples but no model and uses the *whole* trajectory; TD needs only samples and replaces both the full expectation (by one sample) and the unknown true value (by the current estimate).
+
+</div>
+
+### Prediction: TD(0) vs MC
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(The prediction problem)</span></p>
+
+Fix a policy $\pi$ and generate experience under it,
+
+$$
+S_0, A_0, R_1, S_1, A_1, R_2, S_2, \dots,
+$$
+
+with the goal of estimating $v\_\pi(s)$ for every nonterminal $s$. Both methods are instances of the same incremental-mean template $V(S\_t) \leftarrow V(S\_t) + \alpha\,[\,\text{target} - V(S\_t)\,]$; they differ only in the **target**:
+
+$$
+\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,G_t - V(S_t)\,\bigr]}_{\textbf{constant-}\alpha\text{ Monte Carlo, target } = \text{ full return}},
+$$
+
+$$
+\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,R_{t+1} + \gamma V(S_{t+1}) - V(S_t)\,\bigr]}_{\textbf{TD(0)},\; \text{target } = R_{t+1} + \gamma V(S_{t+1})}.
+$$
+
+MC plugs in the realised return $G\_t$ (known only at episode end); TD(0) plugs in the **TD target** $R\_{t+1} + \gamma V(S\_{t+1})$ (known one step later). This is the single substitution that turns a batch, episodic method into an online, incremental one.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 330" role="img" aria-label="Monte Carlo waits until terminal return while TD updates after one transition">
+    <defs>
+      <marker id="td-timing-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-timing-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <text x="80" y="78" text-anchor="middle" font-size="17" font-weight="700">MC</text>
+    <text x="80" y="218" text-anchor="middle" font-size="17" font-weight="700">TD(0)</text>
+
+    <line x1="145" y1="75" x2="725" y2="75" class="line"></line>
+    <circle cx="170" cy="75" r="18" class="box"></circle>
+    <text x="170" y="81" text-anchor="middle" font-size="13">S_t</text>
+    <circle cx="310" cy="75" r="18" class="box"></circle>
+    <text x="310" y="81" text-anchor="middle" font-size="13">S_{t+1}</text>
+    <circle cx="450" cy="75" r="18" class="box"></circle>
+    <text x="450" y="81" text-anchor="middle" font-size="13">S_{t+2}</text>
+    <circle cx="590" cy="75" r="18" class="box"></circle>
+    <text x="590" y="81" text-anchor="middle" font-size="13">...</text>
+    <rect x="702" y="57" width="46" height="36" rx="5" fill="#64748b"></rect>
+    <text x="725" y="81" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">T</text>
+    <path d="M170 112 C300 152 575 152 725 112" stroke="#b45309" stroke-width="3" fill="none" marker-end="url(#td-timing-arrow)"></path>
+    <text x="445" y="166" text-anchor="middle" font-size="13" class="muted">wait until terminal return G_t is known</text>
+    <rect x="632" y="112" width="150" height="36" rx="6" class="amber"></rect>
+    <text x="707" y="135" text-anchor="middle" font-size="13" font-weight="700">update after episode</text>
+
+    <line x1="145" y1="215" x2="725" y2="215" class="line"></line>
+    <circle cx="170" cy="215" r="18" class="box"></circle>
+    <text x="170" y="221" text-anchor="middle" font-size="13">S_t</text>
+    <circle cx="310" cy="215" r="18" class="accent"></circle>
+    <text x="310" y="221" text-anchor="middle" font-size="13">S_{t+1}</text>
+    <circle cx="450" cy="215" r="18" class="box"></circle>
+    <text x="450" y="221" text-anchor="middle" font-size="13">S_{t+2}</text>
+    <circle cx="590" cy="215" r="18" class="box"></circle>
+    <text x="590" y="221" text-anchor="middle" font-size="13">...</text>
+    <rect x="702" y="197" width="46" height="36" rx="5" fill="#64748b"></rect>
+    <text x="725" y="221" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">T</text>
+    <path d="M190 215 L288 215" class="strong-line" marker-end="url(#td-timing-strong)"></path>
+    <rect x="216" y="158" width="188" height="40" rx="6" class="green"></rect>
+    <text x="310" y="183" text-anchor="middle" font-size="13" font-weight="700">update after one step</text>
+    <path d="M310 198 L310 235" class="line"></path>
+    <text x="310" y="267" text-anchor="middle" font-size="13" class="muted">target: R_{t+1} + gamma V(S_{t+1})</text>
+  </svg>
+  <figcaption>Monte Carlo must wait for the realised return $G_t$. TD(0) only waits for the next transition, then updates $V(S_t)$ toward $R_{t+1} + \gamma V(S_{t+1})$ while the episode is still unfolding.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(One-step TD error)</span></p>
+
+The **TD error** is the difference between the old prediction and the (improved) one-step target:
+
+$$
+\delta_t \;\doteq\; R_{t+1} + \gamma V(S_{t+1}) - V(S_t).
+$$
+
+With it, the TD(0) update is simply
+
+$$
+V(S_t) \;\leftarrow\; V(S_t) + \alpha\,\delta_t.
+$$
+
+So $\delta\_t$ measures the gap between the **old prediction** $V(S\_t)$ and the **updated prediction** $R\_{t+1} + \gamma V(S\_{t+1})$ — the difference between two successive predictions of the same quantity. Hence the name *temporal difference*.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 250" role="img" aria-label="TD error as the gap between old value estimate and TD target">
+    <defs>
+      <marker id="td-error-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <line x1="95" y1="195" x2="665" y2="195" class="line"></line>
+    <text x="95" y="222" text-anchor="middle" font-size="13" class="muted">low value</text>
+    <text x="665" y="222" text-anchor="middle" font-size="13" class="muted">high value</text>
+
+    <rect x="160" y="134" width="150" height="52" rx="8" class="box"></rect>
+    <text x="235" y="157" text-anchor="middle" font-size="14" font-weight="700">old estimate</text>
+    <text x="235" y="176" text-anchor="middle" font-size="13">V(S_t)</text>
+
+    <rect x="455" y="58" width="190" height="62" rx="8" class="green"></rect>
+    <text x="550" y="84" text-anchor="middle" font-size="14" font-weight="700">one-step target</text>
+    <text x="550" y="105" text-anchor="middle" font-size="13">R_{t+1} + gamma V(S_{t+1})</text>
+
+    <path d="M315 160 C365 132 406 105 451 94" class="strong-line" marker-end="url(#td-error-arrow)"></path>
+    <text x="378" y="113" text-anchor="middle" font-size="16" font-weight="700">delta_t</text>
+
+    <circle cx="235" cy="195" r="7" fill="#64748b"></circle>
+    <circle cx="550" cy="195" r="7" fill="#047857"></circle>
+    <circle cx="329" cy="195" r="7" fill="#2c3e94"></circle>
+    <path d="M235 195 L329 195" class="strong-line" marker-end="url(#td-error-arrow)"></path>
+    <text x="282" y="184" text-anchor="middle" font-size="13" class="muted">alpha delta_t</text>
+    <text x="329" y="222" text-anchor="middle" font-size="13" font-weight="700">new V(S_t)</text>
+  </svg>
+  <figcaption>The TD error is the signed gap from the old estimate to the one-step target. The update does not jump all the way to the target unless $\alpha = 1$; it moves partway by $\alpha\,\delta_t$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the TD error is the central object)</span></p>
+
+A large fraction of the algorithms still ahead — Sarsa, Q-learning, actor-critic, and the deep-RL methods built on them — are best read in one line:
+
+> *define a TD error, then take a (stochastic-gradient) step on it.*
+
+Everything that changes from method to method is **what goes into the target** inside $\delta\_t$: a sampled action value for Sarsa, a maximised action value for Q-learning, a decoupled pair of tables for Double Q-learning. Getting comfortable with $\delta\_t = (\text{target}) - (\text{old estimate})$ now pays off repeatedly.
+
+</div>
+
+### Where the TD Target Comes From
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The TD target is the Bellman expectation equation)</span></p>
+
+The TD target is not an ad-hoc guess; it falls straight out of the definition of value. Start from
+
+$$
+v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s\,],
+$$
+
+and use the one-step recursion of the return,
+
+$$
+G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} = R_{t+1} + \gamma \sum_{k=0}^{\infty} \gamma^k R_{t+k+2} = R_{t+1} + \gamma\, G_{t+1}.
+$$
+
+Substituting and applying the tower property of conditional expectation,
+
+$$
+\begin{aligned}
+v_\pi(s) &= \mathbb{E}_\pi\bigl[\,R_{t+1} + \gamma G_{t+1} \mid S_t = s\,\bigr] \\
+&= \mathbb{E}_\pi\bigl[\,R_{t+1} + \gamma\, \mathbb{E}_\pi[\,G_{t+1} \mid S_{t+1}\,] \,\big|\, S_t = s\,\bigr] \\
+&= \mathbb{E}_\pi\bigl[\,R_{t+1} + \gamma\, v_\pi(S_{t+1}) \,\big|\, S_t = s\,\bigr].
+\end{aligned}
+$$
+
+This is exactly the **Bellman expectation equation**. The TD target is what you get by turning this *exact identity* into something estimable with two approximations.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The TD recipe — two approximations)</span></p>
+
+Starting from the exact identity $v\_\pi(s) = \mathbb{E}\_\pi[\,R\_{t+1} + \gamma v\_\pi(S\_{t+1}) \mid S\_t = s\,]$:
+
+1. **Replace the expectation by a single sample** — use the one transition $(R\_{t+1}, S\_{t+1})$ that actually occurred instead of averaging over all of them (this is the *sampling* part, shared with MC).
+2. **Replace the unknown $v\_\pi$ by the current estimate $V$** — we do not know the true value of the successor, so we bootstrap from our running guess (this is the *bootstrapping* part, shared with DP).
+
+$$
+\underbrace{R_{t+1} + \gamma\, v_\pi(S_{t+1})}_{\text{Bellman target (exact)}} \;\rightsquigarrow\; \underbrace{R_{t+1} + \gamma\, V(S_{t+1})}_{\text{TD(0) target (sampled + bootstrapped)}}.
+$$
+
+This makes precise where each method sits relative to the same Bellman equation:
+
+* **MC** samples the *whole* return $G\_t$ — no bootstrap.
+* **DP** computes the expectation *exactly* via the model — but bootstraps with $V$.
+* **TD** samples $(R\_{t+1}, S\_{t+1})$ *and* bootstraps with $V(S\_{t+1})$ — it does both approximations at once.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Tabular TD(0) for estimating $v\_\pi$)</span></p>
+
+**Input:** policy $\pi$ to be evaluated. **Parameter:** step size $\alpha \in (0, 1]$.
+
+Initialise $V(s)$ arbitrarily for all $s \in \mathcal{S}^+$, with $V(\text{terminal}) = 0$.
+
+Loop for each episode:
+
+1. Initialise $S$.
+2. Loop for each step of the episode, until $S$ is terminal:
+   * $A \leftarrow$ action given by $\pi$ for $S$.
+   * Take action $A$; observe reward $R$ and next state $S'$.
+   * $V(S) \leftarrow V(S) + \alpha\bigl[\,R + \gamma V(S') - V(S)\,\bigr]$.
+   * $S \leftarrow S'$.
+
+Updates happen **online**, after every transition — which makes TD(0) well suited to very long episodes and to continuing (non-terminating) tasks where MC simply cannot wait for a return.
+
+</div>
+
+### Backup Diagrams
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 330" role="img" aria-label="Backup diagrams for DP, TD(0), and Monte Carlo">
+    <text x="150" y="36" text-anchor="middle" font-size="17" font-weight="700">DP</text>
+    <text x="380" y="36" text-anchor="middle" font-size="17" font-weight="700">TD(0)</text>
+    <text x="610" y="36" text-anchor="middle" font-size="17" font-weight="700">MC</text>
+
+    <!-- DP: full expectation backup -->
+    <line x1="150" y1="70" x2="95" y2="130" class="line"></line>
+    <line x1="150" y1="70" x2="150" y2="130" class="line"></line>
+    <line x1="150" y1="70" x2="205" y2="130" class="line"></line>
+    <line x1="95" y1="140" x2="70" y2="200" class="line"></line>
+    <line x1="95" y1="140" x2="120" y2="200" class="line"></line>
+    <line x1="150" y1="140" x2="150" y2="200" class="line"></line>
+    <line x1="205" y1="140" x2="180" y2="200" class="line"></line>
+    <line x1="205" y1="140" x2="230" y2="200" class="line"></line>
+    <circle cx="150" cy="70" r="11" class="box"></circle>
+    <circle cx="95" cy="135" r="7" fill="#2c3e94"></circle>
+    <circle cx="150" cy="135" r="7" fill="#2c3e94"></circle>
+    <circle cx="205" cy="135" r="7" fill="#2c3e94"></circle>
+    <circle cx="70" cy="205" r="11" class="box"></circle>
+    <circle cx="120" cy="205" r="11" class="box"></circle>
+    <circle cx="150" cy="205" r="11" class="box"></circle>
+    <circle cx="180" cy="205" r="11" class="box"></circle>
+    <circle cx="230" cy="205" r="11" class="box"></circle>
+    <text x="150" y="245" text-anchor="middle" font-size="13" class="muted">full expectation</text>
+
+    <!-- TD(0): one sample step -->
+    <line x1="380" y1="70" x2="380" y2="130" class="strong-line"></line>
+    <line x1="380" y1="140" x2="380" y2="200" class="strong-line"></line>
+    <circle cx="380" cy="70" r="11" class="box"></circle>
+    <circle cx="380" cy="135" r="7" fill="#2c3e94"></circle>
+    <circle cx="380" cy="205" r="11" class="box"></circle>
+    <text x="380" y="245" text-anchor="middle" font-size="13" class="muted">one sample step</text>
+
+    <!-- MC: full sample trajectory -->
+    <line x1="610" y1="70" x2="610" y2="270" class="strong-line"></line>
+    <circle cx="610" cy="70" r="11" class="box"></circle>
+    <circle cx="610" cy="110" r="7" fill="#2c3e94"></circle>
+    <circle cx="610" cy="150" r="11" class="box"></circle>
+    <circle cx="610" cy="190" r="7" fill="#2c3e94"></circle>
+    <circle cx="610" cy="230" r="11" class="box"></circle>
+    <rect x="600" y="262" width="20" height="20" fill="#64748b"></rect>
+    <text x="610" y="305" text-anchor="middle" font-size="13" class="muted">full sample trajectory</text>
+  </svg>
+  <figcaption>Open circles are states, filled circles are state–action pairs, the filled square is a terminal state. DP fans out to <em>all</em> successors (a full backup); TD samples <em>one</em> successor (a shallow sample backup); MC samples a <em>whole</em> trajectory to termination (a deep sample backup).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two axes: depth and width)</span></p>
+
+The three diagrams differ along two independent axes:
+
+* **Depth of the backup.** TD is *shallow* (one step), MC is *deep* (to the end of the episode). This is the axis later unified by $n$-step methods and TD($\lambda$).
+* **Width of the backup.** DP is *wide* (it sweeps the full successor distribution), while MC and TD are *narrow* (a single sampled branch). This is the axis that separates model-based from model-free.
+
+TD(0) is the corner that is both shallow and narrow — and therefore the cheapest possible nontrivial backup.
+
+</div>
+
+### The Driving-Home Example
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Predicting time to drive home)</span></p>
+
+A canonical intuition pump. The **state** is the situation along the route (leaving office, in the car, exiting the highway, …); the **reward** is the minutes elapsed on each leg ($\gamma = 1$); the **value** $V(s)$ is the *expected remaining* travel time; the **return** is the *actual* remaining time; and the **predicted total** is elapsed-so-far $+\, V(s)$.
+
+| state | elapsed | predicted total | how we get $V(s)$ |
+| :---- | :------ | :-------------- | :----------------- |
+| leaving office | 0 | 30 | $30 - 0 = 30$ |
+| reach car (raining) | 5 | 40 | $40 - 5 = 35$ |
+| exiting highway | 20 | 35 | $35 - 20 = 15$ |
+| 2ndary road, truck | 30 | 40 | $40 - 30 = 10$ |
+| home street | 40 | 43 | $43 - 40 = 3$ |
+| arrive home | 43 | 43 | $43 - 43 = 0$ |
+
+The actual trip took 43 minutes. The question — *when should we revise each prediction?* — is exactly the MC-vs-TD question.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(MC vs TD updates on the road)</span></p>
+
+Both methods apply $V(s) \leftarrow V(s) + \alpha\,(\text{target} - V(s))$, but with different targets:
+
+$$
+\text{MC target} = \underbrace{G_t}_{\text{total time } - \text{ elapsed}}, \qquad \text{TD target} = \underbrace{R_{t+1}}_{\text{next elapsed } - \text{ current elapsed}} + V(S_{t+1}).
+$$
+
+| state | old $V$ | MC target | MC error | TD target | TD error |
+| :---- | :------ | :-------- | :------- | :-------- | :------- |
+| leaving office | 30 | $43$ | $+13$ | $5 + 35 = 40$ | $+10$ |
+| reach car | 35 | $38$ | $+3$ | $15 + 15 = 30$ | $-5$ |
+| exit highway | 15 | $23$ | $+8$ | $10 + 10 = 20$ | $+5$ |
+| 2ndary road | 10 | $13$ | $+3$ | $10 + 3 = 13$ | $+3$ |
+| home street | 3 | $3$ | $0$ | $3 + 0 = 3$ | $0$ |
+| arrive home | 0 | $0$ | $0$ | — | — |
+
+**The key visual.** MC updates *every* prediction toward the *final* outcome (43 min) — so a single surprise late in the trip is only felt at the end. TD updates *each* prediction toward the *next* prediction — so the "stuck behind a truck" surprise propagates backward to the immediately preceding state right away, without waiting to arrive home.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 360" role="img" aria-label="Driving home example comparing Monte Carlo updates to final outcome with TD updates to next prediction">
+    <defs>
+      <marker id="td-drive-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-drive-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <text x="78" y="92" text-anchor="middle" font-size="16" font-weight="700">MC</text>
+    <text x="78" y="245" text-anchor="middle" font-size="16" font-weight="700">TD</text>
+
+    <g>
+      <circle cx="160" cy="90" r="20" class="box"></circle>
+      <text x="160" y="95" text-anchor="middle" font-size="12">office</text>
+      <circle cx="285" cy="90" r="20" class="box"></circle>
+      <text x="285" y="95" text-anchor="middle" font-size="12">car</text>
+      <circle cx="410" cy="90" r="20" class="box"></circle>
+      <text x="410" y="95" text-anchor="middle" font-size="12">exit</text>
+      <circle cx="535" cy="90" r="20" class="box"></circle>
+      <text x="535" y="95" text-anchor="middle" font-size="12">truck</text>
+      <circle cx="660" cy="90" r="20" class="box"></circle>
+      <text x="660" y="95" text-anchor="middle" font-size="12">street</text>
+      <rect x="750" y="70" width="58" height="40" rx="6" fill="#047857"></rect>
+      <text x="779" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">43</text>
+
+      <path d="M160 118 C285 175 650 175 779 114" class="line" marker-end="url(#td-drive-arrow)"></path>
+      <path d="M285 116 C390 155 660 158 779 114" class="line" marker-end="url(#td-drive-arrow)"></path>
+      <path d="M410 115 C488 140 665 142 779 114" class="line" marker-end="url(#td-drive-arrow)"></path>
+      <path d="M535 114 C600 128 690 128 779 114" class="line" marker-end="url(#td-drive-arrow)"></path>
+      <path d="M660 110 C694 112 727 112 750 98" class="line" marker-end="url(#td-drive-arrow)"></path>
+      <text x="470" y="188" text-anchor="middle" font-size="13" class="muted">all states update toward the final realised trip time</text>
+    </g>
+
+    <g>
+      <circle cx="160" cy="245" r="20" class="box"></circle>
+      <text x="160" y="250" text-anchor="middle" font-size="12">office</text>
+      <circle cx="285" cy="245" r="20" class="box"></circle>
+      <text x="285" y="250" text-anchor="middle" font-size="12">car</text>
+      <circle cx="410" cy="245" r="20" class="box"></circle>
+      <text x="410" y="250" text-anchor="middle" font-size="12">exit</text>
+      <circle cx="535" cy="245" r="20" class="amber"></circle>
+      <text x="535" y="250" text-anchor="middle" font-size="12">truck</text>
+      <circle cx="660" cy="245" r="20" class="box"></circle>
+      <text x="660" y="250" text-anchor="middle" font-size="12">street</text>
+      <rect x="750" y="225" width="58" height="40" rx="6" fill="#047857"></rect>
+      <text x="779" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">home</text>
+
+      <path d="M181 245 L263 245" class="strong-line" marker-end="url(#td-drive-strong)"></path>
+      <path d="M306 245 L388 245" class="strong-line" marker-end="url(#td-drive-strong)"></path>
+      <path d="M431 245 L513 245" class="strong-line" marker-end="url(#td-drive-strong)"></path>
+      <path d="M556 245 L638 245" class="strong-line" marker-end="url(#td-drive-strong)"></path>
+      <path d="M681 245 L748 245" class="strong-line" marker-end="url(#td-drive-strong)"></path>
+      <text x="470" y="307" text-anchor="middle" font-size="13" class="muted">each state updates toward the next prediction immediately</text>
+      <text x="535" y="214" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">surprise enters here</text>
+    </g>
+  </svg>
+  <figcaption>In MC, the correction for every earlier prediction is delayed until the trip outcome is known. In TD, each leg passes its surprise one step backward through the chain of predictions.</figcaption>
+</figure>
+
+### Why Bootstrap?
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Three questions about "a guess from a guess")</span></p>
+
+The TD target $R\_{t+1} + \gamma V(S\_{t+1})$ uses an *estimate* $V(S\_{t+1})$, not the truth $v\_\pi(S\_{t+1})$ — we are quite literally **learning a guess from a guess**. Three natural questions organise the rest of the prediction story:
+
+1. Why is bootstrapping **useful** computationally? *(advantages over DP and MC)*
+2. Is it **correct** — does TD converge? *(soundness)*
+3. With limited data, who is **faster**, TD or MC? *(efficiency)*
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Advantage over DP — no model required)</span></p>
+
+DP requires the **full model** $p(s', r \mid s, a)$ to compute its expected backup. TD requires only **sampled transitions** $(S\_t, R\_{t+1}, S\_{t+1})$. So TD works in *any* environment we can *interact* with, even when we cannot *model* it.
+
+The mechanism is the **sample backup**: TD replaces DP's full-expectation backup by a single observed transition that stands in for the whole expectation. One sampled successor does the job of the entire $\sum\_{s', r} p(s', r \mid s, a)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Advantage over MC — online and incremental)</span></p>
+
+MC must wait for the **end of the episode** to know $G\_t$; TD updates after a *single* transition using $(S\_t, R\_{t+1}, S\_{t+1})$. This matters because:
+
+* some applications have **very long episodes**, where end-of-episode updates are far too slow;
+* some are **continuing tasks** with *no* terminal state at all, so $G\_t$ is never observed;
+* some MC variants must **discount or discard** episodes containing exploratory actions, whereas TD just uses every transition.
+
+In short, **every transition is a learning opportunity** — TD is the natural fit for streaming, online data.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(TD(0) prediction convergence)</span></p>
+
+For a fixed policy $\pi$, in the **tabular** case:
+
+* with a **small constant** $\alpha$, TD(0) converges *in the mean* to $v\_\pi$;
+* with a **diminishing** $\alpha\_t$ satisfying the standard stochastic-approximation conditions $\sum\_t \alpha\_t = \infty$ and $\sum\_t \alpha\_t^2 < \infty$, TD(0) converges to $v\_\pi$ *with probability 1*.
+
+So bootstrapping is a **convergent** prediction method. The proof is technical (it belongs to stochastic-approximation theory), but the takeaway is simple: learning a guess from a guess is *sound*.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Who learns faster?)</span></p>
+
+Both MC and TD converge asymptotically to $v\_\pi$ for a fixed policy, and **no general theorem says one is always faster**. Even *defining* "faster" rigorously is subtle — it tangles together bias, variance, step size, and non-stationarity. But **empirically**, on stochastic problems, TD often reduces error faster than constant-$\alpha$ MC. The intuition: the TD target has *lower variance* (it depends on one random transition, not a whole random trajectory), at the cost of some *bias* (it depends on the current estimate $V$).
+
+</div>
+
+### The Random-Walk Example
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 150" role="img" aria-label="Five-state random walk Markov reward process">
+    <rect x="40" y="55" width="50" height="50" rx="6" fill="#64748b"></rect>
+    <text x="65" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">0</text>
+    <circle cx="170" cy="80" r="26" class="box"></circle>
+    <text x="170" y="86" text-anchor="middle" font-size="16" font-weight="700">A</text>
+    <circle cx="280" cy="80" r="26" class="box"></circle>
+    <text x="280" y="86" text-anchor="middle" font-size="16" font-weight="700">B</text>
+    <circle cx="390" cy="80" r="26" class="accent"></circle>
+    <text x="390" y="86" text-anchor="middle" font-size="16" font-weight="700">C</text>
+    <circle cx="500" cy="80" r="26" class="box"></circle>
+    <text x="500" y="86" text-anchor="middle" font-size="16" font-weight="700">D</text>
+    <circle cx="610" cy="80" r="26" class="box"></circle>
+    <text x="610" y="86" text-anchor="middle" font-size="16" font-weight="700">E</text>
+    <rect x="670" y="55" width="50" height="50" rx="6" fill="#047857"></rect>
+    <text x="695" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">1</text>
+
+    <line x1="144" y1="80" x2="92" y2="80" class="line"></line>
+    <line x1="196" y1="80" x2="254" y2="80" class="line"></line>
+    <line x1="306" y1="80" x2="364" y2="80" class="line"></line>
+    <line x1="416" y1="80" x2="474" y2="80" class="line"></line>
+    <line x1="526" y1="80" x2="584" y2="80" class="line"></line>
+    <line x1="636" y1="80" x2="668" y2="80" class="line"></line>
+    <text x="390" y="135" text-anchor="middle" font-size="13" class="muted">start</text>
+  </svg>
+  <figcaption>Five nonterminal states $A, B, C, D, E$. Every episode starts at $C$; each step goes left or right with probability $1/2$. Reward $+1$ only on terminating to the <em>right</em>, $0$ otherwise; undiscounted episodic ($\gamma = 1$).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Random walk — true values)</span></p>
+
+Because $\gamma = 1$ and the only nonzero reward is $+1$ on terminating to the right, the value of a state equals the **probability of eventually exiting on the right**, which for a symmetric walk is linear in position:
+
+$$
+v(A) = \tfrac{1}{6}, \quad v(B) = \tfrac{2}{6}, \quad v(C) = \tfrac{3}{6}, \quad v(D) = \tfrac{4}{6}, \quad v(E) = \tfrac{5}{6}.
+$$
+
+The estimates are initialised to $V(s) = 0.5$ for all states (correct only for the centre $C$).
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What the experiments show)</span></p>
+
+* **TD propagates information one step at a time.** After a *single* episode, only one entry of $V$ has changed — the surprise reaches the directly adjacent state first and ripples outward over subsequent episodes. After 100 episodes the estimates closely track the true line.
+* **Constant $\alpha$ never fully settles.** With a fixed step size, $V$ keeps fluctuating around the truth indefinitely (it tracks rather than converges pointwise) — this is the price of online responsiveness.
+* **TD beats MC across step sizes.** Averaging RMS error over states and many seeds, TD reduces error faster than constant-$\alpha$ MC over a wide range of $\alpha$ — a concrete instance of the variance advantage.
+
+</div>
+
+### Online vs Batch Updating
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(From online updates to batch updates)</span></p>
+
+So far updates are **online**: each increment is applied immediately, so $V$ changes between transitions. To compare MC and TD *cleanly* — independent of step-size and update-order artefacts — consider **batch** updating instead:
+
+* freeze $V$;
+* walk through every transition $(S\_t, R\_{t+1}, S\_{t+1})$ in a fixed dataset $\mathcal{D}$, accumulating $\Delta\_t = \alpha\,[\,\text{target}\_t - V(S\_t)\,]$;
+* apply the *summed* increment once, then repeat the sweep to convergence.
+
+The only difference between the two methods is again the target: **batch MC** uses $G\_t$; **batch TD(0)** uses $R\_{t+1} + \gamma V(S\_{t+1})$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Batch MC and batch TD have different fixed points)</span></p>
+
+For small enough $\alpha$, batch TD(0) and batch MC each converge to a **unique fixed point**, independent of $\alpha$. But on the *same* dataset these are **different** fixed points.
+
+The reason is the per-step target: batch MC drives $V$ toward $G\_t$ (the full sample return), while batch TD(0) drives $V$ toward $R\_{t+1} + \gamma V(S\_{t+1})$ (the one-step Bellman backup). Identical data, different notion of "best fit."
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(What should $V(A)$ be?)</span></p>
+
+Eight observed episodes ($\gamma = 1$):
+
+$$
+A, 0, B, 0 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 0.
+$$
+
+Everyone agrees on $B$: it was visited 8 times and the return was $1$ in 6 of them, so
+
+$$
+V(B) = \tfrac{6}{8} = \tfrac{3}{4}.
+$$
+
+But what is $V(A)$? State $A$ was visited exactly once, in the episode $A, 0, B, 0$. There are **two reasonable answers**.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Two reasonable answers for $V(A)$)</span></p>
+
+* **Batch MC.** Asks *what returns were observed after visiting $A$?* Only one return: $G = 0$. So batch MC drives $V(A) \to 0$. This **minimises mean-square error on the observed data** — it fits the past perfectly (zero training error).
+* **Batch TD.** Asks *what one-step transition was observed from $A$?* Always $A \xrightarrow{0} B$. So batch TD enforces $V(A) = 0 + V(B) = \tfrac{3}{4}$. This is the answer an **exact solution on the inferred Markov model** would give.
+
+Which is "right"? MC fits the past data perfectly; TD generalises via the **Markov structure** of the data. On a Markov process, TD's answer is usually the better predictor of *future* returns — which is what we actually care about.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 340" role="img" aria-label="Batch Monte Carlo fits observed returns while batch TD solves the empirical Markov model">
+    <defs>
+      <marker id="td-batch-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-batch-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <rect x="40" y="48" width="235" height="235" rx="8" class="box"></rect>
+    <text x="158" y="82" text-anchor="middle" font-size="16" font-weight="700">Observed data</text>
+    <circle cx="105" cy="150" r="24" class="accent"></circle>
+    <text x="105" y="156" text-anchor="middle" font-size="16" font-weight="700">A</text>
+    <circle cx="210" cy="150" r="24" class="box"></circle>
+    <text x="210" y="156" text-anchor="middle" font-size="16" font-weight="700">B</text>
+    <path d="M129 150 L183 150" class="strong-line" marker-end="url(#td-batch-strong)"></path>
+    <text x="157" y="137" text-anchor="middle" font-size="13">r=0</text>
+    <text x="158" y="210" text-anchor="middle" font-size="13" class="muted">B returns: six 1s, two 0s</text>
+    <text x="158" y="235" text-anchor="middle" font-size="13" class="muted">so V(B) = 3/4</text>
+
+    <rect x="335" y="48" width="210" height="235" rx="8" class="amber"></rect>
+    <text x="440" y="82" text-anchor="middle" font-size="16" font-weight="700">Batch MC</text>
+    <text x="440" y="122" text-anchor="middle" font-size="13">fit returns seen after A</text>
+    <rect x="380" y="152" width="120" height="56" rx="7" fill="#ffffff" stroke="#b45309"></rect>
+    <text x="440" y="176" text-anchor="middle" font-size="14" font-weight="700">only G(A)=0</text>
+    <text x="440" y="196" text-anchor="middle" font-size="13">V(A) -> 0</text>
+    <text x="440" y="243" text-anchor="middle" font-size="13" class="muted">best fit to this sample</text>
+
+    <rect x="610" y="48" width="210" height="235" rx="8" class="green"></rect>
+    <text x="715" y="82" text-anchor="middle" font-size="16" font-weight="700">Batch TD</text>
+    <text x="715" y="122" text-anchor="middle" font-size="13">fit one-step model</text>
+    <circle cx="675" cy="170" r="21" fill="#ffffff" stroke="#047857" stroke-width="2"></circle>
+    <text x="675" y="176" text-anchor="middle" font-size="14" font-weight="700">A</text>
+    <circle cx="755" cy="170" r="21" fill="#ffffff" stroke="#047857" stroke-width="2"></circle>
+    <text x="755" y="176" text-anchor="middle" font-size="14" font-weight="700">B</text>
+    <path d="M697 170 L732 170" stroke="#047857" stroke-width="3" fill="none" marker-end="url(#td-batch-strong)"></path>
+    <text x="715" y="219" text-anchor="middle" font-size="13">V(A) = 0 + V(B)</text>
+    <text x="715" y="241" text-anchor="middle" font-size="13" font-weight="700">V(A) -> 3/4</text>
+
+    <path d="M275 165 L332 165" class="line" marker-end="url(#td-batch-arrow)"></path>
+    <path d="M545 165 L607 165" class="line" marker-end="url(#td-batch-arrow)"></path>
+  </svg>
+  <figcaption>Batch MC treats the one return following $A$ as the target, so it memorises $V(A)=0$. Batch TD treats the observed transition $A \to B$ as evidence about the Markov structure, so it backs up from the learned value of $B$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Batch TD computes the certainty-equivalence estimate)</span></p>
+
+Build the **maximum-likelihood Markov reward process** from the data:
+
+$$
+\hat{p}(i \to j) = \text{fraction of observed transitions from } i \text{ that go to } j, \qquad \hat{r}(i \to j) = \text{average reward on those transitions.}
+$$
+
+The **certainty-equivalence estimate** treats $(\hat{p}, \hat{r})$ as if it were the true model and solves the Bellman equations *exactly* on it. The (perhaps surprising) fact:
+
+> Under batch updating, **TD(0) converges to the certainty-equivalence estimate**.
+
+So batch TD is implicitly doing **model estimation $+$ planning** — without ever building the model explicitly.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why not just compute certainty equivalence directly?)</span></p>
+
+Because it does not scale. For $N = \lvert\mathcal{S}\rvert$ states, forming the certainty-equivalence estimate directly costs
+
+* $O(N^2)$ memory to store $\hat{p}$, and
+* $O(N^3)$ to solve the Bellman equations with generic methods.
+
+TD approximates the *same* answer with only $O(N)$ memory (just $V$) and repeated sweeps over experience (or streaming online updates). On large state spaces, **TD is the only feasible way to approximate the certainty-equivalence value function** — this is a large part of why bootstrapping is so valuable in practice.
+
+</div>
+
+### From Prediction to Control
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Control with TD — GPI once more)</span></p>
+
+Control still follows **Generalised Policy Iteration**: evaluate the current policy, improve it toward greediness, repeat. With TD, the twist is that **evaluation and improvement are interleaved at the finest grain** — updates happen step-by-step *within* each episode, and the policy changes as soon as the value table changes.
+
+As in model-free MC control, we cannot improve a policy from $V$ alone without a model, so we learn **action values** $Q(s, a)$ instead. Everything that follows is "TD(0), but on $Q$."
+
+</div>
+
+### Sarsa: On-Policy TD Control
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sarsa update)</span></p>
+
+Treat the trajectory as alternating state–action pairs $S\_t, A\_t, R\_{t+1}, S\_{t+1}, A\_{t+1}, \dots$ and apply the TD(0) idea to each pair as though it were one enlarged "state":
+
+$$
+Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma\, Q(S_{t+1}, A_{t+1})}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].
+$$
+
+The update uses the quintuple $(S\_t, A\_t, R\_{t+1}, S\_{t+1}, A\_{t+1})$ — which spells the name **Sarsa**. Crucially, $A\_{t+1}$ is the action *actually taken* under the current policy (this is what makes Sarsa **on-policy**). If $S\_{t+1}$ is terminal, the TD target is just $R\_{t+1}$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Sarsa — on-policy TD control)</span></p>
+
+**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$.
+
+Initialise $Q(s, a)$ arbitrarily, with $Q(\text{terminal}, \cdot) = 0$.
+
+Loop for each episode:
+
+1. Initialise $S$; choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q$.
+2. Loop for each step of the episode:
+   * Take action $A$; observe $R, S'$.
+   * **If $S'$ is terminal:** $Q(S, A) \leftarrow Q(S, A) + \alpha\,[\,R - Q(S, A)\,]$, then break.
+   * **Else:** choose $A'$ from $S'$ using the $\varepsilon$-greedy policy; update
+     $$
+     Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma Q(S', A') - Q(S, A)\,\bigr];
+     $$
+     then $S \leftarrow S'$, $A \leftarrow A'$.
+
+Each TD update *evaluates* the current policy a little, and each $\varepsilon$-greedy action choice *improves* the behaviour a little — GPI at the granularity of a single transition.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Sarsa convergence — GLIE)</span></p>
+
+Convergence to the optimal action-value function needs **two simultaneous conditions**:
+
+* **exploration:** every $(s, a)$ pair is visited infinitely often;
+* **greedy in the limit:** the policy becomes greedy with respect to $Q$ as $t \to \infty$.
+
+Any schedule satisfying both is called **GLIE** (*Greedy in the Limit with Infinite Exploration*); a concrete recipe is $\varepsilon$-greedy with $\varepsilon\_t = 1/t$. Under GLIE *and* the standard step-size conditions, tabular Sarsa converges to the optimal action-value function $q\_\ast$ and an optimal policy.
+
+</div>
+
+### Q-Learning: Off-Policy TD Control
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From Sarsa to Q-learning)</span></p>
+
+Compare the two targets:
+
+$$
+\text{Sarsa: } R_{t+1} + \gamma\, Q(S_{t+1}, \underbrace{A_{t+1}}_{\text{action taken}}), \qquad \text{Q-learning: } R_{t+1} + \gamma \max_a Q(S_{t+1}, a).
+$$
+
+Sarsa learns the value of the **policy it actually follows**. Q-learning learns the value of the **greedy policy** — regardless of which action it actually takes next. This is what makes Q-learning **off-policy**:
+
+* the **behaviour** policy is any $\varepsilon$-greedy policy (it must visit all $(s, a)$);
+* the **target** policy is greedy with respect to the current $Q$;
+* the two need not match.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 360" role="img" aria-label="Sarsa backs up the actually selected next action while Q-learning backs up the maximum next action">
+    <defs>
+      <marker id="td-control-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-control-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <text x="215" y="48" text-anchor="middle" font-size="17" font-weight="700">Sarsa: use the action actually taken</text>
+    <text x="645" y="48" text-anchor="middle" font-size="17" font-weight="700">Q-learning: use the greedy action</text>
+
+    <g>
+      <circle cx="92" cy="170" r="27" class="box"></circle>
+      <text x="92" y="176" text-anchor="middle" font-size="14" font-weight="700">S_t</text>
+      <circle cx="225" cy="170" r="27" class="box"></circle>
+      <text x="225" y="176" text-anchor="middle" font-size="14" font-weight="700">S'</text>
+      <path d="M120 170 L197 170" class="strong-line" marker-end="url(#td-control-strong)"></path>
+      <rect x="138" y="128" width="44" height="25" rx="5" class="amber"></rect>
+      <text x="160" y="146" text-anchor="middle" font-size="12">R</text>
+
+      <circle cx="315" cy="105" r="22" class="box"></circle>
+      <text x="315" y="110" text-anchor="middle" font-size="12">left</text>
+      <circle cx="315" cy="170" r="22" class="amber"></circle>
+      <text x="315" y="175" text-anchor="middle" font-size="12">actual</text>
+      <circle cx="315" cy="235" r="22" class="box"></circle>
+      <text x="315" y="240" text-anchor="middle" font-size="12">right</text>
+      <path d="M252 170 L291 170" stroke="#b45309" stroke-width="3" fill="none" marker-end="url(#td-control-arrow)"></path>
+      <text x="215" y="282" text-anchor="middle" font-size="13" class="muted">target uses Q(S', A') from the behavior policy</text>
+    </g>
+
+    <line x1="430" y1="72" x2="430" y2="300" stroke="#dbe1ee" stroke-width="2"></line>
+
+    <g>
+      <circle cx="522" cy="170" r="27" class="box"></circle>
+      <text x="522" y="176" text-anchor="middle" font-size="14" font-weight="700">S_t</text>
+      <circle cx="655" cy="170" r="27" class="box"></circle>
+      <text x="655" y="176" text-anchor="middle" font-size="14" font-weight="700">S'</text>
+      <path d="M550 170 L627 170" class="strong-line" marker-end="url(#td-control-strong)"></path>
+      <rect x="568" y="128" width="44" height="25" rx="5" class="amber"></rect>
+      <text x="590" y="146" text-anchor="middle" font-size="12">R</text>
+
+      <circle cx="745" cy="105" r="22" class="box"></circle>
+      <text x="745" y="110" text-anchor="middle" font-size="12">left</text>
+      <circle cx="745" cy="170" r="22" class="box"></circle>
+      <text x="745" y="175" text-anchor="middle" font-size="12">actual</text>
+      <circle cx="745" cy="235" r="22" class="green"></circle>
+      <text x="745" y="240" text-anchor="middle" font-size="12">max</text>
+      <path d="M682 170 C710 173 719 208 729 219" stroke="#047857" stroke-width="3" fill="none" marker-end="url(#td-control-arrow)"></path>
+      <text x="645" y="282" text-anchor="middle" font-size="13" class="muted">target uses max_a Q(S', a), even if behavior picked another action</text>
+    </g>
+  </svg>
+  <figcaption>Sarsa and Q-learning observe the same transition. They differ only in the next-state action used inside the TD target: Sarsa follows the sampled behaviour action $A'$, while Q-learning backs up the greedy action value.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Q-learning update)</span></p>
+
+$$
+Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma \max_a Q(S_{t+1}, a)}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].
+$$
+
+It uses the quadruple $(S\_t, A\_t, R\_{t+1}, S\_{t+1})$ — there is **no $A\_{t+1}$**. The term $\max\_a Q(S\_{t+1}, a)$ is the best possible value at the next state; if $S\_{t+1}$ is terminal, $\max\_a Q(S\_{t+1}, a) \doteq 0$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Q-learning — off-policy TD control)</span></p>
+
+**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$. Initialise $Q(s, a)$ arbitrarily, with $Q(\text{terminal}, \cdot) = 0$.
+
+Loop for each episode:
+
+1. Initialise $S$.
+2. Loop for each step of the episode, until $S$ is terminal:
+   * Choose $A$ from $S$ using a policy derived from $Q$ (e.g. $\varepsilon$-greedy).
+   * Take action $A$; observe $R, S'$.
+   * $Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma \max\_a Q(S', a) - Q(S, A)\,\bigr]$.
+   * $S \leftarrow S'$.
+
+Only *one* action is sampled from the next state, but the target uses the **max** over actions. This mixed pattern — **sample the successor, maximise over actions** — is the heart of model-free greedy control. Under the standard step-size conditions and visiting all $(s, a)$ infinitely often, $Q \to q\_\ast$ with probability 1, *regardless of how exploratory the behaviour policy is.*
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 230" role="img" aria-label="Cliff walking gridworld with safe and risky paths">
+    <rect x="120" y="40" width="520" height="120" rx="6" fill="none" stroke="#64748b" stroke-width="2"></rect>
+    <rect x="170" y="120" width="420" height="40" fill="#fef2f2" stroke="#b91c1c"></rect>
+    <text x="380" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">The Cliff (R = -100)</text>
+    <rect x="120" y="120" width="50" height="40" fill="#ecfdf5" stroke="#047857"></rect>
+    <text x="145" y="145" text-anchor="middle" font-size="15" font-weight="700">S</text>
+    <rect x="590" y="120" width="50" height="40" fill="#ecfdf5" stroke="#047857"></rect>
+    <text x="615" y="145" text-anchor="middle" font-size="15" font-weight="700">G</text>
+
+    <path d="M145 120 L145 65 L615 65 L615 120" class="strong-line"></path>
+    <path d="M150 150 L585 150" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5" fill="none"></path>
+
+    <line x1="200" y1="200" x2="240" y2="200" class="strong-line"></line>
+    <text x="250" y="205" font-size="13" class="muted">Sarsa: safer detour</text>
+    <line x1="430" y1="200" x2="470" y2="200" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"></line>
+    <text x="480" y="205" font-size="13" class="muted">Q-learning: optimal/risky edge</text>
+  </svg>
+  <figcaption>Cliff-walking gridworld: start $S$ bottom-left, goal $G$ bottom-right, reward $-1$ per step, and $-100$ (with reset to $S$) for stepping into the cliff. Undiscounted episodic, $\gamma = 1$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cliff walking — on-policy vs off-policy)</span></p>
+
+Q-learning learns the values of the *greedy* (optimal) path that runs right along the cliff edge. But its $\varepsilon$-greedy *behaviour* occasionally slips off the cliff, so its **online return is poor**. Sarsa learns the value of the $\varepsilon$-greedy policy *itself* — which includes the chance of falling — so it prefers the **safer detour** one row up, and earns a **higher online return**.
+
+This crystallises the distinction:
+
+* **On-policy** methods (Sarsa) evaluate *what they actually do*, exploration included.
+* **Off-policy** methods (Q-learning) evaluate *what they would do greedily*, ignoring exploration.
+
+Online performance reflects the former — which is why Sarsa looks better *during learning* even though Q-learning has learned the truly optimal path.
+
+</div>
+
+### Maximization Bias and Double Q-Learning
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A subtle problem in Q-learning)</span></p>
+
+The Q-learning target $R\_{t+1} + \gamma \max\_a Q(S\_{t+1}, a)$ uses the *same* estimates $Q$ to do two jobs at once: **select** the action with the largest estimate, and **evaluate** that selected action. This double-duty introduces **maximization bias** — even if every individual estimate is unbiased, the maximum is biased *upward*:
+
+$$
+\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_a \mathbb{E}\bigl[Q(s, a)\bigr].
+$$
+
+In particular, if $\mathbb{E}[Q(s, a)] = q(s, a)$, then $\mathbb{E}[\max\_a Q(s, a)] \ge \max\_a q(s, a)$ — Q-learning is systematically optimistic about the value of the best action.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Why the max overestimates)</span></p>
+
+Let $b^\ast \in \arg\max\_b \mathbb{E}[Q(s, b)]$. Since the maximum is at least as large as any particular action value,
+
+$$
+\max_a Q(s, a) \;\ge\; Q(s, b^\ast).
+$$
+
+Taking expectations on both sides,
+
+$$
+\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \mathbb{E}[Q(s, b^\ast)].
+$$
+
+By the definition of $b^\ast$, $\mathbb{E}[Q(s, b^\ast)] = \max\_b \mathbb{E}[Q(s, b)]$, hence
+
+$$
+\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_b \mathbb{E}[Q(s, b)].
+$$
+
+So taking a maximum over *noisy* estimates injects optimism — the inequality is strict whenever the estimates have genuine variance and are not all maximised at the same action.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition — the max picks positive errors)</span></p>
+
+Suppose two actions are *truly equally good*, $q(s, a\_1) = q(s, a\_2) = 0$, but our estimates are noisy,
+
+$$
+Q(s, a_1) = q(s, a_1) + \text{error}_1, \qquad Q(s, a_2) = q(s, a_2) + \text{error}_2,
+$$
+
+with $\mathbb{E}[\text{error}\_1] = \mathbb{E}[\text{error}\_2] = 0$. Even so, $\max\lbrace Q(s, a\_1), Q(s, a\_2)\rbrace$ tends to select whichever estimate happens to have the **more positive error**.
+
+The key realisation: each estimate may be unbiased, but the *selected* one is **not random** — it is, by construction, the one that currently looks best. In Q-learning the same table $Q$ both selects $A^\ast = \arg\max\_a Q(S\_{t+1}, a)$ and evaluates $Q(S\_{t+1}, A^\ast)$, so the positive selection error is preserved straight into the TD target.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 350" role="img" aria-label="Maximization bias picks the most positive noisy estimate; Double Q-learning separates selection from evaluation">
+    <defs>
+      <marker id="td-bias-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+      </marker>
+      <marker id="td-bias-strong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#2c3e94"></path>
+      </marker>
+    </defs>
+
+    <text x="215" y="48" text-anchor="middle" font-size="17" font-weight="700">Ordinary max: select and evaluate with Q</text>
+    <text x="645" y="48" text-anchor="middle" font-size="17" font-weight="700">Double Q: split the two jobs</text>
+
+    <g>
+      <line x1="75" y1="205" x2="355" y2="205" stroke="#64748b" stroke-width="2"></line>
+      <text x="64" y="210" text-anchor="end" font-size="12" class="muted">true 0</text>
+      <rect x="118" y="170" width="48" height="35" class="box"></rect>
+      <text x="142" y="228" text-anchor="middle" font-size="12">a1</text>
+      <rect x="206" y="112" width="48" height="93" class="green"></rect>
+      <text x="230" y="228" text-anchor="middle" font-size="12">a2</text>
+      <rect x="294" y="190" width="48" height="15" class="box"></rect>
+      <text x="318" y="228" text-anchor="middle" font-size="12">a3</text>
+      <text x="230" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">largest noisy estimate</text>
+      <path d="M230 108 L230 112" class="line" marker-end="url(#td-bias-arrow)"></path>
+      <rect x="95" y="262" width="240" height="43" rx="7" class="amber"></rect>
+      <text x="215" y="288" text-anchor="middle" font-size="13" font-weight="700">positive noise enters the target</text>
+    </g>
+
+    <line x1="430" y1="72" x2="430" y2="312" stroke="#dbe1ee" stroke-width="2"></line>
+
+    <g>
+      <rect x="490" y="94" width="135" height="64" rx="8" class="accent"></rect>
+      <text x="557" y="121" text-anchor="middle" font-size="15" font-weight="700">Q_1</text>
+      <text x="557" y="143" text-anchor="middle" font-size="12">select argmax</text>
+      <rect x="665" y="94" width="135" height="64" rx="8" class="green"></rect>
+      <text x="732" y="121" text-anchor="middle" font-size="15" font-weight="700">Q_2</text>
+      <text x="732" y="143" text-anchor="middle" font-size="12">evaluate selected</text>
+      <path d="M626 126 L662 126" class="strong-line" marker-end="url(#td-bias-strong)"></path>
+      <text x="645" y="185" text-anchor="middle" font-size="13" class="muted">selection noise and evaluation noise are independent</text>
+
+      <rect x="500" y="222" width="290" height="62" rx="8" class="box"></rect>
+      <text x="645" y="247" text-anchor="middle" font-size="13">target uses Q_2(S', argmax_a Q_1(S',a))</text>
+      <text x="645" y="269" text-anchor="middle" font-size="13">or the symmetric update with Q_1 and Q_2 swapped</text>
+      <path d="M732 159 L732 220" class="line" marker-end="url(#td-bias-arrow)"></path>
+    </g>
+  </svg>
+  <figcaption>The max operator tends to choose the estimate with the most favourable noise. Double Q-learning reduces that optimism by using one table to choose the action and the other table to evaluate it.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Double learning — separate selection from evaluation)</span></p>
+
+Maintain **two** independent action-value estimates $Q\_1(s, a)$ and $Q\_2(s, a)$. Use one to *select* the maximising action and the *other* to *evaluate* its value:
+
+$$
+A^\ast = \arg\max_a Q_1(s, a), \qquad \text{value} = Q_2(s, A^\ast).
+$$
+
+Because the noise in $Q\_1$ (which made the selection) is **independent** of the noise in $Q\_2$ (which does the evaluation), the upward bias is removed in expectation. Swapping the roles symmetrically yields a second unbiased estimate.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Double Q-learning)</span></p>
+
+**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$. Initialise $Q\_1(s, a)$ and $Q\_2(s, a)$ arbitrarily, with $Q\_1(\text{terminal}, \cdot) = Q\_2(\text{terminal}, \cdot) = 0$.
+
+Loop for each episode, and for each step:
+
+1. Choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q\_1 + Q\_2$; take $A$, observe $R, S'$.
+2. With probability $\tfrac{1}{2}$, **update $Q\_1$** (select with $Q\_1$, evaluate with $Q\_2$):
+   $$
+   Q_1(S, A) \leftarrow Q_1(S, A) + \alpha\Bigl[\,R + \gamma\, Q_2\bigl(S', \arg\max_a Q_1(S', a)\bigr) - Q_1(S, A)\,\Bigr].
+   $$
+3. **Otherwise update $Q\_2$** symmetrically (select with $Q\_2$, evaluate with $Q\_1$):
+   $$
+   Q_2(S, A) \leftarrow Q_2(S, A) + \alpha\Bigl[\,R + \gamma\, Q_1\bigl(S', \arg\max_a Q_2(S', a)\bigr) - Q_2(S, A)\,\Bigr].
+   $$
+4. $S \leftarrow S'$ (and at a terminal $S'$ the target is just $R$).
+
+The behaviour policy is $\varepsilon$-greedy with respect to $Q\_1 + Q\_2$. The cost is a **$\times 2$ memory** footprint; the per-step computation is the same as ordinary Q-learning.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Maximization bias — Q-learning vs Double Q-learning)</span></p>
+
+From state $A$: going **right** terminates immediately with reward $0$ (this is optimal). Going **left** leads to state $B$, from which $10$ different actions all give $\mathcal{N}(-0.1,\, 1)$ rewards — *negative in expectation*. The true optimum is therefore "always go right"; the only reason to ever go left is forced $\varepsilon$-exploration, whose floor is $\varepsilon/2 = 5\%$.
+
+* **Q-learning is fooled:** the noisy $\mathcal{N}(-0.1, 1)$ rewards occasionally look positive, maximization bias inflates the value of going left, and the agent picks `left` about $65\%$ of the time early in training.
+* **Double Q-learning** decouples selection from evaluation and stays close to the optimal $5\%$ throughout.
+
+This is the cleanest demonstration that overestimation is not a cosmetic issue — it actively corrupts the learned policy.
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Method map — TD at a glance)</span></p>
+
+| Method | Update target | Notes |
+| :----- | :------------ | :---- |
+| TD(0) prediction | $R\_{t+1} + \gamma V(S\_{t+1})$ | sample $+$ bootstrap, online |
+| Sarsa | $R\_{t+1} + \gamma Q(S\_{t+1}, A\_{t+1})$ | on-policy |
+| Q-learning | $R\_{t+1} + \gamma \max\_a Q(S\_{t+1}, a)$ | off-policy, learns greedy target |
+| Double Q-learning | decouple selection & evaluation across $Q\_1, Q\_2$ | removes maximization bias |
+
+Every row is the same skeleton $Q \leftarrow Q + \alpha\,[\,\text{target} - Q\,]$; only the target changes.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — Temporal-Difference Learning)</span></p>
+
+* **TD = sampling $+$ bootstrapping.** The defining hybrid of Monte Carlo (learn from raw experience) and Dynamic Programming (update toward an estimate built from estimates).
+* **The TD error is the central object.** $\delta\_t = R\_{t+1} + \gamma V(S\_{t+1}) - V(S\_t)$; nearly every later algorithm is "define a TD error, then step on it."
+* **Why TD is useful:** no model needed (vs DP), online and incremental (vs MC), often more data-efficient, and batch TD equals **certainty equivalence** on the empirical Markov model.
+* **Control via action values.** **Sarsa** (on-policy) learns the value of the behaviour it follows, exploration included; **Q-learning** (off-policy) learns the value of the greedy target regardless of behaviour; **Double Q-learning** decouples selection from evaluation to remove maximization bias.
+* **Final message.** TD methods are not merely RL algorithms — they are general-purpose tools for *learning long-term predictions from other predictions* in dynamical systems.
+
+**Bridge ahead.** TD(0) is the shallowest possible bootstrap (one step) and MC the deepest (full return). The next step unifies them along the depth axis with **$n$-step TD** and **TD($\lambda$)**, and along the width axis with **function approximation**, carrying the TD-error machinery developed here into the function-approximation and deep-RL settings.
 
 </div>
