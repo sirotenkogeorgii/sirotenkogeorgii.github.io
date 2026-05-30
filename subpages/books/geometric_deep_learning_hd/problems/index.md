@@ -692,3 +692,294 @@ So the abstract construction here (Leibniz $\Rightarrow$ vector space) and the c
 </figure>
 
 </details>
+
+---
+
+## Exercise Sheet 2 — Generalized inverses, SVD, interpolation, and semidefinite projections
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 1</span><span class="math-callout__name">(Dualizing orthogonal partial inverses)</span></p>
+
+Consider the first relation of Proposition A.4(a), i.e. the equation
+
+$$
+\widecheck{A^{-}} = \widecheck{A}^{+}.
+$$
+
+**(i)** Check that the linear mappings on both sides are defined on the same space.
+
+**(ii)** Compute the explicit expression of the operator $\widecheck{A^{-}}$, i.e. dualize the orthogonal left-inverse of $A$, based on the equation
+
+$$
+\langle \widecheck{x}, A^{-}y\rangle = \langle \widecheck{A^{-}}\widecheck{x}, y\rangle,
+\qquad
+\forall\, \widecheck{x} \in \widecheck{\mathcal X},\ y \in \mathcal Y.
+\tag{0.1}
+$$
+
+**(iii)** Compute the explicit expression of the orthogonal right-inverse $\widecheck A^{+}$ of the dual operator $\widecheck A$ of $A$ through "symbol substitution": turn the given expression for the mapping $A \mapsto A^{+}$ (Definition A.3(b)) into the desired mapping $\widecheck A \mapsto \widecheck A^{+}$ by taking into account the spaces $\mathcal X, \mathcal Y$ of $A \in \mathcal L(\mathcal X,\mathcal Y)$ and the mapping $L^{-1} : \widecheck{\mathcal X} \to \mathcal X$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 2</span><span class="math-callout__name">(SVD factorization and pseudo-inverse)</span></p>
+
+The **singular value decomposition (SVD)** of a matrix $A \in \mathcal L(\mathbb R^n, \mathbb R^m) \cong \mathbb R^{m \times n}$ with $\operatorname{rank}(A) = r$ reads
+
+$$
+A = U\Sigma V^{\top},
+\tag{0.2}
+$$
+
+with
+
+$$
+\begin{aligned}
+U &= (U_1, U_2) = (u_1, \dots, u_m) \in \mathrm O(m),
+&
+U^{\top}U &= UU^{\top} = I_m,
+&&\text{(0.3a)} \\
+V &= (V_1, V_2) = (v_1, \dots, v_n) \in \mathrm O(n),
+&
+V^{\top}V &= VV^{\top} = I_n,
+&&\text{(0.3b)}
+\end{aligned}
+$$
+
+such that
+
+$$
+U^{\top}AV =
+\begin{pmatrix}
+U_1^{\top}AV_1 & U_1^{\top}AV_2 \\
+U_2^{\top}AV_1 & U_2^{\top}AV_2
+\end{pmatrix}
+= \Sigma =
+\begin{pmatrix}
+\Sigma_r & 0_{r \times (n-r)} \\
+0_{(m-r) \times r} & 0_{(m-r) \times (n-r)}
+\end{pmatrix},
+\tag{0.4}
+$$
+
+and
+
+$$
+\Sigma_r = \operatorname{Diag}(\sigma_1, \dots, \sigma_r).
+\qquad
+\text{(singular values)}
+\tag{0.5}
+$$
+
+In particular, one has with
+
+$$
+\mathcal N(A) := \ker(A)
+\tag{0.6}
+$$
+
+$$
+\begin{aligned}
+\operatorname{span}\{v_1, \dots, v_r\} &= \mathcal N(A)^{\perp},
+&
+\operatorname{span}\{v_{r+1}, \dots, v_n\} &= \mathcal N(A),
+&&\text{(0.7a)} \\
+\operatorname{span}\{u_1, \dots, u_r\} &= \mathcal R(A),
+&
+\operatorname{span}\{u_{r+1}, \dots, u_m\} &= \mathcal R(A)^{\perp},
+&&\text{(0.7b)} \\
+V_1V_1^{\top} &= \Pi_{\mathcal N(A)^{\perp}},
+&
+V_2V_2^{\top} &= \Pi_{\mathcal N(A)},
+&&\text{(0.7c)} \\
+U_1U_1^{\top} &= \Pi_{\mathcal R(A)},
+&
+U_2U_2^{\top} &= \Pi_{\mathcal R(A)^{\perp}}.
+&&\text{(0.7d)}
+\end{aligned}
+$$
+
+**(i)** Use the SVD of $A$ and provide a factorization
+
+$$
+A = BC
+\tag{0.8}
+$$
+
+analogous to Eq. (A.18) of Definition A.5 (with interchanged roles of $A$ and $C$), i.e. with *injective* factor $B$ and *surjective* factor $C$, which is equivalent to $\operatorname{rank}(B) = \operatorname{rank}(C) = \operatorname{rank}(A) = r$.
+
+**(ii)** Compute the pseudo-inverse $A^{\dagger}$ as specified by Equation (A.18), assuming *self-duality*, i.e. the linear duality mappings associated with $B$ and $C$ are the unit matrices of appropriate dimensions.
+
+**(iii)** Interpret the resulting factorization of $A^{\dagger}$ based on your result of exercise 2 on sheet 1.
+
+**(iv)** Now take into account the duality mappings $L : \mathcal X \to \widecheck{\mathcal X}$ and $M : \mathcal Y \to \widecheck{\mathcal Y}$. Additionally, we define the latent space $\mathcal Z$,
+
+$$
+C \in \mathcal L(\mathcal X, \mathcal Z),
+\qquad
+B \in \mathcal L(\mathcal Z, \mathcal Y)
+\tag{0.9}
+$$
+
+and the duality mapping
+
+$$
+R : \mathcal Z \to \widecheck{\mathcal Z}.
+\tag{0.10}
+$$
+
+Compute the explicit expression of the generalized inverse $A^{\dagger}$.
+
+*Hint.* Apply the result of exercise 1 on this sheet.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3</span><span class="math-callout__name">(Interpolation property of $W_{\mathcal D}$)</span></p>
+
+Show that the operator $W_{\mathcal D}$ defined by Theorem 1.2 satisfies
+
+$$
+W_{\mathcal D}x_i = y_i,
+\tag{0.11}
+$$
+
+where $(x_i, y_i)$ is any fixed input-output pair in the data (training) set $\mathcal D$ which defines $W_{\mathcal D}$.
+
+*Hint.* Equations (A.42), (A.43) regarding the action of $W_{\mathcal D}$ on $x_i$; inspect the definition of the coefficients $G^{kl}$, $k,l \in [n]$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 4</span><span class="math-callout__name">(Projection onto the positive semidefinite cone)</span></p>
+
+Let $\mathbb S_{\succeq 0}^{n} \subset \mathbb R^{n \times n}$ denote the convex cone of symmetric and positive semidefinite matrices.
+
+**(i)** Let $\widetilde L \in \mathbb R^{n \times n}$. Prove that the orthogonal projection
+
+$$
+L := \Pi_{\mathbb S_{\succeq 0}^{n}}(\widetilde L)
+\tag{0.12}
+$$
+
+of $\widetilde L$ onto $\mathbb S_{\succeq 0}^{n} \subset \mathbb R^{n \times n}$ with respect to the canonical inner product $\langle A, B\rangle = \operatorname{tr}(A^{\top}B)$ is given by
+
+$$
+L = V\Lambda_{+}V^{\top}
+= V\operatorname{Diag}([\lambda_1]_{+}, \dots, [\lambda_n]_{+})V^{\top},
+\tag{0.13}
+$$
+
+where $\widetilde L = V\Lambda V^{\top} = V\operatorname{Diag}(\lambda_1, \dots, \lambda_n)V^{\top}$ is the spectral decomposition of $\widetilde L$ and the function $[\cdot]_{+} : \mathbb R \to \mathbb R_{\ge 0}$ maps negative numbers to $0$.
+
+*Hint.* Apply the *low-rank approximation theorem*: for any matrices $A, B \in \mathbb R^{m \times n}$, choosing $B$ as the best $k$-rank approximation of $A$ yields
+
+$$
+\lVert A - B\rVert_F^2 =
+\sum_{i=k+1}^{\operatorname{rank}(A)} \sigma_i^2,
+\tag{0.14}
+$$
+
+where $\sigma_i$, $i \in [r]$ are the singular values of $A$.
+
+**(ii)** Visualize the set
+
+$$
+\mathbb S_{\succeq 0}^{2} \subset \mathbb R^{2 \times 2}
+\tag{0.15}
+$$
+
+of all positive semidefinite $2 \times 2$ matrices, which have three degrees of freedom. Two natural options for a visualization are:
+
+**(a)** Use the vectors
+
+$$
+(L_{11}, L_{22}, L_{12})^{\top}
+\tag{0.16}
+$$
+
+in a bounded subset for representing corresponding matrices $L = (L_{ij})_{i,j \in [2]}$ and apply the definition $L \in \mathbb S_{\succeq 0}^{2}$ for determining which vectors represent matrices in $\mathbb S_{\succeq 0}^{2}$.
+
+**(b)** Exploit the mapping
+
+$$
+\exp_m : \mathbb S^{2} \to \mathbb S_{\succeq 0}^{2},
+\qquad
+L = \exp_m(S),
+\qquad
+S =
+\begin{pmatrix}
+S_{11} & S_{12} \\
+S_{12} & S_{22}
+\end{pmatrix}
+\tag{0.17}
+$$
+
+from the vector space of symmetric $2 \times 2$ matrices to $\mathbb S_{\succeq 0}^{2}$ given by
+
+$$
+\begin{aligned}
+L_{11}
+&= e^{\frac{1}{2}(S_{11}+S_{22})}
+\left(
+\frac{(S_{11}-S_{22})\sinh\left(\frac{1}{2}\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}\right)}
+{\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}}
++
+\cosh\left(\frac{1}{2}\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}\right)
+\right),
+&&\text{(0.18a)} \\
+L_{22}
+&= e^{\frac{1}{2}(S_{11}+S_{22})}
+\left(
+\frac{(S_{22}-S_{11})\sinh\left(\frac{1}{2}\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}\right)}
+{\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}}
++
+\cosh\left(\frac{1}{2}\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}\right)
+\right),
+&&\text{(0.18b)} \\
+L_{12}
+&=
+\frac{2e^{\frac{1}{2}(S_{11}+S_{22})}S_{12}\sinh\left(\frac{1}{2}\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}\right)}
+{\sqrt{4S_{12}^{2}+(S_{11}-S_{22})^{2}}},
+&&\text{(0.18c)}
+\end{aligned}
+$$
+
+and visualize the image of the unit ball $\mathbb B_1(0)$
+
+$$
+\mathbb R^3 \supset \mathbb B_1(0) \ni (S_{11}, S_{22}, S_{12})^{\top}
+\mapsto
+(L_{11}, L_{22}, L_{12})^{\top}.
+\tag{0.19}
+$$
+
+Do both visualizations show the same set?
+
+**(iii)** Consider the set of points in the 2D unit ball $\mathbb B_1(0) \subset \mathbb R^2$ (file: `UnitBallSamples.csv`) and their images (file: `UnitBallSamples-Transformed.csv`)
+
+$$
+\mathbb B_1(0) \ni x_i \mapsto \widetilde{x}_i = Lx_i,
+\qquad
+i \in [N]
+\tag{0.20}
+$$
+
+as depicted by Figure 1.
+
+**Figure 1.** Samples in the unit ball (left panel) mapped by an unknown linear transform (right panel).
+
+Estimate numerically the duality map $L \in \mathbb R^{2 \times 2}$ by solving a suitable optimization problem and taking into account the properties of $L$. A simple numerical method is projected gradient descent using the projection map from subtask (i). Use the initialization $L_{(0)} = \begin{pmatrix}0 & 0 \\ 0 & 0\end{pmatrix}$.
+
+*Hint.* Apply the derivative rules
+
+$$
+\begin{aligned}
+\partial_X \operatorname{tr}(XA) &= A^{\top},
+&&\text{(0.21a)} \\
+\partial_X \operatorname{tr}(X^{2}A) &= (XA + AX)^{\top}.
+&&\text{(0.21b)}
+\end{aligned}
+$$
+
+</div>
