@@ -29,7 +29,86 @@ Everything below is a consequence of that one phrase.
 
 </div>
 
-TODO: add visualization of initial topology
+<style>
+  .iwt-diagram {
+    max-width: 820px;
+    margin: 2.25rem auto;
+  }
+  .iwt-diagram svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line, #dbe1ee);
+    border-radius: 0.75rem;
+    background: var(--surface, #ffffff);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  }
+  .iwt-diagram text { font-family: inherit; fill: var(--text, #172033); }
+  .iwt-diagram .muted { fill: var(--muted, #64748b); }
+  /* themed container nodes: dark fill + light text in dark mode, and vice-versa */
+  .iwt-diagram .box { fill: var(--surface-muted, #f8fafc); stroke: var(--line, #dbe1ee); stroke-width: 1.5; }
+  /* highlight regions use theme-independent light fills, so they pop on either background */
+  .iwt-diagram .accent { fill: #e7edff; stroke: var(--accent, #1d4ed8); stroke-width: 1.6; }
+  .iwt-diagram .green  { fill: #e6f7ef; stroke: #059669; stroke-width: 1.6; }
+  .iwt-diagram .abstract { fill: #fff4e0; stroke: #d97706; stroke-width: 1.6; stroke-dasharray: 6 4; }
+  /* labels sitting on the light highlight fills get explicit dark colours (readable in both modes) */
+  .iwt-diagram .label-accent { fill: #1e3a8a; }
+  .iwt-diagram .label-green  { fill: #065f46; }
+  .iwt-diagram .label-abstract { fill: #92400e; }
+  .iwt-diagram .line { stroke: var(--muted, #64748b); stroke-width: 2; fill: none; }
+  .iwt-diagram .strong-line { stroke: var(--accent, #1d4ed8); stroke-width: 2.5; fill: none; }
+  .iwt-diagram .dashed { stroke: var(--accent, #1d4ed8); stroke-width: 2.5; fill: none; stroke-dasharray: 7 5; }
+  .iwt-diagram .arrowhead { fill: var(--muted, #64748b); }
+  .iwt-diagram .arrowhead-accent { fill: var(--accent, #1d4ed8); }
+</style>
+
+<figure class="iwt-diagram">
+  <svg viewBox="0 0 820 452" role="img" aria-label="The initial topology on a bare set X: open sets of the known targets Y_i pull back along the maps f_i to the open sets of X.">
+    <defs>
+      <marker id="iwt1-head" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L9,4 L0,8 Z" class="arrowhead-accent"></path>
+      </marker>
+    </defs>
+
+    <text x="40" y="38" font-size="19" font-weight="700">Initial topology: the opens of <tspan font-style="italic">X</tspan> are pulled back from the known targets</text>
+    <text x="40" y="62" font-size="13" class="muted">Matching colours = a target's open set and its preimage in <tspan font-style="italic">X</tspan>.</text>
+
+    <!-- the bare set X -->
+    <ellipse cx="205" cy="262" rx="170" ry="158" class="box"></ellipse>
+    <text x="205" y="138" text-anchor="middle" font-size="26" font-weight="700" font-style="italic">X</text>
+    <text x="205" y="162" text-anchor="middle" font-size="13" class="muted">(bare set)</text>
+
+    <!-- preimages inside X -->
+    <ellipse cx="178" cy="222" rx="106" ry="50" class="accent"></ellipse>
+    <text x="178" y="228" text-anchor="middle" font-size="16" class="label-accent">f<tspan baseline-shift="sub" font-size="11">1</tspan><tspan baseline-shift="super" font-size="11">-1</tspan>(U<tspan baseline-shift="sub" font-size="11">1</tspan>)</text>
+
+    <ellipse cx="212" cy="350" rx="106" ry="48" class="green"></ellipse>
+    <text x="212" y="356" text-anchor="middle" font-size="16" class="label-green">f<tspan baseline-shift="sub" font-size="11">2</tspan><tspan baseline-shift="super" font-size="11">-1</tspan>(U<tspan baseline-shift="sub" font-size="11">2</tspan>)</text>
+
+    <!-- target spaces -->
+    <rect x="560" y="80" width="218" height="136" rx="14" class="box"></rect>
+    <text x="588" y="114" font-size="22" font-weight="700" font-style="italic">Y<tspan baseline-shift="sub" font-size="13">1</tspan></text>
+    <text x="588" y="136" font-size="12" class="muted">(known space)</text>
+    <ellipse cx="690" cy="162" rx="70" ry="38" class="accent"></ellipse>
+    <text x="690" y="168" text-anchor="middle" font-size="17" class="label-accent">U<tspan baseline-shift="sub" font-size="11">1</tspan></text>
+
+    <rect x="560" y="292" width="218" height="136" rx="14" class="box"></rect>
+    <text x="588" y="326" font-size="22" font-weight="700" font-style="italic">Y<tspan baseline-shift="sub" font-size="13">2</tspan></text>
+    <text x="588" y="348" font-size="12" class="muted">(known space)</text>
+    <ellipse cx="690" cy="374" rx="70" ry="38" class="green"></ellipse>
+    <text x="690" y="380" text-anchor="middle" font-size="17" class="label-green">U<tspan baseline-shift="sub" font-size="11">2</tspan></text>
+
+    <!-- the maps f_i out of X -->
+    <line x1="348" y1="208" x2="553" y2="152" class="strong-line" marker-end="url(#iwt1-head)"></line>
+    <text x="452" y="166" text-anchor="middle" font-size="17" font-style="italic">f<tspan baseline-shift="sub" font-size="11">1</tspan></text>
+
+    <line x1="352" y1="344" x2="553" y2="362" class="strong-line" marker-end="url(#iwt1-head)"></line>
+    <text x="452" y="372" text-anchor="middle" font-size="17" font-style="italic">f<tspan baseline-shift="sub" font-size="11">2</tspan></text>
+
+    <text x="410" y="446" text-anchor="middle" font-size="12.5" class="muted">open sets of X  =  arbitrary unions of finite intersections of the shaded pullbacks</text>
+  </svg>
+  <figcaption>Each test map $f_i$ leaves the bare set $X$ for a space $Y_i$ you already understand. An open set $U \subseteq Y_i$ pulls back to $f_i^{-1}(U) \subseteq X$ (matching colours), and these pullbacks are exactly the subbasis generating $\tau_X$ — the coarsest topology making every $f_i$ continuous.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why making the $f_i$ continuous wants *many* open sets in $X$.)</span></p>
@@ -136,7 +215,51 @@ which is open precisely because each $f_i\circ g$ is continuous. The content of 
 
 </div>
 
-TODO: add visualization of the mapping-in property
+<figure class="iwt-diagram">
+  <svg viewBox="0 0 760 394" role="img" aria-label="The mapping-in property as a commuting triangle: a map g from Z to X is continuous if and only if every composite f_i after g, from Z to Y_i, is continuous.">
+    <defs>
+      <marker id="iwt2-head" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L9,4 L0,8 Z" class="arrowhead-accent"></path>
+      </marker>
+    </defs>
+
+    <text x="40" y="38" font-size="19" font-weight="700">Mapping-in (universal) property</text>
+    <text x="40" y="62" font-size="13" class="muted">One hard question about <tspan font-style="italic">g</tspan> splits into one easy question per index <tspan font-style="italic">i</tspan>.</text>
+
+    <!-- nodes -->
+    <rect x="55" y="180" width="132" height="74" rx="12" class="box"></rect>
+    <text x="121" y="214" text-anchor="middle" font-size="22" font-weight="700" font-style="italic">Z</text>
+    <text x="121" y="236" text-anchor="middle" font-size="12" class="muted">(any space)</text>
+
+    <rect x="308" y="86" width="178" height="76" rx="12" class="abstract"></rect>
+    <text x="397" y="120" text-anchor="middle" font-size="22" font-weight="700" font-style="italic" class="label-abstract">X</text>
+    <text x="397" y="142" text-anchor="middle" font-size="11.5" class="label-abstract">(initial topology — abstract)</text>
+
+    <rect x="585" y="180" width="142" height="74" rx="12" class="green"></rect>
+    <text x="656" y="214" text-anchor="middle" font-size="22" font-weight="700" font-style="italic" class="label-green">Y<tspan baseline-shift="sub" font-size="13">i</tspan></text>
+    <text x="656" y="236" text-anchor="middle" font-size="11.5" class="label-green">(known space)</text>
+
+    <!-- arrows -->
+    <line x1="180" y1="185" x2="320" y2="135" class="strong-line" marker-end="url(#iwt2-head)"></line>
+    <text x="236" y="148" text-anchor="middle" font-size="17" font-style="italic">g</text>
+    <text x="252" y="167" text-anchor="middle" font-size="11" class="muted">(hard)</text>
+
+    <line x1="474" y1="135" x2="600" y2="185" class="strong-line" marker-end="url(#iwt2-head)"></line>
+    <text x="556" y="148" text-anchor="middle" font-size="17" font-style="italic">f<tspan baseline-shift="sub" font-size="11">i</tspan></text>
+    <text x="556" y="167" text-anchor="middle" font-size="11" class="muted">(given)</text>
+
+    <line x1="190" y1="232" x2="580" y2="232" class="dashed" marker-end="url(#iwt2-head)"></line>
+    <text x="385" y="222" text-anchor="middle" font-size="16" font-style="italic">f<tspan baseline-shift="sub" font-size="11">i</tspan> ∘ g</text>
+    <text x="385" y="254" text-anchor="middle" font-size="12" class="muted">(easy: into the known Y<tspan baseline-shift="sub" font-size="9">i</tspan>)</text>
+
+    <!-- the equivalence -->
+    <rect x="150" y="300" width="460" height="50" rx="10" class="box"></rect>
+    <text x="380" y="331" text-anchor="middle" font-size="16.5"><tspan font-style="italic">g</tspan> continuous&#160;&#160;&#8660;&#160;&#160;<tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="11">i</tspan> ∘ <tspan font-style="italic">g</tspan> continuous for every <tspan font-style="italic">i</tspan> ∈ <tspan font-style="italic">I</tspan></text>
+
+    <text x="380" y="378" text-anchor="middle" font-size="11.5" class="muted">the same triangle commutes for each i — one hard arrow g, a family of easy arrows f<tspan baseline-shift="sub" font-size="9">i</tspan> ∘ g</text>
+  </svg>
+  <figcaption>The universal property as one commuting triangle (there is one such triangle per index $i$). The single hard question — is $g \colon Z \to X$ continuous into the abstract space $X$? — is equivalent to the family of easy ones: is each reading $f_i \circ g \colon Z \to Y_i$ continuous into a space you already understand? Formally, $g$ is continuous $\iff$ $f_i \circ g$ is continuous for every $i \in I$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Net/convergence form)</span></p>
