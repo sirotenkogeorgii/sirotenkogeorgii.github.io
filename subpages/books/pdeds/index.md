@@ -3386,6 +3386,90 @@ for every measurable function $F\colon X\to\mathbb R$ such that $F\circ m,\;F\ci
 
 </div>
 
+<figure>
+  <svg width="100%" viewBox="0 0 760 380" role="img" aria-label="Rearrangement. Panel a: a map m sends four equal mass-lumps from a source W to two bins a and b in a target X. Panel b: a rearrangement m-tilde sends the same lumps along different, crossing arrows, yet the two bins end up with the same heights, so both maps induce the same push-forward measure on X." style="display:block;height:auto;max-width:720px;margin:0.5rem auto;font-size:14px;">
+    <defs>
+      <marker id="ra-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <line x1="380" y1="44" x2="380" y2="356" stroke="currentColor" stroke-opacity="0.18" stroke-dasharray="4 5"/>
+    <line x1="40" y1="240" x2="720" y2="240" stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="2 5"/>
+    <text x="720" y="234" text-anchor="end" fill="currentColor" fill-opacity="0.5" font-size="11">equal bin heights</text>
+
+    <!-- Panel (a) -->
+    <text x="30" y="34" fill="currentColor" font-weight="600">(a) map m</text>
+    <text x="60" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">source W, λ</text>
+    <text x="286" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">target X</text>
+
+    <line x1="74" y1="92"  x2="222" y2="300" stroke="#3b82f6" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="74" y1="150" x2="222" y2="260" stroke="#22c55e" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="74" y1="210" x2="294" y2="300" stroke="#f59e0b" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="74" y1="270" x2="294" y2="260" stroke="#ef4444" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+
+    <circle cx="60" cy="90"  r="12" fill="#3b82f6"/>
+    <circle cx="60" cy="150" r="12" fill="#22c55e"/>
+    <circle cx="60" cy="210" r="12" fill="#f59e0b"/>
+    <circle cx="60" cy="270" r="12" fill="#ef4444"/>
+    <text x="60" y="94"  text-anchor="middle" fill="#fff" font-size="12" font-weight="600">1</text>
+    <text x="60" y="154" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">2</text>
+    <text x="60" y="214" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">3</text>
+    <text x="60" y="274" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">4</text>
+
+    <rect x="224" y="280" width="52" height="40" rx="4" fill="#3b82f6" fill-opacity="0.85" stroke="#3b82f6"/>
+    <rect x="224" y="240" width="52" height="40" rx="4" fill="#22c55e" fill-opacity="0.85" stroke="#22c55e"/>
+    <rect x="296" y="280" width="52" height="40" rx="4" fill="#f59e0b" fill-opacity="0.85" stroke="#f59e0b"/>
+    <rect x="296" y="240" width="52" height="40" rx="4" fill="#ef4444" fill-opacity="0.85" stroke="#ef4444"/>
+
+    <line x1="214" y1="320" x2="358" y2="320" stroke="currentColor" stroke-opacity="0.35"/>
+    <text x="250" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">a</text>
+    <text x="322" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">b</text>
+    <text x="250" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
+    <text x="322" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
+
+    <!-- Panel (b) -->
+    <text x="410" y="34" fill="currentColor" font-weight="600">(b) m̃ — a rearrangement of m</text>
+    <text x="460" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">source W, λ</text>
+    <text x="686" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">target X</text>
+
+    <line x1="474" y1="92"  x2="696" y2="260" stroke="#3b82f6" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="474" y1="150" x2="624" y2="300" stroke="#22c55e" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="474" y1="210" x2="624" y2="260" stroke="#f59e0b" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+    <line x1="474" y1="270" x2="696" y2="300" stroke="#ef4444" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
+
+    <circle cx="460" cy="90"  r="12" fill="#3b82f6"/>
+    <circle cx="460" cy="150" r="12" fill="#22c55e"/>
+    <circle cx="460" cy="210" r="12" fill="#f59e0b"/>
+    <circle cx="460" cy="270" r="12" fill="#ef4444"/>
+    <text x="460" y="94"  text-anchor="middle" fill="#fff" font-size="12" font-weight="600">1</text>
+    <text x="460" y="154" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">2</text>
+    <text x="460" y="214" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">3</text>
+    <text x="460" y="274" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">4</text>
+
+    <rect x="624" y="280" width="52" height="40" rx="4" fill="#22c55e" fill-opacity="0.85" stroke="#22c55e"/>
+    <rect x="624" y="240" width="52" height="40" rx="4" fill="#f59e0b" fill-opacity="0.85" stroke="#f59e0b"/>
+    <rect x="696" y="280" width="52" height="40" rx="4" fill="#ef4444" fill-opacity="0.85" stroke="#ef4444"/>
+    <rect x="696" y="240" width="52" height="40" rx="4" fill="#3b82f6" fill-opacity="0.85" stroke="#3b82f6"/>
+
+    <line x1="614" y1="320" x2="758" y2="320" stroke="currentColor" stroke-opacity="0.35"/>
+    <text x="650" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">a</text>
+    <text x="722" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">b</text>
+    <text x="650" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
+    <text x="722" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
+  </svg>
+  <figcaption><strong>Rearrangement: same destination pile, different routing.</strong> The source $(W,\lambda)$ carries four equal lumps of mass $\tfrac14$ (dots $1$–$4$, colour-coded). <strong>(a)</strong> The map $m$ ships them into two bins $a,b\subset X$ (lumps $1,2\to a$ and $3,4\to b$). <strong>(b)</strong> A rearrangement $\tilde m$ sends the <em>same</em> lumps along <em>different</em> arrows — note the crossings: lump $1$ now lands in $b$, lump $3$ in $a$. Yet each bin still ends up with height $\tfrac12$, so the two maps induce the identical push-forward $\tilde m\_\sharp\lambda=m\_\sharp\lambda$. The colours track <em>which</em> lump went where (not preserved); the bin <em>heights</em> track the mass distribution on $X$ (preserved). That invariance of heights, across all possible re-routings, is exactly the defining identity $\int\_W F\circ m\,d\lambda=\int\_W F\circ\tilde m\,d\lambda$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">($\tilde{m}$ is also measurable)</span></p>
+
+Short answer: as literally written the definition does **not** force $\tilde{m}$ to be measurable, and it also cannot detect non-measurability — but that is an expository gap, not a real choice. The intended object is a measurable map, and you genuinely need that for the statement to mean anything. Here is the anatomy of why.
+
+[Longer answer by Opus 3.8 high](https://claude.ai/share/0e6bae76-a2df-4b6c-a783-d55e6c83aa2c)
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the definition)</span></p>
 
@@ -3409,8 +3493,103 @@ for every measurable $F\colon W\to\mathbb R$ with $F\circ s,\,F\in L^1(\lambda)$
 
 </div>
 
+<figure>
+  <svg width="100%" viewBox="0 0 760 400" role="img" aria-label="Measure-preserving maps. Panel a: a measure-preserving map (a 90-degree rotation) shuffles nine equal tiles of the domain to new locations while every tile keeps its area, so the uniform measure is reproduced. Panel b: a map that compresses the top rows and stretches the bottom rows moves the same colours but changes their areas, so it is not measure-preserving and its Jacobian determinant is not 1." style="display:block;height:auto;max-width:720px;margin:0.5rem auto;font-size:14px;">
+    <defs>
+      <marker id="mp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <line x1="380" y1="48" x2="380" y2="372" stroke="currentColor" stroke-opacity="0.18" stroke-dasharray="4 5"/>
+
+    <!-- ===== Panel (a): measure-preserving ===== -->
+    <text x="28" y="34" fill="currentColor" font-weight="600">(a) measure-preserving: every tile keeps its area</text>
+
+    <!-- before grid -->
+    <rect x="28"  y="120" width="44" height="44" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="72"  y="120" width="44" height="44" fill="#f97316" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="116" y="120" width="44" height="44" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="28"  y="164" width="44" height="44" fill="#84cc16" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="72"  y="164" width="44" height="44" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="116" y="164" width="44" height="44" fill="#14b8a6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="28"  y="208" width="44" height="44" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="72"  y="208" width="44" height="44" fill="#6366f1" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="116" y="208" width="44" height="44" fill="#a855f7" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- arrow -->
+    <line x1="170" y1="186" x2="206" y2="186" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" marker-end="url(#mp-arrow)"/>
+    <text x="188" y="178" text-anchor="middle" fill="currentColor" font-style="italic" font-size="13">s</text>
+    <text x="188" y="250" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11">90° turn</text>
+
+    <!-- after grid (90° clockwise rotation) -->
+    <rect x="216" y="120" width="44" height="44" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="260" y="120" width="44" height="44" fill="#84cc16" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="304" y="120" width="44" height="44" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="216" y="164" width="44" height="44" fill="#6366f1" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="260" y="164" width="44" height="44" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="304" y="164" width="44" height="44" fill="#f97316" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="216" y="208" width="44" height="44" fill="#a855f7" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="260" y="208" width="44" height="44" fill="#14b8a6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="304" y="208" width="44" height="44" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- track one tile: red, area kept -->
+    <rect x="28"  y="120" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3"/>
+    <rect x="304" y="120" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3"/>
+
+    <text x="94"  y="272" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">Ω</text>
+    <text x="282" y="272" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">Ω</text>
+    <text x="28" y="306" fill="#16a34a" font-size="12.5" font-weight="600">✓ s#λ = λ</text>
+    <text x="28" y="324" fill="currentColor" fill-opacity="0.7" font-size="11.5">λ(s⁻¹A) = λ(A) for every set A</text>
+
+    <!-- ===== Panel (b): not measure-preserving ===== -->
+    <text x="410" y="34" fill="currentColor" font-weight="600">(b) not measure-preserving: tiles change area</text>
+
+    <!-- before grid -->
+    <rect x="428" y="120" width="44" height="44" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="472" y="120" width="44" height="44" fill="#f97316" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="516" y="120" width="44" height="44" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="428" y="164" width="44" height="44" fill="#84cc16" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="472" y="164" width="44" height="44" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="516" y="164" width="44" height="44" fill="#14b8a6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="428" y="208" width="44" height="44" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="472" y="208" width="44" height="44" fill="#6366f1" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="516" y="208" width="44" height="44" fill="#a855f7" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- arrow -->
+    <line x1="570" y1="186" x2="606" y2="186" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" marker-end="url(#mp-arrow)"/>
+    <text x="588" y="178" text-anchor="middle" fill="currentColor" font-style="italic" font-size="13">s</text>
+    <text x="588" y="250" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11">squash / stretch</text>
+
+    <!-- after grid: row heights 22 / 44 / 66 -->
+    <rect x="616" y="120" width="44" height="22" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="660" y="120" width="44" height="22" fill="#f97316" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="704" y="120" width="44" height="22" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="616" y="142" width="44" height="44" fill="#84cc16" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="660" y="142" width="44" height="44" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="704" y="142" width="44" height="44" fill="#14b8a6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="616" y="186" width="44" height="66" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="660" y="186" width="44" height="66" fill="#6366f1" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="704" y="186" width="44" height="66" fill="#a855f7" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- track the top row: preimage bigger than image -->
+    <rect x="428" y="120" width="132" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <rect x="616" y="120" width="132" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <text x="494" y="114" text-anchor="middle" fill="currentColor" font-size="11">s⁻¹(A)</text>
+    <text x="682" y="114" text-anchor="middle" fill="currentColor" font-size="11">A</text>
+
+    <text x="494" y="272" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">Ω</text>
+    <text x="682" y="272" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">Ω</text>
+    <text x="428" y="306" fill="#dc2626" font-size="12.5" font-weight="600">✗ s#λ ≠ λ</text>
+    <text x="428" y="324" fill="currentColor" fill-opacity="0.7" font-size="11.5">λ(s⁻¹A) ≠ λ(A),  so  |det ∇s| ≠ 1</text>
+  </svg>
+  <figcaption><strong>Measure-preserving maps preserve the size of every set, not the labels of points.</strong> The domain $\Omega$ is cut into nine equal tiles. <strong>(a)</strong> A measure-preserving $s$ — here a $90^\circ$ rotation — relocates the tiles (follow the outlined red tile) but every tile keeps area $\tfrac19$, so the uniform measure is reproduced exactly: $s\_\sharp\lambda=\lambda$, equivalently $\lambda(s^{-1}(A))=\lambda(A)$ for every measurable $A$. <strong>(b)</strong> A map that compresses the top rows and stretches the bottom ones carries the <em>same</em> colours but rescales their areas; the dashed test set $A$ has a strictly larger preimage $s^{-1}(A)$, so $s\_\sharp\lambda\neq\lambda$ and $\lvert\det\nabla s\rvert\neq 1$. This is the picture behind the defining identity $\int\_W F\circ s\,d\lambda=\int\_W F\,d\lambda$: it holds in (a) because relabelling points never moves mass between regions, and fails in (b) because the regions themselves are resized.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The unit-Jacobian characterisation)</span></p>
+
+TODO: why it must be diffeomorphism?
 
 In the cases relevant to us, $W=\Omega\subset\mathbb R^d$ is a bounded domain and $\lambda$ is Lebesgue measure. For $C^1$-diffeomorphisms there is a clean pointwise criterion:
 
@@ -3486,7 +3665,7 @@ That is the defining identity $\sigma_\sharp\lambda=\lambda$, so $\sigma\in S(W)
 
 Proposition 20 says rearrangements and measure-preserving maps are *two sides of the same coin* — but only almost. Direction (i) is unconditional: composing with an MP map on the source always gives a rearrangement. Direction (ii) requires **invertibility** of $\tilde m$.
 
-* Without invertibility (ii) fails. Two rearrangements of the same $m$ can differ in genuinely non-MP ways: e.g., on $W=[0,1]$ with $m(x)=0$ identically, *every* map $\tilde m\colon W\to X$ with image $\\{0\\}$ is trivially a rearrangement of $m$, and these can certainly fail to be related by an MP map of $W$.
+* Without invertibility (ii) fails. Two rearrangements of the same $m$ can differ in genuinely non-MP ways: e.g., on $W=[0,1]$ with $m(x)=0$ identically, *every* map $\tilde m\colon W\to X$ with image $\lbrace 0\rbrace$ is trivially a rearrangement of $m$, and these can certainly fail to be related by an MP map of $W$.
 * With invertibility (ii) is sharp. Polar factorization, which we are heading toward, will produce a rearrangement of the form $\tilde m=\nabla\psi$. Whether $\nabla\psi$ is invertible is exactly the question of whether the convex potential $\psi$ is strictly convex — a question of regularity, not algebra.
 
 The takeaway: the rearrangement concept is the *primary* one in optimal transport. Measure-preserving maps are how rearrangements are *generated* when one has enough invertibility — but this is not automatic.
@@ -3731,7 +3910,7 @@ Two extra knobs distinguish Theorem 24 from Theorem 22:
 * The target domain $Y$ may differ from the source $W$.
 * The reference measure $\nu$ on $Y$ is **not** taken to be the push-forward $h_\sharp\lambda$; it is supplied separately.
 
-Concretely, $S(W,Y)=\\{\sigma\colon\sigma_\sharp\lambda=\nu\\}$ is the set of "$\lambda$-to-$\nu$ rearrangements" — and the projection of $h$ onto this set is the part of $h$ that respects the target's mass distribution. The convex-gradient $\nabla\psi$ then transports $\nu$ to $\mu=h_\sharp\lambda$, which closes the diagram
+Concretely, $S(W,Y)=\lbrace\sigma\colon\sigma_\sharp\lambda=\nu\rbrace$ is the set of "$\lambda$-to-$\nu$ rearrangements" — and the projection of $h$ onto this set is the part of $h$ that respects the target's mass distribution. The convex-gradient $\nabla\psi$ then transports $\nu$ to $\mu=h_\sharp\lambda$, which closes the diagram
 
 $$
 \lambda \xrightarrow{\;s\;} \nu \xrightarrow{\;\nabla\psi\;} \mu \quad=\quad \lambda \xrightarrow{\;h\;} \mu.

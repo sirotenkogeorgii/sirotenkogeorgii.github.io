@@ -957,7 +957,7 @@ Introduce the Lagrangian
 $$
 \mathscr{L}(x,\widecheck{y})
 = \frac{1}{2}\lambda(x-u)^2
-+ \langle \widecheck{y}, Ax-y\rangle .
++ \langle \widecheck{y}, Ax-y\rangle.
 $$
 
 In the present problem the Lagrange equations are not merely necessary conditions. Since the objective is strictly convex and the constraint set $\lbrace x:Ax=y\rbrace$ is affine, any feasible $x^\ast$ for which there exists $\widecheck{y}^\ast\in\widecheck{\mathcal Y}$ satisfying
@@ -2327,3 +2327,702 @@ $$
 which is consistent both with the rigid-motion action (2.18) on $\mathbb{R}^{N}$ and with the group law (2.17) on $\mathrm{SE}(N)$.
 
 </div>
+
+What does the (right) coset partition (2.26) corresponding to the right-hand side of (2.33) imply for $\mathcal{M} = \mathbb{R}^{N}$? The isotropy $\mathrm{SO}(N)$ acts on $\mathrm{SE}(N)$ on the *right* by
+
+$$
+(b, R) \cdot R' \;=\; (b,\, R R'),
+$$
+
+so each right coset $(b, R)\, \mathrm{SO}(N)$ is indexed by its translational part $b$. Combined with the equivariant identification (2.30a), this yields two parallel geometric readings of the same picture:
+
+- **The Lie group $G = \mathrm{SE}(N)$ acts *isometrically* on $\mathbb{R}^{N}$**, i.e. it preserves (and hence *reveals*) the Euclidean geometry. Rigid motions are exactly the maps $\mathbb{R}^{N} \to \mathbb{R}^{N}$ which conserve all the data $(2.1)$–$(2.3)$ from the opening of Section 2.1.
+- **The Lie subgroup $G_{0} = \mathrm{SO}(N)$ partitions $\mathbb{R}^{N}$ into equivalence classes** — concretely, the spheres $r S^{N-1}$ of radii $r \geq 0$, the orbits of the rotation subgroup centred at the origin.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">2.7 (Relevance for data science and machine learning)</span></p>
+
+- **Equivariance** is an important property of mappings, including the mappings realised by neural networks. Encoding such geometric prior knowledge facilitates machine learning from data: a network that is equivariant *by construction* under the relevant symmetry group $G$ need not waste capacity learning that symmetry from samples.
+- **Finding (learning) symmetries of data**, along with conforming architectural structures for the networks, constitutes an *active* and largely *unexplored field of research*.
+
+</div>
+
+The above instantiation of some general concepts — $\mathrm{SE}(N)$ acting on $\mathbb{R}^{N}$ with isotropy $\mathrm{SO}(N)$ — provides a *template* for other models: identify the manifold $\mathcal{M}$ of "data points", the Lie group $G$ of symmetries that should act on it, and the isotropy $G_{x}$ at a base point; then Theorems 2.2 and 2.3 reconstruct $\mathcal{M}$ as the homogeneous space $G / G_{x}$, and Definition 2.4 supplies the right notion of *equivariant* map between such spaces.
+
+### 2.2. Moving Frames, Frame Bundles
+
+In Section 2.1 the Euclidean scenario was anchored on the *canonical* identifications (2.2)–(2.5): every tangent space $T_{p}\mathbb{R}^{N}$ could be silently identified with $\mathbb{R}^{N}$ itself, the standard inner product was simply $v^{\top}w$, and the standard basis was *globally* available at every point. On a general smooth manifold $\mathcal{M}$, none of these gifts is granted — different tangent spaces $T_{x}\mathcal{M}$ are *a priori* unrelated vector spaces, and there need not be a global basis. The remedy is to choose, *locally* and *smoothly*, an ordered basis at every point. This is the notion of a **moving frame**, and gluing such local choices together produces the **frame bundle** $\mathcal{B}$, the first non-trivial bundle we meet in the course.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.8 (frame, moving frame)</span></p>
+
+A **frame** at $x \in \mathcal{M}$ is an ordered basis of the tangent space $T_{x}\mathcal{M}$. A **moving frame** on an open set $U \subset \mathcal{M}$ is an ordered $n$-tuple of vector fields $X = \lbrace X_{1}, \ldots, X_{n} \rbrace$ that evaluates at every point $x \in U$ to a frame.
+
+*A note on terminology.* The word "frame" carries different meanings in different fields of research. In this section it always means an **ordered basis** of $T_{x}\mathcal{M}$ (resp. a smooth, ordered, basis-valued field on $U$). Later in the course we will also encounter **frames** in the sense of mathematical signal processing — *overcomplete* (possibly non-basis) generating sets of vectors. The two notions are unrelated; the context will always make clear which one is meant.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.9 (frame representation of Riemannian metrics)</span></p>
+
+Given a frame $X = \lbrace X_{1}, \ldots, X_{n} \rbrace$, a **coframe** is an ordered $n$-tuple of $1$-forms $\widecheck{X} = \lbrace \widecheck{X}^{1}, \ldots, \widecheck{X}^{n} \rbrace$ that is *dual* to $X$ in the sense
+
+$$
+\widecheck{X}^{i}(X_{j}) \;=\; \delta^{i}_{j}, \qquad \forall\, i, j \in [n]. \tag{2.35}
+$$
+
+A Riemannian metric $g$ on $\mathcal{M}$ can then be specified by
+
+$$
+g \;=\; g_{ij}\, \widecheck{X}^{i}\, \widecheck{X}^{j} \;=\; g(X_{i}, X_{j})\, \widecheck{X}^{i}\, \widecheck{X}^{j}, \tag{2.36}
+$$
+
+(with summation over repeated indices), which generalizes the usual local representation in coordinates,
+
+$$
+g \;=\; g(\partial_{i}, \partial_{j})\, dx^{i}\, dx^{j}, \tag{2.37}
+$$
+
+in terms of chosen local coordinates $x^{1}, \ldots, x^{n}$ and the coordinate vector fields $\partial_{i} = \frac{\partial}{\partial x^{i}}$, $i \in [n]$. Formula (2.36) keeps exactly the same algebraic shape as (2.37), but replaces the *coordinate* frame/coframe $(\partial_{i}, dx^{i})$ by an *arbitrary* — and in general **non-holonomic** — frame/coframe pair $(X_{i}, \widecheck{X}^{i})$. That extra flexibility is the whole reason for working with moving frames: many manifolds (e.g. spheres of dimension $\geq 2$) admit no global coordinate system, yet often *do* admit a convenient global or near-global moving frame in which the metric components $g_{ij}$ become especially simple — diagonal, constant, or even $\delta_{ij}$ for an *orthonormal* frame.
+
+</div>
+
+Aggregating all such ordered bases over the entire manifold yields the **frame bundle** of $\mathcal{M}$:
+
+$$
+\mathcal{B} \;:=\; \lbrace \text{all frames } B \in \mathrm{GL}(n;\mathbb{R}) \text{ at every point of } \mathcal{M} \rbrace, \tag{2.38a}
+$$
+
+together with the **canonical projection**
+
+$$
+\pi : \mathcal{B} \to \mathcal{M}, \qquad \pi(B) = x \quad \text{if } B \text{ is a frame at } x. \tag{2.38b}
+$$
+
+A point of $\mathcal{B}$ thus packages the data *(base point $x \in \mathcal{M}$ + ordered basis of $T_{x}\mathcal{M}$)*; the projection $\pi$ forgets the basis and remembers only the base point. The **fiber** $\pi^{-1}(x)$ over a fixed $x$ is the set of *all* ordered bases of $T_{x}\mathcal{M}$, a torsor under the action of $\mathrm{GL}(n;\mathbb{R})$ — a fact that will be crucial below.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">2.10 (Notation: $\pi$)</span></p>
+
+Throughout these notes we will meet several different bundles — the frame bundle, the tangent bundle, pullback bundles, $G$-principal bundles, and so on — and we *always* denote the canonical projection by $\pi$.
+
+- **Default.** Unsubscripted $\pi$ refers to the canonical projection of whichever bundle is being discussed in the surrounding sentence.
+- **Subscripts as disambiguators.** When several bundles appear simultaneously, we add a subscript naming the *total space*, e.g. $\pi_{\mathcal{B}}$ for the frame-bundle projection $\mathcal{B} \to \mathcal{M}$.
+- **Occasional renames.** For some constructions — notably pullback bundles — we introduce and use a distinct symbol for the canonical projection where this aids readability; this is announced explicitly when it happens.
+
+In short: $\pi$ is the default; subscripts and renames are *disambiguators*, not new objects.
+
+</div>
+
+For a *general* manifold $\mathcal{M}$ a single global frame need not exist (most manifolds are not parallelizable), so one is forced to work *locally*. Cover $\mathcal{M}$ by open charts $(U_{\alpha})_{\alpha \in I}$ and on each $U_{\alpha}$ fix a moving frame $X^{\alpha}$. The pair $(U_{\alpha}, X^{\alpha})$ — chart plus local frame — yields a one-to-one **local trivialization** of the frame bundle,
+
+$$
+\phi_{\alpha} \;:=\; \pi \times \varphi_{\alpha} \;:\; \pi^{-1}(U_{\alpha}) \;\to\; U_{\alpha} \times \mathrm{GL}(n;\mathbb{R}), \qquad B \;\mapsto\; \bigl(\pi(B),\, \varphi_{\alpha}(B)\bigr), \tag{2.39a}
+$$
+
+where (recall Remark A.1 and the convention (B.54) for indexing matrix entries) $\varphi_{\alpha}(B)$ is the matrix that expresses the abstract frame $B$ in terms of the chosen local frame $X^{\alpha}$:
+
+$$
+\varphi_{\alpha}(B) \;=\; A \;=\; (A^{i}_{j})_{i, j \in [n]} \;\in\; \mathrm{GL}(n;\mathbb{R}), \tag{2.39b}
+$$
+
+$$
+B \;=\; (b_{1}, \ldots, b_{n}) \;=\; X^{\alpha} \cdot \varphi_{\alpha}(B) \;=\; X^{\alpha} \cdot A \;=\; (A^{i}_{1}\, X^{\alpha}_{i}, \ldots, A^{i}_{n}\, X^{\alpha}_{i}). \tag{2.39c}
+$$
+
+Read column-by-column, (2.39c) says: the $j$-th vector of the frame $B$ is reconstructed by reading off the $j$-th column of $A$ and using those numbers as coordinates against the reference frame $X^{\alpha}$. Conversely, fixing $B$ over $x \in U_{\alpha}$ uniquely determines the change-of-basis matrix $A \in \mathrm{GL}(n;\mathbb{R})$. So $\phi_{\alpha}$ exhibits $\pi^{-1}(U_{\alpha})$ as a product $U_{\alpha} \times \mathrm{GL}(n;\mathbb{R})$ — the frame bundle is "locally trivial", whence the name.
+
+The group $\mathrm{GL}(n;\mathbb{R})$ now **acts on $\mathcal{B}$ on the right**: any $g = (g^{i}_{j})_{i, j \in [n]} \in \mathrm{GL}(n;\mathbb{R})$ maps a frame $B = (b_{1}, \ldots, b_{n})$ at $x \in \mathcal{M}$ to the frame
+
+$$
+B \cdot g \;=\; (g^{i}_{1}\, b_{i}, \ldots, g^{i}_{n}\, b_{i})
+$$
+
+at the *same* point $x$ — geometrically, $g$ reshuffles the basis vectors inside $T_{x}\mathcal{M}$ without moving the base point. This action satisfies two clean compatibility identities:
+
+$$
+(B \cdot g) \cdot g' \;=\; B \cdot (g g'), \qquad B \in \mathcal{B},\; g, g' \in \mathrm{GL}(n;\mathbb{R}), \tag{2.40a}
+$$
+
+$$
+\varphi_{\alpha}(B \cdot g) \;=\; \varphi_{\alpha}(B)\, g \;\underset{(2.39c)}{\Longleftrightarrow}\; B \cdot g \;=\; X^{\alpha} \cdot \varphi_{\alpha}(B \cdot g) \;=\; X^{\alpha} \cdot A g \;=\; X^{\alpha} \cdot \varphi_{\alpha}(B)\, g, \tag{2.40b}
+$$
+
+i.e. (2.40a) is the group-action axiom $(B \cdot g) \cdot g' = B \cdot (gg')$, while (2.40b) says that the chart map $\varphi_{\alpha}$ — and hence the local trivialization $\phi_{\alpha}$ in (2.39a) — is **equivariant** in the sense of Definition 2.4, more precisely (2.31b) for *right* actions. An immediate consequence is that the action preserves the base point:
+
+$$
+\pi(B) \;=\; \pi(B \cdot g) \;=\; x, \qquad B \in \mathcal{B},\; g \in G = \mathrm{GL}(n;\mathbb{R}). \tag{2.41}
+$$
+
+In other words, the right $\mathrm{GL}(n;\mathbb{R})$-action moves *within* the fiber $\pi^{-1}(x)$ above each point of $\mathcal{M}$; the fibers of $\pi$ are exactly the orbits of this action, and each fiber is a $\mathrm{GL}(n;\mathbb{R})$-torsor.
+
+Finally, on the overlap $U_{\alpha} \cap U_{\beta}$ of two charts the two local trivializations are related by a **transition function**: for $\alpha, \beta \in I$ with $\alpha \neq \beta$, the mapping
+
+$$
+\pi^{-1}(U_{\alpha}) \cap \pi^{-1}(U_{\beta}) \;\to\; (U_{\alpha} \cap U_{\beta}) \times \mathrm{GL}(n;\mathbb{R}), \qquad B \;\mapsto\; \bigl(\pi(B),\, \varphi_{\alpha}(B)\, \varphi_{\beta}(B)^{-1}\bigr), \tag{2.42}
+$$
+
+records — fiberwise over $U_{\alpha} \cap U_{\beta}$ — exactly the *change of basis* from the local frame $X^{\beta}$ to the local frame $X^{\alpha}$. The collection of these transition functions $\lbrace \varphi_{\alpha} \varphi_{\beta}^{-1} \rbrace_{\alpha, \beta \in I}$, taking values in the structure group $\mathrm{GL}(n;\mathbb{R})$, is the cocycle that glues the local pieces $U_{\alpha} \times \mathrm{GL}(n;\mathbb{R})$ into the global frame bundle $\mathcal{B}$ — the prototypical example of a **principal $\mathrm{GL}(n;\mathbb{R})$-bundle**, to which we will return.
+
+Reread carefully, the map (2.42) is *independent* of which representative $B$ we pick inside the fiber over $x$. Indeed, substituting an arbitrary $B \cdot g$ at $x$ and using the right-equivariance (2.40b),
+
+$$
+\varphi_{\alpha}(B \cdot g)\, \varphi_{\beta}(B \cdot g)^{-1} \;\overset{(2.40b)}{=}\; \varphi_{\alpha}(B)\, \varphi_{\beta}(B)^{-1}, \qquad g \in \mathrm{GL}(n;\mathbb{R}), \tag{2.43}
+$$
+
+so the right-hand side depends only on the base point $x = \pi(B)$, not on the chosen frame $B$. This is exactly what licenses the formal definition of the **transition functions**
+
+$$
+\varphi_{\alpha\beta} : \mathcal{U}_{\alpha} \cap \mathcal{U}_{\beta} \;\to\; \mathrm{GL}(n;\mathbb{R}), \qquad \varphi_{\alpha\beta}(\pi(B)) \;:=\; \varphi_{\alpha}(B)\, \varphi_{\beta}(B)^{-1}, \qquad (\text{transition functions}) \tag{2.44}
+$$
+
+through which the two local trivializations on the overlap are explicitly related by
+
+$$
+\varphi_{\alpha}(B) \;=\; \varphi_{\alpha\beta}(\pi(B))\, \varphi_{\beta}(B), \qquad B \in \pi^{-1}(\mathcal{U}_{\alpha}) \cap \pi^{-1}(\mathcal{U}_{\beta}). \tag{2.45}
+$$
+
+Two structural identities are now immediate from the definition (2.44). The first is the **symmetry** obtained by swapping the roles of $\alpha$ and $\beta$,
+
+$$
+\varphi_{\beta\alpha}(x) \;=\; \varphi_{\alpha\beta}(x)^{-1}, \qquad x \in \mathcal{U}_{\alpha} \cap \mathcal{U}_{\beta}, \tag{2.46a}
+$$
+
+and the second is the **cocycle condition** on triple overlaps,
+
+$$
+\varphi_{\alpha\beta}(x)\, \varphi_{\beta\gamma}(x)\, \varphi_{\gamma\alpha}(x) \;=\; 1, \qquad x \in \mathcal{U}_{\alpha} \cap \mathcal{U}_{\beta} \cap \mathcal{U}_{\gamma}, \tag{2.46b}
+$$
+
+$$
+(\text{cocycle condition}) \tag{2.46c}
+$$
+
+One then says: the set of transition functions $\lbrace \varphi_{\alpha\beta} \rbrace$ is a **cocycle on $\mathcal{M}$** with values in $\mathrm{GL}(n;\mathbb{R})$, relative to the covering $\lbrace \mathcal{U}_{\alpha} \rbrace_{\alpha \in I}$ of $\mathcal{M}$. Up to a choice of covering, this cocycle is the *full* gluing datum for the frame bundle: any other smooth bundle producing the same cocycle is canonically isomorphic to $\mathcal{B}$.
+
+A standard result proved in basic differential-geometry textbooks now upgrades the set $\mathcal{B}$ from (2.38a), together with the ingredients $(\pi,\, \phi_{\alpha},\, \varphi_{\alpha\beta})$ above, to a *bona fide* smooth manifold. We package this result in definitional form.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.11 (frame bundle)</span></p>
+
+The set $\mathcal{B}$ of all frames on $\mathcal{M}$ is a smooth manifold with a *unique* differentiable structure — called the **frame bundle** on $\mathcal{M}$ — for which the mappings
+
+$$
+\phi_{\alpha} \;=\; \pi \times \varphi_{\alpha} \;:\; \pi^{-1}(\mathcal{U}_{\alpha}) \;\to\; \mathcal{U}_{\alpha} \times \mathrm{GL}(n;\mathbb{R}) \tag{2.47}
+$$
+
+are diffeomorphisms, and the following three properties hold.
+
+- **(i) Projection is a submersion.** The canonical projection $\pi : \mathcal{B} \to \mathcal{M}$ is differentiable and has *maximal rank* $n$. Equivalently, $\pi$ is a submersion with surjective differential $d\pi_{B}$ for every $B \in \mathcal{B}$.
+- **(ii) Smooth, free action.** The right action of $\mathrm{GL}(n;\mathbb{R})$ on $\mathcal{B}$ is *differentiable* and *free* — no non-identity element of $\mathrm{GL}(n;\mathbb{R})$ fixes any frame.
+- **(iii) Moving frames are sections.** Moving frames on $\mathcal{U}$ are precisely the smooth local **sections** of the frame bundle $\mathcal{B}$ over $\mathcal{U} \subset \mathcal{M}$,
+
+  $$
+  X = \lbrace X_{1}, \ldots, X_{n} \rbrace \;\in\; \Gamma(\mathcal{U}, \mathcal{B}), \tag{2.48a}
+  $$
+
+  i.e. (by definition) the differentiable mappings $X : \mathcal{U} \to \mathcal{B}$ satisfying the **section identity**
+
+  $$
+  \boxed{\;\pi \circ X \;=\; \operatorname{id}_{\mathcal{U}}.\;} \tag{2.48b}
+  $$
+
+*Notation.* Throughout the course $\Gamma(\cdot, \cdot)$ denotes the space of sections of a given fiber bundle; the concrete meaning of the two slots is determined by the arguments and the surrounding context.
+
+</div>
+
+The three items have a clean conceptual reading: (i) says $\mathcal{B}$ is "fibered" over $\mathcal{M}$ in a regular way; (i) and (ii) together say that *the fibers of $\pi$ are exactly the orbits of $\mathrm{GL}(n;\mathbb{R})$* and each one is a $\mathrm{GL}(n;\mathbb{R})$-torsor; (iii) translates the geometric notion of a *moving frame* (Definition 2.8) into the bundle-theoretic notion of a *smooth section* — a right-inverse to $\pi$ on its domain of definition. From now on, these two viewpoints are interchangeable.
+
+The next example illustrates how a frame bundle becomes relevant in a *data-driven* setting: a color image, viewed as a smooth function on a 2D manifold, will naturally **induce** a moving frame from its own gradient structure. We set the scene here; the explicit construction is carried out in the following pages.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.12 (section of a frame bundle — data-induced moving frame from a color image)</span></p>
+
+We consider a color image
+
+$$
+f : \mathcal{V} \;\to\; \mathbb{R}^{3} \tag{2.49a}
+$$
+
+observed on a grid graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} \subset \Omega \subset \mathbb{R}^{2}$, regarded as the discrete version of a smooth vector-valued function — abusively also denoted $f$ —
+
+$$
+f : \mathcal{M} \;\to\; \mathbb{R}^{3}, \tag{2.49b}
+$$
+
+with $\mathcal{M} \cong \mathbb{R}^{2}$.
+
+*Modeling note.* We treat $f$ purely as a two-dimensional image carrying "some raw data" — three real numbers per pixel — and *ignore*:
+
+- any further mathematical structures that will be introduced in the subsequent sections (e.g. graph- or manifold-valued targets, parallel transport, learned metrics);
+- any preprocessing or data-embedding pipeline that would normally sit upstream of $f$.
+
+The point of the example is to show that *even at this minimal level of structure* — a smooth $\mathbb{R}^{3}$-valued function on $\mathbb{R}^{2}$ — the image itself produces a canonical moving frame, with no learned parameters and no extrinsic choices.
+
+Our goal is to use $f$ to define a **data-induced moving frame**
+
+$$
+X \;\in\; \Gamma(\mathcal{M}, \mathcal{B}) \tag{2.50}
+$$
+
+on $\mathcal{M}$ (the actual construction continues on the next pages).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.12 (continued — the eigenframe construction)</span></p>
+
+The data-induced moving frame $X \in \Gamma(\mathcal{M}, \mathcal{B})$ from (2.50) is a section of the frame bundle $\pi : \mathcal{B} \to \mathcal{M}$. Since $T\mathcal{M} \cong \mathcal{M} \cong \mathbb{R}^{2}$ in the present Euclidean case, $X$ has to assign a two-dimensional basis $X_{x}$ of $\mathbb{R}^{2}$ at every point $x \in \mathcal{M}$. We extract such a basis from the *only* available datum: the image $f$ itself.
+
+**Step 1 — smoothing.** Let
+
+$$
+K : \mathcal{M} \;\to\; \mathbb{R}_{\geq 0}, \qquad \operatorname{supp}(K) \subset B_{\rho}(0), \qquad \rho > 0, \qquad \int_{\mathcal{M}} K(x)\, dx \;=\; 1, \tag{2.51}
+$$
+
+be a smooth **convolution kernel** with compact, small support — e.g. a narrow Gaussian truncated at radius $\rho$. The kernel will simultaneously play two roles below: (i) regularise the (only sampled) raw image $f$, and (ii) move the derivative away from $f$ and onto $K$ — a standard $C^{\infty}$-mollification trick.
+
+**Step 2 — smoothed differential.** Lacking any further information about the meaning of the three color channels, we identify the target space $\mathbb{R}^{3} \cong \widecheck{\mathbb{R}}^{3}$ with its dual, and consider the differential
+
+$$
+F_{x} \;:=\; df(x) \;\in\; \mathbb{R}^{3 \times 2}, \tag{2.52a}
+$$
+
+numerically estimated through the smoothed gradient
+
+$$
+(F_{x})^{i}_{j} \;=\; \partial_{j} f^{i}(x) \;\approx\; \int_{\mathcal{M}} \partial_{j} K(x - y)\, f^{i}(y)\, dy, \qquad i \in [3],\; j \in [2]. \tag{2.52b}
+$$
+
+So $F_{x}$ records *how each of the three color channels varies along each of the two spatial axes* at the pixel $x$; the integration by parts of (2.52b) sends the spatial derivative onto $K$, so no derivative of the (noisy, only sampled) $f$ is ever required.
+
+**Step 3 — eigenframe.** Out of $F_{x}$ we extract a basis of $T_{x}\mathcal{M} = \mathbb{R}^{2}$ that is *adapted to the directions in which the image varies most*. To do so we diagonalise the symmetric, positive-semidefinite $2 \times 2$ **structure tensor** $\widecheck{F}_{x} F_{x}$, and define the **eigenframe section**
+
+$$
+X_{x} \;:=\; (X_{x, 1}, X_{x, 2}) \;\in\; \mathrm{SO}(2), \tag{2.53a}
+$$
+
+$$
+\widecheck{F}_{x}\, F_{x}\, X_{x, i} \;=\; \lambda_{x, i}\, X_{x, i}, \qquad i = 1, 2. \tag{2.53b}
+$$
+
+The two columns of (2.53a) form an orthonormal frame of $T_{x}\mathcal{M}$ — i.e. an element of $\mathrm{SO}(2) \subset \mathrm{GL}(2;\mathbb{R})$ — and they are *intrinsically* labelled by the eigenvalues $\lambda_{x, 1} \geq \lambda_{x, 2} \geq 0$ that quantify the local intensity of variation of $f$ along the corresponding direction. As $x$ varies, $X_{x}$ defines (away from the locus $\lambda_{x, 1} = \lambda_{x, 2}$) a smooth section $X \in \Gamma(\mathcal{M}, \mathcal{B})$ of the frame bundle, *induced by the data $f$ alone*. Figure 2.1 below illustrates the result and discusses common numerical pitfalls.
+
+</div>
+
+<figure>
+  <!-- Image placeholder: Figure 2.1 (color image + eigenframe direction field + color code) -->
+  <figcaption><strong>Figure 2.1.</strong> <strong>(a)</strong> A color image. <strong>(b)</strong> The directions of the first axis of the eigenframe section (2.53), which corresponds to the gradient of the vector-valued image, displayed using the color code in (d). Homogeneous regions, where the numerical decision of which axis locally dominates is fragile, are ignored and marked white. A classical pitfall is the numerous "discontinuous" sign reversals caused by numerical software for computing the spectrum of symmetric matrices, in stark contrast to how a smooth section ought to look. <strong>(c)</strong> A possible remedy is to derive a related <em>scalar-valued</em> image such that gradient estimation does not require spectral decomposition, and to align the gradients from (b) accordingly. A more principled alternative is to use <em>frame-invariant</em> quantities for data analysis. <strong>(d)</strong> Color code for (b) and (c).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">2.13 (frame, fiber, tangent, vector and principal bundles)</span></p>
+
+Two small but useful conventions before we leave the frame-bundle picture.
+
+- **(a) Language.** The bundle $\mathcal{B}$ from (2.38a) provides moving frames for the *tangent bundle* $T\mathcal{M}$, but the standard wording does not mention $T\mathcal{M}$ at all — one simply says: *"frame bundle $\mathcal{B}$ on the manifold $\mathcal{M}$"*. The tangent bundle is implicit in the notion of "frame".
+- **(b) Notation.** It is common and good practice to denote a frame bundle not by its total space alone, but by the **smooth surjection**
+
+  $$
+  \pi : \mathcal{B} \to \mathcal{M}, \qquad \text{or simply} \qquad \mathcal{B} \to \mathcal{M}, \tag{2.54}
+  $$
+
+  rather than just by $\mathcal{B}$. Writing the projection makes the base manifold and the bundle structure visible at a glance, and signals that the differentiable structure (Definition 2.11) is implicitly being carried along.
+- **(c) The fiber over $x \in \mathcal{M}$** is the set
+
+  $$
+  \mathcal{B}_{x} \;:=\; \pi^{-1}(x) \;\subset\; \mathcal{B}, \tag{2.55}
+  $$
+
+  a closed $n^{2}$-dimensional submanifold of $\mathcal{B}$ (matching the dimension of $\mathrm{GL}(n;\mathbb{R})$). For every $x \in \mathcal{M}$ there is an open neighborhood $\mathcal{U}_{\alpha} \subset \mathcal{M}$ such that (2.47) is a *fiber-preserving* diffeomorphism, which restricts on each fiber to a **linear isomorphism**
+
+  $$
+  \mathcal{B}_{x} \;\xrightarrow{\;\sim\;}\; \lbrace x \rbrace \times \mathrm{GL}(n;\mathbb{R}). \tag{2.56}
+  $$
+
+  In other words: $\pi$ is locally constant in the "fiber direction" up to a smooth change of basis valued in $\mathrm{GL}(n;\mathbb{R})$.
+- **(d) Nomenclature.** With the above structure in place,
+
+  - $\mathcal{B}$ is the **total space** of the frame bundle (2.54), and
+  - $\mathcal{M}$ is the **base space**.
+
+  The projection $\pi : \mathcal{B} \to \mathcal{M}$ is a special instance of a **fiber bundle**, in the general sense of having fibers (2.55) that admit local product representations of the form (2.56).
+- **(e) Vector bundles.** A **vector bundle** is a manifold with an analogous differential structure to the frame bundle, except that the fibers are *vector spaces* (rather than copies of a Lie group). The canonical example is the **tangent bundle**
+
+  $$
+  \pi : T\mathcal{M} \to \mathcal{M}, \tag{2.57}
+  $$
+
+  of a smooth manifold $\mathcal{M}$, whose fiber over $x \in \mathcal{M}$ is the tangent space $T_{x}\mathcal{M}$. In the same way as the frame bundle $\mathcal{B}$ is **associated** with the tangent bundle, a frame bundle can be associated with *any* vector bundle $E$, which one denotes by
+
+  $$
+  \pi : E \to \mathcal{M}. \tag{2.58}
+  $$
+- **(f) Sections (vector fields).** The set of all **smooth vector fields on $\mathcal{M}$** is commonly denoted
+
+  $$
+  \mathfrak{X}(\mathcal{M}) \;:=\; \lbrace X : \mathcal{M} \to T\mathcal{M},\ X \text{ is smooth} \rbrace, \tag{2.59}
+  $$
+
+  and is just the vector space of **sections** of the tangent bundle,
+
+  $$
+  \mathfrak{X}(\mathcal{M}) \;=\; \Gamma(T\mathcal{M}), \tag{2.60}
+  $$
+
+  where the right-hand side uses the shorthand $\Gamma(T\mathcal{M}) := \Gamma(\mathcal{M}, T\mathcal{M})$. When sections are only defined on an open $\mathcal{U} \subset \mathcal{M}$, one writes $\Gamma(\mathcal{U}, T\mathcal{M})$ explicitly. A generic section is denoted
+
+  $$
+  \Gamma(T\mathcal{M}) \;\ni\; \sigma : \mathcal{U} \subset \mathcal{M} \to T\mathcal{M}, \tag{2.61}
+  $$
+
+  and is, by definition (cf. (2.48b)), a smooth right-inverse of $\pi$,
+
+  $$
+  \pi \circ \sigma \;=\; \operatorname{id}_{\mathcal{U}}. \tag{2.62a}
+  $$
+
+  Concretely, for each $x \in \mathcal{U}$ it picks out one element
+
+  $$
+  \sigma(x) \;=\; X_{x} \;\in\; T_{x}\mathcal{M} \tag{2.62b}
+  $$
+
+  of the tangent space, i.e. of the fiber over $x$. *As for frame bundles, the corresponding sections (2.48) are nothing but the moving frames.*
+- **(g) Principal $G$-bundles.** Let $G$ be a Lie group. A smooth fiber bundle with fiber $G$,
+
+  $$
+  \pi : P \to \mathcal{M}, \qquad (\text{principal } G\text{-bundle}) \tag{2.63}
+  $$
+
+  is called a **principal $G$-bundle** provided that:
+
+  - $G$ acts smoothly and *freely* on $P$ on the *right*, and
+  - the fiber-preserving local trivializations
+
+    $$
+    \phi_{\alpha} : \pi^{-1}(\mathcal{U}_{\alpha}) \to \mathcal{U}_{\alpha} \times G \tag{2.64}
+    $$
+
+    are *equivariant* for every chart $\mathcal{U}_{\alpha}$.
+
+  Both properties hold for (2.47), so the **frame bundle** $\pi : \mathcal{B} \to \mathcal{M}$ of the tangent bundle — and more generally the frame bundle of any associated vector bundle (cf. (e)) — is an *instance of a principal $G$-bundle* with $G = \mathrm{GL}(n;\mathbb{R})$.
+
+  *Terminological caveat ("associated").* Throughout this section, the word "associated" relates a *vector bundle* to its *frame bundle* and vice versa. More generally one associates vector bundles with arbitrary *principal bundles*; this broader picture is deferred to a later part of the course.
+- **(h) Coset spaces as principal bundles.** Another important instance of a principal $G$-bundle (2.63) is the **homogeneous space** $G / H$ from (2.26): this quotient space carries a differential structure such that
+
+  $$
+  \pi : G \to G / H
+  $$
+
+  is a principal $H$-bundle. This dovetails with the homogeneous-space picture of Section 2.1 (Theorems 2.2–2.3): the same coset map that there appeared as a smooth submersion is *also* the projection of a principal $H$-bundle, with $H = G_{x}$ playing the role of fiber.
+
+</div>
+
+### 2.3. Affine Connections, Geodesics
+
+Sections 2.1–2.2 equipped each manifold with *pointwise* linear-algebraic data — an inner product on every $T\_{x}\mathcal{M}$ (the Riemannian metric) and a smooth, locally chosen ordered basis at every point (the moving frame, organized into the frame bundle $\mathcal{B}$). What is still missing is a way to *differentiate one vector field in the direction of another*. On $\mathbb{R}^{N}$ this comes for free: the canonical identifications (2.2)–(2.5) let us subtract tangent vectors based at different points and take the ordinary directional derivative. On a general smooth manifold the tangent spaces $T\_{x}\mathcal{M}$ are *a priori* unrelated, so "the rate of change of $Y$ in the direction $X$" is not defined until we add one further piece of structure — an **affine connection** $\nabla$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(affine connection)</span></p>
+
+An **affine connection** on a manifold $\mathcal{M}$ is a map
+
+$$
+\nabla : \mathfrak{X}(\mathcal{M}) \times \mathfrak{X}(\mathcal{M}) \to \mathfrak{X}(\mathcal{M}), \qquad \nabla_{X} Y := \nabla(X, Y), \tag{2.65}
+$$
+
+which generalizes the directional derivative of vector fields on $\mathbb{R}^{n}$ to vector fields $\mathfrak{X}(\mathcal{M})$ on $\mathcal{M}$. It has the following properties.
+
+(i) **$\mathcal{F}$-linearity**[^smooth-functions] in the first argument,
+
+$$
+\nabla_{X_{1} + X_{2}} Y = \nabla_{X_{1}} Y + \nabla_{X_{2}} Y, \qquad \forall\, X_{1}, X_{2} \in \mathfrak{X}(\mathcal{M}); \tag{2.66a}
+$$
+
+$$
+\nabla_{fX} Y = f\, \nabla_{X} Y, \qquad \forall\, f \in \mathcal{F}, \quad \forall\, X \in \mathfrak{X}(\mathcal{M}). \tag{2.66b}
+$$
+
+(ii) **$\mathbb{R}$-linearity** in the second argument,
+
+$$
+\nabla_{X}(Y_{1} + Y_{2}) = \nabla_{X} Y_{1} + \nabla_{X} Y_{2}, \qquad \forall\, X, Y_{1}, Y_{2} \in \mathfrak{X}(\mathcal{M}). \tag{2.67}
+$$
+
+(iii) **Leibniz (product) rule**
+
+$$
+\nabla_{X}(fY) = X(f)\, Y + f\, \nabla_{X} Y, \qquad \forall\, f \in \mathcal{F}, \quad \forall\, X, Y \in \mathfrak{X}(\mathcal{M}). \tag{2.68}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(the two arguments play different roles)</span></p>
+
+The defining axioms are deliberately *asymmetric*, and that asymmetry is the entire content of a connection.
+
+- In the **first** ("direction") slot $X$, the connection is $\mathcal{F}$-linear (2.66): scaling the direction by a function $f$ scales the result by the *same* $f$, with no derivative of $f$ appearing. Hence $(\nabla\_{X} Y)\_{x}$ depends on $X$ only through its value $X\_{x}$ at the single point $x$ — it is *tensorial*, i.e. pointwise, in $X$.
+- In the **second** ("argument") slot $Y$, the connection is only $\mathbb{R}$-linear and obeys the Leibniz rule (2.68): differentiating $fY$ produces the extra term $X(f)Y$. So $\nabla\_{X} Y$ genuinely *differentiates* $Y$, and depends on $Y$ in a whole neighborhood of $x$, not just at $x$.
+
+This is exactly the behavior of the Euclidean directional derivative $\partial\_{X} Y$, now abstracted into axioms that survive on a curved manifold.
+
+</div>
+
+Because of the tensorial property (i) in the direction slot, letting the direction vary exhibits the connection as a *linear map*
+
+$$
+\mathfrak{X}(\mathcal{M}) \to \operatorname{End}_{\mathbb{R}}\bigl(\mathfrak{X}(\mathcal{M})\bigr), \qquad X \mapsto \nabla_{X}, \tag{2.69}
+$$
+
+sending each vector field $X$ to the $\mathbb{R}$-linear operator $\nabla\_{X}$ — "covariant differentiation in the direction $X$".
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Christoffel symbols)</span></p>
+
+An affine connection is *locally* described in any chart $(\mathcal{U}, x^{1}, \ldots, x^{n})$ of $\mathcal{M}$ by the $n^{3}$ **Christoffel symbols**
+
+$$
+\Gamma^{k}_{ij}, \qquad i, j, k \in [n], \tag{2.70a}
+$$
+
+defined through the action of $\nabla$ on the coordinate frame,
+
+$$
+\nabla_{\partial_{i}} \partial_{j} = \Gamma^{k}_{ij}(x)\, \partial_{k}, \qquad \partial_{i} := \frac{\partial}{\partial x^{i}}, \quad i, j \in [n]. \tag{2.70b}
+$$
+
+For $X, Y \in \mathfrak{X}(\mathcal{M})$ locally given as $X = X^{i}\partial\_{i}$ and $Y = Y^{j}\partial\_{j}$, the axioms (2.66)–(2.68) then force
+
+$$
+\nabla_{X} Y = \bigl(X(Y^{k}) + X^{i} Y^{j}\, \Gamma^{k}_{ij}\bigr)\, \partial_{k}. \tag{2.70c}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(reading the local formula (2.70c))</span></p>
+
+Formula (2.70c) splits covariant differentiation into two transparent pieces.
+
+- $X(Y^{k})\, \partial\_{k}$ is the **naive** term: differentiate the components $Y^{k}$ of $Y$ as plain functions, in the direction $X$, while holding the basis $\partial\_{k}$ fixed. This is *all* there would be on flat $\mathbb{R}^{n}$ with the standard connection, where $\Gamma^{k}\_{ij} \equiv 0$.
+- $X^{i} Y^{j}\, \Gamma^{k}_{ij}\, \partial\_{k}$ is the **correction** term: it records how the coordinate basis fields $\partial\_{j}$ themselves rotate and stretch from point to point, information stored precisely in the Christoffel symbols via (2.70b).
+
+The $\Gamma^{k}\_{ij}$ are *not* the components of a tensor — they encode the chart-dependent twisting of the frame, and transform inhomogeneously under a change of coordinates — yet the combination (2.70c) is a genuine, chart-independent vector field.
+
+</div>
+
+To differentiate *along a path* rather than along an ambient vector field, fix a smooth curve
+
+$$
+\gamma : [a, b] \to \mathcal{M}, \tag{2.71a}
+$$
+
+and consider an assignment of a tangent vector to each of its points,
+
+$$
+[a, b] \ni t \mapsto V(t) \in T_{\gamma(t)}\mathcal{M}, \tag{2.71b}
+$$
+
+i.e. a vector $V(t)$ that lives in the tangent space *at the moving base point* $\gamma(t)$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(vector field along a curve)</span></p>
+
+A **vector field along the curve** $\gamma$ is a smooth mapping (2.71b) assigning to each $t \in [a, b]$ a tangent vector $V(t) \in T_{\gamma(t)}\mathcal{M}$. We write
+
+$$
+V \in \Gamma\bigl(T\mathcal{M}|_{\gamma(t)}\bigr) \tag{2.72}
+$$
+
+for the space of such mappings.
+
+Note that such a $V$ need **not** be the restriction of a globally defined vector field on $\mathcal{M}$ — it is only required to be tangent at the points of the curve. This is the subtle point the next definition has to accommodate.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.14 (covariant derivative)</span></p>
+
+Let $\nabla$ be an affine connection on $\mathcal{M}$. Then there is a unique map
+
+$$
+\frac{D}{dt} : \Gamma\bigl(T\mathcal{M}|_{\gamma(t)}\bigr) \to \Gamma\bigl(T\mathcal{M}|_{\gamma(t)}\bigr) \qquad (\text{covariant derivative}) \tag{2.73}
+$$
+
+such that the following properties hold.
+
+(i) **$\mathbb{R}$-linearity** of $\dfrac{DV}{dt}$ in $V$.
+
+(ii) **Leibniz rule**
+
+$$
+\frac{D}{dt}(fV) = \frac{df}{dt}\, V + f\, \frac{DV}{dt}, \qquad \forall\, f \in \mathcal{F}([a, b]). \tag{2.74}
+$$
+
+(iii) **Compatibility with $\nabla$:** if $V = X\vert\_{\gamma(t)}$ is induced by a vector field $X \in \mathfrak{X}(\mathcal{M})$, then
+
+$$
+\frac{DV}{dt}(t) = \nabla_{\dot{\gamma}(t)} X. \tag{2.75}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(what the covariant derivative buys us)</span></p>
+
+The operator $D/dt$ is the affine connection "transported onto a curve". Away from any ambient vector field it is pinned down purely by linearity and the Leibniz rule (i)–(ii); compatibility (iii) ties it back to $\nabla$ whenever the data along $\gamma$ happen to come from a genuine field $X$, via the velocity $\dot{\gamma}(t)$ as the direction. Crucially, $D/dt$ makes sense even when $V$ is *not* the restriction of any global field — the situation (2.71b)–(2.72) — which is exactly what is needed to ask whether a vector is "unchanging along $\gamma$": a vector field with $DV/dt \equiv 0$ is said to be **parallel** along $\gamma$. A curve whose own velocity is parallel to itself, $D\dot{\gamma}/dt \equiv 0$, is then the straightest-possible path for the given connection — a **geodesic** — which is taken up next.
+
+</div>
+
+[^smooth-functions]: Here and throughout, $\mathcal{F} = \mathcal{F}(\mathcal{M})$ denotes the ring of smooth functions on $\mathcal{M}$.
+
+An affine connection is *extra* structure: the axioms (2.65)–(2.68) leave enormous freedom, and the Christoffel symbols (2.70a) can be prescribed almost arbitrarily. On a *Riemannian* manifold, however, the metric $g$ singles out one canonical connection, the one that is simultaneously symmetric and metric-preserving.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">2.15 (Riemannian (Levi–Civita, metric) connection)</span></p>
+
+One commonly works with the[^riemannian-metric]
+
+$$
+\nabla^{g} \qquad (\text{Riemannian connection}) \tag{2.76}
+$$
+
+which is uniquely determined among all connections through the properties of being
+
+(a) **torsion free (symmetric):**
+
+$$
+T(X, Y) := \nabla_{X} Y - \nabla_{Y} X - [X, Y] = 0_{\mathfrak{X}(\mathcal{M})}, \tag{2.77}
+$$
+
+(b) **compatible with the metric:**
+
+$$
+Z\langle X, Y\rangle = \langle \nabla^{g}_{Z} X,\, Y\rangle + \langle X,\, \nabla^{g}_{Z} Y\rangle, \qquad \forall\, X, Y, Z \in \mathfrak{X}(\mathcal{M}). \tag{2.78}
+$$
+
+Here $[X, Y]$ is the Lie bracket (commutator) of vector fields. The Christoffel symbols (2.70a) are then *determined by the metric* via
+
+$$
+\Gamma^{k}_{ij} = \frac{1}{2}\, g^{kl}\bigl(\partial_{i} g_{jl} + \partial_{j} g_{il} - \partial_{l} g_{ij}\bigr), \qquad i, j, k \in [n], \tag{2.79}
+$$
+
+where $(g^{ij})\_{i,j\in[n]}$ is the inverse of the metric tensor $(g\_{ij})\_{i,j\in[n]}$ which locally specifies the metric $g$.
+
+</div>
+
+With a notion of differentiation along curves in hand, we can single out the curves that are "as straight as the geometry allows". Geodesics generalize the **straight lines** of Euclidean space to smooth manifolds: the straight-line path $\gamma\_{a,b}(t) = a + t(b - a)$ of (2.3) has vanishing acceleration, $\nabla\_{\dot{\gamma}(t)} \dot{\gamma}(t) = \ddot{\gamma}\_{a,b}(t) = 0$, and it is exactly this zero-acceleration condition that the geodesic definition transports onto a curved manifold. Unless explicitly specified, we consider *some* (not necessarily metric) connection.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.16 (geodesic)</span></p>
+
+Let $\mathcal{M}$ be a smooth manifold equipped with an affine connection $\nabla$. A curve
+
+$$
+\gamma : I \subseteq \mathbb{R} \to \mathcal{M} \tag{2.80}
+$$
+
+is a **geodesic** if the covariant derivative of its *velocity vector field along itself* vanishes,
+
+$$
+\frac{DV}{dt}(t) = 0, \quad \forall\, t \in I, \qquad \boxed{V(t) = \dot{\gamma}(t)}\,. \tag{2.81}
+$$
+
+Due to the compatibility property (2.75), this latter equation defines geodesics equivalently in the form
+
+$$
+\nabla_{\dot{\gamma}(t)} \dot{\gamma}(t) = 0, \quad \forall\, t \in I. \tag{2.82}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">2.17 (independence of $\nabla$ on the metric vs. $\nabla^{g}$)</span></p>
+
+A connection is *only* required to define geodesics — equation (2.82) makes no reference to a metric. Choosing the unique metric connection $\nabla^{g}$ of Remark 2.15 yields *length-minimizing geodesics* (shortest paths) having *constant speed*. The freedom to choose *different* connections, and hence different geodesics, may itself be beneficial for applications.
+
+</div>
+
+The intrinsic, metric-free equation (2.82) becomes a concrete system of ODEs once we write it out in a chart.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.18 (local coordinates, geodesic equations)</span></p>
+
+Let $(\mathcal{U}, \phi) = (\mathcal{U}, x^{1}, \ldots, x^{n})$ be any chart of the smooth manifold $\mathcal{M}$ equipped with an affine connection, which is locally described by the Christoffel symbols (2.70a). Then a curve $\gamma(t)$ locally represented by
+
+$$
+y(t) = \bigl(y^{1}(t), \ldots, y^{n}(t)\bigr)^{\top} = \phi \circ \gamma(t) \tag{2.83}
+$$
+
+is a geodesic if and only if it solves the
+
+$$
+\ddot{y}^{k} + \Gamma^{k}_{ij}(y)\, \dot{y}^{i}\, \dot{y}^{j} = 0, \qquad k \in [n]. \qquad (\text{geodesic equations}) \tag{2.84}
+$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.19 (discussion: direct application)</span></p>
+
+Consider the situation in which data are given as points in $\mathbb{R}^{n}$. We briefly discuss the *direct applicability* of basic geometric concepts in this *unsupervised* situation. It is reasonable to assume that points which are close to each other belong to the same class. But measuring closeness by the Euclidean norm of the *ambient space* does not make sense whenever the data points are samples on an unknown underlying *curved* manifold (the **manifold assumption**).
+
+So we consider *geodesics* and wish to measure closeness of data points through *shortest paths*. This entails the following steps and issues:
+
+</div>
+
+[^riemannian-metric]: Here $g = g(\cdot, \cdot) = \langle \cdot, \cdot \rangle$ denotes the Riemannian metric on $\mathcal{M}$ (Definition 2.1), i.e. a specified family $(\langle \cdot, \cdot \rangle\_{x})\_{x \in \mathcal{M}}$ of inner products on the tangent spaces $T\_{x}\mathcal{M}$ that smoothly vary with the base point $x \in \mathcal{M}$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.19 (continued — steps and issues)</span></p>
+
+Carrying out this geodesic program on real data runs into a chain of estimation problems.
+
+(a) **A Riemannian metric has to be specified first.** A common way is to estimate *local covariance matrices* and to define corresponding quadratic forms — covariance-based generalizations of the standard inner product (2.2). Since the data manifold is typically lower-dimensional and assumed to be embedded in the ambient Euclidean space, the covariance matrices may be singular and hence have to be *regularized*. Handling this issue properly requires one to *estimate* the **intrinsic dimension** of the data manifold.
+
+(b) **The metric coefficients must be differentiated.** Next the *partial derivatives* of the metric-coefficient functions with respect to local coordinates have to be *estimated*, in order to determine the Christoffel symbols (2.79). Since the metric coefficients themselves are commonly obtained by estimating derivatives of data points, computing data-induced Christoffel symbols is highly susceptible to data noise.
+
+(c) **The geodesic equations must be integrated.** Then the geodesic equations (2.84), which form a smooth but *nonlinear* system of ODEs, have to be integrated *numerically*. Here the second initial condition $\dot{\gamma}(0)$ — required besides $\gamma(0) = x$ in order to connect two points $x$ and $x'$ — is *unknown*.
+
+(d) **The distance must be evaluated.** Finally, the Riemannian distance (the length integral) has to be evaluated.
+
+</div>
+
+Overall, these issues sum up to a serious obstacle for handling general data sets in high-dimensional Euclidean spaces. On the positive side, the concepts of differential geometry tell us in a mathematically clear manner what *could* be done *in principle* in order to represent, process and analyze given data. Adequate **discretization methods** that enable us to put such concepts into practice are therefore of primary interest. This remark applies also to the more advanced geometric concepts introduced in the subsequent sections and, in particular, to the discretization methods introduced in Section 2.8.
+
+The next example shows that a coarse but cheap discretization already captures the essential idea behind geodesic distances.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.20 (poor man's geodesics)</span></p>
+
+In view of the **Riemannian distance**
+
+$$
+d_{\mathcal{M}}(x, y) = \inf_{\gamma \in \Gamma(x, y)} L_{\mathcal{M}}(\gamma), \qquad L_{\mathcal{M}}(\gamma) = \int_{a}^{b} \|\dot{\gamma}(t)\|_{g}\, dt = \int_{a}^{b} \sqrt{g\bigl(\dot{\gamma}(t), \dot{\gamma}(t)\bigr)}\, dt \tag{2.85}
+$$
+
+between two points $x, y \in (\mathcal{M}, g)$ for a given Riemannian metric $g$, a natural approximation which is easy to compute consists of the following steps.
+
+(i) Define a **weighted neighborhood graph**, with vertices representing the given data points and with edges labelled either by pairwise distances or by pairwise similarities.
+
+(ii) Approximate $d\_{\mathcal{M}}$, as given by (2.85), by computing the **shortest path** connecting $x$ and $y$ in the graph.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_poor_mans_geodesics_fig_2_2.png' | relative_url }}" alt="Three panels. (a) A heavy-tailed histogram of the probability Pr of local signal changes, peaking near zero and decaying with a long tail. (b) A color image of peppers overlaid with white shortest-path curves between four pairs of antipodal boundary points; the paths bend around the objects rather than running straight. (c) The same image with the shortest paths recomputed using the squared distance, giving visibly different globally optimal curves." loading="lazy">
+</figure>
+
+*Figure 2.2: Illustration of Example 2.20. **(a)** Heavy-tailed empirical distributions of local signal changes abound in natural images, almost like a law of nature. **(b)** Shortest paths between four pairs of antipodal boundary points differ significantly from "straight lines", i.e. from paths minimizing only the number of edges. **(c)** The shortest path corresponding to the squared distance from (b). The comparison shows that globally optimal paths are quite sensitive to changes of the metric.*
+
+Figure 2.2 (above) provides an illustration using the scenario of Example 2.12, where $x, y$ both represent physical positions in $\mathbb{R}^{2}$ and index the corresponding vertices. If $x \sim y$ are adjacent and $z = \frac{1}{2}(x + y)$ is the **midpoint** associated to the connecting edge, then — writing $\gamma(t\_x) = x$ and $\gamma(t\_y) = y$ — we set
+
+$$
+g_{z}\bigl(\dot{\gamma}(t_{x}), \dot{\gamma}(t_{y})\bigr) := \frac{1}{2}\Bigl(\langle e_{i},\, \widecheck{F}_{x} F_{x}\, e_{i}\rangle + \langle e_{i},\, \widecheck{F}_{y} F_{y}\, e_{i}\rangle\Bigr), \tag{2.86}
+$$
+
+where $e\_i = e\_1 = \binom{1}{0}$ for horizontal edges and $e\_i = e\_2 = \binom{0}{1}$ for vertical edges. Here $\widecheck{F}\_x F\_x$ plays the role of the (data-induced) metric-tensor matrix at the endpoint $x$, so each edge is assigned a length by averaging the two endpoint quadratic forms evaluated on the edge direction $e\_i$; see Figure 2.2 above for an illustration.
+
+

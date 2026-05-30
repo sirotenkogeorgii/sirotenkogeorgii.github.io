@@ -724,7 +724,7 @@ $$
 <details class="accordion" markdown="1">
 <summary>Solution 1 (i) — both sides live in $\mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y})$</summary>
 
-We track the arrows. Throughout, the transpose of $T \in \mathcal L(\mathcal U, \mathcal V)$ is the operator $\widecheck T \in \mathcal L(\widecheck{\mathcal V}, \widecheck{\mathcal U})$ fixed by
+We track the arrows. Throughout, the transpose of $T \in \mathcal L(\mathcal U, \mathcal V)$ is the operator $\widecheck T \in \mathcal L(\widecheck{\mathcal V}, \widecheck{\mathcal U})$ fixed by TODO: why is this valid inequality
 
 $$
 \langle p, T u\rangle = \langle \widecheck T p,\, u\rangle, \qquad \forall\, p \in \widecheck{\mathcal V},\ u \in \mathcal U.
@@ -738,7 +738,7 @@ A^{-} \in \mathcal L(\mathcal Y, \mathcal X)
 \widecheck{A^{-}} \in \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).
 $$
 
-**Right-hand side $\widecheck A^{+}$.** The transpose $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$. Since $A$ is injective, $\widecheck A$ is *surjective* (the transpose of an injection is a surjection), so its orthogonal right-inverse $\widecheck A^{+}$ from Definition A.3(b) is defined. A right-inverse of a map $\widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ goes the other way:
+**Right-hand side $\widecheck A^{+}$.** The transpose $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$. Since $A$ is injective, $\widecheck A$ is *surjective* (the transpose of an injection is a surjection TODO: why?), so its orthogonal right-inverse $\widecheck A^{+}$ from Definition A.3(b) is defined. A right-inverse of a map $\widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ goes the other way:
 
 $$
 \widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})
@@ -951,6 +951,130 @@ Compute the explicit expression of the generalized inverse $A^{\dagger}$.
 
 </div>
 
+<details class="accordion" markdown="1">
+<summary>Solution 2 (i) — the thin SVD as an injective $\times$ surjective factorization</summary>
+
+**Throw away the zero blocks.** Multiplying out (0.2) with the block structure (0.4) keeps only the top-left $\Sigma_r$ block, so only the first $r$ columns of $U$ and $V$ survive:
+
+$$
+A = U\Sigma V^{\top} = U_1\,\Sigma_r\,V_1^{\top},
+\qquad
+U_1 = (u_1, \dots, u_r) \in \mathbb R^{m \times r},\quad
+V_1 = (v_1, \dots, v_r) \in \mathbb R^{n \times r}.
+$$
+
+This **thin SVD** already exhibits $A$ as a product passing through the $r$-dimensional latent space $\mathcal Z = \mathbb R^r$. Split it as
+
+$$
+\boxed{\ A = B C, \qquad B := U_1\Sigma_r \in \mathbb R^{m \times r}, \qquad C := V_1^{\top} \in \mathbb R^{r \times n}.\ }
+$$
+
+**Why this is the required factorization.** Definition A.5 wants an *injective* factor and a *surjective* factor, equivalently $\operatorname{rank}(B) = \operatorname{rank}(C) = r$:
+
+  - $C = V_1^{\top} : \mathbb R^n \to \mathbb R^r$ has orthonormal rows ($V_1^{\top}V_1 = I_r$ by (0.3b)), so it has full row rank $r$ — **surjective**. Its kernel is $\operatorname{span}\lbrace v_{r+1}, \dots, v_n\rbrace = \mathcal N(A)$ by (0.7a), matching $\ker(C) = \ker(A)$.
+  - $B = U_1\Sigma_r : \mathbb R^r \to \mathbb R^m$ is the product of $U_1$ (orthonormal columns, full column rank) and the invertible diagonal $\Sigma_r$, so it has full column rank $r$ — **injective**. Its range is $\operatorname{span}\lbrace u_1, \dots, u_r\rbrace = \mathcal R(A)$ by (0.7b), matching $\mathrm{rge}(B) = \mathrm{rge}(A)$.
+
+(The split is not unique — any $B = U_1\Sigma_r S^{-1}$, $C = S V_1^{\top}$ with $S$ invertible works; the choice $S = I_r$ is the cleanest.)
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2 (ii) — the self-dual pseudo-inverse is the Moore–Penrose inverse</summary>
+
+By Definition A.5 with the roles of $A$ and $C$ interchanged (here our operator is $A = BC$ with injective $B$, surjective $C$), the pseudo-inverse is
+
+$$
+A^{\dagger} = C^{+} B^{-}.
+$$
+
+**Self-duality.** "The duality mappings associated with $B$ and $C$ are unit matrices" means all inner products are the canonical Euclidean ones, $L = M = R = I$. Then every transpose $\widecheck{(\cdot)}$ is the ordinary matrix transpose, and (A.11), (A.13) collapse to the textbook one-sided inverses:
+
+$$
+B^{-} = (B^{\top}B)^{-1}B^{\top},
+\qquad
+C^{+} = C^{\top}(C C^{\top})^{-1}.
+$$
+
+**Plug in the SVD factors.** Using $U_1^{\top}U_1 = I_r$ and $V_1^{\top}V_1 = I_r$:
+
+$$
+\begin{aligned}
+B^{\top}B &= \Sigma_r U_1^{\top}U_1\Sigma_r = \Sigma_r^{2}
+&&\Longrightarrow&&
+B^{-} = \Sigma_r^{-2}\,\Sigma_r U_1^{\top} = \Sigma_r^{-1}U_1^{\top}, \\
+C C^{\top} &= V_1^{\top}V_1 = I_r
+&&\Longrightarrow&&
+C^{+} = V_1\,(I_r)^{-1} = V_1.
+\end{aligned}
+$$
+
+Therefore
+
+$$
+\boxed{\ A^{\dagger} = C^{+}B^{-} = V_1\,\Sigma_r^{-1}\,U_1^{\top}
+= V\Sigma^{\dagger}U^{\top},\quad
+\Sigma^{\dagger} = \begin{pmatrix}\Sigma_r^{-1} & 0 \\ 0 & 0\end{pmatrix} \in \mathbb R^{n \times m}.\ }
+$$
+
+This is exactly the **Moore–Penrose pseudo-inverse**: invert the nonzero singular values, transpose the shape, leave the zero blocks zero.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2 (iii) — reading $A^{\dagger} = C^{+}B^{-}$ through Sheet 1, Exercise 2</summary>
+
+On Sheet 1 we found that the two one-sided inverses are *solvers* with complementary jobs:
+
+  - $B^{-}$ is the **least-squares / range-projection** operator: $B B^{-} = \Pi_{\mathrm{rge}(B)}$ in the codomain metric ($AA^{-} = \Pi_{\mathrm{rge}(A)}$ there);
+  - $C^{+}$ is the **minimum-norm** operator: $C^{+}C = \Pi_{\ker(C)^{\perp}}$ in the domain metric ($I - A^+A = \Pi_{\ker(A)}$ there).
+
+The factorization $A^{\dagger} = C^{+}B^{-}$ glues these two halves, and the SVD form $A^{\dagger}y = V_1\Sigma_r^{-1}U_1^{\top}y$ makes the pipeline visible when read **right to left**:
+
+  1. $U_1^{\top}y$ — read off the components of $y$ along $u_1, \dots, u_r$, i.e. project onto $\mathcal R(A)$ and discard the part in $\mathcal R(A)^{\perp} = \operatorname{span}\lbrace u_{r+1}, \dots, u_m\rbrace$. This is the **least-squares step** carried by $B^{-}$.
+  2. $\Sigma_r^{-1}$ — undo the bijective core $\underline A$ by dividing each latent coordinate by its singular value $\sigma_i$.
+  3. $V_1\,(\cdot)$ — map back into $\mathcal X$, landing inside $\operatorname{span}\lbrace v_1, \dots, v_r\rbrace = \mathcal N(A)^{\perp}$. This is the **minimum-norm step** carried by $C^{+}$: among all preimages it picks the one orthogonal to $\ker(A)$.
+
+The two projection identities confirm it (using (0.7c)–(0.7d) and $U_1^{\top}U_1 = V_1^{\top}V_1 = I_r$):
+
+$$
+A A^{\dagger} = U_1\Sigma_r\big(V_1^{\top}V_1\big)\Sigma_r^{-1}U_1^{\top} = U_1U_1^{\top} = \Pi_{\mathcal R(A)},
+\qquad
+A^{\dagger}A = V_1\Sigma_r^{-1}\big(U_1^{\top}U_1\big)\Sigma_r V_1^{\top} = V_1V_1^{\top} = \Pi_{\mathcal N(A)^{\perp}}.
+$$
+
+So $A^{\dagger}$ realizes the Sheet 1 recipe in one map: *project the data onto the range (least squares), then return the minimum-norm preimage* — precisely the picture of Definition A.5.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2 (iv) — general duality maps: the latent metric $R$ drops out</summary>
+
+Now restore arbitrary inner products $L$ on $\mathcal X$, $M$ on $\mathcal Y$, and $R$ on the latent space $\mathcal Z$. Again $A^{\dagger} = C^{+}B^{-}$, but now each factor must use the *correct* metric. Exercise 1 of this sheet is exactly the bookkeeping device for that: it showed that the left-inverse $X^{-}$ is built from the **codomain** metric of $X$, while the right-inverse $X^{+}$ is built from the **domain** metric of $X$. Apply that reading to the two factors:
+
+  - $B \in \mathcal L(\mathcal Z, \mathcal Y)$ is injective, so by (A.11) its left-inverse uses the metric on its codomain $\mathcal Y$, namely $M$:
+
+$$
+B^{-} = (\widecheck B\, M\, B)^{-1}\,\widecheck B\, M \;\in\; \mathcal L(\mathcal Y, \mathcal Z).
+$$
+
+  - $C \in \mathcal L(\mathcal X, \mathcal Z)$ is surjective, so by (A.13) its right-inverse uses the metric on its domain $\mathcal X$, namely $L$:
+
+$$
+C^{+} = L^{-1}\,\widecheck C\,(C\, L^{-1}\,\widecheck C)^{-1} \;\in\; \mathcal L(\mathcal Z, \mathcal X).
+$$
+
+Composing,
+
+$$
+\boxed{\ A^{\dagger} = C^{+}B^{-}
+= L^{-1}\,\widecheck C\,\bigl(C\, L^{-1}\,\widecheck C\bigr)^{-1}\,\bigl(\widecheck B\, M\, B\bigr)^{-1}\,\widecheck B\, M
+\;\in\; \mathcal L(\mathcal Y, \mathcal X).\ }
+$$
+
+**The punchline.** The latent-space metric $R$ **never appears**: $B^{-}$ only sees $M$ (codomain of $B$) and $C^{+}$ only sees $L$ (domain of $C$). This is exactly as it must be — $A^{\dagger}$ is determined by $A$ together with the geometries $L, M$ of the spaces it actually connects, and is independent of how we metrize the auxiliary factorization through $\mathcal Z$. Setting $L = M = R = I$ recovers part (ii).
+
+</details>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 3</span><span class="math-callout__name">(Interpolation property of $W_{\mathcal D}$)</span></p>
 
@@ -966,6 +1090,58 @@ where $(x_i, y_i)$ is any fixed input-output pair in the data (training) set $\m
 *Hint.* Equations (A.42), (A.43) regarding the action of $W_{\mathcal D}$ on $x_i$; inspect the definition of the coefficients $G^{kl}$, $k,l \in [n]$.
 
 </div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 3 — the inverse Gramian collapses the correction to the $i$-th residual</summary>
+
+**Two ingredients.** We only need the closed form (1.6) of $W_{\mathcal D}$ and two facts:
+
+  - the **action of a rank-one tensor** (A.42): for $\widecheck p \in \widecheck{\mathcal X}$ and $w \in \mathcal Y$, the operator $\widecheck p \otimes w \in \mathcal L(\mathcal X, \mathcal Y)$ acts by
+
+$$
+(\widecheck p \otimes w)\,x = \langle \widecheck p,\, x\rangle\, w;
+$$
+
+  - the **inverse-Gramian identity** (1.5b): $G^{kl}$ are the entries of $G^{-1}$, so $G_{jl}\,G^{lk} = \delta_j^{\,k}$ (the product $G^{-1}G = I$ in index form).
+
+**Apply $W_{\mathcal D}$ to a training input $x_i$.** Starting from (1.6) and using the tensor action with $\widecheck p = Lx_l$ and $w = Ux_k - y_k$:
+
+$$
+\begin{aligned}
+W_{\mathcal D}\,x_i
+&= Ux_i - G^{kl}\,\bigl[(Lx_l) \otimes (Ux_k - y_k)\bigr]\,x_i
+&&\text{(1.6)} \\
+&= Ux_i - G^{kl}\,\langle Lx_l,\, x_i\rangle\,(Ux_k - y_k)
+&&\text{(A.42)} \\
+&= Ux_i - G^{kl}\,G_{li}\,(Ux_k - y_k),
+&&\langle Lx_l, x_i\rangle = \ell(x_l, x_i) = G_{li}
+\end{aligned}
+$$
+
+where the indices $k, l \in [n]$ are summed (Einstein convention), and the last step is just the definition (1.5a) of the Gramian.
+
+**The inverse Gramian collapses the sum.** Summing over $l$ is the matrix product $G^{-1}G$, so by (1.5b),
+
+$$
+\sum_{l} G^{kl}\,G_{li} = \delta_i^{\,k}.
+$$
+
+Hence only the $k = i$ term of the remaining sum survives:
+
+$$
+W_{\mathcal D}\,x_i
+= Ux_i - \delta_i^{\,k}\,(Ux_k - y_k)
+= Ux_i - (Ux_i - y_i)
+= y_i.
+$$
+
+$$
+\boxed{\,W_{\mathcal D}\,x_i = y_i \quad \text{for every } i \in [n].\,}
+$$
+
+**Reading of the computation.** The reference operator $U$ would send $x_i$ to $Ux_i$, generally missing the target by the residual $Ux_i - y_i$. The correction term in (1.6) is engineered, via the inverse Gramian $G^{kl}$, so that evaluating at $x_i$ picks out *exactly* that residual and subtracts it — leaving $y_i$. The Gramian inversion is what untangles the non-orthogonal inputs; for $\ell$-orthogonal inputs $G$ is diagonal and the same cancellation is visible directly in (1.7).
+
+</details>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 4</span><span class="math-callout__name">(Projection onto the positive semidefinite cone)</span></p>
