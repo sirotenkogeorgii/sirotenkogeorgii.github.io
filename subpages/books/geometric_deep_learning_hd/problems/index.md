@@ -215,7 +215,7 @@ $$
 \begin{aligned}
 n = \dim(\mathcal X) &= \dim(\ker(A)) + \dim(\mathrm{rge}(A)) &&\text{(0.3a)} \\
 &= \dim(\ker(A)) + \mathrm{rank}(A), &&\text{(0.3b)} \\
-\mathrm{rank}(A) &\le \min\brace m, n\rbrace. &&\text{(0.3c)}
+\mathrm{rank}(A) &\le \min\lbrace m, n\rbrace. &&\text{(0.3c)}
 \end{aligned}
 $$
 
@@ -721,6 +721,123 @@ $$
 
 </div>
 
+<details class="accordion" markdown="1">
+<summary>Solution 1 (i) — both sides live in $\mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y})$</summary>
+
+We track the arrows. Throughout, the transpose of $T \in \mathcal L(\mathcal U, \mathcal V)$ is the operator $\widecheck T \in \mathcal L(\widecheck{\mathcal V}, \widecheck{\mathcal U})$ fixed by
+
+$$
+\langle p, T u\rangle = \langle \widecheck T p,\, u\rangle, \qquad \forall\, p \in \widecheck{\mathcal V},\ u \in \mathcal U.
+$$
+
+**Left-hand side $\widecheck{A^{-}}$.** Here $A \in \mathcal L(\mathcal X, \mathcal Y)$ is injective, so by (A.11) its orthogonal left-inverse is $A^{-} \in \mathcal L(\mathcal Y, \mathcal X)$. Dualizing an operator swaps domain and codomain and replaces each space by its dual, so
+
+$$
+A^{-} \in \mathcal L(\mathcal Y, \mathcal X)
+\quad\Longrightarrow\quad
+\widecheck{A^{-}} \in \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).
+$$
+
+**Right-hand side $\widecheck A^{+}$.** The transpose $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$. Since $A$ is injective, $\widecheck A$ is *surjective* (the transpose of an injection is a surjection), so its orthogonal right-inverse $\widecheck A^{+}$ from Definition A.3(b) is defined. A right-inverse of a map $\widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ goes the other way:
+
+$$
+\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})
+\quad\Longrightarrow\quad
+\widecheck A^{+} \in \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).
+$$
+
+**Conclusion.** Both $\widecheck{A^{-}}$ and $\widecheck A^{+}$ are elements of $\mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y})$, so the equation $\widecheck{A^{-}} = \widecheck A^{+}$ is at least *well-typed* — it compares two maps with the same domain and codomain. Parts (ii) and (iii) compute each side and show they coincide.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 1 (ii) — dualizing the left-inverse $A^{-}$ via the pairing (0.1)</summary>
+
+**Two facts we will use.** The duality map $M$ is *symmetric*, $\langle M y, y'\rangle = m(y, y') = m(y', y) = \langle M y', y\rangle$, i.e. $\widecheck M = M$ (and likewise $\widecheck L = L$); and the double dual is the identity, $\widecheck{\widecheck A} = A$, under the reflexive identification $\widecheck{\widecheck{\mathcal X}} \cong \mathcal X$.
+
+Abbreviate the symmetric "$m$-Gramian" of $A$ by
+
+$$
+N := \widecheck A M A \in \mathcal L(\mathcal X, \widecheck{\mathcal X}),
+\qquad
+\widecheck N = \widecheck A\, \widecheck M\, \widecheck{\widecheck A} = \widecheck A M A = N,
+$$
+
+so $\widecheck{N^{-1}} = (\widecheck N)^{-1} = N^{-1}$. With this, $A^{-} = N^{-1}\widecheck A M$ by (A.11).
+
+**Peel the operators off the right argument of (0.1).** Starting from the right side of $(0.1)$ and applying the transpose property once per factor:
+
+$$
+\begin{aligned}
+\langle \widecheck x,\, A^{-} y\rangle
+&= \langle \widecheck x,\; N^{-1}\,\widecheck A M\, y\rangle
+&&\text{(definition of } A^{-}) \\
+&= \langle \widecheck{N^{-1}}\,\widecheck x,\; \widecheck A M\, y\rangle
+ = \langle N^{-1}\widecheck x,\; \widecheck A M\, y\rangle
+&&(\widecheck{N^{-1}} = N^{-1}) \\
+&= \langle M y,\; A\, N^{-1}\widecheck x\rangle
+&&\text{(transpose of } \widecheck A,\ \text{using } \widecheck{\widecheck A}=A) \\
+&= m\bigl(y,\, A N^{-1}\widecheck x\bigr)
+ = m\bigl(A N^{-1}\widecheck x,\, y\bigr)
+ = \langle M A\, N^{-1}\widecheck x,\; y\rangle.
+&&(m \text{ symmetric})
+\end{aligned}
+$$
+
+**Read off the transpose.** Comparing the last line with the defining identity $(0.1)$, $\langle \widecheck x, A^{-} y\rangle = \langle \widecheck{A^{-}}\widecheck x, y\rangle$, which must hold for all $\widecheck x \in \widecheck{\mathcal X}$, $y \in \mathcal Y$, gives
+
+$$
+\boxed{\ \widecheck{A^{-}} \;=\; M A\, N^{-1} \;=\; M A\,(\widecheck A M A)^{-1} \;\in\; \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).\ }
+$$
+
+The codomain check matches part (i): $(\widecheck A M A)^{-1} : \widecheck{\mathcal X} \to \mathcal X$, then $A : \mathcal X \to \mathcal Y$, then $M : \mathcal Y \to \widecheck{\mathcal Y}$.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 1 (iii) — $\widecheck A^{+}$ by symbol substitution into Definition A.3(b)</summary>
+
+**The template.** Definition A.3(b) gives the orthogonal right-inverse of a *surjective* operator $A \in \mathcal L(\mathcal X, \mathcal Y)$ as
+
+$$
+A^{+} = L^{-1}\,\widecheck A\,\bigl(A\, L^{-1}\,\widecheck A\bigr)^{-1},
+$$
+
+built from three ingredients: the operator $A$ itself, its transpose $\widecheck A$, and the inverse duality map $L^{-1} : \widecheck{\mathcal X} \to \mathcal X$ of its **domain** $\mathcal X$.
+
+**The substitution.** We now feed the operator $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$ (surjective, by part (i)) into the same template. We must re-read each ingredient for $\widecheck A$:
+
+| ingredient for $A$ | ingredient for $\widecheck A$ |
+|---|---|
+| the operator $A$ | the operator $\widecheck A$ |
+| its transpose $\widecheck A$ | its transpose $\widecheck{\widecheck A} = A$ |
+| $L^{-1}$, inverse duality map of the domain $\mathcal X$ | inverse duality map of the domain $\widecheck{\mathcal Y}$ |
+
+The only subtle entry is the last. The domain of $\widecheck A$ is $\widecheck{\mathcal Y}$, whose scalar product is the *dual* scalar product $\widecheck m(p, p') = \langle p, M^{-1} p'\rangle$ from (A.5a); its duality map is therefore $M^{-1} : \widecheck{\mathcal Y} \to \mathcal Y$. So the "$L^{-1}$" of the template — the *inverse* of the domain's duality map — becomes $M : \mathcal Y \to \widecheck{\mathcal Y}$.
+
+**Assemble.** Substituting $A \rightsquigarrow \widecheck A$, $\ \widecheck A \rightsquigarrow A$, $\ L^{-1} \rightsquigarrow M$:
+
+$$
+\widecheck A^{+}
+= \underbrace{M}_{L^{-1}}\,\underbrace{A}_{\widecheck{\widecheck A}}\,\Bigl(\underbrace{\widecheck A}_{A}\,\underbrace{M}_{L^{-1}}\,\underbrace{A}_{\widecheck{\widecheck A}}\Bigr)^{-1}
+$$
+
+i.e.
+
+$$
+\boxed{\ \widecheck A^{+} \;=\; M A\,(\widecheck A M A)^{-1} \;\in\; \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).\ }
+$$
+
+**Conclusion.** This is *exactly* the expression obtained for $\widecheck{A^{-}}$ in part (ii). Hence
+
+$$
+\widecheck{A^{-}} \;=\; M A\,(\widecheck A M A)^{-1} \;=\; \widecheck A^{+},
+$$
+
+which is the first relation (A.15a) of Proposition A.4(a). The two operations — "dualize the left-inverse" and "right-invert the dual" — produce the same map.
+
+</details>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 2</span><span class="math-callout__name">(SVD factorization and pseudo-inverse)</span></p>
 
@@ -870,7 +987,7 @@ L = V\Lambda_{+}V^{\top}
 \tag{0.13}
 $$
 
-where $\widetilde L = V\Lambda V^{\top} = V\operatorname{Diag}(\lambda_1, \dots, \lambda_n)V^{\top}$ is the spectral decomposition of $\widetilde L$ and the function $[\cdot]_{+} : \mathbb R \to \mathbb R_{\ge 0}$ maps negative numbers to $0$.
+where $\widetilde L = V\Lambda V^{\top} = V\operatorname{Diag}(\lambda_1, \dots, \lambda_n)V^{\top}$ is the spectral decomposition of $\widetilde L$ and the function $[\cdot]\_{+} : \mathbb R \to \mathbb R_{\ge 0}$ maps negative numbers to $0$.
 
 *Hint.* Apply the *low-rank approximation theorem*: for any matrices $A, B \in \mathbb R^{m \times n}$, choosing $B$ as the best $k$-rank approximation of $A$ yields
 
@@ -898,7 +1015,7 @@ $$
 \tag{0.16}
 $$
 
-in a bounded subset for representing corresponding matrices $L = (L_{ij})_{i,j \in [2]}$ and apply the definition $L \in \mathbb S_{\succeq 0}^{2}$ for determining which vectors represent matrices in $\mathbb S_{\succeq 0}^{2}$.
+in a bounded subset for representing corresponding matrices $L = (L_{ij})\_{i,j \in [2]}$ and apply the definition $L \in \mathbb S_{\succeq 0}^{2}$ for determining which vectors represent matrices in $\mathbb S_{\succeq 0}^{2}$.
 
 **(b)** Exploit the mapping
 
