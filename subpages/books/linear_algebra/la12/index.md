@@ -105,7 +105,7 @@ A set $M$ is **countable** if there exists a bijection between $M$ and $\mathbb{
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Relation)</span></p>
 
-A *binary relation* $R$ on a set $M$ is any subset of the Cartesian product $M \times M = \lbrace (x, y) ;\; x, y \in M \rbrace$. The relation $R$ is
+A **binary relation** $R$ on a set $M$ is any subset of the Cartesian product $M \times M = \lbrace (x, y) ;\; x, y \in M \rbrace$. The relation $R$ is
 
 - **reflexive**, if $(x, x) \in R$ for every $x \in M$,
 - **symmetric**, if $(x, y) \in R \Rightarrow (y, x) \in R$,
@@ -365,7 +365,7 @@ where $x, y, z$ are the unknowns for the prices of one sheaf of good / average /
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matrix)</span></p>
 
-A real *matrix* of type $m \times n$ is a rectangular array (table) of real numbers
+A real **matrix** of type $m \times n$ is a rectangular array (table) of real numbers
 
 $$A = \begin{pmatrix} a_{11} & a_{12} & \ldots & a_{1n} \\ \vdots & \vdots & & \vdots \\ a_{m1} & a_{m2} & \ldots & a_{mn} \end{pmatrix}.$$
 
@@ -410,7 +410,7 @@ where $a_{ij}, b_i$ are given coefficients and $x_1, \ldots, x_n$ are unknowns. 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coefficient matrix and augmented matrix)</span></p>
 
-The *coefficient matrix* of the system is
+The **coefficient matrix** of the system is
 
 $$A = \begin{pmatrix} a_{11} & a_{12} & \ldots & a_{1n} \\ \vdots & \vdots & & \vdots \\ a_{m1} & a_{m2} & \ldots & a_{mn} \end{pmatrix}$$
 
@@ -770,7 +770,7 @@ The entry at position $(i, j)$ of the product $AB$ is computed as the dot produc
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Identity matrix)</span></p>
 
-The *identity matrix* of order $n$, denoted $I$ or $I_n$, is a square matrix with entries $I_{ij} = 1$ for $i = j$ and $I_{ij} = 0$ otherwise. It has ones on the diagonal and zeros elsewhere. The *standard unit vector* $e_i$ is the $i$-th column of the identity matrix, i.e., $e_i = I_{*i}$.
+The **identity matrix** of order $n$, denoted $I$ or $I_n$, is a square matrix with entries $I_{ij} = 1$ for $i = j$ and $I_{ij} = 0$ otherwise. It has ones on the diagonal and zeros elsewhere. The **standard unit vector** $e_i$ is the $i$-th column of the identity matrix, i.e., $e_i = I_{\asti}$.
 
 </div>
 
@@ -2946,7 +2946,7 @@ Let $U, V$ be vector spaces over a field $\mathbb{T}$. A map $f \colon U \to V$ 
 
 </div>
 
-A linear map is also called a *homomorphism*. An injective homomorphism is a *monomorphism*, a surjective homomorphism is an *epimorphism*, a homomorphism from a set to itself is an *endomorphism*, a surjective and injective homomorphism is an *isomorphism*, and an isomorphic endomorphism is called an *automorphism*.
+A linear map is also called a **homomorphism**. An injective homomorphism is a **monomorphism**, a surjective homomorphism is an **epimorphism**, a homomorphism from a set to itself is an **endomorphism**, a surjective and injective homomorphism is an **isomorphism**, and an isomorphic endomorphism is called an **automorphism**.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.2 — Examples of Linear Maps in the Plane)</span></p>

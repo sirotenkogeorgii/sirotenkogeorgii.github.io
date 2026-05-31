@@ -89,6 +89,40 @@ $$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Does any $L \in \mathcal{L}(\mathcal{X}, \widecheck{\mathcal{X}})$ and $M \in \mathcal{L}(\mathcal{Y}, \widecheck{\mathcal{Y}}))$ induce inner product?</span></p>
+
+It's a convention that the text fixes earlier and then leans on silently. The restrictions on $L$ and $M$ are real, but they're not **imposed** on $L$ and $M$; they're **inherited**. Here's the precise mechanism.
+
+**The order of definition matters.** The opening of Section A.1: "We supply finite-dimensional real vector spaces $\mathcal X$ and $\mathcal Y$ with **scalar products** $\ell$ and $m$." So $\ell$ comes **first**, and it is a scalar product — by definition a symmetric, positive-definite bilinear form. Then (A.2a) does not introduce $L$ as some arbitrary operator and ask it to behave; it **defines** $L$ as the unique operator that encodes the already-given $\ell$:
+
+$$\langle Lx, x'\rangle := \ell(x,x') \quad \forall x,x'$$
+
+$L$ is determined by $\ell$. Its properties are therefore consequences of the properties of $\ell$, which is why the definition doesn't bother to restate them.
+
+**The correspondence that's doing the work.** On a finite-dimensional space there is a canonical bijection
+
+$$
+\lbrace\text{bilinear forms } b \text{ on } \mathcal X\rbrace \;\longleftrightarrow\; \mathcal L(\mathcal X, \widecheck{\mathcal X}), \qquad b \longleftrightarrow B \text{ via } \langle Bx,x'\rangle = b(x,x').
+$$
+
+Under it, three properties translate one-for-one (using the reflexive identification $\widecheck{\widecheck{\mathcal X}}\cong\mathcal X$):
+
+- $b$ symmetric $\iff$ $\widecheck B = B$;
+- $b$ non-degenerate $\iff$ $B$ invertible;
+- $b$ positive-definite $\iff$ $\langle Bx,x\rangle > 0$ for $x\ne 0$ (which implies non-degenerate).
+
+A **scalar product** is precisely a symmetric positive-definite $b$. So the corresponding $L$ is automatically a **symmetric, positive-definite isomorphism** — no extra hypothesis needed. The single word "scalar product" at the top of the section carries all of it.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">($L$ and $M$ are bijections)</span></p>
+
+Bilinear-form operators $L$ and $M$ are full-rank invertible bijections, **because** they are induced by a inner product. 
+
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_scalar_product_geometry.png' | relative_url }}" alt="Three side-by-side panels of R² with the same canonical basis δ₁, δ₂ but three different scalar products: a circle for G = I, a horizontally-stretched ellipse for G = diag(1, 4), and a tilted ellipse for an oblique G with off-diagonal entries. Inset heatmaps show each Gramian." loading="lazy">
   <figcaption>The same vector space $\mathcal X = \mathbb R^2$ acquires entirely different geometries depending on which scalar product $\ell$ we install on it. Concretely, the unit ball $\lbrace x : \ell(x,x) \le 1\rbrace $ is the level-1 set of the quadratic form $x^\top G x$, where $G = (\ell(\delta_i, \delta_j))_{ij}$ is the Gramian. For $G = I$ it is the round disc; for $G = \mathrm{diag}(1, 4)$ it is squashed along $\delta_2$ (lengths in that direction are now twice as expensive); for the oblique $G$ it tilts away from the axes because $\delta_1, \delta_2$ are no longer $\ell$-orthogonal. The basis arrows themselves do not move — only the geometry painted on top of them.</figcaption>
@@ -272,10 +306,10 @@ $$
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_pseudoinverse_minnorm.png' | relative_url }}" alt="Two panels for the pseudo-inverse picture. Left: the source space X with ker(C) drawn as a dashed line, ker(C)^perp as a solid line, and an affine line of preimages of ŷ parallel to ker(C); the special preimage x̄ = C†y sits where this affine line meets ker(C)^perp, closer to the origin than the other (grey) candidate preimages. Right: the target space Y with rge(C) as a line, a target point y above it, and ŷ = CC†y as the orthogonal projection of y onto rge(C); the residual y − ŷ is shown perpendicular to rge(C)." loading="lazy">
   <figcaption>The pseudo-inverse $C^\dagger = A^+ B^-$ from Definition A.5 read right-to-left. <em>Right:</em> a target $y \in \mathcal Y$ that may not lie in $\mathrm{rge}(C)$. The orthogonal projection $\hat y = CC^\dagger y$ is the closest point of $\mathrm{rge}(C)$ to $y$ in the $m$-metric; the residual $y - \hat y$ is $m$-orthogonal to $\mathrm{rge}(C)$. <em>Left:</em> the preimage $C^{-1}(\hat y)$ is an affine line — a coset of $\ker(C)$. All grey points map to $\hat y$, but $\bar x = C^\dagger y$ is the unique element of that coset closest to the origin in $\mathcal X$, equivalently the unique element lying in $\ker(C)^\perp = \mathrm{rge}(C^\dagger)$. So $C^\dagger$ realises in a single linear map the two-step recipe: <em>project to the range, then take the minimum-norm preimage.</em></figcaption>
-</figure>
+</figure> -->
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.6 (Properties of the pseudo-inverse)</span></p>
@@ -296,10 +330,10 @@ $$
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_penrose_conditions.png' | relative_url }}" alt="Two-by-two grid of small diagrams illustrating the four Penrose–Moore conditions for a fixed rank-1 example C: R² → R². Top-left (a): a target vector y and its projection ŷ = CC†y onto rge(C). Top-right (b): a vector Cx already in rge(C). Bottom-left (c): a vector x in source space and its projection C†Cx onto ker(C)^perp. Bottom-right (d): a vector y in target space and its projection CC†y onto rge(C)." loading="lazy">
   <figcaption>The four Penrose–Moore identities (A.21a–d) read off geometrically for a fixed rank-1 example $C : \mathcal X \to \mathcal Y$. <strong>(a)</strong> $C^\dagger$ ignores the $\mathrm{rge}(C)^\perp$-component of its input, so feeding it $y$ versus its projection $\hat y = CC^\dagger y$ produces the same answer — hence $C^\dagger CC^\dagger = C^\dagger$. <strong>(b)</strong> $Cx$ already lives in $\mathrm{rge}(C)$, where $CC^\dagger$ acts as the identity, so $CC^\dagger Cx = Cx$. <strong>(c)</strong> $C^\dagger C$ is the orthogonal projection in $\mathcal X$ onto $\ker(C)^\perp$ — it strips off the kernel component and keeps the rest. <strong>(d)</strong> $CC^\dagger$ is the orthogonal projection in $\mathcal Y$ onto $\mathrm{rge}(C)$. Together (c) and (d) capture the symmetry that makes $C^\dagger$ unique among all generalized inverses.</figcaption>
-</figure>
+</figure> -->
 
 ### A.1.3. Tensor-Products and Generalized Inverses
 
