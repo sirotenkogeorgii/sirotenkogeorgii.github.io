@@ -396,6 +396,8 @@ $$C(\sigma) = C_U(\sigma) = \min \lbrace l(\rho_M \tau) : U(\rho_M \tau) = \sigm
 
 </div>
 
+TODO: is Kolmogorov complexity a function from $\lbrace 0,1\rbrace^\ast \to \mathbb{N}$.
+
 The choice of universal machine matters only up to a constant: passing through $U$ adds at most the cost of the encoding $\rho_M$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -428,9 +430,11 @@ $$C(\sigma) \le C_M(\sigma) + c_M \qquad \text{for every word } \sigma. \tag{1}$
 
    $$C_L(Z) \le l(z_1 \dots z_{1000}) = 1000, \qquad \text{hence} \qquad C(Z) \le 1000 + c_L.$$
 
-* **Sequence $Y$.** A short description of $Y$ is its index in a fixed computable enumeration of all binary words of length 2000 with at most 200 ones (see Section 1.3 — this enumeration is much smaller than $2^{2000}$).
+* **Sequence $Y$.** A short description of $Y$ is its index in a fixed computable enumeration of all binary words of length 2000 with at most 200 ones (see Section 1.3 — this enumeration is much smaller than $2^{2000}$). TODO: is not the complexity of such a word 200 + c_L, because 200 indices with ones, the rest are zeros hardcoded into a turing machine for this class of sequences Y?
 
 </div>
+
+TODO: is there a tension between having a description of turing machine for a specific class of sequences and more general turing machine that gets the description of what to do.
 
 #### From finite strings to infinite sequences
 
@@ -468,7 +472,7 @@ $$C(A \upharpoonright n) < n - c.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* We enumerate the set $S = (\sigma_0, \sigma_1, \dots)$ in stages: at stage $n$, enumerate into $S$ all words of length $n$ that begin with $w_n$ (recall $(w_0, w_1, w_2, w_3, \dots) = (\lambda, 0, 1, 00, \dots)$ is the length-lexicographic enumeration of all binary words). The first few stages produce
+We enumerate the set $S = (\sigma_0, \sigma_1, \dots)$ in stages: at stage $n$, enumerate into $S$ all words of length $n$ that begin with $w_n$ (recall $(w_0, w_1, w_2, w_3, \dots) = (\lambda, 0, 1, 00, \dots)$ is the length-lexicographic enumeration of all binary words). The first few stages produce
 
 $$
 \underbrace{\lambda}_{\text{stage 0}},\quad
@@ -634,15 +638,65 @@ In this section we examine the Kolmogorov complexity as a function on binary wor
 
 There exists a constant $c$ such that the Kolmogorov complexity of every binary word $w$ is no greater than $l(w) + c$:
 
-$$\forall w \in \lbrace 0, 1 \rbrace^{\ast}: \quad C(w) \le l(w) + c.$$
+$$\exists c \ \forall w \in \lbrace 0, 1 \rbrace^{\ast}: \quad C(w) \le l(w) + c.$$
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="The trivial upper bound as a literal description plus fixed overhead">
+    <defs>
+      <marker id="arrow-trivial-bound" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="13" fill="#1f2430">
+      <!-- Literal word -->
+      <text x="330" y="32" text-anchor="middle" font-size="15" font-weight="600">Describe w by printing w itself</text>
+      <g>
+        <rect x="80" y="70" width="110" height="44" rx="4" fill="#fff7e0" stroke="#a86f00" stroke-width="1.5" />
+        <text x="135" y="88" text-anchor="middle" font-size="11" fill="#a86f00">fixed code</text>
+        <text x="135" y="105" text-anchor="middle" font-weight="600">print input</text>
+
+        <rect x="190" y="70" width="260" height="44" rx="4" fill="#edf4ff" stroke="#2c4994" stroke-width="1.5" />
+        <text x="320" y="88" text-anchor="middle" font-size="11" fill="#2c4994">literal payload</text>
+        <text x="320" y="105" text-anchor="middle" font-weight="600">w = 101101001...</text>
+
+        <line x1="470" y1="92" x2="540" y2="92" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-trivial-bound)" />
+        <rect x="545" y="70" width="55" height="44" rx="4" fill="#f2f7ed" stroke="#3d7a26" stroke-width="1.5" />
+        <text x="572" y="97" text-anchor="middle" font-weight="600">w</text>
+      </g>
+
+      <!-- Length accounting -->
+      <g>
+        <line x1="80" y1="150" x2="190" y2="150" stroke="#a86f00" stroke-width="3" />
+        <line x1="190" y1="150" x2="450" y2="150" stroke="#2c4994" stroke-width="3" />
+        <g stroke="#5b6270" stroke-width="1">
+          <line x1="80" y1="142" x2="80" y2="158" />
+          <line x1="190" y1="142" x2="190" y2="158" />
+          <line x1="450" y1="142" x2="450" y2="158" />
+        </g>
+        <text x="135" y="178" text-anchor="middle" fill="#a86f00">constant c</text>
+        <text x="320" y="178" text-anchor="middle" fill="#2c4994">l(w) bits</text>
+        <text x="265" y="216" text-anchor="middle" font-size="16">
+          program length = c + l(w)
+        </text>
+      </g>
+
+      <!-- Complexity inequality -->
+      <g>
+        <rect x="160" y="232" width="340" height="30" rx="4" fill="#f8f9fb" stroke="#cbd2e0" />
+        <text x="330" y="252" text-anchor="middle" font-size="14">C(w) &lt;= l(w) + c for every word w</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption>Proposition 2.1 says that a word is never harder to describe than by giving the word literally. The fixed part tells the universal machine to copy/print the remaining input; the variable part is just $w$ itself. The fixed part contributes only a constant $c$, so the total description length is $l(w) + c$.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* The identity Turing machine $M$ on $\lbrace 0, 1 \rbrace^{\ast}$ satisfies $M(w) = w$, hence $C_M(w) = l(w)$. By (1), there exists a constant $c_M$ with $C(w) \le C_M(w) + c_M = l(w) + c_M$ for every $w$.
+The identity Turing machine $M$ on $\lbrace 0, 1 \rbrace^{\ast}$ satisfies $M(w) = w$, hence $C_M(w) = l(w)$. By (1), there exists a constant $c_M$ with $C(w) \le C_M(w) + c_M = l(w) + c_M$ for every $w$.
 
 </details>
 </div>
@@ -658,11 +712,75 @@ $$C(f(w)) < C(w) + c_f \qquad \text{for every } w \in \mathrm{dom}(f).$$
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="A computable process reuses a shortest description and adds only fixed overhead">
+    <defs>
+      <marker id="arrow-computable-process" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="13" fill="#1f2430">
+      <text x="340" y="30" text-anchor="middle" font-size="15" font-weight="600">The shortest code for w can be reused to describe f(w)</text>
+
+      <!-- Original decoding path -->
+      <g>
+        <rect x="36" y="70" width="120" height="46" rx="4" fill="#edf4ff" stroke="#2c4994" stroke-width="1.5" />
+        <text x="96" y="88" text-anchor="middle" font-size="11" fill="#2c4994">shortest code</text>
+        <text x="96" y="106" text-anchor="middle" font-weight="600">sigma_w</text>
+
+        <line x1="166" y1="93" x2="218" y2="93" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-computable-process)" />
+
+        <rect x="226" y="70" width="86" height="46" rx="4" fill="#fff7e0" stroke="#a86f00" stroke-width="1.5" />
+        <text x="269" y="88" text-anchor="middle" font-size="11" fill="#a86f00">universal</text>
+        <text x="269" y="106" text-anchor="middle" font-weight="600">U</text>
+
+        <line x1="322" y1="93" x2="374" y2="93" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-computable-process)" />
+
+        <rect x="382" y="70" width="76" height="46" rx="4" fill="#f2f7ed" stroke="#3d7a26" stroke-width="1.5" />
+        <text x="420" y="99" text-anchor="middle" font-weight="600">w</text>
+
+        <line x1="468" y1="93" x2="520" y2="93" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-computable-process)" />
+
+        <rect x="528" y="70" width="86" height="46" rx="4" fill="#fff7e0" stroke="#a86f00" stroke-width="1.5" />
+        <text x="571" y="88" text-anchor="middle" font-size="11" fill="#a86f00">computable</text>
+        <text x="571" y="106" text-anchor="middle" font-weight="600">f</text>
+
+        <line x1="571" y1="126" x2="571" y2="162" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-computable-process)" />
+        <rect x="525" y="170" width="92" height="46" rx="4" fill="#f2f7ed" stroke="#3d7a26" stroke-width="1.5" />
+        <text x="571" y="199" text-anchor="middle" font-weight="600">f(w)</text>
+      </g>
+
+      <!-- Composed machine shortcut -->
+      <g>
+        <path d="M96 132 C130 190, 225 238, 340 238 C455 238, 520 218, 571 218" fill="none" stroke="#2c4994" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow-computable-process)" />
+        <rect x="230" y="192" width="220" height="54" rx="4" fill="#f8f9fb" stroke="#cbd2e0" />
+        <text x="340" y="212" text-anchor="middle" font-size="11" fill="#5b6270">compose once</text>
+        <text x="340" y="232" text-anchor="middle" font-weight="600">M = f after U</text>
+      </g>
+
+      <!-- Length accounting -->
+      <g>
+        <line x1="80" y1="278" x2="245" y2="278" stroke="#2c4994" stroke-width="3" />
+        <line x1="245" y1="278" x2="330" y2="278" stroke="#a86f00" stroke-width="3" />
+        <g stroke="#5b6270" stroke-width="1">
+          <line x1="80" y1="270" x2="80" y2="286" />
+          <line x1="245" y1="270" x2="245" y2="286" />
+          <line x1="330" y1="270" x2="330" y2="286" />
+        </g>
+        <text x="162" y="305" text-anchor="middle" fill="#2c4994">C(w) bits</text>
+        <text x="287" y="305" text-anchor="middle" fill="#a86f00">c_f</text>
+        <text x="505" y="292" text-anchor="middle" font-size="15">C(f(w)) &lt; C(w) + c_f</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption>Theorem 2.2 packages the computable post-processing step into a single machine $M = f \circ U$. Once $M$ is fixed, the same optimal code $\sigma_w$ that describes $w$ also makes $M$ output $f(w)$. The universal machine only pays a fixed simulation cost $c_f$ for this whole composed process, independent of the particular input $w$.</figcaption>
+</figure>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $M_f$ be a Turing machine computing $f$, and consider the machine $M$ that, on input $\sigma$, computes $f(U(\sigma))$. For every $w \in \mathrm{dom}(f)$, let $\sigma_w$ be an optimal encoding of $w$, i.e., $U(\sigma_w) = w$ and $l(\sigma_w) = C(w)$. Then
+Let $M_f$ be a Turing machine computing $f$, and consider the machine $M$ that, on input $\sigma$, computes $f(U(\sigma))$. For every $w \in \mathrm{dom}(f)$, let $\sigma_w$ be an optimal encoding of $w$, i.e., $U(\sigma_w) = w$ and $l(\sigma_w) = C(w)$. Then
 
 $$M(\sigma_w) = f(U(\sigma_w)) = f(w),$$
 
@@ -688,7 +806,7 @@ $$\forall n: \quad \#\lbrace w \in \lbrace 0, 1 \rbrace^{\ast} : C(w) < n \rbrac
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* For every $w$ with $C(w) = k$, there exists at least one optimal encoding $\sigma$ with $U(\sigma) = w$ and $l(\sigma) = k$. There are exactly $2^n - 1$ words of length less than $n$, and each can be the optimal encoding of at most one word $w$. The bound follows.
+For every $w$ with $C(w) = k$, there exists at least one optimal encoding $\sigma$ with $U(\sigma) = w$ and $l(\sigma) = k$. There are exactly $2^n - 1$ words of length less than $n$, and each can be the optimal encoding of at most one word $w$. The bound follows.
 
 </details>
 </div>
@@ -791,6 +909,15 @@ Among $2^n$ words of length $n$, there are
   <figcaption>Counting bound for $n = 8$: of the $2^n = 256$ binary words of length 8, at most $2^{k+1} - 1$ have Kolmogorov complexity $\le k$ (Proposition 2.3). The bars grow geometrically, so even at $k = n - 1 = 7$ the upper bound $2^n - 1 = 255$ leaves at least one word of complexity $\ge n$ — incompressible words exist at every length.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Average Kolmogorov Complexity)</span></p>
+
+The function $g:\mathbb{N}\to\mathbb{N}$ is called **average Kolmogorov complexity** of a word of length $n$:
+
+$$g(n):= 2^{-n}\sum_{l(w)=n} C(w).$$
+
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.4 — Average complexity is asymptotically the length)</span></p>
 
@@ -804,13 +931,15 @@ $$\frac{g(n)}{n} \xrightarrow[n \to \infty]{} 1.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* By Proposition 2.1, there is a constant $c$ such that $C(w) < l(w) + c = n + c$ for every word $w$ of length $n$, giving the upper bound. For the lower bound, distribute the $2^n$ words of length $n$ across complexity strata using Corollary 2.3.1:
+By Proposition 2.1, there is a constant $c$ such that $C(w) < l(w) + c = n + c$ for every word $w$ of length $n$, giving the upper bound. For the lower bound, distribute the $2^n$ words of length $n$ across complexity strata using Corollary 2.3.1:
 
 $$
-\frac{2^{n-1}(n - 1) + 2^{n-2}(n - 2) + \dots + 2^0 (n - n)}{2^n \cdot n}
-=
-\frac{2^{n-1} \cdot n + 2^{n-2} \cdot n + \dots + 2^0 \cdot n}{2^n \cdot n}
+\begin{aligned}
+&\frac{2^{n-1}(n - 1) + 2^{n-2}(n - 2) + \dots + 2^0 (n - n)}{2^n \cdot n}
+= \\
+&\frac{2^{n-1} \cdot n + 2^{n-2} \cdot n + \dots + 2^0 \cdot n}{2^n \cdot n}
 - \frac{2^{n-1} \cdot 1 + 2^{n-2} \cdot 2 + \dots + 2^0 \cdot n}{2^n \cdot n}
+\end{aligned}
 $$
 
 $$
@@ -903,7 +1032,7 @@ The Kolmogorov complexity is an upper-semicomputable function.
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Apply Proposition 2.9 to
+Apply Proposition 2.9 to
 
 $$F(w, t) := \min \lbrace l(\sigma) : U(\sigma)[t] \!\downarrow\, = w \rbrace,$$
 
@@ -989,7 +1118,7 @@ The next theorem makes the asymmetry between the upper and the (missing) lower s
 
 There exists no computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \to \mathbb{N}$ such that
 
-* $f$ is unbounded (for every $n$ there exists $w$ with $f(w) \!\downarrow\, > n$);
+* $f$ is unbounded (for every $n$ there exists $w$ with $f(w) \downarrow\, > n$);
 * $C(w) > f(w)$ for every $w \in \mathrm{dom}(f)$.
 
 </div>
@@ -998,7 +1127,7 @@ There exists no computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \t
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \!\downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
+Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \!\downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
 
 $$C(M(\mathrm{bin}(n))) \ge f(M(\mathrm{bin}(n))) > n. \tag{3}$$
 
@@ -1052,7 +1181,7 @@ For every $n$, there exists a word $w$ and:
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $M$ be the Turing machine that on input $\mathrm{bin}(n)$ returns $(01)^{2^n}$. Set $w_n := (01)^{2^n}$. Then $C_M(w_n) \le l(\mathrm{bin}(n)) \le \log(n)$, hence $C(w_n) \le \log(n) + c_M$.
+Let $M$ be the Turing machine that on input $\mathrm{bin}(n)$ returns $(01)^{2^n}$. Set $w_n := (01)^{2^n}$. Then $C_M(w_n) \le l(\mathrm{bin}(n)) \le \log(n)$, hence $C(w_n) \le \log(n) + c_M$.
 
 For (i), define
 
@@ -1149,7 +1278,7 @@ $$C(xy) \le C(x) + 2 \log C(x) + C(y) + c.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $\tau_x$ and $\tau_y$ be optimal plain codes for $x$ and $y$, so
+Let $\tau_x$ and $\tau_y$ be optimal plain codes for $x$ and $y$, so
 
 $$U(\tau_x) = x, \qquad l(\tau_x) = C(x), \qquad U(\tau_y) = y, \qquad l(\tau_y) = C(y).$$
 
@@ -1465,7 +1594,7 @@ $$K(vw) \le K(v) + K(w) + c.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Construct a prefix-free machine $M$ which, on input $\sigma$, tries all splits
+Construct a prefix-free machine $M$ which, on input $\sigma$, tries all splits
 
 $$\sigma = \sigma_1\sigma_2$$
 
@@ -1552,7 +1681,7 @@ for every $w \in \mathrm{dom}(f)$.
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Let $M$ be the machine that computes $f(\widetilde U(\sigma))$ from input $\sigma$. If $w \in \mathrm{dom}(f)$ and $\sigma_w$ is an optimal prefix-free code for $w$, then
+Let $M$ be the machine that computes $f(\widetilde U(\sigma))$ from input $\sigma$. If $w \in \mathrm{dom}(f)$ and $\sigma_w$ is an optimal prefix-free code for $w$, then
 
 $$M(\sigma_w) = f(\widetilde U(\sigma_w)) = f(w), \qquad l(\sigma_w) = K(w).$$
 
@@ -1597,7 +1726,7 @@ There exists no computable function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to 
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Suppose such an $f$ exists. Construct a prefix-free machine $M$ with inputs of the form
+Suppose such an $f$ exists. Construct a prefix-free machine $M$ with inputs of the form
 
 $$0,\ 10,\ 110,\ 1110,\dots, 1^n0,\dots$$
 
@@ -1677,7 +1806,7 @@ $$\sum_{\tau \in \mathrm{dom}(M)} 2^{-l(\tau)} \le 1.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Proof of Proposition 2.25)</span></p>
 
-Show that the cylinders $[\![\tau]\!]$ for $\tau \in \mathrm{dom}(M)$ are pairwise disjoint. Since each has measure $2^{-l(\tau)}$ and all are contained in Cantor space of total measure $1$, the inequality follows.
+Show that the cylinders $[[\tau]]$ for $\tau \in \mathrm{dom}(M)$ are pairwise disjoint. Since each has measure $2^{-l(\tau)}$ and all are contained in Cantor space of total measure $1$, the inequality follows.
 
 </div>
 
@@ -1694,7 +1823,7 @@ $$\sum_{\sigma \in \lbrace 0,1\rbrace^{\ast}} 2^{-K(\sigma)} \le 1.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* For every word $\sigma$, choose an optimal prefix-free code $\tau_\sigma$ with
+For every word $\sigma$, choose an optimal prefix-free code $\tau_\sigma$ with
 
 $$\widetilde U(\tau_\sigma) = \sigma, \qquad l(\tau_\sigma) = K(\sigma).$$
 
@@ -1725,7 +1854,7 @@ $$K(w) > l(w) + \log l(w) + c.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Suppose, toward a contradiction, that there is a constant $d$ such that
+Suppose, toward a contradiction, that there is a constant $d$ such that
 
 $$K(w) \le l(w) + \log l(w) + d$$
 
