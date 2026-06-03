@@ -396,7 +396,14 @@ $$C(\sigma) = C_U(\sigma) = \min \lbrace l(\rho_M \tau) : U(\rho_M \tau) = \sigm
 
 </div>
 
-TODO: is Kolmogorov complexity a function from $\lbrace 0,1\rbrace^\ast \to \mathbb{N}$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kolmogorov complexity assigns a natural number)</span></p>
+
+Yes, **Kolmogorov complexity** is a function that takes a finite binary string as its input and returns a **natural number** as its output:
+
+$$C:\lbrace 0,1\rbrace^\ast \to \mathbb{N}$$
+
+</div>
 
 The choice of universal machine matters only up to a constant: passing through $U$ adds at most the cost of the encoding $\rho_M$.
 
@@ -642,6 +649,15 @@ $$\exists c \ \forall w \in \lbrace 0, 1 \rbrace^{\ast}: \quad C(w) \le l(w) + c
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The identity Turing machine $M$ on $\lbrace 0, 1 \rbrace^{\ast}$ satisfies $M(w) = w$, hence $C_M(w) = l(w)$. By (1), there exists a constant $c_M$ with $C(w) \le C_M(w) + c_M = l(w) + c_M$ for every $w$.
+
+</details>
+</div>
+
 <figure class="math-figure">
   <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="The trivial upper bound as a literal description plus fixed overhead">
     <defs>
@@ -692,15 +708,6 @@ $$\exists c \ \forall w \in \lbrace 0, 1 \rbrace^{\ast}: \quad C(w) \le l(w) + c
   <figcaption>Proposition 2.1 says that a word is never harder to describe than by giving the word literally. The fixed part tells the universal machine to copy/print the remaining input; the variable part is just $w$ itself. The fixed part contributes only a constant $c$, so the total description length is $l(w) + c$.</figcaption>
 </figure>
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-The identity Turing machine $M$ on $\lbrace 0, 1 \rbrace^{\ast}$ satisfies $M(w) = w$, hence $C_M(w) = l(w)$. By (1), there exists a constant $c_M$ with $C(w) \le C_M(w) + c_M = l(w) + c_M$ for every $w$.
-
-</details>
-</div>
-
 The next theorem expresses that no computable process can blow up Kolmogorov complexity by more than an additive constant — the constant depends on the *process* but not on the *input*.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -710,6 +717,23 @@ For every computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \to \lbr
 
 $$C(f(w)) < C(w) + c_f \qquad \text{for every } w \in \mathrm{dom}(f).$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $M_f$ be a Turing machine computing $f$, and consider the machine $M$ that, on input $\sigma$, computes $f(U(\sigma))$. For every $w \in \mathrm{dom}(f)$, let $\sigma_w$ be an optimal encoding of $w$, i.e., $U(\sigma_w) = w$ and $l(\sigma_w) = C(w)$. Then
+
+$$M(\sigma_w) = f(U(\sigma_w)) = f(w),$$
+
+so $C_M(f(w)) \le l(\sigma_w) = C(w)$. By (1), there exists a constant $c_M$ with
+
+$$C(f(w)) \le C_M(f(w)) + c_M \le C(w) + c_M,$$
+
+which concludes the proof.
+
+</details>
 </div>
 
 <figure class="math-figure">
@@ -775,23 +799,6 @@ $$C(f(w)) < C(w) + c_f \qquad \text{for every } w \in \mathrm{dom}(f).$$
   </svg>
   <figcaption>Theorem 2.2 packages the computable post-processing step into a single machine $M = f \circ U$. Once $M$ is fixed, the same optimal code $\sigma_w$ that describes $w$ also makes $M$ output $f(w)$. The universal machine only pays a fixed simulation cost $c_f$ for this whole composed process, independent of the particular input $w$.</figcaption>
 </figure>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-Let $M_f$ be a Turing machine computing $f$, and consider the machine $M$ that, on input $\sigma$, computes $f(U(\sigma))$. For every $w \in \mathrm{dom}(f)$, let $\sigma_w$ be an optimal encoding of $w$, i.e., $U(\sigma_w) = w$ and $l(\sigma_w) = C(w)$. Then
-
-$$M(\sigma_w) = f(U(\sigma_w)) = f(w),$$
-
-so $C_M(f(w)) \le l(\sigma_w) = C(w)$. By (1), there exists a constant $c_M$ with
-
-$$C(f(w)) \le C_M(f(w)) + c_M \le C(w) + c_M,$$
-
-which concludes the proof.
-
-</details>
-</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.3 — Counting bound)</span></p>
@@ -931,19 +938,37 @@ $$\frac{g(n)}{n} \xrightarrow[n \to \infty]{} 1.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-By Proposition 2.1, there is a constant $c$ such that $C(w) < l(w) + c = n + c$ for every word $w$ of length $n$, giving the upper bound. For the lower bound, distribute the $2^n$ words of length $n$ across complexity strata using Corollary 2.3.1:
+**Upper bound**
+
+To establish the upper bound we consider the sum of complexities:
+
+$$\sum_{l(w)=n} C(w) \le 2^n (l(w) + c) = 2^n (n + c),$$
+
+were we used $C(w)\le l(w) + c$ and that totally the sum has $2^n$ terms, because there are only $2^n$ words of the length $n$.
+
+Deviding by $2^n$ in $g(n)$ gives
+
+$$g(n) = \frac{\sum_{l(w)=n} C(w)}{2^n} \le \frac{2^n(n+c)}{2^n} = n+c$$
+
+Therefore, 
+
+$$\frac{g(n)}{n} \le 1 + \frac{c}{n} \xrightarrow[n \to \infty]{} 1$$
+
+**Lower bound**
+
+For the lower bound, distribute the $2^n$ words of length $n$ across complexity strata using Corollary 2.3.1:
 
 $$
 \begin{aligned}
-&\frac{2^{n-1}(n - 1) + 2^{n-2}(n - 2) + \dots + 2^0 (n - n)}{2^n \cdot n}
-= \\
-&\frac{2^{n-1} \cdot n + 2^{n-2} \cdot n + \dots + 2^0 \cdot n}{2^n \cdot n}
-- \frac{2^{n-1} \cdot 1 + 2^{n-2} \cdot 2 + \dots + 2^0 \cdot n}{2^n \cdot n}
+&\frac{2^{n-1}(n - 1) + 2^{n-2}(n - 2) + \dots + 2^0 (n - n)}{2^n \cdot n} \\
+&= 
+\frac{2^{n-1} \cdot n + 2^{n-2} \cdot n + \dots + 2^0 \cdot n}{2^n \cdot n}
+- \frac{2^{n-1} \cdot 1 + 2^{n-2} \cdot 2 + \dots + 2^0 \cdot n}{2^n \cdot n} \\
+&=
+1 - 2^{-n} - \frac{\sum_{i=1}^{n} 2^{-i} \cdot i}{n} \\
+&\ge 
+1 - 2^{-n} - \frac{\sum_{i=1}^{\infty} 2^{-i} \cdot i}{n} \xrightarrow[n \to \infty]{} 1.
 \end{aligned}
-$$
-
-$$
-\ge 1 - 2^{-n} - \frac{\sum_{i=1}^{\infty} 2^{-i} \cdot i}{n} \xrightarrow[n \to \infty]{} 1.
 $$
 
 </details>
@@ -956,6 +981,179 @@ Show that there exist constants $c_m$ and $c_M$ such that
 
 $$n - c_m \le g(n) \le n + c_M \qquad \text{for all } n.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**RHS**
+
+From the first part of the proof of the proposition 2.4, $\frac{g(n)}{n} \le 1 + \frac{c}{n}$. Therefore $g(n) \le n + c$.
+
+**LHS**
+
+From the second part of the proof of the proposition 2.4, 
+
+$$\frac{g(n)}{n} \geq 1 - 2^{-n} - \frac{\sum_{i=1}^{n} 2^{-i} \cdot i}{n}.$$
+
+Therefore,
+
+$$g(n) \geq n - (\frac{n}{2^n} + \sum_{i=1}^{n} 2^{-i} \cdot i) = n - (2 - \frac{2}{2^n}) \geq n - 2 > n - (2 + \epsilon).$$
+
+Setting $c_m := 2 + \epsilon$, where $\epsilon > 0$, we obtain the requires inequality.
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Two-sided constant bound for average Kolmogorov complexity">
+    <defs>
+      <marker id="arrow-average-bound" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <!-- Axes -->
+      <line x1="70" y1="290" x2="600" y2="290" stroke="#5b6270" stroke-width="1.3" marker-end="url(#arrow-average-bound)" />
+      <line x1="70" y1="290" x2="70" y2="35" stroke="#5b6270" stroke-width="1.3" marker-end="url(#arrow-average-bound)" />
+      <text x="605" y="307" text-anchor="end" fill="#5b6270">n</text>
+      <text x="55" y="42" text-anchor="middle" fill="#5b6270">complexity</text>
+
+      <!-- Vertical guide lines -->
+      <g stroke="#cbd2e0" stroke-width="0.8">
+        <line x1="165" y1="290" x2="165" y2="35" />
+        <line x1="260" y1="290" x2="260" y2="35" />
+        <line x1="355" y1="290" x2="355" y2="35" />
+        <line x1="450" y1="290" x2="450" y2="35" />
+        <line x1="545" y1="290" x2="545" y2="35" />
+      </g>
+
+      <!-- Constant-width band around y = n -->
+      <polygon points="95,220 565,45 565,122 95,290" fill="rgba(44,73,148,0.10)" stroke="none" />
+      <line x1="95" y1="220" x2="565" y2="45" stroke="#2c4994" stroke-width="1.6" stroke-dasharray="6 4" />
+      <line x1="95" y1="255" x2="565" y2="82" stroke="#1f2430" stroke-width="1.5" />
+      <line x1="95" y1="290" x2="565" y2="122" stroke="#3d7a26" stroke-width="1.6" stroke-dasharray="6 4" />
+
+      <!-- Schematic average complexity curve trapped inside the band -->
+      <path d="M95 268 C135 250, 165 248, 205 232 S285 204, 325 190 S405 157, 445 144 S520 109, 565 95"
+            fill="none" stroke="#d65336" stroke-width="2.4" />
+
+      <!-- Labels -->
+      <text x="442" y="48" fill="#2c4994" font-weight="600">n + c_M</text>
+      <text x="423" y="82" fill="#1f2430" font-weight="600">n</text>
+      <text x="434" y="128" fill="#3d7a26" font-weight="600">n - c_m</text>
+      <text x="235" y="217" fill="#d65336" font-weight="600">g(n)</text>
+
+      <!-- Constant offsets at a fixed n -->
+      <g stroke="#a86f00" stroke-width="1.1" fill="none">
+        <line x1="585" y1="45" x2="585" y2="82" />
+        <line x1="578" y1="45" x2="592" y2="45" />
+        <line x1="578" y1="82" x2="592" y2="82" />
+        <line x1="585" y1="82" x2="585" y2="122" />
+        <line x1="578" y1="122" x2="592" y2="122" />
+      </g>
+      <text x="603" y="66" fill="#a86f00">c_M</text>
+      <text x="603" y="105" fill="#a86f00">c_m</text>
+
+      <!-- Tick labels -->
+      <g font-size="11" fill="#5b6270" text-anchor="middle">
+        <text x="70" y="307">0</text>
+        <text x="165" y="307">n_1</text>
+        <text x="260" y="307">n_2</text>
+        <text x="355" y="307">n_3</text>
+        <text x="450" y="307">n_4</text>
+        <text x="545" y="307">n_5</text>
+      </g>
+
+      <text x="330" y="335" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        The vertical width of the band is constant, so dividing by n squeezes g(n)/n toward 1.
+      </text>
+    </g>
+  </svg>
+  <figcaption>A schematic plot of the sharper two-sided bound. The line $y = n$ is surrounded by a constant-width band with upper edge $n + c_M$ and lower edge $n - c_m$. The average complexity $g(n)$ may wiggle inside this band, but its distance from $n$ is uniformly bounded for all $n$, which is exactly why $g(n)/n \to 1$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Axiomatical characterization of Kolmogorov complexity)</span></p>
+
+A sequence of sets $(M_0, M_1, \dots)$ is called **uniformly computably enumerable** (or, shortly, uniformly c.e.) if the set of pairs $\lbrace (x, i) : x \in M_i \rbrace$ is computably enumerable.
+
+We consider the sequence of sets of binary words $(S_0, S_1,\dots)$ defined by
+
+$$S_n := \lbrace w \in\lbrace0, 1\rbrace^\ast : C(w) < n\rbrace \quad \forall n.$$
+
+By Proposition 2.3, it holds $\lvert S_n\rvert < 2^n$ for all $n$.
+* **(a)** Show that the sequence of sets $(S_0, S_1, \dots)$ is uniformly c.e.
+* **(b)** Show that, for every uniformly c.e. sequence of sets of binary words $(V_0, V_1,\dots)$ such that $\lvert V_n\rvert < 2^n$ for all $n$, there exists a constant $c$ such that
+
+  $$C(w) < n + c \text{ for every } w \in V_n \quad \forall n.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+* **(a)** For a fixed $n$, we generate $2^n - 1$ programs $w$ of the size less then $n$. Then for each generated program $w$ using interleaving execution of UTMs, if the UTM halts with the output $x$, then we print the output $(x, n)$. Doing it in interleaving manner with all $n$, each word in each $S_n$ will be eventually printed as a corresponding pair.
+* **(b)** Let there be some procedure $P$ that enumerates the pairs $\lbrace (x,i): x\in M\rbrace$. Because the procedure is deterministic, for each pair within a shared $i$ group, we can keep a number in which the word $x$ appears within this group. The index of this word has length $\log 2^n = n$. We consider that the index $n$ is know in advance, i.e. $V_n$ is fixed, we are preconditioned on it.
+
+The clean fix in (b) (and the whole reason the bound has no $\log n$ overhead) is to exploit that a *plain* machine reads its entire input: let the program be the $n$-bit index itself, and have $M$ set $n:=l(p)$ from the input length, then enumerate $V_n​$ to the $p$-th element. Then $C_M(w)\le n$ for every $w\in V_n$, and universality (eq. (1)) gives $C(w)\le C_M(w)+c_M\le n+c_M<n+c$ with $c:=c_M+1$. As written, you're missing (i) the machine that reads $n$ off the length, and (ii) the universality step that actually produces the constant $c$ — that constant is the simulation cost $c_M=l(\rho_M)$, and your write-up never says where $c$ comes from. Also worth a half-sentence: $\lvert V_n\rvert<2^n$ means $\le 2^n-1$ elements, which comfortably inject into the $2^n$ strings of length $n$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Rate of convergence of Kolmogorov complexity to infinity)</span></p>
+
+We consider the function $B : \mathbb N\to\mathbb N$ that returns the largest word which has the given Kolmogorov complexity:
+
+$$B(n) := \max\lbrace m \in \mathbb N : C(m) \leq n\rbrace.$$
+
+* **(a)** Show that $B$ is total.
+* **(b)** Show that the function $B$ **grows faster** than every partially computable function, i.e., every partially computable function $f:\mathbb N\to\mathbb N$ satisfies 
+  
+  $$f(n) \leq B(n) \text{ for all but finitely many } n \in \text{dom}(f).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+* **(a)** 
+  
+The correct proof is purely existential:
+
+$$B(n)=\max\lbrace m\in\mathbb N:C(m)\le n\rbrace.$$
+
+Now
+
+$$C(m)\le n$$
+
+means that there exists a program $p$ with $\lvert p\rvert\le n$ and $U(p)=m$. There are only finitely many such programs $p$, namely at most
+
+$$2^{n+1}-1.$$
+
+Therefore the set of possible outputs
+
+$$\lbrace U(p): |p|\le n,\ U(p)\downarrow\rbrace$$
+
+is finite. Hence its maximum exists, assuming the set is nonempty. If there may be small $n$ for which it is empty, define instead. This is the same distinction with the busy-beaver function: it is well-defined by a finite maximum, but impossible to compute in general.
+
+$$B(n):=\max\bigl(\lbrace m\in\mathbb N:C(m)\le n\rbrace\cup{0}\bigr).$$
+
+So: **totality comes from finiteness, not from computability.**
+
+It is absolutely possible that the universal TM does not halt on some codes. This is exactly why $B(n)$ exists mathematically, but is not computable. 
+
+* **(b)** By contradiction, there are infinitely $n\in\text{dom}(f)$ s.t. $f(n)>B(n)$. Then Kolmogorov complexity of the word $f(n)$ is 
+
+  $$C(f(n)) \le C(n) + c_f \leq \log n + c + c_f = \log n + \tilde{c} < n + \tilde{c}.$$
+
+  For finitely many words we can have $\log n + \tilde{c} \geq n$, depending on the constant $\tilde{c}$, but for infinitely many words it holds that $\log n < n$, giving for them $C(f(n)) < n$. Since the complexity of the word $f(n)$ is less then $n$, it should be in the set $\lbrace m \in \mathbb N : C(m) \leq n\rbrace$ of the definition of the function $B$ for the input $n$, thus it is not possible that $f(n) > B(n)$ for infinitely many $n \in \text{dom}(f)$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -990,17 +1188,19 @@ is computably enumerable.
 
 A function $f$ is **lower-semicomputable** if the set
 
-$$H_f := \lbrace (w, y) : f(w) < y \rbrace$$
+$$H_f := \lbrace (w, y) : f(w) > y \rbrace$$
 
 (called **hypograph** of $f$) is computably enumerable.
 
 A function $f$ is **upper-semicomputable** if the set
 
-$$E_f := \lbrace (w, y) : f(w) > y \rbrace$$
+$$E_f := \lbrace (w, y) : f(w) < y \rbrace$$
 
 (called **epigraph** of $f$) is computably enumerable.
 
 </div>
+
+TODO: for Codex: add visualizations
 
 Computable functions are clearly both upper- and lower-semicomputable. Conversely, given both kinds of enumerations one can compute $f(w)$ by enumerating $H_f$ and $E_f$ in parallel until some $y$ satisfies $(w, y - 1) \in H_f$ and $(w, y + 1) \in E_f$ — which forces $y - 1 < f(w) < y + 1$ — and returning $y$.
 
@@ -1181,7 +1381,13 @@ For every $n$, there exists a word $w$ and:
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $M$ be the Turing machine that on input $\mathrm{bin}(n)$ returns $(01)^{2^n}$. Set $w_n := (01)^{2^n}$. Then $C_M(w_n) \le l(\mathrm{bin}(n)) \le \log(n)$, hence $C(w_n) \le \log(n) + c_M$.
+Let $M$ be the Turing machine that on input $\mathrm{bin}(n)$ returns $(01)^{2^n}$. Set $w_n := (01)^{2^n}$. Then 
+
+$$C_M(w_n) \le l(\mathrm{bin}(n)) \le \log(n)$$
+
+hence 
+
+$$C(w_n) \le \log(n) + c_M$$
 
 For (i), define
 

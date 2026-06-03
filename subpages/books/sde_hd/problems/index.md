@@ -23,6 +23,8 @@ noindex: true
 
 ---
 
+[Exercise Sheet 4](/subpages/books/sde_hd/problems/sheet04/)
+
 ## Exercise Sheet 1 — Brownian Motion
 
 *Keywords: Brownian motion, Gaussian process, scaling invariance, independent-increments properties.*
