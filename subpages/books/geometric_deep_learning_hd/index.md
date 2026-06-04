@@ -176,19 +176,19 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.2 (Making bases orthonormal)</span></p>
 
-1. Let $(e_i)_{i \in [d]} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
+1. Let $(e_i)\_{i \in [d]} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
 
    $$
    B \in \mathcal{L}(\mathbb{R}^d, \mathcal{X}), \qquad B\, v := v^i e_i \in \mathcal{X}, \quad v \in \mathbb{R}^d. \tag{A.7}
    $$
 
-2. Then the basis $(e_i)_{i \in [d]}$ is **orthonormal for the scalar product** on $\mathcal{X}$ iff
+2. Then the basis $(e_i)\_{i \in [d]}$ is **orthonormal for the scalar product** on $\mathcal{X}$ iff
 
    $$
    \ell(x, x') := \langle B^{-1}x, B^{-1}x' \rangle, \tag{A.8}
    $$
 
-   where $\langle \cdot, \cdot \rangle$ denotes the **canonical scalar product** on $\mathbb{R}^d$. 
+   where $\langle \cdot, \cdot \rangle$ denotes the **canonical scalar product** on $\mathbb{R}^d$.
 
 3. The **duality mapping** is
 
@@ -204,12 +204,180 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Map schema between R d, X, and X dual in Lemma A.2">
+    <defs>
+      <marker id="arrow-gdl-a2-map-schema" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+
+    <g font-family="serif" fill="#1f2430">
+      <!-- Space labels -->
+      <g>
+        <rect x="72" y="52" width="160" height="68" rx="4" fill="#fff7e0" stroke="#a86f00" stroke-width="1.5" />
+        <text x="152" y="84" text-anchor="middle" font-size="24" font-style="italic">R<tspan baseline-shift="super" font-size="14">d</tspan></text>
+        <text x="152" y="104" text-anchor="middle" font-size="11" fill="#5b6270">coordinate space</text>
+      </g>
+
+      <g>
+        <rect x="428" y="52" width="160" height="68" rx="4" fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="1.5" />
+        <text x="508" y="86" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <text x="508" y="104" text-anchor="middle" font-size="11" fill="#5b6270">vector space</text>
+      </g>
+
+      <g>
+        <rect x="428" y="184" width="160" height="68" rx="4" fill="rgba(214,83,54,0.10)" stroke="#d65336" stroke-width="1.5" />
+        <text x="508" y="216" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <path d="M499 192 L505 187 L515 194" fill="none" stroke="#1f2430" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="508" y="236" text-anchor="middle" font-size="11" fill="#5b6270">covectors on X</text>
+      </g>
+
+      <!-- Maps -->
+      <g stroke="#5b6270" stroke-width="1.5" fill="none">
+        <line x1="232" y1="86" x2="428" y2="86" marker-end="url(#arrow-gdl-a2-map-schema)" />
+        <line x1="508" y1="120" x2="508" y2="184" marker-end="url(#arrow-gdl-a2-map-schema)" />
+        <line x1="428" y1="205" x2="224" y2="113" marker-end="url(#arrow-gdl-a2-map-schema)" />
+      </g>
+
+      <g font-size="18" font-style="italic" fill="#1f2430">
+        <text x="330" y="72" text-anchor="middle">B</text>
+        <text x="526" y="156" text-anchor="start">L</text>
+        <text x="326" y="179" text-anchor="middle">B</text>
+        <path d="M319 158 L324 154 L333 160" fill="none" stroke="#1f2430" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+
+      <text x="330" y="260" text-anchor="middle" font-size="12" fill="#5b6270">
+        The return arrow uses the transpose map after identifying (R^d) dual with R^d.
+      </text>
+    </g>
+  </svg>
+  <figcaption>The maps in Lemma A.2. The basis map $B : \mathbb R^d \to \mathcal X$ sends coordinate vectors to vectors in $\mathcal X$; the duality map $L : \mathcal X \to \widecheck{\mathcal X}$ lowers a vector to a covector; and the transposed map $\widecheck B : \widecheck{\mathcal X} \to \mathbb R^d$ returns coordinates after the standard identification $\widecheck{\mathbb R^d} \cong \mathbb R^d$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On Lemma A.2)</span></p>
+
+* In the definiiton of the linear mapping $B$, the result of $Bv$ is a linear combination of the basis vectors $e_i$ of the VS $\mathcal{X}$, where the corresponding coefficients are the coefficients $v^i$. B could be represented as a matrix with the columns $B_{\ast i} = e_i$.
+* Generally, transposed operator of a linear operator $P\in\mathcal{L}(\mathcal{X}, \mathcal{Y})$ is a linear operator $\widecheck{P}\in\mathcal{L}(\widecheck{\mathcal{Y}}, \widecheck{\mathcal{X}})$.
+* Proof of the statement A.2.2:
+
+  We prove that the basis $(e_i)\_{i\in[d]}$ is orthonormal for $\ell$ if and only if
+
+  $$
+  \ell(x,x')=\langle B^{-1}x,B^{-1}x'\rangle
+  \qquad \forall x,x'\in \mathcal X.
+  $$
+
+  $(\Longrightarrow)$ Assume that $(e_i)\_{i\in[d]}$ is orthonormal for $\ell$.
+  Let $x,x'\in\mathcal X$, and write
+
+  $$
+  x=x^i e_i,\qquad x'=x'^j e_j.
+  $$
+
+  Since $B\delta_i=e_i$, we have $B^{-1}e_i=\delta_i$. Hence
+
+  $$
+  \begin{aligned}
+  \ell(x,x')
+  &=\ell(x^i e_i,x'^j e_j) \\
+  &=x^i x'^j \ell(e_i,e_j) \\
+  &=x^i x'^j \delta_{ij} \\
+  &=x^i x'^j \langle \delta_i,\delta_j\rangle \\
+  &=\langle x^i\delta_i,x'^j\delta_j\rangle \\
+  &=\langle B^{-1}(x^i e_i),B^{-1}(x'^j e_j)\rangle \\
+  &=\langle B^{-1}x,B^{-1}x'\rangle.
+  \end{aligned}
+  $$
+
+  Thus $\ell$ is exactly the scalar product obtained by pulling back the canonical scalar product on $\mathbb R^d$ through $B^{-1}$. Look at the statement (1) of the Lemma A.2. The map $B$ is determined by the basis $(e_i)$. It maps the canonical basis $(\delta_i)$ to $(e_i)$. Hence $B$ maps the canonical ONB to an $\ell$-ONB exactly when $(e_i)$ is orthonormal for $\ell$. If instead $\ell$ is defined by $\ell(x,x')=\langle B^{-1}x,B^{-1}x'\rangle$, then this orthonormality holds automatically. **Not any $B$** has this property relative to a pre-existing scalar product. Only an isometry does. But the formula in Lemma A.2 defines precisely the scalar product that makes this particular $B$ an isometry.
+
+  $(\Longleftarrow)$ Conversely, assume that
+
+  $$
+  \ell(x,x')=\langle B^{-1}x,B^{-1}x'\rangle
+  \qquad \forall x,x'\in\mathcal X.
+  $$
+
+  Then, for basis vectors $e_i,e_j$, we get
+
+  $$
+  \ell(e_i,e_j)
+  =
+  \langle B^{-1}e_i,B^{-1}e_j\rangle
+  =
+  \langle \delta_i,\delta_j\rangle
+  =
+  \delta_{ij}.
+  $$
+
+  Therefore the basis $(e_i)\_{i\in[d]}$ is orthonormal for $\ell$.
+
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_orthonormalization.png' | relative_url }}" alt="Three panels: left, R^d with canonical inner product and standard basis δ₁, δ₂ inside a circular unit ball; middle, the space X with an oblique basis e₁, e₂ inside the same circle, where e₁ and e₂ are not orthonormal; right, the same space X with an elliptical unit ball aligned to e₁, e₂, where they become orthonormal under the induced metric." loading="lazy">
   <figcaption>Lemma A.2 in three pictures. <em>Left:</em> $\mathbb R^d$ with the canonical inner product, where the standard basis $(\delta_i)$ is automatically orthonormal — its unit ball is the round disc. <em>Middle:</em> transport the $\delta_i$ via $B$ to land at the (oblique) basis $e_1, e_2 \in \mathcal X$; under the canonical inner product on $\mathcal X$, the $e_i$ are not orthonormal — they are not orthogonal ($\langle e_1, e_2\rangle \ne 0$) and their lengths differ from $1$. <em>Right:</em> swap the metric for the pulled-back inner product $\ell(x, x') := \langle B^{-1}x, B^{-1}x'\rangle$. Its unit ball is the image $B(\text{round disc})$ — an ellipse whose principal directions are exactly the $e_i$, restoring orthonormality.</figcaption>
 </figure>
 
 ### A.1.2. Orthogonal Left- and Right-Inverses
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Map schema between X, Y, X dual, and Y dual for orthogonal inverses">
+    <defs>
+      <marker id="arrow-gdl-a3-space-schema" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+
+    <g font-family="serif" fill="#1f2430">
+      <!-- Space labels -->
+      <g>
+        <rect x="72" y="42" width="160" height="68" rx="4" fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="1.5" />
+        <text x="152" y="76" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <text x="152" y="94" text-anchor="middle" font-size="11" fill="#5b6270">domain</text>
+      </g>
+
+      <g>
+        <rect x="428" y="42" width="160" height="68" rx="4" fill="rgba(60,120,40,0.10)" stroke="#3d7a26" stroke-width="1.5" />
+        <text x="508" y="76" text-anchor="middle" font-size="25" font-style="italic">Y</text>
+        <text x="508" y="94" text-anchor="middle" font-size="11" fill="#5b6270">codomain</text>
+      </g>
+
+      <g>
+        <rect x="72" y="188" width="160" height="68" rx="4" fill="rgba(214,83,54,0.10)" stroke="#d65336" stroke-width="1.5" />
+        <text x="152" y="222" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <path d="M143 198 L149 193 L159 200" fill="none" stroke="#1f2430" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="152" y="240" text-anchor="middle" font-size="11" fill="#5b6270">dual space</text>
+      </g>
+
+      <g>
+        <rect x="428" y="188" width="160" height="68" rx="4" fill="rgba(214,83,54,0.10)" stroke="#d65336" stroke-width="1.5" />
+        <text x="508" y="222" text-anchor="middle" font-size="25" font-style="italic">Y</text>
+        <path d="M499 198 L505 193 L515 200" fill="none" stroke="#1f2430" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="508" y="240" text-anchor="middle" font-size="11" fill="#5b6270">dual space</text>
+      </g>
+
+      <!-- Maps -->
+      <g stroke="#5b6270" stroke-width="1.5" fill="none">
+        <line x1="232" y1="76" x2="428" y2="76" marker-end="url(#arrow-gdl-a3-space-schema)" />
+        <line x1="508" y1="110" x2="508" y2="188" marker-end="url(#arrow-gdl-a3-space-schema)" />
+        <line x1="152" y1="110" x2="152" y2="188" marker-end="url(#arrow-gdl-a3-space-schema)" />
+        <line x1="428" y1="222" x2="232" y2="222" marker-end="url(#arrow-gdl-a3-space-schema)" />
+      </g>
+
+      <g font-size="18" font-style="italic" fill="#1f2430">
+        <text x="330" y="62" text-anchor="middle">A</text>
+        <text x="526" y="151" text-anchor="start">M</text>
+        <text x="134" y="151" text-anchor="end">L</text>
+        <text x="330" y="211" text-anchor="middle">A</text>
+        <path d="M323 190 L328 186 L337 192" fill="none" stroke="#1f2430" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    </g>
+  </svg>
+  <figcaption>The space schema behind Definition A.3. The top map is $A:\mathcal X\to\mathcal Y$, the vertical maps are the duality mappings $L:\mathcal X\to\widecheck{\mathcal X}$ and $M:\mathcal Y\to\widecheck{\mathcal Y}$, and the bottom map is the transpose $\widecheck A:\widecheck{\mathcal Y}\to\widecheck{\mathcal X}$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">A.3 (Orthogonal Left- and Right-Inverses)</span></p>
@@ -2448,7 +2616,7 @@ In short: $\pi$ is the default; subscripts and renames are *disambiguators*, not
 
 </div>
 
-For a *general* manifold $\mathcal{M}$ a single global frame need not exist (most manifolds are not parallelizable), so one is forced to work *locally*. Cover $\mathcal{M}$ by open charts $(U_{\alpha})_{\alpha \in I}$ and on each $U_{\alpha}$ fix a moving frame $X^{\alpha}$. The pair $(U_{\alpha}, X^{\alpha})$ — chart plus local frame — yields a one-to-one **local trivialization** of the frame bundle,
+For a *general* manifold $\mathcal{M}$ a single global frame need not exist (most manifolds are not parallelizable), so one is forced to work *locally*. Cover $\mathcal{M}$ by open charts $(U_{\alpha})\_{\alpha \in I}$ and on each $U_{\alpha}$ fix a moving frame $X^{\alpha}$. The pair $(U_{\alpha}, X^{\alpha})$ — chart plus local frame — yields a one-to-one **local trivialization** of the frame bundle,
 
 $$
 \phi_{\alpha} \;:=\; \pi \times \varphi_{\alpha} \;:\; \pi^{-1}(U_{\alpha}) \;\to\; U_{\alpha} \times \mathrm{GL}(n;\mathbb{R}), \qquad B \;\mapsto\; \bigl(\pi(B),\, \varphi_{\alpha}(B)\bigr), \tag{2.39a}
@@ -3058,5 +3226,3 @@ g_{z}\bigl(\dot{\gamma}(t_{x}), \dot{\gamma}(t_{y})\bigr) := \frac{1}{2}\Bigl(\l
 $$
 
 where $e\_i = e\_1 = \binom{1}{0}$ for horizontal edges and $e\_i = e\_2 = \binom{0}{1}$ for vertical edges. Here $\widecheck{F}\_x F\_x$ plays the role of the (data-induced) metric-tensor matrix at the endpoint $x$, so each edge is assigned a length by averaging the two endpoint quadratic forms evaluated on the edge direction $e\_i$; see Figure 2.2 above for an illustration.
-
-
