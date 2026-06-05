@@ -1969,19 +1969,35 @@ Although these two types of relaxations seem to have nothing in common at the fi
 
 ### 5.1 Dual Problem
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Setup: Problem)</span></p>
+
 Let us consider an optimization problem of the form
 
 $$\min_{\mathbf{x} \in P} f(\mathbf{x})$$
 
 $$\text{s.t. } A\mathbf{x} = \mathbf{b} \,,$$
 
-where $P \subseteq \mathbb{R}^n$. We will assume that omitting the equality constraints $A\mathbf{x} = \mathbf{b}$ would make the optimization problem easy (or at least *easier*) to solve. Therefore, we write these constraints separately instead of including them into the set $P$. Below we consider a powerful technique, which allows us to partially get rid of these constraints to simplify optimization.
+where $P \subseteq \mathbb{R}^n$. We will assume that omitting the equality constraints $A\mathbf{x} = \mathbf{b}$ would make the optimization problem easy (or at least **easier**) to solve. Therefore, we write these constraints separately instead of including them into the set $P$. Below we consider a powerful technique, which allows us to partially get rid of these constraints to simplify optimization.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Solution</span><span class="math-callout__name">(Setup: Solution)</span></p>
 
 Consider the following function of a vector $\boldsymbol{\lambda} \in \mathbb{R}^n$
 
 $$\min_{\mathbf{x} \in P} \bigl[f(\mathbf{x}) + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle\bigr] \,,$$
 
-which we will call the *Lagrange dual function*. The expression $L(\mathbf{x}, \boldsymbol{\lambda}) := f(\mathbf{x}) + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle$ is referred to as the *Lagrangean*. One also says that the constraint $A\mathbf{x} = \mathbf{b}$ is *dualized* or *relaxed*. Variables $\boldsymbol{\lambda}$ are called *dual variables*. The dimensionality of $\boldsymbol{\lambda}$ equals the number of rows of the matrix $A$. In other words, each elementary constraint gets a corresponding dual variable.
+which we will call the **Lagrange dual function**. 
+
+* The expression $L(\mathbf{x}, \boldsymbol{\lambda}) := f(\mathbf{x}) + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle$ is referred to as the **Lagrangean**.
+* The constraint $A\mathbf{x} = \mathbf{b}$ is **dualized** or **relaxed**. 
+* Variables $\boldsymbol{\lambda}$ are called **dual variables**. 
+
+The dimensionality of $\boldsymbol{\lambda}$ equals the number of rows of the matrix $A$. In other words, each elementary constraint gets a corresponding dual variable.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1</span></p>

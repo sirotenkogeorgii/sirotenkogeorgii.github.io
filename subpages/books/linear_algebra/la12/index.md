@@ -4848,7 +4848,7 @@ The orthogonal complement of the vector $(2, 5)^\top$ is the line $\operatorname
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.32 — Properties of the orthogonal complement of a set)</span></p>
 
-*Let $V$ be a vector space and $M, N \subseteq V$. Then*
+Let $V$ be a vector space and $M, N \subseteq V$. Then
 
 1. *$M^\perp$ is a subspace of $V$,*
 2. *if $M \subseteq N$ then $M^\perp \supseteq N^\perp$,*
@@ -4874,7 +4874,7 @@ Property (3) says that the orthogonal complement of a space or of its basis is t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.33 — Properties of the orthogonal complement of a subspace)</span></p>
 
-*Let $U$ be a subspace of a vector space $V$. Then:*
+Let $U$ be a subspace of a vector space $V$. Then:
 
 1. *If $z_1, \ldots, z_m$ is an orthonormal basis of $U$, and $z_1, \ldots, z_m, z_{m+1}, \ldots, z_n$ is its extension to an orthonormal basis of $V$, then $z_{m+1}, \ldots, z_n$ is an orthonormal basis of $U^\perp$.*
 2. *$\dim V = \dim U + \dim U^\perp$,*
@@ -4911,11 +4911,18 @@ $$\|x - x_U\| = \min_{y \in U} \|x - y\|.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.36 — On orthogonal projection)</span></p>
 
-*Let $U$ be a subspace of a vector space $V$. Then for every $x \in V$ there exists exactly one projection $x_U \in U$ into the subspace $U$. Moreover, if $z_1, \ldots, z_m$ is an orthonormal basis of $U$, then*
+Let $U$ be a subspace of a vector space $V$. Then for every $x \in V$ there exists exactly one projection $x_U \in U$ into the subspace $U$. Moreover, if $z_1, \ldots, z_m$ is an orthonormal basis of $U$, then
 
 $$x_U = \sum_{i=1}^{m} \langle x, z_i \rangle z_i.$$
 
-*Proof.* Let $z_1, \ldots, z_m, z_{m+1}, \ldots, z_n$ be an extension to an orthonormal basis of $V$. Define $x_U := \sum_{i=1}^{m} \langle x, z_i \rangle z_i \in U$ and show that this is the desired vector. Now
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $z_1, \ldots, z_m, z_{m+1}, \ldots, z_n$ be an extension to an orthonormal basis of $V$. Define $x_U := \sum_{i=1}^{m} \langle x, z_i \rangle z_i \in U$ and show that this is the desired vector. Now
 
 $$x - x_U = \sum_{i=1}^{n} \langle x, z_i \rangle z_i - \sum_{i=1}^{m} \langle x, z_i \rangle z_i = \sum_{i=m+1}^{n} \langle x, z_i \rangle z_i \in U^\perp.$$
 
@@ -4925,6 +4932,7 @@ $$\|x - y\|^2 = \|(x - x_U) + (x_U - y)\|^2 = \|x - x_U\|^2 + \|x_U - y\|^2 \ge 
 
 that is, $\|x - y\| \ge \|x - x_U\|$, which proves minimality. Uniqueness: equality holds only when $\|x_U - y\|^2 = 0$, i.e., when $x_U = y$.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5027,7 +5035,7 @@ Thus $x = \sum_{k=1}^{\infty} (-1)^{k+1} \frac{2}{k} \sin(kx)$.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.44 — Gram matrix)</span></p>
 
-*Let $U$ be a subspace of a real vector space $V$. Let $U$ have a basis $B = \lbrace w_1, \ldots, w_m \rbrace$. Denote by the Gram matrix $G \in \mathbb{R}^{m \times m}$ the matrix with entries $G_{ij} = \langle w_i, w_j \rangle$. Then $G$ is a nonsingular matrix and the coordinate vector $s = [x_U]_B$ of the projection $x_U$ of any vector $x \in V$ into the subspace $U$ is the solution of the system*
+Let $U$ be a subspace of a real vector space $V$. Let $U$ have a basis $B = \lbrace w_1, \ldots, w_m \rbrace$. Denote by the Gram matrix $G \in \mathbb{R}^{m \times m}$ the matrix with entries $G_{ij} = \langle w_i, w_j \rangle$. Then $G$ is a nonsingular matrix and the coordinate vector $s = [x_U]_B$ of the projection $x_U$ of any vector $x \in V$ into the subspace $U$ is the solution of the system
 
 $$Gs = (\langle w_1, x \rangle, \ldots, \langle w_m, x \rangle)^\top.$$
 
@@ -5060,7 +5068,7 @@ Let $A \in \mathbb{R}^{m \times n}$. Then $\mathcal{R}(A)^\perp = \operatorname{
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* From the properties of the orthogonal complement (Proposition 8.32(3)) we know $\mathcal{R}(A)^\perp = \lbrace A_{1*}, \ldots, A_{m*} \rbrace^\perp$. Thus $x \in \mathcal{R}(A)^\perp$ if and only if $x$ is orthogonal to the rows of the matrix $A$, i.e., $A_{i*} x = 0$ for all $i = 1, \ldots, m$. Equivalently, $Ax = o$, that is $x \in \operatorname{Ker}(A)$.
+From the properties of the orthogonal complement (Proposition 8.32(3)) we know $\mathcal{R}(A)^\perp = \lbrace A_{1*}, \ldots, A_{m*} \rbrace^\perp$. Thus $x \in \mathcal{R}(A)^\perp$ if and only if $x$ is orthogonal to the rows of the matrix $A$, i.e., $A_{i*} x = 0$ for all $i = 1, \ldots, m$. Equivalently, $Ax = o$, that is $x \in \operatorname{Ker}(A)$.
 
 </details>
 </div>
@@ -5150,7 +5158,6 @@ Note that the projection is a linear map and by the previous theorem $P := A(A^\
 - The matrix $P$ is symmetric.
 - $P^2 = P$. The projection of a vector $x$ is the vector $Px$. The vector $Px$ already belongs to the subspace $\mathcal{S}(A)$, and therefore its projection is itself: $P^2 x = Px$.
 - Since $P$ represents the projection into $\mathcal{S}(A)$, we have $\mathcal{S}(P) = \mathcal{S}(A)$. The rank of the matrix $P$ is therefore equal to the dimension of the space into which we project, i.e., $\operatorname{rank}(P) = \operatorname{rank}(A)$. The matrix $P$ is thus nonsingular only when $m = n$, i.e., $\mathcal{S}(A) = \mathbb{R}^n$.
-
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Summary on projection on the column space)</span></p>
@@ -5359,17 +5366,30 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 </div>
 
-*Proof.* Briefly. (1)--(5) If $Q$ is orthogonal, then $Q^\top Q = I$ and thus $Q^{-1} = Q^\top$; similarly in the other direction. By the property of the inverse we also have $QQ^\top = I$, i.e., $(Q^\top)^\top Q^\top = I$, so $Q^\top$ is orthogonal. (6): From the equality $Q^\top Q = I$, by comparing entries at position $i, j$, we get $\langle Q_{\ast i}, Q_{\ast j} \rangle = 1$ if $i = j$ and $\langle Q_{\ast i}, Q_{\ast j} \rangle = 0$ if $i \neq j$. Thus the columns of $Q$ form an orthonormal system. Analogously in the other direction.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Briefly. (1)--(5) If $Q$ is orthogonal, then $Q^\top Q = I$ and thus $Q^{-1} = Q^\top$; similarly in the other direction. By the property of the inverse we also have $QQ^\top = I$, i.e., $(Q^\top)^\top Q^\top = I$, so $Q^\top$ is orthogonal. (6): From the equality $Q^\top Q = I$, by comparing entries at position $i, j$, we get $\langle Q_{\ast i}, Q_{\ast j} \rangle = 1$ if $i = j$ and $\langle Q_{\ast i}, Q_{\ast j} \rangle = 0$ if $i \neq j$. Thus the columns of $Q$ form an orthonormal system. Analogously in the other direction.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.64 — Product of orthogonal matrices)</span></p>
 
-*If $Q_1, Q_2 \in \mathbb{R}^{n \times n}$ are orthogonal, then $Q_1 Q_2$ is orthogonal.*
-
+If $Q_1, Q_2 \in \mathbb{R}^{n \times n}$ are orthogonal, then $Q_1 Q_2$ is orthogonal.
 
 </div>
 
-*Proof.* $(Q_1 Q_2)^\top Q_1 Q_2 = Q_2^\top Q_1^\top Q_1 Q_2 = Q_2^\top Q_2 = I_n$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$(Q_1 Q_2)^\top Q_1 Q_2 = Q_2^\top Q_1^\top Q_1 Q_2 = Q_2^\top Q_2 = I_n$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.65 — Examples of orthogonal matrices)</span></p>
@@ -5396,7 +5416,7 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.66 — Properties of orthogonal matrices)</span></p>
 
-*Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Then:*
+Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Then:
 
 1. *$\langle Qx, Qy \rangle = \langle x, y \rangle$ for every $x, y \in \mathbb{R}^n$,*
 2. *$\|Qx\| = \|x\|$ for every $x \in \mathbb{R}^n$,*
@@ -5405,7 +5425,9 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 </div>
 
-*Proof.*
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 (1) $\langle Qx, Qy \rangle = (Qx)^\top Qy = x^\top Q^\top Qy = x^\top Iy = \langle x, y \rangle$.
 
@@ -5415,7 +5437,8 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 (4) By definition $\begin{pmatrix} 1 & o^\top \\\ o & Q \end{pmatrix}^\top \begin{pmatrix} 1 & o^\top \\\ o & Q \end{pmatrix} = \begin{pmatrix} 1 & o^\top \\\ o & Q^\top Q \end{pmatrix} = I_{n+1}$.
 
-$\square$
+</details>
+</div>
 
 If we view $Q$ as the matrix of the corresponding linear map $x \mapsto Qx$, then property (1) of Theorem 8.66 says that angles are preserved under this map, and property (2) says that lengths are preserved. The converse also holds: the matrix of a map preserving the inner product must necessarily be orthogonal (cf. Theorem 8.68) and in fact the matrix of a map preserving the Euclidean norm must be orthogonal. Property (3) is valued in numerical mathematics because $Q$ and $Q^{-1}$ have bounded entry magnitudes. An important property for numerical computation is also (2), because when multiplying by an orthogonal matrix, the entries (and thus also rounding errors) do not tend to grow.
 
@@ -5437,7 +5460,11 @@ Let $U, V$ be spaces over $\mathbb{R}$ with an arbitrary inner product and $f \c
 
 </div>
 
-*Proof.* By Proposition 8.29 and the properties of the matrix of a map,
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By Proposition 8.29 and the properties of the matrix of a map,
 
 $$\langle x, y \rangle = [x]\_{B_U}^\top \cdot [y]\_{B_U},$$
 
@@ -5449,10 +5476,13 @@ $$(I_n)_{ij} = e_i^\top e_j = [x]\_{B_U}^\top [y]\_{B_U} = \langle x, y \rangle 
 
 Thus, entry by entry, we obtain the equality $I_n = {}\_{B_V}[f]\_{B_U}^\top \cdot {}\_{B_V}[f]\_{B_U}$. $\square$
 
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(8.69 — Orthogonal matrices and change-of-basis matrices)</span></p>
 
-*Let $V$ be a space over $\mathbb{R}$ with an arbitrary inner product and $B_1, B_2$ two of its bases. Any two of the following properties imply the third:*
+Let $V$ be a space over $\mathbb{R}$ with an arbitrary inner product and $B_1, B_2$ two of its bases. Any two of the following properties imply the third:
 
 1. *$B_1$ is an orthonormal basis,*
 2. *$B_2$ is an orthonormal basis,*
@@ -5460,7 +5490,14 @@ Thus, entry by entry, we obtain the equality $I_n = {}\_{B_V}[f]\_{B_U}^\top \cd
 
 </div>
 
-*Proof.* Implication "(1), (2) $\Rightarrow$ (3)". Follows from Theorem 8.68, since the identity preserves the inner product. Implication "(2), (3) $\Rightarrow$ (1)". Let $B_1 = \lbrace x_1, \ldots, x_n \rbrace$. By definition, the columns of ${}_{B_2}[id]\_{B_1}$ are formed by the vectors $[x_i]\_{B_2}$, which are (due to the orthogonality of the change-of-basis matrix) orthonormal with respect to the standard inner product in $\mathbb{R}^n$. By Proposition 8.29, $\langle x_i, x_j \rangle = [x_i]\_{B_2}^\top [x_j]\_{B_2}$, which equals 1 for $i = j$ and 0 otherwise. Implication "(3), (1) $\Rightarrow$ (2)". Follows from the previous by symmetry, since ${}_{B_1}[id]\_{B_2} = {}_{B_2}[id]\_{B_1}^{-1}$. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Implication "(1), (2) $\Rightarrow$ (3)". Follows from Theorem 8.68, since the identity preserves the inner product. Implication "(2), (3) $\Rightarrow$ (1)". Let $B_1 = \lbrace x_1, \ldots, x_n \rbrace$. By definition, the columns of ${}_{B_2}[id]\_{B_1}$ are formed by the vectors $[x_i]\_{B_2}$, which are (due to the orthogonality of the change-of-basis matrix) orthonormal with respect to the standard inner product in $\mathbb{R}^n$. By Proposition 8.29, $\langle x_i, x_j \rangle = [x_i]\_{B_2}^\top [x_j]\_{B_2}$, which equals 1 for $i = j$ and 0 otherwise. Implication "(3), (1) $\Rightarrow$ (2)". Follows from the previous by symmetry, since ${}_{B_1}[id]\_{B_2} = {}_{B_2}[id]\_{B_1}^{-1}$. $\square$
+
+</details>
+</div>
 
 ### Summary of Chapter 8
 

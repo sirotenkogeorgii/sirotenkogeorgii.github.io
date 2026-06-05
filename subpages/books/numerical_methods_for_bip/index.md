@@ -1518,11 +1518,16 @@ The previous proposition implies in particular that continuous functions are alw
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\mathcal{A}$-simple function ($\sigma$-algebra))</span></p>
+
 To give meaning to integrals over $V$-valued functions, we require a stronger notion of measurability. A function $f : \Omega \to V$ is called **$\mathcal{A}$-simple** iff
 
 $$f(\omega) = \sum_{j=1}^{N} v_j \mathbb{1}_{A_j}(\omega) \tag{3.2.1}$$
 
 for finite $N \in \mathbb{N}$, measurable $A_j \in \mathcal{A}$ with $A_i \cap A_j = \emptyset$ for all $i \neq j$ and $v_j \in V$.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.5</span><span class="math-callout__name">(Strong Measurability)</span></p>
@@ -1616,6 +1621,9 @@ If $V$ is separable, then measurability implies strong measurability.
 
 In this section $(\Omega, \mathcal{A}, \mu)$ is a $\sigma$-finite measure space, that is, $\mu$ is a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\mu$-simple function (measure))</span></p>
+
 We say that $f : \Omega \to V$ is **$\mu$-simple** if
 
 $$f = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j, \tag{3.2.4}$$
@@ -1623,6 +1631,9 @@ $$f = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j, \tag{3.2.4}$$
 where $v_j \in V$ and $A_j \in \mathcal{A}$ such that $\mu(A_j) < \infty$.
 
 We say that a property holds **$\mu$-almost everywhere (a.e.)** (or $\mu$-almost surely) if there exists a **$\mu$-null-set** $N \in \mathcal{A}$, that is, $\mu(N) = 0$, and the property holds on $\Omega \setminus N$.
+
+</div>
+
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.12</span><span class="math-callout__name">(Strong $\mu$-Measurability)</span></p>
@@ -1781,11 +1792,16 @@ Given measures $\mu$ and $\nu$ on $(\Omega, \mathcal{A})$, we say that $\nu$ is 
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Randon-Nikodym Derivative)</span></p>
+
 Suppose that $\mu$, $\nu$ are two measures on $(\Omega, \mathcal{A})$. In case there exists an $\mathcal{A}$-measurable $f : \Omega \to \mathbb{R}$ such that for all $A \in \mathcal{A}$
 
 $$\nu(A) = \int_\Omega f(\omega) \mathbb{1}_A(\omega) \, \mathrm{d}\mu(\omega),$$
 
 we call $f$ a **density** of $\nu$ w.r.t. $\mu$. If $\nu$ is $\sigma$-finite, such a density is $\mu$-a.e. unique, and as such this function is called the **Radon-Nikodym derivative** of $\nu$ w.r.t. $\mu$. We denote it by $\frac{\mathrm{d}\nu}{\mathrm{d}\mu} := f$.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.22</span><span class="math-callout__name">(Radon-Nikodym)</span></p>
@@ -1817,6 +1833,12 @@ We call $T_\sharp \mu$ the **pushforward measure**.
   <p class="math-callout__title"><span class="math-callout__label">Comment</span><span class="math-callout__name">(Pushforward Measure)</span></p>
 
 * We can say that a pushforward measure is a measure induced by a **source measure space** and a **measurable funtion** to another measurable space.
+  * This understanding is important when we already have two independent measure spaces $(X,\mathcal{A}\_1,\mu)$ and $(Y,\mathcal{A}\_2,\nu)$, and we want to find such a map $T: X\to Y$, which pushes the measure from the source space to a target space, like a contraint in optimal transport problem: 
+  
+    $$\int_T \int_X c(c,T(x))\ d\mu(x), \qquad given T\hash T_\sharp\mu = \nu$$
+
+  * In the original Monge's optimal transport problem such a transformation $T$ might not even exist!
+
 * Because the **measurable function does not necessarily preserve the measure**, i.e. the preimage could have different measure from the target measure, to make the integration compatible on pairs (preimage, image), allowing change of variables, we take into account the local change of measure (a.k.a.) the determinant of the jacobian of the inverse.
 
 </div>
@@ -2769,6 +2791,12 @@ Let us assume for the moment that all densities exist. Then we consider the foll
 
 We point out that computing $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ requires solving an optimization problem, while the computation of $x_{\mathrm{CM}}$ requires computing a (high-dimensional) integral. While $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ need not be unique, $x_{\mathrm{CM}}$ is (in case the expectation exists). The advantage of $x_{\mathrm{CM}}$ is that it is not strongly affected by small changes in the posterior measure, and this will be discussed in more detail in the following sections. Such a statement is not true for $x_{\mathrm{MAP}}$. On the other hand, $x_{\mathrm{CM}}$ has the disadvantage that it does not necessarily correspond to a point with high posterior density. Such a case is often accompanied by the variance of the posterior being high, indicating that we should not be too confident in our point estimate either way.
 
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.2.png' | relative_url }}" alt="Three panels. (a) A heavy-tailed histogram of the probability Pr of local signal changes, peaking near zero and decaying with a long tail. (b) A color image of peppers overlaid with white shortest-path curves between four pairs of antipodal boundary points; the paths bend around the objects rather than running straight. (c) The same image with the shortest paths recomputed using the squared distance, giving visibly different globally optimal curves." loading="lazy">
+</figure>
+
+*Illustration of Example on Point Estimators. MAP and CM for two posterior distributions.*
+
 ### 4.3 Bayes' Theorem
 
 We start with the finite dimensional case where $V = \mathbb{R}^n$ and $W = \mathbb{R}^m$ and $X : \Omega \to V$ and $Y : \Omega \to W$ are RVs with joint density $\pi_{X,Y}$.
@@ -2786,7 +2814,7 @@ $$\pi_{X|Y}(x|y) = \frac{\pi_{Y|X}(y|x) \pi_X(x)}{\pi_Y(y)}. \tag{4.3.1}$$
 <details markdown="1">
 <summary>Proof of Theorem 4.3.1</summary>
 
-By Prop. 3.5.36 and Rmk. 3.5.37 there exists a $\mathbb{P}_X$-null set $N_X \subseteq \mathbb{R}^n$ such that for all $x \in N_X^c$
+By Prop. 3.5.36 and Rmk. 3.5.37 there exists a $\mathbb{P}\_X$-null set $N_X \subseteq \mathbb{R}^n$ such that for all $x \in N_X^c$
 
 $$\pi_{Y|X}(y|x) = \frac{\pi_{X,Y}(x, y)}{\pi_X(x)} \qquad \text{for } \lambda_m\text{-a.e. } y \in \mathbb{R}^m, \tag{4.3.2}$$
 
@@ -2796,7 +2824,14 @@ $$\tau(y, B) := \int_B \pi_{X|Y}(x|y) \, \mathrm{d}x.$$
 
 Then for any $A \in \mathcal{B}(\mathbb{R}^m)$ and any $B \in \mathcal{B}(\mathbb{R}^n)$, using Fubini's theorem, (4.3.1) as a definition of $\pi_{X\mid Y}$, and (4.3.2),
 
-$$\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) = \int_{A \setminus N_Y} \int_B \pi_{X|Y}(x|y) \pi_Y(y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \setminus N_Y} \int_B \pi_{Y|X}(y|x) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \times B} \pi_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[Y \in A, X \in B].$$
+$$
+\begin{aligned}
+\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) 
+&= \int_{A \setminus N_Y} \int_B \pi_{X|Y}(x|y) \pi_Y(y) \, \mathrm{d}x \, \mathrm{d}y \\
+&= \int_{A \setminus N_Y} \int_B \pi_{Y|X}(y|x) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y \\
+&= \int_{A \times B} \pi_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[Y \in A, X \in B].
+\end{aligned}
+$$
 
 Here we have used that $\mathbb{P}\_X[N_X] = \mathbb{P}\_Y[N_Y] = 0$.
 
@@ -2838,9 +2873,16 @@ Next, let $B \in \mathcal{B}(V)$. Then
 
 $$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \underbrace{\mathbb{1}_A(\Phi(X(\omega)) + E(\omega)) \mathbb{1}_B(X(\omega))}_{=:\,\varphi(X, E)} \, \mathrm{d}\mathbb{P}(\omega),$$
 
-where we have defined the function $\varphi : V \times W \to \mathbb{R}$ via $\varphi(x, e) := \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x)$. Then $\varphi$ is measurable as a composition of measurable functions. The independence of the RVs $X$ and $E$ implies that $(X, E)_\sharp \mathbb{P} = \mathbb{P}_{X, E} = \mu_X \otimes \mu_E$, and thus it follows from Thm. 3.2.10 that
+where we have defined the function $\varphi : V \times W \to \mathbb{R}$ via $\varphi(x, e) := \mathbb{1}\_A(\Phi(x) + e) \mathbb{1}\_B(x)$. Then $\varphi$ is measurable as a composition of measurable functions. The independence of the RVs $X$ and $E$ implies that $(X, E)_\sharp \mathbb{P} = \mathbb{P}\_{X, E} = \mu_X \otimes \mu_E$, and thus it follows from Thm. 3.2.10 that
 
-$$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \varphi(X(\omega), E(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_{V \times W} \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x) \, \mathrm{d}(\mathbb{P}_X \otimes \mathbb{P}_E)(x, e) = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A\bigl(S^{\Phi(x)}(e)\bigr) \, \mathrm{d}\mu_E(e) \, \mathrm{d}\mu_X(x).$$
+$$
+\begin{aligned}
+\mathbb{P}[Y \in A, X \in B] 
+&= \int_\Omega \varphi(X(\omega), E(\omega)) \, \mathrm{d}\mathbb{P}(\omega) \\
+&= \int_{V \times W} \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x) \, \mathrm{d}(\mathbb{P}_X \otimes \mathbb{P}_E)(x, e) \\
+&= \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A\bigl(S^{\Phi(x)}(e)\bigr) \, \mathrm{d}\mu_E(e) \, \mathrm{d}\mu_X(x).
+\end{aligned}
+$$
 
 By a change of variables (again Thm. 3.2.10)
 
@@ -2899,13 +2941,23 @@ where $\lVert x \rVert_\Sigma^2 := x^\top \Sigma^{-1} x$.
 
 Let $A \in \mathbb{R}^{m \times n}$ and suppose that for a given $y \in \mathbb{R}^m$ we wish to find $x \in \mathbb{R}^n$ such $Ax = y$. Assume that $y$ is a realization of $Y = AX + E$ with $E \sim \mathcal{N}(0, I_m)$. As a prior we *choose* $\mu_X \sim \mathcal{N}(0, \frac{1}{\alpha} I_n)$ for some fixed $\alpha > 0$. Then
 
-1. **ML:** We have $\pi_{Y\mid X}(y\mid x) = \frac{1}{\sqrt{(2\pi)^m}} \exp\left( -\frac{\lVert Ax - y \rVert^2}{2} \right)$. Maximizing the likelihood is thus equivalent to finding $x$ in $\operatorname{argmin}\_x \lVert Ax - y \rVert$.
+1. **ML:** We have 
+   
+   $$\pi_{Y\mid X}(y\mid x) = \frac{1}{\sqrt{(2\pi)^m}} \exp\left( -\frac{\lVert Ax - y \rVert^2}{2} \right)$$
+   
+   Maximizing the likelihood is thus equivalent to finding $x$ in $\operatorname{argmin}\_x \lVert Ax - y \rVert$.
 
-2. **MAP:** By Example 4.3.5, $\pi_{X\mid Y}(x\mid y)$ is up to a $y$-dependent constant equal to $\exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right)$. Therefore a MAP point is a point in $\operatorname{argmin}\_x(\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2)$.
+2. **MAP:** By Example 4.3.5, $\pi_{X\mid Y}(x\mid y)$ is up to a $y$-dependent constant equal to 
+   
+   $$\exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right)$$
+   
+   Therefore a MAP point is a point in 
+   
+   $$\operatorname{argmin}\_x(\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2)$$
 
 3. **CM:** The conditional mean is given by
 
-$$\int_{\mathbb{R}^n} x \pi_{X|Y}(x|y) \, \mathrm{d}x = \frac{\int_{\mathbb{R}^n} x \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}{\int_{\mathbb{R}^n} \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}.$$
+   $$\int_{\mathbb{R}^n} x \pi_{X|Y}(x|y) \, \mathrm{d}x = \frac{\int_{\mathbb{R}^n} x \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}{\int_{\mathbb{R}^n} \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}.$$
 
 </div>
 
@@ -2933,6 +2985,12 @@ the observation is described by $Y = \Phi(K) + E$, with $\mu_{K,E} \sim \mathrm{
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.1.png' | relative_url }}" alt="Three panels. (a) A heavy-tailed histogram of the probability Pr of local signal changes, peaking near zero and decaying with a long tail. (b) A color image of peppers overlaid with white shortest-path curves between four pairs of antipodal boundary points; the paths bend around the objects rather than running straight. (c) The same image with the shortest paths recomputed using the squared distance, giving visibly different globally optimal curves." loading="lazy">
+</figure>
+
+*Illustration of Example on Logistic Differential Equation. Joint density $\pi_{K,Y}(k,y)$ (left) and posterior density $\pi{K\mid Y}(k\mid 8)$ (right).*
+
 Next we show a version of Bayes' theorem in the infinite dimensional setting. Our goal is to obtain a statement with a computable density function. In infinite dimensional spaces, there is no Lebesgue measure. Hence we have to consider a Radon-Nikodym derivative of the posterior w.r.t. another measure — the prior. Note that it is very natural to assume that the posterior $\mu_{X\mid y}$ is absolutely continuous w.r.t. the prior $\mu_X$ (otherwise the posterior would assign positive measure to an event to which we have a priorily assigned measure 0).
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2959,9 +3017,16 @@ $$Z(y) = \int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \
 
 By definition of a conditional density and due to Lemma 4.3.2 (Likelihood via Pushforward), for every $A \in \mathcal{B}(W)$,
 
-$$\mathbb{P}[Y \in A, X \in V] = \int_V \mu_{Y|x}(A) \, \mathrm{d}\mu_X(x) = \int_V (S_\sharp^{\Phi(x)} \mu_E)(A) \, \mathrm{d}\mu_X(x) = \int_V \int_W \mathbb{1}_A(e) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(e) \, \mathrm{d}\mu_X(x)$$
-
-$$= \int_V \int_W \mathbb{1}_A(e) \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\nu(e) \, \mathrm{d}\mu_X(x) = \int_W \mathbb{1}_A(e) \underbrace{\int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\mu_X(x)}_{=\,Z(e)} \, \mathrm{d}\nu(e).$$
+$$
+\begin{aligned}
+\mathbb{P}[Y \in A, X \in V] 
+&= \int_V \mu_{Y|x}(A) \, \mathrm{d}\mu_X(x) \\
+&= \int_V (S_\sharp^{\Phi(x)} \mu_E)(A) \, \mathrm{d}\mu_X(x) \\
+&= \int_V \int_W \mathbb{1}_A(e) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(e) \, \mathrm{d}\mu_X(x) \\
+&= \int_V \int_W \mathbb{1}_A(e) \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\nu(e) \, \mathrm{d}\mu_X(x) \\
+&= \int_W \mathbb{1}_A(e) \underbrace{\int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e) \, \mathrm{d}\mu_X(x)}_{=\,Z(e)} \, \mathrm{d}\nu(e).
+\end{aligned}
+$$
 
 Here we used that $\frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(e)$ is jointly measurable in $(x, e)$, which allowed to use Fubini's theorem. This calculation shows that $Z(y)$ is equal to the Radon-Nikodym derivative $\frac{\mathrm{d}\mu_Y}{\mathrm{d}\nu}(y)$ of $\mu_Y$ w.r.t. $\nu$. In particular $N := \lbrace y \in W : Z(y) = 0 \rbrace$ is a $\mu_Y$-null set since $\mu_Y[N] = \int_{[Z(y) = 0]} Z(y) \, \mathrm{d}\nu(y) = 0$.
 
@@ -2975,13 +3040,18 @@ $$\tau(y, B) := \int_V \mathbb{1}_B(x) r(x, y) \, \mathrm{d}\mu_X(x).$$
 
 By definition of $r$ the map $B \mapsto \tau(y, B)$ is a probability measure for every $y \in W$ (trivially if $y \in N$, and due to the definition of the normalizing factor $Z(y)$ otherwise). Moreover, $y \mapsto \tau(y, B)$ is measurable as a consequence of Fubini-Tonelli. Since $Z(y) = \frac{\mathrm{d}\mu_Y}{\mathrm{d}\nu}(y)$, for each $B \in \mathcal{B}(V)$, $A \in \mathcal{B}(W)$,
 
-$$\int_W \mathbb{1}_A(y) \tau(y, B) \, \mathrm{d}\mu_Y(y) = \int_{W \times V} \mathbb{1}_B(x) \mathbb{1}_A(y) r(x, y) \, \mathrm{d}\mu_X(x) \, \mathrm{d}\mu_Y(y)$$
-
-$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_Y(y) \, \mathrm{d}\mu_X(x)$$
-
-$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) Z(y) \, \mathrm{d}\nu(y) \, \mathrm{d}\mu_X(x)$$
-
-$$= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(y) \, \mathrm{d}\mu_X(x) = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_{A \setminus N}(y) \, \mathrm{d}\mu_{Y|x}(y) \, \mathrm{d}\mu_X(x) = \mathbb{P}[X \in B, Y \in A \setminus N] = \mathbb{P}[X \in B, Y \in A],$$
+$$
+\begin{aligned}
+\int_W \mathbb{1}_A(y) \tau(y, B) \, \mathrm{d}\mu_Y(y) 
+&= \int_{W \times V} \mathbb{1}_B(x) \mathbb{1}_A(y) r(x, y) \, \mathrm{d}\mu_X(x) \, \mathrm{d}\mu_Y(y) \\
+&= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_Y(y) \, \mathrm{d}\mu_X(x) \\
+&= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) Z(y) \, \mathrm{d}\nu(y) \, \mathrm{d}\mu_X(x) \\
+&= \int_V \mathbb{1}_B(x) \int_{W \setminus N} \mathbb{1}_A(y) \, \mathrm{d}(S_\sharp^{\Phi(x)} \mu_E)(y) \, \mathrm{d}\mu_X(x) \\
+&= \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_{A \setminus N}(y) \, \mathrm{d}\mu_{Y|x}(y) \, \mathrm{d}\mu_X(x) \\
+&= \mathbb{P}[X \in B, Y \in A \setminus N] \\
+&= \mathbb{P}[X \in B, Y \in A],
+\end{aligned}
+$$
 
 where we have used Lemma 4.2.5 and the fact that $\mathbb{P}[Y \in N] = 0$.
 
@@ -3033,14 +3103,65 @@ We now consider the Hellinger distance between measures of the type (4.4.1a). Un
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.4.1</span><span class="math-callout__name">(Stability of the Posterior)</span></p>
 
-Let $\sqrt{\pi_E} : \mathbb{R}^m \to [0, L]$ be Lipschitz continuous with Lipschitz constant $L \ge 1$. Let for $i \in \lbrace 1, 2 \rbrace$
+Let $\sqrt{\pi_E} : \mathbb{R}^m \to [0, L]$ be bounded and Lipschitz continuous with Lipschitz constant $L \ge 1$. Let for $i \in \lbrace 1, 2 \rbrace$
 
 $$\nu_i(A) := \frac{1}{Z_i(y_i)} \int_A \mathbb{1}_A(x) \pi_E(y_i - \Phi_i(x)) \, \mathrm{d}\mu_X(x)$$
 
 with $y_i \in \mathbb{R}^m$, $\Phi_i \in L^2(V, \mu_X; \mathbb{R}^m)$ and $Z_i$ as in (4.4.1b), and where $\mu_X$ is a probability measure on $(V, \mathcal{B}(V))$. Then if $\min\lbrace Z_1, Z_2 \rbrace > 0$
 
-$$D_{\mathrm{H}}(\nu_1, \nu_2) \le \frac{\sqrt{20} L^3}{\min\lbrace Z_1, Z_2 \rbrace} (\lVert y_1 - y_2 \rVert + \lVert \Phi_1 - \Phi_2 \rVert_{L^2(V, \mu_X; \mathbb{R}^m)}).$$
+$$D_{\mathrm{H}}(\nu_1, \nu_2) \le \frac{2L^2}{\min\lbrace Z_1, Z_2 \rbrace} \left( \lVert y_1 - y_2 \rVert + \lVert \Phi_1 - \Phi_2 \rVert_{L^2(V, \mu_X; \mathbb{R}^m)} \right).$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.4.1</summary>
+
+Set $\varphi_i(x) := y_i - \Phi_i(x)$. Using that the Hellinger distance is computed w.r.t. the common dominating measure $\mu_X$ (cf. (3.7.2)) and inserting an intermediate term, we obtain by the elementary inequality $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$
+
+$$
+\begin{aligned}
+D_{\mathrm{H}}(\nu_1, \nu_2)^2 
+&= \frac{1}{2} \int_V \left( \sqrt{\frac{\mathrm{d}\nu_1}{\mathrm{d}\mu_X}(x)} - \sqrt{\frac{\mathrm{d}\nu_2}{\mathrm{d}\mu_X}(x)} \right)^2 \mathrm{d}\mu_X(x) \\
+&= \frac{1}{2} \int_V \left( \sqrt{\tfrac{1}{Z_1} \pi_E(\varphi_1(x))} - \sqrt{\tfrac{1}{Z_2} \pi_E(\varphi_2(x))} \right)^2 \mathrm{d}\mu_X(x) \\
+&\le \underbrace{\int_V \left( \sqrt{\tfrac{1}{Z_1} \pi_E(\varphi_1(x))} - \sqrt{\tfrac{1}{Z_1} \pi_E(\varphi_2(x))} \right)^2 \mathrm{d}\mu_X(x)}_{=:\,I_1} \\
+&\quad + \underbrace{\int_V \left( \sqrt{\tfrac{1}{Z_1} \pi_E(\varphi_2(x))} - \sqrt{\tfrac{1}{Z_2} \pi_E(\varphi_2(x))} \right)^2 \mathrm{d}\mu_X(x)}_{=:\,I_2}.
+\end{aligned}
+$$
+
+**Bounding $I_1$.** Using the Lipschitz continuity of $\sqrt{\pi_E}$ and $\lvert \varphi_1(x) - \varphi_2(x) \rvert^2 = \lvert (y_1 - y_2) - (\Phi_1(x) - \Phi_2(x)) \rvert^2 \le 2\lVert y_1 - y_2 \rVert^2 + 2(\Phi_1(x) - \Phi_2(x))^2$, and since $\mu_X$ is a probability measure,
+
+$$I_1 \le \frac{L^2}{Z_1} \int_V \lvert \varphi_1(x) - \varphi_2(x) \rvert^2 \, \mathrm{d}\mu_X(x) \le \frac{2L^2}{Z_1} \left( \lVert y_1 - y_2 \rVert^2 + \lVert \Phi_1 - \Phi_2 \rVert_{L^2(V, \mu_X; \mathbb{R}^m)}^2 \right). \tag{4.4.2}$$
+
+**Bounding $I_2$.** Pulling the $x$-independent factor out and using $\int_V \pi_E(\varphi_2(x)) \, \mathrm{d}\mu_X(x) = Z_2$ together with $(\sqrt{Z_2} + \sqrt{Z_1})^2 \ge 4 \min\lbrace Z_1, Z_2 \rbrace$,
+
+$$I_2 = Z_2 \left( \frac{1}{\sqrt{Z_1}} - \frac{1}{\sqrt{Z_2}} \right)^2 = \frac{1}{Z_1} (\sqrt{Z_2} - \sqrt{Z_1})^2 = \frac{(Z_2 - Z_1)^2}{Z_1(\sqrt{Z_2} + \sqrt{Z_1})^2} \le \frac{(Z_1 - Z_2)^2}{4 Z_1 \min\lbrace Z_1, Z_2 \rbrace}. \tag{4.4.3}$$
+
+Note that $\pi_E$ is also Lipschitz continuous with Lipschitz constant $2L^2$, since $\sqrt{\pi_E(a)} \le L$ for all $a$ and thus
+
+$$\lvert \pi_E(a) - \pi_E(b) \rvert = \lvert \sqrt{\pi_E(a)} - \sqrt{\pi_E(b)} \rvert \, \lvert \sqrt{\pi_E(a)} + \sqrt{\pi_E(b)} \rvert \le 2L^2 \lvert a - b \rvert.$$
+
+Thus, as in (4.4.2), using the Cauchy-Schwarz inequality for the probability measure $\mu_X$,
+
+$$
+\begin{aligned}
+\lvert Z_1 - Z_2 \rvert^2 
+&= \left( \int_V \lvert \pi_E(\varphi_1(x)) - \pi_E(\varphi_2(x)) \rvert \, \mathrm{d}\mu_X(x) \right)^2 \\
+&\le 4L^4 \int_V \lvert \varphi_1(x) - \varphi_2(x) \rvert^2 \, \mathrm{d}\mu_X(x) \le 8L^4 \left( \lVert y_1 - y_2 \rVert^2 + \lVert \Phi_1 - \Phi_2 \rVert_{L^2}^2 \right).
+\end{aligned}
+$$
+
+Substituting this into (4.4.3) and combining it with (4.4.2) we obtain
+
+$$D_{\mathrm{H}}(\nu_1, \nu_2)^2 \le I_1 + I_2 \le 2L^2 \left( \frac{1}{Z_1} + \frac{L^2}{Z_1 \min\lbrace Z_1, Z_2 \rbrace} \right) \left( \lVert y_1 - y_2 \rVert^2 + \lVert \Phi_1 - \Phi_2 \rVert_{L^2}^2 \right).$$
+
+To conclude we use that $Z_i = \int_V \pi_E(y_i - \Phi_i(x)) \, \mathrm{d}\mu_X(x) \le L^2$ to bound
+
+$$\frac{1}{Z_1} + \frac{L^2}{Z_1 \min\lbrace Z_1, Z_2 \rbrace} = \frac{\min\lbrace Z_1, Z_2 \rbrace + L^2}{Z_1 \min\lbrace Z_1, Z_2 \rbrace} \le \frac{2L^2}{\min\lbrace Z_1, Z_2 \rbrace^2}.$$
+
+Hence $D_{\mathrm{H}}(\nu_1, \nu_2)^2 \le \frac{4L^4}{\min\lbrace Z_1, Z_2 \rbrace^2} (\lVert y_1 - y_2 \rVert^2 + \lVert \Phi_1 - \Phi_2 \rVert_{L^2}^2)$, and the claim follows from $\sqrt{a^2 + b^2} \le \lvert a \rvert + \lvert b \rvert$.
+
+</details>
 </div>
 
 This theorem shows that the posterior distribution depends continuously on the data $y$ and the forward operator $\Phi$ in the Hellinger distance. Together with Lemma 3.7.7, this also implies continuity of the conditional mean $x_{\mathrm{CM}}$ with respect to the data.
@@ -3075,6 +3196,39 @@ Then if $\min\lbrace Z, \tilde{Z} \rbrace > 0$
 
 $$D_{\mathrm{H}}(\nu, \tilde{\nu}) \le \frac{2L}{\min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X).$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.4.3</summary>
+
+Let $\eta$ be a probability measure on $V$ such that $\mu_X \ll \eta$ and $\tilde{\mu}_X \ll \eta$ (e.g. $\eta = \frac{\mu_X + \tilde{\mu}_X}{2}$). Then, writing $\frac{\mathrm{d}\nu}{\mathrm{d}\eta}(x) = \frac{1}{Z} \pi_E(y - \Phi(x)) \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)$ and analogously for $\tilde{\nu}$, and using $\pi_E \le L$ together with $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$,
+
+$$
+\begin{aligned}
+D_{\mathrm{H}}(\nu, \tilde{\nu})^2 
+&= \frac{1}{2} \int_V \left( \sqrt{\frac{\mathrm{d}\nu}{\mathrm{d}\eta}(x)} - \sqrt{\frac{\mathrm{d}\tilde{\nu}}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
+&= \frac{1}{2} \int_V \pi_E(y - \Phi(x)) \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{\tilde{Z}} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
+&\le \int_V L \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
+&\quad + \int_V \pi_E(y - \Phi(x)) \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{\tilde{Z}} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x). \tag{4.4.4}
+\end{aligned}
+$$
+
+The first term equals $\frac{L}{Z} \int_V (\sqrt{\frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}} - \sqrt{\frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}})^2 \, \mathrm{d}\eta = \frac{2L}{Z} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. As in (4.4.3) in the proof of Thm. 4.4.1, the second term can be bounded by
+
+$$\tilde{Z} \left( \sqrt{\tfrac{1}{Z}} - \sqrt{\tfrac{1}{\tilde{Z}}} \right)^2 \le \frac{(Z - \tilde{Z})^2}{4 Z \min\lbrace Z, \tilde{Z} \rbrace},$$
+
+and with Prop. 3.7.6 ($D_{\mathrm{TV}} \le \sqrt{2}\, D_{\mathrm{H}}$) and $\pi_E \le L$,
+
+$$\lvert Z - \tilde{Z} \rvert \le L \int_V \left\lvert \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta} - \frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta} \right\rvert \mathrm{d}\eta \le 2L \, D_{\mathrm{TV}}(\mu_X, \tilde{\mu}_X) \le 2\sqrt{2}\, L \, D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X),$$
+
+so that $(Z - \tilde{Z})^2 \le 8L^2 D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. Hence the second term is bounded by $\frac{2L^2}{Z \min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. Substituting both bounds into (4.4.4) and using $Z \le L$,
+
+$$D_{\mathrm{H}}(\nu, \tilde{\nu})^2 \le 2L \left( \frac{1}{Z} + \frac{L}{Z \min\lbrace Z, \tilde{Z} \rbrace} \right) D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2 \le \frac{4L^2}{\min\lbrace Z, \tilde{Z} \rbrace^2} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2,$$
+
+where the last step used $\frac{1}{Z} + \frac{L}{Z \min\lbrace Z, \tilde{Z} \rbrace} = \frac{\min\lbrace Z, \tilde{Z} \rbrace + L}{Z \min\lbrace Z, \tilde{Z} \rbrace} \le \frac{2L}{\min\lbrace Z, \tilde{Z} \rbrace^2}$. Taking square roots yields the claim.
+
+</details>
 </div>
 
 In all, we have seen that under the stated assumptions (in particular $\sqrt{\pi_E}$ is Lipschitz and bounded, and the normalization constant $Z$ is positive for all $y$) the posterior density defined in (4.4.1) depends w.r.t. the Hellinger distance continuously on
@@ -3147,6 +3301,33 @@ Assume that $a_x$ has finite second moment and $\mathbb{E}[a_x] = 0$ for all $x 
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.5.3</summary>
+
+Since the process is centered, we have
+
+$$\mathbb{E}[(a_x - a_y)^2] = \mathbb{E}[a_x^2] - 2\mathbb{E}[a_x a_y] + \mathbb{E}[a_y^2] = c(x, x) - 2c(x, y) + c(y, y).$$
+
+Hence continuity of $c$ implies mean-square continuity of the stochastic process.
+
+Conversely, let $(a_x)\_{x \in D}$ be mean-square continuous. Then
+
+$$
+\begin{aligned}
+\lvert c(x + s, y + t) - c(x, y) \rvert 
+&= \lvert \mathbb{E}[a_{x+s} a_{y+t}] - \mathbb{E}[a_x a_y] \rvert \\
+&= \lvert \mathbb{E}[(a_{x+s} - a_x)(a_{y+t} - a_y)] + \mathbb{E}[(a_{x+s} - a_x) a_y] + \mathbb{E}[a_x (a_{y+t} - a_y)] \rvert \\
+&\le \lVert a_{x+s} - a_x \rVert_{L^2(\Omega, \mathbb{P})} \lVert a_{y+t} - a_y \rVert_{L^2(\Omega, \mathbb{P})} + \lVert a_{x+s} - a_x \rVert_{L^2(\Omega, \mathbb{P})} \lVert a_y \rVert_{L^2(\Omega, \mathbb{P})} \\
+&\quad + \lVert a_x \rVert_{L^2(\Omega, \mathbb{P})} \lVert a_{y+t} - a_y \rVert_{L^2(\Omega, \mathbb{P})}.
+\end{aligned}
+$$
+
+This term tends to $0$ as $s, t \to 0$ due to the mean-square continuity of $(a_x)\_{x \in D}$.
+
+</details>
+</div>
+
 For a function $c \in L^2(D \times D)$ in the following we consider the *Hilbert-Schmidt integral operator* defined as
 
 $$T_c f(x) = \int_D c(x, y) f(y) \, \mathrm{d}y \qquad x \in D.$$
@@ -3156,6 +3337,23 @@ $$T_c f(x) = \int_D c(x, y) f(y) \, \mathrm{d}y \qquad x \in D.$$
 
 Let $c \in L^2(D \times D, \mathbb{R})$ be symmetric. Then $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint operator.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.5.5</summary>
+
+For every $f \in L^2(D)$, the Cauchy-Schwarz inequality and Fubini's theorem give
+
+$$\int_D T_c f(x)^2 \, \mathrm{d}x = \int_D \left( \int_D c(x, y) f(y) \, \mathrm{d}y \right)^2 \mathrm{d}x \le \int_D \int_D c(x, y)^2 \, \mathrm{d}y \int_D f(y)^2 \, \mathrm{d}y \, \mathrm{d}x,$$
+
+which shows that $\lVert T_c \rVert_{\mathcal{L}(L^2, L^2)} \le \lVert c \rVert_{L^2(D \times D)}$, i.e. $T_c$ is bounded. Due to the symmetry of $c$, $T_c$ is clearly self-adjoint:
+
+$$\langle T_c f, g \rangle_{L^2} = \int_D \int_D c(x, y) f(y) g(x) \, \mathrm{d}y \, \mathrm{d}x = \langle f, T_c g \rangle_{L^2}.$$
+
+We skip the proof of compactness.
+
+</details>
 </div>
 
 Since $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint, positive operator, there is an orthonormal system $(\varphi_j)\_{j \in \mathbb{N}}$ of eigenvectors of $T_c$ with corresponding positive eigenvalues $(\ell_j)\_{j \in \mathbb{N}}$ and such that $T_c f = \sum_{j \in \mathbb{N}} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$.
@@ -3208,11 +3406,89 @@ The coefficients $a_j$ satisfy for all $j$ with $\ell_j > 0$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.5.9</summary>
+
+In the following $(\varphi_j)\_{j \in \mathbb{N}}$ is an orthonormal basis of $L^2(D)$ that is obtained by extending an orthonormal sequence of eigenvectors $\varphi_j$ of $T_c$ with eigenvalues $\ell_j > 0$ to an ONB. We extend the sequence of eigenvalues by zeros, i.e. $\ell_j = 0$ for all $j$ for which $\varphi_j$ belongs to the kernel of $T_c$.
+
+**The coefficients are square-integrable.** Joint measurability and Fubini's theorem imply that $a_j : \Omega \to \mathbb{R}$ is measurable and, using $\int_D \varphi_j(x)^2 \, \mathrm{d}x = 1$ and the Cauchy-Schwarz inequality,
+
+$$\int_\Omega \lvert a_j(\omega) \rvert^2 \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \left\lvert \int_D a(\omega, x) \varphi_j(x) \, \mathrm{d}x \right\rvert^2 \mathrm{d}\mathbb{P}(\omega) \le \int_\Omega \int_D a(\omega, x)^2 \, \mathrm{d}x \, \mathrm{d}\mathbb{P}(\omega) = \lVert a \rVert_{L^2(\Omega \times D)}^2.$$
+
+Thus $a_j \in L^2(\Omega, \mathbb{P}; \mathbb{R})$ and $a_j : \Omega \to \mathbb{R}$ is a RV with finite first and second moment for each $j$.
+
+**Property (1).** Since $(a_x)\_{x \in D}$ is centered,
+
+$$\mathbb{E}[a_j] = \int_\Omega a_j(\omega) \, \mathrm{d}\mathbb{P}(\omega) = \int_D \varphi_j(x) \int_\Omega a(\omega, x) \, \mathrm{d}\mathbb{P}(\omega) \, \mathrm{d}x = 0.$$
+
+**Property (2).** Since $c(x, y) = \int_\Omega a(\omega, x) a(\omega, y) \, \mathrm{d}\mathbb{P}(\omega)$ and $\varphi_i$ is an eigenvector of $T_c$ with eigenvalue $\ell_i$,
+
+$$
+\begin{aligned}
+\mathbb{E}[a_i a_j] 
+&= \int_\Omega \int_D a(\omega, x) \varphi_i(x) \, \mathrm{d}x \int_D a(\omega, y) \varphi_j(y) \, \mathrm{d}y \, \mathrm{d}\mathbb{P}(\omega) \\
+&= \int_D \int_D \varphi_i(x) \varphi_j(y) c(x, y) \, \mathrm{d}x \, \mathrm{d}y = \int_D \ell_i \varphi_i(y) \varphi_j(y) \, \mathrm{d}y = \delta_{ij} \ell_i,
+\end{aligned}
+$$
+
+where we used that the $(\varphi_j)\_{j \in \mathbb{N}}$ are orthonormal in $L^2(D)$ in the last step.
+
+**Convergence (4.5.6).** For $x \in D$, define $\epsilon_n(x) := \mathbb{E}[(a_x - \sum_{j=1}^n a_j \varphi_j(x))^2]$; we prove $\sup_{x \in D} \epsilon_n(x) \to 0$. First observe that
+
+$$\epsilon_n(x) = \mathbb{E}[a_x^2] - 2\mathbb{E}\left[ a_x \sum_{j=1}^n a_j \varphi_j(x) \right] + \mathbb{E}\left[ \sum_{i,j=1}^n a_i a_j \varphi_i(x) \varphi_j(x) \right].$$
+
+Now
+
+$$\mathbb{E}\left[ a_x \sum_{j=1}^n a_j \varphi_j(x) \right] = \sum_{j=1}^n \int_D \varphi_j(x) \varphi_j(y) \underbrace{\int_\Omega a_x(\omega) a_y(\omega) \, \mathrm{d}\mathbb{P}(\omega)}_{=\,c(x, y)} \mathrm{d}y = \sum_{j=1}^n \ell_j \varphi_j(x)^2,$$
+
+and by property (2)
+
+$$\mathbb{E}\left[ \sum_{i,j=1}^n a_i a_j \varphi_i(x) \varphi_j(x) \right] = \sum_{i,j=1}^n \varphi_i(x) \varphi_j(x) \mathbb{E}[a_i a_j] = \sum_{j=1}^n \ell_j \varphi_j(x)^2.$$
+
+Since $\mathbb{E}[a_x^2] = c(x, x)$ we thus find
+
+$$\epsilon_n(x) = c(x, x) - \sum_{j=1}^n \ell_j \varphi_j(x)^2.$$
+
+An application of Mercer's theorem (Thm. 4.5.8), which guarantees absolute and uniform convergence of $\sum_j \ell_j \varphi_j(x)^2$ to $c(x, x)$, concludes the proof.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.13</span><span class="math-callout__name">(Covariance Operator via Hilbert-Schmidt Operator)</span></p>
 
 Let $a : \Omega \to L^2(D)$ be a RV with finite second moment and such that $\mathbb{E}[a] = m \in L^2(D)$. Then $\mathrm{cov}(a) : L^2(D) \to L^2(D)$ is given by $T_c$ where $c(x, y) = \mathbb{E}[(a(\cdot, x) - m(x))(a(\cdot, y) - m(y))]$ and $c \in L^2(D \times D)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.5.13</summary>
+
+By definition of the covariance we have for all $f, g \in L^2(D)$ with $C := \mathrm{cov}(a)$, using Fubini's theorem,
+
+$$
+\begin{aligned}
+\langle g, Cf \rangle_{L^2(D)} 
+&= \int_\Omega \langle a(\omega, \cdot) - m(\cdot), f(\cdot) \rangle_{L^2(D)} \, \langle a(\omega, \cdot) - m(\cdot), g(\cdot) \rangle_{L^2(D)} \, \mathrm{d}\mathbb{P}(\omega) \\
+&= \int_D \int_D \mathbb{E}[(a(\cdot, x) - m(x))(a(\cdot, y) - m(y))] f(x) \, \mathrm{d}x \, g(y) \, \mathrm{d}y = \langle g, T_c f \rangle_{L^2(D)}.
+\end{aligned}
+$$
+
+Furthermore, since $\int_\Omega \int_D (a(\omega, x) - m(x))^2 \, \mathrm{d}x \, \mathrm{d}\mathbb{P}(\omega) = \mathbb{E}[\lVert a - m \rVert_{L^2}^2] < \infty$, the Cauchy-Schwarz inequality gives
+
+$$
+\begin{aligned}
+\int_D \int_D c(x, y)^2 \, \mathrm{d}x \, \mathrm{d}y 
+&= \int_D \int_D \mathbb{E}[(a(\cdot, x) - m(x))(a(\cdot, y) - m(y))]^2 \, \mathrm{d}x \, \mathrm{d}y \\
+&\le \int_D \int_\Omega (a(\omega, x) - m(x))^2 \, \mathrm{d}\mathbb{P}(\omega) \, \mathrm{d}x \int_D \int_\Omega (a(\omega, y) - m(y))^2 \, \mathrm{d}\mathbb{P}(\omega) \, \mathrm{d}y < \infty,
+\end{aligned}
+$$
+
+so that $c \in L^2(D \times D)$.
+
+</details>
 </div>
 
 Theorem 4.5.9 and Lemma 4.5.13 show that a RV can be expanded in terms of the eigenfunctions of the covariance operator. This also works the other way around in the following sense:
@@ -3226,6 +3502,27 @@ $$a(\omega, x) := m(x) + \sum_{j \in \mathbb{N}} \ell_j \xi_j(\omega) \varphi_j(
 
 defines a RV $\omega \mapsto a(\omega, \cdot) \in L^2(D)$ where $\mathbb{E}[a] = m$ and $\mathrm{Cov}(a) = T_c$ with $c(x, y) = \frac{1}{3} \sum_{j \in \mathbb{N}} \ell_j^2 \varphi_j(x) \varphi_j(y) \in L^2(D \times D)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 4.5.14</summary>
+
+Set $a_s(\omega, x) := m(x) + \sum_{j=1}^s \ell_j \xi_j(\omega) \varphi_j(x)$. For every $\omega \in \Omega$ it holds that $a_s(\omega, \cdot) \to a(\omega, \cdot)$ in $L^2(D)$ as $s \to \infty$. Measurability of each $\xi_j : \Omega \to \mathbb{R}$ implies measurability of $a_s : \Omega \to L^2(D)$, and thus $a : \Omega \to L^2(D)$ is measurable as a pointwise limit of measurable functions.
+
+Note that $a_s \to a$ in the topology of $L^2(\Omega, \mathbb{P}; L^2(D))$: by orthonormality of $(\varphi_j)\_{j \in \mathbb{N}}$ and $\xi_j^2 \le 1$,
+
+$$\lim_{s \to \infty} \mathbb{E}\left[ \lVert a - a_s \rVert_{L^2(D)}^2 \right] = \lim_{s \to \infty} \mathbb{E}\left[ \sum_{j > s} \ell_j^2 \xi_j(\omega)^2 \right] \le \lim_{s \to \infty} \sum_{j > s} \ell_j^2 = 0, \tag{4.5.12}$$
+
+since $(\ell_j)\_{j \in \mathbb{N}} \in \ell^2(\mathbb{N})$. The Cauchy-Schwarz inequality implies in particular $a_s \to a$ in $L^1(\Omega, \mathbb{P}; L^2(D))$, so that $\mathbb{E}[a] = \lim_{s \to \infty} \mathbb{E}[a_s] = m$.
+
+Next, with $\mathbb{E}[\xi_i \xi_j] = 0$ for $i \neq j$ (independence) and $\mathbb{E}[\xi_i^2] = \frac{1}{2} \int_{-1}^1 x^2 \, \mathrm{d}x = \frac{1}{3}$,
+
+$$c_s(x, y) := \mathbb{E}[(a_s(\cdot, x) - m(x))(a_s(\cdot, y) - m(y))] = \sum_{i,j=1}^s \ell_i \ell_j \varphi_i(x) \varphi_j(y) \mathbb{E}[\xi_i \xi_j] = \frac{1}{3} \sum_{i=1}^s \ell_i^2 \varphi_i(x) \varphi_i(y).$$
+
+From (4.5.12) it follows that $c_s \to c$ in $L^2(D \times D)$ as $s \to \infty$. An application of Lemma 4.5.13 concludes the proof.
+
+</details>
 </div>
 
 #### 4.5.2 Uniform Measures
@@ -3247,6 +3544,19 @@ defines a RV $\omega \mapsto a(\omega, \cdot) \in L^\infty(D)$ satisfying $\math
 
 $$\lVert a(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j, \qquad \mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j. \tag{4.5.8}$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 4.5.11</summary>
+
+Since each $\xi_j : \Omega \to \mathbb{R}$ is measurable, also $a_n := m + \sum_{j=1}^n \ell_j \xi_j \varphi_j : \Omega \to L^\infty(D)$ is measurable as a sum of measurable functions. Moreover, by the triangle inequality and $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$, $\lvert \xi_j \rvert \le 1$,
+
+$$\lVert a_n(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j < \infty \qquad \text{for every } n,$$
+
+so that $a_n$ converges pointwise to a measurable function $a : \Omega \to L^\infty(D)$. This also implies the first bound in (4.5.8), and the second bound $\mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j$ follows similarly, since $\lvert \sum_{j} \ell_j \xi_j(\omega) \varphi_j(x) \rvert \le \sum_j \ell_j$ for a.e. $x \in D$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -3317,6 +3627,37 @@ $$a(\omega, x) = m(x) + \sum_{j \in \mathbb{N}} a_j(\omega) \, \varphi_j(x), \qq
 
 in the sense of $L^2(\Omega, \mathbb{P}; L^2(D))$ convergence, where the $(a_j)\_{j \in \mathbb{N}}$ are independent real-valued RVs.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.5.20</summary>
+
+Throughout we use the basic property of Gaussian RVs that, for $X \sim \mathcal{N}(m, C)$ and $h \in H = L^2(D)$, one has $\langle X, h \rangle \sim \mathcal{N}(\langle m, h \rangle, \langle h, Ch \rangle)$.
+
+**Step 1: $a(\omega) - m \in H := \overline{\mathrm{span}\lbrace \varphi_j : j \in \mathbb{N} \rbrace}$ $\mathbb{P}$-a.e.** Fix $h \in H^\perp$. Then
+
+$$Ch = \sum_{j \in \mathbb{N}} \ell_j \underbrace{\langle h, \varphi_j \rangle_{L^2(D)}}_{=\,0} \varphi_j = 0.$$
+
+By the property above, $\langle a - m, h \rangle_{L^2(D)} \sim \mathcal{N}(0, \langle h, Ch \rangle_{L^2(D)}) = \mathcal{N}(0, 0) = \delta_0$, where $\delta_0$ is the Dirac measure at $0 \in \mathbb{R}$. Hence there is a $\mathbb{P}$-null set $N_h \subseteq \Omega$ with $\langle a(\omega) - m, h \rangle_{L^2(D)} = 0$ for every $\omega \in N_h^c$. Since $L^2(D)$ is separable, so is $H^\perp$, and we can pick a dense sequence $(h_n)\_{n \in \mathbb{N}} \subseteq H^\perp$. As $\bigcup_{n \in \mathbb{N}} N_{h_n}$ is a $\mathbb{P}$-null set, we conclude that $\mathbb{P}$-a.e. $\langle a(\omega) - m, h_n \rangle_{L^2(D)} = 0$ for all $n$, and thus $\mathbb{P}$-a.e.
+
+$$(a(\omega) - m) \perp H^\perp \quad \Longleftrightarrow \quad a(\omega) - m \in H.$$
+
+**Step 2: the expansion and the law of the coefficients.** We conclude that $\mathbb{P}$-a.e. in the sense of $L^2(D)$
+
+$$a(\omega) = m + \sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j, \qquad a_j(\omega) = \langle a(\omega) - m, \varphi_j \rangle_{L^2(D)}. \tag{4.5.13}$$
+
+Again by the property above, $a_j \sim \mathcal{N}(0, \ell_j)$, where we used $\langle \varphi_j, C\varphi_j \rangle_{L^2(D)} = \ell_j$. Independence of the $(a_j)\_{j \in \mathbb{N}}$ follows from them being uncorrelated jointly Gaussian RVs:
+
+$$\mathrm{cov}(a_i, a_j) = \mathbb{E}[\langle a - m, \varphi_i \rangle_{L^2(D)} \langle a - m, \varphi_j \rangle_{L^2(D)}] = \langle \varphi_i, C\varphi_j \rangle_{L^2(D)} = \ell_i \delta_{ij}.$$
+
+**Step 3: convergence.** By (4.5.13) and Parseval's identity,
+
+$$\left\lVert a - \left( m + \sum_{j=1}^s a_j \varphi_j \right) \right\rVert_{L^2(\Omega; L^2(D))}^2 = \int_\Omega \left\lVert a(\omega) - m - \sum_{j=1}^s a_j(\omega) \varphi_j \right\rVert_{L^2(D)}^2 \mathrm{d}\mathbb{P}(\omega) = \sum_{j > s} \mathbb{E}[a_j^2] = \sum_{j > s} \ell_j \to 0,$$
+
+since $C$ is of trace class by Thm. 4.5.17, which implies $\sum_{j \in \mathbb{N}} \ell_j < \infty$.
+
+</details>
 </div>
 
 There holds the following converse of the previous theorem, which provides a method to construct Gaussian RVs:
@@ -4725,3 +5066,430 @@ The sequence $(u_n)$ forms an ONB for $\overline{\mathcal{R}(K)}$.
 </div>
 
 Letting $x = u_n$, we can see that $u_n$ is an eigenvector corresponding to the eigenvalue $\lambda_n$ with $Ku_n = \lambda_n u_n$. Typically, the eigenvalues and the corresponding eigenvectors are ordered such that $\|\lambda_1\| \ge \|\lambda_2\| \ge \ldots \ge 0$. It follows that $\lVert K \rVert_{\mathcal{L}(X,X)} = \|\lambda_1\|$.
+
+## Appendix B: Basic Concepts of Measure Theory
+
+### B.1 $\sigma$-Algebras
+
+In the following $\Omega$ denotes a set, interpreted as the collection of all "elementary events". We write $2^\Omega$ for its power set (the set of all subsets of $\Omega$). A $\sigma$-algebra is a specific subset of $2^\Omega$, on which we will be able to define measures. For $A \subseteq \Omega$ we denote its complement by $A^c := \Omega \setminus A$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.1.1</span><span class="math-callout__name">($\sigma$-Algebra)</span></p>
+
+We call $\mathcal{A} \subseteq 2^\Omega$ a **$\sigma$-algebra** iff
+
+1. $\Omega \in \mathcal{A}$,
+2. $A \in \mathcal{A}$ implies $A^c \in \mathcal{A}$,
+3. $A_i \in \mathcal{A}$ for all $i \in \mathbb{N}$ implies $\bigcup_{i \in \mathbb{N}} A_i \in \mathcal{A}$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.1.2</span><span class="math-callout__name">(Measurable Space)</span></p>
+
+For $\Omega \neq \emptyset$ and a $\sigma$-algebra $\mathcal{A}$ on $\Omega$, the tuple $(\Omega, \mathcal{A})$ is called a **measurable space**. A subset $A \subseteq \Omega$ is called **measurable** iff it belongs to $\mathcal{A}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark B.1.3</span></p>
+
+Properties (i) and (ii) imply $\Omega^c = \emptyset \in \mathcal{A}$, and (iii) and (ii) imply $(\bigcup_{i \in \mathbb{N}} A_i^c)^c = \bigcap_{i \in \mathbb{N}} A_i \in \mathcal{A}$. In particular $\bigcap_{i \in \mathbb{N}} A_i \in \mathcal{A}$ whenever $A_i \in \mathcal{A}$ for all $i \in \mathbb{N}$.
+
+Recall that $(\Omega, \mathcal{T})$ is called a **topological space**, if $\mathcal{T} \subseteq 2^\Omega$ is a topology, i.e. $\mathcal{T}$ is the collection of all "open sets" and satisfies
+
+1. $\emptyset, \Omega \in \mathcal{T}$,
+2. $\bigcap_{j=1}^N O_j \in \mathcal{T}$,
+3. $\bigcup_{j \in I} O_j \in \mathcal{T}$,
+
+whenever $O_1, \ldots, O_N$ and $(O_j)\_{j \in I}$ belong to $\mathcal{T}$. Here $I$ is an arbitrary index set and need not be countable. On a topological space we can define the Borel $\sigma$-algebra, which is the $\sigma$-algebra generated by the open sets. To introduce it, we need the following result.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition B.1.4</span></p>
+
+Let $\mathcal{E} \subseteq 2^\Omega$ be nonempty. Then
+
+$$\sigma(\mathcal{E}) := \bigcap_{\mathcal{A} \text{ is a } \sigma\text{-algebra s.t. } \mathcal{E} \subseteq \mathcal{A}} \mathcal{A} \tag{B.1}$$
+
+defines a $\sigma$-algebra, called the **$\sigma$-algebra generated by $\mathcal{E}$**.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition B.1.4</summary>
+
+The intersection in (B.1) is not empty since $2^\Omega$ is a $\sigma$-algebra containing $\mathcal{E}$. Let $(\mathcal{A}_i)\_{i \in I}$ be a family of $\sigma$-algebras ($I$ not necessarily countable). Then it is simple to check that $\bigcap_{i \in I} \mathcal{A}_i$ (by which we mean $\lbrace A \subseteq \Omega : A \in \mathcal{A}_i \; \forall i \in I \rbrace$) is again a $\sigma$-algebra, by verifying each item of Def. B.1.1 for this intersection. Hence (B.1) defines a $\sigma$-algebra containing $\mathcal{E}$. Evidently $\sigma(\mathcal{E})$ is the smallest $\sigma$-algebra containing $\mathcal{E}$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.1.5</span><span class="math-callout__name">(Borel $\sigma$-Algebra)</span></p>
+
+For a topological space $(\Omega, \mathcal{T})$ we call $\sigma(\mathcal{T})$ the **Borel $\sigma$-algebra** and denote it by $\mathcal{B}(\Omega)$. In case there is no confusion about the topology, we simply say that "$\mathcal{B}$ is the Borel $\sigma$-algebra on $\Omega$". In case $\Omega$ is an open or closed subset of $\mathbb{R}^d$, the Borel $\sigma$-algebra on $\Omega$ is always understood w.r.t. the Euclidean topology on $\mathbb{R}^d$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark B.1.6</span></p>
+
+There exist sets $A \subseteq \mathbb{R}^d$ which do not belong to $\mathcal{B}(\mathbb{R}^d)$, i.e. $\mathcal{B}(\mathbb{R}^d) \neq 2^{\mathbb{R}^d}$. Since complements of open sets are closed (and closed sets are in general not open), the Euclidean topology on $\mathbb{R}^d$ is not a $\sigma$-algebra.
+
+</div>
+
+We also require the following proposition, which we state without proof (see, e.g., Analysis III). A set $\mathcal{D} \subseteq 2^\Omega$ is called a **Dynkin-system**, iff
+
+* $\Omega \in \mathcal{D}$,
+* for $A, B \in \mathcal{D}$ with $A \subset B$ it holds $B \setminus A \in \mathcal{D}$,
+* for every countable disjoint pairwise sequence $A_j \in \mathcal{D}$, $j \in \mathbb{N}$, it holds $\bigcup_{j \in \mathbb{N}} A_j \in \mathcal{D}$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition B.1.8</span></p>
+
+Let $\mathcal{C} \subseteq 2^\Omega$ satisfy $A \cap B \in \mathcal{C}$ for every $A, B \in \mathcal{C}$. Then the smallest Dynkin-system containing $\mathcal{C}$ exists and is equal to $\sigma(\mathcal{C})$.
+
+</div>
+
+### B.2 Measures
+
+We are now in a position to introduce measures. These are functions assigning nonnegative numbers to each set in $\mathcal{A}$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.2.1</span><span class="math-callout__name">(Measure)</span></p>
+
+Let $\mathcal{A}$ be a $\sigma$-algebra on $\Omega \neq \emptyset$. A function $\mu : \mathcal{A} \to [0, \infty]$ is called a **measure** iff
+
+1. $\mu(\emptyset) = 0$,
+2. ($\sigma$-additivity) if $A_i \in \mathcal{A}$ for all $i \in \mathbb{N}$ and $A_i \cap A_j = \emptyset$ for $i \neq j$, then
+
+   $$\mu\left( \bigcup_{i \in \mathbb{N}} A_i \right) = \sum_{i \in \mathbb{N}} \mu(A_i).$$
+
+A measure is called **$\sigma$-finite** if there exist $(A_j)\_{j \in \mathbb{N}} \in \mathcal{A}$ such that $\Omega = \bigcup_{j \in \mathbb{N}} A_j$ and $\mu(A_j) < \infty$ for all $j \in \mathbb{N}$. A measure $\mu$ with $\mu(\Omega) = 1$ is called a **probability measure**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.2.2</span><span class="math-callout__name">(Measure Space)</span></p>
+
+For a set $\Omega \neq \emptyset$, a $\sigma$-algebra $\mathcal{A}$ on $\Omega$ and a measure $\mu$ on $\mathcal{A}$ we call the triple $(\Omega, \mathcal{A}, \mu)$ a **measure space**. If $\mathbb{P}$ is a probability measure on $(\Omega, \mathcal{A})$, we call $(\Omega, \mathcal{A}, \mathbb{P})$ a **probability space**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example B.2.3</span></p>
+
+Let $\Omega = \lbrace \omega_1, \ldots, \omega_N \rbrace$ be a finite set and let $0 \le p_j \le 1$ for $j = 1, \ldots, N$ such that $\sum_{j=1}^N p_j = 1$. Set $\mathcal{A} := 2^\Omega$. Then $\mu(A) := \sum_{\omega_j \in A} p_j$ defines a probability measure on $(\Omega, \mathcal{A})$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example B.2.4</span></p>
+
+Let $f : \mathbb{R}^n \to \mathbb{R}$ be nonnegative and integrable with $\int_{\mathbb{R}^n} f(x) \, \mathrm{d}x = 1$. Then
+
+$$\mu(A) := \int_A f(x) \, \mathrm{d}x$$
+
+defines a probability measure on $(\mathbb{R}^n, \mathcal{B})$.
+
+</div>
+
+The following theorem is often useful, as it allows to check for equality of two measures.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem B.2.5</span></p>
+
+Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. Let $\mathcal{E} \subseteq 2^\Omega$ satisfy $A \cap B \in \mathcal{E}$ for all $A, B \in \mathcal{E}$ as well as $\sigma(\mathcal{E}) = \mathcal{A}$. If there exists a sequence $(E_n)\_{n \in \mathbb{N}}$ with $\Omega = \bigcup_{n \in \mathbb{N}} E_n$, $E_n \subseteq E_{n+1}$ and $\mu(E_n) < \infty$ for all $n$, then $\mu$ is uniquely defined through $\mu(E)$ for all $E \in \mathcal{E}$.
+
+</div>
+
+#### B.2.1 Product Measures
+
+For measurable spaces $(\Omega_j, \mathcal{A}_j)_{j=1}^n$ the $\sigma$-algebra
+
+$$\textstyle\bigotimes_{j=1}^n \mathcal{A}_j := \sigma\left( \lbrace \times_{j=1}^n A_j \,:\, A_j \in \mathcal{A}_j \; \forall j \rbrace \right)$$
+
+is called the **product $\sigma$-algebra** on the space $\times_{j=1}^n \Omega_j$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem B.2.6</span><span class="math-callout__name">(Product Measure)</span></p>
+
+Let $(\Omega_j, \mathcal{A}_j, \mu_j)$ for $j = 1, \ldots, n$ be a family of $\sigma$-finite measure spaces. Then there exists a unique measure $\mu$ on $(\times_{j=1}^n \Omega_j, \bigotimes_{j=1}^n \mathcal{A}_j)$ such that
+
+$$\mu\left( \times_{j=1}^n A_j \right) = \prod_{j=1}^n \mu_j(A_j) \qquad \forall A_j \in \mathcal{A}_j.$$
+
+We call $\mu$ the **product measure** and use the notation $\mu = \bigotimes_{j=1}^n \mu_j$.
+
+</div>
+
+The product measure can also be constructed for $n = \infty$: Consider the $\sigma$-algebra $\mathcal{A} := \sigma(\mathcal{E})$ generated by the cylindrical sets
+
+$$\mathcal{E} := \lbrace \times_{j \in \mathbb{N}} A_j \,:\, A_j \in \mathcal{B}(\mathbb{R}) \rbrace.$$
+
+Suppose that $(\mu_j)\_{j \in \mathbb{N}}$ is a family of probability measures on $\mathbb{R}$. Then there is a unique measure $\mu$ on $(\mathbb{R}^{\mathbb{N}}, \mathcal{A})$ satisfying $\mu(\times_{j=1}^n A_j \times \times_{i \in \mathbb{N}} \mathbb{R}) = \prod_{j=1}^n \mu_j(A_j)$.
+
+One of the most important measures is the **Lebesgue measure** on the measurable space $(\mathbb{R}, \mathcal{B})$, which satisfies
+
+$$\lambda_1((a, b]) = b - a \qquad \forall b > a. \tag{B.2}$$
+
+Since $\mathcal{E} = \lbrace (a, b] : a < b \rbrace$ generates $\mathcal{B}(\mathbb{R})$, i.e. $\sigma(\mathcal{E}) = \mathcal{B}(\mathbb{R})$, Thm. B.2.5 implies that the Lebesgue measure is unique. Furthermore, by Thm. B.2.6 there is a unique measure $\lambda_d = \bigotimes_{j=1}^d \lambda$ on $(\mathbb{R}^d, \bigotimes_{j=1}^d \mathcal{B}(\mathbb{R}))$ with the property
+
+$$\lambda_d\left( \times_{j=1}^d (a_j, b_j] \right) = \prod_{j=1}^d (b_j - a_j) \qquad \forall a_j < b_j, \tag{B.3}$$
+
+which is again called the Lebesgue measure. Whenever $d$ is clear from the context, we drop the index and simply write $\lambda$ instead of $\lambda_d$. We also mention that $\bigotimes_{j=1}^d \mathcal{B}(\mathbb{R}) = \mathcal{B}(\mathbb{R}^d)$.
+
+### B.3 Measurability
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.3.1</span><span class="math-callout__name">(Measurability)</span></p>
+
+Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces. A function $f : \Omega_1 \to \Omega_2$ is called **$\mathcal{A}_1/\mathcal{A}_2$-measurable** iff $f^{-1}(A_2) \in \mathcal{A}_1$ for all $A_2 \in \mathcal{A}_2$. If there is no confusion about $\mathcal{A}_2$ and/or $\mathcal{A}_1$ we also say that $f$ is **$\mathcal{A}_1$-measurable** or simply **measurable**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark B.3.2</span></p>
+
+Note that measurability of a function depends only on the $\sigma$-algebras, but no measure needs to be defined. If $\mathcal{A}_1$ and $\mathcal{A}_2$ are both the Borel $\sigma$-algebras, then we say that $f : \Omega_1 \to \Omega_2$ is **Borel measurable**. To check for Borel measurability it suffices to consider preimages of open sets; more generally we have the following.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition B.3.3</span></p>
+
+Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces and assume that $\mathcal{A}_2 = \sigma(\mathcal{E})$ for some $\mathcal{E} \subseteq 2^{\Omega_2}$. A function $f : \Omega_1 \to \Omega_2$ is $\mathcal{A}_1/\mathcal{A}_2$-measurable iff $f^{-1}(E) \in \mathcal{A}_1$ for all $E \in \mathcal{E}$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition B.3.3</summary>
+
+Measurability implies that $f^{-1}(E) \in \mathcal{A}_1$ for all $E \in \mathcal{E} \subseteq \sigma(\mathcal{E})$. To show the other direction, define
+
+$$\mathcal{C} := \lbrace B \subseteq \Omega_2 \,:\, f^{-1}(B) \in \mathcal{A}_1 \rbrace.$$
+
+For any $B \in \mathcal{C}$,
+
+$$f^{-1}(B^c) = \lbrace \omega \in \Omega_1 \,:\, f(\omega) \in B^c \rbrace = \lbrace \omega \in \Omega_1 \,:\, f(\omega) \notin B \rbrace = \Omega_1 \setminus f^{-1}(B) = (f^{-1}(B))^c \in \mathcal{A}_1,$$
+
+and thus $B^c \in \mathcal{C}$. Similarly, for all $B_i \in \mathcal{C}$,
+
+$$f^{-1}\left( \bigcup_{i \in \mathbb{N}} B_i \right) = \bigcup_{i \in \mathbb{N}} f^{-1}(B_i),$$
+
+and thus $\bigcup_{i \in \mathbb{N}} B_i \in \mathcal{C}$ whenever $B_i \in \mathcal{C}$ for all $i \in \mathbb{N}$. Hence $\mathcal{C}$ is a $\sigma$-algebra on $\Omega_2$. By assumption every $E \in \mathcal{E}$ belongs to $\mathcal{C}$. Since $\sigma(\mathcal{E})$ is the smallest $\sigma$-algebra containing $\mathcal{E}$ it holds $\mathcal{C} \supseteq \sigma(\mathcal{E})$. Thus $f^{-1}(B) \in \mathcal{A}_1$ for all $B \in \sigma(\mathcal{E}) = \mathcal{A}_2$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark B.3.4</span></p>
+
+The previous proposition implies in particular that continuous functions are always Borel-measurable.
+
+</div>
+
+Let $V$ denote a Banach space over the field $\mathbb{R}$ (most results are easily generalized to Banach spaces over $\mathbb{C}$). To give meaning to integrals over $V$-valued functions, we require a stronger notion of measurability. A function $f : \Omega \to V$, defined on the measurable space $(\Omega, \mathcal{A})$, is called **$\mathcal{A}$-simple** iff
+
+$$f(\omega) = \sum_{j=1}^N v_j \mathbb{1}_{A_j}(\omega)$$
+
+for finite $N \in \mathbb{N}$, measurable $A_j \in \mathcal{A}$ with $A_i \cap A_j = \emptyset$ for all $i \neq j$ and $v_j \in V$. Here $\mathbb{1}_{A_j}(\omega)$ denotes the indicator function, that is $\mathbb{1}_{A_j}(\omega) = 1$ if $\omega \in A_j$ and $\mathbb{1}_{A_j}(\omega) = 0$ otherwise.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.3.5</span><span class="math-callout__name">(Strong Measurability)</span></p>
+
+A function $f : \Omega \to V$ is **strongly measurable** iff there exists a sequence $(f_n)\_{n \in \mathbb{N}}$ of $\mathcal{A}$-simple functions such that $\lim_{n \to \infty} f_n = f$ pointwise.
+
+</div>
+
+As the name suggests, strong measurability is in general indeed stronger than measurability. In case $V$ is a separable Banach space, the two notions are in fact equivalent. This follows by Pettis measurability theorem. Recall that $V$ is called **separable** if there exists a countable dense subset of $V$. A function $f : \Omega \to V$ is called **separably valued** if it takes values in a separable subspace $V_0 \subseteq V$. If $V$ is separable, then any $f : \Omega \to V$ is necessarily separably valued.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition B.3.6</span></p>
+
+Let $(\Omega, \mathcal{A})$ be a measurable space and let $f_n : \Omega \to \mathbb{R}$ for $n \in \mathbb{N}$ be a sequence of $\mathcal{A}$-measurable functions. Then
+
+* if $f(\omega) := \sup_{n \in \mathbb{N}} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable,
+* if $f(\omega) := \inf_{n \in \mathbb{N}} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable,
+* if $f(\omega) := \lim_{n \to \infty} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem B.3.7</span><span class="math-callout__name">(Pettis Measurability Theorem, First Version)</span></p>
+
+Let $(\Omega, \mathcal{A})$ be a measurable space. For $f : \Omega \to V$ the following are equivalent:
+
+1. $f$ is strongly measurable,
+2. $f$ is separably valued and $\langle f, v' \rangle$ is $\mathcal{A}$-measurable for every $v' \in V'$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem B.3.7</summary>
+
+**(i) $\Rightarrow$ (ii):** Let $(f_n)\_{n \in \mathbb{N}}$ be a sequence of $\mathcal{A}$-simple functions converging pointwise to $f$, and let $V_0$ be the closed subspace spanned by the countably many values taken by the functions $(f_n)\_{n \in \mathbb{N}}$. Then $V_0$ is separable and $f : \Omega \to V_0$. Furthermore each $\langle f, v' \rangle : \Omega \to \mathbb{R}$ is $\mathcal{A}$-measurable as the pointwise limit of the $\mathcal{A}$-measurable functions $\langle f_n, v' \rangle$ by Prop. B.3.6.
+
+**(ii) $\Rightarrow$ (i):** Let $V_0$ be a separable subspace of $V$ such that $f : \Omega \to V_0$. First we show that there exists a sequence $(v_n')\_{n \in \mathbb{N}} \subseteq V'$ such that for all $v \in V_0$
+
+$$\lVert v \rVert = \sup_{n \in \mathbb{N}} \lvert \langle v, v_n' \rangle \rvert. \tag{B.4}$$
+
+To this end let $(v_n)\_{n \in \mathbb{N}}$ be a dense sequence in $V_0$. By the Hahn-Banach theorem there exist $v_n' \in V'$ such that $\lVert v_n' \rVert = 1$ and $\lVert v_n \rVert = \langle v_n, v_n' \rangle$. Now, for every $v \in V_0$ and $\varepsilon > 0$ there exists $n \in \mathbb{N}$ so large that $\lVert v - v_n \rVert < \varepsilon$. Then
+
+$$\langle v, v_n' \rangle \ge \langle v_n, v_n' \rangle - \lvert \langle v_n - v, v_n' \rangle \rvert \ge \lVert v_n \rVert - \varepsilon \ge \lVert v \rVert - \lVert v - v_n \rVert - \varepsilon \ge \lVert v \rVert - 2\varepsilon.$$
+
+Also note that for any $n \in \mathbb{N}$, $\lvert \langle v, v_n' \rangle \rvert \le \lVert v \rVert \lVert v_n' \rVert = \lVert v \rVert$. Since $\varepsilon > 0$ was arbitrary, the claim (B.4) follows. By the $\mathcal{A}$-measurability of $\omega \mapsto \langle f(\omega), v_n' \rangle$, for each $v_0 \in V_0$
+
+$$\omega \mapsto \lVert f(\omega) - v_0 \rVert = \sup_{n \in \mathbb{N}} \langle f(\omega) - v_0, v_n' \rangle \quad \text{is } \mathcal{A}\text{-measurable.} \tag{B.5}$$
+
+Next define $s_n : V_0 \to \lbrace v_1, \ldots, v_n \rbrace$ as follows: for all $w \in V_0$ let $k(n, w)$ be the smallest integer in $\lbrace 1, \ldots, n \rbrace$ such that $\lVert w - v_k \rVert = \min_{1 \le j \le n} \lVert w - v_j \rVert$, and set $s_n(w) := v_{k(n, w)}$. By density of $(v_n)\_{n \in \mathbb{N}}$ in $V_0$,
+
+$$\lim_{n \to \infty} \lVert w - s_n(w) \rVert = 0 \qquad \forall w \in V_0.$$
+
+Next, set $f_n(\omega) := s_n(f(\omega))$ for all $\omega \in \Omega$. Then for $1 \le k \le n$
+
+$$
+\begin{aligned}
+\lbrace \omega \in \Omega : f_n(\omega) = v_k \rbrace = \,
+&\lbrace \omega \in \Omega : \lVert f(\omega) - v_k \rVert = \min_{1 \le j \le n} \lVert f(\omega) - v_j \rVert \rbrace \\
+&\cap \lbrace \omega \in \Omega : \lVert f(\omega) - v_l \rVert > \min_{1 \le j \le n} \lVert f(\omega) - v_j \rVert \;\; \forall l = 1, \ldots, k-1 \rbrace.
+\end{aligned}
+$$
+
+The set on the right-hand side is in $\mathcal{A}$ due to (B.5). Since $f_n$ takes values in $\lbrace v_1, \ldots, v_n \rbrace$, we conclude that $f_n$ is $\mathcal{A}$-simple. The proof is finished since for every $\omega \in \Omega$
+
+$$\lim_{n \to \infty} \lVert f_n(\omega) - f(\omega) \rVert = \lim_{n \to \infty} \lVert s_n(f(\omega)) - f(\omega) \rVert = 0.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.8</span></p>
+
+The pointwise limit of a sequence of strongly $\mathcal{A}$-measurable functions is strongly $\mathcal{A}$-measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary B.3.8</summary>
+
+Let $\lim_{n \to \infty} f_n = f$ pointwise, where each $f_n$ is strongly $\mathcal{A}$-measurable, and thus takes values in a separable subspace $V_n \subseteq V$. The closure $V_0$ of $\bigcup_{n \in \mathbb{N}} V_n$ is separable, and thus $f$ is separably valued. Moreover, Pettis theorem implies $\langle f_n, v' \rangle : \Omega \to \mathbb{R}$ is measurable for every $n$ and every $v' \in V'$. Now, $\lim_{n \to \infty} \langle f_n, v' \rangle = \langle f, v' \rangle$ for every $v' \in V'$, and since the limit of $\mathbb{R}$-valued $\mathcal{A}$-measurable functions is $\mathcal{A}$-measurable by Prop. B.3.6, we conclude that $\langle f, v' \rangle : \Omega \to \mathbb{R}$ is $\mathcal{A}$-measurable for every $v' \in V'$ so that by Pettis theorem $f$ is strongly measurable.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.9</span></p>
+
+Let $f : \Omega \to V$ be strongly $\mathcal{A}$-measurable. Let $W$ be another Banach space and let $\phi : V \to W$ be continuous. Then $\phi \circ f : \Omega \to W$ is strongly $\mathcal{A}$-measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary B.3.9</summary>
+
+Let $(f_n)\_{n \in \mathbb{N}}$ be a sequence of simple functions converging pointwise to $f$. Then $\phi \circ f_n$ is a sequence of simple functions converging pointwise to $\phi \circ f$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.10</span></p>
+
+If $V$ is separable, then measurability implies strong measurability.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary B.3.10</summary>
+
+Since $f : \Omega \to V$ is $\mathcal{A}$-measurable, $\langle f, v' \rangle : \Omega \to \mathbb{R}$ is $\mathcal{A}$-measurable for all $v' \in V'$. Hence Pettis measurability theorem implies the claim.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark B.3.11</span></p>
+
+Cor. B.3.10 shows that "$\mathcal{A}$-measurability and separably valued" implies "strong $\mathcal{A}$-measurability". In fact the two are equivalent (exercise).
+
+</div>
+
+#### B.3.1 Strong $\mu$-Measurability
+
+In this section $(\Omega, \mathcal{A}, \mu)$ is a $\sigma$-finite measure space, that is, $\mu$ is a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$.
+
+Recall that $f : \Omega \to V$ is $\mu$**-simple** if $f = \sum_{j=1}^n \mathbb{1}_{A_j} v_j$, where $v_j \in V$ and $A_j \in \mathcal{A}$ such that $\mu(A_j) < \infty$. We say that a property holds $\mu$**-almost everywhere (a.e.)** (or $\mu$-almost surely) if there exists a $\mu$**-null set** $N \in \mathcal{A}$, that is $\mu(N) = 0$, and the property holds on $\Omega \setminus N$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition B.3.12</span><span class="math-callout__name">(Strong $\mu$-Measurability)</span></p>
+
+A function $f : \Omega \to V$ is **strongly $\mu$-measurable** iff there exists a sequence $(f_n)\_{n \in \mathbb{N}}$ of $\mu$-simple functions converging to $f$ $\mu$-a.e. We call $\tilde{f}$ a $\mu$**-version** of $f$ if $\tilde{f} = f$ $\mu$-a.e. In case there is a $\mu$-version of $f$ that is $\mathcal{A}$-measurable, we say that $f$ is $\mu$**-measurable**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition B.3.13</span></p>
+
+For $f : \Omega \to V$ the following are equivalent:
+
+1. $f$ is strongly $\mu$-measurable,
+2. $f$ has a $\mu$-version that is strongly $\mathcal{A}$-measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition B.3.13</summary>
+
+**(i) $\Rightarrow$ (ii):** With $(f_n)\_{n \in \mathbb{N}}$ as in Def. B.3.12 let $N \subseteq \Omega$ be such that $\mu(N) = 0$ and $\lim_{n \to \infty} f_n = f$ pointwise on $\Omega \setminus N$. Then $\mathbb{1}\_{N^c} f_n \to \mathbb{1}\_{N^c} f$ pointwise on $\Omega$. Since $\mathbb{1}\_{N^c} f_n$ are $\mathcal{A}$-simple functions, this shows that $\tilde{f} := \mathbb{1}_{N^c} f$ is strongly $\mathcal{A}$-measurable, and this function coincides with $f$ $\mu$-a.e.
+
+**(ii) $\Rightarrow$ (i):** Let $\tilde{f}$ be a strongly $\mathcal{A}$-measurable $\mu$-version of $f$ and let $N$ be a $\mu$-null set such that $f = \tilde{f}$ on $N^c$. If $(\tilde{f}_n)\_{n \in \mathbb{N}}$ is a sequence of $\mathcal{A}$-simple functions converging pointwise to $\tilde{f}$, then $\lim_{n \to \infty} \tilde{f}\_n = f$ $\mu$-a.e. Let $\Omega = \bigcup_{n \in \mathbb{N}} A_n$ with $\mu(A_n) < \infty$ for all $n$. Then $f_n := \mathbb{1}\_{A_n} \tilde{f}\_n$ are $\mu$-simple functions and $\lim_{n \to \infty} f_n = f$ $\mu$-a.e.
+
+</details>
+</div>
+
+We say that $f : \Omega \to V$ is $\mu$**-separably valued** iff there exists a closed separable subspace $V_0 \subseteq V$ such that $f(\omega) \in V_0$ for $\mu$-a.e. $\omega \in \Omega$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem B.3.14</span><span class="math-callout__name">(Pettis Measurability Theorem, Second Version)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. For $f : \Omega \to V$ the following are equivalent:
+
+1. $f$ is strongly $\mu$-measurable,
+2. $f$ is $\mu$-separably valued and $\langle f, v' \rangle$ is $\mu$-measurable for every $v' \in V'$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sketch of proof of Theorem B.3.14</summary>
+
+**(i) $\Rightarrow$ (ii):** By Prop. B.3.13 there exists $\tilde{f}$ such that $f = \tilde{f}$ $\mu$-a.e. and $\tilde{f} : \Omega \to V$ is strongly $\mathcal{A}$-measurable. The statement then follows by Thm. B.3.7.
+
+**(ii) $\Rightarrow$ (i):** This direction can be shown analogous to Thm. B.3.7, with the exception that this time the functions $f_n$ are $\mu$-a.e. equal to functions $\tilde{f}_n$ that are $\mathcal{A}$-simple.
+
+</details>
+</div>
+
+Prop. B.3.13 and Corollaries B.3.9 and B.3.10 imply the following two corollaries.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.15</span></p>
+
+Let $f_n : \Omega \to V$ be a sequence of strongly $\mu$-measurable functions, and let $\lim_{n \to \infty} f_n = f$ $\mu$-a.e. Then $f$ is strongly $\mu$-measurable.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.16</span></p>
+
+Let $f : \Omega \to V$ be strongly $\mu$-measurable and let $W$ be another Banach space. If $\phi : V \to W$ is continuous, then $\phi \circ f : \Omega \to V$ is strongly $\mu$-measurable.
+
+</div>
