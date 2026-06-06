@@ -1200,8 +1200,6 @@ $$E_f := \lbrace (w, y) : f(w) < y \rbrace$$
 
 </div>
 
-TODO: for Codex: add visualizations
-
 Computable functions are clearly both upper- and lower-semicomputable. Conversely, given both kinds of enumerations one can compute $f(w)$ by enumerating $H_f$ and $E_f$ in parallel until some $y$ satisfies $(w, y - 1) \in H_f$ and $(w, y + 1) \in E_f$ — which forces $y - 1 < f(w) < y + 1$ — and returning $y$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1733,6 +1731,34 @@ for all words $v, v', w, w' \in \lbrace 0,1\rbrace^{\ast}$.
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Concatenation of prefix-free sets is a prefix-free set)</span></p>
+
+Let $V_1,\dots,V_n$ be prefix-free sets. Show that the set
+
+$$V := \lbrace v_1, \dots, v_n : v_i \in V_i for all i\in[n] \rbrace$$
+
+is prefix-free.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Redefine the suggested definition:
+
+$$V^n := \lbrace v_1, \dots, v_n : v_i \in V_i for all i\in[n] \rbrace$$
+
+We will prove it by induction. 
+
+**Base case:** $V^1 = V_1$ is a prefix-free set.
+
+**Induction step:** Let $V^m$ is a prefix-free set, which is a concatentation of $m$ prefix-freee sets and we are appended a prefix-free set $V_{m+1}$. By contradiction, there are two **different** words $w_1,w_2\in V^{m+1}$ that wlog $w_1 \sqsubset w_2$. Consider their splits $w_1=s^1_1 s^1_2$ and $w_2=s^2_1 s^2_2$, where $s^2_1, s^2_1$ come from the set $V^m$, and $s^1_2, s^2_2$ are newly appended parts. Then the key observation is that is $w_1 \sim w_2$, then $s^1_1 \sim s^2_1$, because if none of them is a prefix of another, then appending new characters cannot resolve this incompetability of prefixes. Thus, $w_1 \sim w_2 \implies s^1_1 \sim s^2_1$, which can only be consistent with the assumption in the case of $s^1_1 = s^2_1$. Then either $s^1_1 = s^2_1$ (contradicts the way we chose the words $w_1\neq w_2$) or $s^1_1, s^2_1$ are not prefix-free, which is a contradiction, because $V_{m+1}$ is a prefix-free set.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.19 — Prefix-free machines and prefix-free complexity)</span></p>
 
@@ -2012,8 +2038,54 @@ $$\sum_{\tau \in \mathrm{dom}(M)} 2^{-l(\tau)} \le 1.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Proof of Proposition 2.25)</span></p>
 
-Show that the cylinders $[[\tau]]$ for $\tau \in \mathrm{dom}(M)$ are pairwise disjoint. Since each has measure $2^{-l(\tau)}$ and all are contained in Cantor space of total measure $1$, the inequality follows.
+Prove the Kraft inequality for prefix-free domains.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (skeleton)</summary>
+
+**Induced cylinders are pairwise dosjoint:** Each $\tau \in \mathrm{dom}(M)$ defines a cylinder and the key observation is that those cylinders are pairwise disjoint since the Turing machine $M$ is prefix-free.
+
+**Sum of Lebesgue measures of pairwise dosjoint cylinders:** The total Lebesgue measure of the set $S=([[\tau_0]], [[\tau_1]], \dots)$ is
+
+$$\lambda(S) = \sum_i \lambda([[\tau_i]]) = \sum_i 2^{-l(\tau_i)} \leq 1$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (full)</summary>
+
+This is Proposition 2.25; it is what makes Chaitin's $\Omega=\sum_{M(\sigma)\downarrow}2^{-l(\sigma)}$ a genuine probability in $[0,1]$.
+ 
+**Driving idea.** Each program $\sigma$ "claims" the dyadic block of width $2^{-l(\sigma)}$ consisting of the infinite sequences extending it. Prefix-freeness is exactly the statement that no claim sits inside another, so the blocks are disjoint and their total width cannot exceed $1$. I give the elementary tree-counting version first (no measure theory), then the one-line measure restatement.
+ 
+Let $D:=\operatorname{dom}(M)=\lbrace\sigma:M(\sigma)\downarrow\rbrace$; by hypothesis $D$ is prefix-free.
+ 
+**Elementary bound on finite subsets.** Let $F\subseteq D$ be finite and put $L:=\max_{\sigma\in F}l(\sigma)$. To each $\sigma\in F$ associate its set of length-$L$ extensions,
+
+$$E(\sigma):=\lbrace\sigma\rho:\rho\in\lbrace 0,1\rbrace^{\,L-l(\sigma)}\rbrace,\qquad \sharp E(\sigma)=2^{\,L-l(\sigma)}.$$
+
+**The sets $E(\sigma)$ are pairwise disjoint.** A string $u$ of length $L$ has, for each $k\le L$, exactly one prefix of length $k$; so if $u\in E(\sigma)\cap E(\tau)$ then both $\sigma$ and $\tau$ are prefixes of $u$, hence (being prefixes of a common word) prefix-comparable. Prefix-freeness of $D$ then forces $\sigma=\tau$. Since all $E(\sigma)$ live inside the $2^{L}$ strings of length $L$,
+
+$$\sum_{\sigma\in F}2^{\,L-l(\sigma)}=\sum_{\sigma\in F}\sharpE(\sigma)=\sharp\!\!\bigcup_{\sigma\in F}E(\sigma)\;\le\;2^{L}.$$
+
+Dividing by $2^L$ gives $\sum_{\sigma\in F}2^{-l(\sigma)}\le 1$.
+ 
+**Passing to the full sum.** All terms $2^{-l(\sigma)}$ are non-negative, so the (possibly infinite) series equals the supremum of its finite partial sums:
+
+$$\sum_{\sigma\in D}2^{-l(\sigma)}=\sup_{\substack{F\subseteq D\\ F\text{ finite}}}\ \sum_{\sigma\in F}2^{-l(\sigma)}\;\le\;1. \qquad\blacksquare$$
+ 
+**Remark — what is really going on.** Identify each $\sigma$ with the basic open cylinder $[\![\sigma]\!]=\lbrace\sigma X:X\in\lbrace 0,1\rbrace^\omega\rbrace$ in Cantor space, of Lebesgue measure $\lambda([\![\sigma]\!])=2^{-l(\sigma)}$. The disjointness argument above is precisely the statement that the cylinders $\lbrace[\![\sigma]\!]:\sigma\in D\rbrace$ are pairwise disjoint: a common point $X\in[\![\sigma]\!]\cap[\![\tau]\!]$ would make $\sigma,\tau$ comparable prefixes of $X$, forcing $\sigma=\tau$. Countable additivity and monotonicity of $\lambda$ then give the inequality in one line,
+
+$$\sum_{\sigma\in D}2^{-l(\sigma)}=\lambda\!\Big(\bigsqcup_{\sigma\in D}[\![\sigma]\!]\Big)\le\lambda(\lbraec 0,1\rbrace^\omega)=1 ,$$
+
+which is the geometric content of Kraft's inequality. Equality holds iff the prefix-free set is *complete* — its cylinders cover Cantor space up to a null set, equivalently the program tree has no infinite "gaps". For a halting machine this typically fails, and the slack $1-\sum 2^{-l(\sigma)}$ is the probability that a random infinite input never triggers a halt.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2187,6 +2259,34 @@ $$v_{d'}^{(s)}0,\ v_{d'}^{(s)}00,\ \dots,\ v_{d'}^{(s)}0^{d_s-d'}$$
 are assigned to the positions whose bits in the new remainder become $1$. Each update preserves prefix-freeness because all new words live below the single old placeholder that was removed.
 
 Proceeding effectively through the computably enumerable request list defines the desired computable prefix-free machine.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Functional upper bound for $K$)</span></p>
+
+Let $f:\lbrace 0,1 \rbrace^\ast \to \mathbb{N}$ be a computable function that fulfills
+
+$$\sum_{w \in \lbrace 0,1 \rbrace^\ast} 2^{-f(w)} \le \infty$$
+
+Show that there exists a constant $c$ such that 
+
+$$K(w) \leq f(w) + c \quad \forall w \in \lbrace 0,1 \rbrace^\ast$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Normalize the finite sum:** Let the constant $\tilde{c}$ be such that $\sum_{w \in \lbrace 0,1 \rbrace^\ast} 2^{-f(w) - \tilde{c}} \leq 1$. Define $d(w) = f(w) + \tilde{c}$. Note that $d(w)$ is a computable function.
+
+**Applying Kraft-Chaitin Thm:** For each pair $(d(w), w)$ we have a code $\simga$ such that $l(\sigma) = d(w)$ and a prefix-free TM $M(\sigma) = w$. Then
+
+$$K(w) \leq l(\sigma) + c_M = d(w) + c_M = f(w) + \underbrace{\tilde{c} + c_M}_{:= c} = f(w) + c,$$
+
+since $M$ is prefix-free, $\widetilde U$ simulates it with constant overhead $c_M$, giving $K(w) \le C_M(w) + c_M \le l(\sigma) + c_M$.
 
 </details>
 </div>
