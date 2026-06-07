@@ -1898,6 +1898,40 @@ $$K(vw) \le C_M(vw) + c_M \le K(v) + K(w) + c_M.$$
   <figcaption>Theorem 2.21 removes the plain-complexity parsing overhead. Since $\widetilde U$ is prefix-free, there is at most one prefix of the input on which $\widetilde U$ halts; that halting prefix is exactly the first code, so the rest is the second code.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Connections between $C$ and $K$)</span></p>
+
+Show the following upper bounds for the prefix-free Kolmogorov complexity:
+
+1. $K(w) \leq l(w) + K(l(w)) + O(1) \qquad \forall w$
+
+*(Hint: construct a prefix-free Turing machine $M$ that, for the input $\sigma_w\text{bin}(w)$, where $\sigma_w$ is an optimal prefix-free code of $w$, returns $w$)*
+
+2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
+
+*(Hint: modify the machine $M$ constructed above by computing some data from their optimal (non-prefix-free) codes)*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+1. $K(w) \leq l(w) + K(l(w)) + O(1) \qquad \forall w$
+  
+   * **Construction:** Let $M$ be a TM that takes the input $\text{input} = \sigma_w \text{bin}(w)$. Then it tries all splits of the input $\text{input} = \tilde{\sigma}\tilde{w}$ and running a prefix-free UTM $\tilde{U}(\tilde{\sigma})$ in a dovetailing manner. When the prefix-free UTM halts with $\tilde{U}(\tilde{\sigma}) = \tilde{l}(w)$, we interpret it as a length of the word $w$. Then $M$ prints $\tilde{w}$ if the length of $\tilde{w}$ the same as \tilde{l}(w), othwerwise enter infinity loop to not halt.
+   * **Justification of construction:** The key observation that makes this simple approach work is that the split is unique, i.e. only one prefix of $\text{input}$ is a valid $\tilde{U}$ program, otherwise $\tilde{U}$ is not prefix-free. 
+   * **Veirfication of complexity:** For the machine $M$ to induce an upper bound of $K$, we have to show that $M$ is prefix-free. $M$ is prefix-free, because spliting is deterministic, prefix $\tilde{\sigma}$ of the input is unqiue, prefix also determines the number of next chars to be present, so it cannot be a prefix of something that is bigger.
+     
+     $$K(w) \leq C_M(w) + O(1) \leq l(\sigma_w \text{bin}(w)) + O(1) = \underbrace{l(\sigma_w)}_{K(l(w))} + l(\text{bin}(w)) + O(1) = K(l(w)) + l(\text{bin}(w)) + O(1)$$
+
+2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
+
+   Similarly to the previous approach, but now we encode the shortest description (or the shortest program) that produces the word $w$. The length of the shortest program that produces $w$ is $C(w)$, which is a plan Kolmogorov complexity. The justification and verification steps are very similar to the previous construction.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.22 — Computable processes do not increase $K$)</span></p>
 
