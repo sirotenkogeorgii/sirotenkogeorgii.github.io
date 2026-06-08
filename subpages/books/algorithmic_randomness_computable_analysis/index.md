@@ -399,7 +399,7 @@ $$C(\sigma) = C_U(\sigma) = \min \lbrace l(\rho_M \tau) : U(\rho_M \tau) = \sigm
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kolmogorov complexity assigns a natural number)</span></p>
 
-Yes, **Kolmogorov complexity** is a function that takes a finite binary string as its input and returns a **natural number** as its output:
+**Kolmogorov complexity** is a function that takes a finite binary string as its input and returns a **natural number** as its output:
 
 $$C:\lbrace 0,1\rbrace^\ast \to \mathbb{N}$$
 
@@ -489,14 +489,20 @@ $$
 \underbrace{0100, 0101, 0110, 0111}_{\text{stage 4}}, \dots
 $$
 
+Here $\sigma_n$ denotes a **single word**: the $n$-th word in the flattened enumeration $S$. A stage may enumerate several words, so the stage number and the final enumeration index are different roles. Equivalently, one could write "stage $s$" above and reserve $n$ for the index in $\sigma_n$.
+
 For the machine $M$ that, given $\mathrm{bin}(n)$, returns $\sigma_n$, we have
 
 $$C_M(\sigma_n) \le l(\mathrm{bin}(n)) \le \log(n) + 1, \qquad \text{hence} \qquad C(\sigma_n) \le \log(n) + c_M.$$
 
-It remains to observe that every infinite sequence $A$ contains infinitely many prefixes in the enumeration $S$, and that $l(\sigma_n) - \log(n) \to \infty$ as $n \to \infty$, so the slack $l(\sigma_n) - C(\sigma_n)$ becomes arbitrarily large.
+It remains to observe that every infinite sequence $A$ contains infinitely many prefixes in the enumeration $S$. For each $k$, let $s$ be the length-lexicographic index of $A \upharpoonright k$, so that $w_s = A \upharpoonright k$. Since a word of length $k$ has index at least $2^k - 1 \ge k$, we have $s \ge k$, and therefore $A \upharpoonright s$ begins with $w_s = A \upharpoonright k$ — that is, $A \upharpoonright s \in S$. As $k \to \infty$ these indices $s \to \infty$, giving infinitely many prefixes of $A$ in $S$.
+
+Finally, $l(\sigma_n) - \log(n) \to \infty$ as $n \to \infty$: stage $s$ enumerates $2^{\,s - l(w_s)} \approx 2^s / s$ words of length $s$, so the cumulative count $N(s)$ up to stage $s$ satisfies $\log(N(s)) = s - \log(s) + O(1)$; hence even for the largest index in stage $s$, $l(\sigma_n) - \log(n) \ge \log(s) - O(1) \to \infty$. Combining this with $C(\sigma_n) \le \log(n) + c_M$, the slack $l(\sigma_n) - C(\sigma_n)$ becomes arbitrarily large along the prefixes of $A$.
 
 </details>
 </div>
+
+TODO: grasp it intuitively, rn looks pretty technical
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(1.4)</span></p>
@@ -552,6 +558,8 @@ An infinite sequence $A$ is called **Martin-Löf nonrandom** iff there exists a 
 
 </div>
 
+TODO: what is the intiutive connection between randomness and Martin-Lof?
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.6 — Martin-Löf tests covering $\tilde X$ and $\tilde Z$)</span></p>
 
@@ -565,13 +573,13 @@ A Martin-Löf test $\mathcal{M}^{\tilde Z}$ covering $\tilde Z$ is
 
 $$M_1 = ([\![00]\!], [\![10]\!]),$$
 
-$$M_2 = ([\![0000]\!], [\![0100]\!], [\![0010]\!], [\![0110]\!]),$$
+$$M_2 = ([\![0000]\!], [\![0010]\!], [\![1000]\!], [\![1010]\!]),$$
 
-$$M_3 = ([\![000000]\!], [\![000100]\!], [\![001000]\!], [\![001100]\!], [\![010000]\!], [\![010100]\!], [\![011000]\!], [\![011100]\!]),\ \dots$$
+$$M_3 = ([\![000000]\!], [\![000010]\!], [\![001000]\!], [\![001010]\!], [\![100000]\!], [\![100010]\!], [\![101000]\!], [\![101010]\!]),\ \dots$$
 
 or, more formally,
 
-$$M_i = \lbrace [\![0 a_1\, 0 a_2 \dots 0 a_i]\!] : a_1 a_2 \dots a_i \in \lbrace 0, 1 \rbrace^{i} \rbrace \qquad \text{for every natural } i.$$
+$$M_i = \lbrace [\![a_1 0\, a_2 0 \dots a_i 0]\!] : a_1 a_2 \dots a_i \in \lbrace 0, 1 \rbrace^{i} \rbrace \qquad \text{for every natural } i.$$
 
 For every $i$ one checks that $\tilde Z \in M_i$ and that
 
@@ -627,6 +635,96 @@ $$\lambda(M_i) = \sum_{[\![\sigma]\!] \in M_i} 2^{-l(\sigma)} = 2^i \cdot 2^{-2i
     </g>
   </svg>
   <figcaption>Three layers $M_1 \supset M_2 \supset M_3$ of the Martin-Löf test covering $\tilde X = (01)^{\omega}$. Each layer halves twice when the prefix is extended by two bits, so its measure is $2^{-2i} \le 2^{-i}$ — exactly meeting the Martin-Löf condition. All layers contain the point $\tilde X$, identified with the binary expansion $0.010101\ldots = 1/3$.</figcaption>
+</figure>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:640px" aria-label="Martin-Löf test layers covering sequences with every second bit equal to zero">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <!-- Pattern strip -->
+      <text x="30" y="28" font-weight="600">Pattern for Z̃</text>
+      <g text-anchor="middle" font-weight="600">
+        <rect x="128" y="14" width="42" height="26" fill="#edf4ff" stroke="#2c4994" />
+        <text x="149" y="32" fill="#2c4994">b₁</text>
+        <rect x="170" y="14" width="42" height="26" fill="#fff7e0" stroke="#a86f00" />
+        <text x="191" y="32" fill="#a86f00">0</text>
+        <rect x="212" y="14" width="42" height="26" fill="#edf4ff" stroke="#2c4994" />
+        <text x="233" y="32" fill="#2c4994">b₂</text>
+        <rect x="254" y="14" width="42" height="26" fill="#fff7e0" stroke="#a86f00" />
+        <text x="275" y="32" fill="#a86f00">0</text>
+        <rect x="296" y="14" width="42" height="26" fill="#edf4ff" stroke="#2c4994" />
+        <text x="317" y="32" fill="#2c4994">b₃</text>
+        <rect x="338" y="14" width="42" height="26" fill="#fff7e0" stroke="#a86f00" />
+        <text x="359" y="32" fill="#a86f00">0</text>
+        <text x="398" y="32" fill="#5b6270">...</text>
+      </g>
+      <text x="470" y="31" font-size="11" fill="#5b6270">blue bits are free; zeros are forced</text>
+
+      <!-- M1 -->
+      <text x="20" y="82" font-weight="600">M₁ = ⟦00⟧ ∪ ⟦10⟧</text>
+      <rect x="50" y="92" width="540" height="20" fill="none" stroke="#cbd2e0" />
+      <rect x="50" y="92" width="135" height="20" fill="rgba(61,122,38,0.18)" stroke="#3d7a26" stroke-width="1.1" />
+      <rect x="320" y="92" width="135" height="20" fill="rgba(61,122,38,0.18)" stroke="#3d7a26" stroke-width="1.1" />
+      <rect x="320" y="92" width="135" height="20" fill="rgba(214,83,54,0.20)" stroke="#d65336" stroke-width="1.2" />
+      <text x="410" y="86" font-size="11" fill="#5b6270">2 intervals · 2⁻² = 2⁻¹</text>
+
+      <!-- M2 -->
+      <text x="20" y="145" font-weight="600">M₂ = ⟦0000⟧ ∪ ⟦0010⟧ ∪ ⟦1000⟧ ∪ ⟦1010⟧</text>
+      <rect x="50" y="155" width="540" height="20" fill="none" stroke="#cbd2e0" />
+      <g fill="rgba(61,122,38,0.22)" stroke="#3d7a26" stroke-width="1.1">
+        <rect x="50" y="155" width="33.75" height="20" />
+        <rect x="117.5" y="155" width="33.75" height="20" />
+        <rect x="320" y="155" width="33.75" height="20" />
+        <rect x="387.5" y="155" width="33.75" height="20" />
+      </g>
+      <rect x="320" y="155" width="33.75" height="20" fill="rgba(214,83,54,0.28)" stroke="#d65336" stroke-width="1.2" />
+      <text x="410" y="149" font-size="11" fill="#5b6270">4 intervals · 2⁻⁴ = 2⁻²</text>
+
+      <!-- M3 -->
+      <text x="20" y="208" font-weight="600">M₃: all prefixes a₁0a₂0a₃0</text>
+      <rect x="50" y="218" width="540" height="20" fill="none" stroke="#cbd2e0" />
+      <g fill="rgba(61,122,38,0.26)" stroke="#3d7a26" stroke-width="1">
+        <rect x="50" y="218" width="8.44" height="20" />
+        <rect x="66.88" y="218" width="8.44" height="20" />
+        <rect x="117.5" y="218" width="8.44" height="20" />
+        <rect x="134.38" y="218" width="8.44" height="20" />
+        <rect x="320" y="218" width="8.44" height="20" />
+        <rect x="336.88" y="218" width="8.44" height="20" />
+        <rect x="387.5" y="218" width="8.44" height="20" />
+        <rect x="404.38" y="218" width="8.44" height="20" />
+      </g>
+      <rect x="336.88" y="218" width="8.44" height="20" fill="rgba(214,83,54,0.38)" stroke="#d65336" stroke-width="1.2" />
+      <text x="410" y="212" font-size="11" fill="#5b6270">8 intervals · 2⁻⁶ = 2⁻³</text>
+
+      <!-- Sample covered point -->
+      <g>
+        <line x1="341" y1="92" x2="341" y2="270" stroke="#d65336" stroke-width="1.2" stroke-dasharray="3 3" />
+        <circle cx="341" cy="270" r="3.5" fill="#d65336" />
+        <text x="341" y="290" font-size="11" fill="#d65336" text-anchor="middle">one Z̃ with prefix 100010...</text>
+      </g>
+
+      <!-- Number line -->
+      <line x1="50" y1="320" x2="590" y2="320" stroke="#444" stroke-width="1.2" />
+      <g stroke="#444" stroke-width="1">
+        <line x1="50"  y1="316" x2="50"  y2="328" />
+        <line x1="185" y1="316" x2="185" y2="328" />
+        <line x1="320" y1="316" x2="320" y2="328" />
+        <line x1="455" y1="316" x2="455" y2="328" />
+        <line x1="590" y1="316" x2="590" y2="328" />
+      </g>
+      <g font-size="11" fill="#444" text-anchor="middle">
+        <text x="50"  y="344">0</text>
+        <text x="185" y="344">1/4</text>
+        <text x="320" y="344">1/2</text>
+        <text x="455" y="344">3/4</text>
+        <text x="590" y="344">1</text>
+      </g>
+
+      <text x="320" y="372" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        Each layer keeps all choices of the free bits, but forces one more even-position zero.
+      </text>
+    </g>
+  </svg>
+  <figcaption>Three layers of the Martin-Löf test covering every sequence of the form $\tilde Z = b_1 0 b_2 0 b_3 0 \dots$. Layer $M_i$ is the union of $2^i$ cylinders, one for each possible choice of the free bits $b_1,\dots,b_i$; each cylinder has measure $2^{-2i}$, so the whole layer has measure $2^i \cdot 2^{-2i} = 2^{-i}$. The red marker shows one possible $\tilde Z$ path through the nested unions.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1905,11 +2003,11 @@ Show the following upper bounds for the prefix-free Kolmogorov complexity:
 
 1. $K(w) \leq l(w) + K(l(w)) + O(1) \qquad \forall w$
 
-*(Hint: construct a prefix-free Turing machine $M$ that, for the input $\sigma_w\text{bin}(w)$, where $\sigma_w$ is an optimal prefix-free code of $w$, returns $w$)*
+   *(Hint: construct a prefix-free Turing machine $M$ that, for the input $\sigma_w\text{bin}(w)$, where $\sigma_w$ is an optimal prefix-free code of $w$, returns $w$)*
 
 2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
 
-*(Hint: modify the machine $M$ constructed above by computing some data from their optimal (non-prefix-free) codes)*
+   *(Hint: modify the machine $M$ constructed above by computing some data from their optimal (non-prefix-free) codes)*
 
 </div>
 
@@ -1930,6 +2028,17 @@ Show the following upper bounds for the prefix-free Kolmogorov complexity:
    Similarly to the previous approach, but now we encode the shortest description (or the shortest program) that produces the word $w$. The length of the shortest program that produces $w$ is $C(w)$, which is a plan Kolmogorov complexity. The justification and verification steps are very similar to the previous construction.
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Comparison of plain and prefix-free KC)</span></p>
+
+Both inequalities say the same thing: the *only* reason $K$ can exceed $C$ (or exceed $l$) is the cost of announcing where the payload ends, and that cost is itself just the prefix-free complexity of a single number. Iterating the idea on the header gives the standard refinements, e.g. 
+
+$$K(w) \le l(w) + K(l(w)) + O(1) \le l(w) + \log l(w) + 2\log\log l(w) + O(1),$$
+
+matching the logarithmic overhead that Proposition 2.27 shows is unavoidable. Part 2 also yields $K \le C + K(C) + O(1)$ as the prefix-free counterpart of the plain coding theorem: $K$ and $C$ agree up to a term that only logs the description length.
+
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2192,6 +2301,128 @@ contradicting Theorem 2.26. Hence no fixed $d$ can bound all $K(w)$ by $l(w)+\lo
 The next result is the constructive converse to Kraft's inequality: if a computably enumerable list of requested code lengths satisfies the Kraft sum bound, then one can effectively assign prefix-free codewords of exactly those lengths.
 
 <figure class="math-figure">
+  <svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:720px" aria-label="Kraft-Chaitin theorem as allocation of requested code lengths into prefix-free codewords">
+    <defs>
+      <marker id="arrow-kc-flow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M 0 0 L 8 4 L 0 8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="360" y="24" text-anchor="middle" font-weight="600">Kraft-Chaitin theorem: length requests become prefix-free descriptions</text>
+
+      <!-- Request list -->
+      <rect x="35" y="54" width="190" height="210" rx="6" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="130" y="80" text-anchor="middle" font-weight="600">c.e. request stream</text>
+      <text x="130" y="100" text-anchor="middle" font-size="11" fill="#5b6270">each row asks for length dᵢ</text>
+      <g>
+        <rect x="58" y="118" width="144" height="22" rx="3" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="130" y="134" text-anchor="middle">(d₀=2, τ₀)</text>
+        <rect x="58" y="145" width="144" height="22" rx="3" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="130" y="161" text-anchor="middle">(d₁=3, τ₁)</text>
+        <rect x="58" y="172" width="144" height="22" rx="3" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="130" y="188" text-anchor="middle">(d₂=4, τ₂)</text>
+        <rect x="58" y="199" width="144" height="22" rx="3" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="130" y="215" text-anchor="middle">(d₃=4, τ₃)</text>
+      </g>
+      <text x="130" y="244" text-anchor="middle" font-size="12">Σ 2^-dᵢ ≤ 1</text>
+      <text x="130" y="256" text-anchor="middle" font-size="10" fill="#5b6270">1/4 + 1/8 + 1/16 + 1/16 = 1/2</text>
+
+      <!-- Arrow to interval -->
+      <path d="M 230 145 L 288 145" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-kc-flow)" />
+      <text x="259" y="128" text-anchor="middle" font-size="11" fill="#5b6270">allocate</text>
+
+      <!-- Dyadic interval allocation -->
+      <rect x="300" y="54" width="385" height="160" rx="6" fill="rgba(168,111,0,0.07)" stroke="#a86f00" stroke-width="1.3" />
+      <text x="492" y="80" text-anchor="middle" font-weight="600">dyadic space [0,1]</text>
+      <text x="492" y="100" text-anchor="middle" font-size="11" fill="#5b6270">requested lengths are interval widths 2^-dᵢ</text>
+      <rect x="330" y="122" width="320" height="34" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1" />
+      <rect x="330" y="122" width="80" height="34" fill="rgba(29,78,216,0.14)" stroke="#1d4ed8" stroke-width="1.4" />
+      <text x="370" y="144" text-anchor="middle">00</text>
+      <rect x="410" y="122" width="40" height="34" fill="rgba(214,83,54,0.14)" stroke="#d65336" stroke-width="1.4" />
+      <text x="430" y="144" text-anchor="middle">010</text>
+      <rect x="450" y="122" width="20" height="34" fill="rgba(18,177,124,0.16)" stroke="#0f9b6c" stroke-width="1.4" />
+      <text x="460" y="144" text-anchor="middle" font-size="10">0110</text>
+      <rect x="470" y="122" width="20" height="34" fill="rgba(168,111,0,0.18)" stroke="#a86f00" stroke-width="1.4" />
+      <text x="480" y="144" text-anchor="middle" font-size="10">0111</text>
+      <text x="570" y="144" text-anchor="middle" fill="#5b6270">free remainder</text>
+      <line x1="330" y1="176" x2="650" y2="176" stroke="#444" stroke-width="1.1" />
+      <g stroke="#444">
+        <line x1="330" y1="170" x2="330" y2="182" />
+        <line x1="410" y1="170" x2="410" y2="182" />
+        <line x1="450" y1="170" x2="450" y2="182" />
+        <line x1="490" y1="170" x2="490" y2="182" />
+        <line x1="650" y1="170" x2="650" y2="182" />
+      </g>
+      <g text-anchor="middle" font-size="10" fill="#444">
+        <text x="330" y="196">0</text>
+        <text x="410" y="196">1/4</text>
+        <text x="450" y="196">3/8</text>
+        <text x="490" y="196">1/2</text>
+        <text x="650" y="196">1</text>
+      </g>
+
+      <!-- Arrow down -->
+      <path d="M 492 218 L 492 263" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-kc-flow)" />
+      <text x="545" y="244" text-anchor="middle" font-size="11" fill="#5b6270">read intervals as words</text>
+
+      <!-- Binary tree -->
+      <rect x="300" y="275" width="385" height="180" rx="6" fill="rgba(18,177,124,0.06)" stroke="#0f9b6c" stroke-width="1.3" />
+      <text x="492" y="301" text-anchor="middle" font-weight="600">prefix-free code tree</text>
+      <g stroke="#5b6270" stroke-width="1.1" fill="none">
+        <line x1="492" y1="324" x2="410" y2="360" />
+        <line x1="492" y1="324" x2="574" y2="360" />
+        <line x1="410" y1="360" x2="365" y2="398" />
+        <line x1="410" y1="360" x2="455" y2="398" />
+        <line x1="455" y1="398" x2="430" y2="430" />
+        <line x1="455" y1="398" x2="480" y2="430" />
+        <line x1="480" y1="430" x2="465" y2="456" />
+        <line x1="480" y1="430" x2="500" y2="456" />
+      </g>
+      <g text-anchor="middle">
+        <circle cx="492" cy="320" r="11" fill="#fff7e0" stroke="#a86f00" />
+        <text x="492" y="324">λ</text>
+        <circle cx="410" cy="360" r="11" fill="#fff7e0" stroke="#a86f00" />
+        <text x="410" y="364">0</text>
+        <circle cx="574" cy="360" r="11" fill="#fff7e0" stroke="#a86f00" />
+        <text x="574" y="364">1</text>
+        <circle cx="365" cy="398" r="14" fill="rgba(29,78,216,0.14)" stroke="#1d4ed8" />
+        <text x="365" y="402">00</text>
+        <circle cx="455" cy="398" r="11" fill="#fff7e0" stroke="#a86f00" />
+        <text x="455" y="402">01</text>
+        <circle cx="430" cy="430" r="15" fill="rgba(214,83,54,0.14)" stroke="#d65336" />
+        <text x="430" y="434">010</text>
+        <circle cx="480" cy="430" r="13" fill="#fff7e0" stroke="#a86f00" />
+        <text x="480" y="434">011</text>
+        <circle cx="465" cy="456" r="16" fill="rgba(18,177,124,0.16)" stroke="#0f9b6c" />
+        <text x="465" y="460" font-size="10">0110</text>
+        <circle cx="500" cy="456" r="16" fill="rgba(168,111,0,0.18)" stroke="#a86f00" />
+        <text x="500" y="460" font-size="10">0111</text>
+      </g>
+      <text x="590" y="403" font-size="11" fill="#5b6270">selected nodes are leaves</text>
+      <text x="590" y="421" font-size="11" fill="#5b6270">so no code is a prefix</text>
+      <text x="590" y="439" font-size="11" fill="#5b6270">of another code</text>
+
+      <!-- Machine map -->
+      <rect x="35" y="305" width="190" height="145" rx="6" fill="rgba(214,83,54,0.06)" stroke="#d65336" stroke-width="1.3" />
+      <text x="130" y="331" text-anchor="middle" font-weight="600">prefix-free machine M</text>
+      <g font-size="12">
+        <text x="65" y="358">M(00) = τ₀</text>
+        <text x="65" y="382">M(010) = τ₁</text>
+        <text x="65" y="406">M(0110) = τ₂</text>
+        <text x="65" y="430">M(0111) = τ₃</text>
+      </g>
+      <path d="M 230 365 L 288 365" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-kc-flow)" />
+      <text x="259" y="348" text-anchor="middle" font-size="11" fill="#5b6270">domain</text>
+
+      <text x="360" y="492" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        The theorem says this allocation can be done effectively for every computably enumerable request list with Kraft sum at most 1.
+      </text>
+    </g>
+  </svg>
+  <figcaption>The Kraft-Chaitin theorem is the constructive converse to Kraft's inequality. A request $(d_i,\tau_i)$ asks for a code cylinder of measure $2^{-d_i}$; the Kraft bound says all requested cylinders fit inside Cantor space. The construction places them as disjoint dyadic blocks, reads their addresses as codewords $\sigma_i$, and defines a prefix-free machine by $M(\sigma_i)=\tau_i$.</figcaption>
+</figure>
+
+<figure class="math-figure">
   <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Kraft-Chaitin allocation by splitting free placeholders">
     <g font-family="serif" font-size="12" fill="#1f2430">
       <text x="330" y="24" text-anchor="middle" font-weight="600">Kraft-Chaitin allocation: requests consume free dyadic space</text>
@@ -2237,7 +2468,7 @@ The next result is the constructive converse to Kraft's inequality: if a computa
       </text>
     </g>
   </svg>
-  <figcaption>The constructive idea behind Theorem 2.28. The remainder $R_s$ is represented by available placeholders. When a request of length $d_s$ arrives, the algorithm either uses an existing length-$d_s$ placeholder or splits a larger free placeholder into descendants, assigning one codeword and keeping the rest for later requests.</figcaption>
+  <figcaption>The local step in the Kraft-Chaitin construction. The remainder $R_s$ is represented by available placeholders. When a request of length $d_s$ arrives, the algorithm either uses an existing length-$d_s$ placeholder or splits a larger free placeholder into descendants, assigning one codeword and keeping the rest for later requests.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2316,11 +2547,610 @@ $$K(w) \leq f(w) + c \quad \forall w \in \lbrace 0,1 \rbrace^\ast$$
 
 **Normalize the finite sum:** Let the constant $\tilde{c}$ be such that $\sum_{w \in \lbrace 0,1 \rbrace^\ast} 2^{-f(w) - \tilde{c}} \leq 1$. Define $d(w) = f(w) + \tilde{c}$. Note that $d(w)$ is a computable function.
 
-**Applying Kraft-Chaitin Thm:** For each pair $(d(w), w)$ we have a code $\simga$ such that $l(\sigma) = d(w)$ and a prefix-free TM $M(\sigma) = w$. Then
+**Applying Kraft-Chaitin Thm:** For each pair $(d(w), w)$ we have a code $\sigma$ such that $l(\sigma) = d(w)$ and a prefix-free TM $M(\sigma) = w$. Then
 
 $$K(w) \leq l(\sigma) + c_M = d(w) + c_M = f(w) + \underbrace{\tilde{c} + c_M}_{:= c} = f(w) + c,$$
 
 since $M$ is prefix-free, $\widetilde U$ simulates it with constant overhead $c_M$, giving $K(w) \le C_M(w) + c_M \le l(\sigma) + c_M$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Typicality implies incompressibility)</span></p>
+
+In this exercise, we prove in three steps that all Martin-Löf random sequences are prefix-free incompressible.
+
+1. For a prefix-free Turing machine $M$, we define the sequence $L:= (L_0,L_1,\dots)$ of sets of words $L_i$ defined by
+   
+   $$L_i := \lbrace \sigma: C_M(\sigma) \leq l(\sigma) - i \rbrace \qquad \forall i\in\mathbb{N}$$
+
+   Show that $\lambda(L_i) \le \lambda(\text{dom}(M))$ for every $i$.
+
+2. Show that the sequence $\tilde{L} = (\tilde{L}\_0, \tilde{L}\_1, \dots)$ of open sets
+
+   $$\tilde{L}_i := \lbrace X\in\lbrace 0,1\rbrace^{\mathbb{N}} : \exists n (K(X \upharpoonright n) \le n - i) \rbrace$$
+
+   is a well-defined Martin-Löf test.
+
+3. Show that for every Martin-Löf random sequence $A\in \lbrace 0,1\rbrace^{\mathbb{N}}$ there exists a constant $c$ such that
+
+   $$K(A \upharpoonright n) \geq n - c \qquad \text{for all } n$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+TODO: solve it
+
+</details>
+</div>
+
+Returning to the Kraft–Chaitin theorem, we record a name and a complexity bound for the sequences satisfying its hypothesis. From now on we call any computably enumerable sequence of pairs $(d\_i,\tau\_i)$ obeying $\sum\_i 2^{-d\_i}\le 1$ a **KC set**.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(2.28.1 — KC sets bound $K$)</span></p>
+
+Let $(d\_0,\tau\_0),(d\_1,\tau\_1),\dots$ be a KC set (a sequence fulfilling the requirements of Theorem 2.28). Then
+
+$$K(\tau_i) \le d_i + O(1) \qquad \text{for all } i.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For the prefix-free Turing machine $M$ constructed in the proof of Theorem 2.28 we have $l(\sigma\_i)=d\_i$ and $M(\sigma\_i)=\tau\_i$. Since $\widetilde U$ simulates $M$ with constant overhead,
+
+$$K(\tau_i) \le C_M(\tau_i) + O(1) \le d_i + O(1).$$
+
+</details>
+</div>
+
+We close the discussion of prefix-free complexity with an upper bound on $K(\sigma)$ in terms of the length $l(\sigma)$ together with the cost of describing that length.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.29 — Chaitin)</span></p>
+
+$$K(\sigma) \le l(\sigma) + K(l(\sigma)) + O(1).$$
+
+Here $K(l(\sigma))$ abbreviates $K(\mathrm{bin}(l(\sigma)))$, the prefix-free complexity of the binary encoding of the length.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Deferred to Sheet 2, Exercise 4.1.
+
+</details>
+</div>
+
+## Information Content Measures
+
+Theorem 3.6 below will show that prefix-free complexity is, up to an additive constant, the *smallest* member of a whole class of functions that behave like a complexity measure. We first isolate the two defining properties of that class.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.1 — Information content measure)</span></p>
+
+An **information content measure** is a partial function $F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ that satisfies
+
+$$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+
+and
+
+$$\text{the set } \lbrace (\sigma, k) : F(\sigma) \le k\rbrace \text{ is c.e.} \tag{20}$$
+
+We call the set in (20) the **epigraph** of $F$; condition (19) is the Kraft-type summability bound.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="The two conditions defining an information content measure">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="340" y="24" text-anchor="middle" font-weight="600">Information content measure = enumerable upper bounds + finite Kraft budget</text>
+
+      <!-- Left panel: c.e. epigraph -->
+      <rect x="35" y="48" width="280" height="250" rx="6" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="175" y="74" text-anchor="middle" font-weight="600">c.e. epigraph</text>
+      <text x="175" y="94" text-anchor="middle" font-size="11" fill="#5b6270">certificates of the form F(sigma) ≤ k</text>
+
+      <g>
+        <rect x="70" y="120" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="175" y="141" text-anchor="middle">(001, 7)</text>
+        <rect x="70" y="162" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="175" y="183" text-anchor="middle">(10, 4)</text>
+        <rect x="70" y="204" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="175" y="225" text-anchor="middle">(001, 5)</text>
+      </g>
+      <path d="M 175 246 L 175 270" stroke="#1d4ed8" stroke-width="1.3" fill="none" marker-end="url(#arrow-info-content)" />
+      <text x="175" y="287" text-anchor="middle" font-size="11" fill="#5b6270">better upper bounds may appear later</text>
+
+      <!-- Right panel: Kraft budget -->
+      <rect x="365" y="48" width="280" height="250" rx="6" fill="rgba(168,111,0,0.07)" stroke="#a86f00" stroke-width="1.3" />
+      <text x="505" y="74" text-anchor="middle" font-weight="600">Kraft budget</text>
+      <text x="505" y="94" text-anchor="middle" font-size="11" fill="#5b6270">each value F(sigma) spends mass 2^-F(sigma)</text>
+
+      <rect x="400" y="122" width="210" height="34" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1" />
+      <rect x="400" y="122" width="105" height="34" fill="rgba(214,83,54,0.14)" stroke="#d65336" stroke-width="1.3" />
+      <text x="452" y="144" text-anchor="middle">2^-1</text>
+      <rect x="505" y="122" width="52.5" height="34" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="531" y="144" text-anchor="middle">2^-2</text>
+      <rect x="557.5" y="122" width="26.25" height="34" fill="rgba(18,177,124,0.13)" stroke="#0f9b6c" stroke-width="1.3" />
+      <text x="571" y="144" text-anchor="middle" font-size="10">2^-3</text>
+      <text x="596" y="144" text-anchor="middle" font-size="11" fill="#5b6270">...</text>
+
+      <line x1="400" y1="183" x2="610" y2="183" stroke="#444" stroke-width="1.1" />
+      <line x1="400" y1="177" x2="400" y2="189" stroke="#444" />
+      <line x1="610" y1="177" x2="610" y2="189" stroke="#444" />
+      <text x="400" y="205" text-anchor="middle" font-size="11">0</text>
+      <text x="610" y="205" text-anchor="middle" font-size="11">1</text>
+      <text x="505" y="235" text-anchor="middle" font-size="14">sum 2^-F(sigma) ≤ 1</text>
+      <text x="505" y="262" text-anchor="middle" font-size="11" fill="#5b6270">low information content is expensive;</text>
+      <text x="505" y="280" text-anchor="middle" font-size="11" fill="#5b6270">only so many words can get it</text>
+
+      <defs>
+        <marker id="arrow-info-content" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+          <path d="M 0 0 L 8 4 L 0 8 Z" fill="#1d4ed8" />
+        </marker>
+      </defs>
+    </g>
+  </svg>
+  <figcaption>The definition has a computability side and a measure side. The c.e. epigraph means that the assertions $F(\sigma) \le k$ can be discovered effectively, so $F$ is upper-semicomputable. The Kraft bound says that the masses $2^{-F(\sigma)}$ assigned to words fit inside total measure $1$, just as prefix-free code cylinders do.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two information content measures)</span></p>
+
+* The function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ defined by
+
+  $$f(0^n 1) = n+1 \qquad \text{for all } n \ge 0$$
+
+  is partially computable, so its epigraph is computably enumerable and (20) holds. Moreover
+
+  $$\sum_{\sigma \in \operatorname{dom}(f)} 2^{-f(\sigma)} = \sum_{n \in \mathbb{N}} 2^{-l(0^n 1)} = \sum_{n \in \mathbb{N}} 2^{-(n+1)} = 1,$$
+
+  so (19) holds as well.
+
+* The prefix-free Kolmogorov complexity $K$ is an information content measure: it satisfies (19) by Theorem 2.26 and (20) by Proposition 2.23.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 650 310" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:650px" aria-label="The example f(0^n1)=n+1 as a complete Kraft allocation">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="325" y="24" text-anchor="middle" font-weight="600">Example f(0^n1) = n+1: a complete geometric budget</text>
+
+      <rect x="55" y="58" width="540" height="42" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1" />
+      <rect x="325" y="58" width="270" height="42" fill="rgba(214,83,54,0.13)" stroke="#d65336" stroke-width="1.5" />
+      <text x="460" y="83" text-anchor="middle">[[1]], f=1, mass 1/2</text>
+      <rect x="190" y="58" width="135" height="42" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="257" y="83" text-anchor="middle">[[01]], 1/4</text>
+      <rect x="122.5" y="58" width="67.5" height="42" fill="rgba(18,177,124,0.13)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="156" y="83" text-anchor="middle">[[001]], 1/8</text>
+      <rect x="88.75" y="58" width="33.75" height="42" fill="rgba(168,111,0,0.14)" stroke="#a86f00" stroke-width="1.5" />
+      <text x="105" y="83" text-anchor="middle" font-size="10">1/16</text>
+      <rect x="55" y="58" width="33.75" height="42" fill="rgba(168,111,0,0.08)" stroke="#a86f00" stroke-width="1.2" />
+      <text x="72" y="83" text-anchor="middle" font-size="10">...</text>
+
+      <line x1="55" y1="130" x2="595" y2="130" stroke="#444" stroke-width="1.1" />
+      <g stroke="#444">
+        <line x1="55" y1="124" x2="55" y2="136" />
+        <line x1="325" y1="124" x2="325" y2="136" />
+        <line x1="595" y1="124" x2="595" y2="136" />
+      </g>
+      <text x="55" y="152" text-anchor="middle" font-size="11">0</text>
+      <text x="325" y="152" text-anchor="middle" font-size="11">1/2</text>
+      <text x="595" y="152" text-anchor="middle" font-size="11">1</text>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <line x1="325" y1="195" x2="245" y2="235" />
+        <line x1="325" y1="195" x2="405" y2="235" />
+        <line x1="245" y1="235" x2="205" y2="273" />
+        <line x1="245" y1="235" x2="285" y2="273" />
+      </g>
+      <g>
+        <circle cx="325" cy="190" r="14" fill="#fff7e0" stroke="#a86f00" />
+        <text x="325" y="194" text-anchor="middle">λ</text>
+        <circle cx="245" cy="235" r="14" fill="#fff7e0" stroke="#a86f00" />
+        <text x="245" y="239" text-anchor="middle">0</text>
+        <circle cx="405" cy="235" r="14" fill="rgba(214,83,54,0.13)" stroke="#d65336" />
+        <text x="405" y="239" text-anchor="middle">1</text>
+        <circle cx="205" cy="273" r="14" fill="#fff7e0" stroke="#a86f00" />
+        <text x="205" y="277" text-anchor="middle">00</text>
+        <circle cx="285" cy="273" r="14" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" />
+        <text x="285" y="277" text-anchor="middle">01</text>
+      </g>
+      <text x="445" y="239" font-size="11" fill="#5b6270">leaves 1, 01, 001, ...</text>
+      <text x="445" y="257" font-size="11" fill="#5b6270">form a prefix-free set</text>
+      <text x="445" y="275" font-size="11" fill="#5b6270">their cylinder masses add to 1</text>
+    </g>
+  </svg>
+  <figcaption>The domain $\lbrace 0^n1 : n \ge 0\rbrace$ is prefix-free. Assigning $f(0^n1)=n+1=l(0^n1)$ makes the Kraft sum exactly the geometric series $1/2+1/4+1/8+\cdots=1$.</figcaption>
+</figure>
+
+The next theorem is the engine of the whole section: the class of information content measures can itself be effectively listed.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.2 — Enumeration of all information content measures)</span></p>
+
+There exists a computable enumeration $F\_0, F\_1, \dots$ of all information content measures.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="Enumeration of all information content measures by trimming c.e. epigraphs">
+    <defs>
+      <marker id="arrow-enum-filter" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M 0 0 L 8 4 L 0 8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">Enumerating information content measures by a Kraft filter</text>
+
+      <!-- Raw streams -->
+      <rect x="30" y="55" width="190" height="250" rx="6" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="1.2" />
+      <text x="125" y="80" text-anchor="middle" font-weight="600">all c.e. epigraphs E_i</text>
+      <g>
+        <rect x="55" y="108" width="140" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="125" y="127" text-anchor="middle">(00, 2)</text>
+        <rect x="55" y="146" width="140" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="125" y="165" text-anchor="middle">(11, 3)</text>
+        <rect x="55" y="184" width="140" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="125" y="203" text-anchor="middle">(10, 1)</text>
+        <rect x="55" y="222" width="140" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="125" y="241" text-anchor="middle">(01, 2)</text>
+      </g>
+      <text x="125" y="278" text-anchor="middle" font-size="11" fill="#5b6270">some streams overspend</text>
+
+      <!-- Filter -->
+      <path d="M 224 180 L 295 180" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-enum-filter)" />
+      <rect x="300" y="80" width="150" height="200" rx="6" fill="rgba(168,111,0,0.08)" stroke="#a86f00" stroke-width="1.3" />
+      <text x="375" y="106" text-anchor="middle" font-weight="600">M(i)</text>
+      <text x="375" y="126" text-anchor="middle" font-size="11" fill="#5b6270">copy pair only if</text>
+      <text x="375" y="147" text-anchor="middle">current Kraft sum ≤ 1</text>
+      <rect x="325" y="178" width="100" height="20" fill="rgba(94,96,96,0.08)" stroke="#1f2430" />
+      <rect x="325" y="178" width="78" height="20" fill="rgba(18,177,124,0.15)" stroke="#0f9b6c" />
+      <text x="375" y="213" text-anchor="middle" font-size="11" fill="#0f6b4a">accept</text>
+      <text x="375" y="242" text-anchor="middle" font-size="11" fill="#b91c1c">reject if next block crosses 1</text>
+
+      <!-- Trimmed streams -->
+      <path d="M 455 180 L 526 180" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-enum-filter)" />
+      <rect x="530" y="55" width="140" height="250" rx="6" fill="rgba(18,177,124,0.07)" stroke="#0f9b6c" stroke-width="1.3" />
+      <text x="600" y="80" text-anchor="middle" font-weight="600">F_M(i)</text>
+      <g>
+        <rect x="552" y="108" width="96" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="600" y="127" text-anchor="middle">(00, 2)</text>
+        <rect x="552" y="146" width="96" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="600" y="165" text-anchor="middle">(11, 3)</text>
+        <rect x="552" y="184" width="96" height="28" rx="4" fill="rgba(214,83,54,0.08)" stroke="#d65336" stroke-dasharray="4 3" />
+        <text x="600" y="203" text-anchor="middle" fill="#b91c1c">blocked</text>
+        <rect x="552" y="222" width="96" height="28" rx="4" fill="#ffffff" stroke="#cbd2e0" />
+        <text x="600" y="241" text-anchor="middle">(01, 2)</text>
+      </g>
+      <text x="600" y="278" text-anchor="middle" font-size="11" fill="#5b6270">always satisfies (19)</text>
+    </g>
+  </svg>
+  <figcaption>Theorem 3.2 starts from an effective enumeration of all c.e. epigraphs. The operator $M$ filters each stream by copying a new pair only when the current minimal values still satisfy the Kraft bound. If the original stream already came from an information content measure, no pair is lost; otherwise the filter trims the overspending parts.</figcaption>
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $E\_0, E\_1, \dots$, where $E\_i := \big((\sigma^i\_0,k\_0),(\sigma^i\_1,k\_1),\dots\big)$, be a computable enumeration of all c.e. epigraphs of the corresponding upper-semicomputable partial functions $\widetilde F\_0, \widetilde F\_1, \dots$ from $\lbrace 0,1\rbrace^{\ast}$ to $\mathbb{N}$. Each $\widetilde F\_i$ automatically satisfies (20), but not necessarily (19); the construction below "trims" each enumeration so that the Kraft bound can never be violated.
+
+We build a machine $M$ that, given an index $i$, returns a (possibly finite) sequence of pairs $(\sigma\_0,k\_0),(\sigma\_1,k\_1),\dots$ in $\lbrace 0,1\rbrace^{\ast} \times \mathbb{N}$. For every $n$, the pair $(\sigma\_n,k\_n)$ is defined and equal to $(\sigma^i\_n,k^i\_n)$ if and only if the previous pair $(\sigma\_{n-1},k\_{n-1})$ is already defined (this requirement is dropped for $n=0$) **and** copying it keeps inequality (19) intact.
+
+Formally, write
+
+$$E_i^n := \big((\sigma^i_0,k_0),(\sigma^i_1,k_1),\dots,(\sigma^i_n,k_n)\big)$$
+
+for the list of all pairs enumerated into $E\_i$ by step $n$, and consider the subset
+
+$$\lbrace (\sigma^n_{i_0},k_{i_0}),(\sigma^n_{i_1},k_{i_1}),\dots,(\sigma^n_{i_m},k_{i_m})\rbrace,$$
+
+where $\sigma^n\_{i\_0},\dots,\sigma^n\_{i\_m}$ are the **distinct** words appearing so far and $k\_{i\_0},\dots,k\_{i\_m}$ are their respective **minimal** weights in $E\_i^n$. If
+
+$$\sum_{j=0}^{m} 2^{-k_{i_j}} \le 1, \tag{21}$$
+
+we set $(\sigma\_n,k\_n) = (\sigma^i\_n,k^i\_n)$; otherwise $(\sigma\_n,k\_n)$ stays undefined.
+
+For every $i$ this yields a c.e. epigraph $E\_{M(i)}$, and its associated upper-semicomputable function $\widetilde F\_{M(i)}$ fulfills (19) because (21) holds at every enumeration step. Finally, if the original $\widetilde F\_i$ already satisfies (19), then (21) never fails, every construction step terminates, and so $E\_{M(i)} = E\_i$ and $\widetilde F\_{M(i)} = \widetilde F\_i$. Hence $\big(\widetilde F\_{M(0)}, \widetilde F\_{M(1)}, \dots\big)$ is a well-defined enumeration of exactly the information content measures.
+
+</details>
+</div>
+
+In what follows we fix such a computable enumeration $F\_0, F\_1, \dots$ of all information content measures. Out of this list we manufacture a single canonical measure that dominates the whole class.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.3 — Minimal information content measure)</span></p>
+
+The function $\widetilde F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ defined by
+
+$$\widetilde F(w) := \min_{i\,:\,w \in \operatorname{dom}(F_i)} \big(F_i(w) + i + 1\big)$$
+
+is called the **minimal information content measure**. The penalty $i+1$ charges for the index needed to name the $i$-th measure.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="The minimal information content measure as the lower envelope of penalized measures">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="340" y="24" text-anchor="middle" font-weight="600">The minimal measure is a lower envelope after paying an index penalty</text>
+
+      <line x1="80" y1="300" x2="610" y2="300" stroke="#444" stroke-width="1.2" />
+      <line x1="80" y1="60" x2="80" y2="300" stroke="#444" stroke-width="1.2" />
+      <text x="345" y="334" text-anchor="middle">words w_0, w_1, w_2, ...</text>
+      <text x="28" y="180" text-anchor="middle" transform="rotate(-90 28 180)">value</text>
+
+      <g stroke="#e1e5ee" stroke-width="0.8">
+        <line x1="80" y1="250" x2="610" y2="250" />
+        <line x1="80" y1="200" x2="610" y2="200" />
+        <line x1="80" y1="150" x2="610" y2="150" />
+        <line x1="80" y1="100" x2="610" y2="100" />
+      </g>
+
+      <g fill="#5b6270" font-size="11" text-anchor="middle">
+        <text x="120" y="320">w0</text>
+        <text x="205" y="320">w1</text>
+        <text x="290" y="320">w2</text>
+        <text x="375" y="320">w3</text>
+        <text x="460" y="320">w4</text>
+        <text x="545" y="320">w5</text>
+      </g>
+
+      <!-- Penalized measures -->
+      <polyline points="120,230 205,140 290,180 375,112 460,210 545,120" fill="none" stroke="#1d4ed8" stroke-width="2" />
+      <polyline points="120,160 205,215 290,125 375,190 460,105 545,205" fill="none" stroke="#d65336" stroke-width="2" />
+      <polyline points="120,198 205,175 290,235 375,150 460,165 545,95" fill="none" stroke="#0f9b6c" stroke-width="2" />
+
+      <!-- Lower envelope -->
+      <polyline points="120,160 205,140 290,125 375,112 460,105 545,95" fill="none" stroke="#1f2430" stroke-width="3.2" />
+
+      <g>
+        <circle cx="120" cy="160" r="4" fill="#1f2430" />
+        <circle cx="205" cy="140" r="4" fill="#1f2430" />
+        <circle cx="290" cy="125" r="4" fill="#1f2430" />
+        <circle cx="375" cy="112" r="4" fill="#1f2430" />
+        <circle cx="460" cy="105" r="4" fill="#1f2430" />
+        <circle cx="545" cy="95" r="4" fill="#1f2430" />
+      </g>
+
+      <g font-size="11">
+        <line x1="470" y1="228" x2="500" y2="228" stroke="#1d4ed8" stroke-width="2" />
+        <text x="508" y="232">F0(w)+1</text>
+        <line x1="470" y1="250" x2="500" y2="250" stroke="#d65336" stroke-width="2" />
+        <text x="508" y="254">F1(w)+2</text>
+        <line x1="470" y1="272" x2="500" y2="272" stroke="#0f9b6c" stroke-width="2" />
+        <text x="508" y="276">F2(w)+3</text>
+        <line x1="470" y1="294" x2="500" y2="294" stroke="#1f2430" stroke-width="3.2" />
+        <text x="508" y="298">tilde F(w)</text>
+      </g>
+
+      <text x="340" y="54" text-anchor="middle" font-size="11" fill="#5b6270">
+        For each word, choose the cheapest measure after paying the cost of naming it.
+      </text>
+    </g>
+  </svg>
+  <figcaption>The formula $\widetilde F(w)=\min_i(F_i(w)+i+1)$ forms a lower envelope of all information content measures after adding the index penalty. The penalty makes the mixture summable: the $i$-th measure receives only a geometrically small share of the global Kraft budget.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(3.4)</span></p>
+
+Show that $\widetilde F$ is itself an information content measure.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(3.5 — $\widetilde F$ is total)</span></p>
+
+$\widetilde F$ is total.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For every word $w$ there is an index $i\_w$ of an **atomic** information content measure defined by
+
+$$F_{i_w}(w) = 0 \quad \text{and} \quad F_{i_w}(v)\uparrow \text{ for all } v \ne w.$$
+
+Then the set $\lbrace i \in \mathbb{N} : w \in \operatorname{dom}(F\_i)\rbrace$ is non-empty (it contains $i\_w$), so the minimum defining $\widetilde F(w)$ is taken over a non-empty set and $\widetilde F(w)$ is defined.
+
+</details>
+</div>
+
+From now on we denote by $\widetilde F$ the minimal information content measure. The point of the construction is that it recaptures $K$ up to a constant.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.6 — $\widetilde F$ coincides with $K$)</span></p>
+
+For every word $w$ it holds that
+
+$$K(w) = \widetilde F(w) \pm O(1).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Upper bound on $\widetilde F$.** Since $K$ is an information content measure and $F\_0, F\_1, \dots$ lists all of them, there is an index $k$ with $F\_k = K$. By the definition of $\widetilde F$,
+
+$$\widetilde F(w) \le F_k(w) + k + 1 = K(w) + k + 1,$$
+
+so $\widetilde F(w) \le K(w) + O(1)$.
+
+**Lower bound on $\widetilde F$ (equivalently, upper bound on $K$).** We claim that the set
+
+$$\lbrace (k+1,\, w) : \widetilde F(w) \le k\rbrace$$
+
+is a KC set, i.e. a list of length-requests $k+1$ for the target words $w$.
+
+* It is c.e. by condition (20) applied to $\widetilde F$.
+* Using $\sum_{k \ge \widetilde F(w)} 2^{-(k+1)} = 2^{-\widetilde F(w)}$, its Kraft sum is
+
+  $$\sum_{(k+1,w)} 2^{-(k+1)} = \sum_{w \in \lbrace 0,1\rbrace^{\ast}} \sum_{k \ge \widetilde F(w)} 2^{-(k+1)} = \sum_{w \in \lbrace 0,1\rbrace^{\ast}} 2^{-\widetilde F(w)} \le 1,$$
+
+  where the last inequality is condition (19) applied to $\widetilde F$.
+
+Since $\widetilde F$ is total, for every $w$ the pair $(\widetilde F(w)+1,\, w)$ lies in this KC set. By Corollary 2.28.1 the requested word $w$ then satisfies
+
+$$K(w) \le \big(\widetilde F(w)+1\big) + O(1) = \widetilde F(w) + O(1).$$
+
+Combining the two bounds gives $K(w) = \widetilde F(w) \pm O(1)$.
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="Why the minimal information content measure coincides with prefix-free complexity">
+    <defs>
+      <marker id="arrow-k-eq-f" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M 0 0 L 8 4 L 0 8 Z" fill="#5b6270" />
+      </marker>
+    </defs>
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="340" y="24" text-anchor="middle" font-weight="600">Why the minimal measure recovers prefix-free complexity</text>
+
+      <rect x="55" y="70" width="240" height="82" rx="6" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="175" y="96" text-anchor="middle" font-weight="600">K is in the list</text>
+      <text x="175" y="119" text-anchor="middle">F_k = K</text>
+      <text x="175" y="139" text-anchor="middle" font-size="11" fill="#5b6270">so the minimum can choose it</text>
+
+      <path d="M 298 111 L 378 111" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-k-eq-f)" />
+      <text x="338" y="94" text-anchor="middle" font-size="11" fill="#5b6270">upper bound</text>
+
+      <rect x="385" y="70" width="240" height="82" rx="6" fill="rgba(18,177,124,0.07)" stroke="#0f9b6c" stroke-width="1.3" />
+      <text x="505" y="96" text-anchor="middle" font-weight="600">tilde F(w) ≤ K(w)+O(1)</text>
+      <text x="505" y="123" text-anchor="middle" font-size="11" fill="#5b6270">minimality gives domination</text>
+
+      <rect x="55" y="190" width="240" height="82" rx="6" fill="rgba(168,111,0,0.08)" stroke="#a86f00" stroke-width="1.3" />
+      <text x="175" y="216" text-anchor="middle" font-weight="600">tilde F is a KC request list</text>
+      <text x="175" y="239" text-anchor="middle">(tilde F(w)+1, w)</text>
+      <text x="175" y="259" text-anchor="middle" font-size="11" fill="#5b6270">Kraft sum still ≤ 1</text>
+
+      <path d="M 298 231 L 378 231" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-k-eq-f)" />
+      <text x="338" y="214" text-anchor="middle" font-size="11" fill="#5b6270">Kraft-Chaitin</text>
+
+      <rect x="385" y="190" width="240" height="82" rx="6" fill="rgba(214,83,54,0.07)" stroke="#d65336" stroke-width="1.3" />
+      <text x="505" y="216" text-anchor="middle" font-weight="600">K(w) ≤ tilde F(w)+O(1)</text>
+      <text x="505" y="243" text-anchor="middle" font-size="11" fill="#5b6270">requests become prefix-free descriptions</text>
+
+      <text x="340" y="301" text-anchor="middle" font-size="13">
+        Together: K(w) = tilde F(w) +/- O(1)
+      </text>
+    </g>
+  </svg>
+  <figcaption>The proof of Theorem 3.6 has two directions. Since $K$ itself is one of the information content measures, $\widetilde F$ cannot be much larger than $K$. Conversely, the epigraph of $\widetilde F$ generates a KC set of length requests, so Kraft-Chaitin turns those requests into prefix-free programs and gives $K(w) \le \widetilde F(w)+O(1)$.</figcaption>
+</figure>
+
+A second consequence of the same circle of ideas counts how many words of a given length can be highly compressible.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(3.7 — Chaitin's counting theorem)</span></p>
+
+There is a constant $c$ such that, for all natural numbers $n$ and $r$,
+
+$$\#\lbrace \sigma \in \lbrace 0,1\rbrace^n : K(\sigma) \le n + K(\mathrm{bin}(n)) - r\rbrace \le 2^{\,n-r+c}. \tag{22}$$
+
+In particular, the maximal prefix-free complexity among words of a fixed length $n$ equals $n + K(\mathrm{bin}(n))$ up to an additive constant:
+
+$$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1). \tag{23}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Deferred to Sheet 3, Exercise 2.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(3.7.1 — Almost every word is incompressible)</span></p>
+
+$$\frac{\#\lbrace w \in \lbrace 0,1\rbrace^n : K(w) > n\rbrace}{2^n} \xrightarrow[\;n \to \infty\;]{} 1.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Apply (22) with $r = K(\mathrm{bin}(n))$, so that the threshold becomes $n + K(\mathrm{bin}(n)) - r = n$ and
+
+$$\#\lbrace w \in \lbrace 0,1\rbrace^n : K(w) \le n\rbrace \le 2^{\,n - K(\mathrm{bin}(n)) + c}.$$
+
+Therefore
+
+$$\frac{\#\lbrace w : K(w) > n\rbrace}{2^n} = 1 - \frac{\#\lbrace w : K(w) \le n\rbrace}{2^n} \ge 1 - \frac{2^{\,n - K(\mathrm{bin}(n)) + c}}{2^n} = 1 - 2^{-K(\mathrm{bin}(n)) + c} \xrightarrow[\;n \to \infty\;]{} 1,$$
+
+because only finitely many words have complexity below any fixed bound, so the distinct encodings $\mathrm{bin}(n)$ force $K(\mathrm{bin}(n)) \to \infty$ and hence $2^{-K(\mathrm{bin}(n)) + c} \to 0$.
+
+</details>
+</div>
+
+This last observation motivates formalizing the unpredictability of an infinite binary sequence in terms of **prefix-free incompressibility** of each of its initial segments.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.8 — 1-randomness)</span></p>
+
+A sequence $X \in \lbrace 0,1\rbrace^{\mathbb{N}}$ is **1-random** if there exists a constant $c$ such that
+
+$$K(X \upharpoonright n) \ge n - c \qquad \text{for all } n,$$
+
+and **1-nonrandom** otherwise.
+
+</div>
+
+## Incompressibility and Typicality
+
+The previous exercise *(Typicality implies incompressibility)* foreshadowed that Martin-Löf randomness and prefix-free incompressibility describe the same sequences. We now state this equivalence as a theorem and prove one of its two implications.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.1 — Incompressibility equals typicality)</span></p>
+
+A sequence is $1$-random if and only if it is Martin-Löf random.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof ($\Longleftarrow$: Martin-Löf random $\Rightarrow$ 1-random)</summary>
+
+We prove the contrapositive: every $1$-nonrandom sequence fails some Martin-Löf test, hence is Martin-Löf nonrandom.
+
+**A uniformly c.e. family of words.** For each $i$ define
+
+$$L_i := \lbrace \sigma : K(\sigma) \le l(\sigma) - i\rbrace = (\sigma^i_0, \sigma^i_1, \dots).$$
+
+Since $K$ is upper-semicomputable (Proposition 2.23), the sequence $(L\_1, L\_2, \dots)$ is uniformly c.e., and by construction $K(\sigma^i\_n) \le l(\sigma^i\_n) - i$ for all $n$.
+
+**Bounding the measure of each layer.** For every $\sigma^i\_n$ fix a shortest prefix-free code $\tau^i\_n$ with $\widetilde U(\tau^i\_n) = \sigma^i\_n$ and $l(\tau^i\_n) = K(\sigma^i\_n)$. From the definition of $L\_i$ we get $l(\tau^i\_n) \le l(\sigma^i\_n) - i$ for all $n$, so the total weight of the cylinders in $L\_i$ obeys
+
+$$\sum_{n \in \mathbb{N}} 2^{-l(\sigma^i_n)} \le \sum_{n \in \mathbb{N}} 2^{-\left(l(\tau^i_n) + i\right)} = 2^{-i} \sum_{n \in \mathbb{N}} 2^{-l(\tau^i_n)} \le 2^{-i} \sum_{\tau \in \operatorname{dom}(\widetilde U)} 2^{-l(\tau)} \le 2^{-i},$$
+
+where the last inequality is Proposition 2.25, since $\widetilde U$ is prefix-free.
+
+**The induced Martin-Löf test.** Hence the uniformly c.e. sequence of open sets $\widetilde L\_1, \widetilde L\_2, \dots$, where
+
+$$\widetilde L_i = \big([\![\sigma^i_0]\!], [\![\sigma^i_1]\!], \dots\big), \qquad \lambda(\widetilde L_i) \le 2^{-i},$$
+
+is a well-defined Martin-Löf test.
+
+**Nonrandom sequences fail it.** Let $X$ be $1$-nonrandom. Then for every fixed $i$ there is an $n\_i$ with $K(X \upharpoonright n\_i) \le n\_i - i$, so $X \upharpoonright n\_i \in L\_i$ and therefore $X \in \widetilde L\_i$. As $i$ was arbitrary, $X$ lies in every layer and thus fails the Martin-Löf test $\widetilde L\_1, \widetilde L\_2, \dots$, i.e. $X$ is Martin-Löf nonrandom.
+
+**($\Longrightarrow$)** The converse direction comes next.
 
 </details>
 </div>
