@@ -1,0 +1,35 @@
+---
+layout: default
+title: Search
+permalink: /search/
+---
+{% assign all_docs = site.pages | concat: site.notes | concat: site.posts %}
+{% assign live_count = 0 %}
+{% for doc in all_docs %}{% if doc.title and doc.url != '/' and doc.url != '/tags/' and doc.url != '/graph/' and doc.url != '/search/' and doc.url != '/assets/data/tag-graph.json' %}{% assign live_count = live_count | plus: 1 %}{% endif %}{% endfor %}
+<div class="site-search" id="site-search"
+     data-source="{{ '/assets/data/search-index.json' | relative_url }}"
+     data-tags-url="{{ '/tags/' | relative_url }}"
+     data-live-count="{{ live_count }}">
+  <h1>Search</h1>
+  <p class="site-search__intro">Full-text search across every page — notes, books, paper notes. Case-insensitive; multiple words must all appear on the page. Looking for topics instead? Try the <a href="{{ '/tags/' | relative_url }}">tag index</a> or the <a href="{{ '/graph/' | relative_url }}">tag graph</a>.</p>
+
+  <div class="site-search__box">
+    <input type="search" id="site-search-input" placeholder="Search — e.g. laplacian, hopf bifurcation, …"
+           aria-label="Search all pages" autocomplete="off" autofocus>
+  </div>
+
+  <p class="site-search__stale" id="site-search-stale" hidden>
+    The search index looks out of date (it covers a different set of pages than this build).
+    Rebuild it with <code>python3 _scripts/build_search_index.py</code> and commit the result.
+  </p>
+
+  <p class="site-search__status" id="site-search-status" role="status" aria-live="polite">Loading search index…</p>
+
+  <ul class="site-search__results" id="site-search-results"></ul>
+</div>
+
+<noscript>
+  <p>Search needs JavaScript. You can browse pages via the <a href="{{ '/tags/' | relative_url }}">tag index</a> instead.</p>
+</noscript>
+
+<script src="{{ '/assets/js/site-search.js' | relative_url }}"></script>

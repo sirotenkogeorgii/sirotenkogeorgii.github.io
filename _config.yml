@@ -60,3 +60,5 @@ exclude:
   - README.md
   - vendor
   - tmp
+  - "*.bak"
+  - "**/*.bak"
