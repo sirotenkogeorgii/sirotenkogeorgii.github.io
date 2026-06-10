@@ -2,7 +2,7 @@
 layout: default
 title: Partial Differential Equations in Data Science
 date: 2026-04-20
-excerpt: Lecture notes on PDEs in data science: gradient flows, energy landscapes, existence, uniqueness, and stability, with a view toward applications in physics and machine learning.
+excerpt: "Lecture notes on PDEs in data science: gradient flows, energy landscapes, existence, uniqueness, and stability, with a view toward applications in physics and machine learning."
 tags:
   - pde
   - gradient-flows
@@ -4031,6 +4031,592 @@ The non-degeneracy hypothesis (2.16) suppresses exactly this gauge: by Brenier's
 
 </div>
 
+### 2.5 Displacement-interpolation and -convexity
+
+Chapter 1 lived off convexity: uniqueness and stability of gradient flows (Theorem 2), convergence rates, and long-term asymptotics all traded on convexity properties of the energy. In the present chapter, too, the proof of Brenier's theorem succeeded precisely because we could descend to the level of *convex functions* (the potentials $\varphi$, $\varphi^\ast$) and exploit their structure. So convexity is a very desirable property for functionals. However, the space of probability measures $\mathcal P$ is not a convex space in the sense relevant for transport — so when talking about convexity of functionals on $\mathcal P$, we need to resort to convexity along certain *paths* in this space.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear interpolation mixes; it does not move)</span></p>
+
+As a *set*, $\mathcal P(\mathbb R^d)$ is of course convex: $(1-t)\mu+t\nu$ is again a probability measure. But this **linear interpolation** is the wrong path for transport. Take $\mu=\delta_x$, $\nu=\delta_y$: the linear interpolant $(1-t)\delta_x+t\delta_y$ has *two* atoms whose weights shift — mass teleports from $x$ to $y$ without ever being in between. No intermediate snapshot of an actual transportation process looks like this. The path we will construct instead is $\delta_{(1-t)x+ty}$ — a *single* atom travelling from $x$ to $y$. Convexity of functionals along these **displacement** paths is a genuinely different (and, for the functionals we care about, far more useful) notion than convexity along linear paths.
+
+</div>
+
+#### From the static to the dynamic problem
+
+Recall the Monge problem
+
+$$
+\inf_{T_\sharp\mu=\nu} \int_X c(x,T(x))\,d\mu(x). \tag{2.16}
+$$
+
+The goal is to study this *static* problem from a *dynamic* viewpoint, i.e., with an additional time variable that represents the actual transportation of each particle over a unit time interval. Given a point $x$, we trace its trajectory $T_t(x)$ for $t\in[0,1]$. Naturally $T_0(x)=x$ and $T_1(x)=T(x)$: we view the transport map $T$ as the *final state* and the identity map $\mathrm{id}$ as the *initial state* of the one-parameter family of maps $[0,1]\ni t\mapsto T_t$.
+
+Suppose we are given a displacement cost $C\bigl((T_t(x))\_{t\in[0,1]}\bigr)$ for the trajectory of a particle. Then we consider the **time-dependent transportation problem**
+
+$$
+\inf\Bigl\{ \int_X C\bigl((T_t(x))_{t\in[0,1]}\bigr)\,d\mu(x)\colon\ T_0=\mathrm{id},\ (T_1)_\sharp\mu=\nu \Bigr\}. \tag{2.17}
+$$
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Compatibility of the static and dynamic problems)</span></p>
+
+Under which conditions on the cost functions $C$ and $c$ are (2.16) and (2.17) related? We call the two problems **compatible** if they give the same total cost, and the same displacement map, in the sense that each optimal trajectory family $(T_t)_t$ gives rise to an optimal transport map $T$ via $T=T_1$.
+
+A natural sufficient condition for compatibility is that for all $x$ and $y$,
+
+$$
+c(x,y) \;=\; \inf\bigl\{ C\bigl((z_t)_{t\in[0,1]}\bigr) \colon z_0=x,\ z_1=y \bigr\},
+$$
+
+i.e., the static cost of the pair $(x,y)$ is the cheapest dynamic cost among all paths joining $x$ to $y$.
+
+</div>
+
+A very interesting special case is $X=\mathbb R^d$ and
+
+$$
+C\bigl((z_t)_{t\in[0,1]}\bigr) \;=\; \int_0^1 c'(\dot z_t)\,dt, \qquad \dot z_t=\tfrac{d}{dt}z_t.
+$$
+
+Here $c'$ can be viewed as a **differential cost**: it prices the instantaneous velocity, and the trajectory cost accumulates it over time.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Differential costs and their induced static costs)</span></p>
+
+1. $c' = \lvert\cdot\rvert^2 \;\Rightarrow\; c(x,y)=\lvert x-y\rvert^2$.
+2. $c' = \lvert\cdot\rvert^p \;\Rightarrow\; c(x,y)=\lvert x-y\rvert^p$.
+3. $c'=c'(z,\dot z)=g_z(\dot z,\dot z) \;\Rightarrow\; c(x,y)=d(x,y)^2$.
+4. $c'=c'(z,\dot z)=\bigl(g_z(\dot z,\dot z)\bigr)^{p/2} \;\Rightarrow\; c(x,y)=d(x,y)^p$.
+
+In 3. and 4., $g$ is a Riemannian metric and $d$ the induced geodesic distance — so the framework covers transport on manifolds, where "straight lines" become geodesics.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 25</span><span class="math-callout__name">(Extremal trajectories for convex costs are straight lines)</span></p>
+
+If $c'\colon\mathbb R^d\to\mathbb R$ is convex, then
+
+$$
+\inf\Bigl\{ \int_0^1 c'(\dot z_t)\,dt \colon z_0=x,\ z_1=y \Bigr\} \;=\; c'(y-x).
+$$
+
+Moreover, if $c'$ is strictly convex, the infimum is achieved uniquely by the straight trajectory
+
+$$
+z_t = x + t(y-x).
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 25 — Jensen's inequality</summary>
+
+The interval $[0,1]$ with $dt$ is a probability space, so Jensen's inequality for the convex function $c'$ gives
+
+$$
+\int_0^1 c'(\dot z_t)\,dt \;\ge\; c'\Bigl(\int_0^1 \dot z_t\,dt\Bigr) \;=\; c'(z_1-z_0) \;=\; c'(y-x)
+$$
+
+for every admissible trajectory. The straight line $z_t=x+t(y-x)$ has constant velocity $\dot z_t\equiv y-x$, hence attains the value $c'(y-x)$ — so the infimum equals $c'(y-x)$.
+
+If $c'$ is strictly convex, equality in Jensen's inequality forces the integrand to be constant: $\dot z_t = y-x$ for a.e. $t$, which (with $z_0=x$) pins down the straight trajectory uniquely. $\square$
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 7</span><span class="math-callout__name">(Scaling on a general time interval)</span></p>
+
+If we replace the time interval $[0,1]$ by a general time interval $[0,T]$, what is the scaling in these statements?
+
+*Hint.* Jensen with the normalized measure $\frac{dt}{T}$ gives $\int_0^T c'(\dot z_t)\,dt \ge T\,c'\bigl(\frac{y-x}{T}\bigr)$. For $c'=\lvert\cdot\rvert^p$ this is $\lvert x-y\rvert^p/T^{p-1}$ — for $p>1$ travelling slower (larger $T$) is cheaper, while for $p=1$ the cost is independent of $T$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 26</span><span class="math-callout__name">(Strict convexity, the case $p=1$, and geodesics)</span></p>
+
+In the situation of Proposition 25 with a *strictly* convex $c'$, the only optimal trajectories are straight lines with constant velocity. In the case $p=1$ this fails: the cost functional is invariant under time-reparametrization, so any monotone reparametrization of the straight line is equally optimal — optimality determines the *path* but not the *schedule*.
+
+In the case of a Riemannian manifold with $c'=c'(z,\dot z)=g_z(\dot z,\dot z)$, the only minimizers are length-minimizing geodesics, parametrized with constant speed. Are they unique? In general, no: distinct length-minimizing geodesics can join the same endpoints (think of antipodal points on the sphere, joined by infinitely many great-circle arcs). Uniqueness holds only for endpoints close enough to avoid the cut locus — a first hint that curvature will interact nontrivially with everything in this section.
+
+</div>
+
+#### Time-dependent optimal transport and McCann's displacement interpolation
+
+For the quadratic cost, Brenier's theorem (Theorem 13) and Proposition 25 combine into a complete solution of the dynamic problem.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 27</span><span class="math-callout__name">(Time-dependent optimal transportation theorem)</span></p>
+
+Let $c(x,y)=c'(y-x)=\lvert x-y\rvert^2$ in $\mathbb R^d$. Let $\mu$ and $\nu$ be two probability measures on $\mathbb R^d$ that are absolutely continuous with respect to the Lebesgue measure, and let $C((z_t)_t)=\int_0^1 c'(\dot z_t)\,dt$. Let $\nabla\varphi$ be the Brenier map, i.e., the unique gradient of a convex function such that $(\nabla\varphi)\_\sharp\mu=\nu$. Then the solution to the time-dependent optimal transport problem (2.17) is
+
+$$
+T_t(x) = (1-t)x + t\nabla\varphi(x).
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 27</summary>
+
+This follows directly from Brenier's theorem and Proposition 25. By the compatibility condition (Proposition 25 with the strictly convex $c'=\lvert\cdot\rvert^2$), the cheapest trajectory between $x$ and its destination $T_1(x)$ is the constant-speed straight line, at cost $\lvert x-T_1(x)\rvert^2$. So (2.17) reduces to minimizing $\int_X \lvert x-T_1(x)\rvert^2\,d\mu(x)$ over $(T_1)\_\sharp\mu=\nu$ — the static Monge problem — whose unique solution is $T_1=\nabla\varphi$ by Brenier. Connecting each $x$ to $\nabla\varphi(x)$ by the straight line gives exactly $T_t=(1-t)\,\mathrm{id}+t\nabla\varphi$. $\square$
+
+</details>
+
+This theorem gives us a canonical way to interpolate between two probability measures, due to **McCann**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Displacement interpolation)</span></p>
+
+For $\mu,\nu$ as in Theorem 27 with Brenier map $\nabla\varphi$, the **displacement interpolation** between $\mu$ and $\nu$ is
+
+$$
+\rho_t = [\mu,\nu]_t := \bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)_\sharp\mu, \qquad t\in[0,1]. \tag{2.18}
+$$
+
+</div>
+
+Sometimes the displacement interpolation can be defined without invoking Brenier's theorem. A good example to keep in mind: $\mu=\delta_x$, $\nu=\delta_y$ (not absolutely continuous!) gives
+
+$$
+[\mu,\nu]_t = \delta_{(1-t)x+ty},
+$$
+
+i.e., the displacement interpolation is the measure associated to the standard convex interpolation between the *points* $x$ and $y$ — exactly the "moving atom" promised in the opening remark.
+
+This interpolation has remarkable features:
+
+* $\rho_t$ is a probability measure, and if $\mu$ and $\nu$ don't give mass to small sets, neither does $\rho_t$.
+* Since $(1-t)\,\mathrm{id}+t\nabla\varphi=\nabla\bigl((1-t)\tfrac{\lvert x\rvert^2}{2}+t\varphi\bigr)$ is itself the gradient of a convex function, Brenier's theorem implies that it is the **optimal** transport map from $\mu$ to $\rho_t$. The interpolation is built from restrictions of one optimal plan — travelling along it never wastes cost.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 28</span><span class="math-callout__name">(Properties of the displacement interpolation)</span></p>
+
+The displacement interpolation satisfies
+
+1. $[\mu,\nu]_t = [\nu,\mu]_{1-t}$,
+2. $\bigl[[\mu,\nu]\_t,[\mu,\nu]\_{t'}\bigr]_s = [\mu,\nu]_{(1-s)t+st'}$,
+3. if $\mu$ and $\nu$ are absolutely continuous, then so is $[\mu,\nu]_t$ for all $t\in(0,1)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading Proposition 28: a constant-speed geodesic)</span></p>
+
+* Property 1. is **time reversal**: running the movie backwards transports $\nu$ to $\mu$, and the reversed map is $(\nabla\varphi)^{-1}=\nabla\varphi^\ast$ — the conjugate potential from Theorem 13.
+* Property 2. says that **interpolating between two snapshots of the interpolation re-parametrizes the same path**: the family $(\rho_t)_t$ behaves like a constant-speed geodesic, whose restriction between times $t$ and $t'$ is again (an affinely reparametrized piece of) the same geodesic. This is the measure-level shadow of Proposition 25: particles move along straight lines, so sub-trajectories of optimal trajectories are optimal.
+* Property 3. is an interior regularity statement: absolute continuity propagates to all intermediate times. (At $t\in\lbrace 0,1\rbrace$ it holds trivially by assumption; the point is that no mass concentrates strictly inside the path.)
+
+</div>
+
+#### Displacement convexity
+
+Now that we know how to continuously interpolate between measures, we may ask: **which functionals on the space of probability measures are convex along these paths?** First we must say what convexity means over the nonlinear space of probability measures.
+
+We will often work with probability measures $\rho$ that are absolutely continuous with respect to the Lebesgue measure. We write $\mathcal P_{ac}(\mathbb R^d)$ for the space of these measures and, with a slight abuse of notation, identify such a measure with its density: $d\rho=\rho\,dx$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 29</span><span class="math-callout__name">(Displacement convexity for absolutely continuous measures)</span></p>
+
+1. A set $A\subset\mathcal P_{ac}(\mathbb R^d)$ is called **displacement convex** if $\mu,\nu\in A$ implies $[\mu,\nu]_t\in A$ for all $t\in(0,1)$.
+2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P_{ac}(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** if for any $\mu,\nu\in A$ and $\rho_t:=[\mu,\nu]_t$, the function $[0,1]\ni t\mapsto \mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$ is convex.
+
+</div>
+
+In the case of the quadratic cost $c(x,y)=\lvert x-y\rvert^2$, we can define displacement convexity also for general (not necessarily absolutely continuous) probability measures that merely have **finite second moment**, $\int_{\mathbb R^d}\lvert x\rvert^2\,d\rho(x)<\infty$. We write $\mathcal P^2(\mathbb R^d)$ for the space of such measures. The trick is to interpolate along *plans* instead of maps.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 30</span><span class="math-callout__name">(Displacement convexity, alternative for quadratic cost)</span></p>
+
+Let $\sigma_t\colon\mathbb R^d\times\mathbb R^d\to\mathbb R^d$, $\sigma_t(x,y)=(1-t)x+ty$.
+
+1. A set $A\subset\mathcal P^2(\mathbb R^d)$ is called **displacement convex** if for all $\mu,\nu\in A$, all optimal (for the Kantorovich problem with $c(x,y)=\lvert x-y\rvert^2$) transference plans $\pi\in\Pi(\mu,\nu)$, and all $t\in(0,1)$, we have $\rho_t:=(\sigma_t)\_\sharp\pi\in A$.
+2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P^2(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** on $A$ if for any $\mu,\nu\in A$ and $\rho_t:=(\sigma_t)\_\sharp\pi$, the function $[0,1]\ni t\mapsto\mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$ is convex.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Definition 30 generalises Definition 29)</span></p>
+
+When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so $(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]_t$ and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
+
+</div>
+
+#### Three canonical functionals
+
+Here are the three basic examples of functionals that are very interesting:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definitions</span><span class="math-callout__name">(Internal, potential, and interaction energy)</span></p>
+
+1. **Internal energy.** For a measurable function $U\colon[0,\infty)\to\mathbb R\cup\lbrace+\infty\rbrace$, called the *internal energy density*,
+
+   $$
+   \mathcal U(\rho) := \int_{\mathbb R^d} U(\rho(x))\,dx.
+   $$
+
+2. **Potential energy.** For a measurable function $V\colon\mathbb R^d\to\mathbb R\cup\lbrace+\infty\rbrace$, called the *potential*,
+
+   $$
+   \mathcal V(\rho) := \int_{\mathbb R^d} V(x)\,d\rho(x).
+   $$
+
+3. **Interaction energy.** For a measurable $W\colon\mathbb R^d\to\mathbb R\cup\lbrace+\infty\rbrace$, called the *interaction potential*,
+
+   $$
+   \mathcal W(\rho) := \int_{\mathbb R^d\times\mathbb R^d} W(x-y)\,d\rho(x)\,d\rho(y).
+   $$
+
+</div>
+
+A special example of internal energy is the **(Boltzmann) entropy**
+
+$$
+\mathcal E(\rho) = \int \rho(x)\log\rho(x)\,dx,
+$$
+
+i.e., $U(s)=s\log s$. This functional is well-defined on $\mathcal P^2_{ac}(\mathbb R^d)$ and it is displacement convex, as we will see at the end of this section.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 8</span><span class="math-callout__name">(The three energies for discrete measures)</span></p>
+
+Write down these energies for discrete measures $\rho=\frac1N\sum_{n=1}^N\delta_{x_n}$.
+
+*Answer sketch.* $\mathcal U$ doesn't make sense for superlinear $U$ (the density is a sum of Diracs, not a function), but $\mathcal V$ and $\mathcal W$ are well-defined and are exactly the potential energy
+
+$$
+\frac1N\sum_{n=1}^N V(x_n)
+$$
+
+and interaction energy
+
+$$
+\frac1N\sum_{n=1}^N \frac1N\sum_{m=1}^N W(x_n-x_m),
+$$
+
+respectively, of particles located at $x_1,\dots,x_N$. So $\mathcal V$ and $\mathcal W$ are the mean-field continuum versions of classical particle energies.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 31</span><span class="math-callout__name">(Well-definedness and properness)</span></p>
+
+Some more general, but basic, observations:
+
+1. If $U\ge 0$, the functional $\mathcal U\colon\mathcal P_{ac}(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined. It is **proper** (not identically $+\infty$) as soon as $U(0)=0$ and $U$ is not identically $+\infty$ on $(0,\infty)$. Indeed, pick $r>0$ with $U(r)<\infty$ and set $\rho:=r\,\mathbf 1_A$ with $\lvert A\rvert=1/r$; then $\mathcal U(\rho)=U(r)\,\lvert A\rvert=U(r)/r<\infty$, the region where $\rho=0$ contributing nothing because $U(0)=0$.
+2. If $V\ge -c>-\infty$, then $\mathcal V\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined.
+3. Similarly, if $W\ge -c>-\infty$, then $\mathcal W\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined.
+
+</div>
+
+#### Criteria for displacement convexity
+
+The next theorem gives clean criteria *on the densities* $U,V,W$ for the corresponding functionals to be displacement convex.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 32</span><span class="math-callout__name">(Criteria for displacement convexity)</span></p>
+
+1. Let $A$ be a displacement convex subset of $\mathcal P_{ac}(\mathbb R^d)$ on which $\mathcal U$ is well-defined. Then $\mathcal U$ is displacement convex on $A$ if $U$ satisfies $U(0)=0$ and
+
+   $$
+   \Psi\colon[0,\infty)\to[0,+\infty], \quad r\mapsto r^d\,U\Bigl(\frac1{r^d}\Bigr) \quad\text{is convex and non-increasing.} \tag{2.19}
+   $$
+
+   "Conversely", if $\Psi$ is non-increasing and $\mathcal U$ is displacement convex on $\mathcal P_{ac}(\mathbb R^d)$, then $\Psi$ is convex.
+
+2. Let $A$ be a displacement convex subset of $\mathcal P^2(\mathbb R^d)$ on which $\mathcal V$ is well-defined. If $V$ is convex, then $\mathcal V$ is displacement convex on $A$. Conversely, if $\mathcal V$ is displacement convex on $\mathcal P^2(\mathbb R^d)$, then $V$ is convex.
+
+3. Let $A$ be a displacement convex subset of $\mathcal P^2(\mathbb R^d)$ on which $\mathcal W$ is well-defined. If $W$ is convex, then $\mathcal W$ is displacement convex on $A$. Conversely, if $\mathcal W$ is displacement convex on $\mathcal P^2(\mathbb R^d)$, then $W$ is convex.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading condition (2.19): convexity along dilations)</span></p>
+
+Condition (2.19) is **McCann's condition**, and it has a transparent geometric meaning. Consider mass spread uniformly over a cube whose side length is scaled by $r$: the volume scales like $r^d$, the density like $r^{-d}$, so the internal energy of this dilation family is exactly $r^d\,U(r^{-d})=\Psi(r)$. Dilations *are* displacement interpolations (each particle moves along a straight ray from the center, at constant speed), so convexity of $\mathcal U$ along displacement paths *forces* convexity of $\Psi$ — that is the content of the "converse" part. The theorem says that, together with monotonicity, this one-parameter family of tests is also *sufficient*.
+
+Two standard checks:
+
+* **Entropy** $U(s)=s\log s$: $\Psi(r)=r^d\cdot r^{-d}\log(r^{-d})=-d\log r$ — convex and decreasing. ✓
+* **Power laws** $U(s)=s^m$, $m\ge 1$: $\Psi(r)=r^{d(1-m)}$ — convex and non-increasing. ✓ More generally, with the normalisation $U(s)=\frac{s^m}{m-1}$, condition (2.19) holds precisely for $m\ge 1-\frac1d$ — the exponent range of the porous-medium equation.
+
+Note also that condition 2. and 3. compare cleanly: convexity of the density is *equivalent* to displacement convexity. This is in sharp contrast to convexity along *linear* interpolation: $\mathcal V$ is linear (hence trivially convex) along $(1-t)\mu+t\nu$ for *any* $V$, so linear convexity carries no information about $V$ — displacement convexity is the notion that actually sees the potential.
+
+</div>
+
+We will only give the full proof of part 2., which is rather straightforward, and sketch part 3., which follows the same lines. Note that part 1. is subtle (as can already be seen from the more involved statement itself).
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 32, part 2 — potential energy</summary>
+
+Let $\mu,\nu\in A$ and let $\rho_t=[\mu,\nu]_t=(\sigma_t)\_\sharp\pi$, where $\pi\in\Pi(\mu,\nu)$ is an optimal plan and $\sigma_t(x,y)=(1-t)x+ty$. By the definition of the push-forward measure,
+
+$$
+\mathcal V(\rho_t) = \int_{\mathbb R^d} V(y)\,d\bigl((\sigma_t)_\sharp\pi\bigr)(y)
+= \int_{\mathbb R^d\times\mathbb R^d} V\bigl((1-t)x+ty\bigr)\,d\pi(x,y).
+$$
+
+**($V$ convex $\Rightarrow$ $\mathcal V$ displacement convex.)** If $V$ is convex, then $V((1-t)x+ty)\le(1-t)V(x)+tV(y)$ pointwise, and hence, using the marginal constraints $\pi\in\Pi(\mu,\nu)$,
+
+$$
+\mathcal V(\rho_t) \le (1-t)\int V(x)\,d\pi(x,y) + t\int V(y)\,d\pi(x,y)
+= (1-t)\mathcal V(\mu) + t\mathcal V(\nu).
+$$
+
+**($\mathcal V$ displacement convex $\Rightarrow$ $V$ convex.)** Let $x,y\in\mathbb R^d$ and set $\mu=\delta_x$, $\nu=\delta_y$. Then $\rho_t=\delta_{x_t}$ with $x_t=(1-t)x+ty$, and $\mathcal V(\rho_t)=V(x_t)$ for every $t\in[0,1]$. For $t\in(0,1)$, displacement convexity of $\mathcal V$ gives
+
+$$
+V(x_t) = \mathcal V(\rho_t) \le (1-t)\mathcal V(\mu)+t\mathcal V(\nu) = (1-t)V(x)+tV(y).
+$$
+
+Since $x,y$ and $t\in(0,1)$ were arbitrary, $V$ is convex. (This is where Definition 30 earns its keep: the test measures are Diracs, far from absolutely continuous.) $\square$
+
+</details>
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 32, part 3 — interaction energy (sketch)</summary>
+
+The proof follows the same lines. With the notation as above,
+
+$$
+\begin{aligned}
+\mathcal W(\rho_t) &= \int_{\mathbb R^d\times\mathbb R^d} W(x-x')\,d\bigl((\sigma_t)_\sharp\pi\bigr)(x)\,d\bigl((\sigma_t)_\sharp\pi\bigr)(x')\\
+&= \int_{\mathbb R^d\times\mathbb R^d}\int_{\mathbb R^d\times\mathbb R^d} W\bigl((1-t)(x-x')+t(y-y')\bigr)\,d\pi(x,y)\,d\pi(x',y')\\
+&\le (1-t)\iint W(x-x')\,d\pi(x,y)\,d\pi(x',y') + t\iint W(y-y')\,d\pi(x,y)\,d\pi(x',y'),
+\end{aligned}
+$$
+
+by convexity of $W$ applied to the convex combination of the *differences* $(x-x')$ and $(y-y')$. Using the marginal constraints $\pi\in\Pi(\mu,\nu)$, the right-hand side collapses to
+
+$$
+(1-t)\,\mathcal W(\mu) + t\,\mathcal W(\nu).
+$$
+
+The converse direction again tests with Dirac measures. $\square$
+
+</details>
+
+#### The Eulerian viewpoint: from trajectories to densities
+
+Up to here we worked in the **Lagrangian** viewpoint: we followed the trajectories of individual particles via the transport maps $(T_t)\_{t\in[0,1]}$. We could instead work from the **Eulerian** viewpoint, monitoring the evolution of the *densities* $(\rho_t)\_{t\in[0,1]}$, where
+
+$$
+\rho_t = (T_t)_\sharp\mu.
+$$
+
+To switch between the two viewpoints, we already know the dictionary: a flow map and its velocity field are related by
+
+$$
+\frac{d}{dt}\phi(t,x_0) = v(\phi(t,x_0),t),
+$$
+
+i.e., the Eulerian velocity $v_t$ is the velocity of the particle currently passing through a given location.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 33</span><span class="math-callout__name">(Method of characteristics for conservation laws)</span></p>
+
+Let $(T_t)_{t\in[0,1]}$ be a locally Lipschitz family of diffeomorphisms of $\mathbb R^d$ with
+
+$$
+\frac{d}{dt}T_t = v_t\circ T_t \quad (0<t<1), \qquad T_0=\mathrm{id}.
+$$
+
+Let $\mu\in\mathcal P(\mathbb R^d)$ and $\rho_t:=(T_t)\_\sharp\mu$. Then $\rho_t$ is the unique solution of the conservation law (**continuity equation**)
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0 \quad (0<t<1), \tag{2.20}
+$$
+
+$$
+\rho_0 = \mu \tag{2.21}
+$$
+
+in the space $C([0,1);\mathcal P(\mathbb R^d))$, where $\mathcal P(\mathbb R^d)$ is equipped with the weak topology.
+
+</div>
+
+The equation is to be interpreted in the **distributional sense**: for any test function $\zeta\in C^1_c(\mathbb R^d\times(0,1))$ we require
+
+$$
+\int_{\mathbb R^d\times(0,1)} \bigl(\rho\,\partial_t\zeta + \rho\,v\cdot\nabla\zeta\bigr) = 0,
+$$
+
+or, more precisely,
+
+$$
+\int_0^1\int_{\mathbb R^d} \bigl(\partial_t\zeta + v_t\cdot\nabla\zeta\bigr)\,d\rho_t\,dt = 0,
+$$
+
+where $v_t=v(\cdot,t)$. Equivalently, we may ask that for any $\zeta\in C^1_c(\mathbb R^d)$ and a.e. $t\in(0,1)$,
+
+$$
+\frac{d}{dt}\int_{\mathbb R^d}\zeta\,d\rho_t = -\int_{\mathbb R^d} \zeta\,\nabla\cdot(\rho_t v_t) := \int_{\mathbb R^d} v_t\cdot\nabla\zeta\,d\rho_t.
+$$
+
+Note that this last formulation makes sense even when $\rho_t$ is a mere measure: the middle expression is *defined* by the right-hand one.
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 33 (existence part)</summary>
+
+We only show that $\rho_t$ solves (2.20), and leave the uniqueness for self-study (reading in references — this is not an exercise!).
+
+We claim that for every $\zeta\in C^1_c(\mathbb R^d)$, the map $t\mapsto\int\zeta\,d\rho_t$ is Lipschitz continuous on $(0,1)$ with derivative
+
+$$
+\frac{d}{dt}\int_{\mathbb R^d}\zeta\,d\rho_t = \int_{\mathbb R^d}\nabla\zeta\cdot v_t\,d\rho_t \quad\text{for a.e. } t\in(0,1).
+$$
+
+By the definition of the push-forward,
+
+$$
+\int_{\mathbb R^d}\zeta\,d\rho_t = \int_{\mathbb R^d}\zeta\circ T_t\,d\mu.
+$$
+
+We want to differentiate this in $t$, so we form the difference quotient
+
+$$
+\frac1h\Bigl(\int_{\mathbb R^d}\zeta\,d\rho_{t+h} - \int_{\mathbb R^d}\zeta\,d\rho_t\Bigr)
+= \int_{\mathbb R^d}\frac{\zeta\circ T_{t+h}-\zeta\circ T_t}{h}\,d\mu
+$$
+
+and wish to take the limit $h\downarrow 0$.
+
+The map $t\mapsto\zeta\circ T_t$ is Lipschitz with derivative, for almost every $x$ and $t$,
+
+$$
+\partial_t(\zeta\circ T_t) = (\nabla\zeta\circ T_t)\cdot\frac{dT_t}{dt} = (\nabla\zeta\circ T_t)\cdot(v_t\circ T_t).
+$$
+
+Since $\zeta$ has compact support and $T_t^{-1}$ is continuous, the function $\zeta\circ T_t$ has compact support, uniformly in $t\in[0,1]$. Moreover, the integrand $\frac{\zeta\circ T_{t+h}-\zeta\circ T_t}{h}$ is uniformly bounded on $\mathbb R^d\times[0,1-h]$ (by the Lipschitz bound) and converges, for almost all $t$, to the derivative computed above, a.e. in $\mathbb R^d$. Hence, by Lebesgue's dominated convergence theorem,
+
+$$
+\frac{d}{dt}\int_{\mathbb R^d}\zeta\,d\rho_t = \int_{\mathbb R^d}(\nabla\zeta\circ T_t)\cdot(v_t\circ T_t)\,d\mu = \int_{\mathbb R^d}\nabla\zeta\cdot v_t\,d\rho_t,
+$$
+
+where we used once again the definition of the push-forward in the last step. This is exactly the distributional formulation of (2.20). $\square$
+
+</details>
+
+So much for the density. The *velocity field* of straight-line trajectories also satisfies a PDE of its own:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 34</span><span class="math-callout__name">(Eulerian representation for geodesic trajectories)</span></p>
+
+Let $v_0\colon\mathbb R^d\to\mathbb R^d$ be continuous and differentiable almost everywhere, and let $T_t=\mathrm{id}-tv_0$ be a field of trajectories of particles. Suppose that $(T_t)_{t\in(0,1)}$ defines a family of diffeomorphisms. Then for $t\in(0,1)$, the associated Eulerian velocity field $v_t=\frac{d}{dt}T_t\circ T_t^{-1}$ satisfies the **pressureless Euler equation**
+
+$$
+\partial_t v_t + (v_t\cdot\nabla)v_t = 0.
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 34</summary>
+
+Differentiate the identity $v_t\circ T_t=\frac{d}{dt}T_t$ in $t$. The right-hand side is $-v_0$, constant in $t$, so
+
+$$
+0 = \frac{d}{dt}\bigl(v_t\circ T_t\bigr) = (\partial_t v_t)\circ T_t + \bigl((\nabla v_t)\circ T_t\bigr)\cdot\frac{dT_t}{dt} = \bigl(\partial_t v_t + (v_t\cdot\nabla)v_t\bigr)\circ T_t,
+$$
+
+using $\frac{dT_t}{dt}=v_t\circ T_t$ in the last step. Since $T_t$ is a diffeomorphism, the bracket vanishes everywhere. $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Displacement interpolation fits this format)</span></p>
+
+The displacement interpolation is exactly of the form required in Proposition 34:
+
+$$
+T_t = (1-t)\,\mathrm{id} + t\nabla\varphi = \mathrm{id} - t\,(\mathrm{id}-\nabla\varphi), \qquad\text{i.e.}\qquad v_0=\mathrm{id}-\nabla\varphi.
+$$
+
+Particles fly in straight lines with the velocities they were assigned at time $0$ — free transport, no forces, no pressure. The "pressureless" in *pressureless Euler* records precisely this: unlike the incompressible Euler equations from §2.4 (Arnold's picture, where pressure enforces the volume constraint), nothing here constrains the flow.
+
+</div>
+
+Combining both results, we see that along the displacement interpolation, $\rho_t$ and $v_t$ satisfy the system of PDEs
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0, \tag{2.22}
+$$
+
+$$
+\partial_t v_t + (v_t\cdot\nabla)v_t = 0, \tag{2.23}
+$$
+
+which is formally equivalent to the **sticky particle system**
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0, \qquad
+\partial_t(\rho_t v_t) + \nabla\cdot(\rho_t v_t\otimes v_t) = 0,
+$$
+
+obtained by rewriting the velocity equation as a conservation law for the momentum $\rho_t v_t$ (expand the derivatives in the momentum equation and subtract $v_t$ times the continuity equation to recover (2.23)).
+
+#### Displacement convexity of the entropy, computed in Eulerian coordinates
+
+The Eulerian formulation (2.22)–(2.23) lets us compute derivatives of functionals **along the displacement interpolation** — for example the first and second derivatives of the internal energy, which were very hard to access in the Lagrangian viewpoint (where $\mathcal U(\rho_t)$ involves the Jacobian determinant of $T_t$).
+
+We focus on the Boltzmann entropy $\mathcal U(\rho)=\int\rho\log\rho$, i.e., $U(s)=s\log s$, so that $U'(s)=\log s+1$ and $U''(s)=\frac1s$. Formally — interchanging differentiation and integration and integrating by parts — the **first derivative** is
+
+$$
+\begin{aligned}
+\frac{d}{dt}\mathcal U(\rho_t) &= \int_{\mathbb R^d} U'(\rho_t)\,\partial_t\rho_t\,dx
+\overset{(2.22)}{=} -\int_{\mathbb R^d} U'(\rho_t)\,\nabla\cdot(\rho_t v_t)\,dx\\
+&= \int_{\mathbb R^d} U''(\rho_t)\nabla\rho_t\cdot v_t\,\rho_t\,dx
+= \int_{\mathbb R^d} v_t\cdot\nabla\rho_t\,dx,
+\end{aligned}
+$$
+
+where the last equality uses $U''(\rho_t)\rho_t=1$ — the special algebra of the logarithm. Differentiating once more (again interchanging differentiation and integration, using the product rule, and integrating by parts),
+
+$$
+\begin{aligned}
+\frac{d^2}{dt^2}\mathcal U(\rho_t) &= \int_{\mathbb R^d} v_t\cdot\nabla\partial_t\rho_t\,dx + \int_{\mathbb R^d}\partial_t v_t\cdot\nabla\rho_t\,dx\\
+&= -\int_{\mathbb R^d} v_t\cdot\nabla\bigl(\nabla\cdot(\rho_t v_t)\bigr)\,dx - \int_{\mathbb R^d}(v_t\cdot\nabla)v_t\cdot\nabla\rho_t\,dx \qquad\text{by (2.22), (2.23)}\\
+&= \int_{\mathbb R^d} \lvert\nabla v_t\rvert^2\rho_t\,dx \;\ge\; 0.
+\end{aligned}
+$$
+
+So the Boltzmann entropy is indeed **displacement convex** — as promised, and consistent with McCann's criterion (2.19), which we checked for $U(s)=s\log s$ above.
+
+<details class="proof" markdown="1">
+<summary>Why the last integration by parts works</summary>
+
+The final equality deserves a closer look. Write $A:=-\int v_t\cdot\nabla(\nabla\cdot(\rho_t v_t))\,dx$ and $B:=-\int(v_t\cdot\nabla)v_t\cdot\nabla\rho_t\,dx$, and use indices (summation convention, dropping subscripts $t$):
+
+$$
+A = -\int v_i\,\partial_i(\partial_j(\rho v_j))\,dx = \int (\partial_i v_i)\,\partial_j(\rho v_j)\,dx = -\int \rho\, v_j\,\partial_j(\partial_i v_i)\,dx,
+$$
+
+integrating by parts twice. For the second term,
+
+$$
+B = -\int v_j\,\partial_j v_i\,\partial_i\rho\,dx = \int \rho\,\partial_i\bigl(v_j\,\partial_j v_i\bigr)\,dx
+= \int \rho\,\partial_i v_j\,\partial_j v_i\,dx + \int \rho\,v_j\,\partial_j(\partial_i v_i)\,dx.
+$$
+
+The second summand of $B$ cancels exactly against $A$, leaving
+
+$$
+A+B = \int_{\mathbb R^d} \rho_t\,\operatorname{tr}\bigl((\nabla v_t)^2\bigr)\,dx.
+$$
+
+For a general velocity field, $\operatorname{tr}((\nabla v)^2)=\partial_i v_j\,\partial_j v_i$ need not be non-negative. Here it is, because along the displacement interpolation $v_t$ is a **gradient field**: $v_t(y)=\frac1t\bigl(y-T_t^{-1}(y)\bigr)$, and $T_t^{-1}$ is the gradient of a convex function (it is the Brenier map from $\rho_t$ back to $\mu$, since $T_t$ is a gradient of a convex function), so $\nabla v_t$ is a symmetric matrix. For symmetric matrices, $\operatorname{tr}((\nabla v)^2)=\lvert\nabla v\rvert^2$, the squared Frobenius norm — which is the form stated above, and is manifestly $\ge 0$. $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where this is headed)</span></p>
+
+The two viewpoints assembled in this section — the Wasserstein space $\mathcal P^2(\mathbb R^d)$ with its displacement geodesics, and energy functionals that are displacement convex along them — are exactly the ingredients of Chapter 1, transplanted: a "Riemannian manifold" of measures and convex energies on it. The computation above ($\frac{d^2}{dt^2}\mathcal U(\rho_t)\ge 0$ along geodesics) is the measure-space analogue of $\nabla^2 E\succeq 0$, and it sets up the interpretation of diffusion-type PDEs as **gradient flows of displacement convex entropies on Wasserstein space**, where the uniqueness, stability, and asymptotics machinery of Chapter 1 can be brought to bear.
+
+</div>
+
 ## Appendix A: Desingularizing Functions and the Kurdyka–Łojasiewicz Framework {#appendix-a}
 
 In §1.6, the proof of long-term asymptotics via Łojasiewicz uses an unusual move: rather than tracking the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ along the gradient flow, it tracks the **concave power** $\mathcal E^{1-\theta}(t)$. Why this exact exponent, and not $\mathcal E$ itself, or $\sqrt{\mathcal E}$, or anything else? The answer is *not* a technicality — it points to a deep recurring template in analysis, often called **desingularization** or the **Kurdyka–Łojasiewicz (KL) framework**.
@@ -4261,4 +4847,3 @@ In ODEs this is "separation of variables"; in dynamical systems it's "the right 
 So: the choice of $\mathcal E^{1-\theta}$ in §1.6 is *not* a technicality. It is the canonical example of a recurring template — the **Kurdyka–Łojasiewicz desingularization** — that is worth learning once and recognizing forever.
 
 </div>
-
