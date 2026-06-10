@@ -135,6 +135,19 @@ def collect_pages():
 def main():
     quiet = "--quiet" in sys.argv
     pages = collect_pages()
+
+    # Skip the write when nothing indexed changed, so automated rebuilds
+    # (the pre-commit hook) don't produce timestamp-only diffs.
+    try:
+        with open(OUTPUT, encoding="utf-8") as handle:
+            existing = json.load(handle)
+        if existing.get("pages") == pages:
+            if not quiet:
+                print(f"search index: unchanged ({len(pages)} pages)")
+            return
+    except (OSError, ValueError):
+        pass
+
     index = {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "pageCount": len(pages),
