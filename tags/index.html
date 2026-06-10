@@ -22,6 +22,7 @@ permalink: /tags/
 
   <div class="tags-search">
     <input type="search" id="tags-search-input" placeholder="Filter tags — e.g. functional-analysis, pde, …" aria-label="Filter tags" autocomplete="off">
+    <button type="button" class="tags-cloud-toggle" id="tag-cloud-toggle" aria-controls="tag-cloud" aria-expanded="true">Hide tags</button>
   </div>
 
   <div class="tag-cloud" id="tag-cloud">
@@ -60,6 +61,9 @@ permalink: /tags/
     var chips = Array.from(document.querySelectorAll('#tag-cloud .tag-cloud__tag'));
     var sections = Array.from(document.querySelectorAll('#tag-sections .tag-section'));
     var emptyMessage = document.getElementById('tags-empty');
+    var cloud = document.getElementById('tag-cloud');
+    var cloudToggle = document.getElementById('tag-cloud-toggle');
+    var collapseKey = 'tags-cloud-collapsed';
 
     function normalize(text) {
       return text.toLowerCase().replace(/[-_\s]+/g, ' ').trim();
@@ -74,12 +78,42 @@ permalink: /tags/
         if (match) visible++;
       });
       sections.forEach(function (section) {
-        section.hidden = query && normalize(section.dataset.tag).indexOf(query) === -1;
+        section.hidden = Boolean(query) && normalize(section.dataset.tag).indexOf(query) === -1;
       });
       emptyMessage.hidden = visible > 0;
     }
 
+    function setCloudCollapsed(collapsed, persist) {
+      cloud.hidden = collapsed;
+      cloudToggle.setAttribute('aria-expanded', String(!collapsed));
+      cloudToggle.textContent = collapsed ? 'Show tags' : 'Hide tags';
+      if (persist) {
+        try {
+          localStorage.setItem(collapseKey, collapsed ? '1' : '0');
+        } catch (e) {}
+      }
+    }
+
+    cloudToggle.addEventListener('click', function () {
+      setCloudCollapsed(!cloud.hidden, true);
+    });
+
+    var storedCollapsed = null;
+    try {
+      storedCollapsed = localStorage.getItem(collapseKey);
+    } catch (e) {}
+    if (storedCollapsed === '1') setCloudCollapsed(true, false);
+
     input.addEventListener('input', applyFilter);
+
+    // Enter jumps to the first tag section that matches the filter.
+    input.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter') return;
+      var firstVisible = sections.filter(function (section) { return !section.hidden; })[0];
+      if (!firstVisible) return;
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      firstVisible.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
 
     // Allow pre-filtering via /tags/?q=some-tag
     var params = new URLSearchParams(window.location.search);
