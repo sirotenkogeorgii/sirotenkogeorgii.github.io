@@ -2,6 +2,12 @@
 title: Markov Chain Monte Carlo
 layout: default
 noindex: true
+tags:
+  - probability
+  - monte-carlo
+  - sampling
+  - markov-chain-monte-carlo
+  - markov-processes
 ---
 
 # Markov Chain Monte Carlo

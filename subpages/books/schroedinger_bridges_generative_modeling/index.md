@@ -2,6 +2,14 @@
 layout: default
 title: Foundations of Schroedinger Bridges for Generative Modeling
 date: 2024-11-01
+tags:
+  - machine-learning
+  - generative-models
+  - schroedinger-bridges
+  - optimal-transport
+  - stochastic-differential-equations
+  - diffusion-models
+  - stochastic-control
 ---
 
 <style>

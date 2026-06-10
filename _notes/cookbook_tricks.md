@@ -1,3 +1,12 @@
+---
+layout: default
+title: Cookbook Tricks
+tags:
+  - mathematics
+  - inequalities
+  - analysis
+---
+
 ## Inequalities and Identities
 
 1. **Difference of squares** 

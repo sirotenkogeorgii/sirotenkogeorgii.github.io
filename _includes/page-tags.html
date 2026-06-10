@@ -1,0 +1,7 @@
+{% if page.tags and page.tags != empty %}
+<nav class="page-tags" aria-label="Page tags">
+  {% for tag in page.tags %}
+  <a class="page-tags__tag" href="{{ '/tags/' | relative_url }}#tag-{{ tag | slugify }}">{{ tag }}</a>
+  {% endfor %}
+</nav>
+{% endif %}

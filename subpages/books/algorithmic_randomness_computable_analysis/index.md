@@ -2,6 +2,13 @@
 title: Algorithmic Randomness and Computable Analysis
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - computability
+  - algorithmic-randomness
+  - computable-analysis
+  - kolmogorov-complexity
+  - measure-theory
 ---
 
 # Algorithmic Randomness and Computable Analysis

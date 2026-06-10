@@ -7,6 +7,13 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - mathematics
+  - category-theory
+  - universal-properties
+  - adjoint-functors
+  - yoneda-lemma
+  - limits-and-colimits
 ---
 
 # Basic Category Theory

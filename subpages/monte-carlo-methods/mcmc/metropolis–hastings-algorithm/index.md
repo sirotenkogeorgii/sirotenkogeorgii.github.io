@@ -2,6 +2,12 @@
 title: Metropolis-Hastings Algorithm
 layout: default
 noindex: true
+tags:
+  - probability
+  - monte-carlo
+  - sampling
+  - markov-chain-monte-carlo
+  - metropolis-hastings
 ---
 
 # Metropolis-Hastings Algorithm

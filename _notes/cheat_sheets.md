@@ -1,12 +1,7 @@
 ---
-layout: Cheat Sheets
-title: The Bridge
+layout: default
+title: Cheat Sheets
 date: 2024-10-20
-# excerpt: ...
-# tags:
-#   - modeling
-#   - statistical-physics
-#   - artificial-intelligence
 ---
 
 # Cheat Sheets

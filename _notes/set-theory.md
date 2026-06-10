@@ -7,6 +7,11 @@ date: 2024-10-20
 #   - sampling
 #   - statistics
 #   - algorithms
+tags:
+  - set-theory
+  - mathematics
+  - algebra
+  - topology
 ---
 
 

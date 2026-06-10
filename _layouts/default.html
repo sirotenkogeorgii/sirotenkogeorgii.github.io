@@ -49,6 +49,7 @@
         <nav class="site-nav">
           <a href="{{ '/' | relative_url }}">Home</a>
           <a href="{{ '/notes/' | relative_url }}">Notes</a>
+          <a href="{{ '/tags/' | relative_url }}">Tags</a>
         </nav>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
           <span class="theme-toggle__track" aria-hidden="true">
@@ -62,6 +63,7 @@
 
   <main class="page-content">
     <div class="wrapper">
+      {% unless page.layout == 'note' %}{% include page-tags.html %}{% endunless %}
       {{ content }}
     </div>
   </main>

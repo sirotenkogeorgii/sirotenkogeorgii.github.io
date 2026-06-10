@@ -7,6 +7,10 @@ date: 2024-10-20
 #   - sampling
 #   - statistics
 #   - algorithms
+tags:
+  - reinforcement-learning
+  - machine-learning
+  - markov-processes
 ---
 
 Books:

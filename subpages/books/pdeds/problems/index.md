@@ -2,6 +2,13 @@
 title: Problems from the PDEs in Data Science course
 layout: default
 noindex: true
+tags:
+  - pde
+  - optimization
+  - convex-analysis
+  - gradient-flows
+  - machine-learning
+  - exercises
 ---
 
 <style>
@@ -697,5 +704,400 @@ This means: **the exponent $-1$ in Theorem 5 cannot be improved to $-(1 + \varep
   <img src="{{ '/assets/images/notes/books/pdeds/sheet2_x4_decay.png' | relative_url }}" alt="Three panels. Left: trajectories of x(t) under dot x = -x^3 for several initial conditions, with an exponential decay reference dashed. Middle: log-log plot of E(t) for the x^4/4 case versus the Theorem 5 bound H(0)/t and an asymptotic 1/(16t^2) reference. Right: log-log decay curves for E = |x|^p / p with p = 3, 4, 6, 10, 50, all sitting strictly below the Theorem 5 bound 1/t but approaching it as p → ∞" loading="lazy">
   <figcaption>Left: the explicit trajectory $x(t) = x_0 / \sqrt{1 + 2 x_0^2 t}$ under the gradient flow of $\tfrac14 x^4$. The dashed grey curve $x_0 e^{-t}$ — what we'd get from a uniformly convex $\tfrac12 x^2$ — falls off vastly faster. Middle: actual $\mathcal E(t) \sim 1/(16 t^2)$ (solid) is well *below* the Theorem 5 bound $x_0^2 / t$ (dotted) — the bound is not sharp on this example. Right: the family $E_p = \lvert x\rvert^p / p$ shows the rate $t^{-p/(p-2)}$ approaching the bound $t^{-1}$ as $p \to \infty$ — so the *exponent* in Theorem 5 cannot be improved across the convex class.</figcaption>
 </figure>
+
+</details>
+
+## Exercise Sheet 7 — Displacement convexity of power laws and of the Dirichlet energy; the gluing lemma
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intro</span><span class="math-callout__name">(What this sheet is about)</span></p>
+
+This sheet sits squarely in the *Displacement convexity* section of Chapter 2. Exercise 7.1 takes the **Eulerian machinery** built there — the continuity equation (2.22) and the pressureless Euler equation (2.23), which together describe the displacement interpolation as a flow of densities — and runs it on two new functionals:
+
+* the **power-law internal energy** $\mathcal U(\rho)=\int\rho^p$, $p>1$, where the entropy computation generalises and convexity *survives* (with an extra positive term coming from the pressure);
+* the **Dirichlet energy** $E(\rho)=\frac12\int\lvert\nabla\rho\rvert^2$ — the simplest *first-order* functional, depending on $\nabla\rho$ rather than $\rho$ — where displacement convexity **fails**. We construct an explicit geodesic along which the energy is strictly concave near $t=0$.
+
+The moral of 7.1: McCann's theory (Theorem 32) is a statement about *zeroth-order* functionals of the density. Geodesics in Wasserstein space happily create *shape distortion* — steepening a profile while stretching it elsewhere — which functionals of $\nabla\rho$ can see and zeroth-order functionals cannot.
+
+Exercise 7.2 is about the **gluing lemma**: two transference plans $\pi\_{1,2}\in\Pi(\mu\_1,\mu\_2)$ and $\pi\_{2,3}\in\Pi(\mu\_2,\mu\_3)$ that share the middle marginal $\mu\_2$ can be glued into a single *triple coupling* $\pi\in\mathcal P(\mathbb R^d\times\mathbb R^d\times\mathbb R^d)$ — the key step in proving the triangle inequality for the Wasserstein distance. The exercise asks for the explicit formula in the two structured cases: plans with densities (the answer is a Bayes/Markov formula) and plans supported on graphs (the answer is composition of maps).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 7.1</span><span class="math-callout__name">(Displacement convexity in Eulerian coordinates)</span></p>
+
+**a)** Show that
+
+$$
+\mathcal U(\rho) = \int_{\mathbb R^d} \rho^p\,dx \qquad\text{for } p>1
+$$
+
+is displacement convex. Use the Eulerian representation (2.22) and (2.23). (Do **not** use Theorem 32.)
+
+**b)** Show that
+
+$$
+E(\rho) := \int_{\mathbb R^d} \frac12\,\lvert\nabla\rho\rvert^2\,dx
+$$
+
+is **not** displacement convex.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 7.1 (a) — power laws via (2.22)–(2.23)</summary>
+
+**Set-up.** Let $\mu,\nu\in\mathcal P\_{ac}(\mathbb R^d)$ and let $\rho\_t:=[\mu,\nu]\_t=(T\_t)\_\sharp\mu$ be the displacement interpolation, $T\_t=(1-t)\,\mathrm{id}+t\nabla\varphi$ with $\nabla\varphi$ the Brenier map. By Theorem 33 and Proposition 34, the density–velocity pair $(\rho\_t,v\_t)$, where $v\_t=\frac{d}{dt}T\_t\circ T\_t^{-1}$, solves the Eulerian system
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0, \tag{2.22}
+$$
+
+$$
+\partial_t v_t + (v_t\cdot\nabla)v_t = 0. \tag{2.23}
+$$
+
+As in the entropy computation of the notes, we compute *formally*: we assume $\rho\_t$, $v\_t$ are smooth enough and decay fast enough that we may interchange $\frac{d}{dt}$ with the integral and integrate by parts without boundary terms. We drop the subscript $t$ inside integrals.
+
+**The pressure.** For $U(s)=s^p$ define the **pressure**
+
+$$
+P(s) := s\,U'(s) - U(s) = p\,s^p - s^p = (p-1)\,s^p,
+$$
+
+chosen precisely so that $P'(s)=s\,U''(s)$ and hence
+
+$$
+\nabla\bigl[P(\rho)\bigr] = P'(\rho)\nabla\rho = \rho\,U''(\rho)\,\nabla\rho = \rho\,\nabla\bigl[U'(\rho)\bigr].
+$$
+
+This identity converts the awkward integrand $\rho\,\nabla U'(\rho)$ into a perfect gradient — it is the exact analogue of the "special algebra of the logarithm" ($\rho\,U''(\rho)=1$ for the entropy) that made the computation in the notes collapse.
+
+**First derivative.** Using (2.22) and integrating by parts twice,
+
+$$
+\begin{aligned}
+\frac{d}{dt}\,\mathcal U(\rho_t)
+&= \int_{\mathbb R^d} U'(\rho)\,\partial_t\rho\,dx
+\overset{(2.22)}{=} -\int_{\mathbb R^d} U'(\rho)\,\nabla\cdot(\rho v)\,dx
+= \int_{\mathbb R^d} \nabla\bigl[U'(\rho)\bigr]\cdot v\,\rho\,dx\\[2pt]
+&= \int_{\mathbb R^d} \nabla\bigl[P(\rho)\bigr]\cdot v\,dx
+= -\int_{\mathbb R^d} P(\rho)\,\nabla\cdot v\,dx
+= -(p-1)\int_{\mathbb R^d}\rho^p\,\nabla\cdot v\,dx.
+\tag{7.1}
+\end{aligned}
+$$
+
+**Second derivative.** Differentiating (7.1) in $t$ (product rule, then (2.22) on $\partial\_t\rho$ and (2.23) on $\partial\_t v$):
+
+$$
+\begin{aligned}
+\frac{d^2}{dt^2}\,\mathcal U(\rho_t)
+&= -(p-1)\Bigl[\int p\,\rho^{p-1}\,(\partial_t\rho)\,(\nabla\cdot v)\,dx + \int \rho^p\,\nabla\cdot(\partial_t v)\,dx\Bigr]\\
+&\overset{(2.22),(2.23)}{=} (p-1)\Bigl[\underbrace{\,p\int \rho^{p-1}\,\nabla\cdot(\rho v)\,(\nabla\cdot v)\,dx\,}_{=:A} + \underbrace{\int \rho^p\,\nabla\cdot\bigl((v\cdot\nabla)v\bigr)\,dx}_{=:B}\Bigr].
+\end{aligned}
+$$
+
+We work out $A$ and $B$ in indices (summation convention). For $A$, the observation $p\,\rho^{p-1}\partial\_j(\rho v\_j) = v\_j\,\partial\_j(\rho^p) + p\,\rho^p\,\partial\_j v\_j$ gives
+
+$$
+A = \int v_j\,\partial_j(\rho^p)\,(\partial_i v_i)\,dx + p\int \rho^p\,(\nabla\cdot v)^2\,dx.
+$$
+
+For $B$, expanding $\partial\_i(v\_j\partial\_j v\_i)=\partial\_i v\_j\,\partial\_j v\_i + v\_j\,\partial\_j(\partial\_i v\_i)$ and integrating the second piece by parts,
+
+$$
+B = \int \rho^p\,\operatorname{tr}\bigl((\nabla v)^2\bigr)\,dx
+- \int v_j\,\partial_j(\rho^p)\,(\partial_i v_i)\,dx - \int \rho^p\,(\nabla\cdot v)^2\,dx.
+$$
+
+The mixed terms $\pm\int v\cdot\nabla(\rho^p)\,(\nabla\cdot v)$ cancel exactly, and we are left with
+
+$$
+\frac{d^2}{dt^2}\,\mathcal U(\rho_t)
+= (p-1)^2\int_{\mathbb R^d} \rho^p\,(\nabla\cdot v)^2\,dx
+\;+\; (p-1)\int_{\mathbb R^d} \rho^p\,\operatorname{tr}\bigl((\nabla v)^2\bigr)\,dx.
+\tag{7.2}
+$$
+
+**Sign.** Both terms in (7.2) are non-negative:
+
+* the first because $p>1$ and $(\nabla\cdot v)^2\ge 0$;
+* the second because along the displacement interpolation $\nabla v\_t$ is a **symmetric** matrix, so $\operatorname{tr}((\nabla v)^2)=\lvert\nabla v\rvert^2\ge 0$ (squared Frobenius norm). Symmetry is the same argument as in the notes' entropy computation: $v\_t(y)=\frac1t\bigl(y-T\_t^{-1}(y)\bigr)$ and $T\_t^{-1}$ is the gradient of a convex function (it is the Brenier map from $\rho\_t$ back to $\mu$). Explicitly, $\nabla v\_t = (\nabla^2\varphi - I)\bigl[(1-t)I + t\nabla^2\varphi\bigr]^{-1}$ — two commuting symmetric matrices, hence a symmetric product.
+
+So $t\mapsto\mathcal U(\rho\_t)$ is continuous on $[0,1]$ and has non-negative second derivative on $(0,1)$, hence is convex. Since $\mu,\nu\in\mathcal P\_{ac}(\mathbb R^d)$ were arbitrary, $\mathcal U$ is displacement convex. $\blacksquare$
+
+**Reading 1 — the general pressure formula.** Nothing in the computation used the specific power law until the last step. For a general internal energy density $U$ with pressure $P(s)=sU'(s)-U(s)$, the same manipulations give
+
+$$
+\frac{d^2}{dt^2}\,\mathcal U(\rho_t)
+= \int \bigl[\rho\,P'(\rho)-P(\rho)\bigr](\nabla\cdot v)^2\,dx + \int P(\rho)\,\operatorname{tr}\bigl((\nabla v)^2\bigr)\,dx.
+$$
+
+For the entropy, $P(s)=s$ and $\rho P'(\rho)-P(\rho)=0$: the divergence term *vanishes identically* and only $\int\rho\lvert\nabla v\rvert^2$ remains — exactly the formula in the notes. For $U(s)=s^p$, $\rho P'(\rho)-P(\rho)=(p-1)^2\rho^p$ and $P(\rho)=(p-1)\rho^p$ are both non-negative *precisely because* $p>1$. The entropy is the borderline case where the first term degenerates.
+
+**Reading 2 — consistency checks.** (i) McCann's condition (2.19), which we were not allowed to use: $\Psi(r)=r^d U(r^{-d})=r^{d(1-p)}$ is convex and non-increasing for $p>1$ — agreement. (ii) In $d=1$ the Lagrangian computation is actually explicit and confirms (7.2): with $T\_t=\mathrm{id}+t v\_0$,
+
+$$
+\mathcal U(\rho_t) = \int \frac{\rho_0^p}{(1+tv_0')^p}\,(1+tv_0')\,dx = \int \rho_0^p\,(1+tv_0')^{1-p}\,dx,
+$$
+
+whose integrand has $t$-second-derivative $p(p-1)\,\rho\_0^p\,(v\_0')^2(1+tv\_0')^{-1-p}\ge 0$ pointwise; changing variables back, this is exactly $(7.2)$ in $d=1$, where $(\nabla\cdot v)^2=\operatorname{tr}((\nabla v)^2)=(v')^2$ and $(p-1)^2+(p-1)=p(p-1)$.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 7.1 (b) — the Dirichlet energy is not displacement convex</summary>
+
+We extend $E$ to all of $\mathcal P\_{ac}(\mathbb R^d)$ by setting $E(\rho)=+\infty$ when $\rho\notin H^1$, so that displacement convexity in the sense of Definition 29 is a meaningful claim on the displacement convex set $A=\mathcal P\_{ac}(\mathbb R^d)$. To disprove it, it suffices to exhibit **one** geodesic $(\rho\_t)\_{t\in[0,1]}$ with all energies finite along which $g(t):=E(\rho\_t)$ is not convex. We do this in $d=1$ (see Reading 3 for $d\ge 2$).
+
+**Why the obvious tests fail.** Translations $T=\mathrm{id}+c$ leave $E$ invariant: $g$ constant. Dilations $T=\lambda\,\mathrm{id}$ give, by scaling, $g(t)=\bigl(1-t+t\lambda\bigr)^{-(d+2)}E(\rho\_0)$ — a *convex* function of $t$. So the one-parameter families that detect McCann's condition (2.19) are blind here; the counterexample must genuinely distort the *shape* of the density. The mechanism will be: a density with an **exponentially growing window**, and a displacement concentrated inside the window.
+
+**Step 1: a geodesic and an exact formula for $g$.** Work on $\mathbb R$. Let $\rho\_0$ be a smooth, compactly supported probability density and let $v\colon\mathbb R\to\mathbb R$ be Lipschitz with $v'\ge 0$. Then $T:=\mathrm{id}+v$ is strictly increasing, hence (being monotone, i.e. the derivative of the convex function $x\mapsto \frac{x^2}{2}+\int\_0^x v$) it is the **optimal** map from $\mu:=\rho\_0\,dx$ to $\nu:=T\_\sharp\mu$, and
+
+$$
+\rho_t := (T_t)_\sharp\mu, \qquad T_t = \mathrm{id} + t\,v, \quad t\in[0,1]
+$$
+
+is the displacement interpolation $[\mu,\nu]\_t$. The one-dimensional change-of-variables (Monge–Ampère) identity reads
+
+$$
+\rho_t\bigl(T_t(x)\bigr)\,\bigl(1+t\,v'(x)\bigr) = \rho_0(x).
+$$
+
+Differentiating in $x$ and dividing by $T\_t'=1+tv'$,
+
+$$
+\rho_t'\bigl(T_t(x)\bigr) = \frac{\rho_0'(x)\,(1+t v'(x)) - t\,\rho_0(x)\,v''(x)}{(1+t v'(x))^3},
+$$
+
+and substituting $y=T\_t(x)$, $dy=(1+tv')\,dx$ in $E(\rho\_t)=\frac12\int(\rho\_t')^2\,dy$:
+
+$$
+g(t) = E(\rho_t) = \frac12\int_{\mathbb R} \frac{\bigl[\rho_0'\,(1+t v') - t\,\rho_0\,v''\bigr]^2}{(1+t v')^5}\,dx.
+\tag{7.3}
+$$
+
+This is exact for every $t\in[0,1]$, and $g$ is smooth in $t$ (the integrand is smooth in $t$, with uniformly bounded $t$-derivatives on the compact support).
+
+**Step 2: the second derivative at $t=0$.** Write the integrand of (7.3) as $\bigl[\rho\_0' + t\,g\_1\bigr]^2(1+tv')^{-5}$ with $g\_1:=\rho\_0'v'-\rho\_0v''$, and expand using $(1+z)^{-5}=1-5z+15z^2-O(z^3)$. The coefficient of $t^2$ is $g\_1^2 - 10\,\rho\_0'\,g\_1\,v' + 15\,(\rho\_0')^2(v')^2$, which after expanding $g\_1$ becomes
+
+$$
+g''(0) = \int_{\mathbb R} \Bigl[\,6\,(\rho_0')^2 (v')^2 \;+\; 8\,\rho_0\,\rho_0'\,v'\,v'' \;+\; \rho_0^2\,(v'')^2\,\Bigr]dx.
+\tag{7.4}
+$$
+
+As a pointwise quadratic form in $\bigl(\rho\_0'v',\,\rho\_0v''\bigr)$ this has matrix $\begin{pmatrix}6&4\\4&1\end{pmatrix}$ with determinant $-10<0$: it is **indefinite**, so there is room for negativity — but only if the cross term can beat both squares *after integration*, which is a global question (for an exactly affine density the cross term integrates away and $g''(0)>0$; see Reading 2).
+
+**Step 3: the construction.** Fix $L>0$ and $\kappa>\pi/L$ (for instance $L=2$, $\kappa=\pi$), and set $\beta:=\pi/L$. Choose a smooth, compactly supported probability density $\rho\_0$ with
+
+$$
+\rho_0(x) = c\,e^{\kappa x} \quad\text{on } [0,L]
+$$
+
+for some constant $c>0$ (glue smooth decaying tails outside $[0,L]$ and normalise). Take the displacement
+
+$$
+v(x) := \int_0^x u(s)\,ds, \qquad
+u(x) := e^{-\kappa x}\,\sin(\beta x)\,\mathbf 1_{[0,L]}(x) \;\ge\; 0,
+$$
+
+so $v'=u\ge0$ (Step 1 applies: $T=\mathrm{id}+v$ is optimal) and $v''=u'$ a.e. Outside $[0,L]$ the integrand of (7.4) vanishes; inside, $\rho\_0'=\kappa\rho\_0$ and — this is the point of the construction — the exponentials **cancel**:
+
+$$
+\rho_0 u = c\,\sin(\beta x), \qquad
+\rho_0 u' = c\,\bigl(\beta\cos(\beta x) - \kappa\sin(\beta x)\bigr).
+$$
+
+Abbreviating $s=\sin(\beta x)$, $C=\cos(\beta x)$, the integrand of (7.4) becomes
+
+$$
+c^2\Bigl[6\kappa^2 s^2 + 8\kappa\,s\,(\beta C - \kappa s) + (\beta C - \kappa s)^2\Bigr]
+= c^2\Bigl[-\kappa^2 s^2 + 6\kappa\beta\, sC + \beta^2 C^2\Bigr].
+$$
+
+Since $\beta L=\pi$ is exactly a half-period, $\int\_0^L s^2 = \int\_0^L C^2 = \frac L2$ and $\int\_0^L sC = 0$, so
+
+$$
+g''(0) = c^2\,\frac L2\,\bigl(\beta^2 - \kappa^2\bigr) = c^2\,\frac L2\Bigl(\frac{\pi^2}{L^2} - \kappa^2\Bigr) \;<\; 0
+\qquad\text{precisely when } \kappa L > \pi.
+$$
+
+Since $g\in C^2$ with $g''(0)<0$, $g''<0$ on an interval $[0,\delta)\subset[0,1)$, so $t\mapsto E(\rho\_t)$ is **not convex** on $[0,1]$. Hence $E$ is not displacement convex. $\blacksquare$
+
+**Concrete check.** For $L=2$, $\kappa=\pi$ (so $\kappa L=2\pi>\pi$): $g''(0)=-\tfrac{3\pi^2}{4}c^2\approx-7.40\,c^2$. A direct numerical evaluation of (7.3) (and, independently, of the push-forward density differentiated on a grid — the two agree to 7 digits) confirms a *macroscopic* midpoint violation, e.g. $g\bigl(\tfrac12\bigr)>\tfrac12\bigl(g(0)+g(1)\bigr)$ for the unnormalised window density.
+
+**Reading 1 — regularity fine print.** $u$ has corners at $x=0,L$ (where $u'$ jumps), so $v\in C^{1,1}$ only; formula (7.3) and the expansion (7.4) only need $v''\in L^\infty$ with compact support, so this is harmless. Alternatively, mollify $u$: $g''(0)$ depends continuously on $u$ in $W^{1,2}$, so the strict inequality survives a small smoothing.
+
+**Reading 2 — why this construction, and why $\kappa L>\pi$.** Integrating the cross term of (7.4) by parts ($v'$ has compact support) gives the equivalent form
+
+$$
+g''(0) = \int \bigl[\,2(\rho_0')^2 - 4\rho_0\rho_0''\,\bigr](v')^2\,dx + \int \rho_0^2\,(v'')^2\,dx.
+$$
+
+The *only* possible negative contribution is $-4\rho\_0\rho\_0''(v')^2$, active where the density is strongly **convex**: non-convexity of $E$ is created by placing the displacement on a steep convex ramp of $\rho\_0$. On the exponential window, $2(\rho\_0')^2-4\rho\_0\rho\_0''=-2\kappa^2\rho\_0^2$, and minimising the Rayleigh quotient $\int\rho\_0^2(v'')^2\,/\int\rho\_0^2(v')^2$ over $v'\in H\_0^1(0,L)$ is a weighted Sturm–Liouville problem whose ground state is exactly our $u=e^{-\kappa x}\sin(\pi x/L)$, with eigenvalue $\kappa^2+\pi^2/L^2$. Hence along the optimal disturbance $g''(0)=\bigl(\frac{\pi^2}{L^2}-\kappa^2\bigr)\int\rho\_0^2u^2$, and $\kappa L>\pi$ is the *sharp threshold* at which the convexity term beats the curvature penalty $\int\rho\_0^2(v'')^2$ — the window must be both steep ($\kappa$ large) and long ($L$ large) on the log scale.
+
+**Reading 3 — arbitrary dimension.** Take the product density $\tilde\rho\_0(x)=\rho\_0(x\_1)\,q(x\_2,\dots,x\_d)$ with $q$ a fixed smooth compactly supported density, and the displacement $\tilde v(x)=(v(x\_1),0,\dots,0)$, which is still the gradient of a convex function. Then
+
+$$
+E(\tilde\rho_t) = \Bigl(\int q^2\Bigr)\,g(t) + \Bigl(\int\lvert\nabla' q\rvert^2\Bigr)\,h(t),
+\qquad h(t):=\frac12\int\rho_t^2\,dx_1,
+$$
+
+and $h''(0)=\int\rho\_0^2(v')^2 = c^2\frac L2$ by the same half-period computation. Hence
+
+$$
+\frac{d^2}{dt^2}\Big|_{t=0} E(\tilde\rho_t) = c^2\,\frac L2\Bigl[\Bigl(\frac{\pi^2}{L^2}-\kappa^2\Bigr)\int q^2 + \int\lvert\nabla' q\rvert^2\Bigr],
+$$
+
+which is negative as soon as $\kappa$ is large enough (with $q$, $L$ fixed). So the failure is not a one-dimensional accident. Functionals of $\nabla\rho$ *can* be displacement convex, but they have to be built differently — see Carrillo–Slepčev, *Example of a displacement convex functional of first order* (Calc. Var. PDE, 2009).
+
+</details>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Recap</span><span class="math-callout__name">(The gluing lemma and the triple coupling)</span></p>
+
+**Gluing lemma.** Let $\mu\_1,\mu\_2,\mu\_3\in\mathcal P(\mathbb R^d)$ and let $\pi\_{1,2}\in\Pi(\mu\_1,\mu\_2)$, $\pi\_{2,3}\in\Pi(\mu\_2,\mu\_3)$ be two transference plans **sharing the middle marginal** $\mu\_2$. Then there exists a probability measure $\pi\_{1,2,3}$ on $\mathbb R^d\times\mathbb R^d\times\mathbb R^d$ — the *triple coupling* — whose projections onto the first-two and last-two factors are the given plans:
+
+$$
+(\mathrm{proj}_{1,2})_\sharp\,\pi_{1,2,3} = \pi_{1,2},
+\qquad
+(\mathrm{proj}_{2,3})_\sharp\,\pi_{1,2,3} = \pi_{2,3}.
+$$
+
+**General formula via disintegration.** Disintegrate both plans with respect to the shared variable $x\_2$ (regular conditional probabilities):
+
+$$
+d\pi_{1,2}(x_1,x_2) = d\pi_{1,2}^{x_2}(x_1)\,d\mu_2(x_2),
+\qquad
+d\pi_{2,3}(x_2,x_3) = d\pi_{2,3}^{x_2}(x_3)\,d\mu_2(x_2),
+$$
+
+and glue **conditionally independently**:
+
+$$
+d\pi_{1,2,3}(x_1,x_2,x_3) := d\pi_{1,2}^{x_2}(x_1)\;d\pi_{2,3}^{x_2}(x_3)\;d\mu_2(x_2).
+$$
+
+Probabilistically: draw the middle variable $x\_2\sim\mu\_2$; given $x\_2$, draw $x\_1$ and $x\_3$ *independently* from the two conditionals — a three-step Markov chain $X\_1 - X\_2 - X\_3$. The payoff is the $1{,}3$-marginal $(\mathrm{proj}\_{1,3})\_\sharp\pi\_{1,2,3}\in\Pi(\mu\_1,\mu\_3)$, which is exactly the competitor plan used to prove the triangle inequality for the Wasserstein distance.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 7.2</span><span class="math-callout__name">(The triple coupling, explicitly)</span></p>
+
+Write down the formula for the "triple coupling" in the gluing lemma in the case: $\pi\_{1,2}$ and $\pi\_{2,3}$ are probability measures on $\mathbb R^d\times\mathbb R^d$ and
+
+**a)** $\pi\_{1,2}$ and $\pi\_{2,3}$ are absolutely continuous with respect to the Lebesgue measure, i.e.
+
+$$
+d\pi_{1,2} = f_{1,2}(x_1,x_2)\,dx_1\,dx_2, \qquad
+d\pi_{2,3} = f_{2,3}(x_2,x_3)\,dx_2\,dx_3
+$$
+
+for $f\_{1,2},f\_{2,3}\in L^1$ with respect to the Lebesgue measure.
+
+**b)** $\pi\_{1,2}$ and $\pi\_{2,3}$ are supported on graphs:
+
+$$
+\pi_{1,2} = (\mathrm{id},\,T_{1,2})_\sharp\,\mu_1, \qquad
+\pi_{2,3} = (\mathrm{id},\,T_{2,3})_\sharp\,\mu_2,
+$$
+
+where $T\_{1,2},T\_{2,3}\colon\mathbb R^d\to\mathbb R^d$ are measurable and $\mu\_1,\mu\_2$ are probability measures on $\mathbb R^d$.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 7.2 (a) — absolutely continuous plans: the Bayes/Markov formula</summary>
+
+**The shared marginal.** The middle marginal $\mu\_2$ is absolutely continuous with density
+
+$$
+f_2(x_2) := \int_{\mathbb R^d} f_{1,2}(x_1,x_2)\,dx_1,
+$$
+
+and the gluing hypothesis ("$\pi\_{1,2}$ and $\pi\_{2,3}$ share the middle marginal") reads
+
+$$
+\int_{\mathbb R^d} f_{1,2}(x_1,x_2)\,dx_1 = f_2(x_2) = \int_{\mathbb R^d} f_{2,3}(x_2,x_3)\,dx_3
+\qquad\text{for a.e. } x_2.
+$$
+
+**The formula.** The triple coupling is absolutely continuous on $(\mathbb R^d)^3$, $d\pi\_{1,2,3}=f\_{1,2,3}\,dx\_1\,dx\_2\,dx\_3$, with
+
+$$
+f_{1,2,3}(x_1,x_2,x_3) :=
+\begin{cases}
+\dfrac{f_{1,2}(x_1,x_2)\,f_{2,3}(x_2,x_3)}{f_2(x_2)}, & f_2(x_2)>0,\\[6pt]
+0, & f_2(x_2)=0.
+\end{cases}
+\tag{7.5}
+$$
+
+This is the general disintegration formula made explicit: the conditionals are $d\pi\_{1,2}^{x\_2}(x\_1)=\frac{f\_{1,2}(x\_1,x\_2)}{f\_2(x\_2)}\,dx\_1$ and $d\pi\_{2,3}^{x\_2}(x\_3)=\frac{f\_{2,3}(x\_2,x\_3)}{f\_2(x\_2)}\,dx\_3$, so (7.5) is "conditional density of $x\_1$ given $x\_2$, times density of $x\_2$, times conditional density of $x\_3$ given $x\_2$" — the joint law of a Markov chain in which $x\_1$ and $x\_3$ are **conditionally independent given $x\_2$**.
+
+**Why the zero set is harmless.** On $N:=\lbrace f\_2=0\rbrace$ we declared $f\_{1,2,3}=0$; no mass is lost, because the plans put none there:
+
+$$
+\int_{\mathbb R^d\times N} f_{1,2}\,dx_1\,dx_2 = \int_N f_2\,dx_2 = 0,
+$$
+
+so $f\_{1,2}(\cdot,x\_2)=0$ for a.e. $x\_2\in N$ (and likewise for $f\_{2,3}$).
+
+**Verification of the two marginals.** For $f\_2(x\_2)>0$,
+
+$$
+\int_{\mathbb R^d} f_{1,2,3}(x_1,x_2,x_3)\,dx_3
+= \frac{f_{1,2}(x_1,x_2)}{f_2(x_2)}\int_{\mathbb R^d} f_{2,3}(x_2,x_3)\,dx_3
+= f_{1,2}(x_1,x_2),
+$$
+
+using the shared-marginal identity; on $N$ both sides vanish a.e. So $(\mathrm{proj}\_{1,2})\_\sharp\pi\_{1,2,3}=\pi\_{1,2}$, and symmetrically (integrating out $x\_1$) $(\mathrm{proj}\_{2,3})\_\sharp\pi\_{1,2,3}=\pi\_{2,3}$. In particular $\pi\_{1,2,3}$ is a probability measure. $\blacksquare$
+
+**Reading.** Integrating out the middle variable gives the $1{,}3$-marginal
+
+$$
+f_{1,3}(x_1,x_3) = \int_{\lbrace f_2>0\rbrace} \frac{f_{1,2}(x_1,x_2)\,f_{2,3}(x_2,x_3)}{f_2(x_2)}\,dx_2
+$$
+
+— a Chapman–Kolmogorov-type composition of the two plans, and the coupling of $\mu\_1,\mu\_3$ that feeds the triangle inequality for $W\_2$.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 7.2 (b) — plans on graphs: composition of maps</summary>
+
+**Compatibility.** The second marginal of $\pi\_{1,2}=(\mathrm{id},T\_{1,2})\_\sharp\mu\_1$ is $(T\_{1,2})\_\sharp\mu\_1$, while the first marginal of $\pi\_{2,3}=(\mathrm{id},T\_{2,3})\_\sharp\mu\_2$ is $\mu\_2$. The gluing hypothesis therefore forces
+
+$$
+(T_{1,2})_\sharp\,\mu_1 = \mu_2.
+$$
+
+**The formula.** The triple coupling is
+
+$$
+\pi_{1,2,3} = \bigl(\mathrm{id},\; T_{1,2},\; T_{2,3}\circ T_{1,2}\bigr)_\sharp\,\mu_1,
+\tag{7.6}
+$$
+
+i.e. $\int \zeta\,d\pi\_{1,2,3} = \int \zeta\bigl(x,\,T\_{1,2}(x),\,T\_{2,3}(T\_{1,2}(x))\bigr)\,d\mu\_1(x)$ for bounded measurable $\zeta$. Equivalently, $\pi\_{1,2,3}$ is the push-forward of $\pi\_{1,2}$ under $(x\_1,x\_2)\mapsto(x\_1,x\_2,T\_{2,3}(x\_2))$: the third coordinate is a *deterministic continuation* of the second.
+
+**Verification of the two marginals.** Using $(F\circ G)\_\sharp = F\_\sharp\, G\_\sharp$:
+
+$$
+(\mathrm{proj}_{1,2})_\sharp\,\pi_{1,2,3}
+= \bigl(\mathrm{id},\,T_{1,2}\bigr)_\sharp\,\mu_1 = \pi_{1,2},
+$$
+
+since $\mathrm{proj}\_{1,2}\circ(\mathrm{id},T\_{1,2},T\_{2,3}\circ T\_{1,2}) = (\mathrm{id},T\_{1,2})$; and since $\mathrm{proj}\_{2,3}\circ(\mathrm{id},T\_{1,2},T\_{2,3}\circ T\_{1,2}) = \bigl(T\_{1,2},\,T\_{2,3}\circ T\_{1,2}\bigr) = (\mathrm{id},T\_{2,3})\circ T\_{1,2}$,
+
+$$
+(\mathrm{proj}_{2,3})_\sharp\,\pi_{1,2,3}
+= (\mathrm{id},T_{2,3})_\sharp\bigl[(T_{1,2})_\sharp\,\mu_1\bigr]
+= (\mathrm{id},T_{2,3})_\sharp\,\mu_2 = \pi_{2,3}. \qquad\blacksquare
+$$
+
+**Reading.** (i) Formula (7.6) is the deterministic special case of the general disintegration formula: the conditional of $\pi\_{2,3}$ given $x\_2$ is the Dirac $\pi\_{2,3}^{x\_2}=\delta\_{T\_{2,3}(x\_2)}$. Note the asymmetry: the conditional of $\pi\_{1,2}$ given its *second* variable $x\_2$ need **not** be a Dirac ($T\_{1,2}$ may fail to be injective — the conditional $\pi\_{1,2}^{x\_2}$ lives on the fibre $T\_{1,2}^{-1}(\lbrace x\_2\rbrace)$), but the formula never needs it. (ii) The $1{,}3$-marginal is $(\mathrm{id},\,T\_{2,3}\circ T\_{1,2})\_\sharp\,\mu\_1$: gluing graph plans is **composition of transport maps**. When $T\_{1,2}$ and $T\_{2,3}$ are optimal maps, this composed plan is the (in general suboptimal) coupling of $\mu\_1$ and $\mu\_3$ behind the triangle inequality $W\_2(\mu\_1,\mu\_3)\le W\_2(\mu\_1,\mu\_2)+W\_2(\mu\_2,\mu\_3)$.
 
 </details>

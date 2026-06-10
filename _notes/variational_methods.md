@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - variational-methods
+  - statistical-physics
+  - information-theory
+  - machine-learning
+  - optimization
 ---
 
 # Variational Methods

@@ -1,3 +1,13 @@
+---
+layout: default
+title: "Proof Techniques"
+tags:
+  - mathematics
+  - analysis
+  - proof-techniques
+  - uniform-convergence
+  - inequalities
+---
 ## $\varepsilon /3$ trick
 
 This theorem is proved by the "⁠$\varepsilon /3$ trick", and is the archetypal example of this trick: to prove a given inequality (that a desired quantity is less than ⁠$\varepsilon$), one uses the definitions of continuity and uniform convergence to produce 3 inequalities (demonstrating three separate quantities are each less than ⁠$\varepsilon /3$), and then combines them via the triangle inequality to produce the desired inequality.

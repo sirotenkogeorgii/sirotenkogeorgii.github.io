@@ -2,6 +2,14 @@
 title: The Principles of Diffusion Models
 layout: default
 noindex: true
+tags:
+  - machine-learning
+  - deep-learning
+  - generative-models
+  - diffusion-models
+  - score-matching
+  - flow-matching
+  - variational-inference
 ---
 
 # The Principles of Diffusion Models

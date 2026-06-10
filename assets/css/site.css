@@ -1072,3 +1072,135 @@ thead {
     padding-left: 0.75rem;
   }
 }
+
+/* Tags: per-page chips */
+.page-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1.1rem;
+}
+
+.note-header .page-tags {
+  margin: 0.65rem 0 0;
+}
+
+.page-tags__tag,
+.tag-cloud__tag,
+.tag-section__related-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--accent-muted);
+  color: var(--accent);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.page-tags__tag:hover,
+.tag-cloud__tag:hover,
+.tag-section__related-tag:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+/* Tags index page */
+.tags-page__intro {
+  color: var(--muted);
+}
+
+.tags-search {
+  margin: 1.4rem 0 1.6rem;
+}
+
+.tags-search input {
+  width: 100%;
+  max-width: 26rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.tags-search input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.2rem;
+}
+
+.tag-cloud__count {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.tags-page__empty {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.tag-section {
+  padding-top: 0.4rem;
+  scroll-margin-top: 4.5rem;
+}
+
+.tag-section:target .tag-section__title {
+  color: var(--accent);
+}
+
+.tag-section__title {
+  font-size: 1.25rem;
+  margin: 1.6rem 0 0.6rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.35rem;
+}
+
+.tag-section__count {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.tag-section__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag-section__list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.28rem 0;
+}
+
+.tag-section__related {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.tag-section__related-tag {
+  padding: 0.05rem 0.5rem;
+  font-size: 0.72rem;
+  background: transparent;
+  color: var(--muted);
+}
+
+.tag-section__related-tag:hover {
+  color: var(--accent);
+}

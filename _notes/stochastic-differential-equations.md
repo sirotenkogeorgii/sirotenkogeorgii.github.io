@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - stochastic-differential-equations
+  - stochastic-processes
+  - probability
+  - markov-processes
+  - mathematics
 ---
 
 # Stochastic Differential Equations

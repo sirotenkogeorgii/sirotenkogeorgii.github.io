@@ -7,6 +7,11 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - computability
+  - complexity
+  - information-theory
+  - mathematics
 ---
 
 # Computability Notes

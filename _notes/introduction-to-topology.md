@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - topology
+  - metric-spaces
+  - set-theory
+  - analysis
+  - mathematics
 ---
 
 # Introduction to Topology

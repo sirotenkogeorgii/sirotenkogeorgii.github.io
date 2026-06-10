@@ -2,6 +2,13 @@
 title: Jordan Normal Form
 layout: default
 noindex: true
+tags:
+  - mathematics
+  - linear-algebra
+  - jordan-form
+  - eigenvalues
+  - matrix-exponential
+  - dynamical-systems
 ---
 
 # Jordan Normal Form

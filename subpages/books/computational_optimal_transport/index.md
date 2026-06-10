@@ -7,6 +7,14 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - mathematics
+  - optimal-transport
+  - optimization
+  - numerical-methods
+  - wasserstein-distance
+  - sinkhorn-algorithm
+  - entropic-regularization
 ---
 
 # Computational Optimal Transport

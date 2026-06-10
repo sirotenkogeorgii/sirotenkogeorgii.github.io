@@ -2,6 +2,12 @@
 title: Problems from the NMBIP course
 layout: default
 noindex: true
+tags:
+  - inverse-problems
+  - bayesian-inference
+  - numerical-methods
+  - probability
+  - exercises
 ---
 
 <style>

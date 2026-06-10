@@ -1,3 +1,14 @@
+---
+layout: default
+title: "When Does the Taylor Approximation Fail?"
+tags:
+  - analysis
+  - real-analysis
+  - taylor-series
+  - analytic-functions
+  - smooth-functions
+  - power-series
+---
 ## Taylor Approximation from Mat. Analyza 1
 
 <div class="math-callout math-callout--proposition" markdown="1">

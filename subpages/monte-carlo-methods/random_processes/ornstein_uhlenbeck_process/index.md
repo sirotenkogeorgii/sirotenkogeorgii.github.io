@@ -2,6 +2,12 @@
 title: Ornstein-Uhlenbeck Process
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - ornstein-uhlenbeck-process
+  - stochastic-differential-equations
+  - simulation
 ---
 
 # Ornstein-Uhlenbeck Process

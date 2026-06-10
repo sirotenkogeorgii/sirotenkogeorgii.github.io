@@ -2,6 +2,13 @@
 title: Nonlinear Dynamics and Chaos (Strogatz)
 layout: default
 noindex: true
+tags:
+  - mathematics
+  - dynamical-systems
+  - chaos
+  - bifurcations
+  - fractals
+  - nonlinear-dynamics
 ---
 
 # Nonlinear Dynamics and Chaos

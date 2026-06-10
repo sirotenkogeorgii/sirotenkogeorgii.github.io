@@ -3,6 +3,12 @@ layout: note
 title: "Adding Geometry to a Vector Space"
 date: 2024-10-20
 math: true
+tags:
+  - mathematics
+  - linear-algebra
+  - geometry
+  - inner-product-spaces
+  - gram-schmidt
 ---
 
 From the Hladik's book, section "Orthogonalization, Gram-Schmidt orthogonalization":

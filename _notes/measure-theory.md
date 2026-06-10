@@ -7,6 +7,11 @@ date: 2025-10-16
 #   - cuda
 #   - parallelism
 #   - high-performance-computing
+tags:
+  - measure-theory
+  - integration
+  - analysis
+  - mathematics
 ---
 
 # Some notes on measure theory

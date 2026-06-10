@@ -2,6 +2,15 @@
 title: Problems from the MBTSA course
 layout: default
 noindex: true
+tags:
+  - time-series
+  - statistics
+  - exercises
+  - maximum-likelihood
+  - autoregressive-processes
+  - kalman-filter
+  - dynamical-systems
+  - regression
 ---
 
 # Selected MBTSA Course Problems
@@ -682,7 +691,7 @@ This normalization ensures $\widehat{\text{acor}}(0) = 1$ and $|\widehat{\text{a
 
 * For barrier $B>0$, strike $K<B$, and maturity $T>0$:
   
-  $$P(B,K,T)=\max\lbrace0,S_T-K\rbrace\mathbf{1}_{{M_T<B}}$$
+  $$P(B,K,T)=\max\lbrace0,S_T-K\rbrace\mathbf{1}_{M_T<B}$$
   
   where
   

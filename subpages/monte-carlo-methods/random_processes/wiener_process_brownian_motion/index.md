@@ -2,6 +2,13 @@
 title: Wiener Process and Brownian Motion
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - wiener-process
+  - brownian-motion
+  - gaussian-processes
+  - random-walks
 ---
 
 # Wiener Process and Brownian Motion

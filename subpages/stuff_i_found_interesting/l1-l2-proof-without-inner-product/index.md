@@ -3,6 +3,12 @@ layout: note
 title: "A sum-of-squares proof of the l1–l2 comparison inequality"
 date: 2024-10-20
 math: true
+tags:
+  - mathematics
+  - analysis
+  - linear-algebra
+  - inequalities
+  - norms
 ---
 
 A very standard exercise asks one to establish the comparison

@@ -2,6 +2,13 @@
 title: Evidence Lower Bound (ELBO)
 layout: default
 noindex: true
+tags:
+  - machine-learning
+  - probability
+  - bayesian-inference
+  - variational-inference
+  - kl-divergence
+  - generative-models
 ---
 
 # Evidence Lower Bound (ELBO)

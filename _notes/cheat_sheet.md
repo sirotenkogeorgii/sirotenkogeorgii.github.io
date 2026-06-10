@@ -2,6 +2,12 @@
 layout: default
 title: cheat sheet
 date: 2026-05-13
+tags:
+  - mathematics
+  - functional-analysis
+  - measure-theory
+  - topology
+  - analysis
 ---
 
 # Math Cheat Sheet

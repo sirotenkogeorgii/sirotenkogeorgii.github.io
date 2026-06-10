@@ -2,6 +2,13 @@
 title: Ising Model
 layout: default
 noindex: true
+tags:
+  - statistical-physics
+  - physics
+  - ising-model
+  - monte-carlo
+  - metropolis-hastings
+  - graphs
 ---
 
 <style>

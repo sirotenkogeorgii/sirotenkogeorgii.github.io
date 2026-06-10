@@ -2,6 +2,13 @@
 layout: default
 title: Algorithms for Combinatorial Optimization
 date: 2025-03-10
+tags:
+  - optimization
+  - algorithms
+  - combinatorial-optimization
+  - integer-programming
+  - linear-programming
+  - convex-analysis
 ---
 
 # Algorithms for Combinatorial Optimization

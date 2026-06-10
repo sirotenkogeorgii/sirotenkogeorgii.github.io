@@ -2,6 +2,14 @@
 title: Diffusion Process
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - stochastic-differential-equations
+  - diffusion-processes
+  - euler-maruyama
+  - numerical-methods
+  - simulation
 ---
 
 # Diffusion Process

@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - machine-learning
+  - statistical-learning
+  - supervised-learning
+  - classification
+  - vc-dimension
 ---
 
 # The Classic Theory for Supervised Learning

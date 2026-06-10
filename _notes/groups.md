@@ -7,6 +7,10 @@ date: 2025-10-16
 #   - cuda
 #   - parallelism
 #   - high-performance-computing
+tags:
+  - group-theory
+  - algebra
+  - mathematics
 ---
 
 # Some notes on groups

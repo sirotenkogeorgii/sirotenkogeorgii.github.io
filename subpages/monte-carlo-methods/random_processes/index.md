@@ -2,6 +2,13 @@
 title: Random Processes
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - monte-carlo
+  - markov-processes
+  - gaussian-processes
+  - wiener-process
 ---
 
 # Random Processes

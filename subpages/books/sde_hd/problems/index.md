@@ -2,6 +2,13 @@
 title: Problems from the SDEs & Diffusion Models course
 layout: default
 noindex: true
+tags:
+  - stochastic-differential-equations
+  - stochastic-processes
+  - probability
+  - brownian-motion
+  - diffusion-models
+  - exercises
 ---
 
 <style>

@@ -3,6 +3,12 @@ layout: note
 title: "Why the exponential function is everywhere"
 date: 2026-05-26
 math: true
+tags:
+  - mathematics
+  - analysis
+  - exponential-function
+  - functional-equations
+  - group-theory
 ---
 
 # Why the exponential function is everywhere

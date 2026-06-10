@@ -2,6 +2,11 @@
 title: Interactive proof systems
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - complexity
+  - interactive-proofs
+  - randomized-algorithms
 ---
 
 # Interactive proof systems

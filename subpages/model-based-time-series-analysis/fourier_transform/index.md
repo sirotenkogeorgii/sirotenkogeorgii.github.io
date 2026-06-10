@@ -2,6 +2,14 @@
 title: Fourier Transform
 layout: default
 noindex: true
+tags:
+  - signal-processing
+  - algorithms
+  - fourier-analysis
+  - fast-fourier-transform
+  - polynomials
+  - complex-numbers
+  - time-series
 ---
 
 <style>

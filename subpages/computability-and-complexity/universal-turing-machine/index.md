@@ -2,6 +2,12 @@
 title: Universal Turing Machine
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - computability
+  - turing-machines
+  - halting-problem
+  - undecidability
 ---
 
 # Universal Turing Machine

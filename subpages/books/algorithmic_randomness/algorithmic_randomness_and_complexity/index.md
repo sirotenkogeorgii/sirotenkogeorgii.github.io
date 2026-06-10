@@ -2,6 +2,12 @@
 title: Algorithmic Randomness and Complexity
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - computability
+  - algorithmic-randomness
+  - kolmogorov-complexity
+  - martingales
 ---
 
 # Algorithmic Randomness and Complexity

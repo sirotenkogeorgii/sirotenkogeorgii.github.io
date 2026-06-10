@@ -2,6 +2,13 @@
 title: Metropolis-Adjusted Langevin Algorithm
 layout: default
 noindex: true
+tags:
+  - monte-carlo
+  - sampling
+  - markov-chain-monte-carlo
+  - langevin-dynamics
+  - stochastic-differential-equations
+  - euler-maruyama
 ---
 
 # Metropolis-Adjusted Langevin Algorithm

@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - variational-methods
+  - bayesian-inference
+  - machine-learning
+  - probability
+  - statistics
 ---
 
 # Variational Bayesian Methods

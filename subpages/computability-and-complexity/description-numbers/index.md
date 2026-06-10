@@ -2,6 +2,13 @@
 title: Description Numbers
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - computability
+  - turing-machines
+  - godel-numbering
+  - halting-problem
+  - undecidability
 ---
 
 # Description Numbers

@@ -2,6 +2,12 @@
 title: SINDy
 layout: default
 noindex: true
+tags:
+  - machine-learning
+  - dynamical-systems
+  - system-identification
+  - sparse-regression
+  - time-series
 ---
 
 # SINDy: Sparse Identification of Nonlinear Dynamics

@@ -2,6 +2,12 @@
 title: Acceptance−Rejection Sampling
 layout: default
 noindex: true
+tags:
+  - probability
+  - monte-carlo
+  - sampling
+  - rejection-sampling
+  - simulation
 ---
 
 # Acceptance−Rejection Sampling

@@ -7,6 +7,12 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - information-geometry
+  - information-theory
+  - differential-geometry
+  - statistics
+  - mathematics
 ---
 
 Books:

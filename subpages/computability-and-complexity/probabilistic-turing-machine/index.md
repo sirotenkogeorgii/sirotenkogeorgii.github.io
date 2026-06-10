@@ -2,6 +2,13 @@
 title: Probabilistic Turing Machine
 layout: default
 noindex: true
+tags:
+  - computer-science
+  - computability
+  - complexity
+  - turing-machines
+  - randomized-algorithms
+  - probability
 ---
 
 # (Alternative) Probabilistic Turing Machine

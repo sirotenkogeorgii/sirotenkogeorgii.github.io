@@ -3,6 +3,12 @@ layout: note
 title: "Weak but Not Strong Convergence in Lp: sin(nt)"
 date: 2024-10-20
 math: true
+tags:
+  - mathematics
+  - functional-analysis
+  - weak-convergence
+  - lp-spaces
+  - riemann-lebesgue-lemma
 ---
 
 <div style="margin: 1.2rem 0 1.5rem;">

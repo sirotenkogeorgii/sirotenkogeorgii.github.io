@@ -7,6 +7,12 @@ date: 2024-10-20
 #   - modeling
 #   - statistical-physics
 #   - artificial-intelligence
+tags:
+  - mathematics
+  - dynamical-systems
+  - chaos
+  - fractals
+  - cantor-set
 ---
 
 # Non-Linear Dynamics and Chaos

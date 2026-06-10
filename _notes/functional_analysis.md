@@ -7,6 +7,10 @@ date: 2024-11-01
 #   - dynamical-systems
 #   - machine-learning
 #   - theory
+tags:
+  - functional-analysis
+  - analysis
+  - mathematics
 ---
 
 Books:

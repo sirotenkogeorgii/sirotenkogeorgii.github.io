@@ -2,6 +2,14 @@
 layout: default
 title: Optimal Transport Old and New
 date: 2024-11-01
+tags:
+  - mathematics
+  - optimal-transport
+  - analysis
+  - probability
+  - differential-geometry
+  - wasserstein-distance
+  - ricci-curvature
 ---
 
 # Optimal Transport Old and New

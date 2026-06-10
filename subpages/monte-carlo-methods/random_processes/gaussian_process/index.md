@@ -2,6 +2,12 @@
 title: Gaussian Processes
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - gaussian-processes
+  - monte-carlo
+  - simulation
 ---
 
 # Gaussian Processes

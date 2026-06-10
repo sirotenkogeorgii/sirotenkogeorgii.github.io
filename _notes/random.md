@@ -2,6 +2,14 @@
 layout: default
 title: random
 date: 2024-10-20
+tags:
+  - mathematics
+  - analysis
+  - measure-theory
+  - integration
+  - probability
+  - stochastic-processes
+  - algorithms
 ---
 
 # Random Stuff

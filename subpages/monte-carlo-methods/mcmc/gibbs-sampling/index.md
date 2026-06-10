@@ -2,6 +2,13 @@
 title: Gibbs Sampling
 layout: default
 noindex: true
+tags:
+  - probability
+  - monte-carlo
+  - sampling
+  - markov-chain-monte-carlo
+  - gibbs-sampling
+  - bayesian-inference
 ---
 
 # Gibbs Sampling

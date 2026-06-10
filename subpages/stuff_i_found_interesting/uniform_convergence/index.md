@@ -1,3 +1,14 @@
+---
+layout: default
+title: "Uniform Convergence"
+tags:
+  - analysis
+  - real-analysis
+  - topology
+  - uniform-convergence
+  - function-spaces
+  - uniform-spaces
+---
 Uniform convergence is a strong mode of convergence for a sequence of functions where the functions approach their limit at the same rate across the entire domain. Unlike pointwise convergence, where the speed of convergence can vary dramatically from point to point, uniform convergence guarantees that the entire graph of the function eventually fits within a tight vertical band around the target limit function.
 
 

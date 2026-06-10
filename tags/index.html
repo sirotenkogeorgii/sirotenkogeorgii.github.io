@@ -1,0 +1,92 @@
+---
+layout: default
+title: Tags
+permalink: /tags/
+---
+{% assign all_docs = site.pages | concat: site.notes | concat: site.posts %}
+{% assign tagged_docs = "" | split: "" %}
+{% for doc in all_docs %}
+  {% if doc.title and doc.tags and doc.tags != empty %}
+    {% assign tagged_docs = tagged_docs | push: doc %}
+  {% endif %}
+{% endfor %}
+{% assign all_tags = "" | split: "" %}
+{% for doc in tagged_docs %}
+  {% assign all_tags = all_tags | concat: doc.tags %}
+{% endfor %}
+{% assign all_tags = all_tags | uniq | sort %}
+
+<div class="tags-page">
+  <h1>Tags</h1>
+  <p class="tags-page__intro">{{ tagged_docs | size }} pages across {{ all_tags | size }} topics. Click a tag to see every page on that topic, or type to filter.</p>
+
+  <div class="tags-search">
+    <input type="search" id="tags-search-input" placeholder="Filter tags — e.g. functional-analysis, pde, …" aria-label="Filter tags" autocomplete="off">
+  </div>
+
+  <div class="tag-cloud" id="tag-cloud">
+    {% for tag in all_tags %}
+    {% assign docs_for_tag = tagged_docs | where_exp: 'doc', 'doc.tags contains tag' %}
+    <a class="tag-cloud__tag" href="#tag-{{ tag | slugify }}" data-tag="{{ tag }}">{{ tag }}<span class="tag-cloud__count">{{ docs_for_tag | size }}</span></a>
+    {% endfor %}
+  </div>
+
+  <p class="tags-page__empty" id="tags-empty" hidden>No tags match that filter.</p>
+
+  <div id="tag-sections">
+    {% for tag in all_tags %}
+    {% assign docs_for_tag = tagged_docs | where_exp: 'doc', 'doc.tags contains tag' | sort: 'title' %}
+    <section class="tag-section" id="tag-{{ tag | slugify }}" data-tag="{{ tag }}">
+      <h2 class="tag-section__title">{{ tag }} <span class="tag-section__count">{{ docs_for_tag | size }}</span></h2>
+      <ul class="tag-section__list">
+        {% for doc in docs_for_tag %}
+        <li>
+          <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+          <span class="tag-section__related">
+            {% for other in doc.tags %}{% unless other == tag %}<a class="tag-section__related-tag" href="#tag-{{ other | slugify }}">{{ other }}</a>{% endunless %}{% endfor %}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var input = document.getElementById('tags-search-input');
+    if (!input) return;
+    var chips = Array.from(document.querySelectorAll('#tag-cloud .tag-cloud__tag'));
+    var sections = Array.from(document.querySelectorAll('#tag-sections .tag-section'));
+    var emptyMessage = document.getElementById('tags-empty');
+
+    function normalize(text) {
+      return text.toLowerCase().replace(/[-_\s]+/g, ' ').trim();
+    }
+
+    function applyFilter() {
+      var query = normalize(input.value);
+      var visible = 0;
+      chips.forEach(function (chip) {
+        var match = !query || normalize(chip.dataset.tag).indexOf(query) !== -1;
+        chip.hidden = !match;
+        if (match) visible++;
+      });
+      sections.forEach(function (section) {
+        section.hidden = query && normalize(section.dataset.tag).indexOf(query) === -1;
+      });
+      emptyMessage.hidden = visible > 0;
+    }
+
+    input.addEventListener('input', applyFilter);
+
+    // Allow pre-filtering via /tags/?q=some-tag
+    var params = new URLSearchParams(window.location.search);
+    var preset = params.get('q');
+    if (preset) {
+      input.value = preset;
+      applyFilter();
+    }
+  })();
+</script>

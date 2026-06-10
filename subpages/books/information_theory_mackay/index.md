@@ -2,6 +2,13 @@
 title: Information Theory, Inference, and Learning Algorithms
 layout: default
 noindex: true
+tags:
+  - information-theory
+  - machine-learning
+  - bayesian-inference
+  - coding-theory
+  - entropy
+  - probability
 ---
 
 # Information Theory, Inference, and Learning Algorithms

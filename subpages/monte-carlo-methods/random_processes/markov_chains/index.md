@@ -2,6 +2,13 @@
 title: Markov Chains
 layout: default
 noindex: true
+tags:
+  - probability
+  - stochastic-processes
+  - markov-processes
+  - markov-chains
+  - random-walks
+  - simulation
 ---
 
 # Markov Chains

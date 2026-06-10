@@ -1,3 +1,14 @@
+---
+layout: default
+title: "Convex Conjugate"
+tags:
+  - convex-analysis
+  - optimization
+  - legendre-transform
+  - duality
+  - optimal-transport
+  - subgradients
+---
 <figure>
   <img src="{{ '/assets/images/notes/stuff_i_found_interesting/Drini-nonuniformconvergence.png' | relative_url }}"" loading="lazy">
   <figcaption>The limit of a sequence of continuous functions does not have to be continuous: the sequence of functions $f_{n}(x)=\sin ^{n}(x)$ (marked in green and blue) converges pointwise over the entire domain, but the limit function is discontinuous (marked in red).</figcaption>
