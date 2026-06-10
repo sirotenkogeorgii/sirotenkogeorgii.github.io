@@ -18,7 +18,7 @@ permalink: /tags/
 
 <div class="tags-page">
   <h1>Tags</h1>
-  <p class="tags-page__intro">{{ tagged_docs | size }} pages across {{ all_tags | size }} topics. Click a tag to see every page on that topic, or type to filter.</p>
+  <p class="tags-page__intro">{{ tagged_docs | size }} pages across {{ all_tags | size }} topics. Click a tag to see every page on that topic, type to filter — or explore the <a href="{{ '/graph/' | relative_url }}">interactive tag graph</a>.</p>
 
   <div class="tags-search">
     <input type="search" id="tags-search-input" placeholder="Filter tags — e.g. functional-analysis, pde, …" aria-label="Filter tags" autocomplete="off">
@@ -37,7 +37,7 @@ permalink: /tags/
     {% for tag in all_tags %}
     {% assign docs_for_tag = tagged_docs | where_exp: 'doc', 'doc.tags contains tag' | sort: 'title' %}
     <section class="tag-section" id="tag-{{ tag | slugify }}" data-tag="{{ tag }}">
-      <h2 class="tag-section__title">{{ tag }} <span class="tag-section__count">{{ docs_for_tag | size }}</span></h2>
+      <h2 class="tag-section__title">{{ tag }} <span class="tag-section__count">{{ docs_for_tag | size }}</span> <a class="tag-section__graph-link" href="{{ '/graph/' | relative_url }}?tag={{ tag | url_encode }}" title="View {{ tag }} in the tag graph">graph ↗</a></h2>
       <ul class="tag-section__list">
         {% for doc in docs_for_tag %}
         <li>

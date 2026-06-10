@@ -1,0 +1,10 @@
+---
+layout: null
+permalink: /assets/data/tag-graph.json
+---
+{% assign all_docs = site.pages | concat: site.notes | concat: site.posts %}{% assign tagged_docs = "" | split: "" %}{% for doc in all_docs %}{% if doc.title and doc.tags and doc.tags != empty %}{% assign tagged_docs = tagged_docs | push: doc %}{% endif %}{% endfor %}{
+  "generated": {{ site.time | date_to_xmlschema | jsonify }},
+  "pages": [
+{% for doc in tagged_docs %}    { "title": {{ doc.title | jsonify }}, "url": {{ doc.url | relative_url | jsonify }}, "tags": {{ doc.tags | jsonify }} }{% unless forloop.last %},{% endunless %}
+{% endfor %}  ]
+}

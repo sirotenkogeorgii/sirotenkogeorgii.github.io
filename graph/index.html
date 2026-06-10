@@ -1,0 +1,42 @@
+---
+layout: default
+title: Graph
+permalink: /graph/
+---
+<div class="tag-graph" id="tag-graph"
+     data-source="{{ '/assets/data/tag-graph.json' | relative_url }}"
+     data-tags-url="{{ '/tags/' | relative_url }}">
+  <div class="tag-graph__intro">
+    <h1>Tag graph</h1>
+    <p>Every node is a tag; two tags are connected when they appear together on a page, and the connection gets stronger the more pages they share. Drag nodes, scroll to zoom, click a tag to see its pages — or browse the flat <a href="{{ '/tags/' | relative_url }}">tag index</a>.</p>
+  </div>
+
+  <div class="tag-graph__toolbar">
+    <div class="tag-graph__search">
+      <input id="tag-graph-search" type="search" placeholder="Find a tag…" autocomplete="off"
+             aria-label="Find a tag" role="combobox" aria-expanded="false" aria-controls="tag-graph-search-results">
+      <ul class="tag-graph__search-results" id="tag-graph-search-results" role="listbox" hidden></ul>
+    </div>
+    <label class="tag-graph__slider">
+      <span>Min shared pages</span>
+      <input id="tag-graph-threshold" type="range" min="1" max="8" step="1" value="1">
+      <output id="tag-graph-threshold-value">1</output>
+    </label>
+    <span class="tag-graph__stats" id="tag-graph-stats" aria-live="polite"></span>
+    <button type="button" class="tag-graph__reset" id="tag-graph-reset">Reset view</button>
+  </div>
+
+  <div class="tag-graph__stage" id="tag-graph-stage">
+    <canvas id="tag-graph-canvas" role="application" aria-label="Interactive tag graph. Use the search box to find tags."></canvas>
+    <div class="tag-graph__tooltip" id="tag-graph-tooltip" hidden></div>
+    <aside class="tag-graph__panel" id="tag-graph-panel" aria-label="Selected tag details" hidden></aside>
+    <div class="tag-graph__message" id="tag-graph-message">Loading graph…</div>
+  </div>
+
+  <noscript>
+    <p>The interactive graph needs JavaScript. You can browse the same information on the <a href="{{ '/tags/' | relative_url }}">tag index</a>.</p>
+  </noscript>
+</div>
+
+<script src="{{ '/assets/js/vendor/d3.v7.min.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/tag-graph.js' | relative_url }}"></script>
