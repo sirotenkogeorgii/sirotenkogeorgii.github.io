@@ -8,6 +8,13 @@ tags:
   - gradient-flows
   - analysis
   - machine-learning
+  - eulerian-representation
+  - geodesics
+  - subdifferential
+  - minimizing-movements
+  - convexity
+  - optimal-transport
+  - monge-problem
 ---
 
 # Partial Differential Equations in Data Science
@@ -4042,6 +4049,11 @@ As a *set*, $\mathcal P(\mathbb R^d)$ is of course convex: $(1-t)\mu+t\nu$ is ag
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_displacement_vs_linear.png' | relative_url }}" alt="Two-panel figure comparing interpolations between a narrow Gaussian mu on the left and a wider Gaussian nu on the right, with snapshots at t = 0, 0.25, 0.5, 0.75, 1 coloured by a viridis colourbar. Top panel: linear interpolation (1-t)mu + t nu shows two coexisting bumps whose heights trade off — the bump at mu shrinks while the bump at nu grows, with no mass ever in between. Bottom panel: displacement interpolation shows a single Gaussian packet whose centre and width move continuously from mu to nu, with a dashed red curve tracking the travelling peak" loading="lazy">
+  <figcaption>The opening remark in pictures. <strong>Top.</strong> Along the linear path $(1-t)\mu+t\nu$ the two bumps <em>coexist</em>: the weight $1-t$ at $\mu$ fades while the weight $t$ at $\nu$ grows. No snapshot looks like a transportation process — mass teleports. <strong>Bottom.</strong> Along the displacement path $[\mu,\nu]_t$ a <em>single</em> packet travels and reshapes from $\mu$ to $\nu$ (for Diracs: $\delta_{(1-t)x+ty}$, the moving atom). The two paths share endpoints but nothing else — and convexity of a functional along one says nothing about convexity along the other.</figcaption>
+</figure>
+
 #### From the static to the dynamic problem
 
 Recall the Monge problem
@@ -4125,6 +4137,11 @@ If $c'$ is strictly convex, equality in Jensen's inequality forces the integrand
 
 </details>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_straight_line_optimal.png' | relative_url }}" alt="Two-panel figure for Proposition 25 with quadratic differential cost. Left panel: three trajectories from x = (0,0) to y = (3,0) in the plane — a straight green line, an orange small sinusoidal detour, and a purple large detour — each with dots marking equal time steps and its total cost in the legend (9.00, 10.78, 16.11). Right panel: the squared speed of each trajectory as a function of time; the green straight path is a flat line exactly at the dashed grey Jensen bound |y-x|^2 = 9, while the detours bulge above it" loading="lazy">
+  <figcaption>Proposition 25 for $c'=\lvert\cdot\rvert^2$. <strong>Left.</strong> Three trajectories joining the same endpoints; dots mark equal time steps. Detours cost more: $\int_0^1\lvert\dot z_t\rvert^2\,dt$ grows with the wiggle. <strong>Right.</strong> The instantaneous cost $\lvert\dot z_t\rvert^2$ over time. Jensen's inequality says the area under each curve is at least $c'(y-x)=\lvert y-x\rvert^2$ (dashed); the constant-speed straight line is the only trajectory whose integrand sits exactly at the bound for all $t$ — both the <em>route</em> (straight) and the <em>schedule</em> (constant speed) are forced by strict convexity.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 7</span><span class="math-callout__name">(Scaling on a general time interval)</span></p>
 
@@ -4196,9 +4213,9 @@ This interpolation has remarkable features:
 
 The displacement interpolation satisfies
 
-1. $[\mu,\nu]_t = [\nu,\mu]_{1-t}$,
-2. $\bigl[[\mu,\nu]\_t,[\mu,\nu]\_{t'}\bigr]_s = [\mu,\nu]_{(1-s)t+st'}$,
-3. if $\mu$ and $\nu$ are absolutely continuous, then so is $[\mu,\nu]_t$ for all $t\in(0,1)$.
+1. $[\mu,\nu]\_t = [\nu,\mu]\_{1-t}$,
+2. $\bigl[[\mu,\nu]\_t,[\mu,\nu]\_{t'}\bigr]\_s = [\mu,\nu]\_{(1-s)t+st'}$,
+3. if $\mu$ and $\nu$ are absolutely continuous, then so is $[\mu,\nu]\_t$ for all $t\in(0,1)$.
 
 </div>
 
@@ -4210,6 +4227,11 @@ The displacement interpolation satisfies
 * Property 3. is an interior regularity statement: absolute continuity propagates to all intermediate times. (At $t\in\lbrace 0,1\rbrace$ it holds trivially by assumption; the point is that no mass concentrates strictly inside the path.)
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_displacement_geodesic_2d.png' | relative_url }}" alt="Two-panel figure of McCann's displacement interpolation between two 2D Gaussian-like densities sketched as ellipses. Left panel: five ellipse snapshots coloured by time t from a wide flat blue ellipse mu at the lower left to a tall narrow yellow ellipse nu at the upper right, with thin grey straight segments connecting boundary particles to their destinations and a dashed red line for the centre trajectory. Right panel: distance travelled |T_t(x) - x| against time for several particles — every curve is a straight line through the origin, i.e. each particle moves at its own constant speed" loading="lazy">
+  <figcaption>The displacement interpolation as a constant-speed geodesic. <strong>Left.</strong> Snapshots $\rho_t$ of the interpolation between two anisotropic Gaussians (colour = time $t$). Each particle flies along the straight grey segment $T_t(x)=(1-t)x+t\nabla\varphi(x)$ — the Lagrangian picture of Theorem 27 — while the Eulerian density morphs its shape en route. <strong>Right.</strong> Distance travelled $\lvert T_t(x)-x\rvert=t\,\lvert T(x)-x\rvert$ is linear in $t$ for every particle: constant individual speeds, which is exactly the reparametrization property 2. of Proposition 28 at the particle level.</figcaption>
+</figure>
 
 #### Displacement convexity
 
@@ -4240,7 +4262,7 @@ Let $\sigma_t\colon\mathbb R^d\times\mathbb R^d\to\mathbb R^d$, $\sigma_t(x,y)=(
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Definition 30 generalises Definition 29)</span></p>
 
-When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so $(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]_t$ and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
+When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so $(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]\_t$ and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
 
 </div>
 
@@ -4346,6 +4368,11 @@ Note also that condition 2. and 3. compare cleanly: convexity of the density is 
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_mccann_dilation.png' | relative_url }}" alt="Two-panel figure for McCann's condition. Left panel: concentric circles of radii r = 0.55 to 2.2 representing dilations of a uniform disk, shaded so that smaller disks are darker (density scales like r to the minus d), with dotted radial rays showing particles moving outward from the centre. Right panel: the function Psi(r) = r^d U(r^{-d}) minus its value at r = 1, for three internal energy densities — the entropy giving -d log r in blue, U = s^2 giving r^{-d} in green, and the porous-medium boundary exponent m = 1 - 1/d giving a straight dashed orange line; all three curves are convex and non-increasing" loading="lazy">
+  <figcaption>McCann's condition (2.19) as convexity along dilations (here $d=2$). <strong>Left.</strong> Dilating a uniform blob by $r$ scales its volume like $r^d$ and its density like $r^{-d}$, so the internal energy of the dilation family is exactly $\Psi(r)=r^d\,U(r^{-d})$. The dotted rays show why dilations <em>are</em> displacement interpolations: every particle travels radially in a straight line at constant speed. <strong>Right.</strong> $\Psi$ (shifted to vanish at $r=1$) for the two standard checks — entropy $U(s)=s\log s$ gives $\Psi=-d\log r$, the power law $U(s)=s^2$ gives $\Psi=r^{-d}$ — and for the borderline porous-medium exponent $m=1-\frac{1}{d}$, where $\Psi$ degenerates to a straight line: convex and non-increasing, but only just.</figcaption>
+</figure>
+
 We will only give the full proof of part 2., which is rather straightforward, and sketch part 3., which follows the same lines. Note that part 1. is subtle (as can already be seen from the more involved statement itself).
 
 <details class="proof" markdown="1">
@@ -4374,6 +4401,11 @@ $$
 Since $x,y$ and $t\in(0,1)$ were arbitrary, $V$ is convex. (This is where Definition 30 earns its keep: the test measures are Diracs, far from absolutely continuous.) $\square$
 
 </details>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_potential_displacement.png' | relative_url }}" alt="Two-by-two figure testing displacement convexity of the potential energy with two Dirac atoms. Top row: a convex parabola V(x) = x^2/2 on the left and a non-convex double-well potential on the right, each with blue atoms mu = delta_x and nu = delta_y at the two ends and a red moving atom x_t in between. Bottom row: potential energy along the interpolations — the blue displacement curve V(x_t) and the dashed orange linear chord (1-t)V(x) + tV(y). For the parabola the curve stays below the chord; for the double-well the curve rises above the chord over the central hump" loading="lazy">
+  <figcaption>Theorem 32, part 2, run on the Dirac test from the proof: $\mu=\delta_x$, $\nu=\delta_y$, so $\rho_t=\delta_{x_t}$ is a single moving atom and $\mathcal V(\rho_t)=V(x_t)$ traces the potential along the segment. <strong>Left column.</strong> Convex $V$: the displacement curve stays below the chord — displacement convex. <strong>Right column.</strong> Double-well $V$: the moving atom must climb over the central hump, so $V(x_t)$ rises above the chord — displacement convexity fails exactly where convexity of $V$ fails. Along <em>linear</em> interpolation, by contrast, $\mathcal V$ always traces the chord (dashed orange) no matter what $V$ is — which is why linear convexity sees nothing.</figcaption>
+</figure>
 
 <details class="proof" markdown="1">
 <summary>Proof of Theorem 32, part 3 — interaction energy (sketch)</summary>
@@ -4609,6 +4641,11 @@ $$
 For a general velocity field, $\operatorname{tr}((\nabla v)^2)=\partial_i v_j\,\partial_j v_i$ need not be non-negative. Here it is, because along the displacement interpolation $v_t$ is a **gradient field**: $v_t(y)=\frac1t\bigl(y-T_t^{-1}(y)\bigr)$, and $T_t^{-1}$ is the gradient of a convex function (it is the Brenier map from $\rho_t$ back to $\mu$, since $T_t$ is a gradient of a convex function), so $\nabla v_t$ is a symmetric matrix. For symmetric matrices, $\operatorname{tr}((\nabla v)^2)=\lvert\nabla v\rvert^2$, the squared Frobenius norm — which is the form stated above, and is manifestly $\ge 0$. $\square$
 
 </details>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_entropy_displacement_convex.png' | relative_url }}" alt="Two-panel figure showing displacement convexity of the Boltzmann entropy along the geodesic between two Gaussians. Left panel: the entropy of rho_t as a function of interpolation time t is a blue convex curve lying below its dashed grey chord, with the gap shaded. Right panel: the second time derivative of the entropy, a positive decreasing green curve with the area above zero shaded green, illustrating that it equals the integral of |grad v_t|^2 rho_t and is non-negative" loading="lazy">
+  <figcaption>The Eulerian computation made visible, for the displacement geodesic between two Gaussians (where everything is explicit: $\rho_t$ is Gaussian with $\sigma_t=(1-t)\sigma_0+t\sigma_1$, so $\mathcal U(\rho_t)=-\log\sigma_t+\text{const}$). <strong>Left.</strong> $t\mapsto\mathcal U(\rho_t)$ lies below its chord: the Boltzmann entropy is displacement convex. <strong>Right.</strong> Its second derivative $\frac{d^2}{dt^2}\mathcal U(\rho_t)=\int\lvert\nabla v_t\rvert^2\rho_t\,dx$ — here $(\sigma_1-\sigma_0)^2/\sigma_t^2$ — stays strictly positive. This is the measure-space analogue of checking $\nabla^2 E\succeq 0$ along geodesics.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where this is headed)</span></p>

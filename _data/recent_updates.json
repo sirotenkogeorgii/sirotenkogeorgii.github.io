@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "Partial Differential Equations in Data Science",
+   "url": "/subpages/books/pdeds/",
+   "date": "2026-06-11",
+   "added": false
+  },
+  {
    "title": "Reinforcement Learning (HD)",
    "url": "/subpages/reinforcement_learning_hd/",
    "date": "2026-06-11",
@@ -17,12 +23,6 @@
    "url": "/notes/maths_topics/",
    "date": "2026-06-10",
    "added": true
-  },
-  {
-   "title": "Partial Differential Equations in Data Science",
-   "url": "/subpages/books/pdeds/",
-   "date": "2026-06-10",
-   "added": false
   },
   {
    "title": "Numerical Methods for Bayesian Inverse Problems",
