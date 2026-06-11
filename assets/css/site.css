@@ -1310,6 +1310,40 @@ thead {
   display: none !important;
 }
 
+/* Recent updates (home page) */
+.recent-updates {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+}
+
+.recent-updates li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding: 0.24rem 0;
+}
+
+.recent-updates__date {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.recent-updates__badge {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--accent-muted);
+  border-radius: 999px;
+  background: var(--accent-muted);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 /* Site search page */
 .site-search__intro {
   max-width: 56rem;

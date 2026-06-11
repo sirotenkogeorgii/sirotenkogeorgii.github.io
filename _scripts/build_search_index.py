@@ -132,22 +132,75 @@ def walked_markdown_files():
     return sorted(files)
 
 
-def collect_pages():
+def staged_file_contents(relpaths):
+    """relpath -> text from the git index (stage 0), via one cat-file batch.
+
+    Generated artifacts must describe commits, not editing sessions: reading
+    the working tree would bake words from in-progress, unstaged edits into
+    the committed index. Returns None on any git trouble so callers fall back
+    to reading the working tree.
+    """
+    if not relpaths:
+        return {}
+    try:
+        proc = subprocess.run(
+            ["git", "cat-file", "--batch"],
+            cwd=ROOT,
+            input="".join(":" + p + "\n" for p in relpaths).encode("utf-8"),
+            capture_output=True, check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    data = proc.stdout
+    contents = {}
+    pos = 0
+    for relpath in relpaths:
+        newline = data.index(b"\n", pos)
+        header = data[pos:newline].decode("utf-8", errors="replace")
+        pos = newline + 1
+        if header.endswith(" missing"):
+            contents[relpath] = None
+            continue
+        size = int(header.rsplit(" ", 1)[1])
+        contents[relpath] = data[pos:pos + size].decode("utf-8", errors="replace")
+        pos = pos + size + 1  # skip the trailing newline after the blob
+    return contents
+
+
+def iter_published_sources():
+    """Yield (relpath, scalars, tags, body) for every published page.
+
+    Prefers staged content from the git index; files deleted from the working
+    tree are skipped even while still tracked, so the index never references
+    pages the local preview can't serve.
+    """
     relpaths = tracked_markdown_files()
+    contents = None
     if relpaths is None:
         relpaths = walked_markdown_files()
-    pages = []
+    else:
+        contents = staged_file_contents(relpaths)
     for relpath in relpaths:
         if os.path.basename(relpath).startswith("_"):
             continue
         path = os.path.join(ROOT, relpath)
-        try:
-            raw = open(path, encoding="utf-8").read()
-        except (OSError, UnicodeDecodeError):
+        if not os.path.exists(path):
             continue
+        raw = contents.get(relpath) if contents is not None else None
+        if raw is None:
+            try:
+                raw = open(path, encoding="utf-8").read()
+            except (OSError, UnicodeDecodeError):
+                continue
         scalars, tags, body = parse_front_matter(raw)
         if scalars is None or "title" not in scalars:
             continue  # no front matter -> Jekyll treats it as a static file
+        yield relpath, scalars, tags, body
+
+
+def collect_pages():
+    pages = []
+    for relpath, scalars, tags, body in iter_published_sources():
         url = scalars.get("permalink") or url_for(relpath)
         if url in EXCLUDED_PERMALINKS:
             continue
