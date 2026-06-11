@@ -128,7 +128,9 @@
       }, 120);
     }
 
-    fetch(root.dataset.source)
+    // The live-count cache-buster ties the fetched index to this build of the
+    // page, so a cached old index can never be paired with a newer page.
+    fetch(root.dataset.source + '?v=' + (root.dataset.liveCount || '0'))
       .then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
