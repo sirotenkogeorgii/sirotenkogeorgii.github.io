@@ -3,6 +3,14 @@ title: Reinforcement Learning (HD)
 layout: default
 noindex: true
 math: true
+tags:
+  - machine-learning
+  - reinforcement-learning
+  - markov-decision-processes
+  - multi-armed-bandits
+  - dynamic-programming
+  - temporal-difference-learning
+  - monte-carlo
 ---
 
 <style>
@@ -3507,6 +3515,21 @@ DP needs a model and averages over *all* successors; MC needs samples but no mod
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(DP does not approximate, it computes the value function **exactly**)</span></p>
+
+Dynamic Programming (DP) computes the value function **exactly**, rather than approximating it through sampled experience like Monte Carlo (MC) methods do.
+
+Here is exactly how DP handles these computations:
+
+* **Perfect Knowledge of the Model:** DP operates under the assumption that you have a perfect model of the environment, specifically the complete one-step transition dynamics $p(s', r \mid s, a)$.
+* **Exact Expectations:** Because this transition kernel is fully known, every expectation in a Bellman backup—whether it is over actions, next states, or rewards—can be calculated exactly as a finite sum. There is absolutely no sampling involved.
+* **Contrast with MC:** Monte Carlo methods are entirely "model-free". Since they do not have access to the environment's transition model, they must estimate the value function by averaging the actual complete returns gathered from sampled trajectories.
+
+In short, DP acts as a planner using full, exact mathematical expectations, whereas MC acts as a learner estimating values through the empirical averages of real, unfolding experiences.
+
+</div>
+
 ### Prediction: TD(0) vs MC
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -3518,7 +3541,11 @@ $$
 S_0, A_0, R_1, S_1, A_1, R_2, S_2, \dots,
 $$
 
-with the goal of estimating $v\_\pi(s)$ for every nonterminal $s$. Both methods are instances of the same incremental-mean template $V(S\_t) \leftarrow V(S\_t) + \alpha\,[\,\text{target} - V(S\_t)\,]$; they differ only in the **target**:
+with the goal of estimating $v\_\pi(s)$ for every nonterminal $s$. Both methods are instances of the same incremental-mean template 
+
+$$V(S\_t) \leftarrow V(S\_t) + \alpha\,[\,\text{target} - V(S\_t)\,]$$
+
+they differ only in the **target**:
 
 $$
 \underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,G_t - V(S_t)\,\bigr]}_{\textbf{constant-}\alpha\text{ Monte Carlo, target } = \text{ full return}},
@@ -3697,7 +3724,7 @@ This makes precise where each method sits relative to the same Bellman equation:
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Tabular TD(0) for estimating $v\_\pi$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Tabular TD(0) for estimating $v_\pi$)</span></p>
 
 **Input:** policy $\pi$ to be evaluated. **Parameter:** step size $\alpha \in (0, 1]$.
 
@@ -3995,7 +4022,10 @@ The estimates are initialised to $V(s) = 0.5$ for all states (correct only for t
 So far updates are **online**: each increment is applied immediately, so $V$ changes between transitions. To compare MC and TD *cleanly* — independent of step-size and update-order artefacts — consider **batch** updating instead:
 
 * freeze $V$;
-* walk through every transition $(S\_t, R\_{t+1}, S\_{t+1})$ in a fixed dataset $\mathcal{D}$, accumulating $\Delta\_t = \alpha\,[\,\text{target}\_t - V(S\_t)\,]$;
+* walk through every transition $(S\_t, R\_{t+1}, S\_{t+1})$ in a fixed dataset $\mathcal{D}$, accumulating 
+  
+  $$\Delta\_t = \alpha\,[\,\text{target}\_t - V(S\_t)\,]$$
+
 * apply the *summed* increment once, then repeat the sweep to convergence.
 
 The only difference between the two methods is again the target: **batch MC** uses $G\_t$; **batch TD(0)** uses $R\_{t+1} + \gamma V(S\_{t+1})$.
@@ -4092,9 +4122,9 @@ Which is "right"? MC fits the past data perfectly; TD generalises via the **Mark
 
 Build the **maximum-likelihood Markov reward process** from the data:
 
-$$
-\hat{p}(i \to j) = \text{fraction of observed transitions from } i \text{ that go to } j, \qquad \hat{r}(i \to j) = \text{average reward on those transitions.}
-$$
+$$\hat{p}(i \to j) = \text{fraction of observed transitions from } i \text{ that go to } j,$$
+
+$$\qquad \hat{r}(i \to j) = \text{average reward on those transitions.}$$
 
 The **certainty-equivalence estimate** treats $(\hat{p}, \hat{r})$ as if it were the true model and solves the Bellman equations *exactly* on it. The (perhaps surprising) fact:
 
@@ -4156,9 +4186,11 @@ Loop for each episode:
    * Take action $A$; observe $R, S'$.
    * **If $S'$ is terminal:** $Q(S, A) \leftarrow Q(S, A) + \alpha\,[\,R - Q(S, A)\,]$, then break.
    * **Else:** choose $A'$ from $S'$ using the $\varepsilon$-greedy policy; update
+     
      $$
      Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma Q(S', A') - Q(S, A)\,\bigr];
      $$
+     
      then $S \leftarrow S'$, $A \leftarrow A'$.
 
 Each TD update *evaluates* the current policy a little, and each $\varepsilon$-greedy action choice *improves* the behaviour a little — GPI at the granularity of a single transition.
@@ -4438,19 +4470,25 @@ Because the noise in $Q\_1$ (which made the selection) is **independent** of the
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Double Q-learning)</span></p>
 
-**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$. Initialise $Q\_1(s, a)$ and $Q\_2(s, a)$ arbitrarily, with $Q\_1(\text{terminal}, \cdot) = Q\_2(\text{terminal}, \cdot) = 0$.
+**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$. Initialise $Q\_1(s, a)$ and $Q\_2(s, a)$ arbitrarily, with 
+
+$$Q_1(\text{terminal}, \cdot) = Q_2(\text{terminal}, \cdot) = 0$$
 
 Loop for each episode, and for each step:
 
 1. Choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q\_1 + Q\_2$; take $A$, observe $R, S'$.
 2. With probability $\tfrac{1}{2}$, **update $Q\_1$** (select with $Q\_1$, evaluate with $Q\_2$):
+
    $$
    Q_1(S, A) \leftarrow Q_1(S, A) + \alpha\Bigl[\,R + \gamma\, Q_2\bigl(S', \arg\max_a Q_1(S', a)\bigr) - Q_1(S, A)\,\Bigr].
    $$
+
 3. **Otherwise update $Q\_2$** symmetrically (select with $Q\_2$, evaluate with $Q\_1$):
+
    $$
    Q_2(S, A) \leftarrow Q_2(S, A) + \alpha\Bigl[\,R + \gamma\, Q_1\bigl(S', \arg\max_a Q_2(S', a)\bigr) - Q_2(S, A)\,\Bigr].
    $$
+
 4. $S \leftarrow S'$ (and at a terminal $S'$ the target is just $R$).
 
 The behaviour policy is $\varepsilon$-greedy with respect to $Q\_1 + Q\_2$. The cost is a **$\times 2$ memory** footprint; the per-step computation is the same as ordinary Q-learning.
@@ -4495,5 +4533,683 @@ Every row is the same skeleton $Q \leftarrow Q + \alpha\,[\,\text{target} - Q\,]
 * **Final message.** TD methods are not merely RL algorithms — they are general-purpose tools for *learning long-term predictions from other predictions* in dynamical systems.
 
 **Bridge ahead.** TD(0) is the shallowest possible bootstrap (one step) and MC the deepest (full return). The next step unifies them along the depth axis with **$n$-step TD** and **TD($\lambda$)**, and along the width axis with **function approximation**, carrying the TD-error machinery developed here into the function-approximation and deep-RL settings.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Does not TD operate in dynamical programming manner, i.e. to update the current $V(S_t)$, we need to know $V(S_{t+1})$? Why does it allow to make the updates faster without waiting the whole trajectory to end, if we still need the final state to send the updates  backwards in DP chain?</summary>
+
+This is a fantastic question, and you have hit on the exact, counterintuitive "magic" of Temporal-Difference (TD) learning.
+
+You are completely correct that TD bootstraps—it uses the value of the next state, $V(S_{t+1})$, to update the current state, $V(S_t)$. Your intuition about having to wait for the final state to send updates "backwards" perfectly describes how Monte Carlo (MC) works.
+
+Here is why TD escapes that requirement and allows for immediate, online updates.
+
+### The Secret: Learning a Guess from a Guess
+
+The reason we do not have to wait for the trajectory to end is that TD does not look for the *true* final value of $S_{t+1}$. Instead, it simply looks up its **current, imperfect estimate** of $V(S_{t+1})$ that is already stored in memory.
+
+Here is exactly how the timeline of a single step works in TD(0):
+
+1. **Take a step:** The agent is in state $S_t$, takes an action, receives an immediate reward $R_{t+1}$, and lands in $S_{t+1}$.
+2. **Look up the guess:** The episode is still ongoing, but the agent immediately looks at its value table and pulls its *current* estimated value for $V(S_{t+1})$.
+3. **Form the target:** It creates the TD target: $R_{t+1} + \gamma V(S_{t+1})$.
+4. **Update immediately:** It updates $V(S_t)$ toward that target right then and there.
+
+By doing this, TD combines the **sampling** of Monte Carlo (taking one actual step in the world to get $R_{t+1}$) with the **bootstrapping** of Dynamic Programming (using an existing estimate $V$ instead of waiting for the real outcome).
+
+### The "Driving Home" Analogy
+
+To make this concrete, imagine you are predicting how long it takes to drive home from work.
+
+* **The Monte Carlo Way:** You predict the trip will take 30 minutes. You hit a terrible traffic jam halfway through and arrive in 43 minutes. You have to wait until you are parked in your driveway to look back and update the values of every street you took.
+* **The TD Way:** You are driving and suddenly get stuck behind a slow-moving truck. The moment you hit that delay, you generate a "TD error" (a surprise). You immediately update your estimate for the *previous* street you were just on, passing the surprise one step backwards. You do not need to arrive home to know that you are running late; you just update your current prediction based on your *next* prediction.
+
+### Why does this actually work?
+
+It feels like a house of cards to update a guess using another guess, but it is mathematically sound. Even though $V(S_{t+1})$ might be highly inaccurate early in training, the immediate reward $R_{t+1}$ is a real, grounded piece of data from the environment.
+
+With a small step size, these local, step-by-step updates pull the estimates toward the true values over time. This makes TD incredibly powerful because **every single transition is a learning opportunity**, meaning you can learn from long episodes or even continuing tasks that never terminate, without ever having to wait for the end.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>So, we use $V(S_{t+1})$ value from the previous iteration?</summary>
+
+In online Temporal-Difference (TD) learning, we don't look back at a fixed table from a "previous iteration". Instead, tabular TD updates happen **in-place** and **online** after every single transition.
+
+We maintain a single, live value table $V$ in memory. When the agent steps from $S_t$ into $S_{t+1}$, it reads **whatever value happens to be sitting in the $S_{t+1}$ slot of that table at that exact millisecond**.
+
+### How the In-Place Memory Lookup Works
+
+Because TD updates are online and asynchronous rather than sweeping the entire state space in structured blocks, there are no global "outer iterations". The values evolve dynamically based on the path the agent travels:
+
+* **If $S_{t+1}$ was updated recently:** If the agent visited $S_{t+1}$ a few steps ago (or in a previous episode) and changed its value, the target for $S_t$ immediately benefits from that newly updated information.
+* **If $S_{t+1}$ hasn't been visited yet:** The lookup simply pulls the original initialized value (or whatever baseline guess was set at the start).
+
+### Contrast with Dynamic Programming
+
+This is distinct from the synchronous **two-array update** style often used in textbook Dynamic Programming sweeps:
+
+* **Synchronous DP sweeps:** You maintain an `old` array and a `new` array. Every state's new value reads *exclusively* from the frozen `old` values of the previous iteration.
+* **Online TD:** You maintain a **single array**. New updates are written directly into the table and are instantly available to be read by any subsequent step.
+
+By modifying the table in-place, surprise and reward information ripple through the value function much faster, leveraging the most up-to-date estimates available the moment a state transition occurs.
+
+</details>
+</div>
+
+## Lecture 7: $n$-step Bootstrapping
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Bridging Monte Carlo and one-step TD)</span></p>
+
+The previous lecture set up the two extremes of model-free value estimation. **Monte Carlo** waits for the *complete return* $G\_t$ before updating; **one-step TD** updates immediately, after a single transition, by bootstrapping from $V(S\_{t+1})$. This lecture fills in everything *between* them: the family of **$n$-step methods**, which use the first $n$ real rewards and then bootstrap.
+
+The build-up is:
+
+1. **The spectrum.** Why neither pure MC nor pure one-step TD is usually best, and how $n$-step methods decouple *how often we act* from *how far we bootstrap*.
+2. **$n$-step prediction.** The $n$-step return $G\_{t:t+n}$, the $n$-step TD update, and the **error-reduction property** that guarantees soundness.
+3. **Control.** $n$-step **Sarsa** and **Expected Sarsa**.
+4. **Off-policy.** Importance sampling over $n$ steps, and **control variates** that cut its variance.
+
+The guiding question of the lecture is:
+
+> *One-step TD bootstraps after a single step; Monte Carlo waits until the end. Why is the **best** answer almost always somewhere in between — and how do we get there?*
+
+</div>
+
+### The Space Between MC and TD
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(One target, three depths)</span></p>
+
+All three methods update a state's value toward a *target*; they differ only in how many real rewards the target contains before it bootstraps:
+
+* **Monte Carlo:** update toward the *full return* — all rewards until termination.
+* **One-step TD:** update toward *one* reward plus the bootstrapped value of the next state.
+* **$n$-step:** update toward the first $n$ rewards plus the bootstrapped value $n$ steps later.
+
+Laid side by side, the targets form a continuum indexed by depth:
+
+$$
+\underbrace{R_{t+1} + \gamma V(S_{t+1})}_{\text{1-step TD}}
+\;\;\cdots\;\;
+\underbrace{R_{t+1} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} V(S_{t+n})}_{n\text{-step}}
+\;\;\cdots\;\;
+\underbrace{R_{t+1} + \cdots + \gamma^{T-t-1} R_{T}}_{\text{Monte Carlo}}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($n$-step methods are still TD methods)</span></p>
+
+It is tempting to read $n$-step methods as "almost Monte Carlo". They are not — they remain **TD methods**: they change an earlier estimate based on a *later estimate*, just $n$ steps later instead of one. Monte Carlo is the single special case where the bootstrap term vanishes because the episode has ended. The bootstrapping machinery, the TD-error viewpoint, and the convergence arguments all carry over unchanged.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why one step is a compromise — decoupling acting from bootstrapping)</span></p>
+
+With one-step TD a *single* time step is forced to control **two different things at once**:
+
+* how often the agent can **change its action**, and
+* the interval over which **bootstrapping** occurs.
+
+These pull in opposite directions. We usually want to *act fast* — react to whatever just changed — but *bootstrap over a longer interval*, long enough for a meaningful state change to register. One step forces a compromise between the two.
+
+**$n$-step methods break the tie:** the agent still acts every step, but bootstraps over $n$ steps. Acting frequency and bootstrap horizon become independent design choices.
+
+</div>
+
+### $n$-step TD Prediction
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 270" role="img" aria-label="Backup-diagram spectrum from one-step TD through n-step to Monte Carlo: the only thing that changes is the depth of the backup">
+    <!-- 1-step TD : x=120 -->
+    <line x1="120" y1="44" x2="120" y2="70" class="line"></line>
+    <line x1="120" y1="70" x2="120" y2="96" class="line"></line>
+    <circle cx="120" cy="44" r="11" class="box"></circle>
+    <circle cx="120" cy="70" r="8" fill="#2c3e94"></circle>
+    <circle cx="120" cy="96" r="11" class="box"></circle>
+    <text x="120" y="124" text-anchor="middle" font-size="13" class="muted">1-step TD</text>
+
+    <!-- 2-step : x=270 -->
+    <line x1="270" y1="44" x2="270" y2="148" class="line"></line>
+    <circle cx="270" cy="44" r="11" class="box"></circle>
+    <circle cx="270" cy="70" r="8" fill="#2c3e94"></circle>
+    <circle cx="270" cy="96" r="11" class="box"></circle>
+    <circle cx="270" cy="122" r="8" fill="#2c3e94"></circle>
+    <circle cx="270" cy="148" r="11" class="box"></circle>
+    <text x="270" y="176" text-anchor="middle" font-size="13" class="muted">2-step</text>
+
+    <!-- 3-step : x=420 -->
+    <line x1="420" y1="44" x2="420" y2="200" class="line"></line>
+    <circle cx="420" cy="44" r="11" class="box"></circle>
+    <circle cx="420" cy="70" r="8" fill="#2c3e94"></circle>
+    <circle cx="420" cy="96" r="11" class="box"></circle>
+    <circle cx="420" cy="122" r="8" fill="#2c3e94"></circle>
+    <circle cx="420" cy="148" r="11" class="box"></circle>
+    <circle cx="420" cy="174" r="8" fill="#2c3e94"></circle>
+    <circle cx="420" cy="200" r="11" class="box"></circle>
+    <text x="420" y="228" text-anchor="middle" font-size="13" class="muted">3-step</text>
+
+    <!-- n-step : x=580 -->
+    <line x1="580" y1="44" x2="580" y2="96" class="line"></line>
+    <line x1="580" y1="96" x2="580" y2="148" stroke="#64748b" stroke-width="2" stroke-dasharray="2 5"></line>
+    <line x1="580" y1="148" x2="580" y2="200" class="line"></line>
+    <circle cx="580" cy="44" r="11" class="box"></circle>
+    <circle cx="580" cy="70" r="8" fill="#2c3e94"></circle>
+    <circle cx="580" cy="96" r="11" class="box"></circle>
+    <circle cx="580" cy="148" r="8" fill="#2c3e94"></circle>
+    <circle cx="580" cy="174" r="11" class="box"></circle>
+    <text x="580" y="202" text-anchor="middle" font-size="13" class="muted" font-style="italic">n-step</text>
+
+    <!-- inf / MC : x=740 -->
+    <line x1="740" y1="44" x2="740" y2="96" class="line"></line>
+    <line x1="740" y1="96" x2="740" y2="174" stroke="#64748b" stroke-width="2" stroke-dasharray="2 5"></line>
+    <line x1="740" y1="174" x2="740" y2="200" class="line"></line>
+    <circle cx="740" cy="44" r="11" class="box"></circle>
+    <circle cx="740" cy="70" r="8" fill="#2c3e94"></circle>
+    <circle cx="740" cy="96" r="11" class="box"></circle>
+    <circle cx="740" cy="148" r="8" fill="#2c3e94"></circle>
+    <rect x="730" y="190" width="20" height="20" class="box"></rect>
+    <text x="740" y="232" text-anchor="middle" font-size="13" class="muted">∞-step / MC</text>
+  </svg>
+  <figcaption>The backup-diagram spectrum. Open circles are states, filled dots are actions, the square is termination. From one-step TD to Monte Carlo the <em>only</em> thing that changes is the depth of the backup.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($n$-step return)</span></p>
+
+The target of an $n$-step update is the **$n$-step return**:
+
+$$
+G_{t:t+n} \;\doteq\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} V_{t+n-1}(S_{t+n}),
+$$
+
+defined for $n \geq 1$ and $0 \leq t < T - n$. Here $V\_{t+n-1}$ denotes the value-function estimate *as it stands at time $t+n-1$* (estimates change over time, so the bootstrap uses the most recent one).
+
+* The first $n$ rewards are **real**; everything after is replaced by the **bootstrap** $\gamma^{n} V\_{t+n-1}(S\_{t+n})$.
+* If the return runs to or past termination ($t + n \geq T$), the missing terms are zero and $G\_{t:t+n} \doteq G\_t$ — the ordinary full return. So Monte Carlo is the limit $n \to \infty$.
+* **Timing subtlety.** $G\_{t:t+n}$ needs $R\_{t+n}$ and $V\_{t+n-1}$, which only exist at time $t+n$. So **no update for $S\_t$ can be made until then.**
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">($n$-step TD prediction)</span></p>
+
+The natural learning rule, applied when the data becomes available (at time $t + n$):
+
+$$
+V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr], \qquad 0 \leq t < T,
+$$
+
+with all other states left unchanged ($V\_{t+n}(s) = V\_{t+n-1}(s)$ for $s \neq S\_t$). Two book-keeping consequences of the timing subtlety:
+
+* No updates happen during the *first $n - 1$ steps* of an episode (the first return is not yet complete).
+* To compensate, $n - 1$ extra updates are made *after* termination, before the next episode starts, so the last $n-1$ visited states still get updated.
+
+**Special cases:** $n = 1$ recovers one-step TD; $n = \infty$ (or any $n \geq T$) recovers the constant-$\alpha$ Monte Carlo update.
+
+</div>
+
+### Why It Works: The Error-Reduction Property
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Error-reduction property of the $n$-step return)</span></p>
+
+The expected $n$-step return is a **contraction toward $v\_\pi$** in the worst-state (sup-norm) sense:
+
+$$
+\max_s \bigl|\, \mathbb{E}_\pi[\, G_{t:t+n} \mid S_t = s \,] - v_\pi(s) \,\bigr| \;\leq\; \gamma^{n} \max_s \bigl|\, V_{t+n-1}(s) - v_\pi(s) \,\bigr|.
+$$
+
+In words: the worst error of the *expected* $n$-step return is at most $\gamma^{n}$ times the worst error of the current estimate. Since $\gamma^{n} < 1$, repeated application shrinks the error.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(All $n$-step methods are sound)</span></p>
+
+Because of error reduction, **all $n$-step TD methods converge to $v\_\pi$** under the usual conditions (in expectation, with appropriate step sizes). One-step TD and Monte Carlo are not special — they are just the two extreme members of a single sound family.
+
+</div>
+
+### The Empirical Story: Bias, Variance, and the Best $n$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5-state random walk — credit travels $n$ states)</span></p>
+
+Consider a short chain $0 \leftrightarrow A \leftrightarrow B \leftrightarrow C \leftrightarrow D \leftrightarrow E \leftrightarrow 1$, starting in $C$, with reward $+1$ only on terminating at the right end. Suppose the first episode goes $C \to D \to E \to$ terminate-right, return $+1$, with all values initialised at $0.5$.
+
+* **1-step:** only $V(E)$ moves toward $1$ — credit travels just one state.
+* **2-step:** both $V(D)$ and $V(E)$ move toward $1$.
+* **$n$-step ($n > 2$):** all three visited states ($C, D, E$) move toward $1$, equally.
+
+**Intuition:** larger $n$ propagates the outcome back to *more* states from a single episode — but, as the next example shows, it can also over-commit to a noisy return.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 296" role="img" aria-label="On a five-state random walk, after the episode C to D to E to the right terminal, one-step TD updates only state E, two-step updates D and E, and n-step with n at least three updates C, D and E equally">
+    <defs>
+      <marker id="rw-traj" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L8,3 z" fill="#b45309"></path>
+      </marker>
+    </defs>
+
+    <!-- backbone -->
+    <line x1="80" y1="70" x2="800" y2="70" class="line"></line>
+
+    <!-- terminals + states -->
+    <rect x="56" y="46" width="48" height="48" rx="6" class="box"></rect>
+    <text x="80" y="77" text-anchor="middle" font-size="17" font-weight="700">0</text>
+    <circle cx="200" cy="70" r="24" class="box"></circle>
+    <text x="200" y="76" text-anchor="middle" font-size="17" font-weight="700">A</text>
+    <circle cx="320" cy="70" r="24" class="box"></circle>
+    <text x="320" y="76" text-anchor="middle" font-size="17" font-weight="700">B</text>
+    <circle cx="440" cy="70" r="24" class="box"></circle>
+    <text x="440" y="76" text-anchor="middle" font-size="17" font-weight="700">C</text>
+    <circle cx="560" cy="70" r="24" class="box"></circle>
+    <text x="560" y="76" text-anchor="middle" font-size="17" font-weight="700">D</text>
+    <circle cx="680" cy="70" r="24" class="box"></circle>
+    <text x="680" y="76" text-anchor="middle" font-size="17" font-weight="700">E</text>
+    <rect x="776" y="46" width="48" height="48" rx="6" class="green"></rect>
+    <text x="800" y="77" text-anchor="middle" font-size="17" font-weight="700">1</text>
+    <text x="800" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">+1</text>
+    <text x="440" y="112" text-anchor="middle" font-size="12" class="muted">start</text>
+
+    <!-- trajectory C -> D -> E -> terminal -->
+    <path d="M462 56 C500 30 520 30 558 50" class="strong-line" stroke="#b45309" marker-end="url(#rw-traj)"></path>
+    <path d="M582 56 C620 30 640 30 678 50" class="strong-line" stroke="#b45309" marker-end="url(#rw-traj)"></path>
+    <path d="M702 56 C740 30 760 32 776 48" class="strong-line" stroke="#b45309" marker-end="url(#rw-traj)"></path>
+
+    <!-- credit rows -->
+    <text x="40" y="160" font-size="13" font-weight="700">1-step</text>
+    <text x="40" y="210" font-size="13" font-weight="700">2-step</text>
+    <text x="40" y="260" font-size="13" font-weight="700">n ≥ 3</text>
+
+    <!-- row 1: only E -->
+    <circle cx="200" cy="155" r="11" class="box"></circle>
+    <circle cx="320" cy="155" r="11" class="box"></circle>
+    <circle cx="440" cy="155" r="11" class="box"></circle>
+    <circle cx="560" cy="155" r="11" class="box"></circle>
+    <circle cx="680" cy="155" r="11" fill="#047857"></circle>
+    <!-- row 2: D, E -->
+    <circle cx="200" cy="205" r="11" class="box"></circle>
+    <circle cx="320" cy="205" r="11" class="box"></circle>
+    <circle cx="440" cy="205" r="11" class="box"></circle>
+    <circle cx="560" cy="205" r="11" fill="#047857"></circle>
+    <circle cx="680" cy="205" r="11" fill="#047857"></circle>
+    <!-- row 3: C, D, E -->
+    <circle cx="200" cy="255" r="11" class="box"></circle>
+    <circle cx="320" cy="255" r="11" class="box"></circle>
+    <circle cx="440" cy="255" r="11" fill="#047857"></circle>
+    <circle cx="560" cy="255" r="11" fill="#047857"></circle>
+    <circle cx="680" cy="255" r="11" fill="#047857"></circle>
+
+    <text x="745" y="160" font-size="12" class="muted">updated</text>
+    <text x="745" y="260" font-size="12" class="muted">toward 1</text>
+  </svg>
+  <figcaption>One episode $C \to D \to E \to$ right-terminal (reward $+1$). Filled green = a state whose value moves toward $1$ after this single episode. Deeper backups (<em>larger $n$</em>) push the outcome's credit further back along the visited path — one extra state per extra step.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(19-state random walk — intermediate $n$ wins)</span></p>
+
+Running $n$-step TD directly on a 19-state random walk and plotting RMS error against step size $\alpha$ for each fixed $n$ gives a family of U-shaped curves:
+
+* **Intermediate $n$ wins.** The lowest error is achieved around $n \approx 4$ — not at $n = 1$ (one-step TD) nor at $n = \infty$ (Monte Carlo).
+* **Larger $n$ needs a smaller $\alpha$.** Deeper backups carry higher-variance targets, so they must take smaller steps to stay stable.
+
+The generalization genuinely **outperforms both** extremes — this is the empirical payoff for decoupling the bootstrap horizon from the acting frequency.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 412" role="img" aria-label="Average RMS error versus step size alpha for n-step TD on the 19-state random walk. Each curve is a fixed n; all are U-shaped. Intermediate n around 4 reaches the lowest error; larger n bottoms out at smaller alpha and then diverges.">
+    <!-- gridlines -->
+    <line x1="85" y1="45" x2="85" y2="355" class="line"></line>
+    <line x1="85" y1="355" x2="775" y2="355" class="line"></line>
+    <line x1="85" y1="45" x2="775" y2="45" stroke="#dbe1ee" stroke-width="1" stroke-dasharray="2 4"></line>
+    <line x1="85" y1="148.3" x2="775" y2="148.3" stroke="#dbe1ee" stroke-width="1" stroke-dasharray="2 4"></line>
+    <line x1="85" y1="251.7" x2="775" y2="251.7" stroke="#dbe1ee" stroke-width="1" stroke-dasharray="2 4"></line>
+
+    <!-- y ticks (RMS error) -->
+    <text x="78" y="50" text-anchor="end" font-size="12" class="muted">0.55</text>
+    <text x="78" y="153" text-anchor="end" font-size="12" class="muted">0.45</text>
+    <text x="78" y="256" text-anchor="end" font-size="12" class="muted">0.35</text>
+    <text x="78" y="359" text-anchor="end" font-size="12" class="muted">0.25</text>
+    <!-- x ticks (alpha) -->
+    <text x="85" y="374" text-anchor="middle" font-size="12" class="muted">0</text>
+    <text x="223" y="374" text-anchor="middle" font-size="12" class="muted">0.2</text>
+    <text x="361" y="374" text-anchor="middle" font-size="12" class="muted">0.4</text>
+    <text x="499" y="374" text-anchor="middle" font-size="12" class="muted">0.6</text>
+    <text x="637" y="374" text-anchor="middle" font-size="12" class="muted">0.8</text>
+    <text x="775" y="374" text-anchor="middle" font-size="12" class="muted">1.0</text>
+    <text x="430" y="398" text-anchor="middle" font-size="13">α (step size)</text>
+    <text x="26" y="200" text-anchor="middle" font-size="13" transform="rotate(-90 26 200)">Avg. RMS error (first 10 episodes)</text>
+
+    <!-- curves -->
+    <polyline fill="none" stroke="#94a3b8" stroke-width="2" points="96.5,55.3 108.0,62.8 119.5,70.1 131.0,77.0 142.5,83.7 154.0,90.3 165.5,96.7 177.0,102.9 188.5,108.9 200.0,114.8 211.5,120.9 223.0,126.5 234.5,132.2 246.0,137.7 257.5,143.3 269.0,148.2 280.5,153.5 292.0,158.7 303.5,163.9 315.0,168.5 326.5,173.0 338.0,178.1 349.5,182.8 361.0,187.2 372.5,192.3 384.0,196.3 395.5,200.3 407.0,204.4 418.5,208.7 430.0,212.1 441.5,216.7 453.0,220.4 464.5,223.3 476.0,227.1 487.5,230.0 499.0,233.7 510.5,236.5 522.0,239.8 533.5,242.7 545.0,245.1 556.5,247.7 568.0,248.7 579.5,251.1 591.0,252.5 602.5,254.6 614.0,256.5 625.5,255.9 637.0,258.5 648.5,258.0 660.0,256.6 671.5,255.7 683.0,255.5 694.5,253.4 706.0,249.5 717.5,248.0 729.0,243.6 740.5,239.2 752.0,233.0 763.5,225.1 775.0,211.1"></polyline>
+    <polyline fill="none" stroke="#93c5fd" stroke-width="2" points="96.5,62.4 108.0,76.6 119.5,90.2 131.0,103.2 142.5,115.8 154.0,128.0 165.5,139.8 177.0,151.2 188.5,162.3 200.0,173.2 211.5,183.9 223.0,193.5 234.5,203.4 246.0,213.4 257.5,222.1 269.0,231.0 280.5,239.4 292.0,248.9 303.5,257.0 315.0,265.0 326.5,271.6 338.0,278.6 349.5,286.1 361.0,292.8 372.5,296.8 384.0,302.1 395.5,308.7 407.0,312.1 418.5,317.2 430.0,320.1 441.5,322.0 453.0,323.4 464.5,324.1 476.0,325.6 487.5,326.2 499.0,328.2 510.5,326.5 522.0,325.8 533.5,323.7 545.0,320.3 556.5,318.7 568.0,314.7 579.5,310.2 591.0,306.7 602.5,300.7 614.0,297.9 625.5,291.5 637.0,287.0 648.5,279.3 660.0,276.0 671.5,263.1 683.0,257.6 694.5,250.3 706.0,238.3 717.5,228.0 729.0,219.9 740.5,207.4 752.0,194.6 763.5,178.6 775.0,160.9"></polyline>
+    <polyline fill="none" stroke="#2563eb" stroke-width="2" points="96.5,94.8 108.0,136.2 119.5,172.4 131.0,203.8 142.5,230.1 154.0,256.2 165.5,275.0 177.0,289.4 188.5,303.5 200.0,316.0 211.5,321.2 223.0,321.9 234.5,328.8 246.0,329.3 257.5,326.2 269.0,328.4 280.5,322.3 292.0,316.7 303.5,319.0 315.0,310.9 326.5,298.2 338.0,298.9 349.5,291.5 361.0,285.2 372.5,278.2 384.0,270.9 395.5,267.2 407.0,256.5 418.5,255.7 430.0,244.5 441.5,239.5 453.0,235.6 464.5,228.8 476.0,219.6 487.5,208.3 499.0,205.1 510.5,195.0 522.0,195.8 533.5,184.3 545.0,178.8 556.5,171.9 568.0,164.1 579.5,153.0 591.0,152.1 602.5,145.3 614.0,136.9 625.5,125.1 637.0,122.9 648.5,113.6 660.0,108.7 671.5,94.6 683.0,84.8 694.5,84.2 706.0,71.7 717.5,62.5 729.0,52.6"></polyline>
+    <polyline fill="none" stroke="#1e3a8a" stroke-width="2" points="96.5,119.8 108.0,175.6 119.5,216.2 131.0,246.8 142.5,266.7 154.0,283.8 165.5,287.3 177.0,294.4 188.5,291.6 200.0,284.5 211.5,278.7 223.0,279.0 234.5,273.1 246.0,259.6 257.5,251.4 269.0,245.0 280.5,236.0 292.0,233.6 303.5,223.6 315.0,211.2 326.5,204.4 338.0,200.9 349.5,185.3 361.0,184.1 372.5,176.3 384.0,168.4 395.5,159.1 407.0,151.7 418.5,143.8 430.0,140.8 441.5,132.3 453.0,122.1 464.5,114.3 476.0,114.3 487.5,107.4 499.0,97.3 510.5,92.7 522.0,85.9 533.5,76.3 545.0,70.3 556.5,68.0 568.0,56.5 579.5,54.8 591.0,46.1"></polyline>
+    <!-- n = 4 : the winner, drawn last and thicker -->
+    <polyline fill="none" stroke="#b91c1c" stroke-width="3" points="96.5,74.9 108.0,100.5 119.5,124.2 131.0,146.5 142.5,167.6 154.0,187.3 165.5,205.2 177.0,222.9 188.5,239.3 200.0,253.9 211.5,267.5 223.0,281.6 234.5,291.6 246.0,301.3 257.5,311.6 269.0,318.6 280.5,323.8 292.0,329.7 303.5,332.5 315.0,337.2 326.5,339.9 338.0,341.4 349.5,340.7 361.0,338.9 372.5,341.1 384.0,334.1 395.5,335.2 407.0,330.7 418.5,324.3 430.0,326.0 441.5,318.3 453.0,316.1 464.5,312.9 476.0,304.3 487.5,299.8 499.0,297.6 510.5,290.7 522.0,280.3 533.5,275.0 545.0,268.4 556.5,263.4 568.0,255.0 579.5,251.1 591.0,241.8 602.5,235.7 614.0,229.6 625.5,220.6 637.0,209.4 648.5,201.9 660.0,192.7 671.5,187.0 683.0,176.7 694.5,167.9 706.0,156.7 717.5,147.3 729.0,135.1 740.5,120.2 752.0,112.4 763.5,97.4 775.0,82.4"></polyline>
+
+    <!-- lowest-error marker -->
+    <circle cx="338" cy="341.4" r="4.5" fill="#b91c1c"></circle>
+    <line x1="338" y1="341.4" x2="392" y2="318" stroke="#b91c1c" stroke-width="1"></line>
+    <text x="396" y="315" font-size="12" font-weight="700" fill="#b91c1c">lowest error (n ≈ 4)</text>
+
+    <!-- legend -->
+    <rect x="624" y="52" width="146" height="118" rx="8" class="box"></rect>
+    <line x1="636" y1="70" x2="664" y2="70" stroke="#94a3b8" stroke-width="2"></line>
+    <text x="672" y="74" font-size="12">n = 1</text>
+    <line x1="636" y1="90" x2="664" y2="90" stroke="#93c5fd" stroke-width="2"></line>
+    <text x="672" y="94" font-size="12">n = 2</text>
+    <line x1="636" y1="110" x2="664" y2="110" stroke="#b91c1c" stroke-width="3"></line>
+    <text x="672" y="114" font-size="12" font-weight="700">n = 4</text>
+    <line x1="636" y1="130" x2="664" y2="130" stroke="#2563eb" stroke-width="2"></line>
+    <text x="672" y="134" font-size="12">n = 8</text>
+    <line x1="636" y1="150" x2="664" y2="150" stroke="#1e3a8a" stroke-width="2"></line>
+    <text x="672" y="154" font-size="12">n = 16</text>
+  </svg>
+  <figcaption>Reproduced by running $n$-step TD directly on the 19-state random walk (600 runs, first 10 episodes, values initialised to $0$). Each curve fixes $n$ and sweeps the step size $\alpha$. Every curve is U-shaped; <strong>$n \approx 4$ attains the lowest error</strong>. Larger $n$ bottoms out at a <em>smaller</em> $\alpha$ and then diverges as the high-variance targets destabilise — the curves leave the top of the band. Neither extreme ($n=1$ TD, $n=\infty$ MC) is best.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($n$ is a bias–variance dial)</span></p>
+
+The whole spectrum is one bias–variance trade-off. **Small $n$** leans on the bootstrap (more bias from a possibly-wrong $V$, but low variance). **Large $n$** uses more real, sampled reward (less bias, but high variance because long reward sequences are noisy). The U-shaped curves are exactly what a bias–variance trade-off looks like; the best $n$ is the bottom of the U, problem-dependent and usually small but greater than one.
+
+</div>
+
+### $n$-step Sarsa (Control)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From prediction to control — switch to action values)</span></p>
+
+Moving from prediction ($v\_\pi$) to control ($q\_\pi$) repeats exactly the move made for one-step TD when we went from TD(0) to **Sarsa**: switch from states to **state–action pairs**, act $\varepsilon$-greedily, and bootstrap from an action value. The $n$-step return for action values is
+
+$$
+G_{t:t+n} \;\doteq\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} Q_{t+n-1}(S_{t+n}, A_{t+n}),
+$$
+
+and the update is **$n$-step Sarsa**:
+
+$$
+Q_{t+n}(S_t, A_t) \;\doteq\; Q_{t+n-1}(S_t, A_t) + \alpha\,\bigl[\, G_{t:t+n} - Q_{t+n-1}(S_t, A_t) \,\bigr].
+$$
+
+As with prediction, $n = 1$ recovers ordinary Sarsa(0) and $n = \infty$ recovers Monte Carlo control.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($n$-step Sarsa — the core idea)</span></p>
+
+Read against ordinary Sarsa, which updates after **one** transition,
+
+$$
+G = R_{t+1} + \gamma\, Q(S_{t+1}, A_{t+1}),
+$$
+
+$n$-step Sarsa simply **waits longer and uses more real rewards** before it bootstraps,
+
+$$
+G = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} Q(S_{t+n}, A_{t+n}),
+$$
+
+and then applies the *same* Sarsa update to the original pair:
+
+$$
+Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\,\bigl[\, G - Q(S_t, A_t) \,\bigr].
+$$
+
+It is the same algorithm — only the return is longer.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why $n$-step control learns faster)</span></p>
+
+Picture a gridworld episode that wanders to the goal $G$, where reaching $G$ is the *only* reward. After that single episode:
+
+* **One-step Sarsa** strengthens just the **last** action — the one that stepped into the goal. Every earlier action along the path is untouched; their values only improve on later episodes, one step further back each time.
+* **10-step Sarsa** strengthens the **last ten** actions at once — so far more is learned from the same single trajectory.
+
+Deeper backups propagate the goal's credit many steps back per episode, which is exactly why intermediate $n$ accelerates control learning.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 300" role="img" aria-label="Three gridworld panels showing one path from start to goal G. One-step Sarsa strengthens only the final action; ten-step Sarsa strengthens the last ten actions of the same trajectory.">
+    <defs>
+      <marker id="gw-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L7,3 z" fill="#b45309"></path>
+      </marker>
+    </defs>
+
+    <!-- panel titles -->
+    <text x="132" y="64" text-anchor="middle" font-size="14" font-weight="700">Path taken (one episode)</text>
+    <text x="417" y="64" text-anchor="middle" font-size="14" font-weight="700">1-step Sarsa</text>
+    <text x="702" y="64" text-anchor="middle" font-size="14" font-weight="700">10-step Sarsa</text>
+
+    <!-- ===== Panel 1 ===== -->
+    <g stroke="#e2e8f0" stroke-width="1">
+      <line x1="48" y1="87" x2="48" y2="255"></line><line x1="76" y1="87" x2="76" y2="255"></line><line x1="104" y1="87" x2="104" y2="255"></line><line x1="132" y1="87" x2="132" y2="255"></line><line x1="160" y1="87" x2="160" y2="255"></line><line x1="188" y1="87" x2="188" y2="255"></line><line x1="216" y1="87" x2="216" y2="255"></line>
+      <line x1="48" y1="255" x2="216" y2="255"></line><line x1="48" y1="227" x2="216" y2="227"></line><line x1="48" y1="199" x2="216" y2="199"></line><line x1="48" y1="171" x2="216" y2="171"></line><line x1="48" y1="143" x2="216" y2="143"></line><line x1="48" y1="115" x2="216" y2="115"></line><line x1="48" y1="87" x2="216" y2="87"></line>
+    </g>
+    <rect x="204" y="75" width="24" height="24" rx="3" class="green"></rect>
+    <text x="216" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">G</text>
+    <polyline fill="none" stroke="#94a3b8" stroke-width="2.5" points="48,255 76,255 76,227 104,227 104,199 132,199 132,171 160,171 160,143 188,143 188,115 216,115 216,87"></polyline>
+    <circle cx="48" cy="255" r="5" fill="#1f2933"></circle>
+
+    <!-- ===== Panel 2 ===== -->
+    <g stroke="#e2e8f0" stroke-width="1">
+      <line x1="333" y1="87" x2="333" y2="255"></line><line x1="361" y1="87" x2="361" y2="255"></line><line x1="389" y1="87" x2="389" y2="255"></line><line x1="417" y1="87" x2="417" y2="255"></line><line x1="445" y1="87" x2="445" y2="255"></line><line x1="473" y1="87" x2="473" y2="255"></line><line x1="501" y1="87" x2="501" y2="255"></line>
+      <line x1="333" y1="255" x2="501" y2="255"></line><line x1="333" y1="227" x2="501" y2="227"></line><line x1="333" y1="199" x2="501" y2="199"></line><line x1="333" y1="171" x2="501" y2="171"></line><line x1="333" y1="143" x2="501" y2="143"></line><line x1="333" y1="115" x2="501" y2="115"></line><line x1="333" y1="87" x2="501" y2="87"></line>
+    </g>
+    <rect x="489" y="75" width="24" height="24" rx="3" class="green"></rect>
+    <text x="501" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">G</text>
+    <polyline fill="none" stroke="#cbd5e1" stroke-width="2.5" points="333,255 361,255 361,227 389,227 389,199 417,199 417,171 445,171 445,143 473,143 473,115 501,115 501,87"></polyline>
+    <polyline fill="none" stroke="#b45309" stroke-width="4" points="501,115 501,87" marker-end="url(#gw-arrow)"></polyline>
+    <circle cx="333" cy="255" r="5" fill="#1f2933"></circle>
+
+    <!-- ===== Panel 3 ===== -->
+    <g stroke="#e2e8f0" stroke-width="1">
+      <line x1="618" y1="87" x2="618" y2="255"></line><line x1="646" y1="87" x2="646" y2="255"></line><line x1="674" y1="87" x2="674" y2="255"></line><line x1="702" y1="87" x2="702" y2="255"></line><line x1="730" y1="87" x2="730" y2="255"></line><line x1="758" y1="87" x2="758" y2="255"></line><line x1="786" y1="87" x2="786" y2="255"></line>
+      <line x1="618" y1="255" x2="786" y2="255"></line><line x1="618" y1="227" x2="786" y2="227"></line><line x1="618" y1="199" x2="786" y2="199"></line><line x1="618" y1="171" x2="786" y2="171"></line><line x1="618" y1="143" x2="786" y2="143"></line><line x1="618" y1="115" x2="786" y2="115"></line><line x1="618" y1="87" x2="786" y2="87"></line>
+    </g>
+    <rect x="774" y="75" width="24" height="24" rx="3" class="green"></rect>
+    <text x="786" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">G</text>
+    <polyline fill="none" stroke="#cbd5e1" stroke-width="2.5" points="618,255 646,255 646,227 674,227 674,199 702,199 702,171 730,171 730,143 758,143 758,115 786,115 786,87"></polyline>
+    <polyline fill="none" stroke="#b45309" stroke-width="4" points="646,227 674,227 674,199 702,199 702,171 730,171 730,143 758,143 758,115 786,115 786,87" marker-end="url(#gw-arrow)"></polyline>
+    <circle cx="618" cy="255" r="5" fill="#1f2933"></circle>
+
+    <text x="430" y="285" text-anchor="middle" font-size="12.5" class="muted">● start &nbsp;&nbsp; ■ goal (only reward) &nbsp;&nbsp; <tspan fill="#b45309" font-weight="700">orange</tspan> = action values strengthened by this episode</text>
+  </svg>
+  <figcaption>A single trajectory reaches the goal $G$ (the only reward). <strong>One-step Sarsa</strong> strengthens just the <em>last</em> action that entered the goal; <strong>10-step Sarsa</strong> strengthens the last ten actions at once — so a single episode teaches far more of the path, which is why deeper backups speed up control.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">($n$-step Sarsa — on-policy TD control)</span></p>
+
+**Parameters:** step size $\alpha \in (0, 1]$, exploration $\varepsilon > 0$, integer $n \geq 1$.
+
+Initialise $Q(s, a)$ arbitrarily, with $Q(\text{terminal}, \cdot) = 0$.
+
+Loop for each episode:
+
+1. Initialise and store $S\_0 \neq$ terminal; choose and store $A\_0 \sim \varepsilon\text{-greedy}(\cdot \mid S\_0)$.
+2. Set $T \leftarrow \infty$.
+3. Loop $t = 0, 1, 2, \dots$:
+   * **If $t < T$:** take action $A\_t$; observe and store $R\_{t+1}, S\_{t+1}$.
+     * If $S\_{t+1}$ is terminal: $T \leftarrow t + 1$.
+     * Else: choose and store $A\_{t+1} \sim \varepsilon\text{-greedy}(\cdot \mid S\_{t+1})$.
+   * Let $\tau \leftarrow t - n + 1$ ($\tau$ is the time of the estimate now being updated).
+   * **If $\tau \geq 0$:**
+     
+     $$
+     G \leftarrow \sum_{i=\tau+1}^{\min(\tau+n,\, T)} \gamma^{\,i-\tau-1} R_i;
+     $$
+     
+     if $\tau + n < T$, add the bootstrap $G \leftarrow G + \gamma^{n} Q(S_{\tau+n}, A_{\tau+n})$; then
+     
+     $$
+     Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].
+     $$
+   * Until $\tau = T - 1$.
+
+The guard `if $t < T$` stops *sampling* once the episode ends, while the loop keeps *issuing updates* until $\tau = T - 1$, so the last $n - 1$ visited pairs are still updated.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($n$-step Expected Sarsa)</span></p>
+
+Same update, but the **last** node is a full expectation over the target policy rather than a single sampled action:
+
+$$
+G_{t:t+n} \;\doteq\; R_{t+1} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} \bar V_{t+n-1}(S_{t+n}),
+$$
+
+where the **expected approximate value** is
+
+$$
+\bar V_{t+n-1}(S_{t+n}) \;\doteq\; \sum_a \pi(a \mid S_{t+n})\, Q_{t+n-1}(S_{t+n}, a).
+$$
+
+The terminal branch averages over *all* actions, weighted by $\pi$. This has **lower variance** than Sarsa's sampled last step; the quantity $\bar V$ reappears in several later contexts (notably the off-policy control variates below).
+
+</div>
+
+### $n$-step Off-policy Learning
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Off-policy $n$-step learning via importance sampling)</span></p>
+
+To learn about a target policy $\pi$ while following a behaviour policy $b$, we reweight each $n$-step return by the **importance-sampling ratio** — the product of per-step action-probability ratios over the segment:
+
+$$
+\rho_{t:h} \;\doteq\; \prod_{k=t}^{\min(h,\, T-1)} \frac{\pi(A_k \mid S_k)}{b(A_k \mid S_k)},
+$$
+
+where $T$ is the terminal time step and $h$ is the last action index included in the product. The off-policy updates simply premultiply the TD error by the appropriate ratio.
+
+**Off-policy $n$-step TD (state values):**
+
+$$
+V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\, \rho_{t:t+n-1}\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr].
+$$
+
+**Off-policy $n$-step Sarsa (action values):**
+
+$$
+Q_{t+n}(S_t, A_t) \;\doteq\; Q_{t+n-1}(S_t, A_t) + \alpha\, \rho_{t+1:t+n}\,\bigl[\, G_{t:t+n} - Q_{t+n-1}(S_t, A_t) \,\bigr].
+$$
+
+The ratio for the action-value version starts at $t+1$, not $t$: the pair $(S\_t, A\_t)$ being updated is *given*, so its own action is not reweighted — only the actions chosen *afterwards* need correcting.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the ratios)</span></p>
+
+The product $\rho\_{t:h}$ has a clean interpretation, recalling the importance-sampling idea from the off-policy Monte Carlo lecture:
+
+* If $\pi$ would **never** take one of the actions ($\pi(A\_k \mid S\_k) = 0$), the whole return gets weight zero — it is **ignored**.
+* If $\pi$ would take an action *far more often* than $b$, the return is **up-weighted** — it is characteristic of $\pi$ but rare in the data.
+* If $\pi = b$ (on-policy), every ratio is $1$ and we recover the on-policy updates exactly.
+
+</div>
+
+### Control Variates: Taming Off-policy Variance
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control variate for state values)</span></p>
+
+Write the $n$-step return recursively, $G^{\text{plain}}\_{t:h} = R\_{t+1} + \gamma\, G\_{t+1:h}$. A naive weighting multiplies the *whole* thing by $\rho\_t$ — but if $\rho\_t = 0$ the target collapses to **zero**, injecting variance (the estimate is yanked toward $0$ for no good reason). The fix folds in a **control variate**:
+
+$$
+G_{t:h} \;\doteq\; \rho_t\,\bigl(R_{t+1} + \gamma\, G_{t+1:h}\bigr) + (1 - \rho_t)\, V_{h-1}(S_t).
+$$
+
+* If $\rho\_t = 0$, the target becomes $V\_{h-1}(S\_t)$ — the *current estimate* — so **no spurious change** is made.
+* Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$ (because $\mathbb{E}\_b[\rho\_t \mid S\_t = s] = \sum\_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum\_a \pi(a\mid s) = 1$). So the control variate has **zero conditional expectation**: it **does not bias** the update — it only reduces variance.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control variate for action values)</span></p>
+
+For action values we update the already-chosen pair $(S\_t, A\_t)$, so importance sampling starts at the *next* action. The naive form is $G^{\text{naive}}\_{t:h} \doteq R\_{t+1} + \gamma\, \rho\_{t+1}\, G\_{t+1:h}$. Rewriting the next return around its current estimate,
+
+$$
+G_{t+1:h} = Q_{h-1}(S_{t+1}, A_{t+1}) + \bigl(G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})\bigr),
+$$
+
+we importance-sample **only the correction** and add back the target-policy expectation:
+
+$$
+G_{t:h} \;\doteq\; R_{t+1} + \gamma\Bigl(\, \bar V_{h-1}(S_{t+1}) + \rho_{t+1}\bigl[\, G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1}) \,\bigr] \Bigr),
+$$
+
+where $\bar V\_{h-1}(S\_{t+1}) \doteq \sum\_a \pi(a \mid S\_{t+1})\, Q\_{h-1}(S\_{t+1}, a)$. This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why subtract $Q_{h-1}$?)</span></p>
+
+The bracketed term
+
+$$
+G^{\text{cv}}_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})
+$$
+
+is the **surprise** beyond the current estimate. The construction splits the return into a default and a correction:
+
+* $\bar V\_{h-1}(S\_{t+1})$ is the default expected value under $\pi$ — what we believe *before* seeing the sampled continuation.
+* $\rho\_{t+1}[\cdots]$ corrects only the *sampled deviation* from the current action-value estimate.
+* If $\rho\_{t+1} = 0$, the target falls back to $\bar V\_{h-1}(S\_{t+1})$ — **not zero** — because $\mathbb{E}\_b[\rho\_{t+1} Q\_{h-1}(S\_{t+1}, A\_{t+1}) \mid S\_{t+1}] = \bar V\_{h-1}(S\_{t+1})$.
+
+Subtracting $Q\_{h-1}$ is precisely what makes the importance-sampled piece a *zero-mean correction* on top of a low-variance baseline — the defining trick of a control variate.
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Map of the $n$-step family)</span></p>
+
+| Method | On/off-policy | Last-step handling |
+| :----- | :------------ | :----------------- |
+| **$n$-step TD** | prediction | bootstrap state value $V\_{t+n-1}(S\_{t+n})$ |
+| **$n$-step Sarsa** | on-policy | sample final action: $Q\_{t+n-1}(S\_{t+n}, A\_{t+n})$ |
+| **$n$-step Expected Sarsa** | on/off-policy | expectation over actions: $\bar V\_{t+n-1}(S\_{t+n})$ |
+| **Off-policy $n$-step Sarsa** | off-policy | importance-sampled, optionally with control variates |
+
+Every row is the *same* skeleton — $n$ real rewards then a bootstrap — differing only in how the final node is handled.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — $n$-step Bootstrapping)</span></p>
+
+* **A spectrum, not two camps.** $n$-step methods span a continuum from one-step TD ($n = 1$) to Monte Carlo ($n = \infty$); intermediate $n$ is usually best, and they remain TD methods throughout.
+* **The $n$-step return is the central object.** $n$ real rewards plus a bootstrap, $G\_{t:t+n} = R\_{t+1} + \cdots + \gamma^{n-1}R\_{t+n} + \gamma^{n} V\_{t+n-1}(S\_{t+n})$; the **error-reduction property** ($\gamma^{n}$ contraction) guarantees soundness for the whole family.
+* **$n$ is a bias–variance dial.** Small $n$ = more bootstrapping (bias, low variance); large $n$ = more real reward (less bias, high variance). Larger $n$ needs a smaller $\alpha$.
+* **Faster control.** **$n$-step Sarsa** propagates credit back $n$ steps per episode, so a single trajectory teaches far more than one-step Sarsa does; **Expected Sarsa** trades the sampled last action for a lower-variance expectation.
+* **Off-policy needs reweighting.** **Importance sampling** corrects for following $b$ while learning $\pi$; **control variates** keep the update unbiased while cutting the variance that the raw ratios inject.
+
+**Bridge ahead.** Choosing a single $n$ is itself a compromise — short returns are biased, long ones noisy. The next step removes the choice by *averaging over all $n$ at once* with an exponentially weighted geometric mixture, giving **TD($\lambda$)** and **eligibility traces**: a mechanism that achieves the $n$-step backup incrementally and online, without storing the trajectory, carrying this lecture's TD-error and bias–variance lessons into the function-approximation setting.
 
 </div>
