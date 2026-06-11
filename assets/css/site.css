@@ -1477,6 +1477,48 @@ thead {
   color: var(--accent);
 }
 
+/* Fullscreen graph: native :fullscreen on the .tag-graph block, plus a
+   fixed-overlay fallback class for browsers without element fullscreen. */
+.tag-graph--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: auto;
+}
+
+.tag-graph:fullscreen,
+.tag-graph--fullscreen {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 1.4rem 1.2rem;
+  background: var(--surface);
+}
+
+.tag-graph:fullscreen .tag-graph__intro,
+.tag-graph--fullscreen .tag-graph__intro {
+  display: none;
+}
+
+.tag-graph:fullscreen .tag-graph__toolbar,
+.tag-graph--fullscreen .tag-graph__toolbar {
+  margin-top: 0.2rem;
+}
+
+.tag-graph:fullscreen .tag-graph__stage,
+.tag-graph--fullscreen .tag-graph__stage {
+  flex: 1 1 auto;
+  width: 100%;
+  margin-left: 0;
+  height: auto;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+body.tag-graph-noscroll {
+  overflow: hidden;
+}
+
 .tag-graph__stage {
   position: relative;
   width: 100vw;

@@ -160,6 +160,7 @@
     var thresholdValue = document.getElementById('tag-graph-threshold-value');
     var statsEl = document.getElementById('tag-graph-stats');
     var resetButton = document.getElementById('tag-graph-reset');
+    var fullscreenButton = document.getElementById('tag-graph-fullscreen');
     var tagsUrl = root.dataset.tagsUrl || '/tags/';
 
     var ctx = canvas.getContext('2d');
@@ -721,10 +722,50 @@
         selectNode(findNodeAtEvent(event) || null);
       });
       document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && state.selected && document.activeElement !== searchInput) {
+        if (event.key !== 'Escape') return;
+        if (fallbackFullscreen) {
+          // Native fullscreen handles its own Escape; the CSS fallback needs ours.
+          fallbackFullscreen = false;
+          applyFullscreenUi();
+          return;
+        }
+        if (state.selected && document.activeElement !== searchInput) {
           selectNode(null);
         }
       });
+
+      // Fullscreen: native API on the whole graph block (keeps the toolbar
+      // usable), with a fixed-overlay CSS fallback where divs can't go
+      // fullscreen (e.g. iOS Safari). Re-fit the graph to the new canvas.
+      var fallbackFullscreen = false;
+
+      function applyFullscreenUi() {
+        var active = document.fullscreenElement === root || fallbackFullscreen;
+        fullscreenButton.textContent = active ? 'Exit fullscreen' : 'Fullscreen';
+        fullscreenButton.setAttribute('aria-pressed', String(active));
+        root.classList.toggle('tag-graph--fullscreen', fallbackFullscreen);
+        document.body.classList.toggle('tag-graph-noscroll', fallbackFullscreen);
+        resizeCanvas();
+        fitView(true);
+      }
+
+      fullscreenButton.addEventListener('click', function () {
+        if (document.fullscreenElement === root) {
+          document.exitFullscreen();
+        } else if (fallbackFullscreen) {
+          fallbackFullscreen = false;
+          applyFullscreenUi();
+        } else if (root.requestFullscreen) {
+          root.requestFullscreen().catch(function () {
+            fallbackFullscreen = true;
+            applyFullscreenUi();
+          });
+        } else {
+          fallbackFullscreen = true;
+          applyFullscreenUi();
+        }
+      });
+      document.addEventListener('fullscreenchange', applyFullscreenUi);
 
       sim.on('tick', schedulePaint);
       if (!motionReduced) sim.alpha(0.18).restart();
