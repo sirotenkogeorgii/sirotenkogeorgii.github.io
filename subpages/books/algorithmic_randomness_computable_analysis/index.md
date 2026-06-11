@@ -9,6 +9,13 @@ tags:
   - computable-analysis
   - kolmogorov-complexity
   - measure-theory
+  - information-content-measure
+  - martin-löf-test
+  - cantor-space
+  - turing-machine
+  - prefix-free-turing-machine
+  - compressibility
+  - minimum-description-length
 ---
 
 # Algorithmic Randomness and Computable Analysis
@@ -1841,7 +1848,7 @@ for all words $v, v', w, w' \in \lbrace 0,1\rbrace^{\ast}$.
 
 Let $V_1,\dots,V_n$ be prefix-free sets. Show that the set
 
-$$V := \lbrace v_1, \dots, v_n : v_i \in V_i for all i\in[n] \rbrace$$
+$$V := \lbrace v_1, \dots, v_n : v_i \in V_i \quad \forall i\in[n] \rbrace$$
 
 is prefix-free.
 
@@ -2024,11 +2031,17 @@ Show the following upper bounds for the prefix-free Kolmogorov complexity:
 
 1. $K(w) \leq l(w) + K(l(w)) + O(1) \qquad \forall w$
   
-   * **Construction:** Let $M$ be a TM that takes the input $\text{input} = \sigma_w \text{bin}(w)$. Then it tries all splits of the input $\text{input} = \tilde{\sigma}\tilde{w}$ and running a prefix-free UTM $\tilde{U}(\tilde{\sigma})$ in a dovetailing manner. When the prefix-free UTM halts with $\tilde{U}(\tilde{\sigma}) = \tilde{l}(w)$, we interpret it as a length of the word $w$. Then $M$ prints $\tilde{w}$ if the length of $\tilde{w}$ the same as \tilde{l}(w), othwerwise enter infinity loop to not halt.
+   * **Construction:** Let $M$ be a TM that takes the input $\text{input} = \sigma_w \text{bin}(w)$. Then it tries all splits of the input $\text{input} = \tilde{\sigma}\tilde{w}$ and running a prefix-free UTM $\tilde{U}(\tilde{\sigma})$ in a dovetailing manner. When the prefix-free UTM halts with $\tilde{U}(\tilde{\sigma}) = \tilde{l}(w)$, we interpret it as a length of the word $w$. Then $M$ prints $\tilde{w}$ if the length of $\tilde{w}$ the same as $\tilde{l}(w)$, othwerwise enter infinity loop to not halt.
    * **Justification of construction:** The key observation that makes this simple approach work is that the split is unique, i.e. only one prefix of $\text{input}$ is a valid $\tilde{U}$ program, otherwise $\tilde{U}$ is not prefix-free. 
    * **Veirfication of complexity:** For the machine $M$ to induce an upper bound of $K$, we have to show that $M$ is prefix-free. $M$ is prefix-free, because spliting is deterministic, prefix $\tilde{\sigma}$ of the input is unqiue, prefix also determines the number of next chars to be present, so it cannot be a prefix of something that is bigger.
      
-     $$K(w) \leq C_M(w) + O(1) \leq l(\sigma_w \text{bin}(w)) + O(1) = \underbrace{l(\sigma_w)}_{K(l(w))} + l(\text{bin}(w)) + O(1) = K(l(w)) + l(\text{bin}(w)) + O(1)$$
+     $$
+     \begin{\aligned}
+     K(w) 
+     &\leq C_M(w) + O(1) \\
+     &\leq l(\sigma_w \text{bin}(w)) + O(1) \\
+     &= \underbrace{l(\sigma_w)}_{K(l(w))} + l(\text{bin}(w)) + O(1) = K(l(w)) + l(\text{bin}(w)) + O(1)$$
+     \end{\aligned}
 
 2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
 
@@ -2563,38 +2576,6 @@ since $M$ is prefix-free, $\widetilde U$ simulates it with constant overhead $c_
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Typicality implies incompressibility)</span></p>
-
-In this exercise, we prove in three steps that all Martin-Löf random sequences are prefix-free incompressible.
-
-1. For a prefix-free Turing machine $M$, we define the sequence $L:= (L_0,L_1,\dots)$ of sets of words $L_i$ defined by
-   
-   $$L_i := \lbrace \sigma: C_M(\sigma) \leq l(\sigma) - i \rbrace \qquad \forall i\in\mathbb{N}$$
-
-   Show that $\lambda(L_i) \le \lambda(\text{dom}(M))$ for every $i$.
-
-2. Show that the sequence $\tilde{L} = (\tilde{L}\_0, \tilde{L}\_1, \dots)$ of open sets
-
-   $$\tilde{L}_i := \lbrace X\in\lbrace 0,1\rbrace^{\mathbb{N}} : \exists n (K(X \upharpoonright n) \le n - i) \rbrace$$
-
-   is a well-defined Martin-Löf test.
-
-3. Show that for every Martin-Löf random sequence $A\in \lbrace 0,1\rbrace^{\mathbb{N}}$ there exists a constant $c$ such that
-
-   $$K(A \upharpoonright n) \geq n - c \qquad \text{for all } n$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-TODO: solve it
-
-</details>
-</div>
-
 Returning to the Kraft–Chaitin theorem, we record a name and a complexity bound for the sequences satisfying its hypothesis. From now on we call any computably enumerable sequence of pairs $(d\_i,\tau\_i)$ obeying $\sum\_i 2^{-d\_i}\le 1$ a **KC set**.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -2789,6 +2770,33 @@ There exists a computable enumeration $F\_0, F\_1, \dots$ of all information con
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $E\_0, E\_1, \dots$, where $E\_i := \big((\sigma^i\_0,k\_0),(\sigma^i\_1,k\_1),\dots\big)$, be a computable enumeration of all c.e. epigraphs of the corresponding upper-semicomputable partial functions $\widetilde F\_0, \widetilde F\_1, \dots$ from $\lbrace 0,1\rbrace^{\ast}$ to $\mathbb{N}$. Each $\widetilde F\_i$ automatically satisfies (20), but not necessarily (19); the construction below "trims" each enumeration so that the Kraft bound can never be violated.
+
+We build a machine $M$ that, given an index $i$, returns a (possibly finite) sequence of pairs $(\sigma\_0,k\_0),(\sigma\_1,k\_1),\dots$ in $\lbrace 0,1\rbrace^{\ast} \times \mathbb{N}$. For every $n$, the pair $(\sigma\_n,k\_n)$ is defined and equal to $(\sigma^i\_n,k^i\_n)$ if and only if the previous pair $(\sigma\_{n-1},k\_{n-1})$ is already defined (this requirement is dropped for $n=0$) **and** copying it keeps inequality (19) intact.
+
+Formally, write
+
+$$E_i^n := \big((\sigma^i_0,k_0),(\sigma^i_1,k_1),\dots,(\sigma^i_n,k_n)\big)$$
+
+for the list of all pairs enumerated into $E\_i$ by step $n$, and consider the subset
+
+$$\lbrace (\sigma^n_{i_0},k_{i_0}),(\sigma^n_{i_1},k_{i_1}),\dots,(\sigma^n_{i_m},k_{i_m})\rbrace,$$
+
+where $\sigma^n\_{i\_0},\dots,\sigma^n\_{i\_m}$ are the **distinct** words appearing so far and $k\_{i\_0},\dots,k\_{i\_m}$ are their respective **minimal** weights in $E\_i^n$. If
+
+$$\sum_{j=0}^{m} 2^{-k_{i_j}} \le 1, \tag{21}$$
+
+we set $(\sigma\_n,k\_n) = (\sigma^i\_n,k^i\_n)$; otherwise $(\sigma\_n,k\_n)$ stays undefined.
+
+For every $i$ this yields a c.e. epigraph $E\_{M(i)}$, and its associated upper-semicomputable function $\widetilde F\_{M(i)}$ fulfills (19) because (21) holds at every enumeration step. Finally, if the original $\widetilde F\_i$ already satisfies (19), then (21) never fails, every construction step terminates, and so $E\_{M(i)} = E\_i$ and $\widetilde F\_{M(i)} = \widetilde F\_i$. Hence $\big(\widetilde F\_{M(0)}, \widetilde F\_{M(1)}, \dots\big)$ is a well-defined enumeration of exactly the information content measures.
+
+</details>
+</div>
+
 <figure class="math-figure">
   <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="Enumeration of all information content measures by trimming c.e. epigraphs">
     <defs>
@@ -2845,33 +2853,6 @@ There exists a computable enumeration $F\_0, F\_1, \dots$ of all information con
   <figcaption>Theorem 3.2 starts from an effective enumeration of all c.e. epigraphs. The operator $M$ filters each stream by copying a new pair only when the current minimal values still satisfy the Kraft bound. If the original stream already came from an information content measure, no pair is lost; otherwise the filter trims the overspending parts.</figcaption>
 </figure>
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-Let $E\_0, E\_1, \dots$, where $E\_i := \big((\sigma^i\_0,k\_0),(\sigma^i\_1,k\_1),\dots\big)$, be a computable enumeration of all c.e. epigraphs of the corresponding upper-semicomputable partial functions $\widetilde F\_0, \widetilde F\_1, \dots$ from $\lbrace 0,1\rbrace^{\ast}$ to $\mathbb{N}$. Each $\widetilde F\_i$ automatically satisfies (20), but not necessarily (19); the construction below "trims" each enumeration so that the Kraft bound can never be violated.
-
-We build a machine $M$ that, given an index $i$, returns a (possibly finite) sequence of pairs $(\sigma\_0,k\_0),(\sigma\_1,k\_1),\dots$ in $\lbrace 0,1\rbrace^{\ast} \times \mathbb{N}$. For every $n$, the pair $(\sigma\_n,k\_n)$ is defined and equal to $(\sigma^i\_n,k^i\_n)$ if and only if the previous pair $(\sigma\_{n-1},k\_{n-1})$ is already defined (this requirement is dropped for $n=0$) **and** copying it keeps inequality (19) intact.
-
-Formally, write
-
-$$E_i^n := \big((\sigma^i_0,k_0),(\sigma^i_1,k_1),\dots,(\sigma^i_n,k_n)\big)$$
-
-for the list of all pairs enumerated into $E\_i$ by step $n$, and consider the subset
-
-$$\lbrace (\sigma^n_{i_0},k_{i_0}),(\sigma^n_{i_1},k_{i_1}),\dots,(\sigma^n_{i_m},k_{i_m})\rbrace,$$
-
-where $\sigma^n\_{i\_0},\dots,\sigma^n\_{i\_m}$ are the **distinct** words appearing so far and $k\_{i\_0},\dots,k\_{i\_m}$ are their respective **minimal** weights in $E\_i^n$. If
-
-$$\sum_{j=0}^{m} 2^{-k_{i_j}} \le 1, \tag{21}$$
-
-we set $(\sigma\_n,k\_n) = (\sigma^i\_n,k^i\_n)$; otherwise $(\sigma\_n,k\_n)$ stays undefined.
-
-For every $i$ this yields a c.e. epigraph $E\_{M(i)}$, and its associated upper-semicomputable function $\widetilde F\_{M(i)}$ fulfills (19) because (21) holds at every enumeration step. Finally, if the original $\widetilde F\_i$ already satisfies (19), then (21) never fails, every construction step terminates, and so $E\_{M(i)} = E\_i$ and $\widetilde F\_{M(i)} = \widetilde F\_i$. Hence $\big(\widetilde F\_{M(0)}, \widetilde F\_{M(1)}, \dots\big)$ is a well-defined enumeration of exactly the information content measures.
-
-</details>
-</div>
-
 In what follows we fix such a computable enumeration $F\_0, F\_1, \dots$ of all information content measures. Out of this list we manufacture a single canonical measure that dominates the whole class.
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -2884,6 +2865,8 @@ $$\widetilde F(w) := \min_{i\,:\,w \in \operatorname{dom}(F_i)} \big(F_i(w) + i 
 is called the **minimal information content measure**. The penalty $i+1$ charges for the index needed to name the $i$-th measure.
 
 </div>
+
+TODO: what is the point of penalty in Minimal information content measure?
 
 <figure class="math-figure">
   <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="The minimal information content measure as the lower envelope of penalized measures">
@@ -2917,15 +2900,15 @@ is called the **minimal information content measure**. The penalty $i+1$ charges
       <polyline points="120,198 205,175 290,235 375,150 460,165 545,95" fill="none" stroke="#0f9b6c" stroke-width="2" />
 
       <!-- Lower envelope -->
-      <polyline points="120,160 205,140 290,125 375,112 460,105 545,95" fill="none" stroke="#1f2430" stroke-width="3.2" />
+      <polyline points="120,230 205,215 290,235 375,190 460,210 545,205" fill="none" stroke="#1f2430" stroke-width="3.2" />
 
       <g>
-        <circle cx="120" cy="160" r="4" fill="#1f2430" />
-        <circle cx="205" cy="140" r="4" fill="#1f2430" />
-        <circle cx="290" cy="125" r="4" fill="#1f2430" />
-        <circle cx="375" cy="112" r="4" fill="#1f2430" />
-        <circle cx="460" cy="105" r="4" fill="#1f2430" />
-        <circle cx="545" cy="95" r="4" fill="#1f2430" />
+        <circle cx="120" cy="230" r="4" fill="#1f2430" />
+        <circle cx="205" cy="215" r="4" fill="#1f2430" />
+        <circle cx="290" cy="235" r="4" fill="#1f2430" />
+        <circle cx="375" cy="190" r="4" fill="#1f2430" />
+        <circle cx="460" cy="210" r="4" fill="#1f2430" />
+        <circle cx="545" cy="205" r="4" fill="#1f2430" />
       </g>
 
       <g font-size="11">
@@ -3122,6 +3105,38 @@ and **1-nonrandom** otherwise.
 
 ## Incompressibility and Typicality
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Typicality implies incompressibility)</span></p>
+
+In this exercise, we prove in three steps that all Martin-Löf random sequences are prefix-free incompressible.
+
+1. For a prefix-free Turing machine $M$, we define the sequence $L:= (L_0,L_1,\dots)$ of sets of words $L_i$ defined by
+   
+   $$L_i := \lbrace \sigma: C_M(\sigma) \leq l(\sigma) - i \rbrace \qquad \forall i\in\mathbb{N}$$
+
+   Show that $\lambda(L_i) \le \lambda(\text{dom}(M))$ for every $i$.
+
+2. Show that the sequence $\tilde{L} = (\tilde{L}\_0, \tilde{L}\_1, \dots)$ of open sets
+
+   $$\tilde{L}_i := \lbrace X\in\lbrace 0,1\rbrace^{\mathbb{N}} : \exists n (K(X \upharpoonright n) \le n - i) \rbrace$$
+
+   is a well-defined Martin-Löf test.
+
+3. Show that for every Martin-Löf random sequence $A\in \lbrace 0,1\rbrace^{\mathbb{N}}$ there exists a constant $c$ such that
+
+   $$K(A \upharpoonright n) \geq n - c \qquad \text{for all } n$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+TODO: solve it
+
+</details>
+</div>
+
 The previous exercise *(Typicality implies incompressibility)* foreshadowed that Martin-Löf randomness and prefix-free incompressibility describe the same sequences. We now state this equivalence as a theorem and prove one of its two implications.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3161,3 +3176,328 @@ is a well-defined Martin-Löf test.
 
 </details>
 </div>
+
+It remains to prove the converse implication, namely that Martin-Löf nonrandomness already forces $1$-nonrandomness. The idea is to turn a Martin-Löf test that captures $X$ into an *information content measure* that compresses the initial segments of $X$ arbitrarily far below their length, using the minimality of $K$ to transfer that compression to $K$ itself.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof ($\Longrightarrow$: 1-random $\Rightarrow$ Martin-Löf random)</summary>
+
+We prove the contrapositive. Let $X$ be a Martin-Löf nonrandom sequence, and let $(\widetilde L\_1, \widetilde L\_2, \dots)$ be a Martin-Löf test with $X \in \widetilde L\_i$ for all $i$. We may take the words $L\_i = (\sigma^i\_0, \sigma^i\_1, \dots)$ that generate the open set $\widetilde L\_i$ to be **prefix-free** and **pairwise disjoint**: whenever a word $\sigma^i\_k$ has already been enumerated into some $L\_j$ with $j < i$, we split it into its two one-bit extensions $\sigma^i\_k 0$ and $\sigma^i\_k 1$, which keeps the generated open set unchanged.
+
+**An information content measure built from the test.** Define a partial function $F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ by
+
+$$F(\sigma) := l(\sigma) - i \qquad \text{for every } \sigma \in L_{i^2},\ i \ge 2.$$
+
+Then $F$ is a well-defined information content measure. Condition (20) (its lower graph is c.e.) holds by construction, since the family $(L\_{i^2})\_{i \ge 2}$ is uniformly c.e. Condition (19) (the Kraft inequality) holds because, using that the words of each $L\_{i^2}$ are prefix-free and pairwise disjoint,
+
+$$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} = \sum_{i=2}^{\infty} \sum_{\sigma \in L_{i^2}} 2^{-(l(\sigma)-i)} = \sum_{i=2}^{\infty} 2^{\,i} \underbrace{\sum_{\sigma \in L_{i^2}} 2^{-l(\sigma)}}_{=\ \lambda(\widetilde L_{i^2})\ \le\ 2^{-i^2}} \le \sum_{i=2}^{\infty} 2^{\,i-i^2} < 1.$$
+
+**Transferring the compression to $K$.** Recall that $K$ is a *minimal* information content measure, so by Corollary 3.6.1 there is a constant $c$ with
+
+$$K(\sigma) \le F(\sigma) + c \qquad \text{for every } \sigma \in \operatorname{dom}(F). \tag{24}$$
+
+**Conclusion.** Fix any $i$. Since $X \in \widetilde L\_{i^2}$, some word $\sigma \in L\_{i^2}$ is a prefix of $X$, say $\sigma = X \upharpoonright n$, so that $l(\sigma) = n$. Applying (24) to this $\sigma$ gives
+
+$$K(X \upharpoonright n) \le F(\sigma) + c = \big(l(\sigma) - i\big) + c = n - i + c.$$
+
+As $i$ was arbitrary, the deficit $K(X \upharpoonright n) - n$ can be pushed below any constant, so no $c'$ satisfies $K(X \upharpoonright n) \ge n - c'$ for all $n$. Hence $X$ is $1$-nonrandom, and the contrapositive — and with it the theorem — is proved. $\square$
+
+</details>
+</div>
+
+This closes the loop opened by the exercise above: **prefix-free incompressibility ($1$-randomness) and Martin-Löf typicality single out exactly the same sequences.** We will lean on this equivalence repeatedly, switching freely between the compression viewpoint and the measure-theoretic viewpoint of randomness.
+
+## Computable Approximations of Real Numbers
+
+As we will see later, a "natural" example of a random sequence is the binary representation of the limit of the *slowest* nondecreasing computable Cauchy sequence. Before we can make that statement precise, we need a vocabulary for the limits of computable Cauchy sequences and for their convergence speed. We therefore begin by transferring the notion of computability from words and sequences to the real line.
+
+### Computability on the Reals
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.1 — Computable real)</span></p>
+
+A real $\alpha$ is **computable** if $\alpha = 0.A$ for a computable binary sequence $A$ (recall that $0.A$ denotes the real with binary expansion $0.a\_0 a\_1 a\_2 \dots$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dyadic rationals)</span></p>
+
+In what follows we identify the dyadic rationals with their *finite* binary representations. This is without loss of generality: for every word $w \in \lbrace 0,1\rbrace^{\ast}$, both tails $w\,1000\dots$ and $w\,0111\dots$ name the same real and are computable, so a dyadic rational always has a computable expansion.
+
+</div>
+
+To compare a real with the rationals effectively, we track it through the rationals lying below it.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.2 — Left cut)</span></p>
+
+For a real $\alpha$, the **left cut** of $\alpha$ is the set of all rationals smaller than $\alpha$:
+
+$$L(\alpha) := \lbrace q \in \mathbb{Q} : q < \alpha \rbrace.$$
+
+</div>
+
+Computability and the Cauchy condition transfer verbatim to sequences of rationals.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.3 — Computable sequence of rationals)</span></p>
+
+A sequence of rationals $(q\_n)\_{n\in\mathbb{N}}$ is **computable** if there exists a Turing machine that, on input $i$, returns $q\_i$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.4 — Cauchy sequence)</span></p>
+
+A sequence of rationals $(a\_n)\_{n\in\mathbb{N}}$ is a **Cauchy sequence** if for every $\epsilon > 0$ there exists $N \in \mathbb{N}$ such that $\lvert a\_n - a\_m\rvert < \epsilon$ for all $m, n \ge N$.
+
+</div>
+
+Combining the two notions yields the two central approximability classes of this section.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.5 — Computably approximable, left-c.e.)</span></p>
+
+A real $\alpha$ is **computably approximable** (c.a.) if there exists a computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$. A real $\alpha$ is **left computably enumerable** (left-c.e.) if there exists a *nondecreasing* computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$.
+
+</div>
+
+The bare definition of "converging" says nothing about *how fast*; the next proposition shows that for computable reals one may always demand a known, geometric rate. Geometrically this rate is a nested family of dyadic intervals shrinking onto $\alpha$.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:620px" aria-label="Effective approximation of a real by nested dyadic intervals">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="310" y="22" text-anchor="middle" font-weight="600">An effective approximation: α ∈ [aₙ, aₙ + 2⁻ⁿ]</text>
+
+      <!-- n = 1 -->
+      <rect x="320" y="44" width="260" height="22" fill="rgba(29,78,216,0.08)" stroke="#1d4ed8" stroke-width="1.3" />
+      <text x="450" y="59" text-anchor="middle" font-size="11">n = 1,  width 2⁻¹</text>
+      <!-- n = 2 -->
+      <rect x="350" y="74" width="130" height="22" fill="rgba(60,120,40,0.10)" stroke="#3d7a26" stroke-width="1.3" />
+      <text x="415" y="89" text-anchor="middle" font-size="11">n = 2,  2⁻²</text>
+      <!-- n = 3 -->
+      <rect x="370" y="104" width="65" height="22" fill="rgba(168,111,0,0.10)" stroke="#a86f00" stroke-width="1.3" />
+      <text x="402" y="119" text-anchor="middle" font-size="10">n = 3</text>
+
+      <!-- left endpoints aₙ guide lines down to the axis -->
+      <g stroke="#5b6270" stroke-dasharray="2 3" stroke-width="0.8">
+        <line x1="320" y1="66"  x2="320" y2="180" />
+        <line x1="350" y1="96"  x2="350" y2="180" />
+        <line x1="370" y1="126" x2="370" y2="180" />
+      </g>
+
+      <!-- number line -->
+      <line x1="60" y1="180" x2="580" y2="180" stroke="#444" stroke-width="1.2" />
+      <g stroke="#444" stroke-width="1">
+        <line x1="60"  y1="176" x2="60"  y2="184" />
+        <line x1="580" y1="176" x2="580" y2="184" />
+      </g>
+      <g font-size="11" fill="#444" text-anchor="middle">
+        <text x="60"  y="198">0</text>
+        <text x="580" y="198">1</text>
+      </g>
+
+      <!-- aₙ ticks -->
+      <g font-size="10" fill="#5b6270" text-anchor="middle">
+        <text x="320" y="198">a₁</text>
+        <text x="350" y="212">a₂</text>
+        <text x="370" y="198">a₃</text>
+      </g>
+
+      <!-- α marker -->
+      <line x1="398" y1="40" x2="398" y2="184" stroke="#d65336" stroke-width="1.6" />
+      <circle cx="398" cy="180" r="3.5" fill="#d65336" />
+      <text x="398" y="228" text-anchor="middle" font-size="12" fill="#d65336" font-weight="600">α</text>
+
+      <text x="310" y="246" text-anchor="middle" font-size="11" fill="#5b6270" font-style="italic">
+        Each step halves the bracket around α; the left endpoints aₙ = α↾n climb toward α from below.
+      </text>
+    </g>
+  </svg>
+  <figcaption>An effective approximation of a computable real $\alpha$. The dyadic rationals $a_n = \alpha \upharpoonright n$ approach $\alpha$ from below, while the nested intervals $[a_n,\ a_n + 2^{-n}]$ trap $\alpha$ with error below $2^{-n}$ — exactly condition (25) and the containment (27) used in the proof of Proposition 5.6.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.6 — Characterizations of computable reals)</span></p>
+
+For a real $\alpha$, the following are equivalent:
+
+- **(i)** $\alpha$ is computable;
+- **(ii)** $L(\alpha)$ is computable;
+- **(iii)** there exists a computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ that converges *effectively*, i.e.
+
+$$\lvert \alpha - a_n\rvert < 2^{-n} \qquad \text{for every } n. \tag{25}$$
+
+A sequence satisfying (25) is called an **effective approximation** of $\alpha$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**(i) $\Longrightarrow$ (ii).** Let $\alpha = 0.A$ be computable and let $M$ be a Turing machine that, given $n$, outputs the bit $A(n)$ (the $n$-th position of $A$). We build a machine $N$ that, on input a rational $q$, decides whether $q \in L(\alpha)$. It enumerates the dyadic rationals
+
+$$a_n := \alpha \upharpoonright n = 0.A(0)A(1)\cdots A(n-1)$$
+
+until it meets an index $N$ for which
+
+$$q < a_N \qquad \text{or} \qquad q \ge a_N + 2^{-N}. \tag{26}$$
+
+If the left alternative of (26) holds, then $q < a\_N \le \alpha$, so $q \in L(\alpha)$. If the right alternative holds, then — using that
+
+$$\alpha \in \big[\,\alpha \upharpoonright n,\ \alpha \upharpoonright n + 2^{-n}\,\big] \qquad \text{for all } n \tag{27}$$
+
+— we get $q \ge a\_N + 2^{-N} \ge \alpha$, so $q \notin L(\alpha)$.
+
+For every $q$ the search halts, because (26) is eventually satisfied:
+
+- if $q < \alpha$, then since $a\_n \to \alpha > q$ the left alternative of (26) is met;
+- if $q > \alpha$, then since $a\_n + 2^{-n} \to \alpha < q$ the right alternative of (26) is met.
+
+**(i) $\Longrightarrow$ (iii).** If $\alpha = 0.A$ is computable, then by (27) the sequence $a\_n := \alpha \upharpoonright n$ already satisfies $\lvert \alpha - a\_n\rvert < 2^{-n}$, so it is an effective approximation of $\alpha$.
+
+**(ii) $\Longrightarrow$ (i).** If $L(\alpha)$ is computable for $\alpha = 0.A$, then for every $n$ we can compute the prefix $\alpha \upharpoonright n$ — and hence its last bit $A(n-1)$ — by
+
+$$\alpha \upharpoonright n = \max\lbrace 0.\sigma : l(\sigma) = n \text{ and } 0.\sigma \in L(\alpha)\rbrace.$$
+
+**(iii) $\Longrightarrow$ (i).** Exercise. $\square$
+
+</details>
+</div>
+
+Relativizing the equivalence (i) $\Leftrightarrow$ (ii) to the halting problem $\emptyset'$ gives a one-jump analogue for free.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(5.6.1 — Relativization to $\emptyset'$)</span></p>
+
+For a real $\alpha = 0.A$, the following are equivalent:
+
+- **(i)** $A$ is $\emptyset'$-computable;
+- **(ii)** $L(\alpha)$ is $\emptyset'$-computable.
+
+</div>
+
+The relativized characterization locates the computably approximable reals exactly within the arithmetical hierarchy.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.7 — c.a. reals are exactly $\Delta^0_2$)</span></p>
+
+A real $\alpha = 0.A$ is computably approximable if and only if $A \in \Delta^0\_2$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**($\Longleftarrow$).** If $A \in \Delta^0\_2$, then by Post's theorem (the limit lemma) there is a computable function $g : \mathbb{N} \times \mathbb{N} \to \lbrace 0,1\rbrace$ with
+
+$$A(n) = \lim_{k\to\infty} g(k,n) \qquad \text{for all } n.$$
+
+Setting $a\_n := 0.A\_n$, where $A\_n$ is the length-$n$ word
+
+$$A_n := g(n,0)\,g(n,1)\cdots g(n,n-1)$$
+
+(the stage-$n$ guesses of the first $n$ bits), yields a computable approximation $(a\_n)\_{n\in\mathbb{N}}$ of $\alpha$.
+
+**($\Longrightarrow$).** Conversely, suppose $\alpha = 0.A = \lim\_{n\to\infty} a\_n$ for a computable approximation $(a\_n)\_{n\in\mathbb{N}}$. Then $L(\alpha)$ lies in both halves of the second level of the hierarchy:
+
+- $L(\alpha) \in \Sigma^0\_2$, since
+
+  $$q \in L(\alpha) \iff \exists n\, \forall m \ge n\,(q < a_m);$$
+
+- $L(\alpha) \in \Pi^0\_2$, since
+
+  $$q \in L(\alpha) \iff \forall n\, \exists m \ge n\,(q < a_m).$$
+
+Hence $L(\alpha) \in \Sigma^0\_2 \cap \Pi^0\_2 = \Delta^0\_2$, i.e. $L(\alpha)$ is $\emptyset'$-computable. By Corollary 5.6.1, $\alpha$ is then $\emptyset'$-computable, which is to say $A \in \Delta^0\_2$. $\square$
+
+</details>
+</div>
+
+### Halting Probability and the Class of Left-c.e. Reals
+
+Left-c.e. reals admit a strikingly concrete description: each of them is the halting probability of some prefix-free machine, and conversely. We first attach a real to every prefix-free machine.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.8 — Halting probability)</span></p>
+
+Let $\widetilde M$ be a prefix-free Turing machine. The real
+
+$$\alpha_{\widetilde M} := \sum_{\sigma \in \operatorname{dom}(\widetilde M)} 2^{-l(\sigma)}$$
+
+is called the **halting probability** of $\widetilde M$. It is exactly the Lebesgue measure $\lambda(\operatorname{dom}(\widetilde M))$ of the machine's domain, so the prefix-free Kraft inequality guarantees $\alpha\_{\widetilde M} \le 1$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.9 — Characterizations of left-c.e. reals)</span></p>
+
+For a real $\alpha$, the following are equivalent:
+
+- **(i)** $\alpha$ is left-c.e.;
+- **(ii)** $L(\alpha)$ is c.e.;
+- **(iii)** there exists a prefix-free machine $\widetilde M$ such that $\alpha$ is the halting probability of $\widetilde M$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Fix a computable enumeration $(q\_n)\_{n\in\mathbb{N}}$ of all rationals.
+
+**(i) $\Longrightarrow$ (ii).** If $(a\_n)$ is a left-c.e. approximation of $\alpha$, then $L(\alpha)$ is the domain of the partial computable function
+
+$$f(q) := \min\lbrace n : a_n > q\rbrace,$$
+
+and is therefore c.e.
+
+**(ii) $\Longrightarrow$ (i).** Given an enumeration $q\_0, q\_1, \dots$ of $L(\alpha)$, compute the index sequence
+
+$$i_0 := 0, \qquad i_n := \min\lbrace m > i_{n-1} : q_m > q_{i_{n-1}}\rbrace.$$
+
+Then $q\_{i\_0}, q\_{i\_1}, \dots$ is nondecreasing and converges to $\alpha$, hence is a left-c.e. approximation.
+
+**(iii) $\Longrightarrow$ (i).** Given a prefix-free machine $\widetilde M$ with $\alpha = \sum\_{q \in \operatorname{dom}(\widetilde M)} 2^{-l(q)}$, the partial sums
+
+$$a_n := \sum_{\substack{q \,\in\, \operatorname{dom}(\widetilde M[n]) \\ l(q) < n}} 2^{-l(q)},$$
+
+where $\widetilde M[n]$ is $\widetilde M$ run for $n$ steps, form a nondecreasing computable sequence converging to $\alpha$, i.e. a left-c.e. approximation.
+
+**(i) $\Longrightarrow$ (iii).** Exercise. $\square$
+
+</details>
+</div>
+
+The three notions of approximability introduced here nest, each layer being pinned down by its own list of equivalent characterizations.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:640px" aria-label="Hierarchy of computable, left-c.e., and computably approximable reals">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <!-- outer: computably approximable = Delta^0_2 -->
+      <rect x="30" y="36" width="580" height="258" rx="10" fill="rgba(214,83,54,0.06)" stroke="#d65336" stroke-width="1.4" />
+      <text x="320" y="60" text-anchor="middle" font-weight="600" fill="#d65336">Computably approximable (c.a.)</text>
+      <text x="320" y="78" text-anchor="middle" font-size="11" fill="#5b6270">α = lim of a computable Cauchy sequence  ⟺  A ∈ Δ⁰₂   (Thm 5.7)</text>
+
+      <!-- middle: left-c.e. -->
+      <rect x="70" y="96" width="500" height="160" rx="10" fill="rgba(168,111,0,0.08)" stroke="#a86f00" stroke-width="1.4" />
+      <text x="320" y="120" text-anchor="middle" font-weight="600" fill="#a86f00">Left-c.e.</text>
+      <text x="320" y="138" text-anchor="middle" font-size="11" fill="#5b6270">nondecreasing computable approx.  ⟺  L(α) c.e.  ⟺  α is a halting probability   (Prop 5.9)</text>
+
+      <!-- inner: computable -->
+      <rect x="120" y="156" width="400" height="80" rx="10" fill="rgba(29,78,216,0.08)" stroke="#1d4ed8" stroke-width="1.4" />
+      <text x="320" y="184" text-anchor="middle" font-weight="600" fill="#1d4ed8">Computable</text>
+      <text x="320" y="204" text-anchor="middle" font-size="11" fill="#5b6270">L(α) computable  ⟺  |α − aₙ| &lt; 2⁻ⁿ   (Prop 5.6,  Def 5.1)</text>
+
+      <!-- Omega marker in the left-c.e. ring -->
+      <text x="320" y="248" text-anchor="middle" font-size="10" fill="#a86f00" font-style="italic">Ω (a halting probability): left-c.e. but not computable</text>
+    </g>
+  </svg>
+  <figcaption>The three classes of reals studied in this section, ordered by the strictness of their approximability: <strong>computable</strong> $\subseteq$ <strong>left-c.e.</strong> $\subseteq$ <strong>computably approximable</strong> $\left(= \Delta^0_2\right)$. Each layer is characterized by Propositions 5.6 and 5.9 and Theorem 5.7. The halting probability $\alpha_{\widetilde M}$ of a universal prefix-free machine is the canonical example separating left-c.e. from computable.</figcaption>
+</figure>
+
+In particular, the halting probability of a *universal* prefix-free machine — Chaitin's $\Omega$ — is left-c.e. but, as we will see, also $1$-random. It is precisely the promised "natural" example of a random sequence: the binary expansion of the limit of the slowest nondecreasing computable Cauchy sequence.
