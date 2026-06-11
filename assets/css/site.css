@@ -1109,12 +1109,39 @@ thead {
   }
 }
 
-/* Tags: per-page chips */
+/* Tags: per-page chips (collapsed by default behind the toggle) */
 .page-tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.45rem;
   margin: 0 0 1.1rem;
+}
+
+.page-tags__toggle {
+  padding: 0.12rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.page-tags__toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-tags__list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.page-tags__list[hidden] {
+  display: none;
 }
 
 .note-header .page-tags {

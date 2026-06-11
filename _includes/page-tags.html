@@ -1,7 +1,40 @@
 {% if page.tags and page.tags != empty %}
 <nav class="page-tags" aria-label="Page tags">
-  {% for tag in page.tags %}
-  <a class="page-tags__tag" href="{{ '/tags/' | relative_url }}#tag-{{ tag | slugify }}">{{ tag }}</a>
-  {% endfor %}
+  <button type="button" class="page-tags__toggle" aria-expanded="false">▸ Tags ({{ page.tags | size }})</button>
+  <div class="page-tags__list" hidden>
+    {% for tag in page.tags %}
+    <a class="page-tags__tag" href="{{ '/tags/' | relative_url }}#tag-{{ tag | slugify }}">{{ tag }}</a>
+    {% endfor %}
+  </div>
 </nav>
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    var toggle = root.querySelector('.page-tags__toggle');
+    var list = root.querySelector('.page-tags__list');
+    var storageKey = 'page-tags-expanded';
+    var count = {{ page.tags | size }};
+
+    function setExpanded(expanded, persist) {
+      list.hidden = !expanded;
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.textContent = (expanded ? '▾' : '▸') + ' Tags (' + count + ')';
+      if (persist) {
+        try {
+          localStorage.setItem(storageKey, expanded ? '1' : '0');
+        } catch (e) {}
+      }
+    }
+
+    var stored = null;
+    try {
+      stored = localStorage.getItem(storageKey);
+    } catch (e) {}
+    if (stored === '1') setExpanded(true, false);
+
+    toggle.addEventListener('click', function () {
+      setExpanded(list.hidden, true);
+    });
+  })();
+</script>
 {% endif %}
