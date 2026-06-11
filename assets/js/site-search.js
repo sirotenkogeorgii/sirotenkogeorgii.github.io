@@ -71,6 +71,20 @@
     var staleNote = document.getElementById('site-search-stale');
 
     var pages = null;
+    var idleNote = '';
+
+    /* The page embeds the URL list of the build it belongs to; comparing it
+     * with the index's URLs detects real staleness (results pointing at pages
+     * this build doesn't have) without false alarms from local drafts. */
+    var liveUrls = null;
+    try {
+      var liveUrlsEl = document.getElementById('site-search-live-urls');
+      if (liveUrlsEl) liveUrls = JSON.parse(liveUrlsEl.textContent);
+    } catch (e) { liveUrls = null; }
+
+    function normalizeUrl(url) {
+      try { return decodeURIComponent(url); } catch (e) { return url; }
+    }
 
     function el(tag, className, text) {
       var node = document.createElement(tag);
@@ -82,7 +96,8 @@
     function render(results, query) {
       list.innerHTML = '';
       if (!query) {
-        status.textContent = 'Search ' + pages.length + ' pages. Type at least ' + MIN_QUERY_LENGTH + ' characters.';
+        status.textContent = 'Search ' + pages.length + ' pages. Type at least ' +
+          MIN_QUERY_LENGTH + ' characters.' + idleNote;
         return;
       }
       if (!results.length) {
@@ -128,17 +143,26 @@
       }, 120);
     }
 
-    // The live-count cache-buster ties the fetched index to this build of the
-    // page, so a cached old index can never be paired with a newer page.
-    fetch(root.dataset.source + '?v=' + (root.dataset.liveCount || '0'))
+    // The cache-buster ties the fetched index to this build of the page, so a
+    // cached old index can never be paired with a newer page.
+    fetch(root.dataset.source + '?v=' + (liveUrls ? liveUrls.length : '0'))
       .then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
       })
       .then(function (data) {
         pages = preparePages(data.pages || []);
-        var liveCount = Number(root.dataset.liveCount);
-        if (liveCount && data.pageCount !== liveCount) staleNote.hidden = false;
+        if (Array.isArray(liveUrls)) {
+          var buildSet = new Set(liveUrls.map(normalizeUrl));
+          var dead = pages.filter(function (p) { return !buildSet.has(normalizeUrl(p.url)); }).length;
+          if (dead > 0) staleNote.hidden = false;
+          var indexSet = new Set(pages.map(function (p) { return normalizeUrl(p.url); }));
+          var unindexed = liveUrls.filter(function (u) { return !indexSet.has(normalizeUrl(u)); }).length;
+          if (unindexed > 0) {
+            idleNote = ' ' + unindexed + (unindexed === 1 ? ' page in this build is' : ' pages in this build are') +
+              ' not indexed yet (usually uncommitted drafts).';
+          }
+        }
         render([], '');
         input.addEventListener('input', onInput);
         input.addEventListener('keydown', function (event) {

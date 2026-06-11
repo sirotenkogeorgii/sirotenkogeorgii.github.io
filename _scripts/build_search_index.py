@@ -16,6 +16,7 @@ automatically for commits that touch markdown files:
 import json
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from urllib.parse import quote
@@ -99,35 +100,65 @@ def url_for(relpath):
     return quote(url, safe="/")
 
 
-def collect_pages():
-    pages = []
+def tracked_markdown_files():
+    """Markdown files git knows about (tracked or staged) under SOURCES.
+
+    The committed index must describe the committed site: indexing the raw
+    working tree would bake uncommitted drafts into the index, and deployed
+    search results would point at pages that don't exist. Returns None when
+    git is unavailable so the caller can fall back to a filesystem walk.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "ls-files", "--cached", "-z", "--", *SOURCES],
+            cwd=ROOT, capture_output=True, check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return sorted(
+        name for name in out.stdout.decode("utf-8").split("\0")
+        if name.endswith((".md", ".markdown"))
+    )
+
+
+def walked_markdown_files():
+    files = []
     for source in SOURCES:
         base = os.path.join(ROOT, source)
-        for dirpath, dirnames, filenames in os.walk(base):
-            dirnames.sort()
-            for name in sorted(filenames):
-                if not name.endswith((".md", ".markdown")) or name.startswith("_"):
-                    continue
-                path = os.path.join(dirpath, name)
-                relpath = os.path.relpath(path, ROOT)
-                try:
-                    raw = open(path, encoding="utf-8").read()
-                except (OSError, UnicodeDecodeError):
-                    continue
-                scalars, tags, body = parse_front_matter(raw)
-                if scalars is None or "title" not in scalars:
-                    continue  # no front matter -> Jekyll treats it as a static file
-                url = scalars.get("permalink") or url_for(relpath)
-                if url in EXCLUDED_PERMALINKS:
-                    continue
-                title = scalars["title"]
-                words = extract_words(body, title + " " + " ".join(tags))
-                pages.append({
-                    "title": title,
-                    "url": url,
-                    "tags": tags,
-                    "words": words,
-                })
+        for dirpath, _dirnames, filenames in os.walk(base):
+            for name in filenames:
+                if name.endswith((".md", ".markdown")):
+                    files.append(os.path.relpath(os.path.join(dirpath, name), ROOT))
+    return sorted(files)
+
+
+def collect_pages():
+    relpaths = tracked_markdown_files()
+    if relpaths is None:
+        relpaths = walked_markdown_files()
+    pages = []
+    for relpath in relpaths:
+        if os.path.basename(relpath).startswith("_"):
+            continue
+        path = os.path.join(ROOT, relpath)
+        try:
+            raw = open(path, encoding="utf-8").read()
+        except (OSError, UnicodeDecodeError):
+            continue
+        scalars, tags, body = parse_front_matter(raw)
+        if scalars is None or "title" not in scalars:
+            continue  # no front matter -> Jekyll treats it as a static file
+        url = scalars.get("permalink") or url_for(relpath)
+        if url in EXCLUDED_PERMALINKS:
+            continue
+        title = scalars["title"]
+        words = extract_words(body, title + " " + " ".join(tags))
+        pages.append({
+            "title": title,
+            "url": url,
+            "tags": tags,
+            "words": words,
+        })
     pages.sort(key=lambda p: p["url"])
     return pages
 
