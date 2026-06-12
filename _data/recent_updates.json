@@ -43,6 +43,12 @@
    "added": true
   },
   {
+   "title": "The Laplace Operator, or: How a Point Talks to Its Neighbors",
+   "url": "/subpages/math_topics/laplacian/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-06-11",
@@ -171,12 +177,6 @@
   {
    "title": "Weak but Not Strong Convergence in Lp: sin(nt)",
    "url": "/subpages/stuff_i_found_interesting/example_weak_not_strong_congerg_Lp/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "When Does the Taylor Approximation Fail?",
-   "url": "/subpages/stuff_i_found_interesting/when_does_taylor_fail/",
    "date": "2026-05-24",
    "added": true
   }
