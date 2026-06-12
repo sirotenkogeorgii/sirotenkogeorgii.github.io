@@ -25,6 +25,12 @@
    "added": false
   },
   {
+   "title": "Maths Topics",
+   "url": "/notes/maths_topics/",
+   "date": "2026-06-12",
+   "added": false
+  },
+  {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-06-12",
@@ -39,6 +45,12 @@
   {
    "title": "Solving Methods",
    "url": "/notes/solving_methods/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
+   "title": "The Fourier Transform: Diagonalizing Translation",
+   "url": "/subpages/math_topics/fourier_transform/",
    "date": "2026-06-12",
    "added": true
   },
@@ -65,12 +77,6 @@
    "url": "/subpages/reinforcement_learning_hd/",
    "date": "2026-06-11",
    "added": false
-  },
-  {
-   "title": "Maths Topics",
-   "url": "/notes/maths_topics/",
-   "date": "2026-06-10",
-   "added": true
   },
   {
    "title": "Algorithms for Combinatorial Optimization",
@@ -171,12 +177,6 @@
   {
    "title": "Uniform Convergence",
    "url": "/subpages/stuff_i_found_interesting/uniform_convergence/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "Weak but Not Strong Convergence in Lp: sin(nt)",
-   "url": "/subpages/stuff_i_found_interesting/example_weak_not_strong_congerg_Lp/",
    "date": "2026-05-24",
    "added": true
   }
