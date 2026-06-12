@@ -28,8 +28,57 @@ tags:
 
 ## Chapter 1: Introduction
 
+### 1.1 A Motivating Example
+
+Many processes in science and engineering can be modelled via differential equations. Assuming complete knowledge of all the necessary parameters, initial and boundary conditions, the solution of such a differential equation allows in principle to fully predict the process.
+
+Consider for example a rod of length 1 with thermal diffusivity coefficient $\alpha$. The temperature at the two ends of the rod is assumed to be 0. Then the temperature distribution $u(x,t)$ satisfies
+
+$$\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}, \qquad \text{for } 0 < x < 1,\ t > 0, \tag{1.1}$$
+
+with boundary conditions
+
+$$u(0, t) = u(1, t) = 0, \qquad \text{for } t > 0, \tag{1.2}$$
+
+and initial condition
+
+$$u(x, 0) = u_0(x), \qquad \text{for } 0 < x < 1. \tag{1.3}$$
+
+We can now consider the following inverse problem in this simple setting: Given the temperature distribution at some time $T > 0$, can we recover the initial temperature profile $u_0$ at time $t = 0$?
+
+Using the Laplace transform method, the solution to the heat equation (1.1)-(1.3) has the general form
+
+$$u(x, t) = \sum_{n=1}^{\infty} \theta_n e^{-(n\pi)^2 \alpha t} \sin(n\pi x),$$
+
+where $\theta_n$ are the Fourier-sine-coefficients of the initial condition $u_0$, i.e.,
+
+$$u_0(x) = \sum_{n=1}^{\infty} \theta_n \sin(n\pi x).$$
+
+Thus, in principle the coefficients $\theta_n$ of the initial condition $u_0$ can be estimated from measurements of $u(x, T)$ at time $T > 0$. However, consider two initial conditions $u_0^{(1)}$ and $u_0^{(2)}$ with $\theta_1^{(1)} = \theta_1^{(2)} = 1$ that differ only in one single frequency component, i.e.,
+
+$$u_0^{(1)}(x) - u_0^{(2)}(x) = \theta_N \sin(N\pi x), \quad \text{for some } N > 1.$$
+
+At time $T > 0$ the two solutions will differ by
+
+$$u^{(1)}(x, T) - u^{(2)}(x, T) = \theta_N e^{-(N\pi)^2 \alpha T} \sin(N\pi x),$$
+
+which is exponentially small. Therefore, any information about this difference will be lost due to measurement noise for $T$ or $N$ sufficiently large, even if the noise is extremely small.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inverse Heat Equation)</span></p>
+
+To demonstrate this, consider the case of $\alpha = 0.01$ (which after nondimensionalisation roughly corresponds to a copper rod of length 10cm in dimensionless quantities with time measured in seconds) and let
+
+$$\theta_1^{(1)} = \theta_1^{(2)} = 1, \quad \theta_5^{(2)} = 0.5 \quad \text{and} \quad \theta_i^{(j)} = 0 \quad \text{otherwise}.$$
+
+The solution is plotted at the initial time $t = 0$ and at $t = 1$ and $t = 4$. Even though the two initial conditions clearly differ significantly and the difference is not even particularly oscillatory, it is already very difficult to distinguish the two solutions at $t = 1$. At $t = 4$, it will be impossible to say whether the observed temperature profile came from $u_0^{(1)}$ or from $u_0^{(2)}$.
+
+</div>
+
+### 1.2 What is an Inverse Problem?
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 1.0.1</span><span class="math-callout__name">(Well-Posed Problem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 1.2.1</span><span class="math-callout__name">(Well-Posed Problem)</span></p>
 
 According to **Hadamard** (1865-1963) a problem is called **well-posed**, if
 
@@ -123,52 +172,78 @@ In this course, we will study how ill-posed problems can be solved in a numerica
 
 </div>
 
-### 1.1 A Motivating Example
+### 1.3 Further Examples
 
-Many processes in science and engineering can be modelled via differential equations. Assuming complete knowledge of all the necessary parameters, initial and boundary conditions, the solution of such a differential equation allows in principle to fully predict the process.
-
-Consider for example a rod of length 1 with thermal diffusivity coefficient $\alpha$. The temperature at the two ends of the rod is assumed to be 0. Then the temperature distribution $u(x,t)$ satisfies
-
-$$\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}, \qquad \text{for } 0 < x < 1,\ t > 0, \tag{1.1}$$
-
-with boundary conditions
-
-$$u(0, t) = u(1, t) = 0, \qquad \text{for } t > 0, \tag{1.2}$$
-
-and initial condition
-
-$$u(x, 0) = u_0(x), \qquad \text{for } 0 < x < 1. \tag{1.3}$$
-
-We can now consider the following inverse problem in this simple setting: Given the temperature distribution at some time $T > 0$, can we recover the initial temperature profile $u_0$ at time $t = 0$?
-
-Using the Laplace transform method, the solution to the heat equation (1.1)-(1.3) has the general form
-
-$$u(x, t) = \sum_{n=1}^{\infty} \theta_n e^{-(n\pi)^2 \alpha t} \sin(n\pi x),$$
-
-where $\theta_n$ are the Fourier-sine-coefficients of the initial condition $u_0$, i.e.,
-
-$$u_0(x) = \sum_{n=1}^{\infty} \theta_n \sin(n\pi x).$$
-
-Thus, in principle the coefficients $\theta_n$ of the initial condition $u_0$ can be estimated from measurements of $u(x, T)$ at time $T > 0$. However, consider two initial conditions $u_0^{(1)}$ and $u_0^{(2)}$ with $\theta_1^{(1)} = \theta_1^{(2)} = 1$ that differ only in one single frequency component, i.e.,
-
-$$u_0^{(1)}(x) - u_0^{(2)}(x) = \theta_N \sin(N\pi x), \quad \text{for some } N > 1.$$
-
-At time $T > 0$ the two solutions will differ by
-
-$$u^{(1)}(x, T) - u^{(2)}(x, T) = \theta_N e^{-(N\pi)^2 \alpha T} \sin(N\pi x),$$
-
-which is exponentially small. Therefore, any information about this difference will be lost due to measurement noise for $T$ or $N$ sufficiently large, even if the noise is extremely small.
+We finish this section by presenting a few other, typical examples of inverse problems in applications, which all have an infinite-dimensional state space and often also an infinite-dimensional (or at least high-dimensional) parameter space. Finite dimensional inverse problems, while still possibly leading to non-existence and non-uniqueness problems, do typically not violate Hadamard's third condition of stability in Definition 1.2.1 and -- while still interesting -- are fundamentally not as challenging. Our main focus will be on PDE-constrained Bayesian inverse problems, but there are also some classical examples.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inverse Heat Equation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(X-ray Tomography)</span></p>
 
-To demonstrate this, consider the case of $\alpha = 0.01$ (which after nondimensionalisation roughly corresponds to a copper rod of length 10cm in dimensionless quantities with time measured in seconds) and let
+Given a bounded domain $D$, for simplicity $D \subset \mathbb{R}^2$, representing a cross-sectional slice of the object to be studied. Assume that a pointlike X-ray source is placed on one side of the object. The radiation passes through the object and is detected on the other side by an X-ray film or a digital sensor. It is common to assume that the scattering of the X-rays by the traversed material is insignificant, i.e., only absorption occurs, and that rays are not deflected through interaction with the material. If we further assume that the **mass absorption coefficient** is proportional to the density of the material, the attenuation $\mathrm{d}I$ of the intensity $I(x)$ along a line segment $\mathrm{d}s$ at a point $x \in D$ is given by
 
-$$\theta_1^{(1)} = \theta_1^{(2)} = 1, \quad \theta_5^{(2)} = 0.5 \quad \text{and} \quad \theta_i^{(j)} = 0 \quad \text{otherwise}.$$
+$$\mathrm{d}I = -I(x)\theta(x)\,\mathrm{d}s$$
 
-The solution is plotted at the initial time $t = 0$ and at $t = 1$ and $t = 4$. Even though the two initial conditions clearly differ significantly and the difference is not even particularly oscillatory, it is already very difficult to distinguish the two solutions at $t = 1$. At $t = 4$, it will be impossible to say whether the observed temperature profile came from $u_0^{(1)}$ or from $u_0^{(2)}$.
+where $\theta(x) \ge 0$ is the mass absorption coefficient of the material. We assume that $\theta$ is compactly supported in $\overline{D}$ and bounded. If an X-ray is transmitted with intensity $I\_0^\ell$ along a straight line $\ell$ towards a receiver, the received intensity $I\_r^\ell$ can be obtained from the equation
+
+$$\log I_r^\ell - \log I_0^\ell = \int_{I_0^\ell}^{I_r^\ell} \frac{\mathrm{d}I}{I} = -\int_\ell \theta(x)\, \mathrm{d}s. \tag{1.4}$$
+
+The inverse problem of X-ray tomography can thus be stated as a problem of integral geometry: Estimate the function $\theta : D \to \mathbb{R}\_+$ from the values of its integrals along a set of straight lines $\lbrace \ell(n, s) : n \in \mathbb{R}^2,\ \lVert n \rVert\_2 = 1,\ s \in \mathbb{R} \rbrace$ passing through $D$, parametrised by their normal vector $n$ and their distance $s > 0$ from the origin. Denoting the data by $y(n, s) := \log\bigl( I\_r^{\ell(n,s)} / I\_0^{\ell(n,s)} \bigr)$, equation (1.4) leads to the linear operator equation
+
+$$y = \mathcal{R}\theta$$
+
+with compact integral operator $\mathcal{R}$, the so-called **Radon transform**.
+
+The nature of the X-ray tomography problem depends on how many lines of integration are available. In the ideal case, we have data along all possible lines passing through the object. The classical results are based on the availability of this complete data. The problem can then be solved explicitly using the **inverse Radon transform**. However, it involves differentiating the data, which is an ill-posed problem in the sense of Hadamard, such that small errors in the data lead to large errors in the solution.
+
+In practice, often only limited-angle data is available, which is further polluted by noise.
 
 </div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Process Regression or Kriging)</span></p>
+
+Many problems in spatial statistics are of the form that a functional quantity is to be estimated from a few point evaluations, a form of statistical interpolation also called **kriging**.
+
+Let $D \subset \mathbb{R}^d$ be a bounded open set. Consider a field $u \in \mathcal{H} = L^2(D; \mathbb{R}^n)$. Assume that we are given noisy observations $\lbrace y\_k \rbrace\_{k=1}^q$ of a function $g : \mathbb{R}^n \to \mathbb{R}^\ell$ of the field $u$ at a set of points $\lbrace x\_k \rbrace\_{k=1}^q$. Thus
+
+$$y_k = g(u(x_k)) + \eta_k,$$
+
+where the $\lbrace \eta\_k \rbrace\_{k=1}^q$ describe the observational noise. Concatenating data, we have
+
+$$y = \mathcal{G}(u) + \eta,$$
+
+where $y = \bigl( y\_1^\top, \ldots, y\_q^\top \bigr)^\top \in \mathbb{R}^{\ell q}$ and $\eta = \bigl( \eta\_1^\top, \ldots, \eta\_q^\top \bigr)^\top \in \mathbb{R}^{\ell q}$. The observation operator $\mathcal{G}$ maps $V = \bigl( C(\overline{D}) \bigr)^n \subset \mathcal{H}$ to $W = \mathbb{R}^{\ell q}$. The inverse problem is to reconstruct the field $u$ from the data $y$.
+
+In the Bayesian approach to this inverse problem, the unknown function $u \in \mathcal{H}$ is modelled as an $\mathcal{H}$-valued *random field* $U$, which is then conditioned on the observed data $y$. One specifies a so-called *prior measure* $\mu\_U$ on the random field $U$ and determines the so-called *posterior measure* $\mu\_{U \mid y}$ for $U$ given the observed data $y$.
+
+If $g : \mathbb{R}^n \to \mathbb{R}^\ell$ is linear, so that $\mathcal{G}(u) = Au$ for some linear operator $A : V \to W$, if we assume that the observational noise $\eta$ is Gaussian $\mathcal{N}(0, \Sigma)$, with some covariance matrix $\Sigma$, and if the prior measure $\mu\_U$ on the random field $U$ is Gaussian $\mathcal{N}(m\_0, \mathcal{C}\_0)$, with some mean function $m\_0$ and some covariance operator $\mathcal{C}\_0$, then the posterior measure $\mu\_{U \mid y}$ is also Gaussian with a mean and covariance operator that can be computed explicitly, as we will see later in the course. This is called a **Gaussian process** and the data fitting approach is called **Gaussian process regression**. It has many interesting and favourable properties and is very popular in computational statistics.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subsurface Flow, Heat Conduction, Impedance Tomography)</span></p>
+
+The inverse heat equation, the PDE-constrained inverse problem we used as the motivating example in Section 1.1, is exponentially ill-posed. Another model problem, which is less severely ill-posed, is the problem to identify the diffusion coefficient $a$ in a stationary diffusion or heat conduction problem. Let $D \subseteq \mathbb{R}^d$ be a bounded domain and consider the elliptic PDE
+
+$$-\operatorname{div}(a \nabla u) = f, \qquad u|_{\partial D} = 0. \tag{1.5}$$
+
+If we assume that $f \in H^{-1}(D)$ and $a \in L^\infty(D)$ with $\operatorname{essinf}\_{x \in D} a(x) > 0$, then this problem has a unique weak solution $u \in H\_0^1(D)$. For a bounded linear (observation) operator $B : H\_0^1(D) \to \mathbb{R}^m$ we define the forward operator $\Phi(a) := Bu \in \mathbb{R}^m$; note that the solution $u \in H\_0^1(D)$ of (1.5) depends on $a$, so that $\Phi(a)$ is well-defined. One can show that $\Phi$ is a continuous and measurable function from
+
+$$\lbrace a \in L^\infty(D) \, : \, \operatorname{essinf}_{x \in D} a(x) > 0 \rbrace \to \mathbb{R}^m.$$
+
+This model problem is ubiquitous in many fields of mathematics due to the many important applications it appears in centrally. Whether we are interested in heat conduction, electrostatics, magnetostatics, porous media flow or even radiation shielding, the central mechanism in all those physical processes (in practically relevant regimes) is diffusion and a central question in practice is often how to estimate the diffusion coefficient non-destructively (or with minimal "destruction") from indirect measurements.
+
+The Bayesian inverse problem associated with (1.5) is to find the diffusion coefficient $a \in L^\infty(D)$ from a noisy measurement
+
+$$Y = \Phi(a) + E, \tag{1.6}$$
+
+with $E \sim \mathcal{N}(0, \Gamma)$ for an SPD covariance matrix $\Gamma \in \mathbb{R}^{m \times m}$. In order to do so, we proceed as in the previous example. We specify a prior measure on the unknown diffusion coefficient and then condition on the measured data. We will discuss this example extensively in Sec. 4.1 below. The only important point we want to add here is that, since $u$ depends nonlinearly on $a$, even when the forward operator $\Phi$ in (1.6) is linear as a map of $u$, i.e., $\Phi(a) = Bu$, it is nonlinear as an operator on $a$. This makes it the pre-eminent infinite-dimensional non-linear (Bayesian) inverse problem.
+
+</div>
+
+There are many more examples of important inverse problems in applications -- some of them also studied in our groups in Heidelberg -- such as **inverse scattering** (geophysics, MRT), **inverse source problems** (Tsunami prediction, subsurface pollution), **data assimilation** (weather prediction), **parameter estimation** (pattern formation in developmental biology) or **epidemiology** (COVID-19 modelling and prediction).
+
+For more examples see [Stuart, 2010, Chap. 3] and [Kaipio & Somersalo, 2004, Chap. 6].
 
 ## Chapter 2: Linear Inverse Problems and Regularisation
 
@@ -504,7 +579,7 @@ $$\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp.$$
 </figure> -->
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Moore-Penrose Equations)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Well-Definedness of the Pseudoinverse)</span></p>
 
 Due to the restriction to $\mathcal{N}(A)^\perp\to\mathcal{R}(A)$ the operator $\tilde{A}$ in (2.2.2) is bijective. For arbitrary $y \in \mathcal{D}(A^\dagger)$, an orthogonal decomposition guarantees the existence of $y_1 \in \mathcal{R}(A)$ and $y_2 \in \mathcal{R}(A)^\perp$ such that $y = y_1 + y_2$. Finally, due to $\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp$ we have
 
@@ -642,6 +717,8 @@ Let $A \in \mathcal{L}(X, Y)$. Then
 
 $$A^\dagger \in \mathcal{L}(\mathcal{D}(A^\dagger), X) \iff \mathcal{R}(A) \text{ is closed}$$
 
+(In fact, in that case $\mathcal{D}(A^\dagger) = Y$ and thus $A^\dagger \in \mathcal{L}(Y, X)$.)
+
 </div>
 
 <div class="accordion" markdown="1">
@@ -711,7 +788,7 @@ We now use an orthonormal system to characterise the Moore-Penrose inverse of co
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.3.1</span><span class="math-callout__name">(Singular Value Decomposition)</span></p>
 
-Let $K \in \mathcal{K}(X, Y)$. Then there exists
+Let $K \in \mathcal{K}(X, Y)$ with infinite dimensional range $\mathcal{R}(K)$. Then there exists
 
 1. a (null) sequence $(\sigma_n)\_{n \in \mathbb{N}}$ with $\sigma_1 \ge \sigma_2 \ge \ldots > 0$ and $\sigma_n \to 0$ as $n \to \infty$,
 2. an orthonormal basis $(u_n)\_{n \in \mathbb{N}} \subset Y$ of $\overline{\mathcal{R}(K)}$, and
@@ -819,7 +896,7 @@ $$(x_N)_{N \in \mathbb{N}} \quad \text{with} \quad x_N := \sum_{n=1}^{N} \sigma_
 
 is also a Cauchy sequence. In other words,
 
-$$\lVert x_N - x_M \rVert_X^2 = \left\lVert \sum_{n=N}^{M} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \right\rVert_X^2 = \sum_{n=N+1}^{M} \sigma_n^{-2}|\langle y, u_n \rangle_Y|^2 = S_M - S_N \to 0,$$
+$$\lVert x_N - x_M \rVert_X^2 = \left\lVert \sum_{n=N+1}^{M} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \right\rVert_X^2 = \sum_{n=N+1}^{M} \sigma_n^{-2}|\langle y, u_n \rangle_Y|^2 = s_M - s_N \to 0,$$
 
 where we used that $(v_n)\_{n \in \mathbb{N}}$ is an orthonormal system in $\overline{\mathcal{R}(K^\ast)}$. Thus, $(x_N)\_{N \in \mathbb{N}} \subset \overline{\mathcal{R}(K^\ast)}$ converges to
 
@@ -844,7 +921,7 @@ Therefore, the faster the singular values decay the more data errors are amplifi
 
 * **moderately ill-posed**, if there are $c, r > 0$ such that $\sigma_n \ge c n^{-r}$ for all $n \in \mathbb{N}$,
 * **severely ill-posed**, if this is not the case, and
-* **exponentially ill-posed**. If there are $c, r > 0$ such that $\sigma_n \le c e^{n^{-r}}$ for all $n \in \mathbb{N}$.
+* **exponentially ill-posed**, if there are $c, r > 0$ such that $\sigma_n \le c e^{-n^r}$ for all $n \in \mathbb{N}$.
 
 For exponentially ill-posed problems, such as the inverse heat equation in Section 1.1, we can typically expect only very crude estimates for the solution. However, if $\mathcal{R}(K)$ is finite dimensional, the sequence $(\sigma_n)$ truncates at a finite $N$, i.e. $\sigma_n = 0$ for $n > N$ and the error remains bounded; in this case $K^\dagger$ is bounded.
 
@@ -938,7 +1015,7 @@ Then $(A_\alpha^\dagger, \alpha)$ is a convergent regularisation method.
 
 Due to the decomposition (2.4.2) it follows that
 
-$$\lVert A_{\alpha(\delta)}^\dagger y^\delta - A^\dagger y \rVert_X \le \delta \lVert A_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(X,Y)} + \lVert A_{\alpha(\delta)}^\dagger y - A^\dagger y \rVert_X \to 0 \quad \text{as } \delta \to 0,$$
+$$\lVert A_{\alpha(\delta)}^\dagger y^\delta - A^\dagger y \rVert_X \le \delta \lVert A_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} + \lVert A_{\alpha(\delta)}^\dagger y - A^\dagger y \rVert_X \to 0 \quad \text{as } \delta \to 0,$$
 
 where we have used (ii) and the pointwise convergence of the regularisation operators under condition (i).
 
@@ -1003,7 +1080,174 @@ The existence of an $n^* \in \mathbb{N}$ then follows directly, since $\tau > 1$
 
 Heuristic rules do not even assume any knowledge of the noise level $\delta$, which is highly relevant in practice, since often it is hard or impossible to estimate $\delta$ accurately. However, the Bakushinskii veto shows that such a strategy cannot work in general.
 
-#### 2.4.2 Convergence Rates
+#### 2.4.2 Construction of Regularisation Methods
+
+Let us now consider the construction of regularisation methods for linear ill-posed problems. We focus on compact operators $K \in \mathcal{K}(X, Y)$ and recall that stability issues with the Moore-Penrose inverse arose from error amplification through small singular values. Therefore, we aim to construct regularisation methods in such a way that they modify the smallest singular values appropriately.
+
+Thus, recall the SVD of $K^\dagger$ with respect to the singular system $(\sigma_n, u_n, v_n)\_{n \in \mathbb{N}}$ of $K$. It suggests to construct regularisation operators of the form
+
+$$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n \qquad \text{for } y \in Y,$$
+
+with a suitable function $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)\_{\alpha \ge 0}$ is a regularisation if
+
+$$g_\alpha(\sigma) \le C_\alpha < \infty, \qquad \text{for all } \sigma > 0. \tag{2.4.5}$$
+
+Note that (2.4.5) implies
+
+$$\lVert K_\alpha^\dagger y \rVert_X^2 = \sum_{n=1}^{\infty} (g_\alpha(\sigma_n))^2 |\langle y, u_n \rangle_Y|^2 \le C_\alpha^2 \sum_{n=1}^{\infty} |\langle y, u_n \rangle_Y|^2 \le C_\alpha^2 \lVert y \rVert_Y^2,$$
+
+i.e. $C_\alpha$ is a bound for the norm of $K_\alpha^\dagger$. Moreover, the condition $\lim_{\delta \to 0} \delta \lVert K_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} = 0$ can be replaced by
+
+$$\lim_{\delta \to 0} \delta C_{\alpha(\delta)} = 0.$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.4.9</span><span class="math-callout__name">(Truncated SVD)</span></p>
+
+Here, all singular values smaller than a prescribed value (controlled by $\alpha$) are ignored (i.e. set to 0). We choose
+
+$$g_\alpha(\sigma) := \begin{cases} \frac{1}{\sigma}, & \text{if } \sigma \ge \alpha, \\ 0, & \text{otherwise.} \end{cases} \tag{2.4.6}$$
+
+Clearly, $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $C_\alpha = \frac{1}{\alpha}$. Thus, this regularisation with a-priori parameter choice rule leads to a convergent regularisation method provided $\frac{\delta}{\alpha} \to 0$. Furthermore, $\sup_{\sigma, \alpha} \sigma g_\alpha(\sigma) = 1$.
+
+The regularised solution is
+
+$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{\sigma_n \ge \alpha} \frac{1}{\sigma_n} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y,$$
+
+motivating the name of the method. The sum in $x_\alpha^\delta$ is always finite for $\alpha > 0$, since zero is the only accumulation point of the sequence $(\sigma_n)$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.4.10</span><span class="math-callout__name">(Lavrentiev Regularisation)</span></p>
+
+Here, all singular values are shifted away from zero by $\alpha$, i.e. $g_\alpha(\sigma) = \frac{1}{\sigma + \alpha}$, and
+
+$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{n=1}^{\infty} \frac{1}{\sigma_n + \alpha} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y.$$
+
+The computation of this approximation requires an explicit knowledge of the singular system $(\sigma_n, u_n, v_n)\_{n \in \mathbb{N}}$ of $K$, which is not very useful in practice. However, for selfadjoint, positive semidefinite operators $K$ (i.e. $Y = X$, $\lambda_n = \sigma_n$ and $u_n = v_n$) we have
+
+$$(K + \alpha I)x_\alpha^\delta = \sum_{n=1}^{\infty} (\sigma_n + \alpha) \langle x_\alpha^\delta, u_n \rangle_X u_n = \sum_{n=1}^{\infty} \langle y^\delta, u_n \rangle_Y u_n = y^\delta$$
+
+and the regularised solution can be found without explicit knowledge of the singular system of $K$ by solving
+
+$$(K + \alpha I) x_\alpha^\delta = y^\delta.$$
+
+Since $\frac{1}{\sigma + \alpha} \le \frac{1}{\alpha}$, we have again $C_\alpha = \frac{1}{\alpha}$. Furthermore, $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $\sigma g_\alpha(\sigma) < 1$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.4.11</span><span class="math-callout__name">(Tikhonov Regularisation)</span></p>
+
+Here
+
+$$g_\alpha(\sigma) = \frac{\sigma}{\sigma^2 + \alpha},$$
+
+such that
+
+$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{n=1}^{\infty} \frac{\sigma_n}{\sigma_n^2 + \alpha} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y.$$
+
+Since $\sigma^2 + \alpha \ge 2\sigma\sqrt{\alpha}$, we can choose $C_\alpha = \frac{1}{2\sqrt{\alpha}}$. Thus, a necessary condition for convergence with a-priori parameter rule is $\frac{\delta}{\sqrt{\alpha}} \to 0$. Furthermore, again $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $\sigma g_\alpha(\sigma) = \frac{\sigma^2}{\sigma^2 + \alpha} < 1$.
+
+As in Example 2.4.10, $x_\alpha^\delta$ can be computed without explicit knowledge of the singular system, however, in this case for arbitrary $K \in \mathcal{K}(X, Y)$. In particular,
+
+$$(K^* K + \alpha I) x_\alpha^\delta = K^* y^\delta, \tag{2.4.7}$$
+
+a well-posed linear system for $\alpha > 0$. Tikhonov regularisation is in fact equivalent to Lavrentiev regularisation applied to the normal equations.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.4.12</span><span class="math-callout__name">(Landweber Iteration)</span></p>
+
+For $\omega > 0$, consider the fixed point iteration
+
+$$x_0 = 0 \quad \text{and} \quad x_{k+1} = x_k + \omega K^*(y^\delta - Kx_k), \quad \text{for } k \ge 0,$$
+
+to compute regularised solutions $x_k$ of $Kx = y^\delta$. The associated family of regularisation operators $(K_k^\dagger)\_{k \in \mathbb{N}}$ satisfies $K_k^\dagger y^\delta = x_k$. Using the SVD of $K$ and $K^*$ we get
+
+$$\sum_{j=1}^{\infty} \langle x_{k+1}, v_j \rangle_X v_j = \sum_{j=1}^{\infty} \left( (1 - \omega \sigma_j^2) \langle x_k, v_j \rangle_X + \omega \sigma_j \langle y^\delta, u_j \rangle_Y \right) v_j$$
+
+and due to orthogonality
+
+$$\langle x_{k+1}, v_j \rangle_X = (1 - \omega \sigma_j^2) \langle x_k, v_j \rangle_X + \omega \sigma_j \langle y^\delta, u_j \rangle_Y.$$
+
+Since $x_0 = 0$, we get
+
+$$\langle x_k, v_j \rangle_X = \omega \sigma_j \langle y^\delta, u_j \rangle_Y \sum_{i=1}^{k} (1 - \omega \sigma_j^2)^{k-i} = \frac{1 - (1 - \omega \sigma_j^2)^k}{\sigma_j} \langle y^\delta, u_j \rangle_Y.$$
+
+Now we interpret the iteration number as the regularisation parameter and set $\alpha := 1/k$, so that
+
+$$x_\alpha^\delta = K_\alpha^\dagger y^\delta = \sum_{j=1}^{\infty} \frac{1 - (1 - \omega \sigma_j^2)^{1/\alpha}}{\sigma_j} \langle y^\delta, u_j \rangle_Y \, v_j,$$
+
+i.e. $g_\alpha(\sigma) = (1 - (1 - \omega\sigma^2)^{1/\alpha}) \frac{1}{\sigma}$. This function converges to $\frac{1}{\sigma}$ as $\alpha \to 0$ provided $\|1 - \omega\sigma^2\| < 1$. A sufficient condition for $\sigma \in \lbrace \sigma_n \rbrace$ is
+
+$$0 < \omega < 2 \lVert K \rVert_{\mathcal{L}(X,Y)}^{-2}.$$
+
+Since $g_\alpha$ is continuous and $\lim_{\sigma \to 0} g_\alpha(\sigma) = 0$, it is also bounded and $\sigma g_\alpha(\sigma) < 1$ for any $\alpha > 0$.
+
+</div>
+
+Under the stated conditions on $g_\alpha(\sigma)$, we can now prove the convergence of all the above regularisation methods with parameter choice rule $\alpha = \alpha(\delta, y^\delta)$ satisfying $\lim_{\delta \to 0} \delta C_{\alpha(\delta, y^\delta)} = 0$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.13</span><span class="math-callout__name">(Convergence of Spectral Regularisation)</span></p>
+
+Let $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
+
+$$\sigma g_\alpha(\sigma) \le \gamma \qquad \text{and} \qquad g_\alpha(\sigma) \le C_\alpha < \infty \quad \text{for all } \sigma, \alpha > 0.$$
+
+Consider (2.1.1) with $A = K \in \mathcal{K}(X, Y)$, $y \in \mathcal{D}(K^\dagger)$ and perturbed data $y^\delta \in Y$ with $\lVert y - y^\delta \rVert_Y \le \delta$. Then the regularisation method $(K_\alpha^\dagger, \alpha)$ with
+
+$$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n, \qquad \text{for } y \in Y,$$
+
+and parameter choice rule $\alpha = \alpha(\delta, y^\delta)$ converges provided
+
+$$C_{\alpha(\delta, y^\delta)} \delta \to 0 \quad \text{as} \quad \delta \to 0.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 2.4.13</summary>
+
+To show convergence we bound again the two terms in the decomposition (2.4.2).
+
+First to show that $K_\alpha^\dagger \to K^\dagger$ on $\mathcal{D}(K^\dagger)$ let $y \in D(K^\dagger)$. Then,
+
+$$K_\alpha^\dagger y - K^\dagger y = \sum_{n=1}^{\infty} (g_\alpha(\sigma_n) - \frac{1}{\sigma_n}) \langle y, u_n \rangle_Y v_n = \sum_{n=1}^{\infty} (\sigma_n g_\alpha(\sigma_n) - 1) \langle x^\dagger, v_n \rangle_X v_n.$$
+
+Due to the assumptions on $g_\alpha$, the coefficients in the above expansion satisfy
+
+$$|(\sigma_n g_\alpha(\sigma_n) - 1) \langle x^\dagger, v_n \rangle_X| \le (\gamma + 1) |\langle x^\dagger, v_n \rangle_X|,$$
+
+i.e. the sequence is bounded, and thus
+
+$$\limsup_{\alpha \to 0} \lVert K_\alpha^\dagger y - K^\dagger y \rVert_X^2 \le \limsup_{\alpha \to 0} \sum_{n=1}^{\infty} |\sigma_n g_\alpha(\sigma_n) - 1|^2 |\langle x^\dagger, v_n \rangle_X|^2 \le \sum_{n=1}^{\infty} \lim_{\alpha \to 0} |\sigma_n g_\alpha(\sigma_n) - 1|^2 |\langle x^\dagger, v_n \rangle_X|^2 = 0,$$
+
+since $\sigma g_\alpha(\sigma) \to 1$ pointwise. Thus, $\lVert K_\alpha^\dagger y - K^\dagger y \rVert_X \to 0$ as $\alpha \to 0$, independently of $\delta$.
+
+To bound the propagated data error, note that, for all $\alpha, \delta > 0$,
+
+$$\lVert K_\alpha^\dagger y - K_\alpha^\dagger y^\delta \rVert_X^2 \le \sum_{n=1}^{\infty} g_\alpha(\sigma_n)^2 |\langle y - y^\delta, u_n \rangle_Y|^2 \le C_\alpha^2 \sum_{n=1}^{\infty} |\langle y - y^\delta, u_n \rangle_Y|^2 \le C_\alpha^2 \lVert y - y^\delta \rVert_Y^2 \le (C_\alpha \delta)^2.$$
+
+Thus, under the condition on the limit of $\delta C_{\alpha(\delta, y^\delta)}$ for the parameter choice rule $\alpha(\delta, y^\delta)$, this term also converges with $\delta \to 0$ and the proof is complete.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 2.4.14</span><span class="math-callout__name">(Data Error Bound)</span></p>
+
+The bound
+
+$$\lVert K_\alpha^\dagger y - K_\alpha^\dagger y^\delta \rVert_X \le C_\alpha \delta$$
+
+in the proof suggests that the propagated data error is of order $\delta$. However, this is not true since $C_\alpha$ depends on $\delta$ and will in general grow with $\delta \to 0$. However, since we required that $C_{\alpha(\delta, y^\delta)} \delta \to 0$ as $\delta \to 0$, $C_\alpha$ grows slower than $\delta$ decreases such that $C_\alpha \delta$ will be of order $\delta^\nu$ for some $0 < \nu < 1$.
+
+</div>
+
+#### 2.4.3 Convergence Rates
 
 A central question in the regularisation of inverse problems is the derivation of error bounds of the form
 
@@ -1011,14 +1255,16 @@ $$\lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert \le 
 
 for some function $\phi : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ with $\lim_{t \to 0} \phi(t) = 0$ that is independent of $y$. We are interested in particular in the **worst case error**
 
-$$e(y, \delta) := \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y \text{ with } \lVert y - y^\delta \rVert_Y \le \delta \rbrace. \tag{2.4.5}$$
+$$e(y, \delta) := \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y \text{ with } \lVert y - y^\delta \rVert_Y \le \delta \rbrace. \tag{2.4.8}$$
+
+This would allow us to provide a priori error bounds for the regularisation method. However, without any further assumptions on $y$ or on $x^\dagger = A^\dagger y$ this hope is futile.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.9</span><span class="math-callout__name">(No Uniform Convergence Rate Without Source Conditions)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.15</span><span class="math-callout__name">(No Uniform Convergence Rate Without Source Conditions)</span></p>
 
 Let $(A_\alpha^\dagger, \alpha)$ be a convergent regularisation method. If there exists a function $\phi : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ with $\lim_{t \to 0} \phi(t) = 0$ and
 
-$$\sup_{y \in \mathcal{D}(A^\dagger) \text{ s.t. } \lVert y \rVert_Y \le 1} e(y, \delta) \le \phi(\delta), \tag{2.4.6}$$
+$$\sup_{y \in \mathcal{D}(A^\dagger) \text{ s.t. } \lVert y \rVert_Y \le 1} e(y, \delta) \le \phi(\delta), \tag{2.4.9}$$
 
 then $A^\dagger$ is bounded.
 
@@ -1026,7 +1272,7 @@ then $A^\dagger$ is bounded.
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 2.4.9</summary>
+<summary>Proof of Theorem 2.4.15</summary>
 
 Let $y \in \mathcal{D}(A^\dagger)$ with $\lVert y \rVert_Y \le 1$ and $(y_n)\_n \subset \mathcal{D}(A^\dagger)$ with $\lVert y_n \rVert_Y \le 1$ a sequence satisfying $y_n \to y$ as $n \to \infty$. With $\delta_n := \lVert y - y_n \rVert_Y \to 0$ it then follows that
 
@@ -1051,178 +1297,11 @@ Under this condition, it can be shown that the convergence rate as $\delta \to 0
 
 $$e(Kx^\dagger, \delta) \le c \, \delta^{\frac{\nu}{\nu+1}}.$$
 
-### 2.5 Construction of Regularisation Methods
+### 2.5 Variational Regularisation and Extensions
 
-Let us now consider the construction of regularisation methods for linear ill-posed problems. We focus on compact operators $K \in \mathcal{K}(X, Y)$ and recall that stability issues with the Moore-Penrose inverse arose from error amplification through small singular values. Therefore, we aim to construct regularisation methods in such a way that they modify the smallest singular values appropriately.
+The solution of the Tikhonov regularised linear system (2.4.7) is equivalent to minimising the following quadratic functional
 
-Thus, recall the SVD of $K^\dagger$ with respect to the singular system $(\sigma_n, u_n, v_n)\_{n \in \mathbb{N}}$ of $K$. It suggests to construct regularisation operators of the form
-
-$$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n \qquad \text{for } y \in Y,$$
-
-with a suitable function $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)\_{\alpha \ge 0}$ is a regularisation if
-
-$$g_\alpha(\sigma) \le C_\alpha < \infty, \qquad \text{for all } \sigma > 0. \tag{2.5.1}$$
-
-Note that (2.5.1) implies
-
-$$\lVert K_\alpha^\dagger y \rVert_X^2 = \sum_{n=1}^{\infty} (g_\alpha(\sigma_n))^2 |\langle y, u_n \rangle_Y|^2 \le C_\alpha^2 \sum_{n=1}^{\infty} |\langle y, u_n \rangle_Y|^2 \le C_\alpha^2 \lVert y \rVert_Y^2,$$
-
-i.e. $C_\alpha$ is a bound for the norm of $K_\alpha^\dagger$. Moreover, the condition $\lim_{\delta \to 0} \delta \lVert K_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} = 0$ can be replaced by
-
-$$\lim_{\delta \to 0} \delta C_{\alpha(\delta)} = 0.$$
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.1</span><span class="math-callout__name">(Truncated SVD)</span></p>
-
-Here, all singular values smaller than a prescribed value (controlled by $\alpha$) are ignored (i.e. set to 0). We choose
-
-$$g_\alpha(\sigma) := \begin{cases} \frac{1}{\sigma}, & \text{if } \sigma \ge \alpha, \\ 0, & \text{otherwise.} \end{cases} \tag{2.5.2}$$
-
-Clearly, $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $C_\alpha = \frac{1}{\alpha}$. Thus, this regularisation with a-priori parameter choice rule leads to a convergent regularisation method provided $\frac{\delta}{\alpha} \to 0$. Furthermore, $\sup_{\sigma, \alpha} \sigma g_\alpha(\sigma) = 1$.
-
-The regularised solution is
-
-$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{\sigma_n \ge \alpha} \frac{1}{\sigma_n} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y,$$
-
-motivating the name of the method. The sum in $x_\alpha^\delta$ is always finite for $\alpha > 0$, since zero is the only accumulation point of the sequence $(\sigma_n)$.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.2</span><span class="math-callout__name">(Lavrentiev Regularisation)</span></p>
-
-Here, all singular values are shifted away from zero by $\alpha$, i.e. $g_\alpha(\sigma) = \frac{1}{\sigma + \alpha}$, and
-
-$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{n=1}^{\infty} \frac{1}{\sigma_n + \alpha} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y.$$
-
-The computation of this approximation requires an explicit knowledge of the singular system $(\sigma_n, u_n, v_n)\_{n \in \mathbb{N}}$ of $K$, which is not very useful in practice. However, for selfadjoint, positive semidefinite operators $K$ (i.e. $Y = X$, $\lambda_n = \sigma_n$ and $u_n = v_n$) we have
-
-$$(K + \alpha I)x_\alpha^\delta = \sum_{n=1}^{\infty} (\sigma_n + \alpha) \langle x_\alpha^\delta, u_n \rangle_X u_n = \sum_{n=1}^{\infty} \langle y^\delta, u_n \rangle_Y u_n = y^\delta$$
-
-and the regularised solution can be found without explicit knowledge of the singular system of $K$ by solving
-
-$$(K + \alpha I) x_\alpha^\delta = y^\delta.$$
-
-Since $\frac{1}{\sigma + \alpha} \le \frac{1}{\alpha}$, we have again $C_\alpha = \frac{1}{\alpha}$. Furthermore, $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $\sigma g_\alpha(\sigma) < 1$.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.3</span><span class="math-callout__name">(Tikhonov Regularisation)</span></p>
-
-Here
-
-$$g_\alpha(\sigma) = \frac{\sigma}{\sigma^2 + \alpha},$$
-
-such that
-
-$$x_\alpha^\delta := K_\alpha^\dagger y^\delta = \sum_{n=1}^{\infty} \frac{\sigma_n}{\sigma_n^2 + \alpha} \langle y^\delta, u_n \rangle_Y v_n, \qquad \text{for } y^\delta \in Y.$$
-
-Since $\sigma^2 + \alpha \ge 2\sigma\sqrt{\alpha}$, we can choose $C_\alpha = \frac{1}{2\sqrt{\alpha}}$. Thus, a necessary condition for convergence with a-priori parameter rule is $\frac{\delta}{\sqrt{\alpha}} \to 0$. Furthermore, again $g_\alpha(\sigma) \to \frac{1}{\sigma}$ as $\alpha \to 0$ and $\sigma g_\alpha(\sigma) = \frac{\sigma^2}{\sigma^2 + \alpha} < 1$.
-
-As in Example 2.5.2, $x_\alpha^\delta$ can be computed without explicit knowledge of the singular system, however, in this case for arbitrary $K \in \mathcal{K}(X, Y)$. In particular,
-
-$$(K^* K + \alpha I) x_\alpha^\delta = K^* y^\delta, \tag{2.5.3}$$
-
-a well-posed linear system for $\alpha > 0$. Tikhonov regularisation is in fact equivalent to Lavrentiev regularisation applied to the normal equations.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.4</span><span class="math-callout__name">(Landweber Iteration)</span></p>
-
-For $\omega > 0$, consider the fixed point iteration
-
-$$x_0 = 0 \quad \text{and} \quad x_{k+1} = x_k + \omega K^*(y^\delta - Kx_k), \quad \text{for } k \ge 0,$$
-
-to compute regularised solutions $x_k$ of $Kx = y^\delta$. The associated family of regularisation operators $(K_k^\dagger)\_{k \in \mathbb{N}}$ satisfies $K_k^\dagger y^\delta = x_k$. Using the SVD of $K$ and $K^*$ we get
-
-$$\sum_{j=1}^{\infty} \langle x_{k+1}, v_j \rangle_X v_j = \sum_{j=1}^{\infty} \left( (1 - \omega \sigma_j^2) \langle x_k, v_j \rangle_X + \omega \sigma_j \langle y^\delta, u_j \rangle_Y \right) v_j$$
-
-and due to orthogonality
-
-$$\langle x_{k+1}, v_j \rangle_X = (1 - \omega \sigma_j^2) \langle x_k, v_j \rangle_X + \omega \sigma_j \langle y^\delta, u_j \rangle_Y.$$
-
-Since $x_0 = 0$, we get
-
-$$\langle x_k, v_j \rangle_X = \omega \sigma_j \langle y^\delta, u_j \rangle_Y \sum_{i=1}^{k} (1 - \omega \sigma_j^2)^{k-i} = \frac{1 - (1 - \omega \sigma_j^2)^k}{\sigma_j} \langle y^\delta, u_j \rangle_Y.$$
-
-Now we interpret the iteration number as the regularisation parameter and set $\alpha := 1/k$, so that
-
-$$x_\alpha^\delta = K_\alpha^\dagger y^\delta = \sum_{j=1}^{\infty} \frac{1 - (1 - \omega \sigma_j^2)^{1/\alpha}}{\sigma_j} \langle y^\delta, u_j \rangle_Y,$$
-
-i.e. $g_\alpha(\sigma) = (1 - (1 - \omega\sigma^2)^{1/\alpha}) \frac{1}{\sigma}$. This function converges to $\frac{1}{\sigma}$ as $\alpha \to 0$ provided $\|1 - \omega\sigma^2\| < 1$. A sufficient condition for $\sigma \in \lbrace \sigma_n \rbrace$ is
-
-$$0 < \omega < 2 \lVert K \rVert_{\mathcal{L}(X,Y)}^{-2}.$$
-
-Since $g_\alpha$ is continuous and $\lim_{\sigma \to 0} g_\alpha(\sigma) = 0$, it is also bounded and $\sigma g_\alpha(\sigma) < 1$ for any $\alpha > 0$.
-
-</div>
-
-Under the stated conditions on $g_\alpha(\sigma)$, we can now prove the convergence of all the above regularisation methods with parameter choice rule $\alpha = \alpha(\delta, y^\delta)$ satisfying $\lim_{\delta \to 0} \delta C_{\alpha(\delta, y^\delta)} = 0$.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 2.5.5</span><span class="math-callout__name">(Convergence of Spectral Regularisation)</span></p>
-
-Let $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
-
-$$\sigma g_\alpha(\sigma) \le \gamma \qquad \text{and} \qquad g_\alpha(\sigma) \le C_\alpha < \infty \quad \text{for all } \sigma, \alpha > 0.$$
-
-Consider (2.1.1) with $A = K \in \mathcal{K}(X, Y)$, $y \in \mathcal{D}(K^\dagger)$ and perturbed data $y^\delta \in Y$ with $\lVert y - y^\delta \rVert_Y \le \delta$. Then the regularisation method $(K_\alpha^\dagger, \alpha)$ with
-
-$$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n, \qquad \text{for } y \in Y,$$
-
-and parameter choice rule $\alpha = \alpha(\delta, y^\delta)$ converges provided
-
-$$C_{\alpha(\delta, y^\delta)} \delta \to 0 \quad \text{as} \quad \delta \to 0.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Theorem 2.5.5</summary>
-
-To show convergence we bound again the two terms in the decomposition (2.4.2).
-
-First to show that $K_\alpha^\dagger \to K^\dagger$ on $\mathcal{D}(K^\dagger)$ let $y \in D(K^\dagger)$. Then,
-
-$$K_\alpha^\dagger y - K^\dagger y = \sum_{n=1}^{\infty} (g_\alpha(\sigma_n) - \frac{1}{\sigma_n}) \langle y, u_n \rangle_Y v_n = \sum_{n=1}^{\infty} (\sigma_n g_\alpha(\sigma_n) - 1) \langle x^\dagger, v_n \rangle_X v_n.$$
-
-Due to the assumptions on $g_\alpha$, the coefficients in the above expansion satisfy
-
-$$|(\sigma_n g_\alpha(\sigma_n) - 1) \langle x^\dagger, v_n \rangle_X| \le (\gamma + 1) |\langle x^\dagger, v_n \rangle_X|,$$
-
-i.e. the sequence is bounded, and thus
-
-$$\limsup_{\alpha \to 0} \lVert K_\alpha^\dagger y - K^\dagger y \rVert_X^2 \le \limsup_{\alpha \to 0} \sum_{n=1}^{\infty} |\sigma_n g_\alpha(\sigma_n) - 1|^2 |\langle x^\dagger, v_n \rangle_X|^2 \le \sum_{n=1}^{\infty} (\lim_{\alpha \to 0} |\sigma_n g_\alpha(\sigma_n)) - 1|^2 |\langle x^\dagger, v_n \rangle_X|^2 = 0,$$
-
-since $\sigma g_\alpha(\sigma) \to 1$ pointwise. Thus, $\lVert K_\alpha^\dagger y - K^\dagger y \rVert_X \to 0$ as $\alpha \to 0$, independently of $\delta$.
-
-To bound the propagated data error, note that, for all $\alpha, \delta > 0$,
-
-$$\lVert K_\alpha^\dagger y - K_\alpha^\dagger y^\delta \rVert_X^2 \le \sum_{n=1}^{\infty} g_\alpha(\sigma_n)^2 |\langle y - y^\delta, u_n \rangle_Y|^2 \le C_\alpha^2 \sum_{n=1}^{\infty} |\langle y - y^\delta, u_n \rangle_Y|^2 \le C_\alpha^2 \lVert y - y^\delta \rVert_Y^2 \le (C_\alpha \delta)^2.$$
-
-Thus, under the condition on the limit of $\delta C_{\alpha(\delta, y^\delta)}$ for the parameter choice rule $\alpha(\delta, y^\delta)$, this term also converges with $\delta \to 0$ and the proof is complete.
-
-</details>
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 2.5.6</span><span class="math-callout__name">(Data Error Bound)</span></p>
-
-The bound
-
-$$\lVert K_\alpha^\dagger y - K_\alpha^\dagger y^\delta \rVert_X \le C_\alpha \delta$$
-
-in the proof suggests that the propagated data error is of order $\delta$. However, this is not true since $C_\alpha$ depends on $\delta$ and will in general grow with $\delta \to 0$. However, since we required that $C_{\alpha(\delta, y^\delta)} \delta \to 0$ as $\delta \to 0$, $C_\alpha$ grows slower than $\delta$ decreases such that $C_\alpha \delta$ will be of order $\delta^\nu$ for some $0 < \nu < 1$.
-
-</div>
-
-### 2.6 Variational Regularisation and Extensions
-
-The solution of the Tikhonov regularised linear system (2.5.3) is equivalent to minimising the following quadratic functional
-
-$$K_\alpha^\dagger y^\delta := \arg\min_{x \in X} \left\lbrace \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2 \right\rbrace. \tag{2.6.1}$$
+$$K_\alpha^\dagger y^\delta := \arg\min_{x \in X} \left\lbrace \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2 \right\rbrace. \tag{2.5.1}$$
 
 This is how Tikhonov regularisation is typically introduced. In this variational setting, it is easier to generalise to other regularising functionals and to nonlinear inverse problems.
 
@@ -1234,14 +1313,14 @@ and thus
 
 $$0 = \frac{\mathrm{d}}{\mathrm{d}t} \Phi(x^* + th)\big|_{t=0} = \langle Kx^* - y^\delta, Kh \rangle_Y + \alpha \langle x^*, h \rangle_X = \langle K^*(Kx^* - y^\delta) + \alpha x^*, h \rangle_X,$$
 
-which is equivalent to $x^*$ being the solution of (2.5.3), since $h \in X$ with $\lVert h \rVert_X = 1$ was arbitrary.
+which is equivalent to $x^*$ being the solution of (2.4.7), since $h \in X$ with $\lVert h \rVert_X = 1$ was arbitrary.
 
 Let $J : X \to \mathbb{R}$ be a functional on $X$, then **generalised Tikhonov regularisation** seeks the regularised solution as the minimum of
 
 $$\Phi_{\alpha, y^\delta}(x) := \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} J(x).$$
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.6.1</span><span class="math-callout__name">(Tikhonov-Philipps Regularisation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.1</span><span class="math-callout__name">(Tikhonov-Philipps Regularisation)</span></p>
 
 A simple generalisation of the classical Tikhonov regularisation consists in simply replacing $\frac{1}{2} \lVert x \rVert_X$ by $\frac{1}{2} \lVert Dx \rVert_Z$ for some linear (not necessarily bounded) operator $D : X \to Z$ from $X$ to some Hilbert space $Z$. Then minimising
 
@@ -1252,7 +1331,7 @@ constitutes the so-called Tikhonov-Philipps regularisation. It allows to penalis
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 2.6.2</span><span class="math-callout__name">($\ell^1$-Regularisation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.5.2</span><span class="math-callout__name">($\ell^1$-Regularisation)</span></p>
 
 For non-injective operators $K \in \mathcal{L}(l^1, l^2)$ on sequence spaces, a popular choice for $J$ is the $l^1$-norm which is suitable to enforce sparsity in the regularised solution, i.e.,
 
@@ -1262,428 +1341,74 @@ $$\Phi_{\alpha, y^\delta}(x) := \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \a
 
 As mentioned above, in variational form, Tikhonov regularisation can also easily be generalised to nonlinear inverse problems
 
-$$F(x) = y, \tag{2.6.2}$$
+$$F(x) = y, \tag{2.5.2}$$
 
 where $F : \mathcal{D}(F) \subset X \to Y$ is a nonlinear bounded operator with domain $\mathcal{D}(F)$ between two Hilbert spaces $X$ and $Y$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 2.6.3</span><span class="math-callout__name">(Locally Ill-Posed)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 2.5.3</span><span class="math-callout__name">(Locally Ill-Posed)</span></p>
 
-Let $x \in \mathcal{D}(F)$. The nonlinear equation (2.6.2) is called **locally ill-posed in $x$**, if for every $r > 0$ there exists a sequence $(x_n)\_{n \in \mathbb{N}} \subset B_r(x) \subset \mathcal{D}(F)$ such that
+Let $x \in \mathcal{D}(F)$. The nonlinear equation (2.5.2) is called **locally ill-posed in $x$**, if for every $r > 0$ there exists a sequence $(x_n)\_{n \in \mathbb{N}} \subset B_r(x) \subset \mathcal{D}(F)$ such that
 
 $$F(x_n) \to F(x), \quad \text{but} \quad x_n \not\to x.$$
 
-Otherwise (2.6.2) is called **locally well-posed in $x$**.
+Otherwise (2.5.2) is called **locally well-posed in $x$**.
 
 </div>
 
 For nonlinear problems, the classical Tikhonov regularisation computes a regularised approximation $x_\alpha^\delta$ of $x$ by minimising the functional
 
-$$\Phi_{\alpha, y^\delta}(x) := \frac{1}{2} \lVert F(x) - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2. \tag{2.6.3}$$
+$$\Phi_{\alpha, y^\delta}(x) := \frac{1}{2} \lVert F(x) - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2. \tag{2.5.3}$$
 
 Under certain conditions on the nonlinear operator $F$ it can be shown that together with an a priori parameter choice rule $\alpha = \alpha(\delta)$ such that
 
 $$\alpha(\delta) \to 0 \quad \text{and} \quad \frac{\delta^2}{\alpha(\delta)} \to 0 \quad \text{as } \delta \to 0,$$
 
-(2.6.3) provides a convergent regularisation method for (2.6.2). As in the linear case, the regularisation functional $\lVert \cdot \rVert_X^2$ can again be replaced by another functional $J : X \to \mathbb{R}$ that penalises other features in the solution $x$.
+(2.5.3) provides a convergent regularisation method for (2.5.2). As in the linear case, the regularisation functional $\lVert \cdot \rVert_X^2$ can again be replaced by another functional $J : X \to \mathbb{R}$ that penalises other features in the solution $x$.
 
-## Chapter 3: Basic Concepts of Probability Theory
+For more details on nonlinear inverse problems see, e.g., [Engl, Hanke, Neubauer, 2000] or [Rieder, 2003].
 
-Bertrand's paradox shows that one must be careful when introducing the notion of "randomness". In this chapter, we formally introduce probability spaces, random variables and most importantly conditional expectations and probabilities. In uncertainty quantification and inverse problems for partial differential equations, we often deal with quantities of interest or random objects belonging to a Sobolev space. For this reason, throughout we concentrate on random variables taking values in separable Banach spaces. For such random variables we will show the existence of so-called "regular conditional distributions", which allows to consider a version of Bayes' theorem in this setting.
 
-### 3.1 Measure Spaces
+## Chapter 3: Probability Theory in Banach Spaces
 
-#### 3.1.1 $\sigma$-Algebras
+Bertrand's paradox from Exercise sheet 0 shows that one must be careful when introducing the notion of "randomness". In this chapter, among others we formally introduce probability spaces, random variables and most importantly conditional expectations and probabilities. In uncertainty quantification and inverse problems for partial differential equations, we often deal with quantities of interest or random objects belonging to a Sobolev space. For this reason, throughout we concentrate on random variables taking values in separable Banach spaces. For such random variables we will show the existence of so-called "regular conditional distributions", which allows to consider a version of Bayes' theorem in this setting.
 
-In the following $\Omega$ denotes a set, interpreted as the collection of all "elementary events". We write $2^\Omega$ for its power set (the set of all subsets of $\Omega$). A $\sigma$-algebra is a specific subset of $2^\Omega$, on which we will be able to define measures. For $A \subseteq \Omega$ we denote its complement by $A^c := \Omega \setminus A$.
+Basic concepts of measure theory and the notions of measurability and strong-measurability are summarised in Appendix B. Proofs for the stated results on probability theory that are not given in this chapter, can be found in the book "Wahrscheinlichkeitstheorie" by Achim Klenke or in the lecture notes to "Probability Theory I" by Jan Johannes.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.1</span><span class="math-callout__name">($\sigma$-Algebra)</span></p>
+### 3.1 Integration in Banach Spaces
 
-We call $\mathcal{A} \subseteq 2^\Omega$ a **$\sigma$-algebra** iff
+Let $V$ denote a Banach space over the field $\mathbb{R}$ (most results are easily generalized to Banach spaces over $\mathbb{C}$). In this section, we discuss integrals of the type $\int\_\Omega f(\omega) \, \mathrm{d}\mu(\omega)$, where $\mu$ is a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$ and $f$ maps from $\Omega$ to the Banach space $V$.
 
-1. $\Omega \in \mathcal{A}$,
-2. $A \in \mathcal{A}$ implies $A^c \in \mathcal{A}$,
-3. $A_i \in A$ for all $i \in \mathbb{N}$ implies $\bigcup_{i \in \mathbb{N}} A_i \in \mathcal{A}$.
+Throughout we adhere to the following notational conventions: The norm of elements $x \in V$ is denoted by $\lVert x \rVert\_V$ (or simply $\lVert x \rVert$ in case there's no confusion about $V$) and we write $V' := \mathcal{L}(V; \mathbb{R})$ for the topological dual space of $V$ (the space of continuous linear maps from $V \to \mathbb{R}$). For $v' \in V'$, we denote by $\langle v, v' \rangle\_V$ the dual pairing (or simply $\langle v, v' \rangle$ if there's no confusion about $V$). We consider $V$ as a measurable space equipped with the Borel $\sigma$-algebra $\mathcal{B}(V)$. For a function $f : \Omega \to V$ and a set $B \subseteq V$ we use the shorthand $f^{-1}(B) := \lbrace \omega \in \Omega : f(\omega) \in B \rbrace$.
 
-</div>
+#### 3.1.1 Bochner Integrals
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.2</span><span class="math-callout__name">(Measurable Space)</span></p>
-
-For $\Omega \neq \emptyset$ and a $\sigma$-algebra $\mathcal{A}$ on $\Omega$, the tuple $(\Omega, \mathcal{A})$ is called a **measurable space**. A subset $A \subseteq \Omega$ is called **measurable** iff it belongs to $\mathcal{A}$.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.1.3</span></p>
-
-Note that (i) and (ii) imply $\Omega^c = \emptyset \in \mathcal{A}$ and (ii) and (iii) imply $(\bigcup_{i \in \mathbb{N}} A_i)^c = \bigcap_{i \in \mathbb{N}} A_i^c \in \mathcal{A}$. In particular $\bigcap_{i \in \mathbb{N}} A_i \in \mathcal{A}$ whenever $A_i \in \mathcal{A}$ for all $i \in \mathbb{N}$.
-
-</div>
-
-Recall that $(\Omega, \mathcal{T})$ is called a **topological space**, if $\mathcal{T} \subseteq 2^\Omega$ is a topology on $\Omega$, i.e. $\mathcal{T}$ is the collection of all "open sets" and satisfies that
-
-1. $\emptyset, \Omega \in \mathcal{T}$,
-2. $\bigcap_{j=1}^{N} O_j \in \mathcal{T}$,
-3. $\bigcup_{j \in I} O_j \in \mathcal{T}$,
-
-whenever $O_1, \ldots, O_N$ and $(O_j)\_{j \in I}$ belong to $\mathcal{T}$. Here $I$ is an arbitrary index set and need not be countable. On a topological space we can define the Borel $\sigma$-algebra, which is the $\sigma$-algebra generated by the open sets.
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.1.4</span><span class="math-callout__name">(Generated $\sigma$-Algebra)</span></p>
-
-Let $\mathcal{E} \subseteq 2^\Omega$ be nonempty. Then
-
-$$\sigma(\mathcal{E}) := \bigcap_{\mathcal{A} \text{ is a } \sigma\text{-algebra s.t. } \mathcal{E} \subseteq \mathcal{A}} \mathcal{A} \tag{3.1.1}$$
-
-defines a $\sigma$-algebra called the **$\sigma$-algebra generated by $\mathcal{E}$**.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Proposition 3.1.4</summary>
-
-The intersection in (3.1.1) is not empty since $2^\Omega$ is a $\sigma$-algebra containing $\mathcal{E}$. Let $(\mathcal{A}\_i)\_{i \in I}$ be a family of $\sigma$-algebras ($I$ is not necessarily countable). Then it is simple to check that $\bigcap_{i \in I} \mathcal{A}\_i$ (by which we mean $\lbrace A \subseteq \Omega : A \in \mathcal{A}\_i \ \forall i \in I \rbrace$) is again a $\sigma$-algebra (by verifying each item in Def. 3.1.1 for this intersection). Hence (3.1.1) defines a $\sigma$-algebra containing $\mathcal{E}$.
-
-</details>
-</div>
-
-Evidently $\sigma(\mathcal{E})$ is the smallest $\sigma$-algebra containing $\mathcal{E}$.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.5</span><span class="math-callout__name">(Borel $\sigma$-Algebra)</span></p>
-
-For a topological space $(\Omega, \mathcal{T})$ we call $\sigma(\mathcal{T})$ the **Borel $\sigma$-algebra** and denote it by $\mathcal{B}(\Omega)$.
-
-</div>
-
-In case there is no confusion about the topology, we simply say that "$\mathcal{B}$ is the Borel $\sigma$-algebra on $\Omega$". In case of $\Omega$ being an open or closed subset of $\mathbb{R}^d$, the "Borel $\sigma$-algebra on $\Omega$" is always understood w.r.t. the Euclidean topology on $\mathbb{R}^d$.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.1.6</span></p>
-
-There exist sets $A \subseteq \mathbb{R}^d$ which do not belong to $\mathcal{B}(\mathbb{R}^d)$, i.e. $\mathcal{B}(\mathbb{R}^d) \neq 2^{\mathbb{R}^d}$.
-
-</div>
-
-Since complements of open sets are closed (and closed sets are in general not open), the Euclidean topology on $\mathbb{R}^d$ is not a $\sigma$-algebra. Furthermore, $\mathcal{B}(\mathbb{R}^d)$ is not a topology.
-
-#### 3.1.2 Measures
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.8</span><span class="math-callout__name">(Measure)</span></p>
-
-Let $\mathcal{A}$ be a $\sigma$-algebra on $\Omega \neq \emptyset$. A function $\mu : \mathcal{A} \to [0, \infty]$ is called a **measure** iff
-
-1. $\mu(\emptyset) = 0$,
-2. if $A_i \in \mathcal{A}$ for all $i \in \mathbb{N}$ and $A_i \cap A_j = \emptyset$ for all $i \neq j$ then
-
-$$\mu\Big(\bigcup_{i \in \mathbb{N}} A_i\Big) = \sum_{i \in \mathbb{N}} \mu(A_i).$$
-
-</div>
-
-A measure is called **$\sigma$-finite** if there exist $(A_j)\_{j \in \mathbb{N}} \in \mathcal{A}$ such that $\Omega = \bigcup_{j \in I} A_j$ and $\mu(A_j) < \infty$ for all $j \in \mathbb{N}$. A measure $\mu$ with $\mu(\Omega) = 1$ is called a **probability measure**.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.9</span><span class="math-callout__name">(Measure Space, Probability Space)</span></p>
-
-For a set $\Omega \neq \emptyset$, a $\sigma$-algebra $\mathcal{A}$ on $\Omega$ and a measure $\mu$ on $\mathcal{A}$ we call the triple $(\Omega, \mathcal{A}, \mu)$ a **measure space**. If $\mathbb{P}$ is a probability measure on $(\Omega, \mathcal{A})$, we call $(\Omega, \mathcal{A}, \mathbb{P})$ a **probability space**.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3.1.10</span><span class="math-callout__name">(Discrete Probability Measure)</span></p>
-
-Let $\Omega = \lbrace \omega_1, \ldots, \omega_N \rbrace$ be a finite set and let $0 \le p_j \le 1$ for $j = 1, \ldots, N$ such that $\sum_{j=1}^{N} p_j = 1$. Set $\mathcal{A} := 2^\Omega$. Then $\mu(A) := \sum_{\omega_j \in A} p_j$ defines a probability measure on $(\Omega, \mathcal{A})$.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3.1.11</span><span class="math-callout__name">(Measure via Density)</span></p>
-
-Let $f : \mathbb{R}^n \to \mathbb{R}$ be nonnegative and integrable with $\int_{\mathbb{R}^n} f(x) \, \mathrm{d}x = 1$. Then
-
-$$\mu(A) := \int_A f(x) \, \mathrm{d}x \tag{3.1.2}$$
-
-defines a probability measure on $(\mathbb{R}^n, \mathcal{B})$.
-
-</div>
-
-The following theorem is often useful, as it allows to check for equality of two measures:
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.12</span><span class="math-callout__name">(Uniqueness of Measures)</span></p>
-
-Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. Let $\mathcal{E} \subseteq 2^\Omega$ satisfy $A \cap B \in \mathcal{E}$ for all $A, B \in \mathcal{E}$ as well as $\sigma(\mathcal{E}) = \mathcal{A}$. If there exists a sequence $(E_n)\_{n \in \mathbb{N}}$ with $\Omega = \bigcup_{n \in \mathbb{N}} E_n$, $E_n \subseteq E_{n+1}$ and $\mu(E_n) < \infty$ for all $n$, then $\mu$ is uniquely defined through $\mu(E)$ for all $E \in \mathcal{E}$.
-
-</div>
-
-#### 3.1.3 Product Measures
-
-For measurable spaces $(\Omega_j, \mathcal{A}\_j)\_{j=1}^n$ the $\sigma$-algebra
-
-$$\otimes_{j=1}^n \mathcal{A}_j := \sigma(\lbrace \times_{j=1}^n A_j : A_j \in \mathcal{A}_j \ \forall j \rbrace)$$
-
-is called the **product $\sigma$-algebra** on the space $\times_{j=1}^n \Omega_j$.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.13</span><span class="math-callout__name">(Product Measure)</span></p>
-
-Let $(\Omega_j, \mathcal{A}\_j, \mu_j)$ for $j = 1, \ldots, n$ be a family of $\sigma$-finite measure spaces. Then there exists a unique measure $\mu$ on $(\times_{j=1}^n \Omega_j, \otimes_{j=1}^n \mathcal{A}\_j)$ such that
-
-$$\mu(\times_{j=1}^n A_j) = \prod_{j=1}^n \mu_j(A_j) \qquad \forall A_j \in \mathcal{A}_j.$$
-
-We call $\mu$ the **product measure** and use the notation $\mu = \otimes_{j=1}^n \mu_j$.
-
-</div>
-
-The product measure can also be constructed for $n = \infty$: Consider the $\sigma$-algebra $\mathcal{A} := \sigma(\mathcal{E})$ generated by the cylindrical sets
-
-$$\mathcal{E} := \lbrace \times_{j \in \mathbb{N}} A_j : A_j \in \mathcal{B}(\mathbb{R}) \rbrace.$$
-
-Suppose that $(\mu_j)\_{j \in \mathbb{N}}$ is a family of probability measures on $\mathbb{R}$. Then there is a unique measure $\mu$ on $(\mathbb{R}^{\mathbb{N}}, \mathcal{A})$ satisfying
-
-$$\mu(\times_{j=1}^n A_j \times \times_{i \in \mathbb{N}} \mathbb{R}) = \prod_{j=1}^n \mu_j(A_j).$$
-
-One of the most important measures is the **Lebesgue measure** on the measurable space $(\mathbb{R}, \mathcal{B})$, which satisfies
-
-$$\lambda_1((a, b]) = b - a \qquad \forall b > a. \tag{3.1.3}$$
-
-Note that since $\mathcal{E} = \lbrace (a, b] : a < b \rbrace$ generates $\mathcal{B}(\mathbb{R})$, i.e. $\sigma(\mathcal{E}) = \mathcal{B}(\mathbb{R})$, Thm. 3.1.12 implies that the Lebesgue measure is unique. Furthermore, by Thm. 3.1.13 there is a unique measure $\lambda_d = \otimes_{j=1}^d \lambda$ on $(\mathbb{R}^d, \otimes_{j=1}^d \mathcal{B}(\mathbb{R}))$ with the property
-
-$$\lambda_d(\times_{j=1}^d (a_j, b_j]) = \prod_{j=1}^d (b_j - a_j) \qquad \forall a_j < b_j,$$
-
-which is again called the Lebesgue measure. We also mention that $\otimes_{j=1}^d \mathcal{B}(\mathbb{R}) = \mathcal{B}(\mathbb{R}^d)$.
-
-### 3.2 Integration in Banach Spaces
-
-Let $V$ denote a Banach space over the field $\mathbb{R}$. In this section, we discuss integrals of the type $\int_\Omega f(\omega) \, \mathrm{d}\mu(\omega)$, where $\mu$ is a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$ and $f$ maps from $\Omega$ to the Banach space $V$.
-
-Throughout we adhere to the following notational conventions: The norm of elements $x \in V$ is denoted by $\lVert x \rVert_V$ and we write $V' := \mathcal{L}(V; \mathbb{R})$ for the topological dual space. For $v' \in V'$, we denote by $\langle v, v' \rangle_V$ the dual pairing. We consider $V$ as a measurable space equipped with the Borel $\sigma$-algebra $\mathcal{B}(V)$. For a function $f : \Omega \to V$ and a set $B \subseteq V$ we use the shorthand $f^{-1}(B) := \lbrace \omega \in \Omega : f(\omega) \in B \rbrace$.
-
-#### 3.2.1 Measurability
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.1</span><span class="math-callout__name">(Measurability)</span></p>
-
-Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces. A function $f : \Omega_1 \to \Omega_2$ is called $\mathcal{A}_1/\mathcal{A}_2$**-measurable** iff $f^{-1}(A_2) \in \mathcal{A}_1$ for all $A_2 \in \mathcal{A}_2$. If there's no confusion about $\mathcal{A}_2$ and/or $\mathcal{A}_1$ we also say that $f$ is $\mathcal{A}_1$-measurable or simply **measurable**.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.2.2</span></p>
-
-Note that measurability of a function depends only on the $\sigma$-algebras, but no measure needs to be defined.
-
-</div>
-
-If $\mathcal{A}_1$ and $\mathcal{A}_2$ are both the Borel-$\sigma$-algebras, then we say that $f : \Omega_1 \to \Omega_2$ is **Borel measurable**. To check for Borel measurability it suffices to consider preimages of open sets; more generally:
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.2.3</span><span class="math-callout__name">(Measurability via Generators)</span></p>
-
-Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces and assume that $\mathcal{A}_2 = \sigma(\mathcal{E})$ for some $\mathcal{E} \subseteq 2^{\Omega_2}$. A function $f : \Omega_1 \to \Omega_2$ is $\mathcal{A}_1/\mathcal{A}_2$-measurable iff $f^{-1}(E) \in \mathcal{A}_1$ for all $E \in \mathcal{E}$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Proposition 3.2.3</summary>
-
-Measurability implies that $f^{-1}(E) \in \mathcal{A}_1$ for all $E \in \mathcal{E} \subseteq \sigma(\mathcal{E})$.
-
-To show the other direction define
-
-$$\mathcal{C} := \lbrace B \subseteq \Omega_2 : f^{-1}(B) \in \mathcal{A}_1 \rbrace.$$
-
-For any $B \in \mathcal{C}$
-
-$$f^{-1}(B^c) = \lbrace \omega \in \Omega_1 : f(\omega) \in B^c \rbrace = \lbrace \omega \in \Omega_1 : f(\omega) \notin B \rbrace = \Omega_1 \setminus f^{-1}(B) = (f^{-1}(B))^c \in \mathcal{A}_1$$
-
-and thus $B^c \in \mathcal{C}$. Similarly for all $B_i \in \mathcal{C}$
-
-$$f^{-1}\Big(\bigcup_{i \in \mathbb{N}} B_i\Big) = \bigcup_{i \in \mathbb{N}} f^{-1}(B_i),$$
-
-and thus $\bigcup_{i \in \mathbb{N}} B_i \in \mathcal{C}$ whenever $B_i \in \mathcal{C}$ for all $i \in \mathbb{N}$. Hence $\mathcal{C}$ is a $\sigma$-algebra on $\Omega_2$. By assumption every $E \in \mathcal{E}$ belongs to $\mathcal{C}$. Since $\sigma(\mathcal{E})$ is the smallest $\sigma$-algebra containing $\mathcal{E}$ it holds $\mathcal{C} \supseteq \sigma(\mathcal{E})$. Thus $f^{-1}(B) \in \mathcal{A}_1$ for all $B \in \sigma(\mathcal{E}) = \mathcal{A}_2$.
-
-</details>
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.2.4</span></p>
-
-The previous proposition implies in particular that continuous functions are always Borel-measurable.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\mathcal{A}$-simple function ($\sigma$-algebra))</span></p>
-
-To give meaning to integrals over $V$-valued functions, we require a stronger notion of measurability. A function $f : \Omega \to V$ is called **$\mathcal{A}$-simple** iff
-
-$$f(\omega) = \sum_{j=1}^{N} v_j \mathbb{1}_{A_j}(\omega) \tag{3.2.1}$$
-
-for finite $N \in \mathbb{N}$, measurable $A_j \in \mathcal{A}$ with $A_i \cap A_j = \emptyset$ for all $i \neq j$ and $v_j \in V$.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.5</span><span class="math-callout__name">(Strong Measurability)</span></p>
-
-A function $f : \Omega \to V$ is **strongly measurable** iff there exists a sequence $(f_n)\_{n \in \mathbb{N}}$ of $\mathcal{A}$-simple functions such that $\lim_{n \to \infty} f_n = f$ pointwise.
-
-</div>
-
-As the name suggests, strong measurability is in general indeed stronger than measurability. In case $V$ is a separable Banach space, the two notions are in fact equivalent. This follows by Pettis measurability theorem. Recall that $V$ is called **separable** if there exists a countable dense subset of $V$. A function $f : \Omega \to V$ is called **separably valued** if it takes values in a separable subspace $V_0 \subseteq V$.
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.2.6</span><span class="math-callout__name">(Measurability of Limits)</span></p>
-
-Let $(\Omega, \mathcal{A})$ be a measurable space and let $f_n : \Omega \to \mathbb{R}$ for $n \in \mathbb{N}$ be a sequence of $\mathcal{A}$-measurable functions. Then
-
-* if $f(\omega) := \sup_{n \in \mathbb{N}} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable,
-* if $f(\omega) := \inf_{n \in \mathbb{N}} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable,
-* if $f(\omega) := \lim_{n \to \infty} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable.
-
-</div>
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.7</span><span class="math-callout__name">(Pettis Measurability Theorem, First Version)</span></p>
-
-Let $(\Omega, \mathcal{A})$ be a measurable space. For $f : \Omega \to V$ the following are equivalent:
-
-1. $f$ is strongly measurable,
-2. $f$ is separably valued and $\langle f, v' \rangle$ is $\mathcal{A}$-measurable for every $v' \in V'$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Theorem 3.2.7</summary>
-
-**(i) $\Rightarrow$ (ii):** Let $(f_n)\_{n \in \mathbb{N}}$ be a sequence of $\mathcal{A}$-simple functions converging pointwise to $f$, and let $V_0$ be the closed subspace spanned by the countably many values taken by the functions $(f_n)\_{n \in \mathbb{N}}$. Then $V_0$ is separable and $f : \Omega \to V_0$. Furthermore each $\langle f, v' \rangle : \Omega \to \mathbb{R}$ is $\mathcal{A}$-measurable as the pointwise limit of the $\mathcal{A}$-measurable functions $\langle f_n, v' \rangle$ by Prop. 3.2.6.
-
-**(ii) $\Rightarrow$ (i):** Let $V_0$ be a separable subspace of $V$ such that $f : \Omega \to V_0$. First we show that there exists a sequence $(v_n')\_{n \in \mathbb{N}} \subseteq V'$ such that for all $v \in V_0$
-
-$$\lVert v \rVert = \sup_{n \in \mathbb{N}} |\langle v, v_n' \rangle|. \tag{3.2.2}$$
-
-To this end let $(v_n)\_{n \in \mathbb{N}}$ be dense sequence in $V_0$. By the Hahn-Banach theorem there exist $v_n' \in V'$ such that $\lVert v_n' \rVert = 1$ and $\lVert v_n \rVert = \langle v_n, v_n' \rangle$. Now, for every $v \in V_0$ and $\varepsilon > 0$ there exists $n \in \mathbb{N}$ so large that $\lVert v - v_n \rVert < \varepsilon$. Then
-
-$$\langle v, v_n' \rangle \ge \langle v_n, v_n' \rangle - |\langle v_n - v, v_n' \rangle| \ge \lVert v_n \rVert - \varepsilon \ge \lVert v \rVert - \varepsilon = \lVert v \rVert - 2\varepsilon.$$
-
-Also note that for any $n \in \mathbb{N}$ $\|\langle v, v_n \rangle\| \le \lVert v \rVert \lVert v_n \rVert = \lVert v \rVert$. Since $\varepsilon > 0$ was arbitrary, the claim follows. Now let $v_0 \in V_0$. By the $\mathcal{A}$-measurability of $\omega \mapsto \langle f(\omega), v_n' \rangle$, for each $v_0 \in V_0$
-
-$$\omega \mapsto \lVert f(\omega) - v_0 \rVert = \sup_{n \in \mathbb{N}} \langle f(\omega) - v_0, v_n' \rangle \qquad \text{is } \mathcal{A}\text{-measurable.} \tag{3.2.3}$$
-
-Next define $s_n : V_0 \to \lbrace v_1, \ldots, v_n \rbrace$ as follows: for all $w \in V_0$ let $k(n, w)$ be the smallest integer in $\lbrace 1, \ldots, n \rbrace$ such that
-
-$$\lVert w - v_k \rVert = \min_{1 \le j \le n} \lVert w - v_j \rVert,$$
-
-and set $s_n(w) := v_{k(n,w)}$. By density of $(v_n)\_{n \in \mathbb{N}}$ in $V_0$
-
-$$\lim_{n \to \infty} \lVert w - s_n(w) \rVert = 0 \qquad \forall w \in V_0.$$
-
-Next, set $f_n(\omega) := s_n(f(\omega))$ for all $\omega \in \Omega$. Then for $1 \le k \le n$
-
-$$\lbrace \omega \in \Omega : f_n(\omega) = v_k \rbrace = \lbrace \omega \in \Omega : \lVert f(\omega) - v_k \rVert = \min_{1 \le j \le n} \lVert f(\omega) - v_j \rVert \rbrace \cap \lbrace \omega \in \Omega : \lVert f(\omega) - v_l \rVert > \min_{1 \le j \le n} \lVert f(\omega) - v_j \rVert \ \forall l = 1, \ldots, k-1 \rbrace.$$
-
-The set on the right-hand side is in $\mathcal{A}$ due to (3.2.3). Since $f_n$ takes values in $\lbrace v_1, \ldots, v_n \rbrace$, we conclude that $f_n$ is $\mathcal{A}$-simple. The proof is finished since for every $\omega \in \Omega$
-
-$$\lim_{n \to \infty} \lVert f_n(\omega) - f(\omega) \rVert = \lim_{n \to \infty} \lVert s_n(f(\omega)) - f(\omega) \rVert = 0.$$
-
-</details>
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.2.8</span><span class="math-callout__name">(Limits Preserve Strong Measurability)</span></p>
-
-The pointwise limit of a sequence of strongly $\mathcal{A}$-measurable functions is strongly $\mathcal{A}$-measurable.
-
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.2.9</span><span class="math-callout__name">(Composition with Continuous Maps)</span></p>
-
-Let $f : \Omega \to V$ be strongly $\mathcal{A}$-measurable. Let $W$ be another Banach space and let $\phi : V \to W$ be continuous. Then $\phi \circ f : \Omega \to W$ is strongly $\mathcal{A}$-measurable.
-
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.2.10</span><span class="math-callout__name">(Measurability in Separable Spaces)</span></p>
-
-If $V$ is separable, then measurability implies strong measurability.
-
-</div>
-
-#### 3.2.2 Strong $\mu$-Measurability
-
-In this section $(\Omega, \mathcal{A}, \mu)$ is a $\sigma$-finite measure space, that is, $\mu$ is a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\mu$-simple function (measure))</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\mu$-simple function)</span></p>
 
 We say that $f : \Omega \to V$ is **$\mu$-simple** if
 
-$$f = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j, \tag{3.2.4}$$
+$$f = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j, \tag{3.1.1}$$
 
-where $v_j \in V$ and $A_j \in \mathcal{A}$ such that $\mu(A_j) < \infty$.
+where $v\_j \in V$ and $A\_j \in \mathcal{A}$ such that $\mu(A\_j) < \infty$.
 
 We say that a property holds **$\mu$-almost everywhere (a.e.)** (or $\mu$-almost surely) if there exists a **$\mu$-null-set** $N \in \mathcal{A}$, that is, $\mu(N) = 0$, and the property holds on $\Omega \setminus N$.
 
 </div>
 
-
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.12</span><span class="math-callout__name">(Strong $\mu$-Measurability)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.1</span><span class="math-callout__name">(Strong $\mu$-Measurability)</span></p>
 
-A function $f : \Omega \to V$ is **strongly $\mu$-measurable** iff there exists a sequence $(f_n)\_{n \in \mathbb{N}}$ of $\mu$-simple functions converging to $f$ $\mu$-a.e.
-
-</div>
+A function $f : \Omega \to V$ is **strongly $\mu$-measurable** iff there exists a sequence $(f\_n)\_{n \in \mathbb{N}}$ of $\mu$-simple functions converging to $f$ $\mu$-a.e.
 
 We call $\tilde{f}$ a **$\mu$-version** of $f$ if $\tilde{f} = f$ $\mu$-a.e. In case there is a $\mu$-version of $f$ that is $\mathcal{A}$-measurable, we say that $f$ is **$\mu$-measurable**.
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.2.13</span><span class="math-callout__name">(Equivalence of $\mu$-Measurability Notions)</span></p>
-
-For $f : \Omega \to V$ the following are equivalent:
-
-1. $f$ is strongly $\mu$-measurable,
-2. $f$ has a $\mu$-version that is strongly $\mathcal{A}$-measurable.
-
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.14</span><span class="math-callout__name">(Pettis Measurability Theorem, Second Version)</span></p>
-
-Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. For $f : \Omega \to V$ the following are equivalent:
-
-1. $f$ is strongly $\mu$-measurable,
-2. $f$ is $\mu$-separably valued and $\langle f, v' \rangle$ is $\mu$-measurable for every $v' \in V'$.
-
-</div>
-
-Prop. 3.2.13 and Corollaries 3.2.9 and 3.2.10 imply:
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.2.15</span><span class="math-callout__name">(Limits of $\mu$-Measurable Functions)</span></p>
-
-Let $f_n : \Omega \to V$ be a sequence of strongly $\mu$-measurable functions, and let $\lim_{n \to \infty} f_n = f$ $\mu$-a.e. Then $f$ is strongly $\mu$-measurable.
-
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.2.16</span><span class="math-callout__name">(Composition Preserves $\mu$-Measurability)</span></p>
-
-Let $f : \Omega \to V$ be strongly $\mu$-measurable and let $W$ be another Banach space. If $\phi : V \to W$ is continuous, then $\phi \circ f : \Omega \to V$ is strongly $\mu$-measurable.
-
-</div>
-
-#### 3.2.3 Bochner Integrals
+As the name suggests, strong $\mu$-measurability is in general indeed stronger than $\mu$-measurability. In case $V$ is a separable Banach space, the two notions are in fact equivalent. This follows by Pettis measurability theorem (Theorem B.3.14).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.17</span><span class="math-callout__name">(Bochner Integral)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.2</span><span class="math-callout__name">(Bochner Integral)</span></p>
 
 Let $\mu$ be a $\sigma$-finite measure on the measurable space $(\Omega, \mathcal{A})$. A function $f : \Omega \to V$ is called $\mu$**-Bochner integrable** iff the following two conditions are met:
 
@@ -1692,34 +1417,43 @@ Let $\mu$ be a $\sigma$-finite measure on the measurable space $(\Omega, \mathca
 
 For a $\mu$-Bochner integrable function we define
 
-$$\int_\Omega f(\omega) \, \mathrm{d}\mu(\omega) := \lim_{n \to \infty} \sum_{j=1}^{n} \mu(A_{n,j}) v_{n,j} \in V. \tag{3.2.5}$$
+$$\int_\Omega f(\omega) \, \mathrm{d}\mu(\omega) := \lim_{n \to \infty} \sum_{j=1}^{n} \mu(A_{n,j}) v_{n,j} \in V. \tag{3.1.2}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.1.3</span></p>
+
+Show that (3.1.2) does not depend on the approximating sequence $(f\_n)\_{n \in \mathbb{N}}$ and is well-defined (i.e. the limit exists in $V$).
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.2.19</span><span class="math-callout__name">(Dual Pairing and Bochner Integral)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.1.4</span><span class="math-callout__name">(Dual Pairing and Bochner Integral)</span></p>
 
 Let $v' \in V'$ and let $f : \Omega \to V$ be Bochner-integrable. Then
 
-$$\left\langle \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangle = \int_\Omega \langle f(\omega), v' \rangle \, \mathrm{d}\mu(\omega). \tag{3.2.6}$$
+$$\left\langle \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangle = \int_\Omega \langle f(\omega), v' \rangle \, \mathrm{d}\mu(\omega). \tag{3.1.3}$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 3.2.19</summary>
+<summary>Proof of Lemma 3.1.4</summary>
 
 For a $\mu$-simple function $f_n = \sum_{j=1}^{n} \mathbb{1}_{A_j} v_j$, due to the linearity of the dual product
 
-$$\left\langle \int_\Omega f_n(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangle = \left\langle \sum_{j=1}^{n} v_j \mu(A_j),\, v' \right\rangle = \sum_{j=1}^{n} \langle v_j, v' \rangle \, \mu(A_j) = \int_\Omega \langle f_n(\omega), v' \rangle \, \mathrm{d}\mu(\omega). \tag{3.2.6a}$$
+$$\left\langle \int_\Omega f_n(\omega) \, \mathrm{d}\mu(\omega),\, v' \right\rangle = \left\langle \sum_{j=1}^{n} v_j \mu(A_j),\, v' \right\rangle = \sum_{j=1}^{n} \langle v_j, v' \rangle \, \mu(A_j) = \int_\Omega \langle f_n(\omega), v' \rangle \, \mathrm{d}\mu(\omega). \tag{3.1.4}$$
 
-Now let $(f_n)_{n \in \mathbb{N}}$ be as in Def. 3.2.17 (the Bochner integral definition). Taking the limit $n \to \infty$ on both sides of (3.2.6a) yields (3.2.6). Here we use that $v' : V \to \mathbb{R}$ is continuous and that $\int_\Omega f_n \, \mathrm{d}\mu \to \int_\Omega f \, \mathrm{d}\mu$ in $V$ by assumption (which shows that the left-hand side of (3.2.6a) converges to the left-hand side of (3.2.6)), and Def. 3.2.17(ii) (which shows that the right-hand side of (3.2.6a) converges to the right-hand side of (3.2.6)).
+Now let $(f_n)_{n \in \mathbb{N}}$ be as in Def. 3.1.2 (the Bochner integral definition). Taking the limit $n \to \infty$ on both sides of (3.1.4) yields (3.1.3). Here we use that $v' : V \to \mathbb{R}$ is continuous and that $\int_\Omega f_n \, \mathrm{d}\mu \to \int_\Omega f \, \mathrm{d}\mu$ in $V$ by assumption (which shows that the left-hand side of (3.1.4) converges to the left-hand side of (3.1.3)), and Def. 3.1.2(ii) (which shows that the right-hand side of (3.1.4) converges to the right-hand side of (3.1.3)).
 
 </details>
 </div>
 
+The next theorem is useful to check for Bochner-integrability of a function.
+
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.20</span><span class="math-callout__name">(Bochner Integrability Criterion)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.5</span><span class="math-callout__name">(Bochner Integrability Criterion)</span></p>
 
 A strongly $\mu$-measurable function $f : \Omega \to V$ is $\mu$-Bochner integrable iff
 
@@ -1727,19 +1461,19 @@ $$\int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega) < \infty$$
 
 (in the sense of the Lebesgue integral) and in this case
 
-$$\left\lVert \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega) \right\rVert \le \int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega). \tag{3.2.8}$$
+$$\left\lVert \int_\Omega f(\omega) \, \mathrm{d}\mu(\omega) \right\rVert \le \int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega). \tag{3.1.5}$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 3.2.20</summary>
+<summary>Proof of Theorem 3.1.5</summary>
 
-**($\Rightarrow$)** If $f$ is $\mu$-Bochner integrable, then for the simple functions $(f_n)_{n \in \mathbb{N}}$ as in Def. 3.2.17
+**($\Rightarrow$)** If $f$ is $\mu$-Bochner integrable, then for the simple functions $(f_n)_{n \in \mathbb{N}}$ as in Def. 3.1.2
 
 $$\int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega) \le \int_\Omega \lVert f(\omega) - f_n(\omega) \rVert \, \mathrm{d}\mu(\omega) + \int_\Omega \lVert f_n(\omega) \rVert \, \mathrm{d}\mu(\omega).$$
 
-Due to assumption (ii) of Def. 3.2.17 the first term is finite for $n$ large enough. The second term is finite since each $f_n$ is a $\mu$-simple function.
+Due to assumption (ii) of Def. 3.1.2 the first term is finite for $n$ large enough. The second term is finite since each $f_n$ is a $\mu$-simple function.
 
 **($\Leftarrow$)** Let $f$ be strongly $\mu$-measurable such that $\int_\Omega \lVert f(\omega) \rVert \, \mathrm{d}\mu(\omega) < \infty$, and let $g_n$ be $\mu$-simple functions satisfying $\lim_{n \to \infty} g_n = f$ $\mu$-a.e. Set
 
@@ -1749,12 +1483,12 @@ Then $f_n$ is $\mu$-simple and $\lim_{n \to \infty} f_n = f$ $\mu$-a.e. Since $\
 
 $$\lim_{n \to \infty} \int_\Omega \lVert f - f_n \rVert \, \mathrm{d}\mu = 0.$$
 
-The inequality (3.2.8) is trivial for $\mu$-simple functions, and follows by approximation in the general case.
+The inequality (3.1.5) is trivial for $\mu$-simple functions, and follows by approximation in the general case.
 
 </details>
 </div>
 
-#### 3.2.4 $L^p$-Spaces
+#### 3.1.2 $L^p$-Spaces
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($L^p$-Spaces)</span></p>
@@ -1763,7 +1497,7 @@ Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. For $1 \le 
 
 $$\lVert f \rVert_{L^p(\Omega, \mu; V)} := \left( \int_\Omega \lVert f(\omega) \rVert^p \, \mathrm{d}\mu(\omega) \right)^{1/p} < \infty$$
 
-and identifying $\mu$-a.e. equal functions (i.e. elements of $L^p(\Omega, \mu; V)$ are equivalence classes of $\mu$-a.e. equal functions).
+and identifying $\mu$-a.e. equal functions (i.e. elements of $L^p(\Omega, \mu; V)$ are equivalence classes of $\mu$-a.e. equal functions). In case we wish to emphasize the $\sigma$-algebra on $\Omega$ we write $L^p(\Omega, \mathcal{A}, \mu; V)$ (note that if $\mathcal{F} \subseteq \mathcal{A}$ is a sub-$\sigma$-algebra, in general $L^p(\Omega, \mathcal{A}, \mu; V) \neq L^p(\Omega, \mathcal{F}, \mu; V)$). If there's no confusion about $\mu$ or $\mathcal{A}$ we simply write $L^p(\Omega; V)$.
 
 </div>
 
@@ -1772,7 +1506,7 @@ and identifying $\mu$-a.e. equal functions (i.e. elements of $L^p(\Omega, \mu; V
 
 Similarly, $L^\infty(\Omega; V)$ consists of all equivalence classes of strongly measurable $\mu$-a.e. equal functions endowed with the norm
 
-$$\lVert f \rVert_{L^\infty(\Omega; V)} := \inf \lbrace r \ge 0 : \mu(\lbrace \omega \in \Omega : \lVert f(\omega) \rVert \ge r \rbrace) = 0 \rbrace. \tag{3.2.9}$$
+$$\lVert f \rVert_{L^\infty(\Omega; V)} := \inf \lbrace r \ge 0 : \mu(\lbrace \omega \in \Omega : \lVert f(\omega) \rVert \ge r \rbrace) = 0 \rbrace. \tag{3.1.6}$$
 
 </div>
 
@@ -1783,17 +1517,17 @@ Without proof we mention that $L^p(\Omega; V) = L^p(\Omega, \mathcal{A}, \mu; V)
 
 </div>
 
-#### 3.2.5 Radon-Nikodym Derivative
+#### 3.1.3 Theorem of Radon-Nikodym
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.21</span><span class="math-callout__name">(Absolute Continuity of Measures)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.6</span><span class="math-callout__name">(Absolute Continuity of Measures)</span></p>
 
 Given measures $\mu$ and $\nu$ on $(\Omega, \mathcal{A})$, we say that $\nu$ is **absolutely continuous** wrt $\mu$ ($\nu \ll \mu$) if for all $A \in \mathcal{A}$ s.t. $\mu(A) = 0$, we have $\nu(A) = 0$. The two measures are called **equivalent** iff $\mu \ll \nu$ and $\nu \ll \mu$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Randon-Nikodym Derivative)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Radon-Nikodym Derivative)</span></p>
 
 Suppose that $\mu$, $\nu$ are two measures on $(\Omega, \mathcal{A})$. In case there exists an $\mathcal{A}$-measurable $f : \Omega \to \mathbb{R}$ such that for all $A \in \mathcal{A}$
 
@@ -1804,7 +1538,7 @@ we call $f$ a **density** of $\nu$ w.r.t. $\mu$. If $\nu$ is $\sigma$-finite, su
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.22</span><span class="math-callout__name">(Radon-Nikodym)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.7</span><span class="math-callout__name">(Radon-Nikodym)</span></p>
 
 Let $\mu$, $\nu$ be two $\sigma$-finite measures on $(\Omega, \mathcal{A})$. Then
 
@@ -1814,10 +1548,10 @@ In this case $\frac{\mathrm{d}\nu}{\mathrm{d}\mu}$ is $\mathcal{A}$-measurable a
 
 </div>
 
-#### 3.2.6 Transformation of Measures
+#### 3.1.4 Transformation of Measures
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.23</span><span class="math-callout__name">(Pushforward Measure)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.8</span><span class="math-callout__name">(Pushforward Measure)</span></p>
 
 Let $(\Omega_1, \mathcal{A}\_1, \mu)$ be a measure space and $(\Omega_2, \mathcal{A}\_2)$ a measurable space. Let $T : \Omega_1 \to \Omega_2$ be measurable. Then
 
@@ -1832,10 +1566,10 @@ We call $T_\sharp \mu$ the **pushforward measure**.
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Comment</span><span class="math-callout__name">(Pushforward Measure)</span></p>
 
-* We can say that a pushforward measure is a measure induced by a **source measure space** and a **measurable funtion** to another measurable space.
-  * This understanding is important when we already have two independent measure spaces $(X,\mathcal{A}\_1,\mu)$ and $(Y,\mathcal{A}\_2,\nu)$, and we want to find such a map $T: X\to Y$, which pushes the measure from the source space to a target space, like a contraint in optimal transport problem: 
+* We can say that a pushforward measure is a measure induced by a **source measure space** and a **measurable function** to another measurable space.
+  * This understanding is important when we already have two independent measure spaces $(X,\mathcal{A}\_1,\mu)$ and $(Y,\mathcal{A}\_2,\nu)$, and we want to find such a map $T: X\to Y$, which pushes the measure from the source space to a target space, like a constraint in the optimal transport problem: 
   
-    $$\int_T \int_X c(c,T(x))\ d\mu(x), \qquad given T\hash T_\sharp\mu = \nu$$
+    $$\min_T \int_X c(x, T(x)) \, \mathrm{d}\mu(x), \qquad \text{subject to } T_\sharp \mu = \nu.$$
 
   * In the original Monge's optimal transport problem such a transformation $T$ might not even exist!
 
@@ -1846,7 +1580,7 @@ We call $T_\sharp \mu$ the **pushforward measure**.
 For real valued measurable functions, we have the usual change of variables formula (for the Lebesgue integrals):
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.24</span><span class="math-callout__name">(Change of Variables)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.9</span><span class="math-callout__name">(Change of Variables)</span></p>
 
 Let $T : \Omega_1 \to \Omega_2$ and $f : \Omega_2 \to \mathbb{R}$ be measurable. Then 
 
@@ -1859,7 +1593,7 @@ $$\int_{\Omega_1} f \circ T(\omega_1) \, \mathrm{d}\mu(\omega_1) = \int_{\Omega_
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.2.25</span><span class="math-callout__name">(Transformation of Densities)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.1.10</span><span class="math-callout__name">(Transformation of Densities)</span></p>
 
 Assume that $\mu \ll \lambda$ is a measure on $(\mathbb{R}^d, \mathcal{B}(\mathbb{R}^d))$ with density $f := \frac{\mathrm{d}\mu}{\mathrm{d}\lambda}$. In the important case that $T : \mathbb{R}^d \to \mathbb{R}^d$ is a $C^1$-diffeomorphism, we have for all $A \in \mathcal{B}(\mathbb{R}^d)$
 
@@ -1873,16 +1607,16 @@ where $\mathrm{d}T^{-1} : \mathbb{R}^d \to \mathbb{R}^{d \times d}$ denotes the 
 
 </div>
 
-### 3.3 Random Variables
+### 3.2 Banach-valued Random Variables
 
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space.
+Let $V$ be a Banach space and $(\Omega, \mathcal{A}, \mathbb{P})$ a probability space.
 
 A set $A \in \mathcal{A}$ is called an **event**. $\mathbb{P}[A]$ is the **probability** of the event $A$.
 
 Often it is not convenient or possible to work with events. Instead we consider observable quantities of such events. This idea is formalized with the notion of random variables.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.2</span><span class="math-callout__name">(Random Variable)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.2</span><span class="math-callout__name">(Random Variable)</span></p>
 
 Let $(\Omega, \mathcal{A})$ be a measurable space and $V$ a Banach space. Then a measurable function $X : \Omega \to V$ is called a $V$**-valued random variable** (RV).
 
@@ -1893,17 +1627,17 @@ It is common practice in probability theory to write $X$ instead of $X(\omega)$,
 For a probability space $(\Omega, \mathcal{A}, \mathbb{P})$, a RV $X : \Omega \to V$ induces a probability measure $\mathbb{P}\_X := X_\sharp \mathbb{P}$ on $(V, \mathcal{B}(V))$, i.e. $\mathbb{P}\_X[B] = \mathbb{P}[\lbrace \omega \in \Omega : X(\omega) \in B \rbrace]$. For $B \in \mathcal{B}(V)$ we usually write $\mathbb{P}[X \in B]$ to denote $\mathbb{P}\_X[B]$, which is the probability of the event $\lbrace \omega \in \Omega : X(\omega) \in B \rbrace$, i.e. the probability that $X$ takes a value in $B$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.4</span><span class="math-callout__name">(Distribution)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.4</span><span class="math-callout__name">(Distribution)</span></p>
 
 1. The measure $\mathbb{P}\_X$ is the **distribution** of $X$.
 2. We write $X \sim \mu$ to express that $X$ has distribution $\mu$, i.e. $\mathbb{P}\_X = \mu$.
-3. A family of $V$-valued RVs $(X_j)\_{j \in I}$ is called **equally distributed** if $\mathbb{P}\_{X_i} = \mathbb{P}\_{X_j}$ for all $i, j \in I$.
+3. A family of $V$-valued RVs $(X_j)\_{j \in I}$ is called **identically distributed** if $\mathbb{P}\_{X_i} = \mathbb{P}\_{X_j}$ for all $i, j \in I$.
 4. For a finite family of RVs $X_j : \Omega \to V_j$, $j = 1, \ldots, n$, the measure $\mathbb{P}\_{X_1, \ldots, X_n} := (X_1, \ldots, X_n)\_\sharp \mathbb{P}$ on $(\times_{j=1}^n V_j, \mathcal{B}(\times_{j=1}^n V_j))$ is the **joint distribution** of the RVs $(X_j)\_{j=1}^n$, and $\mathbb{P}\_{X_j}$ is the **marginal distribution** of $X_j$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.5</span><span class="math-callout__name">(Distribution Function and Density)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.5</span><span class="math-callout__name">(Distribution Function and Density)</span></p>
 
 Suppose $X : \Omega \to \mathbb{R}$ is a real valued RV.
 
@@ -1924,10 +1658,10 @@ and if there exists a nonnegative $f : \mathbb{R} \to \mathbb{R}$ satisfying
 
 $$F_{X_1, \ldots, X_n}(x_1, \ldots, x_n) = \int_{-\infty}^{x_1} \cdots \int_{-\infty}^{x_n} f(t_1, \ldots, t_n) \, \mathrm{d}t_1 \ldots \mathrm{d}t_n$$
 
-then $f$ is the **density function** of $X = (X_1, \ldots, X_n)$.
+then $f$ is the **density function** of $X = (X_1, \ldots, X_n)$. We also write $f(x) = f\_{X\_1, \ldots, X\_n}(x)$.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3.3.6</span><span class="math-callout__name">(Dice Roll)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 3.2.6</span><span class="math-callout__name">(Dice Roll)</span></p>
 
 Let $\Omega = \lbrace 1, \ldots, 6 \rbrace$ be equipped with the $\sigma$-algebra $\mathcal{A} = 2^\Omega$. We interpret each $\omega \in \Omega$ as the outcome of a dice roll, and set
 
@@ -1943,12 +1677,19 @@ $$\sigma(X) := \lbrace X^{-1}(B) : B \in \mathcal{B}(V) \rbrace$$
 
 is a $\sigma$-algebra, called the **$\sigma$-algebra generated by $X$**. It is the smallest $\sigma$-algebra on $\Omega$ w.r.t. which $X$ is measurable, and it can be interpreted as containing all relevant information about the RV $X$.
 
-### 3.4 Expectation and Covariance
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 3.2.7</span><span class="math-callout__name">($\sigma$-Algebra Generated by the Dice Roll)</span></p>
 
-Let $V$ be a separable Banach space and $(\Omega, \mathcal{A}, \mathbb{P})$ a probability space.
+Consider $X : \lbrace 1, \ldots, 6 \rbrace \to \lbrace 0, 1 \rbrace$ from Example 3.2.6. Then
+
+$$\sigma(X) = \lbrace \lbrace 1, 3, 5 \rbrace, \lbrace 2, 4, 6 \rbrace, \lbrace 1, 2, 3, 4, 5, 6 \rbrace, \emptyset \rbrace.$$
+
+This $\sigma$-algebra contains all relevant information about $X$, namely whether the dice shows an odd or an even number.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.4.1</span><span class="math-callout__name">(Expectation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.8</span><span class="math-callout__name">(Expectation)</span></p>
 
 We say that a RV $X : \Omega \to V$ has finite $k$th moment, iff $\int_\Omega \lVert X(\omega) \rVert^k \, \mathrm{d}\mathbb{P}(\omega) < \infty$.
 
@@ -1976,7 +1717,7 @@ $$\mathbb{V}(X) := \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - \mathbb
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3.4.2</span><span class="math-callout__name">(Covariance Matrix)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 3.2.9</span><span class="math-callout__name">(Covariance Matrix)</span></p>
 
 Let $X : \Omega \to \mathbb{R}^n$ and $Y : \Omega \to \mathbb{R}^m$ be two random variables. Then $\mathrm{cov}(X, Y)$ is represented by the **covariance matrix** $C \in \mathbb{R}^{n \times m}$ with entries
 
@@ -1989,7 +1730,7 @@ Under linear transformations the covariance matrix satisfies $\mathrm{cov}(AX, B
 Expectations can be computed using the following change of variables formula:
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.4.3</span><span class="math-callout__name">(Change of Variables for Expectations)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.10</span><span class="math-callout__name">(Change of Variables for Expectations)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $(V, \lVert \cdot \rVert_V)$, $(W, \lVert \cdot \rVert_W)$ two separable Banach spaces. Let $X : \Omega \to V$ be a RV and $\varphi : V \to W$ a measurable function. Then $\varphi(X) : \Omega \to W$ is a RV. It holds $\varphi \in L^1(V, \mathbb{P}_X; W)$ iff $\varphi(X) \in L^1(\Omega, \mathbb{P}; W)$ and in this case
 
@@ -1999,17 +1740,17 @@ $$\mathbb{E}[\varphi(X)] = \int_\Omega \varphi(X(\omega)) \, \mathrm{d}\mathbb{P
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 3.4.3</summary>
+<summary>Proof of Theorem 3.2.10</summary>
 
-Both $\varphi(X) : \Omega \to W$ and $\varphi : V \to W$ are measurable, and thus strongly measurable since $V$ and $W$ are separable. $\mathbb{P}$ and $\mathbb{P}_X$ are probability measures, and thus $\varphi(X)$ is strongly $\mathbb{P}$-measurable and $\varphi$ is strongly $\mathbb{P}_X$-measurable. By Thm. 3.2.24
+Both $\varphi(X) : \Omega \to W$ and $\varphi : V \to W$ are measurable, and thus strongly measurable since $V$ and $W$ are separable. $\mathbb{P}$ and $\mathbb{P}_X$ are probability measures, and thus $\varphi(X)$ is strongly $\mathbb{P}$-measurable and $\varphi$ is strongly $\mathbb{P}_X$-measurable. By Thm. 3.1.9
 
 $$\int_\Omega \lVert \varphi(X(\omega)) \rVert_W \, \mathrm{d}\mathbb{P}(\omega) = \int_V \lVert \varphi(v) \rVert_W \, \mathrm{d}\mathbb{P}_X(v)$$
 
-and hence Thm. 3.2.20 implies $\varphi(X) \in L^1(\Omega, \mathbb{P}; W)$ iff $\varphi \in L^1(V, \mathbb{P}_X; W)$. In this case, Lemma 3.2.19 implies for all $w' \in W'$
+and hence Thm. 3.1.5 implies $\varphi(X) \in L^1(\Omega, \mathbb{P}; W)$ iff $\varphi \in L^1(V, \mathbb{P}_X; W)$. In this case, Lemma 3.1.4 implies for all $w' \in W'$
 
 $$\left\langle \int_\Omega \varphi(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega), w' \right\rangle = \int_\Omega \langle \varphi(X(\omega)), w' \rangle \, \mathrm{d}\mathbb{P}(\omega) = \int_V \langle \varphi(v), w' \rangle \, \mathrm{d}\mathbb{P}_X(v) = \left\langle \int_V \varphi(v) \, \mathrm{d}\mathbb{P}_X(v), w' \right\rangle,$$
 
-where we used again Thm. 3.2.24 for the real-valued measurable function $\omega \mapsto \langle \varphi(X(\omega)), w' \rangle$ (and the fact that the Lebesgue and Bochner integrals coincide for the integral of real-valued measurable functions w.r.t. $\sigma$-finite measures). Since this equality holds for all $w' \in W'$, we conclude
+where we used again Thm. 3.1.9 for the real-valued measurable function $\omega \mapsto \langle \varphi(X(\omega)), w' \rangle$ (and the fact that the Lebesgue and Bochner integrals coincide for the integral of real-valued measurable functions w.r.t. $\sigma$-finite measures). Since this equality holds for all $w' \in W'$, we conclude
 
 $$\int_\Omega \varphi(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_V \varphi(v) \, \mathrm{d}\mathbb{P}_X(v).$$
 
@@ -2017,7 +1758,7 @@ $$\int_\Omega \varphi(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_V \varph
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.4.4</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.2.11</span></p>
 
 With $\varphi(v) = v$ we get
 
@@ -2025,14 +1766,14 @@ $$\mathbb{E}[X] = \int_V v \, \mathrm{d}\mathbb{P}_X(v).$$
 
 </div>
 
-### 3.5 Independence and Conditionals
+### 3.3 Independence and Conditionals
 
-#### 3.5.1 Conditional Probability and Independence
+#### 3.3.1 Conditional Probability and Independence
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and let $A, B \in \mathcal{A}$ be two events such that $\mathbb{P}[B] > 0$. For $\omega \in \Omega$, assuming that we already know $\omega \in B$, we want to define the probability that $\omega \in A$ -- **the probability of $A$ given $B$**. Since we know $\omega \in B$, we can interpret $B$ together with the $\sigma$-algebra $\lbrace C \in \mathcal{A} : C \subseteq B \rbrace$ and the probability measure $\tilde{\mathbb{P}} := \frac{\mathbb{P}}{\mathbb{P}[B]}$ as a new probability space. Then the probability of $\omega$ belonging to $A$ equals $\tilde{\mathbb{P}}[A \cap B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.1</span><span class="math-callout__name">(Conditional Probability I)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.1</span><span class="math-callout__name">(Conditional Probability I)</span></p>
 
 The **conditional probability** of $A$ given $B$ is
 
@@ -2043,7 +1784,7 @@ $$\mathbb{P}[A|B] := \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}.$$
 If the knowledge of $B$ has no influence on the probability of $A$, i.e. $\mathbb{P}[A\mid B] = \mathbb{P}[A]$, we say that the **events are independent**. If $P(B) > 0$, this is equivalent to $\mathbb{P}[A]\mathbb{P}[B] = \mathbb{P}[A \cap B]$. The latter condition is symmetric in $A$ and $B$, as it should be.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.2</span><span class="math-callout__name">(Independent Events)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.2</span><span class="math-callout__name">(Independent Events)</span></p>
 
 Two events $A$ and $B$ are called **independent** iff
 
@@ -2051,10 +1792,17 @@ $$\mathbb{P}[A \cap B] = \mathbb{P}[A]\mathbb{P}[B].$$
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.3.3</span></p>
+
+Show that if $A$ and $B$ are independent, then $A^c$ and $B$ are also independent.
+
+</div>
+
 Next we generalize the notion of independence to $\sigma$-algebras and RVs.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.4</span><span class="math-callout__name">(Independent $\sigma$-Algebras)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.4</span><span class="math-callout__name">(Independent $\sigma$-Algebras)</span></p>
 
 Let $\mathcal{A}\_i \subseteq \mathcal{A}$ be $\sigma$-algebras on $\Omega$ for all $i \in I$. The $(\mathcal{A}_i)\_{i \in I}$ are **independent** if for all finite subsets $\lbrace k_1, \ldots, k_n \rbrace \subseteq I$ and all events $A_i \in \mathcal{A}\_{k_i}$ holds
 
@@ -2063,7 +1811,7 @@ $$\mathbb{P}[A_1 \cap \cdots \cap A_n] = \mathbb{P}[A_1] \ldots \mathbb{P}[A_n].
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.5</span><span class="math-callout__name">(Independent Random Variables)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.5</span><span class="math-callout__name">(Independent Random Variables)</span></p>
 
 Let $X_i : \Omega \to V$ for $i \in I$ be a family of RVs for a Banach space $V$. We say that the $X_i$ are **independent** if for all finite subsets $\lbrace k_1, \ldots, k_n \rbrace \subseteq I$ the $\sigma$-algebras $(\sigma(X_{k_i}))\_{i=1}^n$ are independent or equivalently for all $B_1, \ldots, B_n \in \mathcal{B}(V)$
 
@@ -2071,8 +1819,28 @@ $$\mathbb{P}[X_{k_1} \in B_1, \ldots, X_{k_n} \in B_n] = \mathbb{P}[X_1 \in B_1]
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.3.6</span></p>
+
+Consider the probability space $([0, 1], \mathcal{B}([0, 1]), \lambda)$. Define for $\omega \in [0, 1]$
+
+$$X_n(\omega) := \begin{cases} 1 & \text{if } \frac{k}{2^n} \le \omega \le \frac{k+1}{2^n},\ k \text{ even} \\ -1 & \text{if } \frac{k}{2^n} \le \omega \le \frac{k+1}{2^n},\ k \text{ odd.} \end{cases}$$
+
+Show that the $(X\_n)\_{n \in \mathbb{N}}$ are a family of independent random variables.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.3.7</span><span class="math-callout__name">(Bayes' Formula)</span></p>
+
+Let $A\_1, \ldots, A\_n$ be disjoint events of positive probability such that $\Omega = \bigcup\_{j=1}^{n} A\_j$. Let $B$ be another event with $\mathbb{P}[B] > 0$. Show that for $k \in \lbrace 1, \ldots, n \rbrace$
+
+$$\mathbb{P}[A_k|B] = \frac{\mathbb{P}[B|A_k]\mathbb{P}[A_k]}{\sum_{j=1}^{n} \mathbb{P}[B|A_j]\mathbb{P}[A_j]}.$$
+
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.5.8</span><span class="math-callout__name">(Independence via Product Measures)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.3.8</span><span class="math-callout__name">(Independence via Product Measures)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a measure space and $V$ a Banach space. Let $X_i : \Omega \to V$ be RVs for $i = 1, \ldots, n$. Then the $X_i$ are independent if and only if $\mathbb{P}\_{X_1, \ldots, X_n} = \mathbb{P}\_{X_1} \otimes \cdots \otimes \mathbb{P}\_{X_n}$.
 
@@ -2080,13 +1848,13 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a measure space and $V$ a Banach spac
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Proposition 3.5.8</summary>
+<summary>Proof of Proposition 3.3.8</summary>
 
 **($\Rightarrow$)** Assume that the $X_j$ are independent. Then for all $A_j \in \mathcal{A}$
 
 $$\mathbb{P}_{X_1, \ldots, X_n}[A_1 \times \cdots \times A_n] = \mathbb{P}[X_1 \in A_1, \ldots, X_n \in A_n] = \mathbb{P}[X_1 \in A_1] \cdots \mathbb{P}[X_n \in A_n] = \mathbb{P}_{X_1}[A_1] \cdots \mathbb{P}_{X_n}[A_n].$$
 
-By the uniqueness of the product measure (Thm. 3.1.13), this implies $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$.
+By the uniqueness of the product measure (Thm. B.2.6), this implies $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$.
 
 **($\Leftarrow$)** Conversely, by definition of the product measure, $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$ implies for all $A_j \in \mathcal{A}$ that
 
@@ -2100,7 +1868,7 @@ which is exactly the independence condition.
 For real valued RVs, independence is equivalent to saying that the distribution functions and densities factor.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.9</span><span class="math-callout__name">(Independence via Factorisation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.9</span><span class="math-callout__name">(Independence via Factorisation)</span></p>
 
 Let $X_i : \Omega \to \mathbb{R}^m$ be $n$ RVs for $i = 1, \ldots, n$.
 
@@ -2111,7 +1879,7 @@ Let $X_i : \Omega \to \mathbb{R}^m$ be $n$ RVs for $i = 1, \ldots, n$.
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Sketch of Proof of Theorem 3.5.9</summary>
+<summary>Sketch of Proof of Theorem 3.3.9</summary>
 
 **($\Rightarrow$)** If the $X_j$ are independent, then
 
@@ -2127,7 +1895,7 @@ $$= \prod_{j=1}^{n} \int_{B_j} f_{X_j}(x_j) \, \mathrm{d}x_j = \prod_{j=1}^{n} \
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.10</span><span class="math-callout__name">(Expectation of Independent Products)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.10</span><span class="math-callout__name">(Expectation of Independent Products)</span></p>
 
 Let $X_1, \ldots, X_n : \Omega \to \mathbb{R}$ be independent RVs and such that $\mathbb{E}[\|X_i\|] < \infty$ for all $i = 1, \ldots, n$. Then
 
@@ -2137,14 +1905,14 @@ $$\mathbb{E}[X_1 \cdots X_n] = \mathbb{E}[X_1] \cdots \mathbb{E}[X_n] < \infty.$
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 3.5.10</summary>
+<summary>Proof of Theorem 3.3.10</summary>
 
-Follows from Thm. 3.4.3 (change of variables for expectations) and Fubini's theorem applied to the product measure $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$ guaranteed by Proposition 3.5.8.
+Follows from Thm. 3.2.10 (change of variables for expectations) and Fubini's theorem applied to the product measure $\mathbb{P}_{X_1, \ldots, X_n} = \mathbb{P}_{X_1} \otimes \cdots \otimes \mathbb{P}_{X_n}$ guaranteed by Proposition 3.3.8.
 
 </details>
 </div>
 
-#### 3.5.2 Conditional Expectations
+#### 3.3.2 Conditional Expectations
 
 Let $X$ be a random variable on $(\Omega, \mathcal{A})$ and let $B \in \mathcal{A}$. Given an event $B$ with $\mathbb{P}[B] > 0$, it is natural to introduce the expectation of $X$ given $B$ as
 
@@ -2170,7 +1938,7 @@ We make the following observations:
 The second item motivates us to first introduce expectations of $X$ conditioned on $\sigma$-algebras.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.11</span><span class="math-callout__name">(Conditional Expectation I)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.11</span><span class="math-callout__name">(Conditional Expectation I)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra, $V$ a separable Banach space and $X : \Omega \to V$ a random variable such that $X \in L^1(\Omega, \mu; V)$. A random variable $Z : \Omega \to V$ is called a **conditional expectation of $X$ given $\mathcal{F}$**, iff
 
@@ -2182,7 +1950,7 @@ In this case we write $\mathbb{E}[X\mid \mathcal{F}] = Z$.
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.12</span><span class="math-callout__name">(Existence and Uniqueness for $V = \mathbb{R}$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.12</span><span class="math-callout__name">(Existence and Uniqueness for $V = \mathbb{R}$)</span></p>
 
 Let $V = \mathbb{R}$. Then $\mathbb{E}[X\mid \mathcal{F}]$ exists and is $\mathbb{P}$-a.e. unique.
 
@@ -2190,9 +1958,9 @@ Let $V = \mathbb{R}$. Then $\mathbb{E}[X\mid \mathcal{F}]$ exists and is $\mathb
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 3.5.12</summary>
+<summary>Proof of Theorem 3.3.12</summary>
 
-**Uniqueness:** Assume $Z$ and $Z'$ both satisfy the conditions of Def. 3.5.11. Let $A = \lbrace \omega \in \Omega : Z(\omega) > Z'(\omega) \rbrace \in \mathcal{F}$. Then
+**Uniqueness:** Assume $Z$ and $Z'$ both satisfy the conditions of Def. 3.3.11. Let $A = \lbrace \omega \in \Omega : Z(\omega) > Z'(\omega) \rbrace \in \mathcal{F}$. Then
 
 $$\int_\Omega \mathbb{1}_A(\omega)(Z(\omega) - Z'(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = 0$$
 
@@ -2214,7 +1982,7 @@ $$\int_\Omega \mathbb{1}_A(\omega) Z \, \mathrm{d}\mathbb{P}(\omega) = \int_\Ome
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.5.13</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.3.13</span></p>
 
 The spaces $L^2(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R})$ and $L^2(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$ are Hilbert spaces with the $L^2(\Omega, \mathbb{P})$-inner product. It can be shown that for $X \in L^2(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R})$, $\mathbb{E}[X\mid \mathcal{F}]$ is the orthogonal projection onto the closed subspace $L^2(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$, that is for any $\mathcal{F}$-measurable $Z : \Omega \to \mathbb{R}$
 
@@ -2224,10 +1992,20 @@ with equality iff $Z = \mathbb{E}[X\mid \mathcal{F}]$ $\mathbb{P}$-a.e.
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.3.14</span></p>
+
+For $V = \mathbb{R}$ show that
+
+1. $\mathbb{E}[\mathbb{E}[X\mid\mathcal{F}]] = \mathbb{E}[X]$,
+2. $\mathbb{E}[X] = \mathbb{E}[X\mid\mathcal{F}]$ in case $\mathcal{F} = \lbrace \emptyset, \Omega \rbrace$.
+
+</div>
+
 Some further properties of the conditional probability are the following:
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.15</span><span class="math-callout__name">(Properties of Conditional Expectation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.15</span><span class="math-callout__name">(Properties of Conditional Expectation)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $X$ and $Y$ two real-valued RVs in $L^1(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R})$, and $\mathcal{G} \subseteq \mathcal{F} \subseteq \mathcal{A}$ sub-$\sigma$-algebras. Then
 
@@ -2236,13 +2014,14 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $X$ and $Y$ two 
 3. *(tower property)* $\mathbb{E}[\mathbb{E}[X\mid\mathcal{F}]\mid\mathcal{G}] = \mathbb{E}[\mathbb{E}[X\mid\mathcal{G}]\mid\mathcal{F}] = \mathbb{E}[X\mid\mathcal{G}]$,
 4. *(triangle inequality)* $\mathbb{E}[\|X\|\mid\mathcal{F}] \ge \|\mathbb{E}[X\mid\mathcal{F}]\|$,
 5. *(independence)* if $\sigma(X)$ and $\mathcal{F}$ are independent, then $\mathbb{E}[X\mid\mathcal{F}] = \mathbb{E}[X]$,
-6. *(Lebesgue dominated convergence)* if $Y \ge 0$ and $(X_n)\_{n \in \mathbb{N}}$ is a sequence of RVs with $\|X_n\| \le Y$ for all $n \in \mathbb{N}$ and $X_n \to X$ $\mathbb{P}$-a.e., then $\lim_{n \to \infty} \mathbb{E}[X_n\mid\mathcal{F}] = \mathbb{E}[X\mid\mathcal{F}]$ $\mathbb{P}$-a.e. and in the sense of $L^1(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$.
+6. *(Lebesgue dominated convergence)* if $Y \ge 0$ and $(X_n)\_{n \in \mathbb{N}}$ is a sequence of RVs with $\|X_n\| \le Y$ for all $n \in \mathbb{N}$ and $X_n \to X$ $\mathbb{P}$-a.e., then $\lim_{n \to \infty} \mathbb{E}[X_n\mid\mathcal{F}] = \mathbb{E}[X\mid\mathcal{F}]$ $\mathbb{P}$-a.e. and in the sense of $L^1(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$,
+7. *(Jensen's inequality)* for $\varphi : \mathbb{R} \to \mathbb{R}$ convex, $\varphi(\mathbb{E}[X\mid\mathcal{F}]) \le \mathbb{E}[\varphi(X)\mid\mathcal{F}]$ $\mathbb{P}$-a.e.
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Sketch of Proof of Theorem 3.5.15 (linearity and monotonicity)</summary>
+<summary>Sketch of Proof of Theorem 3.3.15 (linearity and monotonicity)</summary>
 
 **(i) (linearity):** For $\alpha \in \mathbb{R}$ and $X, Y \in L^1(\Omega, \mathbb{P}; \mathbb{R})$, the function $\mathbb{E}[X\mid\mathcal{F}] + \alpha \mathbb{E}[Y\mid\mathcal{F}]$ is $\mathcal{F}$-measurable, and satisfies for every $A \in \mathcal{F}$
 
@@ -2262,17 +2041,17 @@ and similarly $\mathbb{E}[\|X\|\mid\mathcal{F}] \ge \mathbb{E}[X\mid\mathcal{F}]
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5.16</span><span class="math-callout__name">(Conditional Expectation is a Contraction)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.3.16</span><span class="math-callout__name">(Conditional Expectation is a Contraction)</span></p>
 
-In the setting of Thm. 3.5.12 denote $T(X) = \mathbb{E}[X\mid\mathcal{F}]$. Then $T : L^1(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R}) \to L^1(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$ is linear and $\lVert T \rVert_{\mathcal{L}(L^1; L^1)} \le 1$.
+In the setting of Thm. 3.3.12 denote $T(X) = \mathbb{E}[X\mid\mathcal{F}]$. Then $T : L^1(\Omega, \mathcal{A}, \mathbb{P}; \mathbb{R}) \to L^1(\Omega, \mathcal{F}, \mathbb{P}; \mathbb{R})$ is linear and $\lVert T \rVert_{\mathcal{L}(L^1; L^1)} \le 1$.
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 3.5.16</summary>
+<summary>Proof of Lemma 3.3.16</summary>
 
-According to Thm. 3.5.15(i), $T$ is linear. The bound on the norm of the operator follows from Thm. 3.5.15(iv) (triangle inequality) and the tower property (or Exercise 3.5.14, $\mathbb{E}[\mathbb{E}[X\mid\mathcal{F}]] = \mathbb{E}[X]$):
+According to Thm. 3.3.15(i), $T$ is linear. The bound on the norm of the operator follows from Thm. 3.3.15(iv) (triangle inequality) and the tower property (or Exercise 3.3.14, $\mathbb{E}[\mathbb{E}[X\mid\mathcal{F}]] = \mathbb{E}[X]$):
 
 $$\lVert \mathbb{E}[X\mid\mathcal{F}] \rVert_{L^1} = \mathbb{E}\bigl[\|\mathbb{E}[X\mid\mathcal{F}]\|\bigr] \le \mathbb{E}\bigl[\mathbb{E}[\|X\|\mid\mathcal{F}]\bigr] = \mathbb{E}[\|X\|] = \lVert X \rVert_{L^1}.$$
 
@@ -2280,52 +2059,84 @@ $$\lVert \mathbb{E}[X\mid\mathcal{F}] \rVert_{L^1} = \mathbb{E}\bigl[\|\mathbb{E
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.17</span><span class="math-callout__name">(Jensen's Inequality for Conditional Expectations)</span></p>
-
-Let $\varphi : \mathbb{R} \to \mathbb{R}$ be convex and let $X$ be a real-valued random variable on $(\Omega, \mathcal{A}, \mathbb{P})$. If $\mathbb{E}[\|X\|] < \infty$ and $\mathcal{F} \subseteq \mathcal{A}$ is a sub-$\sigma$-algebra, then
-
-$$\varphi(\mathbb{E}[X|\mathcal{F}]) \le \mathbb{E}[\varphi(X)|\mathcal{F}] \qquad \mathbb{P}\text{-a.e.}$$
-
-</div>
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.18</span><span class="math-callout__name">(Conditional Expectation in Banach Spaces)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.17</span><span class="math-callout__name">(Conditional Expectation in Banach Spaces)</span></p>
 
 Let $V$ be a separable Banach space. Then $\mathbb{E}[X\mid\mathcal{F}]$ exists and is $\mathbb{P}$-a.e. unique.
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.3.17 (not examinable)</summary>
+
+For $\mathcal{A}$-simple functions $Y : \Omega \to V$, $Y = \sum\_{j=1}^{n} \mathbb{1}\_{A\_j} v\_j$ with $A\_i \cap A\_j = \emptyset$ for all $i \neq j$, define $\tilde{T}(Y)$ via
+
+$$\tilde{T}(Y)(\omega) := \sum_{j=1}^{n} \mathbb{E}[\mathbb{1}_{A_j}|\mathcal{F}](\omega) v_j = \sum_{j=1}^{n} T(\mathbb{1}_{A_j})(\omega) v_j,$$
+
+with $T$ from Lemma 3.3.16. Then $\tilde{T}$ is a linear operator on the vector space of $V$-valued $\mathcal{A}$-simple functions, and we want to show that it can be extended to a bounded operator on all of $L^1(\Omega, \mathbb{P}; V)$.
+
+Using linearity of $T$ and the fact that $T(\mathbb{1}\_{A\_j}) = \mathbb{E}[\mathbb{1}\_{A\_j}\mid\mathcal{F}]$ takes nonnegative values $\mathbb{P}$-a.e. (why?),
+
+$$\begin{aligned}
+\lVert \tilde{T}(Y) \rVert_{L^1(\Omega, \mathcal{F}, \mathbb{P}; V)} &= \int_\Omega \Big\lVert \sum_{j=1}^{n} T(\mathbb{1}_{A_j})(\omega) v_j \Big\rVert \, \mathrm{d}\mathbb{P}(\omega) \le \int_\Omega \sum_{j=1}^{n} |T(\mathbb{1}_{A_j})(\omega)| \lVert v_j \rVert \, \mathrm{d}\mathbb{P}(\omega) \\
+&= \int_\Omega \Big| T\Big( \sum_{j=1}^{n} \mathbb{1}_{A_j} \lVert v_j \rVert \Big)(\omega) \Big| \, \mathrm{d}\mathbb{P}(\omega) \le \lVert T \rVert_{\mathcal{L}(L^1; L^1)} \Big\lVert \sum_{j=1}^{n} \mathbb{1}_{A_j} \lVert v_j \rVert \Big\rVert_{L^1(\Omega, \mathbb{P}; \mathbb{R})} \\
+&= \lVert T \rVert_{\mathcal{L}(L^1; L^1)} \lVert Y \rVert_{L^1(\Omega, \mathcal{A}, \mathbb{P}; V)}.
+\end{aligned}$$
+
+By density of the $\mathcal{B}(V)$-simple functions in $L^1(\Omega, \mathbb{P}; V)$, we conclude that $\tilde{T}$ can be extended to a bounded linear operator $\tilde{T} : L^1(\Omega, \mathcal{A}, \mathbb{P}; V) \to L^1(\Omega, \mathcal{F}, \mathbb{P}; V)$ with $\lVert \tilde{T} \rVert\_{\mathcal{L}(L^1; L^1)} \le \lVert T \rVert\_{\mathcal{L}(L^1; L^1)} = 1$.
+
+Now we show that $\tilde{T}(X) = \mathbb{E}[X\mid\mathcal{F}]$ in the sense of Def. 3.3.11. By definition $\tilde{T}(X)$ is $\mathcal{F}$-measurable. Moreover for $A \in \mathcal{F}$ and $\mathcal{A}$-simple random variables $X : \Omega \to V$ one checks that $\mathbb{E}[\mathbb{1}\_A \tilde{T}(X)] = \mathbb{E}[\mathbb{1}\_A X]$. By density the equality holds for all $X \in L^1(\Omega, \mathcal{A}, \mathbb{P}; V)$, and therefore $\tilde{T}(X)$ is a conditional expectation.
+
+Finally we show that $\mathbb{E}[X\mid\mathcal{F}]$ is $\mathbb{P}$-a.e. unique. Assume that $Z$ and $Z'$ are two conditional expectations. For arbitrary $\varphi \in V'$, $\langle Z, \varphi \rangle$ and $\langle Z', \varphi \rangle$ are (strongly) $\mathcal{F}$-measurable (by Cor. B.3.9) and satisfy $\mathbb{E}[\mathbb{1}\_A \langle Z, \varphi \rangle] = \mathbb{E}[\mathbb{1}\_A \langle Z', \varphi \rangle] = \mathbb{E}[\mathbb{1}\_A \langle X, \varphi \rangle]$ for all $A \in \mathcal{F}$ (see Lemma 3.1.4). This shows that $\langle Z, \varphi \rangle$ and $\langle Z', \varphi \rangle$ are both conditional expectations of $\langle X, \varphi \rangle$, and by Thm. 3.3.12 there exists a $\mathbb{P}$-null set $N \subseteq \Omega$ such that $\langle Z, \varphi \rangle = \langle Z', \varphi \rangle$ on $N^c$. Since $V$ is separable, (as shown earlier) there exists a sequence $\varphi\_n \in V'$ with $\lVert \varphi\_n \rVert\_{V'} = 1$, and such that $\lVert v \rVert = \sup\_{n \in \mathbb{N}} \langle v, \varphi\_n \rangle$ for all $v \in V$. Let $N\_n$ be a $\mathbb{P}$-null set such that $\langle Z, \varphi\_n \rangle = \langle Z', \varphi\_n \rangle$ on $N\_n^c$. Then $N := \bigcup\_{n \in \mathbb{N}} N\_n$ is a null set and $Z = Z'$ on $N^c$.
+
+</details>
+</div>
+
 Now we can introduce the conditional expectation of $X$ given $Y$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.19</span><span class="math-callout__name">(Conditional Expectation II)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.18</span><span class="math-callout__name">(Conditional Expectation II)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $V$, $W$ two separable Banach spaces and $X : \Omega \to V$, $Y : \Omega \to W$ two random variables such that $X \in L^1(\Omega, \mu; V)$. Then $\mathbb{E}[X\mid Y] := \mathbb{E}[X\mid\sigma(Y)]$ is the **conditional expectation of $X$ given $Y$**.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 3.5.20</span><span class="math-callout__name">(Conditional Expectation for Dice Roll)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 3.3.19</span><span class="math-callout__name">(Conditional Expectation for Dice Roll)</span></p>
 
-Let $X : \Omega \to \lbrace 0, 1 \rbrace$ be as in Example 3.3.6, i.e. $X$ is 0 if the dice shows an even number and $X$ is 1 if the dice shows an odd number. Let $Y : \Omega \to \lbrace 0, 1 \rbrace$ with $Y(\omega) = 0$ for $\omega \in \lbrace 1, 2, 3 \rbrace$ and $Y(\omega) = 1$ for $\omega \in \lbrace 4, 5, 6 \rbrace$. Then
+Let $X : \Omega \to \lbrace 0, 1 \rbrace$ be as in Example 3.2.6, i.e. $X$ is 0 if the dice shows an even number and $X$ is 1 if the dice shows an odd number. Let $Y : \Omega \to \lbrace 0, 1 \rbrace$ with $Y(\omega) = 0$ for $\omega \in \lbrace 1, 2, 3 \rbrace$ and $Y(\omega) = 1$ for $\omega \in \lbrace 4, 5, 6 \rbrace$. Then
 
 $$\mathbb{E}[X|Y](\omega) = \begin{cases} 1/3 & \omega \in \lbrace 1, 2, 3 \rbrace \\ 2/3 & \omega \in \lbrace 4, 5, 6 \rbrace. \end{cases}$$
 
 </div>
 
-#### 3.5.3 Regular Conditional Distribution
+For a probability space $(\Omega, \mathcal{A}, \mathbb{P})$ and an event $A \in \mathcal{A}$ it holds $\mathbb{P}[A] = \mathbb{E}[\mathbb{1}\_A]$. This motivates:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.20</span><span class="math-callout__name">(Conditional Probability II)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $A \in \mathcal{A}$. Let $\mathcal{F} \subseteq \mathcal{A}$ be a sub-$\sigma$-algebra and let $Y : \Omega \to V$ be a $V$-valued RV. Then we define
+
+1. the **conditional probability of $A$ given $\mathcal{F}$** as $\mathbb{P}[A\mid\mathcal{F}] := \mathbb{E}[\mathbb{1}\_A\mid\mathcal{F}]$ and
+2. the **conditional probability of $A$ given $Y$** as $\mathbb{P}[A\mid Y] := \mathbb{E}[\mathbb{1}\_A\mid\sigma(Y)]$.
+
+</div>
+
+Note that $\mathbb{P}[A\mid Y]$ is again a RV, that is $A \mapsto \mathbb{P}[A\mid Y]$ is a mapping from events to RVs. Furthermore, one can show that this mapping is $\sigma$-additive in the sense $\mathbb{P}[\bigcup\_{j \in \mathbb{N}} A\_j \mid Y] = \sum\_{j \in \mathbb{N}} \mathbb{P}[A\_j \mid Y]$ $\mathbb{P}$-a.e. for pairwise disjoint $A\_j \in \mathcal{A}$.
+
+#### 3.3.3 Regular Conditional Distribution
 
 So far we have defined $\mathbb{P}[A\mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$ in case $\mathbb{P}[B] > 0$. The goal of this section is to define the conditional probability $\mathbb{P}[A\mid X = x]$ even if $\mathbb{P}[X = x] = 0$.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why $\mathbb{P}[X=1\mid p=1/2]$ needs care)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 3.3.21</span><span class="math-callout__name">(Why $\mathbb{P}[X=1\mid p=1/2]$ needs care)</span></p>
 
 Let $p$ be a uniformly distributed RV on $[0, 1]$ and let $X$ be a Bernoulli RV, i.e. $X$ takes the value 1 with probability $p$ and the value 0 with probability $1 - p$. What is $\mathbb{P}[X = 1 \mid p = 1/2]$? Our previous definition of conditional probabilities doesn't lead to a meaningful result here since $[p = 1/2]$ is an event of probability 0. Intuitively we expect $\mathbb{P}[X = 1 \mid p = 1/2] = 1/2$, but how to make this rigorous?
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.21</span><span class="math-callout__name">(Transition/Markov Kernel)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.22</span><span class="math-callout__name">(Transition/Markov Kernel)</span></p>
 
 Let $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$ be two measurable spaces. A map $\kappa : \Omega_1 \times \mathcal{A}_2 \to [0, \infty]$ is called a **transition kernel** from $\Omega_1$ to $\Omega_2$, if
 
@@ -2339,99 +2150,163 @@ If the measure in (ii) is a probability measure for each $\omega \in \Omega_1$ t
 Using a Markov kernel we can now define a more "robust" notion of conditional distributions:
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.22</span><span class="math-callout__name">(Regular Conditional Distribution I)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.23</span><span class="math-callout__name">(Regular Conditional Distribution)</span></p>
 
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $X : \Omega \to V$ and $Y : \Omega \to W$ two random variables for two separable Banach spaces $V$ and $W$. A map $\tau_{X\mid Y} : W \times \mathcal{B}(V) \to [0, 1]$ satisfying
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $X : \Omega \to V$ a random variable in a Banach space $V$.
 
-1. $y \mapsto \tau_{X\mid Y}(y, B)$ is $\mathcal{B}(W)/\mathcal{B}(\mathbb{R})$-measurable for every $B \in \mathcal{B}(V)$,
-2. $B \mapsto \tau_{X\mid Y}(y, B)$ is a probability measure on $(V, \mathcal{B}(V))$ for every $y \in \lbrace Y(\omega) : \omega \in \Omega \rbrace$,
-3. $\mathbb{P}[X \in B, Y \in A] = \int_A \tau_{X\mid Y}(y, B) \, \mathrm{d}\mathbb{P}\_Y(y)$ for all $A \in \mathcal{B}(W)$ and all $B \in \mathcal{B}(V)$,
+1. Let $\mathcal{F} \subseteq \mathcal{A}$ be a sub-$\sigma$-algebra. Then a Markov kernel $\kappa\_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(V) \to [0, \infty]$ from $(\Omega, \mathcal{F})$ to $(V, \mathcal{B}(V))$ such that $\kappa\_{X\mid\mathcal{F}}(\omega, B) = \mathbb{P}[X \in B\mid\mathcal{F}](\omega)$ for every $B \in \mathcal{B}(V)$ $\mathbb{P}$-a.e., i.e.
 
-is called a **regular (version of the) conditional distribution of $X$ given $Y$**. In this case we denote
+   $$\mathbb{P}[A \cap [X \in B]] = \int_\Omega \mathbb{1}_B(X(\omega)) \mathbb{1}_A(\omega) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \kappa_{X|\mathcal{F}}(\omega, B) \mathbb{1}_A(\omega) \, \mathrm{d}\mathbb{P}(\omega) \qquad \forall A \in \mathcal{F},\ B \in \mathcal{B}(V),$$
 
-$$\mathbb{P}[X \in B | Y = y] := \tau_{X|Y}(y, B).$$
+   is called a **regular (version of the) conditional distribution of $X$ given $\mathcal{F}$**.
 
-</div>
+2. In the special case $\mathcal{F} = \sigma(Y)$, where $Y : \Omega \to W$ is a second RV in a Banach space $W$, the map $\tau\_{X\mid Y} : W \times \mathcal{B}(V) \to [0, 1]$ defined by
 
-Assuming that $\tau_{X\mid Y}$ exists, we have found a meaningful way to define the probability distribution of $X$ given that $Y = y$, namely the measure $B \mapsto \mathbb{P}[X \in B \mid Y = y]$. This is well-defined even if $[Y = y]$ is a (nonempty) $\mathbb{P}$-null set. In this sense, $\mathbb{P}[X \in \cdot \mid Y = y]$ can be interpreted as a well behaved conditional probability.
+   $$\tau_{X|Y}(y, B) := \kappa_{X|\sigma(Y)}(Y^{-1}(y), B)$$
 
-**Uniqueness.** Uniqueness of the regular conditional distribution holds in the following $\mathbb{P}_Y$-a.e. sense:
+   is called a **regular (version of the) conditional distribution of $X$ given $Y$**. In this case we write
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5.23</span><span class="math-callout__name">(Uniqueness of Regular Conditional Distribution)</span></p>
-
-Assume that $\tau$ and $\tilde{\tau}$ are two functions satisfying the conditions of Def. 3.5.22. Then there exists a $\mathbb{P}\_Y$-null set $N \in \mathcal{B}(W)$ such that for all $y \in N^c \cap \lbrace Y(\omega) : \omega \in \Omega \rbrace$ holds $\tau(y, \cdot) = \tilde{\tau}(y, \cdot)$, i.e. these probability measures coincide on $(V, \mathcal{B}(V))$ for all $y \in N^c \cap \lbrace Y(\omega) : \omega \in \Omega \rbrace$.
+   $$\mathbb{P}[X \in B | Y = y] := \tau_{X|Y}(y, B).$$
 
 </div>
 
-Due to $\tau$ only being unique in the above sense, we speak of regular *versions* of the conditional distribution.
+Assuming for the moment that such a $\tau\_{X\mid Y}$ exists, then we have found a meaningful way to define the probability distribution of $X$ given that $Y = y$, namely the measure $B \mapsto \mathbb{P}[X \in B \mid Y = y]$. This is well-defined even if $\lbrace Y = y \rbrace$ is a (nonempty) $\mathbb{P}$-null set. In this sense, $\mathbb{P}[X \in \cdot \mid Y = y]$ can be interpreted as a well behaved conditional probability.
 
-**Existence.**
+It remains to show that $\tau\_{X\mid Y}$ exists and is unique (in a suitable sense), to which the rest of this section is dedicated. We emphasize that the existence of regular conditional distributions is not trivial, and indeed not always satisfied. However, in the present setting, where $V$ and $W$ are separable Banach spaces, existence does hold.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.25</span><span class="math-callout__name">(Conditional Probability II)</span></p>
+In fact, the assumptions that $V$ and $W$ are separable Banach spaces could be significantly weakened, in particular it would suffice for $W$ equipped with some $\sigma$-algebra to be a measurable space. Such generalizations are beyond the scope of these lecture notes.
 
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra. Then for all $A \in \mathcal{A}$
-
-$$\mathbb{P}[A|\mathcal{F}] := \mathbb{E}[\mathbb{1}_A|\mathcal{F}]$$
-
-is the **conditional probability of $A$ given $\mathcal{F}$**, and if $Y : \Omega \to W$ is a RV
-
-$$\mathbb{P}[A|Y] := \mathbb{E}[\mathbb{1}_A|\sigma(Y)]$$
-
-is the **conditional probability of $A$ given $Y$**.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.26</span><span class="math-callout__name">(Regular Conditional Distribution II)</span></p>
-
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $X : \Omega \to V$ a random variable for a Banach space $V$. Let $\mathcal{F} \subseteq \mathcal{A}$ be a sub-$\sigma$-algebra. A map $\kappa_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(V) \to [0, \infty]$ satisfying
-
-1. $\omega \mapsto \kappa_{X\mid\mathcal{F}}(\omega, B)$ is $\mathcal{F}$-measurable for each $B \in \mathcal{B}(V)$,
-2. $B \mapsto \kappa_{X\mid\mathcal{F}}(\omega, B)$ is a probability measure on $(V, \mathcal{B}(V))$ for each $\omega \in \Omega$,
-3. for every $B \in \mathcal{B}(V)$ holds $\kappa_{X\mid\mathcal{F}}(\omega, B) = \mathbb{P}[X \in B\mid\mathcal{F}] (\omega)$ $\mathbb{P}$-a.e., or equivalently
-
-$$\mathbb{P}[A \cap [X \in B]] = \int_\Omega \kappa_{X|\mathcal{F}}(\omega, B) \mathbb{1}_A(\omega) \, \mathrm{d}\mathbb{P}(\omega) \qquad \forall A \in \mathcal{F},\ B \in \mathcal{B}(V),$$
-
-is called a **regular (version of the) conditional distribution of $X$ given $\mathcal{F}$**.
-
-</div>
+**Existence.** The next theorem shows existence of $\kappa\_{X\mid\mathcal{F}}$ in the case $(V, \mathcal{B}(V)) = (\mathbb{R}, \mathcal{B}(\mathbb{R}))$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.28</span><span class="math-callout__name">(Existence of Regular Conditional Distribution for $\mathbb{R}$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.24</span><span class="math-callout__name">(Existence of Regular Conditional Distribution for $\mathbb{R}$)</span></p>
 
-Let $X : (\Omega, \mathcal{A}, \mathbb{P}) \to (\mathbb{R}, \mathcal{B}(\mathbb{R}))$ be a real valued random variable and $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra. Then there exists a regular version $\kappa_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(\mathbb{R}) \to \mathbb{R}$ of the conditional distribution of $X$ given $\mathcal{F}$.
+Let $X : (\Omega, \mathcal{A}, \mathbb{P}) \to (\mathbb{R}, \mathcal{B}(\mathbb{R}))$ be a real valued random variable and $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra. Then there exists a regular version $\kappa_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(\mathbb{R}) \to [0, \infty]$ of the conditional distribution of $X$ given $\mathcal{F}$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.3.24 (not examinable)</summary>
+
+We proceed as follows: We construct a measurable version of the distribution function of the conditional distribution by first defining it on the countable set of rational numbers, and then extend it to the real numbers. Throughout this proof we write $\kappa$ for $\kappa\_{X\mid\mathcal{F}}$.
+
+**Step 1.** We construct a function $\tilde{F} : \Omega \times \mathbb{R} \to [0, 1]$ such that $q \mapsto \tilde{F}(\omega, q)$ is the distribution function of the measure $\kappa(\omega, \cdot)$. To this end, for every $q \in \mathbb{Q}$ let $\omega \mapsto F(\cdot, q) : (\Omega, \mathcal{F}) \to (\mathbb{R}, \mathcal{B}(\mathbb{R}))$ be a fixed version of the conditional probability
+
+$$\mathbb{P}[X \in (-\infty, q]|\mathcal{F}] = \mathbb{E}[\mathbb{1}_{X \in (-\infty, q]}|\mathcal{F}] : \Omega \to \mathbb{R}$$
+
+(remember that the conditional probability is only unique $\mathbb{P}$-a.e.). For any $q \le r \in \mathbb{Q}$ it holds $\mathbb{1}\_{X \in (-\infty, q]} \le \mathbb{1}\_{X \in (-\infty, r]}$ and by the monotonicity of the conditional expectation (Thm. 3.3.15(ii)) there is a null set $A\_{q,r} \in \mathcal{F}$ such that
+
+$$F(\omega, q) \le F(\omega, r) \qquad \forall \omega \in \Omega \setminus A_{q,r}.$$
+
+By Lebesgue dominated convergence (cp. Thm. 3.3.15(vi)), there are null sets $B\_q \in \mathcal{F}$ for every $q \in \mathbb{Q}$ such that
+
+$$\lim_{n \to \infty} F\Big(\omega, q + \frac{1}{n}\Big) = \lim_{n \to \infty} \mathbb{E}[\mathbb{1}_{X \in (-\infty, q + \frac{1}{n}]}|\mathcal{F}](\omega) = \mathbb{E}[\mathbb{1}_{X \in (-\infty, q]}|\mathcal{F}](\omega) = F(\omega, q) \qquad \forall \omega \in \Omega \setminus B_q,$$
+
+and by the same argument there exists a null set $C \in \mathcal{F}$ such that
+
+$$\inf_{n \in \mathbb{N}} F(\omega, -n) = \lim_{n \to \infty} F(\omega, -n) = \mathbb{E}[0|\mathcal{F}](\omega) = 0, \qquad \sup_{n \in \mathbb{N}} F(\omega, n) = \lim_{n \to \infty} F(\omega, n) = \mathbb{E}[1|\mathcal{F}](\omega) = 1 \qquad \forall \omega \in \Omega \setminus C.$$
+
+Now set $N := \bigcup\_{q, r \in \mathbb{Q}} A\_{q,r} \cup \bigcup\_{q \in \mathbb{Q}} B\_q \cup C$. Then $N \in \mathcal{F}$ and $\mathbb{P}[N] = 0$. Define
+
+$$\tilde{F}(\omega, z) := \inf \lbrace F(\omega, q) : z < q \in \mathbb{Q} \rbrace \qquad z \in \mathbb{R},\ \omega \in \Omega \setminus N.$$
+
+Then $z \mapsto \tilde{F}(\omega, z)$ is monotonically increasing, right-continuous and satisfies $\lim\_{z \to \infty} F(\omega, z) = 1$ and $\lim\_{z \to \infty} F(\omega, -z) = 0$. As such it is a distribution function, i.e. $\mu\_\omega((a, b]) := F(\omega, b) - F(\omega, a)$ defines a probability measure on $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$. For $\omega \in N$ set $F(\omega, z) := F\_0(z)$ where $F\_0$ is an arbitrary fixed probability distribution function, and again $\mu\_\omega((a, b]) := F\_0(b) - F\_0(a)$ defines a probability measure on $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$.
+
+**Step 2.** We define $\kappa$ and show that it possesses the properties (i) and (ii) of Def. 3.3.22. For $B \in \mathcal{B}(\mathbb{R})$ set
+
+$$\kappa(\omega, B) := \mu_\omega(B).$$
+
+By construction, for each $\omega \in \Omega$, $\kappa(\omega, \cdot)$ is a probability measure on $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$.
+
+It remains to show that for each $B \in \mathcal{B}(\mathbb{R})$ the map $\omega \mapsto \kappa(\omega, B)$ is $\mathcal{F}$-measurable. First let $q \in \mathbb{Q}$ and set $B := (-\infty, q]$. Then
+
+$$\kappa(\omega, B) = F(\omega, q) \mathbb{1}_{N^c}(\omega) + F_0(q) \mathbb{1}_N(\omega).$$
+
+Since $N \in \mathcal{F}$ and $\omega \mapsto F(\omega, q)$ is $\mathcal{F}$-measurable by construction, $\omega \mapsto \kappa(\omega, B)$ is $\mathcal{F}$-measurable. Next, note that with
+
+$$\mathcal{C} := \lbrace (-\infty, q] : q \in \mathbb{Q} \rbrace \tag{3.3.1}$$
+
+it holds $\sigma(\mathcal{C}) = \mathcal{B}(\mathbb{R})$ (i.e. $\mathcal{C}$ generates the Borel-$\sigma$-algebra). We claim that
+
+$$\mathcal{D} := \lbrace B \in \mathcal{B}(\mathbb{R}) : \omega \mapsto \kappa(\omega, B) \text{ is } \mathcal{F}\text{-measurable} \rbrace$$
+
+is a $\sigma$-algebra. In this case $\mathcal{D} \supseteq \sigma(\mathcal{C}) = \mathcal{B}(\mathbb{R})$, which then shows that $\omega \mapsto \kappa(\omega, B)$ is $\mathcal{F}$-measurable for all $B \in \mathcal{B}(\mathbb{R})$.
+
+To show the claim we first point out that $\mathcal{D}$ is a Dynkin-system:
+
+* $\mathbb{R} \in \mathcal{D}$ since $\omega \mapsto \kappa(\omega, \mathbb{R}) = \mu\_\omega(\mathbb{R}) = 1$ is trivially $\mathcal{F}$-measurable,
+* for $A, B \in \mathcal{D}$ with $A \subseteq B$ it holds $B \setminus A \in \mathcal{D}$ due to
+
+  $$\kappa(\omega, B \setminus A) = \kappa(\omega, B) - \kappa(\omega, A), \tag{3.3.2}$$
+
+  i.e. $\omega \mapsto \kappa(\omega, B \setminus A)$ is $\mathcal{F}$-measurable since it is the sum of two $\mathcal{F}$-measurable functions (we have used that $A \mapsto \kappa(\omega, A)$ is a probability measure in (3.3.2)),
+* for disjoint sets $(A\_j)\_{j \in \mathbb{N}}$ in $\mathcal{D}$ we have $\bigcup\_{j \in \mathbb{N}} A\_j \in \mathcal{D}$ since
+
+  $$\kappa\Big(\omega, \bigcup_{j \in \mathbb{N}} A_j\Big) = \sum_{j \in \mathbb{N}} \kappa(\omega, A_j),$$
+
+  and this sum converges pointwise for every $\omega \in \Omega$ to a number in $[0, 1]$ since $\kappa(\omega, \cdot)$ is a probability measure. Thus $\omega \mapsto \kappa(\omega, \bigcup\_{j \in \mathbb{N}} A\_j) \in \mathbb{R}$ is $\mathcal{F}$-measurable as the pointwise limit of $\mathcal{F}$-measurable functions (cp. Prop. B.3.6).
+
+By Prop. B.1.8 (and because $\mathcal{C}$ satisfies $A, B \in \mathcal{C} \Rightarrow A \cap B \in \mathcal{C}$) we conclude $\mathcal{B}(\mathbb{R}) = \sigma(\mathcal{C}) \subseteq \mathcal{D}$.
+
+**Step 3.** Finally we verify that $\kappa$ satisfies $\kappa(\omega, B) = \mathbb{P}[X \in B\mid\mathcal{F}](\omega)$ of Def. 3.3.23(i) and is thus a regular conditional distribution of $X$ given $\mathcal{F}$.
+
+By definition of $\kappa$, for every $A \in \mathcal{F}$, $q \in \mathbb{Q}$ and $B = (-\infty, q]$
+
+$$\int_\Omega \mathbb{1}_A(\omega) \kappa(\omega, B) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(\omega) \mathbb{P}[X \in B|\mathcal{F}](\omega) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(\omega) \mathbb{E}[\mathbb{1}_{X \in B}|\mathcal{F}](\omega) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_{A \cap \lbrace X \in B \rbrace}(\omega) \, \mathrm{d}\mathbb{P}(\omega) = \mathbb{P}[A \cap \lbrace X \in B \rbrace]. \tag{3.3.3}$$
+
+Since $\mathcal{C}$ in (3.3.1) generates $\mathcal{B}(\mathbb{R})$, and because of Thm. B.2.5 the left and the right-hand side of (3.3.3) coincide in the sense of finite measures on $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$. Thus they are equal for all $B \in \mathcal{B}(\mathbb{R})$.
+
+Now fix $B \in \mathcal{B}(\mathbb{R})$ and assume that there exists $A \in \mathcal{F}$ with $\mathbb{P}[A] > 0$ and such that $\kappa(\omega, B) \neq \mathbb{P}[X \in B\mid\mathcal{F}]$ for all $\omega \in A$. Without loss of generality we can assume that $\kappa(\omega, B) - \mathbb{P}[X \in B\mid\mathcal{F}] > \varepsilon$ for some $\varepsilon > 0$. But then $\int\_\Omega \mathbb{1}\_A(\omega) \kappa(\omega, B) \, \mathrm{d}\mathbb{P}(\omega) - \int\_\Omega \mathbb{1}\_A(\omega) \mathbb{P}[X \in B\mid\mathcal{F}](\omega) \, \mathrm{d}\mathbb{P}(\omega) \ge \varepsilon \mathbb{P}[A] \neq 0$. Thus such $A$ cannot exist and we conclude that $\kappa(\cdot, B) = \mathbb{P}[X \in B\mid\mathcal{F}]$ $\mathbb{P}$-a.e. for every $B \in \mathcal{B}(\mathbb{R})$.
+
+</details>
 </div>
 
 To obtain a version of the above theorem for separable Banach spaces $V$, we need the following notion:
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.29</span><span class="math-callout__name">(Borel Space)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.3.25</span><span class="math-callout__name">(Borel Space)</span></p>
 
 Two measurable spaces $(\Omega, \mathcal{A})$ and $(\tilde{\Omega}, \tilde{\mathcal{A}})$ are **isomorphic** if there exists a bijection $\varphi : \Omega \to \tilde{\Omega}$ such that $\varphi$ is $\mathcal{A}/\tilde{\mathcal{A}}$-measurable and $\varphi^{-1}$ is $\tilde{\mathcal{A}}/\mathcal{A}$-measurable. We call $(\Omega, \mathcal{A})$ a **Borel space** if there exists $B \in \mathcal{B}(\mathbb{R})$ such that $(B, \mathcal{B}(B))$ and $(\Omega, \mathcal{A})$ are isomorphic.
 
 </div>
 
+We state without proof:
+
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.30</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.26</span></p>
 
 Let $V$ be a separable Banach space. Then $(V, \mathcal{B}(V))$ is a Borel space.
 
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.5.32</span><span class="math-callout__name">(Existence of Regular Conditional Distribution in Banach Spaces)</span></p>
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.3.27</span></p>
 
-Let $X : (\Omega, \mathcal{A}, \mathbb{P}) \to V$ be a RV, $V$ a separable Banach space and $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra. Then there exists a regular version $\kappa_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(V) \to \mathbb{R}$ of the conditional distribution of $X$ given $\mathcal{F}$.
+Let $d \in \mathbb{N}$. Show that $([0, 1]^d, \mathcal{B}([0, 1]^d))$ is a Borel space. *(Hint: Use binary representations.)*
 
 </div>
 
-Finally, rather than conditioning on $\omega \in \Omega$, we wish to condition on $Y = y$ (i.e. on the event $[Y = y] \subseteq \Omega$). In order to do so we need the Doob-Dynkin lemma:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.3.28</span><span class="math-callout__name">(Existence of Regular Conditional Distribution in Banach Spaces)</span></p>
+
+Let $X : (\Omega, \mathcal{A}, \mathbb{P}) \to V$ be a RV, $(V, \mathcal{B}(V))$ a separable Banach space and $\mathcal{F} \subseteq \mathcal{A}$ a sub-$\sigma$-algebra. Then there exists a regular version $\kappa_{X\mid\mathcal{F}} : \Omega \times \mathcal{B}(V) \to \mathbb{R}$ of the conditional distribution of $X$ given $\mathcal{F}$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 3.3.28</summary>
+
+Let $B \in \mathcal{B}(\mathbb{R})$ and $\varphi : (V, \mathcal{B}(V)) \to (B, \mathcal{B}(B))$ an isomorphism as in Def. 3.3.25, which exists by Thm. 3.3.26. Then $\tilde{X} := \varphi \circ X : \Omega \to \mathbb{R}$ is a real-valued RV, and by Thm. 3.3.24 there exists a regular version $\kappa\_{\tilde{X}\mid\mathcal{F}}$ of the conditional distribution of $\tilde{X}$ given $\mathcal{F}$. Set $\kappa\_{X\mid\mathcal{F}}(\omega, A) := \kappa\_{\tilde{X}\mid\mathcal{F}}(\omega, \varphi(A))$ for all $A \in \mathcal{B}(V)$. Then $\kappa\_{X\mid\mathcal{F}}$ is a regular version of the conditional distribution of $X$ given $\mathcal{F}$.
+
+</details>
+</div>
+
+Finally, rather than conditioning on a sub-$\sigma$-algebra, we now wish to condition on $Y = y$ (i.e. on the event $\lbrace Y = y \rbrace \subseteq \Omega$). In order to do so, we need the Doob-Dynkin lemma:
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5.33</span><span class="math-callout__name">(Doob-Dynkin Lemma)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.3.29</span><span class="math-callout__name">(Doob-Dynkin Lemma)</span></p>
 
 Let $\Omega$ be a set and $(\tilde{\Omega}, \tilde{\mathcal{A}})$ a measurable space. Then $\kappa : \Omega \to \mathbb{R}$ is $\sigma(Y)/\mathcal{B}(\mathbb{R})$-measurable iff there exists $\tau : \tilde{\Omega} \to \mathbb{R}$ which is $\tilde{\mathcal{A}}/\mathcal{B}(\mathbb{R})$-measurable such that $\kappa = \tau \circ Y$.
 
@@ -2439,7 +2314,7 @@ Let $\Omega$ be a set and $(\tilde{\Omega}, \tilde{\mathcal{A}})$ a measurable s
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 3.5.33 ("$\Leftarrow$" direction)</summary>
+<summary>Proof of Lemma 3.3.29 ("$\Leftarrow$" direction)</summary>
 
 **($\Leftarrow$)** If such $\tau$ exists, then $\tau \circ Y = \kappa$ is measurable as a composition of measurable functions.
 
@@ -2454,99 +2329,133 @@ The other direction can be proved as follows: First assume $\kappa : \Omega \to 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.5.35</span><span class="math-callout__name">(Existence of Conditional Distribution Given $Y$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3.3.31</span><span class="math-callout__name">(Existence and Uniqueness of the Conditional Distribution Given $Y$)</span></p>
 
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $X : \Omega \to V$, $Y : \Omega \to W$ two RVs for two separable Banach spaces $V$ and $W$. Then there exists a regular version of the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ (in the sense of Def. 3.5.22). It is unique in the sense of Lemma 3.5.23.
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $X : \Omega \to V$, $Y : \Omega \to W$ two RVs for two separable Banach spaces $V$ and $W$. Then there exists a regular version of the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ (in the sense of Def. 3.3.23).
+
+It is unique in the sense that for all other regular versions $\tilde{\tau}$ of the conditional distribution there exists a $\mathbb{P}\_Y$-null set $N \in \mathcal{B}(W)$ such that $\mathbb{P}[X \in \cdot \mid Y = y] = \tilde{\tau}(y, \cdot)$ as probability measures on $(V, \mathcal{B}(V))$, for all $y \in N^c \cap \lbrace Y(\omega) : \omega \in \Omega \rbrace$.
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 3.5.35 (Existence)</summary>
+<summary>Proof of Theorem 3.3.31 (Existence)</summary>
 
-By Corollary 3.5.32 there exists a regular version $\kappa_{X\mid\sigma(Y)}(\omega, B)$ of the conditional distribution. By the Doob-Dynkin Lemma (Lemma 3.5.33, with $(\tilde{\Omega}, \tilde{\mathcal{A}}) = (W, \mathcal{B}(W))$), for every $B \in \mathcal{B}(V)$, there exists $\tau(\cdot, B) : W \to \mathbb{R}$ such that
+By Corollary 3.3.28 there exists a regular version $\kappa_{X\mid\sigma(Y)}(\omega, B)$ of the conditional distribution. By the Doob-Dynkin Lemma (Lemma 3.3.29, with $(\tilde{\Omega}, \tilde{\mathcal{A}}) = (W, \mathcal{B}(W))$), for every $B \in \mathcal{B}(V)$, there exists $\tau(\cdot, B) : W \to \mathbb{R}$ such that
 
 $$\kappa(\omega, B) = \tau(Y(\omega), B) \qquad \forall \omega \in \Omega.$$
 
 Then $\tau$ satisfies
 
-(i) $y \mapsto \tau(y, B)$ is $\mathcal{B}(W)/\mathcal{B}(\mathbb{R})$-measurable for every $B \in \mathcal{B}(V)$ by definition of $\tau$ in Lemma 3.5.33,
+(i) $y \mapsto \tau(y, B)$ is $\mathcal{B}(W)/\mathcal{B}(\mathbb{R})$-measurable for every $B \in \mathcal{B}(V)$ by definition of $\tau$ in Lemma 3.3.29,
 
 (ii) $B \mapsto \tau(y, B)$ is a probability measure on $(V, \mathcal{B}(V))$ for every $y \in \lbrace Y(\omega) : \omega \in \Omega \rbrace$, since this is true for $B \mapsto \kappa(\omega, B) = \tau(Y(\omega), B) = \tau(y, B)$ and $\omega \in Y^{-1}(y)$,
 
-(iii) for any $B \in \mathcal{B}(V)$ and any $A \in \mathcal{B}(W)$, by Thm. 3.2.24 and the definition condition Def. 3.5.26(iii) with $\mathcal{F} = \sigma(Y)$ and $[Y \in A] \in \sigma(Y)$
+(iii) for any $B \in \mathcal{B}(V)$ and any $A \in \mathcal{B}(W)$, by Thm. 3.1.9 and the condition in Def. 3.3.23(i) with $\mathcal{F} = \sigma(Y)$ and $[Y \in A] \in \sigma(Y)$
 
 $$\int_W \mathbb{1}_A(y) \tau(y, B) \, \mathrm{d}\mathbb{P}_Y = \int_\Omega \mathbb{1}_A(Y(\omega)) \tau(Y(\omega), B) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(Y(\omega)) \kappa(\omega, B) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \mathbb{P}[X \in B, Y \in A].$$
 
-This proves the existence of a regular version of the conditional distribution as in Def. 3.5.22(ii). Uniqueness in the sense of Lemma 3.5.23 follows by a separate argument using denseness of a countable basis in $V$.
+This proves the existence of a regular version of the conditional distribution as in Def. 3.3.23(ii).
 
 </details>
 </div>
 
-#### Conditional Densities
-
-Suppose that $X : \Omega \to \mathbb{R}^m$ and $Y : \Omega \to \mathbb{R}^n$ are two RVs on the probability space $(\Omega, \mathcal{A}, \mathbb{P})$. Assume that $(X, Y) : \Omega \to \mathbb{R}^{m+n}$ has the joint (measurable) density $f_{X,Y} : \mathbb{R}^{m+n} \to [0, \infty)$.
-
-Then for any $A \in \mathcal{B}(\mathbb{R}^n)$, by Fubini's theorem
-
-$$\mathbb{P}[Y \in A] = \mathbb{P}[X \in \mathbb{R}^n, Y \in A] = \int_{\mathbb{R}^n \times A} f_{X,Y}(x, y) \, \mathrm{d}(x, y) = \int_A \int_{\mathbb{R}^n} f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y.$$
-
-Hence the marginal $Y : \Omega \to \mathbb{R}^n$ has a density, which is given by
-
-$$f_Y(y) := \int_{\mathbb{R}} f_{X,Y}(x, y) \, \mathrm{d}x.$$
-
-We also say $f_Y$ is the **marginal density** of $Y$. Next, let us consider a regular version of the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ of $X$ given $Y = y$. It turns out that in the present setting this measure $\mathbb{P}[X \in \cdot \mid Y = y]$ has a density, which we call the **conditional density**, and denote by
-
-$$f_{X|Y}(\cdot | y) := \frac{\mathrm{d}\mathbb{P}[X \in \cdot | Y = y]}{\mathrm{d}\lambda_m}.$$
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.5.36</span><span class="math-callout__name">(Conditional Density Formula)</span></p>
-
-It holds that
-
-$$f_{X|Y}(x|y) = \begin{cases} \frac{f_{X,Y}(x, y)}{f_Y(y)} & \text{if } f_Y(y) \in (0, \infty) \\ f_0(x) & \text{if } f_Y(y) \in \lbrace 0, \infty \rbrace \end{cases} \tag{3.5.4}$$
-
-for some fixed probability density $f_0$ on $\mathbb{R}^n$, is a density of (a version of) $\mathbb{P}[X \in \cdot \mid Y = y]$.
-
-</div>
-
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Proposition 3.5.36</summary>
+<summary>Proof of Theorem 3.3.31 (Uniqueness, not examinable)</summary>
 
-The measure $\mathbb{P}[X \in \cdot \mid Y = y]$ on $(\mathbb{R}^m, \mathcal{B}(\mathbb{R}^m))$ exists due to Thm. 3.5.35. For $y \in \mathbb{R}^n$ and $B \in \mathcal{B}(\mathbb{R}^m)$ set
+Denote $\tau(y, \cdot) := \mathbb{P}[X \in \cdot \mid Y = y]$ and let $\tilde{\tau}$ be another regular version of the conditional distribution of $X$ given $Y$ that satisfies Def. 3.3.23(ii).
 
-$$\tau(y, B) := \int_B f_{X|Y}(x|y) \, \mathrm{d}x.$$
+Fix $B \in \mathcal{B}(V)$ and let $A\_n := \lbrace y \in W : \tau(y, B) - \tilde{\tau}(y, B) > \frac{1}{n} \rbrace$. Then $A\_n \in \mathcal{B}(W)$. Due to
 
-Then
+$$\int_{A_n} \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) = \mathbb{P}[X \in B, Y \in A_n] = \int_{A_n} \tilde{\tau}(y, B) \, \mathrm{d}\mathbb{P}_Y(y),$$
 
-(i) $y \mapsto \tau(y, B)$ is measurable for every $B \in \mathcal{B}(\mathbb{R})$ (this is a consequence of Fubini's theorem),
+we find $0 = \int\_{A\_n} (\tau(y, B) - \tilde{\tau}(y, B)) \, \mathrm{d}\mathbb{P}\_Y(y) \ge \frac{1}{n} \mathbb{P}\_Y[A\_n]$. Hence $\lbrace y \in W : \tau(y, B) > \tilde{\tau}(y, B) \rbrace = \bigcup\_{n \in \mathbb{N}} A\_n$ is a $\mathbb{P}\_Y$-null set, and by symmetry we conclude that $A\_B := \lbrace y \in W : \tau(y, B) \neq \tilde{\tau}(y, B) \rbrace$ is a $\mathbb{P}\_Y$-null set.
 
-(ii) $B \mapsto \tau(y, B)$ is a probability measure for every $y \in \mathbb{R}^n$ since $\int_{\mathbb{R}^m} f_{X\mid Y}(x|y) \, \mathrm{d}x = 1$,
+Now fix a dense sequence $(x\_n)\_{n \in \mathbb{N}} \subseteq V$, such that with the open balls $B\_r(x) := \lbrace v \in V : \lVert v - x \rVert\_V < r \rbrace$,
 
-(iii) for every $B \in \mathcal{B}(\mathbb{R}^m)$ and every $A \in \mathcal{B}(\mathbb{R}^n)$, with the $\mathbb{P}_Y$-null set $N := \lbrace y : f_Y(y) \in \lbrace 0, \infty \rbrace \rbrace$,
+$$\tilde{\mathcal{C}} := \lbrace B_{1/n}(x_m) : n, m \in \mathbb{N} \rbrace = \lbrace \tilde{C}_j : j \in \mathbb{N} \rbrace$$
 
-$$\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) = \int_{A \setminus N} \int_B f_Y(y) f_{X|Y}(x|y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \setminus N} \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \times B} f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y + \int_N \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[X \in A, Y \in B],$$
+is a countable basis of the topology of $V$ (i.e. $(\tilde{C}\_j)\_{j \in \mathbb{N}}$ is some fixed enumeration of the countable set $\tilde{\mathcal{C}}$). Then
 
-where we used $\int_N \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y \le \int_N f_Y(y) \, \mathrm{d}y = \mathbb{P}_Y[N] = 0$.
+$$\mathcal{C} := \lbrace \cap_{i \in I} \tilde{C}_i : I \subseteq \mathbb{N},\ |I| < \infty \rbrace = \lbrace C_j : j \in \mathbb{N} \rbrace$$
+
+is a countable set of open sets (why is $\mathcal{C}$ countable?). Since $\tilde{\mathcal{C}}$ is a basis of the topology on $V$, it holds $\sigma(\tilde{\mathcal{C}}) = \mathcal{B}(V)$, and in particular $\sigma(\mathcal{C}) = \mathcal{B}(V)$. Furthermore, $\mathcal{C}$ has the property that for any $C\_i, C\_j \in \mathcal{C}$ also $C\_i \cap C\_j \in \mathcal{C}$ by definition of $\mathcal{C}$. Now choose for every $i \in \mathbb{N}$ a $\mathbb{P}\_Y$-null set $N\_i \in \mathcal{B}(W)$ such that $\tau(y, C\_i) = \tilde{\tau}(y, C\_i)$ for all $y \in W \setminus N\_i$. Then $N := \bigcup\_{i \in \mathbb{N}} N\_i$ is a $\mathbb{P}\_Y$-null set and for all $y \in W \setminus N$ and all $i \in \mathbb{N}$ holds $\tau(y, C\_i) = \tilde{\tau}(y, C\_i)$. Thm. B.2.5 implies $\tau(y, B) = \tilde{\tau}(y, B)$ for all $y \in \lbrace Y(\omega) : \omega \in \Omega \rbrace \setminus N$ and all $B \in \mathcal{B}(V)$.
 
 </details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.5.37</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.3.32</span></p>
 
-The set $\lbrace y \in \mathbb{R}^n : f_Y(y) = 0 \rbrace$ is a $\mathbb{P}\_Y$-null set, and also $\lbrace y \in \mathbb{R}^n : f_Y(y) = \infty \rbrace$ is a $\lambda$-null set (and thus a $\mathbb{P}\_Y$-null set). By Lemma 3.5.23, the conditional distribution is only unique $\mathbb{P}\_Y$-a.e., hence in (3.5.4) it doesn't matter how we define $f_{X\mid Y}(x, y)$ for $y$ with $f_Y(y) \in \lbrace 0, \infty \rbrace$. Hence (3.5.4) is in agreement with our definition of conditional probabilities. In practice, $f_{X\mid Y}(\cdot\mid y)$ is only defined for $y$ with $f_Y(y) > 0$.
+Due to $\tau$ only being unique in the above sense, we speak of regular *versions* of the conditional distribution. Often we will drop this term, and simply say that $\tau$ is a regular conditional distribution, with the understanding that such a map is only unique $\mathbb{P}\_Y$-a.e.
 
 </div>
 
-### 3.6 Some Common Distributions
+#### 3.3.4 Conditional Densities
 
-#### 3.6.1 Bernoulli
+Suppose that $X : \Omega \to \mathbb{R}^n$ and $Y : \Omega \to \mathbb{R}^m$ are two RVs on the probability space $(\Omega, \mathcal{A}, \mathbb{P})$. Assume that $(X, Y) : \Omega \to \mathbb{R}^{n+m}$ has the joint (measurable) density $f\_{X,Y} : \mathbb{R}^{n+m} \to [0, \infty)$.
+
+Then for any $A \in \mathcal{B}(\mathbb{R}^m)$, by Fubini's theorem
+
+$$\mathbb{P}[Y \in A] = \mathbb{P}[X \in \mathbb{R}^n, Y \in A] = \int_{\mathbb{R}^n \times A} f_{X,Y}(x, y) \, \mathrm{d}(x, y) = \int_A \int_{\mathbb{R}^n} f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y.$$
+
+Hence the marginal $Y : \Omega \to \mathbb{R}^m$ has a density, which is given by
+
+$$f_Y(y) := \int_{\mathbb{R}^n} f_{X,Y}(x, y) \, \mathrm{d}x.$$
+
+We also say $f\_Y$ is the **marginal density** of $Y$. We point out that we use here the fact that $y \mapsto \int\_{\mathbb{R}^n} f\_{X,Y}(x, y) \, \mathrm{d}x$ is measurable, which is also a consequence of Fubini's theorem. Next, let us consider a regular version of the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ of $X$ given $Y = y$. It turns out that in the present setting (a version of the) measure $\mathbb{P}[X \in \cdot \mid Y = y]$ has a density, which we call the **conditional density**, and denote by
+
+$$f_{X|Y}(\cdot | y) := \frac{\mathrm{d}\mathbb{P}[X \in \cdot | Y = y]}{\mathrm{d}\lambda_n}.$$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.3.33</span><span class="math-callout__name">(Conditional Density Formula)</span></p>
+
+It holds that
+
+$$f_{X|Y}(x|y) = \begin{cases} \frac{f_{X,Y}(x, y)}{f_Y(y)} & \text{if } f_Y(y) \in (0, \infty) \\ f_0(x) & \text{if } f_Y(y) \in \lbrace 0, \infty \rbrace \end{cases} \tag{3.3.4}$$
+
+for some fixed probability density $f\_0$ on $\mathbb{R}^n$, is a density of (a version of) $\mathbb{P}[X \in \cdot \mid Y = y]$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.3.34</span></p>
+
+The set $\lbrace y \in \mathbb{R}^m : f\_Y(y) = 0 \rbrace$ is a $\mathbb{P}\_Y$-null set, and also $\lbrace y \in \mathbb{R}^m : f\_Y(y) = \infty \rbrace$ is a $\lambda$-null set (and thus a $\mathbb{P}\_Y$-null set) since otherwise $\int\_{\mathbb{R}^{n+m}} f\_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \int\_{\mathbb{R}^m} f\_Y(y) \, \mathrm{d}y$ would not be finite. By Thm. 3.3.31, the conditional distribution is only unique $\mathbb{P}\_Y$-a.e., hence in (3.3.4) it doesn't matter how we define $f\_{X\mid Y}(x \mid y)$ for $y$ with $f\_Y(y) \in \lbrace 0, \infty \rbrace$, in agreement with our definition of conditional probabilities. In practice, $f\_{X\mid Y}(\cdot \mid y)$ is only defined for $y$ with $f\_Y(y) \in (0, \infty)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 3.3.33</summary>
+
+The measure $\mathbb{P}[X \in \cdot \mid Y = y]$ on $(\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n))$ exists due to Thm. 3.3.31. For $y \in \mathbb{R}^m$ and $B \in \mathcal{B}(\mathbb{R}^n)$ set
+
+$$\tau(y, B) := \int_B f_{X|Y}(x|y) \, \mathrm{d}x$$
+
+(with $f\_{X\mid Y}(x \mid y)$ as defined in (3.3.4)). This is a version of $\mathbb{P}[X \in \cdot \mid Y = y]$, since
+
+(i) $y \mapsto \tau(y, B)$ is measurable for every $B \in \mathcal{B}(\mathbb{R}^n)$ (this is a consequence of Fubini's theorem),
+
+(ii) $B \mapsto \tau(y, B)$ is a probability measure for every $y \in \mathbb{R}^m$ since $\int\_{\mathbb{R}^n} f\_{X\mid Y}(x \mid y) \, \mathrm{d}x = 1$,
+
+(iii) for every $B \in \mathcal{B}(\mathbb{R}^n)$ and every $A \in \mathcal{B}(\mathbb{R}^m)$, with the $\mathbb{P}\_Y$-null set $N := \lbrace y : f\_Y(y) \in \lbrace 0, \infty \rbrace \rbrace$,
+
+$$\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) = \int_{A \setminus N} \int_B f_Y(y) f_{X|Y}(x|y) \, \mathrm{d}x \, \mathrm{d}y = \int_{A \setminus N} \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y + \int_N \int_B f_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[X \in B, Y \in A],$$
+
+where we used $\int\_N \int\_B f\_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y \le \int\_N f\_Y(y) \, \mathrm{d}y = \mathbb{P}\_Y[N] = 0$.
+
+</details>
+</div>
+
+### 3.4 Some Common Distributions (Revision)
+
+#### 3.4.1 Bernoulli
 
 Given a parameter $0 \le p \le 1$, the Bernoulli RV $X \sim \mathrm{Ber}(p)$ is defined such that $\mathbb{P}[X = 1] = p$ and $\mathbb{P}[X = 0] = 1 - p$. This RV can be thought of as representing a coin flip with probability of heads equal to $p$. It is a special case of the binomial distribution with $n = 1$.
 
-#### 3.6.2 Binomial
+#### 3.4.2 Binomial
 
 For $0 \le p \le 1$ and $n \in \mathbb{N}$, we define the binomial RV $X \sim \mathrm{Bin}(n, p)$ with probability mass function
 
@@ -2554,7 +2463,7 @@ $$\mathbb{P}[X = k] = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0 \ldots n.$$
 
 This mass function can be thought of as the probability of $k$ heads in $n$ independent trials of a Bernoulli RV.
 
-#### 3.6.3 Uniform
+#### 3.4.3 Uniform
 
 For $a < b$, the uniform RV $X \sim \mathrm{uniform}(a, b)$ has probability density function
 
@@ -2562,7 +2471,7 @@ $$f_X(x) = \begin{cases} \frac{1}{b-a} & \text{if } a \le x \le b \\ 0 & \text{o
 
 A uniform distribution assigns the same probability mass to all sub-intervals of the same length within its support.
 
-#### 3.6.4 Exponential
+#### 3.4.4 Exponential
 
 For $\lambda > 0$, the exponential RV $X \sim \mathrm{Exp}(\lambda)$ has probability density function
 
@@ -2572,13 +2481,13 @@ The exponential RV is memoryless: for $0 \le s < t$,
 
 $$\mathbb{P}[X > s + t \mid X > s] = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = \mathbb{P}[X > t].$$
 
-#### 3.6.5 Univariate Gaussian
+#### 3.4.5 Univariate Gaussian
 
 For $\mu \in \mathbb{R}$ and $\sigma \in (0, \infty)$, the Gaussian RV $X \sim \mathcal{N}(\mu, \sigma^2)$ can be defined by the probability density function
 
 $$f_X(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left( -\frac{(x - \mu)^2}{2\sigma^2} \right).$$
 
-#### 3.6.6 Multivariate Gaussian
+#### 3.4.6 Multivariate Gaussian
 
 First, let $X = (X_1, \ldots, X_n)$ be a vector of real-valued RVs. We say that $X_1, \ldots, X_n$ are "jointly normal" iff $a^\top X$ is Gaussian for every $a \in \mathbb{R}^n$. Equivalently, we say that $X$ has a multivariate Gaussian distribution, $X \sim N(\mu, \Sigma)$. $\mu \in \mathbb{R}^n$ is the mean of $X$ and $\Sigma \in \mathbb{R}^{n \times n}$ is the covariance of $X$. If $\Sigma$ is positive definite, then the probability density of $X$ is
 
@@ -2592,7 +2501,7 @@ $$\phi_X(\lambda) = \mathbb{E}[e^{i\lambda^\top X}], \quad \lambda \in \mathbb{R
 
 It is thus a function from the real numbers to the complex numbers; it always exists and completely characterizes the distribution. For a multivariate Gaussian, $X \sim N(\mu, \Sigma)$, we have $\phi_X(\lambda) = e^{i\lambda^\top \mu} e^{-\lambda^\top \Sigma \lambda / 2}$.
 
-#### 3.6.7 Chi-squared
+#### 3.4.7 Chi-squared
 
 A chi-squared distributed RV with $k$ degrees of freedom, $X \sim \chi^2(k)$, is the distribution of a sum of the squares of $k$ independent standard normal RVs. Its probability density function (pdf) is
 
@@ -2602,14 +2511,14 @@ where $\Gamma(\cdot)$ is the gamma function.
 
 A chi-squared RV $X \sim \chi^2(k)$ has mean $k$ and variance $2k$. Also note that the sum of chi-squared distributed RVs is also chi-squared distributed. Specifically, if $\lbrace X_i \rbrace_{i=1}^n$ are independent chi-squared variables with $\lbrace k_i \rbrace_{i=1}^n$ degrees of freedom, respectively, then the RV $Y = \sum_{i=1}^n X_i$ is chi-squared distributed with $\sum_{i=1}^n k_i$ degrees of freedom.
 
-### 3.7 Distances and Divergences
+### 3.5 Distances and Divergences
 
 Here we consider how to quantify the "difference" between probability measures. Some of these measures of "difference" are distance functions in the proper mathematical sense. Others do not satisfy the triangle inequality and are thus only so-called divergences.
 
 Let $(\Omega, \mathcal{A})$ be a measurable space.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.7.1</span><span class="math-callout__name">(Total Variation Distance)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.1</span><span class="math-callout__name">(Total Variation Distance)</span></p>
 
 The **total variation distance** between two probability measures $\mathbb{P}$ and $\mathbb{Q}$ on $(\Omega, \mathcal{A})$ is defined as:
 
@@ -2619,32 +2528,39 @@ $$D_{\mathrm{TV}}(\mathbb{P}, \mathbb{Q}) = \sup_{A \in \mathcal{A}} |\mathbb{P}
 
 This is the largest possible difference between the probabilities that the two distributions can assign to the same event.
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.5.2</span></p>
+
+If $\mathbb{P} \ll \mu$ and $\mathbb{Q} \ll \mu$, show that $D\_{\mathrm{TV}}(\mathbb{P}, \mathbb{Q}) = \frac{1}{2} \big( \int\_\Omega \big\lvert \frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu} - \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu} \big\rvert \, \mathrm{d}\mu \big)$.
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.7.3</span><span class="math-callout__name">(Hellinger Distance)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.3</span><span class="math-callout__name">(Hellinger Distance)</span></p>
 
 Consider two probability measures $\mathbb{P}$ and $\mathbb{Q}$ that are absolutely continuous with respect to a third measure $\mu$ (such a measure always exists, for example $\frac{1}{2}(\mathbb{P} + \mathbb{Q})$). The **Hellinger distance** between $\mathbb{P}$ and $\mathbb{Q}$ is defined as:
 
-$$D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \mathrm{d}\mu \right)^{1/2}. \tag{3.7.1}$$
+$$D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \mathrm{d}\mu \right)^{1/2}. \tag{3.5.1}$$
 
 </div>
 
 If $\mu \ll \nu$, then
 
-$$D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \frac{\mathrm{d}\mu}{\mathrm{d}\nu} \mathrm{d}\nu \right)^{1/2} = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\nu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\nu}} \right)^2 \mathrm{d}\nu \right)^{1/2}, \tag{3.7.2}$$
+$$D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\mu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mu}} \right)^2 \frac{\mathrm{d}\mu}{\mathrm{d}\nu} \mathrm{d}\nu \right)^{1/2} = \left( \frac{1}{2} \int_\Omega \left( \sqrt{\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\nu}} - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\nu}} \right)^2 \mathrm{d}\nu \right)^{1/2}, \tag{3.5.2}$$
 
-and thus (3.7.1) does not depend on which measure $\mu$ was chosen. In particular, if $\Omega = \mathbb{R}^d$ and $\mathbb{P}$ and $\mathbb{Q}$ are absolutely continuous with respect to the Lebesgue measure $\lambda_d$, then Hellinger distance in (3.7.2) can be expressed through the probability densities $\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\lambda_d}$ and $\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\lambda_d}$.
+and thus (3.5.1) does not depend on which measure $\mu$ was chosen. In particular, if $\Omega = \mathbb{R}^d$ and $\mathbb{P}$ and $\mathbb{Q}$ are absolutely continuous with respect to the Lebesgue measure $\lambda_d$, then Hellinger distance in (3.5.2) can be expressed through the probability densities $\frac{\mathrm{d}\mathbb{P}}{\mathrm{d}\lambda_d}$ and $\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\lambda_d}$.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 3.7.4</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 3.5.4</span></p>
 
-In case $\mathbb{P} \ll \mathbb{Q}$, $D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = (\frac{1}{2} \int_\Omega (1 - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}}})^2 \, \mathrm{d}\mathbb{P})^{1/2}$, and the normalization constant $\frac{1}{2}$ guarantees $D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) \in [0, 1]$.
+In case $\mathbb{P} \ll \mathbb{Q}$, $D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) = (\frac{1}{2} \int_\Omega (1 - \sqrt{\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}}})^2 \, \mathrm{d}\mathbb{P})^{1/2}$, and the normalization constant $\frac{1}{2}$ guarantees $D_{\mathrm{H}}(\mathbb{P}, \mathbb{Q}) \in [0, 1]$. A similar remark can be made about $D\_{\mathrm{TV}}$, cp. Exercise 3.5.2.
 
 </div>
 
 The Kullback-Leibler (KL) divergence (also called relative entropy) is a measure of how one probability distribution diverges from a second.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.7.5</span><span class="math-callout__name">(Kullback-Leibler Divergence)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.5</span><span class="math-callout__name">(Kullback-Leibler Divergence)</span></p>
 
 The **Kullback-Leibler divergence** between two probability measures $\mathbb{Q}$ and $\mathbb{P}$ is defined as:
 
@@ -2672,10 +2588,10 @@ $$H(\mathbb{P} \| \mathbb{Q}) = -\int \log q(x) \, p(x) \, \mathrm{d}x.$$
 
 Given a set of samples drawn from $\mathbb{P}$, it is possible to compute the cross entropy for a given $\mathbb{Q}$ with known density function without knowing the density function of $\mathbb{P}$. This is particularly useful for many tasks in computational statistics such as importance sampling and density estimation.
 
-The next proposition summarizes the most important relations between the above divergences.
+The next proposition summarizes the most important relations between the above divergences. The proof is left as an exercise.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.7.6</span><span class="math-callout__name">(Relations Between Divergences)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 3.5.6</span><span class="math-callout__name">(Relations Between Divergences)</span></p>
 
 It holds
 
@@ -2691,7 +2607,7 @@ Moreover, if $\mathbb{P}$ and $\mathbb{Q}$ are equivalent
 Finally, we show how a bound on the Hellinger distance implies a bound on the difference of expectations taken with respect to two different probability measures.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.7.7</span><span class="math-callout__name">(Expectation Bound via Hellinger Distance)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5.7</span><span class="math-callout__name">(Expectation Bound via Hellinger Distance)</span></p>
 
 Let $\mathbb{P}$ and $\mathbb{Q}$ be two probability measures on a measurable space $(\Omega, \mathcal{A})$. Let $f : \Omega \to V$ be a RV for a separable Banach space $V$, such that $f$ has finite second moments with respect to both $\mathbb{P}$ and $\mathbb{Q}$. Then
 
@@ -2701,7 +2617,7 @@ $$\lVert \mathbb{E}_{\mathbb{P}}[f] - \mathbb{E}_{\mathbb{Q}}[f] \rVert \le 2(\m
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 3.7.7</summary>
+<summary>Proof of Lemma 3.5.7</summary>
 
 Let $\mathbb{P} \ll \mu$ and $\mathbb{Q} \ll \mu$ (such $\mu$ always exists, e.g. $\mu = \frac{1}{2}(\mathbb{P} + \mathbb{Q})$). Then
 
@@ -2720,13 +2636,14 @@ Here we used the Cauchy-Schwarz inequality, the factorisation $a^2 - b^2 = (a-b)
 </details>
 </div>
 
+
 ## Chapter 4: Bayesian Inversion
 
 In this chapter we discuss the Bayesian approach towards inverse problems. In contrast to the methods of Chapter 2, in the Bayesian setting all involved quantities are modelled as random variables. As such, the question to be answered is not *what is the value of the unknown variable?*, but rather *what is the distribution of the unknown variable?* It turns out that this is a very powerful viewpoint, leading to a host of numerical methods with broad applications in statistics, applied mathematics and machine learning. Additionally, it has the mathematical advantage of yielding a well-posed inverse problem, as will be discussed in this chapter.
 
 ### 4.1 The Bayesian Inverse Problem
 
-We denote by $X$ the unknown of primary interest which we wish to identify, by $Y$ an observable quantity, and by $E$ a noise term. In the most general form, the model is described by a possibly nonlinear operator $\Phi$ such that
+As in the previous chapter, we will use capital letters to denote RVs. We denote by $X$ the unknown of primary interest which we wish to identify, by $Y$ an observable quantity, and by $E$ a noise term. In the most general form, the model is described by a possibly nonlinear operator $\Phi$ such that
 
 $$Y = \Phi(X, E).$$
 
@@ -2745,21 +2662,22 @@ For an underlying probability space $(\Omega, \mathcal{A}, \mathbb{P})$, the fol
 From (4.1.1) we observe that $Y : \Omega \to W$ is also a RV. Assuming that we observe $Y$ (i.e. we are given a realization $Y(\omega) = \Phi(X(\omega)) + E(\omega) \in W$ for some $\omega \in \Omega$), the Bayesian inverse problem is then to determine the distribution of $X$ conditioned on the event $[Y = y]$. Under the present assumptions, this distribution can be interpreted as pooling all available information that we (can) have on $X$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Terminology 4.1.1</span><span class="math-callout__name">(Posterior Distribution)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Terminology 4.1.1</span><span class="math-callout__name">(Posterior Distribution and Likelihood)</span></p>
 
-Given a realization $y \in W$ of $Y$, the solution to the Bayesian inverse problem is the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$. We call $\mathbb{P}[X \in \cdot \mid Y = y]$ the **posterior distribution** (or simply the posterior).
+1. Given a realization $y \in W$ of $Y$, the solution to the Bayesian inverse problem is the conditional distribution $\mathbb{P}[X \in \cdot \mid Y = y]$. We call $\mathbb{P}[X \in \cdot \mid Y = y]$ the **posterior distribution** (or simply the posterior) and denote it for short by $\mu\_{X\mid y}$.
+2. Conversely, given a realization $x \in V$ of $X$, we will also need the conditional distribution $\mathbb{P}[Y \in \cdot \mid X = x]$, for short denoted by $\mu\_{Y\mid x}$. When it exists, the density of $\mathbb{P}[Y \in \cdot \mid X = x]$ is called the **likelihood** of $Y$ given $X = x$, as it expresses the likelihood of different measurement outcomes for fixed parameter $x$.
 
 </div>
 
-The algorithms discussed in Chapter 2 returned a point estimate $x$ for a given value $y$, for instance assuming the model $y = Ax$ for some matrix $A$. One advantage of Bayesian methods is, that they do not merely deliver point estimates, but acknowledge the fact, that we cannot know the exact value of $x$. This is reflected in the posterior being a distribution, and thus assigning probabilities to events of the type $[X \in B]$, $B \in \mathcal{B}(V)$. The posterior represents our knowledge and uncertainty about $X$.
+The algorithms discussed in Chapter 2 returned a point estimate $x$ for a given value $y$, for instance assuming the model $y = Ax$ for some matrix $A$. One advantage of Bayesian methods is, that they do not merely deliver point estimates, but acknowledge the fact, that we cannot know the exact value of $x$; for instance, there may exist multiple $x_j$ with $Ax_j = y$ due to $A$ being non-regular. This is reflected in the posterior being a distribution, and thus assigning probabilities to events of the type $[X \in B]$, $B \in \mathcal{B}(V)$. The posterior represents our knowledge and uncertainty about $X$.
 
-Apart from computing point estimates, the Bayesian approach additionally allows to compute quantities like the variance to investigate uncertainty — a large variance of the parameter w.r.t. the posterior may for instance indicate that the data is not very informative about the parameter.
+In this chapter we investigate how to determine and explore the posterior.
 
-### 4.2 Estimators
+### 4.2 The Finite Dimensional Case
 
-Even though the posterior contains all available information about $X$, it is still desirable to have a point estimate, i.e. a concrete value $x \in V$ which can be interpreted as the "most probable" value of $X$ (in a suitable sense) given that we observed some value $y$ for $Y$.
+As in Chapter 2, the finite dimensional setting is significantly easier, and in practice we will in general always work in finite (possibly very high) dimensions. Thus, let us restrict first to $V = \mathbb{R}^n$ and $W = \mathbb{R}^m$, and let $X : \Omega \to V$ and $Y : \Omega \to W$ be RVs with joint density $\pi_{X,Y}$.
 
-Before continuing, we first introduce some shorter notation for the occurring distributions. We will assume in the following that real valued RVs are absolutely continuous w.r.t. the Lebesgue measures, and thus have densities.
+We first introduce some shorter notation for the occurring distributions. We will assume in the following that real valued RVs are absolutely continuous w.r.t. the Lebesgue measures, and thus have densities.
 
 * The prior distribution $\mathbb{P}_X$ on $(V, \mathcal{B}(V))$ will be denoted by $\mu_X$. If $V = \mathbb{R}^n$, we write $\pi_X(x)$ for its density.
 * The posterior distribution $\mathbb{P}[X \in \cdot \mid Y = y]$ on $(V, \mathcal{B}(V))$ is denoted by $\mu_{X\mid y}$. If $V = \mathbb{R}^n$, we write $\pi_{X\mid Y}(x\mid y)$ for its density.
@@ -2768,206 +2686,12 @@ Before continuing, we first introduce some shorter notation for the occurring di
 
 Similarly, we will denote the joint density of $X$ and $Y$ by $\pi_{X,Y}(x, y)$, and the joint density of $X$ and $E$ by $\pi_{X,E}(x, e)$. Note that the standing assumption of $X$ and $E$ being independent implies $\pi_{X,E}(x, e) = \pi_X(x)\pi_E(e)$.
 
-The density $\pi_{Y\mid X}(y\mid x)$ is called the **likelihood**. For a fixed $x \in V$, it describes the probability distribution of the observed quantity $Y$, and thus expresses the likelihood of different measurement outcomes for fixed parameter $x$. We can also see it as a function of $x$, in which case the $x$-value maximizing $\pi(y\mid x)$ can be interpreted as "best explaining" the observed data $y$.
+The density $\pi_{Y\mid X}(y\mid x)$ is called the **likelihood**. For a fixed $x \in V$, it describes the probability distribution of the observed quantity $Y$, and thus expresses the likelihood of different measurement outcomes for fixed parameter $x$.
 
-Let us assume for the moment that all densities exist. Then we consider the following three point estimates:
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Point Estimators)</span></p>
-
-1. **Maximum likelihood (ML):** The maximum likelihood estimate is a popular estimate in statistics. It is defined as a point
-
-   $$x_{\mathrm{ML}} \in \operatorname{argmax}_x \pi_{Y|X}(y|x).$$
-
-2. **Maximum a posteriori (MAP):** A MAP point is a point maximizing the posterior density
-
-   $$x_{\mathrm{MAP}} \in \operatorname{argmax}_x \pi_{X|Y}(x|y).$$
-
-3. **Conditional mean (CM):** The conditional mean is the posterior expectation of $X$, i.e.
-
-   $$x_{\mathrm{CM}} := \mathbb{E}[X|Y = y] = \int_V x \, \mathrm{d}\mu_{X|y}(x) = \int_V x \pi_{X|Y}(x|y) \, \mathrm{d}x.$$
-
-</div>
-
-We point out that computing $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ requires solving an optimization problem, while the computation of $x_{\mathrm{CM}}$ requires computing a (high-dimensional) integral. While $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ need not be unique, $x_{\mathrm{CM}}$ is (in case the expectation exists). The advantage of $x_{\mathrm{CM}}$ is that it is not strongly affected by small changes in the posterior measure, and this will be discussed in more detail in the following sections. Such a statement is not true for $x_{\mathrm{MAP}}$. On the other hand, $x_{\mathrm{CM}}$ has the disadvantage that it does not necessarily correspond to a point with high posterior density. Such a case is often accompanied by the variance of the posterior being high, indicating that we should not be too confident in our point estimate either way.
-
-<figure>
-  <img src="{{ '/assets/images/notes/bip/bip_figure4.2.png' | relative_url }}" alt="Three panels. (a) A heavy-tailed histogram of the probability Pr of local signal changes, peaking near zero and decaying with a long tail. (b) A color image of peppers overlaid with white shortest-path curves between four pairs of antipodal boundary points; the paths bend around the objects rather than running straight. (c) The same image with the shortest paths recomputed using the squared distance, giving visibly different globally optimal curves." loading="lazy">
-</figure>
-
-*Illustration of Example on Point Estimators. MAP and CM for two posterior distributions.*
-
-### 4.3 Bayes' Theorem
-
-We start with the finite dimensional case where $V = \mathbb{R}^n$ and $W = \mathbb{R}^m$ and $X : \Omega \to V$ and $Y : \Omega \to W$ are RVs with joint density $\pi_{X,Y}$.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.3.1</span><span class="math-callout__name">(Bayes' Theorem, Finite Dimensional)</span></p>
-
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $X : \Omega \to \mathbb{R}^n$, $Y : \Omega \to \mathbb{R}^m$ two RVs with joint density $\pi_{X,Y}$ and marginal densities $\pi_X(x) = \int_{\mathbb{R}^m} \pi_{X,Y}(x, y) \, \mathrm{d}y$ and $\pi_Y(y) = \int_{\mathbb{R}^n} \pi_{X,Y}(x, y) \, \mathrm{d}x$. Let $\pi_{Y\mid X}(y\mid x)$ be a conditional density of $Y$ given $X$. Then $\mu_Y$-a.e.
-
-$$\pi_{X|Y}(x|y) = \frac{\pi_{Y|X}(y|x) \pi_X(x)}{\pi_Y(y)}. \tag{4.3.1}$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Theorem 4.3.1</summary>
-
-By Prop. 3.5.36 and Rmk. 3.5.37 there exists a $\mathbb{P}\_X$-null set $N_X \subseteq \mathbb{R}^n$ such that for all $x \in N_X^c$
-
-$$\pi_{Y|X}(y|x) = \frac{\pi_{X,Y}(x, y)}{\pi_X(x)} \qquad \text{for } \lambda_m\text{-a.e. } y \in \mathbb{R}^m, \tag{4.3.2}$$
-
-with the denominator being a positive number. With the $\mathbb{P}\_Y$-null set $N_Y := \lbrace y : \pi_Y(y) \in \lbrace 0, \infty \rbrace \rbrace$, set for $y \in N_Y^c$ and $B \in \mathcal{B}(\mathbb{R}^n)$ with $\pi_{X\mid Y}(x\mid y)$ as in (4.3.1)
-
-$$\tau(y, B) := \int_B \pi_{X|Y}(x|y) \, \mathrm{d}x.$$
-
-Then for any $A \in \mathcal{B}(\mathbb{R}^m)$ and any $B \in \mathcal{B}(\mathbb{R}^n)$, using Fubini's theorem, (4.3.1) as a definition of $\pi_{X\mid Y}$, and (4.3.2),
-
-$$
-\begin{aligned}
-\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) 
-&= \int_{A \setminus N_Y} \int_B \pi_{X|Y}(x|y) \pi_Y(y) \, \mathrm{d}x \, \mathrm{d}y \\
-&= \int_{A \setminus N_Y} \int_B \pi_{Y|X}(y|x) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y \\
-&= \int_{A \times B} \pi_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y = \mathbb{P}[Y \in A, X \in B].
-\end{aligned}
-$$
-
-Here we have used that $\mathbb{P}\_X[N_X] = \mathbb{P}\_Y[N_Y] = 0$.
-
-</details>
-</div>
-
-Bayes' theorem is often referred to in the form
-
-$$\text{posterior} \propto \text{likelihood} \cdot \text{prior} \tag{4.3.3}$$
-
-where $\propto$ signifies equality of two functions up to a constant (independent of the function argument). In our notation the posterior is $\pi_{X\mid Y}(x\mid y)$, the likelihood $\pi_{Y\mid X}(y\mid x)$ and the prior $\pi_X(x)$. Equality holds up the multiplicative factor $\pi_Y(y)^{-1}$, which does not depend on $x$ — the argument of the conditional density $x \mapsto \pi_{X\mid Y}(x\mid y)$. Hence the posterior is proportional to the prior multiplied with the likelihood. The likelihood represents the information obtained through the data and can be interpreted as updating our prior belief ($\pi_X$) on the parameter.
-
-Next we deduce explicit expressions of the posterior for the additive noise model (4.1.1). To this end, we first compute the likelihood. With $\Phi : V \to W$, introduce the shift operator $S^{\Phi(x)} : W \to W$ via
-
-$$S^{\Phi(x)}(y) := y + \Phi(x).$$
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.3.2</span><span class="math-callout__name">(Likelihood via Pushforward)</span></p>
-
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $V$, $W$ two separable Banach spaces, $\Phi : V \to W$ measurable, and $X : \Omega \to V$ as well as $E : \Omega \to W$ two independent RVs. Assume that $x \mapsto S_\sharp^{\Phi(x)} \mu_E(A)$ is measurable for every $A \in \mathcal{B}(W)$.
-
-Then with the RV $Y := \Phi(X) + E : \Omega \to W$ it holds $\mu_X$-a.e.
-
-$$\mu_{Y|x} = S_\sharp^{\Phi(x)} \mu_E.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Lemma 4.3.2</summary>
-
-Define for $A \in \mathcal{B}(W)$ and $x \in V$
-
-$$\tau(x, A) := (S_\sharp^{\Phi(x)} \mu_E)(A).$$
-
-Since $\mu_E$ and consequently $S_\sharp^{\Phi(x)} \mu_E$ are probability measures, $A \mapsto \tau(x, A) = S_\sharp^{\Phi(x)} \mu_E(A)$ defines a probability measure on $W$ for every $x$. Measurability of $x \mapsto \tau(x, A)$ holds by assumption.
-
-Next, let $B \in \mathcal{B}(V)$. Then
-
-$$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \underbrace{\mathbb{1}_A(\Phi(X(\omega)) + E(\omega)) \mathbb{1}_B(X(\omega))}_{=:\,\varphi(X, E)} \, \mathrm{d}\mathbb{P}(\omega),$$
-
-where we have defined the function $\varphi : V \times W \to \mathbb{R}$ via $\varphi(x, e) := \mathbb{1}\_A(\Phi(x) + e) \mathbb{1}\_B(x)$. Then $\varphi$ is measurable as a composition of measurable functions. The independence of the RVs $X$ and $E$ implies that $(X, E)_\sharp \mathbb{P} = \mathbb{P}\_{X, E} = \mu_X \otimes \mu_E$, and thus it follows from Thm. 3.2.10 that
-
-$$
-\begin{aligned}
-\mathbb{P}[Y \in A, X \in B] 
-&= \int_\Omega \varphi(X(\omega), E(\omega)) \, \mathrm{d}\mathbb{P}(\omega) \\
-&= \int_{V \times W} \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x) \, \mathrm{d}(\mathbb{P}_X \otimes \mathbb{P}_E)(x, e) \\
-&= \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A\bigl(S^{\Phi(x)}(e)\bigr) \, \mathrm{d}\mu_E(e) \, \mathrm{d}\mu_X(x).
-\end{aligned}
-$$
-
-By a change of variables (again Thm. 3.2.10)
-
-$$\mathbb{P}[Y \in A, X \in B] = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A(e) \, \mathrm{d}S_\sharp^{\Phi(x)} \mu_E(e) \, \mathrm{d}\mu_X(x) = \int_V \mathbb{1}_B(x) \tau(x, A) \, \mathrm{d}\mathbb{P}_X(x).$$
-
-Thus $\tau(x, A)$ is a regular conditional distribution of $Y$ given $X$.
-
-</details>
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary 4.3.3</span><span class="math-callout__name">(Posterior for Additive Noise, Finite Dimensional)</span></p>
-
-Let $Y = \Phi(X) + E$ where $X : \Omega \to \mathbb{R}^n$, $E : \Omega \to \mathbb{R}^m$ are independent RVs with densities $\pi_X$ and $\pi_E$ and $\Phi : \mathbb{R}^n \to \mathbb{R}^m$ is measurable. Then $\mu_Y$-a.e.
-
-$$\pi_{X|Y}(x|y) = \frac{\pi_E(y - \Phi(x)) \, \pi_X(x)}{Z(y)},$$
-
-where
-
-$$Z(y) = \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \, \pi_X(x) \, \mathrm{d}x.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Corollary 4.3.3</summary>
-
-By definition of the shift operator $S^{\Phi(x)}(y) = y + \Phi(x)$, we have for any $A \in \mathcal{B}(\mathbb{R}^m)$
-
-$$S_\sharp^{\Phi(x)} \mu_E(A) = \mu_E\bigl(\lbrace y \in \mathbb{R}^m : y + \Phi(x) \in A \rbrace\bigr) = \int_{\mathbb{R}^m} \mathbb{1}_A(y + \Phi(x)) \pi_E(y) \, \mathrm{d}y = \int_{\mathbb{R}^m} \mathbb{1}_A(y) \pi_E(y - \Phi(x)) \, \mathrm{d}y,$$
-
-and thus $S_\sharp^{\Phi(x)} \mu_E$ has density $y \mapsto \pi_E(y - \Phi(x))$. Hence by Lemma 4.3.2 the conditional density $\pi_{Y\mid X}(y\mid x)$ is equal to $\pi_E(y - \Phi(x))$ for $\mu_X$-a.e. $x \in V$.
-
-The second statement then follows by Thm. 4.3.1 (Bayes' Theorem, finite dimensional) and the observation that by definition of the conditional density, for every $A \in \mathcal{B}(\mathbb{R}^m)$
-
-$$\mathbb{P}[Y \in A, X \in \mathbb{R}^n] = \int_{\mathbb{R}^n} \int_A \pi_{Y|X}(y|x) \, \mathrm{d}y \, \pi_X(x) \, \mathrm{d}x = \int_A \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y,$$
-
-so that — except on the $\mu_Y$-null set $\lbrace y \in \mathbb{R}^m : Z(y) = \pi_Y(y) = 0 \rbrace$ — $Z(y)$ is equal to the marginal density $\pi_Y(y)$ of $Y$.
-
-</details>
-</div>
+The following is an example of an inverse problem with an infinite dimensional "latent" field in the background, but where both $V = \mathbb{R}$ and $W = \mathbb{R}$.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.3.5</span><span class="math-callout__name">(Additive Gaussian Noise I)</span></p>
-
-Let $E \sim \mathcal{N}(0, \Sigma)$ (which is the most common setting for Bayesian inference problems), then the posterior in Cor. 4.3.3 reads
-
-$$\pi_{X|Y}(x|y) \propto \exp\left( -\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 \right) \pi_X(x), \tag{4.3.4}$$
-
-where $\lVert x \rVert_\Sigma^2 := x^\top \Sigma^{-1} x$.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.3.6</span><span class="math-callout__name">(Linear Gaussian Inverse Problem)</span></p>
-
-Let $A \in \mathbb{R}^{m \times n}$ and suppose that for a given $y \in \mathbb{R}^m$ we wish to find $x \in \mathbb{R}^n$ such $Ax = y$. Assume that $y$ is a realization of $Y = AX + E$ with $E \sim \mathcal{N}(0, I_m)$. As a prior we *choose* $\mu_X \sim \mathcal{N}(0, \frac{1}{\alpha} I_n)$ for some fixed $\alpha > 0$. Then
-
-1. **ML:** We have 
-   
-   $$\pi_{Y\mid X}(y\mid x) = \frac{1}{\sqrt{(2\pi)^m}} \exp\left( -\frac{\lVert Ax - y \rVert^2}{2} \right)$$
-   
-   Maximizing the likelihood is thus equivalent to finding $x$ in $\operatorname{argmin}\_x \lVert Ax - y \rVert$.
-
-2. **MAP:** By Example 4.3.5, $\pi_{X\mid Y}(x\mid y)$ is up to a $y$-dependent constant equal to 
-   
-   $$\exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right)$$
-   
-   Therefore a MAP point is a point in 
-   
-   $$\operatorname{argmin}\_x(\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2)$$
-
-3. **CM:** The conditional mean is given by
-
-   $$\int_{\mathbb{R}^n} x \pi_{X|Y}(x|y) \, \mathrm{d}x = \frac{\int_{\mathbb{R}^n} x \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}{\int_{\mathbb{R}^n} \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}.$$
-
-</div>
-
-We make the following observations:
-
-* The ML estimate is *not Bayesian*: The joint distribution can be written as $\pi_{X,Y}(x, y) = \pi_{Y\mid X}(y\mid x)\pi_X(x)$ (cp. Prop. 3.5.36). Hence $\pi_{Y\mid X}(y\mid x)$ and as a consequence $x_{\mathrm{ML}}$ are independent of the (choice of) prior $\pi_X(\cdot)$. In the above example determining $x_{\mathrm{ML}}$ amounts to minimizing $\lVert Ax - y \rVert$ in $x$, i.e. to solving the inverse problem without regularization. Therefore the ML estimator is not really interesting in the context of ill-posed inverse problems.
-* The MAP estimate in Example 4.3.6 corresponds to the Tikhonov regularized solution. Thus, using prior information can be interpreted as adding a form of regularization.
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.3.7</span><span class="math-callout__name">(Logistic Differential Equation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.2.1</span><span class="math-callout__name">(Logistic Differential Equation)</span></p>
 
 We consider a logistic differential equation modeling the growth of a population $N(t)$ over time $t \ge 0$, with growth rate $r > 0$ and carrying capacity $k$:
 
@@ -2981,41 +2705,320 @@ Assume we are given the values $r = 0.25$ and $N_0 = 2$, and wish to infer $k$. 
 
 $$\Phi(k) = \frac{k}{1 + \exp(-0.125k)(\frac{k}{2} - 1)}, \qquad k \in [10, 20],$$
 
-the observation is described by $Y = \Phi(K) + E$, with $\mu_{K,E} \sim \mathrm{uniform}(10, 20) \otimes \mathcal{N}(0, 0.5)$.
+the observation is described by $Y = \Phi(K) + E$, with $\mu\_{K,E} \sim \mathrm{uniform}(10, 20) \otimes \mathcal{N}(0, 0.5)$. The joint and posterior density for $Y = 8$ are depicted in Figure 4.1.
 
 </div>
 
 <figure>
-  <img src="{{ '/assets/images/notes/bip/bip_figure4.1.png' | relative_url }}" alt="Three panels. (a) A heavy-tailed histogram of the probability Pr of local signal changes, peaking near zero and decaying with a long tail. (b) A color image of peppers overlaid with white shortest-path curves between four pairs of antipodal boundary points; the paths bend around the objects rather than running straight. (c) The same image with the shortest paths recomputed using the squared distance, giving visibly different globally optimal curves." loading="lazy">
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.1.png' | relative_url }}" alt="Left: heatmap of the joint density of (k, y) over k in [10, 20] and y in [0, 20], concentrated along a narrow, gently rising band. Right: the posterior density of k given y = 8, a single sharp peak around k = 15.5." loading="lazy">
 </figure>
 
-*Illustration of Example on Logistic Differential Equation. Joint density $\pi_{K,Y}(k,y)$ (left) and posterior density $\pi{K\mid Y}(k\mid 8)$ (right).*
+*Figure 4.1: Joint density $\pi_{K,Y}(k,y)$ (left) and posterior density $\pi_{K\mid Y}(k\mid 8)$ (right) in Example 4.2.1.*
 
-Next we show a version of Bayes' theorem in the infinite dimensional setting. Our goal is to obtain a statement with a computable density function. In infinite dimensional spaces, there is no Lebesgue measure. Hence we have to consider a Radon-Nikodym derivative of the posterior w.r.t. another measure — the prior. Note that it is very natural to assume that the posterior $\mu_{X\mid y}$ is absolutely continuous w.r.t. the prior $\mu_X$ (otherwise the posterior would assign positive measure to an event to which we have a priorily assigned measure 0).
+#### 4.2.1 Bayes' Theorem in Finite Dimensions
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.3.8</span><span class="math-callout__name">(Bayes' Theorem, Infinite Dimensional)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.2.2</span><span class="math-callout__name">(Bayes' Theorem I)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $X : \Omega \to \mathbb{R}^n$, $Y : \Omega \to \mathbb{R}^m$ two RVs with joint density $\pi\_{X,Y}$ and marginal densities $\pi\_X(x) = \int\_{\mathbb{R}^m} \pi\_{X,Y}(x, y) \, \mathrm{d}y$ and $\pi\_Y(y) = \int\_{\mathbb{R}^n} \pi\_{X,Y}(x, y) \, \mathrm{d}x$. Let $\pi\_{Y\mid X}(y\mid x)$ be a conditional density of $Y$ given $X$. Then $\mu\_Y$-a.e.
+
+$$\pi_{X|Y}(x|y) = \frac{\pi_{Y|X}(y|x) \pi_X(x)}{\pi_Y(y)}. \tag{4.2.1}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.2.2</summary>
+
+By Prop. 3.3.33 and Rmk. 3.3.34 there exists a $\mathbb{P}\_X$-null set $N_X \subseteq \mathbb{R}^n$ such that for all $x \in N_X^c$
+
+$$\pi_{Y|X}(y|x) = \frac{\pi_{X,Y}(x, y)}{\pi_X(x)} \qquad \text{for } \lambda_m\text{-a.e. } y \in \mathbb{R}^m, \tag{4.2.2}$$
+
+with the denominator being a positive number. With the $\mathbb{P}\_Y$-null set $N_Y := \lbrace y : \pi_Y(y) \in \lbrace 0, \infty \rbrace \rbrace$, set for $y \in N_Y^c$ and $B \in \mathcal{B}(\mathbb{R}^n)$ with $\pi_{X\mid Y}(x\mid y)$ as in (4.2.1)
+
+$$\tau(y, B) := \int_B \pi_{X|Y}(x|y) \, \mathrm{d}x.$$
+
+Then for any $A \in \mathcal{B}(\mathbb{R}^m)$ and any $B \in \mathcal{B}(\mathbb{R}^n)$, using Fubini's theorem, (4.2.1) as a definition of $\pi_{X\mid Y}$, and (4.2.2),
+
+$$
+\begin{aligned}
+\int_A \tau(y, B) \, \mathrm{d}\mathbb{P}_Y(y) 
+&= \int_{A \setminus N_Y} \int_B \pi_{X|Y}(x|y) \pi_Y(y) \, \mathrm{d}x \, \mathrm{d}y \\
+&= \int_{A \setminus N_Y} \int_B \pi_{Y|X}(y|x) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y \\
+&= \int_{A \times B} \pi_{X,Y}(x, y) \, \mathrm{d}x \, \mathrm{d}y \\
+&= \mathbb{P}[Y \in A, X \in B].
+\end{aligned}
+$$
+
+Here we have used that $\mathbb{P}\_X[N_X] = \mathbb{P}\_Y[N_Y] = 0$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 4.2.3</span></p>
+
+Bayes' theorem is often referred to in the form
+
+$$\text{posterior} \propto \text{likelihood} \cdot \text{prior} \tag{4.2.3}$$
+
+where $\propto$ signifies equality of two functions up to a constant (independent of the function argument). In our notation the posterior is $\pi\_{X\mid Y}(x\mid y)$, the likelihood $\pi\_{Y\mid X}(y\mid x)$ and the prior $\pi\_X(x)$. Equality holds up the multiplicative factor $\pi\_Y(y)^{-1}$, which does not depend on $x$ — the argument of the conditional density $x \mapsto \pi\_{X\mid Y}(x\mid y)$. Hence the posterior is proportional to the prior multiplied with the likelihood. The likelihood represents the information obtained through the data and can be interpreted as updating our prior belief ($\pi\_X$) on the parameter.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_bayes_update_1d.png' | relative_url }}" alt="Three density curves over x: a broad blue prior centered at 0, a dashed amber likelihood centered at the data y = 2, and a green posterior lying between them, closer to the likelihood and narrower than both." loading="lazy">
+</figure>
+
+*The mechanics of (4.2.3) in one dimension: the posterior (green) is the prior (blue) reweighted by the likelihood (amber, scaled for display; as a function of $x$ it need not integrate to one). The posterior concentrates between prior mean and data and is narrower than either factor — the data has updated and sharpened our prior belief.*
+
+#### 4.2.2 Point Estimates
+
+Even though the posterior contains all available information about $X$, it is still desirable to have a point estimate, i.e. a concrete value $x \in V$ which can be interpreted as the "most probable" value of $X$ (in a suitable sense) given that we observed some value $y$ for $Y$. Part of the reason is that the posterior distribution is a measure on $V$ — a possibly high- or even infinite-dimensional Banach space. This precludes visualization of the posterior density and its properties.
+
+Let us assume for the moment that all densities exist. Then we consider the following three point estimates:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Point Estimators)</span></p>
+
+1. **Maximum likelihood (ML):** The maximum likelihood estimate is a popular estimate in statistics. It is defined as a point
+
+   $$x_{\mathrm{ML}} \in \operatorname{argmax}_x \pi_{Y|X}(y|x). \tag{4.2.4}$$
+
+   Here, the likelihood $\pi\_{Y\mid X}(y\mid x)$ is interpreted as a function of $x$, not a density for $Y$. Thus, a value $x$ that maximizes $\pi(y\mid x)$ can be interpreted as "best explaining" the observed data $y$.
+
+2. **Maximum a posteriori (MAP):** A MAP point is a point maximizing the posterior density
+
+   $$x_{\mathrm{MAP}} \in \operatorname{argmax}_x \pi_{X|Y}(x|y). \tag{4.2.5}$$
+
+3. **Conditional mean (CM):** The conditional mean is the posterior expectation of $X$, i.e.
+
+   $$x_{\mathrm{CM}} := \mathbb{E}[X|Y = y] = \int_V x \, \mathrm{d}\mu_{X|y}(x) = \int_V x \pi_{X|Y}(x|y) \, \mathrm{d}x. \tag{4.2.6}$$
+
+</div>
+
+We point out that computing $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ requires solving an **optimization** problem, while the computation of $x_{\mathrm{CM}}$ requires computing a (high-dimensional) **integral**. For this reason the computational techniques can differ significantly. However, modern Bayesian techniques are often rooted in a combination of optimization, sampling and integration methods.
+
+Moreover, while $x_{\mathrm{ML}}$ and $x_{\mathrm{MAP}}$ need not be unique, $x_{\mathrm{CM}}$ is (in case the expectation exists). The advantage of $x_{\mathrm{CM}}$ is that it is not strongly affected by small changes in the posterior measure, and this will be discussed in more detail in the following sections. Such a statement is not true for $x_{\mathrm{MAP}}$. On the other hand, $x_{\mathrm{CM}}$ has the disadvantage that it does not necessarily correspond to a point with high posterior density. Such a case is often accompanied by the variance of the posterior being high, indicating that we should not be too confident in our point estimate either way. Figure 4.2 visualizes these statements.
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.2.png' | relative_url }}" alt="Two bimodal posterior densities. Left: the right mode is taller, so the MAP point lies at the right mode while the CM falls between the two modes in a region of low posterior density. Right: the left mode is taller, so the MAP lies at the left mode and the CM again falls between the modes." loading="lazy">
+</figure>
+
+*Figure 4.2: MAP and CM for two posterior distributions.*
+
+Thus, apart from computing point estimates we should additionally always compute some other quantities to investigate uncertainty, such as the variance, and the Bayesian approach allows this! A large variance of one of the parameters w.r.t. the posterior may for instance indicate that the data is not very informative about that parameter. In general, we can define **other statistics** about the parameter $X$ via a function $\varphi \in L^1(V, \mathbb{P}_X; \widetilde{W})$ (as in Thm. 3.2.10). Then we may compute the posterior expectation of $\varphi(X)$, i.e.
+
+$$\mathbb{E}[\varphi(X)|Y = y] = \int_V \varphi(x) \, \mathrm{d}\mu_{X|y}(x) = \int_V \varphi(x) \pi_{X|Y}(x|y) \, \mathrm{d}x \in \widetilde{W}. \tag{4.2.7}$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.2.4</span><span class="math-callout__name">(Posterior Variance)</span></p>
+
+A simple example with $V = \mathbb{R}^n$ and $\widetilde{W} = \mathbb{R}$ would be $\varphi(x) = x\_i^2$, i.e., the second moment of $X\_i$ conditioned on $[Y = y]$. From this we can then estimate the posterior variance of parameter $X\_i$ via
+
+$$\mathbb{V}[X_i|Y = y] := \mathbb{E}[X_i^2|Y = y] - x_{\mathrm{CM},i}^2.$$
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_credible_interval.png' | relative_url }}" alt="Two posterior densities with MAP (solid blue vertical line), CM (dashed red vertical line) and a shaded 90 percent credible interval. Left: a sharp unimodal posterior where MAP and CM nearly coincide and the interval is short. Right: a wide bimodal posterior where MAP sits at the higher mode, CM lies between the modes, and the credible interval is much wider." loading="lazy">
+</figure>
+
+*Point estimates alone can be deceptive: for the sharp posterior (left) $x\_{\mathrm{MAP}} \approx x\_{\mathrm{CM}}$ and the 90% credible interval (shaded) is short, so either estimate is trustworthy. For the broad posterior (right) the two estimates disagree and the posterior variance $\mathbb{V}[X \mid Y = y]$ from Example 4.2.4 is an order of magnitude larger — reporting it reveals how little the data has determined the parameter.*
+
+#### 4.2.3 Additive Noise Model
+
+For the additive noise model (4.1.1) we can deduce explicit expressions of the posterior. To this end, we first compute the likelihood and consider immediately the general case of (possibly infinite dimensional) separable Banach spaces $V$ and $W$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.2.5</span><span class="math-callout__name">(Shift Operator)</span></p>
+
+Let $\Phi : V \to W$ be the forward operator in (4.1.1). We introduce the **shift operator** $S^{\Phi(x)} : W \to W$ via
+
+$$S^{\Phi(x)}(e) := e + \Phi(x).$$
+
+This function is measurable, and hence for the probability measure $\mu\_E$ on $(W, \mathcal{B}(W))$, the pushforward $S\_\sharp^{\Phi(x)} \mu\_E$ also is a probability measure on $(W, \mathcal{B}(W))$.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.2.6</span><span class="math-callout__name">(Likelihood)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $V$, $W$ two separable Banach spaces, $\Phi : V \to W$ measurable, and $X : \Omega \to V$ as well as $E : \Omega \to W$ two independent RVs. Assume that $x \mapsto S_\sharp^{\Phi(x)} \mu_E(A)$ is measurable for every $A \in \mathcal{B}(W)$.
+
+Then with the RV $Y := \Phi(X) + E : \Omega \to W$ it holds $\mu_X$-a.e.
+
+$$\mu_{Y|x} = S_\sharp^{\Phi(x)} \mu_E.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.2.6</summary>
+
+Define for $A \in \mathcal{B}(W)$ and $x \in V$
+
+$$\tau(x, A) := (S_\sharp^{\Phi(x)} \mu_E)(A).$$
+
+Since $\mu_E$ and consequently $S_\sharp^{\Phi(x)} \mu_E$ are probability measures, $A \mapsto \tau(x, A) = S_\sharp^{\Phi(x)} \mu_E(A)$ defines a probability measure on $W$ for every $x$. Measurability of $x \mapsto \tau(x, A)$ holds by assumption.
+
+Next, let $B \in \mathcal{B}(V)$. Then
+
+$$\mathbb{P}[Y \in A, X \in B] = \int_\Omega \mathbb{1}_A(Y(\omega)) \mathbb{1}_B(X(\omega)) \, \mathrm{d}\mathbb{P}(\omega) = \int_\Omega \underbrace{\mathbb{1}_A(\Phi(X(\omega)) + E(\omega)) \mathbb{1}_B(X(\omega))}_{=:\,\varphi(X, E)} \, \mathrm{d}\mathbb{P}(\omega),$$
+
+where we have defined the function $\varphi : V \times W \to \mathbb{R}$ via $\varphi(x, e) := \mathbb{1}\_A(\Phi(x) + e) \mathbb{1}\_B(x)$. Then $\varphi$ is measurable as a composition of measurable functions. The independence of the RVs $X$ and $E$ implies that $(X, E)_\sharp \mathbb{P} = \mathbb{P}\_{X, E} = \mu_X \otimes \mu_E$, and thus it follows from Thm. 3.1.9 that
+
+$$
+\begin{aligned}
+\mathbb{P}[Y \in A, X \in B] 
+&= \int_\Omega \varphi(X(\omega), E(\omega)) \, \mathrm{d}\mathbb{P}(\omega) \\
+&= \int_{V \times W} \mathbb{1}_A(\Phi(x) + e) \mathbb{1}_B(x) \, \mathrm{d}(\mathbb{P}_X \otimes \mathbb{P}_E)(x, e) \\
+&= \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A\bigl(S^{\Phi(x)}(e)\bigr) \, \mathrm{d}\mu_E(e) \, \mathrm{d}\mu_X(x).
+\end{aligned}
+$$
+
+By a change of variables (again Thm. 3.1.9)
+
+$$\mathbb{P}[Y \in A, X \in B] = \int_V \mathbb{1}_B(x) \int_W \mathbb{1}_A(e) \, \mathrm{d}S_\sharp^{\Phi(x)} \mu_E(e) \, \mathrm{d}\mu_X(x) = \int_V \mathbb{1}_B(x) \tau(x, A) \, \mathrm{d}\mathbb{P}_X(x).$$
+
+Thus $\tau(x, A)$ is a regular conditional distribution of $Y$ given $X$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 4.2.7</span><span class="math-callout__name">(Posterior for Additive Noise, Finite Dimensional)</span></p>
+
+Let $Y = \Phi(X) + E$ where $X : \Omega \to \mathbb{R}^n$, $E : \Omega \to \mathbb{R}^m$ are independent RVs with densities $\pi\_X$ and $\pi\_E$ and $\Phi : \mathbb{R}^n \to \mathbb{R}^m$ is measurable. Then $\pi\_{Y\mid X}(y\mid x) = \pi\_E(y - \Phi(x))$ $\mu\_X$-a.e. and
+
+$$\pi_{X|Y}(x|y) = \frac{\pi_E(y - \Phi(x)) \, \pi_X(x)}{Z(y)} \qquad \mu_Y\text{-a.e.}, \tag{4.2.8}$$
+
+where
+
+$$Z(y) = \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \, \pi_X(x) \, \mathrm{d}x. \tag{4.2.9}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 4.2.7</summary>
+
+By definition of the shift operator $S^{\Phi(x)}(y) = y + \Phi(x)$, we have for any $A \in \mathcal{B}(\mathbb{R}^m)$
+
+$$
+\begin{aligned}
+S_\sharp^{\Phi(x)} \mu_E(A) 
+&= \mu_E\bigl(\lbrace y \in \mathbb{R}^m : y + \Phi(x) \in A \rbrace\bigr) \\
+&= \int_{\mathbb{R}^m} \mathbb{1}_A(y + \Phi(x)) \pi_E(y) \, \mathrm{d}y \\
+&= \int_{\mathbb{R}^m} \mathbb{1}_A(y) \pi_E(y - \Phi(x)) \, \mathrm{d}y,
+\end{aligned}
+$$
+
+and thus $S_\sharp^{\Phi(x)} \mu_E$ has density $y \mapsto \pi_E(y - \Phi(x))$. Hence by Lemma 4.2.6 the conditional density $\pi_{Y\mid X}(y\mid x)$ is equal to $\pi_E(y - \Phi(x))$ for $\mu_X$-a.e. $x \in V$.
+
+The second statement then follows by Thm. 4.2.2 (Bayes' Theorem I) and the observation that by definition of the conditional density, for every $A \in \mathcal{B}(\mathbb{R}^m)$
+
+$$\mathbb{P}[Y \in A, X \in \mathbb{R}^n] = \int_{\mathbb{R}^n} \int_A \pi_{Y|X}(y|x) \, \mathrm{d}y \, \pi_X(x) \, \mathrm{d}x = \int_A \int_{\mathbb{R}^n} \pi_E(y - \Phi(x)) \pi_X(x) \, \mathrm{d}x \, \mathrm{d}y,$$
+
+so that — except on the $\mu_Y$-null set $\lbrace y \in \mathbb{R}^m : Z(y) = \pi_Y(y) = 0 \rbrace$ — $Z(y)$ is equal to the marginal density $\pi_Y(y)$ of $Y$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.2.8</span><span class="math-callout__name">(Sigma-Weighted Norm)</span></p>
+
+For $\Sigma \in \mathbb{R}^{m \times m}$ symmetric positive definite (SPD) we define $\lVert x \rVert\_\Sigma^2 := x^\top \Sigma^{-1} x$. When $\Sigma = I\_m$, the $m \times m$ identity matrix, we write as usual $\lVert x \rVert := \lVert x \rVert\_{I\_m}$ (the Euclidean norm).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.2.9</span><span class="math-callout__name">(Additive Gaussian Noise I)</span></p>
+
+Let $E \sim \mathcal{N}(0, \Sigma)$ with SPD $\Sigma \in \mathbb{R}^{m \times m}$ (which is the most common setting for Bayesian inference problems), then the posterior in Cor. 4.2.7 reads
+
+$$\pi_{X|Y}(x|y) \propto \exp\left( -\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 \right) \pi_X(x). \tag{4.2.10}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.2.10</span><span class="math-callout__name">(Linear Gaussian Inverse Problem)</span></p>
+
+Let $A \in \mathbb{R}^{m \times n}$ and suppose that for a given $y \in \mathbb{R}^m$ we wish to find $x \in \mathbb{R}^n$ such $Ax = y$. Assume that $y$ is a realization of $Y = AX + E$ with $E \sim \mathcal{N}(0, I\_m)$. As a prior we *choose* $\mu\_X \sim \mathcal{N}(0, \frac{1}{\alpha} I\_n)$ for some fixed $\alpha > 0$, i.e. $\pi\_X(x) = \frac{\alpha^{n/2}}{(2\pi)^{n/2}} \exp\bigl( -\frac{\alpha \lVert x \rVert^2}{2} \bigr)$. Then
+
+1. **ML:** We have 
+   
+   $$\pi_{Y\mid X}(y\mid x) = \frac{1}{\sqrt{(2\pi)^m}} \exp\left( -\frac{\lVert Ax - y \rVert^2}{2} \right)$$
+   
+   Maximizing the likelihood is thus equivalent to finding $x$ in 
+   
+   $$\operatorname{argmin}_x \lVert Ax - y \rVert$$
+
+2. **MAP:** By Example 4.2.9, $\pi\_{X\mid Y}(x\mid y)$ is up to a $y$-dependent constant equal to 
+   
+   $$\exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right)$$
+   
+   Therefore a MAP point is a point in 
+   
+   $$\operatorname{argmin}_x(\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2)$$
+
+3. **CM:** The conditional mean is given by
+
+   $$\int_{\mathbb{R}^n} x \pi_{X|Y}(x|y) \, \mathrm{d}x = \frac{\int_{\mathbb{R}^n} x \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}{\int_{\mathbb{R}^n} \exp\left( -\frac{\lVert Ax - y \rVert^2 + \alpha \lVert x \rVert^2}{2} \right) \mathrm{d}x}.$$
+
+</div>
+
+We make the following observations:
+
+* The ML estimate is *not Bayesian*: The joint distribution can be written as $\pi_{X,Y}(x, y) = \pi_{Y\mid X}(y\mid x)\pi_X(x)$ (cp. Prop. 3.3.33). Hence $\pi_{Y\mid X}(y\mid x)$ and as a consequence $x_{\mathrm{ML}}$ are independent of the (choice of) prior $\pi_X(\cdot)$. In the above example determining $x_{\mathrm{ML}}$ amounts to minimizing $\lVert Ax - y \rVert$ in $x$, i.e. to solving the inverse problem without regularization. We have discussed at length in Chapter 2 why this is a bad idea in the context of ill-posed inverse problems. Therefore the ML estimator is not really interesting here.
+* The MAP estimate in Example 4.2.10 corresponds to the Tikhonov-regularized solution in (2.5.1) (with $X = \mathbb{R}^n$ and $Y = \mathbb{R}^m$). Thus, using prior information can be interpreted as adding a form of regularization.
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_additive_noise_2d.png' | relative_url }}" alt="Three contour plots over the (x1, x2) plane. Left: circular blue contours of an isotropic Gaussian prior centered at the origin. Middle: an amber diagonal ridge of the likelihood concentrated around the line x1 + x2 = y. Right: green elliptical posterior contours squeezed along that line, with the MAP point marked by a red dot on the diagonal." loading="lazy">
+</figure>
+
+*Example 4.2.10 for $n = 2$, $m = 1$, $A = (1, 1)$: the data only informs the direction $x\_1 + x\_2$, so the likelihood (middle) is constant along the dotted line $\lbrace x : Ax = y \rbrace$ — the unregularised problem has no unique solution. Multiplying by the prior (left) yields a proper posterior (right) whose maximiser is exactly the Tikhonov-regularised solution.*
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_noise_concentration.png' | relative_url }}" alt="A dashed gray standard normal prior and four posterior densities for noise levels sigma between 1.5 and 0.15. As sigma decreases the posteriors move from the prior toward the dotted vertical line at the data y = 1.5 and become increasingly narrow and tall." loading="lazy">
+</figure>
+
+*The role of the noise level for $Y = X + E$, $E \sim \mathcal{N}(0, \sigma^2)$: for large $\sigma$ the posterior stays close to the prior (the data is barely informative); as $\sigma \to 0$ the likelihood dominates and the posterior concentrates around the data $y$.*
+
+### 4.3 Bayes' Theorem in Infinite Dimensions
+
+We finish by showing a version of Bayes' theorem in the infinite dimensional setting. Our goal is to obtain a statement with a computable density function. In infinite dimensional spaces, there is no Lebesgue measure. Hence we have to consider a Radon-Nikodym derivative of the posterior w.r.t. another measure — the prior.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 4.3.1</span></p>
+
+Note that it is very natural to assume that the posterior $\mu\_{X\mid y}$ is absolutely continuous w.r.t. the prior $\mu\_X$. Otherwise the posterior would assign positive measure to an event which has a priori been assigned measure 0.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.3.2</span><span class="math-callout__name">(Bayes' Theorem II)</span></p>
 
 Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $V$, $W$ two separable Banach spaces, $X : \Omega \to V$, $E : \Omega \to W$ two RVs and $\Phi : V \to W$ a measurable function. Suppose further that for some $\sigma$-finite measure $\nu$ on $(W, \mathcal{B}(W))$
 
 1. $S_\sharp^{\Phi(x)} \mu_E \ll \nu$ for all $x \in V$,
 2. $(x, y) \mapsto \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y)$ is measurable for $(x, y) \in V \times W$.
 
-Then with the RV $Y = \Phi(X) + E : \Omega \to W$ it holds $\mu_{X\mid y} \ll \mu_X$ for $\mu_Y$-a.e. $y \in W$ and in this case (in particular excluding the $\mu_Y$-null set where $Z(y) = 0$)
+Then with the RV $Y = \Phi(X) + E : \Omega \to W$ it holds $\mu\_{X\mid y} \ll \mu\_X$ for $\mu\_Y$-a.e. $y \in W$ and in this case (in particular excluding the $\mu\_Y$-null set where $Z(y) = 0$)
 
-$$\frac{\mathrm{d}\mu_{X|y}}{\mathrm{d}\mu_X}(y) = \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y),$$
+$$\frac{\mathrm{d}\mu_{X|y}}{\mathrm{d}\mu_X}(x) = \frac{1}{Z(y)} \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y), \tag{4.3.1}$$
 
 where
 
-$$Z(y) = \int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_X(x). \tag{4.3.5}$$
+$$Z(y) = \int_V \frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\nu}(y) \, \mathrm{d}\mu_X(x). \tag{4.3.2}$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 4.3.8</summary>
+<summary>Proof of Theorem 4.3.2</summary>
 
-By definition of a conditional density and due to Lemma 4.3.2 (Likelihood via Pushforward), for every $A \in \mathcal{B}(W)$,
+By definition of a conditional density and due to Lemma 4.2.6 (Likelihood), for every $A \in \mathcal{B}(W)$,
 
 $$
 \begin{aligned}
@@ -3053,23 +3056,23 @@ $$
 \end{aligned}
 $$
 
-where we have used Lemma 4.2.5 and the fact that $\mathbb{P}[Y \in N] = 0$.
+where we have used Lemma 4.2.6 and the fact that $\mathbb{P}[Y \in N] = 0$.
 
 </details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.3.9</span><span class="math-callout__name">(Additive Gaussian Noise II)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.3.3</span><span class="math-callout__name">(Additive Gaussian Noise II)</span></p>
 
 Let $V$ be a separable Banach space and $X : \Omega \to V$ a RV. Let $W = \mathbb{R}^m$, $\Phi : V \to \mathbb{R}^m$ measurable, and assume $E : \Omega \to \mathbb{R}^m$ is a RV independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ for an SPD covariance matrix $\Sigma \in \mathbb{R}^{m \times m}$. Then
 
 $$\frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\lambda_m}(e) = \frac{1}{\sqrt{(2\pi)^m \det(\Sigma)}} \exp\left( -\frac{1}{2} \lVert e - \Phi(x) \rVert_\Sigma^2 \right) = \pi_E(e - \Phi(x)).$$
 
-Hence by Thm. 4.3.8
+Measurability of $\Phi$ implies that the last expression is measurable in $(e, x)$. Hence, by Thm. 4.3.2,
 
-$$\frac{\mathrm{d}\mu_{X|y}}{\mathrm{d}\mu_X}(x) \propto \exp\left( -\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 \right),$$
+$$\frac{\mathrm{d}\mu_{X|y}}{\mathrm{d}\mu_X}(x) \propto \exp\left( -\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 \right), \tag{4.3.3}$$
 
-which (up to a constant) corresponds to the likelihood. This is to be expected, since we took the Radon-Nikodym derivative of the posterior w.r.t. the prior. Up to a constant, the negative log-likelihood
+which (up to a constant) corresponds to the likelihood. This is to be expected, since we took the Radon-Nikodym derivative of the posterior w.r.t. the prior. Thus we have established a form of (4.2.3) in this setting. Up to a constant, the negative log-likelihood
 
 $$\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2$$
 
@@ -3077,20 +3080,20 @@ is the so-called **data misfit potential**. It tells us how well a parameter $x$
 
 </div>
 
-### 4.4 Stability
+### 4.4 Stability and Well-Posedness
 
-In the previous section we have seen that (under certain assumptions), the posterior distribution exists and is unique ($\mu_Y$-a.e.). Thus the Bayesian inverse problem (BIP) possesses a unique solution. To further pursue our investigation of well-posedness, in this section we discuss continuity of the posterior w.r.t. the data.
+In the previous section we have seen that (under certain assumptions), the posterior distribution exists and is unique ($\mu_Y$-a.e.). Thus the Bayesian inverse problem (BIP) possesses a unique solution (Hadamard 1 & 2). To further pursue our investigation of well-posedness, in this section we discuss continuity of the posterior w.r.t. the data (Hadamard 3).
 
-To this end we focus on the situation where
+To this end we restrict ourselves to the case where
 
-1. the noise is finite dimensional: $W = \mathbb{R}^m$, i.e. $E : \Omega \to \mathbb{R}^m$,
-2. the noise has a density: $\mu_E \ll \lambda_m$.
+1. the number of measurements is finite: $W = \mathbb{R}^m$ and $E : \Omega \to \mathbb{R}^m$,
+2. the noise has a Lebesgue density: $\mu_E \ll \lambda_m$.
 
-This covers for example Gaussian noise as discussed in Example 4.3.9. In this case, as we have shown in the proof of Cor. 4.3.3,
+This covers for example Gaussian noise as discussed in Example 4.3.3. It follows from Cor. 4.2.7 that
 
-$$\frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\lambda_m}(y) = \pi_E(y - \Phi(x)).$$
+$$\frac{\mathrm{d}S_\sharp^{\Phi(x)} \mu_E}{\mathrm{d}\lambda_m}(y) = \pi_E(y - \Phi(x)),$$
 
-Therefore Thm. 4.3.8 implies that for $\mu_Y$-a.e. $y$ and for every $A \in \mathcal{B}(V)$
+which is measurable (as a composition of Borel measurable functions). Therefore Thm. 4.3.2 implies that for $\mu_Y$-a.e. $y$ and for every $A \in \mathcal{B}(V)$ the posterior is given by
 
 $$\mu_{X|y}(A) = \frac{1}{Z(y)} \int_V \mathbb{1}_A(x) \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x) \tag{4.4.1a}$$
 
@@ -3098,14 +3101,14 @@ with normalization constant
 
 $$Z(y) = \int_V \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x). \tag{4.4.1b}$$
 
-We now consider the Hellinger distance between measures of the type (4.4.1a). Under the above assumptions we have:
+To study the stability of the posterior measure, let us consider the Hellinger distance between measures of the type (4.4.1a). Under the above assumptions we have:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.4.1</span><span class="math-callout__name">(Stability of the Posterior)</span></p>
 
 Let $\sqrt{\pi_E} : \mathbb{R}^m \to [0, L]$ be bounded and Lipschitz continuous with Lipschitz constant $L \ge 1$. Let for $i \in \lbrace 1, 2 \rbrace$
 
-$$\nu_i(A) := \frac{1}{Z_i(y_i)} \int_A \mathbb{1}_A(x) \pi_E(y_i - \Phi_i(x)) \, \mathrm{d}\mu_X(x)$$
+$$\nu_i(A) := \frac{1}{Z_i(y_i)} \int_V \mathbb{1}_A(x) \pi_E(y_i - \Phi_i(x)) \, \mathrm{d}\mu_X(x)$$
 
 with $y_i \in \mathbb{R}^m$, $\Phi_i \in L^2(V, \mu_X; \mathbb{R}^m)$ and $Z_i$ as in (4.4.1b), and where $\mu_X$ is a probability measure on $(V, \mathcal{B}(V))$. Then if $\min\lbrace Z_1, Z_2 \rbrace > 0$
 
@@ -3117,7 +3120,7 @@ $$D_{\mathrm{H}}(\nu_1, \nu_2) \le \frac{2L^2}{\min\lbrace Z_1, Z_2 \rbrace} \le
 <details markdown="1">
 <summary>Proof of Theorem 4.4.1</summary>
 
-Set $\varphi_i(x) := y_i - \Phi_i(x)$. Using that the Hellinger distance is computed w.r.t. the common dominating measure $\mu_X$ (cf. (3.7.2)) and inserting an intermediate term, we obtain by the elementary inequality $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$
+Set $\varphi_i(x) := y_i - \Phi_i(x)$. Using that the Hellinger distance is computed w.r.t. the common dominating measure $\mu_X$ and inserting an intermediate term, we obtain by the elementary inequality $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$
 
 $$
 \begin{aligned}
@@ -3164,11 +3167,17 @@ Hence $D_{\mathrm{H}}(\nu_1, \nu_2)^2 \le \frac{4L^4}{\min\lbrace Z_1, Z_2 \rbra
 </details>
 </div>
 
-This theorem shows that the posterior distribution depends continuously on the data $y$ and the forward operator $\Phi$ in the Hellinger distance. Together with Lemma 3.7.7, this also implies continuity of the conditional mean $x_{\mathrm{CM}}$ with respect to the data.
+This theorem shows that the posterior distribution depends continuously on the data $y$ and the forward operator $\Phi$ in the Hellinger distance. Together with Lemma 3.5.7, this also implies continuity of the conditional mean $x_{\mathrm{CM}}$ with respect to the data.
 
-Assume that $Z(y) > 0$ for all $y \in \mathbb{R}^m$ in (4.4.1b). Then for fixed forward operator $\Phi = \Phi_1 = \Phi_2$, the posterior density depends continuously on the data $y$; in fact the dependence is locally Lipschitz continuous. As a consequence, also the conditional mean estimate depends continuously on the data, cp. Lemma 3.7.7.
+Assume that $Z(y) > 0$ for all $y \in \mathbb{R}^m$ in (4.4.1b). Then for fixed forward operator $\Phi = \Phi_1 = \Phi_2$, the posterior density depends continuously on the data $y$; in fact the dependence is locally Lipschitz continuous. As a consequence, also the conditional mean estimate depends continuously on the data, cp. Lemma 3.5.7.
 
-Similarly, for fixed data $y = y_1 = y_2$, the posterior depends continuously on the *forward operator*. Such results are of interest, as in practice, the forward operator needs to be replaced by a numerical approximation $\tilde{\Phi}$ to $\Phi$.
+Similarly, for fixed data $y = y_1 = y_2$, the posterior depends continuously on the *forward operator*. Such results are of interest, as in practice, the forward operator needs to be replaced by a numerical approximation $\tilde{\Phi}$ to $\Phi$, e.g. when discretising a PDE.
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_hellinger_stability.png' | relative_url }}" alt="Left: three posterior densities for data values y = 0.8, 1.1 and 1.6 that shift gradually to the right as y grows. Right: the Hellinger distance between the posterior for y = 0.8 and the perturbed posterior, plotted against the size of the data perturbation; the curve grows from zero and stays below a dotted straight line through the origin." loading="lazy">
+</figure>
+
+*Well-posedness in action (1D problem with Gaussian prior, nonlinear forward map and Gaussian noise): perturbing the data $y$ deforms the posterior continuously (left), and the Hellinger distance $D\_{\mathrm{H}}(\mu\_{X\mid y}, \mu\_{X\mid y'})$ grows at most linearly in $\lVert y - y' \rVert$ (right), exactly as Theorem 4.4.1 predicts.*
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.4.2</span><span class="math-callout__name">(Additive Gaussian Noise III)</span></p>
@@ -3186,7 +3195,7 @@ To conclude this discussion, we investigate continuity of the posterior w.r.t. t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.4.3</span><span class="math-callout__name">(Stability w.r.t. the Prior)</span></p>
 
-Let $\mu_X$, $\tilde{\mu}_X$ be two probability measures on the separable Banach space $V$, $y \in \mathbb{R}^m$ and $\Phi : V \to \mathbb{R}^m$ measurable. Let the noise density $\pi_E : \mathbb{R}^m \to [0, L]$ for some $L < \infty$. For $A \in \mathcal{B}(V)$ set
+Consider two probability measures $\mu\_X$, $\tilde{\mu}\_X$ on the separable Banach space $V$. Let $y \in \mathbb{R}^m$, $\Phi : V \to \mathbb{R}^m$ be measurable, and let the noise density be bounded, i.e. $\pi\_E : \mathbb{R}^m \to [0, L^2]$ for some $L < \infty$. For $A \in \mathcal{B}(V)$ set
 
 $$\nu(A) := \frac{1}{Z} \int_V \mathbb{1}_A(x) \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x)$$
 
@@ -3194,7 +3203,7 @@ as well as $Z := \int_V \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x)$ and define $\t
 
 Then if $\min\lbrace Z, \tilde{Z} \rbrace > 0$
 
-$$D_{\mathrm{H}}(\nu, \tilde{\nu}) \le \frac{2L}{\min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X).$$
+$$D_{\mathrm{H}}(\nu, \tilde{\nu}) \le \frac{2L^2}{\min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X).$$
 
 </div>
 
@@ -3202,31 +3211,38 @@ $$D_{\mathrm{H}}(\nu, \tilde{\nu}) \le \frac{2L}{\min\lbrace Z, \tilde{Z} \rbrac
 <details markdown="1">
 <summary>Proof of Theorem 4.4.3</summary>
 
-Let $\eta$ be a probability measure on $V$ such that $\mu_X \ll \eta$ and $\tilde{\mu}_X \ll \eta$ (e.g. $\eta = \frac{\mu_X + \tilde{\mu}_X}{2}$). Then, writing $\frac{\mathrm{d}\nu}{\mathrm{d}\eta}(x) = \frac{1}{Z} \pi_E(y - \Phi(x)) \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)$ and analogously for $\tilde{\nu}$, and using $\pi_E \le L$ together with $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$,
+Let $\eta$ be a probability measure on $V$ such that $\mu_X \ll \eta$ and $\tilde{\mu}_X \ll \eta$ (e.g. $\eta = \frac{\mu_X + \tilde{\mu}_X}{2}$). Then, writing $\frac{\mathrm{d}\nu}{\mathrm{d}\eta}(x) = \frac{1}{Z} \pi_E(y - \Phi(x)) \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)$ and analogously for $\tilde{\nu}$, and using $\pi_E \le L^2$ together with $(a - b)^2 \le 2(a - c)^2 + 2(c - b)^2$,
 
 $$
 \begin{aligned}
 D_{\mathrm{H}}(\nu, \tilde{\nu})^2 
 &= \frac{1}{2} \int_V \left( \sqrt{\frac{\mathrm{d}\nu}{\mathrm{d}\eta}(x)} - \sqrt{\frac{\mathrm{d}\tilde{\nu}}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
 &= \frac{1}{2} \int_V \pi_E(y - \Phi(x)) \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{\tilde{Z}} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
-&\le \int_V L \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
+&\le \int_V L^2 \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\mu_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x) \\
 &\quad + \int_V \pi_E(y - \Phi(x)) \left( \sqrt{\tfrac{1}{Z} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} - \sqrt{\tfrac{1}{\tilde{Z}} \tfrac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}(x)} \right)^2 \mathrm{d}\eta(x). \tag{4.4.4}
 \end{aligned}
 $$
 
-The first term equals $\frac{L}{Z} \int_V (\sqrt{\frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}} - \sqrt{\frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}})^2 \, \mathrm{d}\eta = \frac{2L}{Z} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. As in (4.4.3) in the proof of Thm. 4.4.1, the second term can be bounded by
+The first term equals $\frac{L^2}{Z} \int_V (\sqrt{\frac{\mathrm{d}\mu_X}{\mathrm{d}\eta}} - \sqrt{\frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta}})^2 \, \mathrm{d}\eta = \frac{2L^2}{Z} D_{\mathrm{H}}(\mu_X, \tilde{\mu}\_X)^2$. As in (4.4.3) in the proof of Thm. 4.4.1, the second term can be bounded by
 
 $$\tilde{Z} \left( \sqrt{\tfrac{1}{Z}} - \sqrt{\tfrac{1}{\tilde{Z}}} \right)^2 \le \frac{(Z - \tilde{Z})^2}{4 Z \min\lbrace Z, \tilde{Z} \rbrace},$$
 
-and with Prop. 3.7.6 ($D_{\mathrm{TV}} \le \sqrt{2}\, D_{\mathrm{H}}$) and $\pi_E \le L$,
+and with Prop. 3.5.6 ($D_{\mathrm{TV}} \le \sqrt{2}\, D_{\mathrm{H}}$) and $\pi_E \le L^2$,
 
-$$\lvert Z - \tilde{Z} \rvert \le L \int_V \left\lvert \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta} - \frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta} \right\rvert \mathrm{d}\eta \le 2L \, D_{\mathrm{TV}}(\mu_X, \tilde{\mu}_X) \le 2\sqrt{2}\, L \, D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X),$$
+$$
+\begin{aligned}
+\lvert Z - \tilde{Z} \rvert 
+&\le L^2 \int_V \left\lvert \frac{\mathrm{d}\mu_X}{\mathrm{d}\eta} - \frac{\mathrm{d}\tilde{\mu}_X}{\mathrm{d}\eta} \right\rvert \mathrm{d}\eta \\ 
+&\le 2L^2 \, D_{\mathrm{TV}}(\mu_X, \tilde{\mu}_X) \\
+&\le 2\sqrt{2}\, L^2 \, D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X),
+\end{aligned}
+$$
 
-so that $(Z - \tilde{Z})^2 \le 8L^2 D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. Hence the second term is bounded by $\frac{2L^2}{Z \min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2$. Substituting both bounds into (4.4.4) and using $Z \le L$,
+so that $(Z - \tilde{Z})^2 \le 8L^4 D_{\mathrm{H}}(\mu_X, \tilde{\mu}\_X)^2$. Hence the second term is bounded by $\frac{2L^4}{Z \min\lbrace Z, \tilde{Z} \rbrace} D_{\mathrm{H}}(\mu_X, \tilde{\mu}\_X)^2$. Substituting both bounds into (4.4.4) and using $Z \le L^2$,
 
-$$D_{\mathrm{H}}(\nu, \tilde{\nu})^2 \le 2L \left( \frac{1}{Z} + \frac{L}{Z \min\lbrace Z, \tilde{Z} \rbrace} \right) D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2 \le \frac{4L^2}{\min\lbrace Z, \tilde{Z} \rbrace^2} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2,$$
+$$D_{\mathrm{H}}(\nu, \tilde{\nu})^2 \le \left( \frac{2L^2}{Z} + \frac{2L^4}{Z \min\lbrace Z, \tilde{Z} \rbrace} \right) D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2 \le \frac{4L^4}{\min\lbrace Z, \tilde{Z} \rbrace^2} D_{\mathrm{H}}(\mu_X, \tilde{\mu}_X)^2,$$
 
-where the last step used $\frac{1}{Z} + \frac{L}{Z \min\lbrace Z, \tilde{Z} \rbrace} = \frac{\min\lbrace Z, \tilde{Z} \rbrace + L}{Z \min\lbrace Z, \tilde{Z} \rbrace} \le \frac{2L}{\min\lbrace Z, \tilde{Z} \rbrace^2}$. Taking square roots yields the claim.
+where the last step used $\frac{1}{Z} + \frac{L^2}{Z \min\lbrace Z, \tilde{Z} \rbrace} = \frac{\min\lbrace Z, \tilde{Z} \rbrace + L^2}{Z \min\lbrace Z, \tilde{Z} \rbrace} \le \frac{2L^2}{\min\lbrace Z, \tilde{Z} \rbrace^2}$. Taking square roots yields the claim.
 
 </details>
 </div>
@@ -3241,9 +3257,9 @@ In this sense the inverse problem is well-posed.
 
 ### 4.5 Prior Measures
 
-The choice of prior plays an important role in Bayesian inference, and is what distinguishes it from the frequentist approach. In the (finite dim.) Gaussian setting, see Ex. 4.3.4, the prior and the posterior are equivalent measures. In particular, if the prior assigns the value 0 to an event, then the same holds for the posterior. Hence, as a general rule of thumb, apart from excluding physically impossible events, the prior should not be too restrictive.
+The choice of prior plays an important role in Bayesian inference, and is what distinguishes it from the frequentist approach. In the (finite dim.) Gaussian setting, cf. Example 4.2.10, the prior and the posterior are equivalent measures. In particular, if the prior assigns the value 0 to an event, then the same holds for the posterior. Hence, as a general rule of thumb, apart from excluding physically impossible events, the prior should not be too restrictive.
 
-In this section we discuss a few techniques to construct suitable measures in separable Banach spaces.
+In this section we discuss a few techniques to construct suitable measures in separable Banach spaces. As a motivation, we first define an important PDE-constrained inverse problem.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.1</span><span class="math-callout__name">(PDE-Driven Inverse Problem)</span></p>
@@ -3252,50 +3268,105 @@ Let $D \subseteq \mathbb{R}^d$ be a bounded Lipschitz domain and consider the el
 
 $$-\mathrm{div}(a \nabla u) = f, \qquad u|_{\partial D} = 0. \tag{4.5.1}$$
 
-Here we assume $f \in H^{-1}(D)$ and $a \in L^\infty(D)$ with $\mathrm{essinf}\_{x \in D} a(x) > 0$. Then there exists a unique weak solution $u \in H_0^1(D)$ of (4.5.1). For a bounded linear operator $B : H_0^1(D) \to \mathbb{R}^m$ define the forward operator $\Phi(a) := Bu \in \mathbb{R}^m$; note that the solution $u \in H_0^1(D)$ of (4.5.1) depends on $a$, so that $\Phi(a)$ is well-defined. One can show that $\Phi$ is a continuous function from $\lbrace a \in L^\infty(D) : \mathrm{essinf}\_{x \in D} a(x) > 0 \rbrace \to \mathbb{R}^m$ and thus $\Phi$ is also measurable.
+Here we assume $f \in L^2(D)$ and $a \in L^\infty(D)$ with $\mathrm{essinf}\_{x \in D} a(x) > 0$. As a consequence of the Lax-Milgram Lemma, there exists a unique weak solution $u \in H_0^1(D)$ of (4.5.1). For a bounded linear operator $B : H_0^1(D) \to \mathbb{R}^m$ — the *observation operator* — define the forward operator $\Phi(a) := Bu \in \mathbb{R}^m$; note that the solution $u \in H_0^1(D)$ of (4.5.1) depends on $a$, so that $\Phi(a)$ is well-defined. One can show that $\Phi$ is a continuous function from $\lbrace a \in L^\infty(D) : \mathrm{essinf}\_{x \in D} a(x) > 0 \rbrace \to \mathbb{R}^m$ and thus $\Phi$ is also measurable.
 
 The inverse problem is to find the diffusion coefficient $a \in L^\infty$ from a noisy measurement
 
 $$Y = \Phi(a) + E, \tag{4.5.2}$$
 
-with $E \sim \mathcal{N}(0, \Gamma)$ for an SPD matrix $\Gamma \in \mathbb{R}^{m \times m}$. In order to do so, we proceed as outlined in Sec. 4.1: $a : \Omega \to L^\infty(D)$ is modelled as a RV for a probability space $(\Omega, \mathcal{A}, \mathbb{P})$. Once we have constructed a prior measure $\mu_a$ on $L^\infty$ (the distribution of the RV $a$), the posterior can be determined with Thm. 4.3.8.
+with $E \sim \mathcal{N}(0, \Gamma)$ for an SPD matrix $\Gamma \in \mathbb{R}^{m \times m}$. In order to do so, we proceed as outlined in Sec. 4.1: $a : \Omega \to L^\infty(D)$ is modelled as a RV for a probability space $(\Omega, \mathcal{A}, \mathbb{P})$, and it is distributed according to some prior measure $\mu\_a$ on $L^\infty(D)$, which we need to specify. The posterior can then be determined using Thm. 4.3.2 by conditioning on the data.
 
 </div>
 
-#### 4.5.1 Karhunen-Loève Expansion
+Throughout this section let $D \subseteq \mathbb{R}^d$ be a bounded (closed) Lipschitz domain (the physical domain) and let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space.
 
-Let in this section $D \subseteq \mathbb{R}^d$ be a bounded (closed) Lipschitz domain and $(\Omega, \mathcal{A}, \mathbb{P})$ a probability space.
+#### 4.5.1 Mean and Covariance Functions
 
 The map $a : \Omega \times D \to \mathbb{R}$ in Example 4.5.1, which models a random diffusion coefficient in (4.5.1), allows for two interpretations:
 
 * $\omega \mapsto a(\omega, \cdot) \in L^\infty$ is an $L^\infty$-valued RV,
 * $(a(\cdot, x))\_{x \in D}$ is a stochastic process, that is, a family of real-valued RVs indexed over $x \in D$.
 
-For now we adopt the second viewpoint, and use the notation $a_x : \Omega \to \mathbb{R}$ instead of $a(\cdot, x)$. Hence $(a_x)\_{x \in D}$ is a collection of RVs. Assuming that each $a_x : \Omega \to \mathbb{R}$ has finite first and second moments, set for $x \in D$
-
-$$m_x := \mathbb{E}[a_x] \in \mathbb{R}$$
-
-and for $x, y \in D$
-
-$$c(x, y) := \mathrm{cov}(a_x, a_y) = \mathbb{E}[(a_x - m_x)(a_y - m_y)] \in \mathbb{R}.$$
-
-We call $c$ the **covariance function**. It is symmetric, i.e. $c(x, y) = c(y, x)$, and satisfies for all $n \in \mathbb{N}$
-
-$$\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) \ge 0 \qquad \forall x_j \in D, \ \forall x_j \in \mathbb{R} \tag{4.5.3}$$
-
-since $\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) = \mathbb{E}[(\sum_{j=1}^{n} s_j(a_{x_j} - m_{x_j}))^2]$. In other words, the matrix $c(x_i, x_j)$ is positive semi-definite. Therefore, we say that a function $c : D \times D \to \mathbb{R}$ is **positive semi-definite** if it satisfies (4.5.3). Moreover, a stochastic process is called **centered** if $m_x = 0$ for all $x \in D$.
+For now we adopt the second viewpoint, and use the notation $a_x : \Omega \to \mathbb{R}$ instead of $a(\cdot, x)$. Hence $(a_x)\_{x \in D}$ is a collection of RVs.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.2</span><span class="math-callout__name">(Mean-Square Continuity)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Assumption 4.5.2</span><span class="math-callout__name">(Mean and Covariance Function)</span></p>
+
+Each $a\_x : \Omega \to \mathbb{R}$ is assumed to have finite first and second moments. For $x, y \in D$, we set
+
+$$m_x := \mathbb{E}[a_x] \in \mathbb{R} \qquad \text{and} \qquad c(x, y) := \mathrm{cov}(a_x, a_y) = \mathbb{E}[(a_x - m_x)(a_y - m_y)] \in \mathbb{R}.$$
+
+We call $m\_x$ the **mean function** and $c$ the **covariance function**.
+
+</div>
+
+The covariance function is symmetric, i.e. $c(x, y) = c(y, x)$, and satisfies for all $n \in \mathbb{N}$
+
+$$\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) \ge 0 \qquad \forall x_i, x_j \in D, \ \forall s_i, s_j \in \mathbb{R}, \tag{4.5.3}$$
+
+since $\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) = \mathbb{E}[(\sum_{j=1}^{n} s_j(a_{x_j} - m_{x_j}))^2]$. In other words, the matrix $C = (c(x_i, x_j))\_{i,j=1}^{n}$ is positive semi-definite.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.3</span><span class="math-callout__name">(Positive Semi-Definite Function)</span></p>
+
+A function $c : D \times D \to \mathbb{R}$ that satisfies (4.5.3) is called **positive semi-definite**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.4</span><span class="math-callout__name">(Centered, Stationary, Isotropic)</span></p>
+
+A stochastic process is called
+
+1. **centered** if $m\_x = 0$ for all $x \in D$;
+2. **stationary** if $c$ is translationally invariant, i.e.
+
+   $$c(x + h, y + h) = c(x, y) \qquad \text{for all } x, y \in D \text{ and all } h \in \mathbb{R}^d \text{ s.t. } x + h, y + h \in D;$$
+
+3. **isotropic** if $c$ is translationally and rotationally invariant, i.e. there is a $\rho : \mathbb{R}^+ \to \mathbb{R}$ s.t.
+
+   $$c(x, y) = \rho(\lVert x - y \rVert) \qquad \text{for all } x, y \in D.$$
+
+</div>
+
+In the following, it will be convenient to work with centered processes, but we emphasize that the following discussion also applies to non-centered processes $(a_x)\_{x \in D}$ by considering $\tilde{a}_x := a_x - m_x$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.5.5</span><span class="math-callout__name">(Matérn Covariance Functions)</span></p>
+
+A popular family of covariance functions for isotropic stochastic processes is the **Matérn** family
+
+$$\rho(r) = \frac{\sigma^2}{2^{\nu - 1} \Gamma(\nu)} \left( \frac{2\sqrt{\nu}\, r}{\ell} \right)^{\nu} K_\nu\left( \frac{2\sqrt{\nu}\, r}{\ell} \right),$$
+
+where $K\_\nu$ is the modified Bessel function of order $\nu$ and $\Gamma$ is the Gamma-function. For $\nu = 1/2$ and $\nu = \infty$, we have the special cases
+
+$$\rho(r) = \sigma^2 \exp(-\sqrt{2} r / \ell) \qquad \text{and} \qquad \rho(r) = \sigma^2 \exp(-r^2 / \ell^2).$$
+
+The three parameters $\sigma^2$, $\ell$ and $\nu$ control the (overall) variance, the correlation length and the smoothness of the stochastic process, respectively. The larger $\nu$, the faster $\rho(r)$ decays for $r \to \infty$ and the smoother the behaviour for $r \to 0$. The family is depicted in Figure 4.3.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.3.png' | relative_url }}" alt="Four Matérn covariance curves rho(r) on r in [0, 3], all starting at 1: for nu = 1/2 the curve has a kink at zero and decays slowly; for nu = 3/2, 5/2 and infinity the curves become flatter at the origin and decay faster in the tail." loading="lazy">
+</figure>
+
+*Figure 4.3: Matérn covariance functions $\rho(r)$ with $\sigma^2 = 1$, $\ell = 1$ and $\nu \in \lbrace 1/2, 3/2, 5/2, \infty \rbrace$. The exponential covariance ($\nu = 1/2$) is non-differentiable at $r = 0$, while increasing $\nu$ flattens $\rho$ near the origin — the smoothness of $\rho$ at $0$ is what governs the smoothness of the process.*
+
+Let us begin our discussion by relating continuity of the covariance function to a form of continuity of the stochastic process.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.6</span><span class="math-callout__name">(Mean-Square Continuity)</span></p>
 
 We say that $(a_x)\_{x \in D}$ is **mean-square continuous**, if for all $x \in D$ holds $a_x \in L^2(\Omega, \mathbb{P}; \mathbb{R})$ and
 
 $$\lim_{y \to x} \mathbb{E}[(a_x - a_y)^2] = 0.$$
 
+This condition can equivalently be stated as $\lim\_{y \to x} \lVert a\_x - a\_y \rVert\_{L^2(\Omega, \mathbb{P})} = 0$.
+
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.3</span><span class="math-callout__name">(Covariance Continuity Equivalence)</span></p>
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.7</span><span class="math-callout__name">(Covariance Continuity Equivalence)</span></p>
 
 Assume that $a_x$ has finite second moment and $\mathbb{E}[a_x] = 0$ for all $x \in D$. Then the covariance function $c : D \times D \to \mathbb{R}$ is continuous iff the stochastic process $(a_x)\_{x \in D}$ is mean-square continuous.
 
@@ -3303,7 +3374,7 @@ Assume that $a_x$ has finite second moment and $\mathbb{E}[a_x] = 0$ for all $x 
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 4.5.3</summary>
+<summary>Proof of Lemma 4.5.7</summary>
 
 Since the process is centered, we have
 
@@ -3328,12 +3399,27 @@ This term tends to $0$ as $s, t \to 0$ due to the mean-square continuity of $(a_
 </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 4.5.8</span><span class="math-callout__name">(Smoothness of Paths)</span></p>
+
+More generally, the smoothness of the covariance function can be related to the smoothness of *paths* of the random process; a path is a function $a(\omega, \cdot) : D \to \mathbb{R}$ for fixed $\omega \in \Omega$. This will be further discussed in the exercises. Figure 4.4 illustrates the effect for the Matérn family: the larger $\nu$, the smoother the realizations.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_figure4.4.png' | relative_url }}" alt="Four panels showing two sample paths each, driven by the same random input, for Matérn smoothness nu = 1/2, 3/2, 5/2 and infinity. The nu = 1/2 paths are jagged and rough; with growing nu the paths become progressively smoother until they are infinitely smooth curves." loading="lazy">
+</figure>
+
+*Figure 4.4: Realizations of a centered stochastic process with Matérn covariance ($\sigma^2 = 1$, $\ell = 0.4$) for increasing smoothness parameter $\nu$. All panels use the same underlying random input, so only the effect of $\nu$ is visible: paths go from nowhere-differentiable ($\nu = 1/2$) to analytic ($\nu = \infty$).*
+
+#### 4.5.2 Karhunen-Loève Expansion
+
 For a function $c \in L^2(D \times D)$ in the following we consider the *Hilbert-Schmidt integral operator* defined as
 
 $$T_c f(x) = \int_D c(x, y) f(y) \, \mathrm{d}y \qquad x \in D.$$
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.5</span><span class="math-callout__name">(Hilbert-Schmidt Integral Operator)</span></p>
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.9</span><span class="math-callout__name">(Hilbert-Schmidt Integral Operator)</span></p>
 
 Let $c \in L^2(D \times D, \mathbb{R})$ be symmetric. Then $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint operator.
 
@@ -3341,7 +3427,7 @@ Let $c \in L^2(D \times D, \mathbb{R})$ be symmetric. Then $T_c : L^2(D) \to L^2
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 4.5.5</summary>
+<summary>Proof of Lemma 4.5.9</summary>
 
 For every $f \in L^2(D)$, the Cauchy-Schwarz inequality and Fubini's theorem give
 
@@ -3356,10 +3442,17 @@ We skip the proof of compactness.
 </details>
 </div>
 
-Since $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint, positive operator, there is an orthonormal system $(\varphi_j)\_{j \in \mathbb{N}}$ of eigenvectors of $T_c$ with corresponding positive eigenvalues $(\ell_j)\_{j \in \mathbb{N}}$ and such that $T_c f = \sum_{j \in \mathbb{N}} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 4.5.10</span></p>
+
+For a symmetric positive semi-definite $c \in L^2(D \times D; \mathbb{R})$ show that $T\_c : L^2(D) \to L^2(D)$ is a positive operator, i.e. $\langle T\_c f, f \rangle \ge 0$ for all $f \in L^2(D)$.
+
+</div>
+
+Since $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint, positive operator, Theorem A.2.6 guarantees the existence of an orthonormal system $(\varphi_j)\_{j \in \mathbb{N}}$ of eigenvectors of $T_c$ with corresponding positive eigenvalues $(\ell_j)\_{j \in \mathbb{N}}$ such that $T_c f = \sum_{j \in \mathbb{N}} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$, the spectral decomposition of $T_c$; or $T_c f = \sum_{j=1}^{n} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$, in case $T_c$ has finite, $n$-dimensional range. To avoid distinguishing two cases, for simplicity we assume in the following that $c$ is such that the range of $T_c$ is infinite dimensional.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.7</span><span class="math-callout__name">(Trace-Class Operator)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.11</span><span class="math-callout__name">(Trace-Class Operator)</span></p>
 
 Let $H$ be a separable Hilbert space and $A \in \mathcal{L}(H, H)$ a bounded positive linear operator. We say that $A$ is a **trace-class operator** (or $A$ is of trace class) if for an ONB $(\varphi_j)\_{j \in \mathbb{N}}$ of $H$ holds
 
@@ -3370,7 +3463,7 @@ $$\mathrm{tr}(A) := \sum_{j \in \mathbb{N}} \langle A\varphi_j, \varphi_j \rangl
 One can show that the definition trace $\mathrm{tr}(A)$ does not depend on the choice of ONB $(\varphi_j)\_{j \in \mathbb{N}}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.8</span><span class="math-callout__name">(Mercer's Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.12</span><span class="math-callout__name">(Mercer's Theorem)</span></p>
 
 Let $c : D \times D \to \mathbb{R}$ be continuous, positive semi-definite and symmetric. Then there exists an orthonormal system $(\varphi_j)\_{j \in \mathbb{N}}$ in $L^2(D)$ such that $\varphi_j \in C^0(D)$, $T_c \varphi_j = \ell_j \varphi_j$ for a sequence of nonnegative numbers $\ell_j$ satisfying $\ell_j \to 0$ as $j \to \infty$, and
 
@@ -3382,9 +3475,11 @@ $$\mathrm{tr}(T_c) = \int_D c(x, x) \, \mathrm{d}x < \infty.$$
 
 </div>
 
+We skip the proof of Mercer's theorem.
+
 For every $\omega$, we can formally expand $a_x(\omega) = a(\omega, x)$ as a function of $x$ in the $L^2(D)$ orthonormal basis $(\varphi_j)\_{j \in \mathbb{N}}$:
 
-$$a_x(\omega) = a(\omega, x) = \sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j(x) \tag{4.5.5}$$
+$$a_x(\omega) = a(\omega, x) = \sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j(x) \tag{4.5.4}$$
 
 with the coefficients defined as
 
@@ -3393,11 +3488,11 @@ $$a_j(\omega) = \int_D a(\omega, x) \varphi_j(x) \, \mathrm{d}x$$
 being real-valued RVs. Such an expansion is called a Karhunen-Loève expansion. We next show its convergence.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.9</span><span class="math-callout__name">(Karhunen-Loève Expansion)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.13</span><span class="math-callout__name">(Karhunen-Loève Expansion)</span></p>
 
 Let $a : \Omega \times D \to \mathbb{R}$ be a measurable centered mean-square continuous stochastic process with $a \in L^2(\Omega \times D, \mathbb{P} \otimes \lambda_d; \mathbb{R})$. There exists an orthonormal basis $(\varphi_j)\_{j \in \mathbb{N}} \subseteq L^2(D)$ and nonnegative numbers $(\ell_j)\_{j \in \mathbb{N}}$ (we allow for $\ell_j = 0$) such that with $a_j(\omega) = \int_D a(\omega, x) \varphi_j(x) \, \mathrm{d}x$ and $a_x(\omega) = a(\omega, x)$
 
-$$\lim_{n \to \infty} \sup_{x \in D} \mathbb{E}\left[ \left( a_x - \sum_{j=1}^{n} a_j \varphi_j(x) \right)^2 \right] = 0. \tag{4.5.6}$$
+$$\lim_{n \to \infty} \sup_{x \in D} \mathbb{E}\left[ \left( a_x - \sum_{j=1}^{n} a_j \varphi_j(x) \right)^2 \right] = 0. \tag{4.5.5}$$
 
 The coefficients $a_j$ satisfy for all $j$ with $\ell_j > 0$
 
@@ -3408,7 +3503,7 @@ The coefficients $a_j$ satisfy for all $j$ with $\ell_j > 0$
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 4.5.9</summary>
+<summary>Proof of Theorem 4.5.13</summary>
 
 In the following $(\varphi_j)\_{j \in \mathbb{N}}$ is an orthonormal basis of $L^2(D)$ that is obtained by extending an orthonormal sequence of eigenvectors $\varphi_j$ of $T_c$ with eigenvalues $\ell_j > 0$ to an ONB. We extend the sequence of eigenvalues by zeros, i.e. $\ell_j = 0$ for all $j$ for which $\varphi_j$ belongs to the kernel of $T_c$.
 
@@ -3434,9 +3529,9 @@ $$
 
 where we used that the $(\varphi_j)\_{j \in \mathbb{N}}$ are orthonormal in $L^2(D)$ in the last step.
 
-**Convergence (4.5.6).** For $x \in D$, define $\epsilon_n(x) := \mathbb{E}[(a_x - \sum_{j=1}^n a_j \varphi_j(x))^2]$; we prove $\sup_{x \in D} \epsilon_n(x) \to 0$. First observe that
+**Convergence (4.5.5).** For $x \in D$, define $\epsilon_n(x) := \mathbb{E}[(a_x - \sum_{j=1}^n a_j \varphi_j(x))^2]$; we prove $\sup_{x \in D} \epsilon_n(x) \to 0$. First observe that
 
-$$\epsilon_n(x) = \mathbb{E}[a_x^2] - 2\mathbb{E}\left[ a_x \sum_{j=1}^n a_j \varphi_j(x) \right] + \mathbb{E}\left[ \sum_{i,j=1}^n a_i a_j \varphi_i(x) \varphi_j(x) \right].$$
+$$\epsilon_n(x) = \mathbb{E}[a_x^2] - 2\mathbb{E}\left[ a_x \sum_{j=1}^n a_j \varphi_j(x) \right] + \mathbb{E}\left[ \sum_{i,j=1}^n a_i a_j \varphi_i(x) \varphi_j(x) \right]. \tag{4.5.6}$$
 
 Now
 
@@ -3446,17 +3541,31 @@ and by property (2)
 
 $$\mathbb{E}\left[ \sum_{i,j=1}^n a_i a_j \varphi_i(x) \varphi_j(x) \right] = \sum_{i,j=1}^n \varphi_i(x) \varphi_j(x) \mathbb{E}[a_i a_j] = \sum_{j=1}^n \ell_j \varphi_j(x)^2.$$
 
-Since $\mathbb{E}[a_x^2] = c(x, x)$ we thus find
+Since $\mathbb{E}[a_x^2] = c(x, x)$ by (4.5.6) we thus find
 
 $$\epsilon_n(x) = c(x, x) - \sum_{j=1}^n \ell_j \varphi_j(x)^2.$$
 
-An application of Mercer's theorem (Thm. 4.5.8), which guarantees absolute and uniform convergence of $\sum_j \ell_j \varphi_j(x)^2$ to $c(x, x)$, concludes the proof.
+An application of Mercer's theorem (Thm. 4.5.12), which guarantees absolute and uniform convergence of $\sum_j \ell_j \varphi_j(x)^2$ to $c(x, x)$, concludes the proof.
 
 </details>
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.13</span><span class="math-callout__name">(Covariance Operator via Hilbert-Schmidt Operator)</span></p>
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_kl_expansion.png' | relative_url }}" alt="Three panels. Left: eigenvalues of the covariance operator on a logarithmic scale decaying rapidly over the first 50 indices. Middle: the four leading eigenfunctions, oscillating sine-like curves with increasing frequency. Right: one random realization reconstructed from 2, 8, 32 and 500 KL terms; the low truncations are smooth approximations that progressively capture the rough reference path." loading="lazy">
+</figure>
+
+*Anatomy of the KL expansion for the exponential covariance $c(x, y) = e^{-\lvert x - y \rvert / 0.3}$ on $D = (0, 1)$: the eigenvalues $\ell\_j$ of $T\_c$ decay rapidly (left), the eigenfunctions $\varphi\_j$ oscillate with increasing frequency (middle), and a single realization $\sum\_{j \le s} a\_j \varphi\_j$ converges to the full field as the truncation level $s$ grows (right). The decay of $\ell\_j$ is what makes truncation — and hence computation — feasible.*
+
+Thus, the Karhunen-Loève expansion provides a method to construct measures on function spaces such as $L^2(D)$, respectively to sample from a $L^2(D)$-valued RV: We adopt now the viewpoint that $\omega \mapsto a(\omega, \cdot)$ is an $L^2(D)$-valued RV. A sample from this RV can be drawn by first sampling from the real-valued RVs $(a_j)\_{j \in \mathbb{N}}$, and then computing $\sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j(x)$. In practice, the sum is truncated after $s$ terms and
+
+$$a_{s,x}(\omega) = \sum_{j=1}^{s} a_j(\omega) \varphi_j(x)$$
+
+is obtained as an approximation.
+
+A common situation in practice is that the mean $\mathbb{E}[a]$ and the covariance $\mathrm{cov}(a)$ are known or prescribed and one wishes to obtain a random field with the given expectation and covariance. Note that such a random field is not unique, since the expectation and covariance do not uniquely determine a RV (except in the case of a Gaussian RF).
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.14</span><span class="math-callout__name">(Covariance Operator via Hilbert-Schmidt Operator)</span></p>
 
 Let $a : \Omega \to L^2(D)$ be a RV with finite second moment and such that $\mathbb{E}[a] = m \in L^2(D)$. Then $\mathrm{cov}(a) : L^2(D) \to L^2(D)$ is given by $T_c$ where $c(x, y) = \mathbb{E}[(a(\cdot, x) - m(x))(a(\cdot, y) - m(y))]$ and $c \in L^2(D \times D)$.
 
@@ -3464,7 +3573,7 @@ Let $a : \Omega \to L^2(D)$ be a RV with finite second moment and such that $\ma
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Lemma 4.5.13</summary>
+<summary>Proof of Lemma 4.5.14</summary>
 
 By definition of the covariance we have for all $f, g \in L^2(D)$ with $C := \mathrm{cov}(a)$, using Fubini's theorem,
 
@@ -3491,10 +3600,82 @@ so that $c \in L^2(D \times D)$.
 </details>
 </div>
 
-Theorem 4.5.9 and Lemma 4.5.13 show that a RV can be expanded in terms of the eigenfunctions of the covariance operator. This also works the other way around in the following sense:
+Thus, Theorem 4.5.13 and Lemma 4.5.14 show that a RV can be expanded in terms of the eigenfunctions of the covariance operator (under the assumptions of Thm. 4.5.13) to obtain a random field with prescribed mean $\mathbb{E}[a]$ and covariance $\mathrm{cov}(a)$.
+
+#### 4.5.3 Uniform Measures
+
+We now want to construct a similar expansion with real-valued RVs for $L^\infty(D)$ random fields, as needed in Example 4.5.1.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 4.5.15</span></p>
+
+We note without proof that the pointwise limit $X : \Omega \to V$ of a sequence of RVs $X\_j : (\Omega, \mathcal{A}) \to (V, \mathcal{B}(V))$, $j \in \mathbb{N}$, on a separable Banach space $V$ is measurable.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 4.5.14</span><span class="math-callout__name">(Constructing RVs via KL Expansion)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 4.5.16</span><span class="math-callout__name">(Constructing $L^\infty$ Random Fields)</span></p>
+
+Let $(\varphi_j)\_{j \in \mathbb{N}} \subseteq L^\infty(D)$ such that $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$ for all $j$, $m \in L^\infty(D)$ and $(\ell_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$. Furthermore, let $\xi := (\xi_j)\_{j \in \mathbb{N}}$ be a sequence of iid RVs $\xi_j : \Omega \to [-1, 1]$ such that $\xi_j \sim \mathrm{uniform}(-1, 1)$.
+
+Then
+
+$$a(\omega, x) := m(x) + \sum_{j \in \mathbb{N}} \ell_j \xi_j(\omega) \varphi_j(x) \tag{4.5.7}$$
+
+defines a RV $\omega \mapsto a(\omega, \cdot) \in L^\infty(D)$ satisfying $\mathbb{E}[a] = m$ and for all $\omega \in \Omega$
+
+$$\lVert a(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j, \qquad \mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j. \tag{4.5.8}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 4.5.16</summary>
+
+Since each $\xi_j : \Omega \to \mathbb{R}$ is measurable, also $a_n := m + \sum_{j=1}^n \ell_j \xi_j \varphi_j : \Omega \to L^\infty(D)$ is measurable as a sum of measurable functions. Moreover, by the triangle inequality and $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$, $\lvert \xi_j \rvert \le 1$,
+
+$$\lVert a_n(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j < \infty \qquad \text{for every } n,$$
+
+so that $a_n$ converges pointwise to a measurable function $a : \Omega \to L^\infty(D)$ by Remark 4.5.15. This also implies the first bound in (4.5.8), and the second bound $\mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j$ follows similarly, since $\lvert \sum_{j} \ell_j \xi_j(\omega) \varphi_j(x) \rvert \le \sum_j \ell_j$ for a.e. $x \in D$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.5.17</span><span class="math-callout__name">(Continuation of Example 4.5.1)</span></p>
+
+Let $\omega \in \Omega$ be fixed. Assume that $a(\omega, x)$ is expanded in a series as in (4.5.7), where $\varphi\_j \in L^\infty(D)$ with $\lVert \varphi\_j \rVert\_{L^\infty(D)} = 1$ for all $j \in \mathbb{N}$, and the sequence $(\ell\_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$ and $m \in L^\infty(D)$ are chosen such that
+
+$$a_- := \operatorname{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j > 0. \tag{4.5.9}$$
+
+The weak formulation of (4.5.1) is: Find $u \in H\_0^1(D)$ such that
+
+$$\int_D a \nabla u(x)^\top \nabla v(x) \, \mathrm{d}x = \langle f, v \rangle \qquad \forall v \in H_0^1(D), \tag{4.5.10}$$
+
+where the last bracket is the $L^2$-inner product. Then for every $\omega \in \Omega$
+
+$$\lVert a(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j < \infty, \tag{4.5.11}$$
+
+which implies boundedness of the bilinear form on the left-hand side of (4.5.10), while equation (4.5.9) implies its coercivity ($\operatorname{essinf}\_{x \in D} a(\omega, x) \ge a\_- > 0$ by Proposition 4.5.16). Therefore, by the Lax-Milgram Lemma, for each $\omega \in \Omega$ there is a unique weak solution $u \in H\_0^1(D)$ to (4.5.10) for the diffusion coefficient $a(\omega, \cdot) \in L^\infty(D)$. Since the solution depends on $a(\omega, \cdot)$ we also write $u(a(\omega), \cdot)$ (or simply $u(\omega, \cdot)$) to emphasize this dependence.
+
+Now to specify the prior measure $\mu\_a$ on $a(\omega, \cdot) \in L^\infty(D)$ for the Bayesian inverse problem (4.5.2), we denote by $\nu := \otimes\_{j \in \mathbb{N}} \frac{\lambda}{2}$ the distribution of $\xi := (\xi\_j)\_{j \in \mathbb{N}}$ on $[-1, 1]^{\mathbb{N}}$, where $\frac{\lambda}{2}$ is the uniform probability measure on $[-1, 1]$ (i.e. $1/2$ times the Lebesgue measure). Denoting by $T : [-1, 1]^{\mathbb{N}} \to L^\infty(D)$ the operator that maps a sequence $\xi \in [-1, 1]^{\mathbb{N}}$ to a function $a \in L^\infty(D)$, i.e.
+
+$$T(\xi) := m + \sum_{j \in \mathbb{N}} \xi_j \ell_j \varphi_j,$$
+
+the **uniform prior measure** on the random diffusion coefficient $a(\omega, \cdot) \in L^\infty(D)$ is $\mu\_a := T\_\sharp \nu$. It is called uniform because of the uniform distribution on the coefficient sequence, but also because the diffusion coefficient $a(\omega, \cdot)$ is uniformly bounded from above and below for all $\omega \in \Omega$. For computational purposes, it is often much more convenient to formulate the inverse problem in terms of the RV $(\xi\_j)\_{j \in \mathbb{N}} : \Omega \to [-1, 1]^{\mathbb{N}}$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_uniform_field_pde.png' | relative_url }}" alt="Left: four samples of a random diffusion coefficient on [0, 1], wiggly curves starting and ending at the mean value 1 and staying well above a dashed lower bound a-minus. Right: the four corresponding solutions of the elliptic boundary value problem, smooth arch-shaped curves vanishing at both endpoints." loading="lazy">
+</figure>
+
+*Example 4.5.17 in one dimension: samples of $a(\omega, \cdot) = m + \sum\_j \ell\_j \xi\_j(\omega) \varphi\_j$ with $m \equiv 1$, $\varphi\_j(x) = \sin(j \pi x)$, $\ell\_j \propto j^{-2}$ and iid $\xi\_j \sim \mathrm{uniform}(-1, 1)$ (left). Every sample stays above $a\_- > 0$ (dashed), so by Lax-Milgram each draw yields a unique solution $u(a(\omega), \cdot)$ of $-(a u')' = f$, $u(0) = u(1) = 0$ (right) — the solution map $a \mapsto u$ is well-defined on the support of the uniform prior.*
+
+Theorem 4.5.13 and Lemma 4.5.14 show that a RV can be expanded in terms of the eigenfunctions of the covariance operator. This also works the other way around in the following sense:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 4.5.18</span><span class="math-callout__name">(Constructing RVs via KL Expansion)</span></p>
 
 Let $(\varphi_j)\_{j \in \mathbb{N}}$ be an orthonormal system in $L^2(D)$. Let $\xi_j : \Omega \to [-1, 1]$ be a sequence of iid RVs with $\xi_j \sim \mathrm{uniform}(-1, 1)$. Then for a sequence $(\ell_j)\_{j \in \mathbb{N}} \in \ell^2(\mathbb{N})$ and $m \in L^2(D)$
 
@@ -3506,9 +3687,9 @@ defines a RV $\omega \mapsto a(\omega, \cdot) \in L^2(D)$ where $\mathbb{E}[a] =
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Proposition 4.5.14</summary>
+<summary>Proof of Proposition 4.5.18</summary>
 
-Set $a_s(\omega, x) := m(x) + \sum_{j=1}^s \ell_j \xi_j(\omega) \varphi_j(x)$. For every $\omega \in \Omega$ it holds that $a_s(\omega, \cdot) \to a(\omega, \cdot)$ in $L^2(D)$ as $s \to \infty$. Measurability of each $\xi_j : \Omega \to \mathbb{R}$ implies measurability of $a_s : \Omega \to L^2(D)$, and thus $a : \Omega \to L^2(D)$ is measurable as a pointwise limit of measurable functions.
+Set $a_s(\omega, x) := m(x) + \sum_{j=1}^s \ell_j \xi_j(\omega) \varphi_j(x)$. For every $\omega \in \Omega$ it holds that $a_s(\omega, \cdot) \to a(\omega, \cdot)$ in $L^2(D)$ as $s \to \infty$. Measurability of each $\xi_j : \Omega \to \mathbb{R}$ implies measurability of $a_s : \Omega \to L^2(D)$, and thus $a : \Omega \to L^2(D)$ is measurable by Remark 4.5.15.
 
 Note that $a_s \to a$ in the topology of $L^2(\Omega, \mathbb{P}; L^2(D))$: by orthonormality of $(\varphi_j)\_{j \in \mathbb{N}}$ and $\xi_j^2 \le 1$,
 
@@ -3520,108 +3701,66 @@ Next, with $\mathbb{E}[\xi_i \xi_j] = 0$ for $i \neq j$ (independence) and $\mat
 
 $$c_s(x, y) := \mathbb{E}[(a_s(\cdot, x) - m(x))(a_s(\cdot, y) - m(y))] = \sum_{i,j=1}^s \ell_i \ell_j \varphi_i(x) \varphi_j(y) \mathbb{E}[\xi_i \xi_j] = \frac{1}{3} \sum_{i=1}^s \ell_i^2 \varphi_i(x) \varphi_i(y).$$
 
-From (4.5.12) it follows that $c_s \to c$ in $L^2(D \times D)$ as $s \to \infty$. An application of Lemma 4.5.13 concludes the proof.
+From (4.5.12) it follows that $c_s \to c = \mathbb{E}[(a(\cdot, x) - m(x))(a(\cdot, y) - m(y))]$ in $L^2(D \times D)$ as $s \to \infty$. An application of Lemma 4.5.14 concludes the proof.
 
 </details>
 </div>
 
-#### 4.5.2 Uniform Measures
-
-We let again $D \subseteq \mathbb{R}^d$ be a bounded compact Lipschitz domain. The Karhunen-Loève expansion provides a method to construct measures on function spaces such as $L^2(D)$, respectively to sample from a $L^2(D)$-valued RV. A sample from this RV can be drawn by first sampling from the RVs $(a_j)\_{j \in \mathbb{N}}$, and then computing $\sum_{j \in \mathbb{N}} a_j \varphi_j(x)$. In practice, the sum is truncated after $s$ terms and $\sum_{j=1}^{s} a_j \varphi_j(x)$ is obtained as an approximation.
-
-To continue the discussion of Example 4.5.1, we construct an $L^\infty(D)$ random field through an expansion with real-valued RVs.
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 4.5.11</span><span class="math-callout__name">(Constructing $L^\infty$ Random Fields)</span></p>
-
-Let $(\varphi_j)\_{j \in \mathbb{N}} \subseteq L^\infty(D)$ such that $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$ for all $j$, $m \in L^\infty(D)$ and $(\ell_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$. Furthermore, let $(\xi_j)\_{j \in \mathbb{N}}$ be a sequence of iid RVs $\xi_j : \Omega \to [-1, 1]$ such that $\xi_j \sim \mathrm{uniform}(-1, 1)$.
-
-Then
-
-$$a(\omega, x) := m(x) + \sum_{j \in \mathbb{N}} \ell_j \xi_j(\omega) \varphi_j(x)$$
-
-defines a RV $\omega \mapsto a(\omega, \cdot) \in L^\infty(D)$ satisfying $\mathbb{E}[a] = m$ and for all $\omega \in \Omega$
-
-$$\lVert a(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j, \qquad \mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j. \tag{4.5.8}$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof of Proposition 4.5.11</summary>
-
-Since each $\xi_j : \Omega \to \mathbb{R}$ is measurable, also $a_n := m + \sum_{j=1}^n \ell_j \xi_j \varphi_j : \Omega \to L^\infty(D)$ is measurable as a sum of measurable functions. Moreover, by the triangle inequality and $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$, $\lvert \xi_j \rvert \le 1$,
-
-$$\lVert a_n(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j < \infty \qquad \text{for every } n,$$
-
-so that $a_n$ converges pointwise to a measurable function $a : \Omega \to L^\infty(D)$. This also implies the first bound in (4.5.8), and the second bound $\mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j$ follows similarly, since $\lvert \sum_{j} \ell_j \xi_j(\omega) \varphi_j(x) \rvert \le \sum_j \ell_j$ for a.e. $x \in D$.
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.5.12</span><span class="math-callout__name">(Continuation of Example 4.5.1)</span></p>
-
-Assume that the sequence $(\ell_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$ and $m \in L^\infty(D)$ are chosen such that
-
-$$\mathrm{essinf}_{x \in D} m(x) > \sum_{j \in \mathbb{N}} \ell_j.$$
-
-Let $\varphi_j \in L^\infty(D)$ with $\lVert \varphi_j \rVert_{L^\infty(D)} = 1$ for all $j \in \mathbb{N}$ and set $a(\omega, x) = m(x) + \sum_{j \in \mathbb{N}} \ell_j \xi_j(\omega) \varphi_j(x)$. Then for every $\omega \in \Omega$
-
-$$\mathrm{essinf}_{x \in D} a(\omega, x) \ge \mathrm{essinf}_{x \in D} m(x) - \sum_{j \in \mathbb{N}} \ell_j =: a_- > 0 \tag{4.5.9}$$
-
-and $\lVert a(\omega, \cdot) \rVert_{L^\infty(D)} \le \lVert m \rVert_{L^\infty(D)} + \sum_{j \in \mathbb{N}} \ell_j < \infty$. By the Lax-Milgram Lemma, for each $\omega \in \Omega$ there is a unique weak solution to (4.5.1) for the diffusion coefficient $a(\omega, \cdot) \in L^\infty(D)$.
-
-The prior measure is in this case the distribution of the RV $a : \Omega \to L^\infty(D)$. The map $T : [-1, 1]^{\mathbb{N}} \to L^\infty(D)$ defined as $(\zeta_j)\_{j \in \mathbb{N}} \mapsto m + \sum_{j \in \mathbb{N}} \zeta_j \ell_j \varphi_j(x)$ gives the distribution $T_\sharp \mu$, where $\mu := \otimes_{j \in \mathbb{N}} \frac{\lambda}{2}$ is the uniform probability measure on $[-1, 1]$. For computational purposes, it is much more convenient to formulate the inverse problem in terms of the RV $(\xi_j)\_{j \in \mathbb{N}} : \Omega \to [-1, 1]^{\mathbb{N}}$.
-
-</div>
-
-#### 4.5.3 Gaussian Measures
+#### 4.5.4 Gaussian Measures
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.15</span><span class="math-callout__name">(Gaussian Probability Measure)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.19</span><span class="math-callout__name">(Gaussian Probability Measure)</span></p>
 
 Let $V$ be a separable Banach space. A Borel measure $\mu$ on $(V, \mathcal{B}(V))$ (i.e. a locally finite measure) is called a **Gaussian probability measure** iff for every $f \in V'$ the measure $f_\sharp \mu$ is Gaussian; here Dirac measures are considered to be Gaussian with zero variance. The measure is said to be **centered** if $\int_{\mathbb{R}} x \, \mathrm{d}f_\sharp\mu(x) = 0$ for all $f \in V'$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 4.5.16</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 4.5.20</span><span class="math-callout__name">(Fernique's Theorem)</span></p>
 
-It can be shown ("Fernique's theorem") that for every Gaussian measure $\mu$ there exists $\alpha > 0$ such that $\int_V \exp(\alpha \lVert x \rVert_V^2) \, \mathrm{d}\mu(x) < \infty$. Thus a RV with Gaussian distribution has finite moments of all orders.
+It can be shown ("Fernique's theorem") that for every Gaussian measure $\mu$ on $(V, \mathcal{B}(V))$ there exists $\alpha > 0$ such that $\int_V \exp(\alpha \lVert x \rVert_V^2) \, \mathrm{d}\mu(x) < \infty$. Thus a RV with Gaussian distribution has finite moments of all orders.
 
 </div>
 
-We concentrate on the case of separable Hilbert spaces $H$. The expectation and covariance of a probability measure $\mu$ are understood as the expectation and covariance of a RV with distribution $\mu$: Assuming they exist, the expectation of $\mu$ is $m := \int_H x \, \mathrm{d}\mu(x) \in H$ and the covariance operator $C : H \to H$ of $\mu$ is the operator satisfying
+We concentrate on the case of separable Hilbert spaces $H$. The expectation and covariance of a probability measure $\mu$ are understood as the expectation and covariance of a RV with distribution $\mu$. Recall from Section 3.2: when they exist, the expectation of $\mu$ is $m := \int_H x \, \mathrm{d}\mu(x) \in H$ and the covariance operator $C : H \to H$ of $\mu$ is the operator satisfying
 
 $$\langle x, Cy \rangle_H = \int_H \langle h - m, x \rangle_H \langle h - m, y \rangle_H \, \mathrm{d}\mu(h) \qquad \forall x, y \in H.$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.17</span><span class="math-callout__name">(Gaussian Measures on Hilbert Spaces)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.21</span><span class="math-callout__name">(Gaussian Measures on Hilbert Spaces)</span></p>
 
-Let $H$ be a separable Hilbert space. Every Gaussian measure $\mu$ on $(H, \mathcal{B}(H))$ has a positive covariance operator $C_\mu : H \to H$ which is of trace-class and satisfies
+Let $H$ be a separable Hilbert space. Every Gaussian measure $\mu$ on $(H, \mathcal{B}(H))$ has a positive covariance operator $C\_\mu : H \to H$ which is of trace-class and satisfies
 
 $$\mathrm{tr}(C_\mu) = \int_H \lVert x \rVert_H^2 \, \mathrm{d}\mu(x) < \infty.$$
 
-Conversely, for every positive trace-class symmetric operator $K : H \to H$ there exists a Gaussian measure $\mu$ on $H$ with covariance operator $K$.
+Conversely, for every positive trace-class symmetric operator $C : H \to H$ there exists a Gaussian measure $\mu$ on $H$ with covariance operator $C$.
 
 </div>
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.18</span><span class="math-callout__name">(Gaussian Random Variable)</span></p>
+We state this result without proof.
 
-A RV $X : \Omega \to H$ is called Gaussian, if its distribution is a Gaussian measure on $H$ with expectation $m \in H$ and covariance operator $C \in CL(H, H)$. In this case we write $X \sim \mathcal{N}(m, C)$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.22</span><span class="math-callout__name">(Gaussian Random Variable)</span></p>
+
+A RV $X : \Omega \to H$ is called Gaussian, if its distribution is a Gaussian measure on $H$ with expectation $m \in H$ and covariance operator $C$. In this case we write $X \sim \mathcal{N}(m, C)$.
 
 </div>
 
 We mention that, as in the finite dimensional case, Gaussian measures are uniquely determined through their expectation and covariance operator.
 
-There holds the following Karhunen-Loève expansion for Gaussian measures:
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 4.5.23</span></p>
+
+Check that if $X \sim \mathcal{N}(m, C)$ and $h \in H$, then the real-valued RV $\langle X, h \rangle\_H$ is $\mathcal{N}\bigl( \langle m, h \rangle\_H, \langle h, Ch \rangle\_H \bigr)$.
+
+</div>
+
+There holds the following Karhunen-Loève expansion for Gaussian measures, which can be proved similarly to Theorem 4.5.13:
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.20</span><span class="math-callout__name">(Karhunen-Loève Expansion for Gaussian Measures)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.24</span><span class="math-callout__name">(Karhunen-Loève Expansion of Gaussian RFs)</span></p>
 
-Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space. Let $D \subseteq \mathbb{R}^d$ be a compact set and let $a : \Omega \to L^2(D)$ be a RV with distribution $\mathcal{N}(m, C)$. Let $(\varphi_j)\_{j \in \mathbb{N}} \subseteq L^2(D)$ be an orthonormal system of eigenvectors of $C$ with positive eigenvalues $(\ell_j)\_{j \in \mathbb{N}}$ such that $Cf = \sum_{j \in \mathbb{N}} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$. Then
+Let $a : \Omega \to L^2(D)$ be a RV with distribution $\mathcal{N}(m, C)$. Let $(\varphi_j)\_{j \in \mathbb{N}} \subseteq L^2(D)$ be an orthonormal system of eigenvectors of $C$ with positive eigenvalues $(\ell_j)\_{j \in \mathbb{N}}$ such that $Cf = \sum_{j \in \mathbb{N}} \ell_j \langle f, \varphi_j \rangle_{L^2(D)} \varphi_j$. Then
 
 $$a(\omega, x) = m(x) + \sum_{j \in \mathbb{N}} a_j(\omega) \, \varphi_j(x), \qquad a_j \sim \mathcal{N}(0, \ell_j),$$
 
@@ -3631,15 +3770,15 @@ in the sense of $L^2(\Omega, \mathbb{P}; L^2(D))$ convergence, where the $(a_j)\
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of Theorem 4.5.20</summary>
+<summary>Proof of Theorem 4.5.24 (not examinable)</summary>
 
-Throughout we use the basic property of Gaussian RVs that, for $X \sim \mathcal{N}(m, C)$ and $h \in H = L^2(D)$, one has $\langle X, h \rangle \sim \mathcal{N}(\langle m, h \rangle, \langle h, Ch \rangle)$.
+Throughout we use the basic property of Gaussian RVs from Exercise 4.5.23 that, for $X \sim \mathcal{N}(m, C)$ and $h \in H = L^2(D)$, one has $\langle X, h \rangle \sim \mathcal{N}(\langle m, h \rangle, \langle h, Ch \rangle)$.
 
 **Step 1: $a(\omega) - m \in H := \overline{\mathrm{span}\lbrace \varphi_j : j \in \mathbb{N} \rbrace}$ $\mathbb{P}$-a.e.** Fix $h \in H^\perp$. Then
 
 $$Ch = \sum_{j \in \mathbb{N}} \ell_j \underbrace{\langle h, \varphi_j \rangle_{L^2(D)}}_{=\,0} \varphi_j = 0.$$
 
-By the property above, $\langle a - m, h \rangle_{L^2(D)} \sim \mathcal{N}(0, \langle h, Ch \rangle_{L^2(D)}) = \mathcal{N}(0, 0) = \delta_0$, where $\delta_0$ is the Dirac measure at $0 \in \mathbb{R}$. Hence there is a $\mathbb{P}$-null set $N_h \subseteq \Omega$ with $\langle a(\omega) - m, h \rangle_{L^2(D)} = 0$ for every $\omega \in N_h^c$. Since $L^2(D)$ is separable, so is $H^\perp$, and we can pick a dense sequence $(h_n)\_{n \in \mathbb{N}} \subseteq H^\perp$. As $\bigcup_{n \in \mathbb{N}} N_{h_n}$ is a $\mathbb{P}$-null set, we conclude that $\mathbb{P}$-a.e. $\langle a(\omega) - m, h_n \rangle_{L^2(D)} = 0$ for all $n$, and thus $\mathbb{P}$-a.e.
+By Exercise 4.5.23, $\langle a - m, h \rangle_{L^2(D)} \sim \mathcal{N}(0, \langle h, Ch \rangle_{L^2(D)}) = \mathcal{N}(0, 0) = \delta_0$, where $\delta_0$ is the Dirac measure at $0 \in \mathbb{R}$. Hence there is a $\mathbb{P}$-null set $N_h \subseteq \Omega$ with $\langle a(\omega) - m, h \rangle_{L^2(D)} = 0$ for every $\omega \in N_h^c$. Since $L^2(D)$ is separable, so is $H^\perp$, and we can pick a dense sequence $(h_n)\_{n \in \mathbb{N}} \subseteq H^\perp$. As $\bigcup_{n \in \mathbb{N}} N_{h_n}$ is a $\mathbb{P}$-null set, we conclude that $\mathbb{P}$-a.e. $\langle a(\omega) - m, h_n \rangle_{L^2(D)} = 0$ for all $n$, and thus $\mathbb{P}$-a.e.
 
 $$(a(\omega) - m) \perp H^\perp \quad \Longleftrightarrow \quad a(\omega) - m \in H.$$
 
@@ -3647,7 +3786,7 @@ $$(a(\omega) - m) \perp H^\perp \quad \Longleftrightarrow \quad a(\omega) - m \i
 
 $$a(\omega) = m + \sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j, \qquad a_j(\omega) = \langle a(\omega) - m, \varphi_j \rangle_{L^2(D)}. \tag{4.5.13}$$
 
-Again by the property above, $a_j \sim \mathcal{N}(0, \ell_j)$, where we used $\langle \varphi_j, C\varphi_j \rangle_{L^2(D)} = \ell_j$. Independence of the $(a_j)\_{j \in \mathbb{N}}$ follows from them being uncorrelated jointly Gaussian RVs:
+Again by Exercise 4.5.23, $a_j \sim \mathcal{N}(0, \ell_j)$, where we used $\langle \varphi_j, C\varphi_j \rangle_{L^2(D)} = \ell_j$. Independence of the $(a_j)\_{j \in \mathbb{N}}$ follows from them being uncorrelated jointly Gaussian RVs:
 
 $$\mathrm{cov}(a_i, a_j) = \mathbb{E}[\langle a - m, \varphi_i \rangle_{L^2(D)} \langle a - m, \varphi_j \rangle_{L^2(D)}] = \langle \varphi_i, C\varphi_j \rangle_{L^2(D)} = \ell_i \delta_{ij}.$$
 
@@ -3655,17 +3794,17 @@ $$\mathrm{cov}(a_i, a_j) = \mathbb{E}[\langle a - m, \varphi_i \rangle_{L^2(D)} 
 
 $$\left\lVert a - \left( m + \sum_{j=1}^s a_j \varphi_j \right) \right\rVert_{L^2(\Omega; L^2(D))}^2 = \int_\Omega \left\lVert a(\omega) - m - \sum_{j=1}^s a_j(\omega) \varphi_j \right\rVert_{L^2(D)}^2 \mathrm{d}\mathbb{P}(\omega) = \sum_{j > s} \mathbb{E}[a_j^2] = \sum_{j > s} \ell_j \to 0,$$
 
-since $C$ is of trace class by Thm. 4.5.17, which implies $\sum_{j \in \mathbb{N}} \ell_j < \infty$.
+since $C$ is of trace class by Thm. 4.5.21, which implies $\sum_{j \in \mathbb{N}} \ell_j < \infty$.
 
 </details>
 </div>
 
-There holds the following converse of the previous theorem, which provides a method to construct Gaussian RVs:
+As in the uniform case, the following converse of the previous theorem holds, which provides a method to construct Gaussian RVs. The proof is left as an exercise.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.21</span><span class="math-callout__name">(Constructing Gaussian RVs)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5.25</span><span class="math-callout__name">(Constructing Gaussian RVs)</span></p>
 
-Let $D \subseteq \mathbb{R}^d$ be compact. Let $a : \Omega \times D \to \mathbb{R}$ via
+Let $a : \Omega \times D \to \mathbb{R}$ be defined via
 
 $$a(\omega, x) = m(x) + \sum_{j \in \mathbb{N}} a_j(\omega) \varphi_j(x)$$
 
@@ -3677,19 +3816,19 @@ $$c(x, y) := \sum_{j \in \mathbb{N}} \ell_j \varphi_j(x) \varphi_j(y) \qquad \fo
 
 </div>
 
-#### 4.5.4 Uninformative Priors
+#### 4.5.5 Uninformative Priors
 
 Suppose again that we wish to determine $X$ from the measurement $Y$. If we have no prior information about $X$, it is tempting to choose a uniform distribution as a prior. However, for example in case $X : \Omega \to \mathbb{R}$, this leads to an **improper** prior with density $\pi_X \equiv 1$, i.e. $\pi_X$ does not satisfy $\int_{\mathbb{R}} \pi_X(x) \, \mathrm{d}x = 1$. Improper priors may still be used, but are not in line with the theory discussed in this lecture. Furthermore, a uniform distribution should not be interpreted as being "uninformative":
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 4.5.22</span><span class="math-callout__name">(Uniform Prior is Not Uninformative)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 4.5.26</span><span class="math-callout__name">(Uniform Prior is Not Uninformative)</span></p>
 
 Suppose that we wish to find a parameter $X$. Assume that we know (a priori) that $X$ belongs to $[0, 1]$, but we know nothing else about $X$. We may choose the prior $X \sim \mathrm{uniform}(0, 1)$. Finding $X \in [0, 1]$ is equivalent to finding $X^2 \in [0, 1]$. Note that the RV $X^2$ is *not* uniformly distributed on $[0, 1]$: $\mathbb{P}[X^2 \le a] = \mathbb{P}[X \le \sqrt{a}] = \sqrt{a}$ and thus $X^2$ has density $\pi_{X^2}(x) = \frac{1}{2} \frac{1}{\sqrt{x}}$. Hence this prior "favours" smaller values of $X^2$ over larger values of $X^2$. This is counterintuitive: If we have no information about $X \in [0, 1]$, then we also shouldn't have any information about $X^2 \in [0, 1]$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.23</span><span class="math-callout__name">(Jeffreys Prior)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.27</span><span class="math-callout__name">(Jeffreys Prior)</span></p>
 
 Given a likelihood function $L(y, x) := \pi_{Y\mid X}(y\mid x)$ with $y \in \mathbb{R}^m$, $x \in \mathbb{R}^n$, **Jeffreys prior** is defined as
 
@@ -3702,6 +3841,13 @@ $$I_X(x) := \int_{\mathbb{R}^m} \nabla_x \ell(y, x) \cdot \nabla_x \ell(y, x)^\t
 </div>
 
 Jeffreys prior satisfies the following form of "invariance": Suppose that $X$ is a $\mathbb{R}^n$ valued RV and $g : \mathbb{R}^n \to \mathbb{R}^n$ is a diffeomorphism with nonnegative Jacobian determinant $\det Dg : \mathbb{R}^n \to (0, \infty)$. Then $\tilde{X} := g(X)$ is a RV representing another parametrization of $X$. To obtain a prior for the reparametrization $\tilde{X}$, we could now proceed in two ways: (i) given the prior $\pi_X(x) \propto \sqrt{\det(I_X(x))}$, the density of $\tilde{X}$ is obtained after a change of variables as $\pi_X(g^{-1}(\tilde{x})) \det Dg^{-1}(\tilde{x})$ (ii) we may set $\pi_{\tilde{X}}(\tilde{x}) = \sqrt{\det(I_{\tilde{X}}(\tilde{x}))}$ obtained with the reparametrized likelihood $\pi_{Y\mid\tilde{X}}(y\mid\tilde{x}) = \pi_{Y\mid X}(y\mid g^{-1}(\tilde{x}))$. It can be shown that both constructions lead to the same prior.
+
+<figure>
+  <img src="{{ '/assets/images/notes/bip/bip_jeffreys_prior.png' | relative_url }}" alt="Left: the flat density of a uniform random variable on [0, 1] together with the density of its square, which blows up like one over two square root of x near zero. Right: the U-shaped Jeffreys prior Beta(1/2, 1/2) for the Bernoulli success probability compared with the flat uniform density." loading="lazy">
+</figure>
+
+*Left: Example 4.5.26 — if $X \sim \mathrm{uniform}(0, 1)$ then $X^2$ has density $\frac{1}{2\sqrt{x}}$, so "no information about $X$" silently becomes "strong preference for small $X^2$"; the uniform prior is not reparametrization-invariant. Right: for the Bernoulli likelihood, Jeffreys prior (Definition 4.5.27) is the $\mathrm{Beta}(\frac{1}{2}, \frac{1}{2})$ distribution, which differs from the uniform prior precisely so that the construction becomes invariant under reparametrization.*
+
 
 ## Chapter 5: Numerical Methods
 
@@ -3741,7 +3887,7 @@ $$y = \mathcal{G}(u) + \eta,$$
 
 where $y = (y_1^\top, \ldots, y_q^\top)^\top \in \mathbb{R}^{\ell q}$ and $\eta = (\eta_1^\top, \ldots, \eta_q^\top)^\top \in \mathbb{R}^{\ell q}$. The observation operator $\mathcal{G}$ maps $V = (C(\overline{D}))^n \subset \mathcal{H}$ to $W = \mathbb{R}^{\ell q}$. The inverse problem is to reconstruct the field $u$ from the data $y$.
 
-We assume that the observational noise $\eta$ is Gaussian $\mathcal{N}(0, \Sigma)$ and specify a prior measure $\mu_U$ on the random field $U$, which is Gaussian $\mathcal{N}(m_0, \mathcal{C}\_0)$ and determine the posterior measure $\mu_{U\mid y}$ for $U$ given $y$. By Example 4.3.9, the Radon-Nikodym derivative of the posterior w.r.t. the prior is
+We assume that the observational noise $\eta$ is Gaussian $\mathcal{N}(0, \Sigma)$ and specify a prior measure $\mu_U$ on the random field $U$, which is Gaussian $\mathcal{N}(m_0, \mathcal{C}\_0)$ and determine the posterior measure $\mu_{U\mid y}$ for $U$ given $y$. By Example 4.3.3, the Radon-Nikodym derivative of the posterior w.r.t. the prior is
 
 $$\frac{\mathrm{d}\mu_{U|y}}{\mathrm{d}\mu_U}(u) \propto \exp\left( -\frac{1}{2} \lVert y - \mathcal{G}(u) \rVert_\Sigma^2 \right)$$
 
@@ -3837,7 +3983,7 @@ $$\lVert u \rVert_{L^q(\Omega; H^2(D))} \le C \lVert f \rVert_{L^2(D)}.$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.2.4</span></p>
 
-Sufficient conditions for $u(\cdot, \omega) \in H^2(D)$ are that $D$ is convex, that $a(\cdot, \omega)$ is Lipschitz continuous and that (5.2.3) holds. For a uniform distribution, as in Section 4.5.2, Assumption 5.2.3 holds with $q = \infty$. However, a more commonly used type of prior distribution, especially in subsurface flow, is a **lognormal distribution** for $a$ with **Matérn covariance**. In that case, $\log a$ is a Gaussian field that admits a Karhunen-Loève expansion as in Theorem 4.5.20, and it can be shown that Assumption 5.2.3 holds for all $q < \infty$.
+Sufficient conditions for $u(\cdot, \omega) \in H^2(D)$ are that $D$ is convex, that $a(\cdot, \omega)$ is Lipschitz continuous and that (5.2.3) holds. For a uniform distribution, as in Section 4.5.3, Assumption 5.2.3 holds with $q = \infty$. However, a more commonly used type of prior distribution, especially in subsurface flow, is a **lognormal distribution** for $a$ with **Matérn covariance**. In that case, $\log a$ is a Gaussian field that admits a Karhunen-Loève expansion as in Theorem 4.5.24, and it can be shown that Assumption 5.2.3 holds for all $q < \infty$.
 
 </div>
 
@@ -3874,7 +4020,7 @@ $$\left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi_h(a)] \right| \le Ch^
 
 **(a)** Similar results can be proved for Fréchet-differentiable nonlinear functionals $G : H_0^1(D) \to \mathbb{R}$ of the PDE solution with $\Psi(a) := G(u)$ or for other Fréchet-differentiable nonlinear functionals $\Psi : L^\infty \to \mathbb{R}$ (with measurable Fréchet derivative).
 
-**(b)** Another approximation error that we have not discussed so far concerns the numerical approximation of the prior distribution. In case of the Karhunen-Loève expansion (cf. Sect. 4.5.1), a natural way to discretise the prior is truncation of the series expansion (4.5.5) at a suitably large index $s \in \mathbb{N}$. For the case of Matérn covariances, both in the uniform and in the lognormal case it can be shown, e.g., in [Graham et al, 2015] that there exists a $\chi > 0$ such that $\lVert Bu_h - Bu_{s,h} \rVert_{L^p(\Omega)} \le Cs^{-\chi}$, where $u_{s,h}$ is the solution to a FE system like (5.2.5) but with truncated coefficient function $a_s$ instead of $a$ and the value of $\chi$ depends on the smoothness parameter in the Matérn covariance. From this it can again be deduced that $D_{\mathrm{H}}(\nu_h, \nu_{s,h}) \le Cs^{-\chi}$.
+**(b)** Another approximation error that we have not discussed so far concerns the numerical approximation of the prior distribution. In case of the Karhunen-Loève expansion (cf. Sect. 4.5.2), a natural way to discretise the prior is truncation of the series expansion (4.5.4) at a suitably large index $s \in \mathbb{N}$. For the case of Matérn covariances, both in the uniform and in the lognormal case it can be shown, e.g., in [Graham et al, 2015] that there exists a $\chi > 0$ such that $\lVert Bu_h - Bu_{s,h} \rVert_{L^p(\Omega)} \le Cs^{-\chi}$, where $u_{s,h}$ is the solution to a FE system like (5.2.5) but with truncated coefficient function $a_s$ instead of $a$ and the value of $\chi$ depends on the smoothness parameter in the Matérn covariance. From this it can again be deduced that $D_{\mathrm{H}}(\nu_h, \nu_{s,h}) \le Cs^{-\chi}$.
 
 </div>
 
@@ -3928,11 +4074,11 @@ Note that in the linear Gaussian case, the conditional mean $x_{\mathrm{CM}}$ is
 
 $$x_{\mathrm{MAP}} = \operatorname{argmax}_{x \in \mathbb{R}^s} \pi_{X|Y}(x|y) = \operatorname{argmin}_{x \in H} \frac{1}{2} \lVert y - Ax \rVert_\Sigma^2 + \frac{1}{2} \lVert x - \overline{x} \rVert_C^2$$
 
-and is in fact also **identical** to the solution of a generalised Tikhonov-regularised system as discussed in Section 2.6 (with suitable norms on the parameter space $X$ and on the observation space $Y$, in the notation there).
+and is in fact also **identical** to the solution of a generalised Tikhonov-regularised system as discussed in Section 2.5 (with suitable norms on the parameter space $X$ and on the observation space $Y$, in the notation there).
 
 #### The Laplace Approximation
 
-As in numerical optimisation for general, nonlinear deterministic problems, and in particular for the solution of Tikhonov-regularised, nonlinear inverse problems, such as (2.6.3), a powerful way to accelerate numerical methods is a change of metric, also referred to as **preconditioning**. For simplicity, let us restrict ourselves to a finite dimensional parameter space $H = \mathbb{R}^s$ and to additive Gaussian noise $E$ independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ again.
+As in numerical optimisation for general, nonlinear deterministic problems, and in particular for the solution of Tikhonov-regularised, nonlinear inverse problems, such as (2.5.3), a powerful way to accelerate numerical methods is a change of metric, also referred to as **preconditioning**. For simplicity, let us restrict ourselves to a finite dimensional parameter space $H = \mathbb{R}^s$ and to additive Gaussian noise $E$ independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ again.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.3.2</span><span class="math-callout__name">(Laplace Approximation)</span></p>
@@ -3973,7 +4119,7 @@ $$D_{\mathrm{H}}(\nu_n, \mathcal{L}_{\nu_n}) \le Cn^{-1/2}.$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.3.4</span></p>
 
-The scaled posterior log-likelihood in (5.3.5) is the same as the generalised Tikhonov functional (cf. Sect. 2.6)
+The scaled posterior log-likelihood in (5.3.5) is the same as the generalised Tikhonov functional (cf. Sect. 2.5)
 
 $$\Psi_{\alpha,\delta}(x) := \frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma - \alpha \log \pi_X(x) \tag{5.3.6}$$
 
@@ -4108,13 +4254,13 @@ In the case of uniform mesh refinement in two spatial dimensions with $d = 2$ an
 
 #### 5.4.3 Quasi-Monte Carlo
 
-We only consider quasi-Monte Carlo (QMC) methods in the context of the elliptic PDE in Section 5.2.1 with uniform diffusion coefficient $a$, as described in Example 4.5.12.
+We only consider quasi-Monte Carlo (QMC) methods in the context of the elliptic PDE in Section 5.2.1 with uniform diffusion coefficient $a$, as described in Example 4.5.17.
 
 The Karhunen-Loève expansion is truncated after $s$ terms, and we set $\Xi := (\xi_j)\_{j=1}^s$ with iid $\xi_j \sim \mathrm{uniform}(-1, 1)$, such that $\mu_\Xi$ is the product uniform measure on $V = [-1, 1]^s$. As quantity of interest, we consider a linear functional $B : H_0^1(D) \to \mathbb{R}$ of the PDE solution $u$, which, as a functional of the parameter vector $\Xi$ we denote by $Q := F(\Xi)$. The functional $F : V \to \mathbb{R}$ can then be written as the composition
 
 $$F := B \circ \mathcal{G} \circ T, \quad \text{such that} \quad \Xi \xrightarrow{T} a \xrightarrow{\mathcal{G}} u \xrightarrow{B} Q,$$
 
-where $T : V \to L^\infty(D)$ is the operator defined in (4.5.12) and $\mathcal{G} : L^\infty(D) \to H_0^1(D)$ is the solution operator. QMC methods are formulated as quadrature rules over the unit cube $[0, 1]^s$. Using the simple change of variables $x = 2v - \mathbf{1}$ from $[0, 1]$ to $[-1, 1]$, we will use a **randomly shifted rank-1 lattice rule** to approximate the integral. This takes the form
+where $T : V \to L^\infty(D)$ is the operator defined in Section 4.5.3 and $\mathcal{G} : L^\infty(D) \to H_0^1(D)$ is the solution operator. QMC methods are formulated as quadrature rules over the unit cube $[0, 1]^s$. Using the simple change of variables $x = 2v - \mathbf{1}$ from $[0, 1]$ to $[-1, 1]$, we will use a **randomly shifted rank-1 lattice rule** to approximate the integral. This takes the form
 
 $$\widehat{Q}_{h,N}^{\mathrm{QMC}} = \frac{1}{N} \sum_{i=1}^{N} F_h(\tilde{\Xi}^{(i)}), \quad \text{where} \quad \tilde{\Xi}^{(i)} := 2 \operatorname{frac}\left(\frac{iz}{N} + \Delta\right) - \mathbf{1}, \tag{5.4.14}$$
 
@@ -4892,7 +5038,14 @@ $$\mathbb{E}[F(Z_{j+1}) \mid Y^{[1:j+1]} = y^{[1:j+1]}] \approx \sum_{m=1}^{M} w
 
 In general, particle filters of this form can be viewed as sequential importance sampling method, where existing consistency results are based on perfect models and $M$ approaching infinity. In practical implementations, the generated weights tend to degenerate for small choices of the number of particles $M$. To overcome this issue, resampling methods based on the effective sample size have been considered in the literature.
 
+
 ## Appendix A: Basic Concepts in Functional Analysis
+
+In this appendix we put together the main concepts from functional analysis that will be needed in this lecture. We recommend the following supplementary references:
+
+* H. Alt, *Funktionalanalysis*, 6. Auflage, Springer, Berlin, 2012.
+* W. Rudin, *Functional Analysis*, 2nd ed., Mc-Graw-Hill, New York, 1991.
+* D. Werner, *Funktionalanalysis*, 6. Auflage, Springer, Berlin, 2007.
 
 ### A.1 Normed Spaces and Bounded Linear Operators
 
@@ -4900,11 +5053,30 @@ In general, particle filters of this form can be viewed as sequential importance
 
 A map $\lVert \cdot \rVert : X \to [0, \infty)$ is a **norm** on a vector space $X$ (over $\mathbb{K} = \mathbb{R}$), if
 
-1. $\lVert \lambda x \rVert = \|\lambda\| \lVert x \rVert$ for all $\lambda \in \mathbb{K}$, $x \in X$,
+1. $\lVert \lambda x \rVert = \lvert \lambda \rvert \lVert x \rVert$ for all $\lambda \in \mathbb{K}$, $x \in X$,
 2. $\lVert x + y \rVert \le \lVert x \rVert + \lVert y \rVert$ for all $x, y \in X$,
 3. $\lVert x \rVert = 0$ iff $x = 0$.
 
-The pair $(X, \lVert \cdot \rVert)$ is called a **normed space**. Two norms $\lVert \cdot \rVert_\alpha$ and $\lVert \cdot \rVert_\beta$ are **equivalent** if there are constants $c_1, c_2 > 0$ such that $c_1 \lVert x \rVert_\beta \le \lVert x \rVert_\alpha \le c_2 \lVert x \rVert_\beta$ for all $x \in X$. If $\dim(X) < \infty$ all norms on $X$ are equivalent.
+The pair $(X, \lVert \cdot \rVert)$ is called a **normed space**. Two norms $\lVert \cdot \rVert_\alpha$ and $\lVert \cdot \rVert_\beta$ are **equivalent** if there are constants $c_1, c_2 > 0$ such that $c_1 \lVert x \rVert_\beta \le \lVert x \rVert_\alpha \le c_2 \lVert x \rVert_\beta$ for all $x \in X$. If $\dim(X) < \infty$ all norms on $X$ are equivalent. The constants $c_1, c_2$ depend on the dimension of $X$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example A.1.1</span><span class="math-callout__name">(Examples of Norms)</span></p>
+
+The following maps are norms on
+
+1. $X = \mathbb{R}^n$, $n \in \mathbb{N}$:
+
+   $$\lVert x \rVert_p = \left( \sum_{j=1}^n |x_j|^p \right)^{1/p}, \quad 1 \le p < \infty, \quad \text{and} \quad \lVert x \rVert_\infty = \max_{j=1,\ldots,n} |x_j|;$$
+
+2. $X = l^p$ $(:= \lbrace (t_n) : t_n \in \mathbb{R}, \, \sum_{n=1}^\infty \lvert t_n \rvert^p < \infty \rbrace)$:
+
+   $$\lVert x \rVert_p = \left( \sum_{j=1}^\infty |x_j|^p \right)^{1/p}, \quad 1 \le p < \infty, \quad \text{and} \quad \lVert x \rVert_\infty = \max_{j \in \mathbb{N}} |x_j|;$$
+
+3. $X = L^p(\Omega)$ $(:= \lbrace f : \Omega \to \mathbb{K} : f \text{ measurable}, \, \int_\Omega \lvert f \rvert^p \, \mathrm{d}\lambda < \infty \rbrace)$ where $\Omega \subset \mathbb{R}^n$:
+
+   $$\lVert f \rVert_p = \left( \int_\Omega |f|^p \, \mathrm{d}\lambda \right)^{1/p}, \quad 1 \le p < \infty, \quad \text{and} \quad \lVert f \rVert_\infty = \operatorname{ess\,sup}_{x \in \Omega} |f(x)|.$$
+
+</div>
 
 A normed space $(X, \|\cdot\|_X)$ with $X \subset Y$ is said to be **continuously embedded** in $(Y, \lVert \cdot \rVert_Y)$, denoted by $X \hookrightarrow Y$, if there is a constant $C > 0$ such that $\lVert x \rVert_Y \le C \lVert x \rVert_X$ for all $x \in X$.
 
@@ -4916,7 +5088,22 @@ A subset $U \subset X$ is called
 * **compact**, if any sequence $(x_n) \subset U$ has a convergent subsequence $(x_{n_k})\_{k \ge 1}$ with limit $x \in U$;
 * **dense** in $X$, if for any $x \in X$ there exists a sequence $(x_n) \subset U$ with $x_n \to x$.
 
-A normed space $X$ is said to be **complete**, if every Cauchy sequence in $X$ converges. Such a space $X$ is also called a **Banach space**.
+The union of $U$ with the set of all limits of convergent sequences in $U$ is called the **closure** $\overline{U}$ of $U$. It follows that $U$ is dense in $\overline{U}$.
+
+A normed space $X$ is said to be **complete**, if every Cauchy sequence in $X$ converges. Such a space $X$ is also called a **Banach space**. If $X$ is not complete, we denote by $\overline{X}$ its **completion** (w.r.t. the norm $\lVert \cdot \rVert_X$).
+
+For $x \in X$ and $r > 0$ we define
+
+* the **open ball** $U_r(x) = \lbrace z \in X : \lVert x - z \rVert_X < r \rbrace$ and
+* the **closed ball** $B_r(x) = \lbrace z \in X : \lVert x - z \rVert_X \le r \rbrace$.
+
+The closed ball at $0$ with radius $1$ is called the **unit ball** $B_X$ in $X$. Furthermore, the set $U \subset X$ is called
+
+* **open**, if for all $x \in U$ there exists a $r > 0$ such that $U_r(x) \subset U$;
+* **bounded**, if there exists an $r > 0$ such that $U$ is contained in the closed ball $B_r(0)$;
+* **convex**, if for all $x, y \in U$ and $\lambda \in (0, 1)$ we have $\lambda x + (1 - \lambda) y \in U$.
+
+The complement of an open set in a normed space is closed and vice versa. As a consequence of the norm axioms, all open and closed balls are convex.
 
 #### A.1.2 Bounded Operators
 
@@ -4930,13 +5117,19 @@ We say that $F$ is **continuous** in $x \in U$, if for all $\epsilon > 0$ there 
 
 A map $F : X \to Y$ is continuous iff $x_n \to x$ implies $F(x_n) \to F(x)$, and **closed**, if for any sequence $x_n \to x$ with $F(x_n) \to y$ it follows that $F(x) = y$.
 
-If $F : X \to Y$ is linear, then the continuity of $F$ is equivalent to the condition that there exists a constant $C > 0$ such that $\lVert Fx \rVert_Y \le C \lVert x \rVert_X$ for all $x \in X$. For that reason continuous, linear maps are also called **bounded** and we speak about a bounded, linear operator.
+If $F : X \to Y$ is linear, i.e., $F(\lambda_1 x_1 + \lambda_2 x_2) = \lambda_1 F(x_1) + \lambda_2 F(x_2)$ for all $x_1, x_2 \in X$, $\lambda_1, \lambda_2 \in \mathbb{R}$, then the continuity of $F$ is equivalent to the condition that there exists a constant $C > 0$ such that $\lVert Fx \rVert_Y \le C \lVert x \rVert_X$ for all $x \in X$. For that reason continuous, linear maps are also called **bounded** and we speak about a bounded, linear operator. (To stress this in the following, we will denote such maps with $A$.)
 
 If $Y$ is complete, then the space of all bounded, linear operators from $X$ to $Y$, denoted by $\mathcal{L}(X, Y)$, is a Banach space with the **operator norm**
 
 $$\lVert A \rVert_{\mathcal{L}(X,Y)} = \sup_{x \in X \setminus \lbrace 0 \rbrace} \frac{\lVert Ax \rVert_Y}{\lVert x \rVert_X} = \sup_{\lVert x \rVert_X \le 1} \lVert Ax \rVert_Y.$$
 
-If $A \in \mathcal{L}(X, Y)$ is bijective, the inverse $A^{-1} : Y \to X$ is bounded iff there exists a $c > 0$ such that $c \lVert x \rVert_X \le \lVert Ax \rVert_Y$ for all $x \in X$, and $\lVert A^{-1} \rVert_{\mathcal{L}(Y,X)} = c^{-1}$ for the largest possible $c$.
+It is equal to the smallest constant $C$ in the boundedness condition above. As for linear operators in $\mathbb{R}^n$ we say that $A$ is
+
+* **injective**, if $\mathcal{N}(A) = \lbrace 0 \rbrace$,
+* **surjective**, if $\mathcal{R}(A) = Y$,
+* **bijective**, if $A$ is injective and surjective.
+
+If $A \in \mathcal{L}(X, Y)$ is bijective, the inverse $A^{-1} : Y \to X$ is bounded iff there exists a $c > 0$ such that $c \lVert x \rVert_X \le \lVert Ax \rVert_Y$ for all $x \in X$, and $\lVert A^{-1} \rVert_{\mathcal{L}(Y,X)} = c^{-1}$ for the largest possible $c$. Whether this is the case follows from the following fundamental theorem of functional analysis.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.1.2</span><span class="math-callout__name">(Closed Graph Theorem)</span></p>
@@ -4983,6 +5176,8 @@ Also, if $A_n$ converges pointwise to $A : X \to Y$ then $A$ is bounded.
 
 ### A.2 Hilbert Spaces, Compact Operators and the Spectral Theorem
 
+Inverse problems can be analysed in Banach spaces, but the theory can be presented more comprehensively in Hilbert spaces. It also provides a clearer link to underdetermined or ill-conditioned linear equation systems in $\mathbb{R}^n$, which have been covered, e.g., in introductory numerical analysis courses.
+
 #### A.2.1 Scalar Product and Weak Convergence
 
 Hilbert spaces distinguish themselves from Banach spaces by having one additional structure: a map $\langle \cdot, \cdot \rangle : X \times X \to \mathbb{R}$, called a **scalar product**, with the properties
@@ -4991,9 +5186,30 @@ Hilbert spaces distinguish themselves from Banach spaces by having one additiona
 2. $\langle x, y \rangle = \langle y, x \rangle$ for all $x, y \in X$,
 3. $\langle x, x \rangle \ge 0$ for all $x \in X$, with $\langle x, x \rangle = 0$ iff $x = 0$.
 
-The scalar product induces a norm $\lVert x \rVert_X := \sqrt{\langle x, x \rangle_X}$ that satisfies the Cauchy-Schwarz inequality $\|\langle x, y \rangle_X\| \le \lVert x \rVert_X \lVert y \rVert_X$. A Banach space with a scalar product $(X, \langle \cdot, \cdot \rangle_X)$ is called a **Hilbert space**.
+The scalar product induces a norm $\lVert x \rVert_X := \sqrt{\langle x, x \rangle_X}$ that satisfies the Cauchy-Schwarz inequality $\lvert \langle x, y \rangle_X \rvert \le \lVert x \rVert_X \lVert y \rVert_X$. A Banach space with a scalar product $(X, \langle \cdot, \cdot \rangle_X)$ is called a **Hilbert space**.
 
-The scalar product also allows to define a further notion of convergence: a sequence $(x_n) \subset X$ **converges weakly** (in $X$) to $x \in X$ — we write $x_n \rightharpoonup x$ — if $\langle x_n, z \rangle_X \to \langle x, z \rangle_X$ for all $z \in X$. In finite dimensional spaces strong and weak convergence are equivalent. In infinite dimensional spaces, strong convergence implies weak convergence, but the converse is not true. However, if a sequence $(x_n)$ converges weakly to $x \in X$ and in addition $\lVert x_n \rVert_X \to \lVert x \rVert_X$, then $(x_n)$ converges also strongly to $x$.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example A.2.1</span><span class="math-callout__name">(Examples of Scalar Products)</span></p>
+
+We can define the following scalar products on
+
+1. $X = \mathbb{R}^n$, $n \in \mathbb{N}$:
+
+   $$\langle x, y \rangle = \sum_{j=1}^n x_j y_j \qquad \text{for all } x, y \in X;$$
+
+2. $X = l^2$:
+
+   $$\langle x, y \rangle = \sum_{j=1}^\infty x_j y_j \qquad \text{for all } x, y \in X;$$
+
+3. $X = L^2(\Omega)$, $\Omega \subset \mathbb{R}^n$:
+
+   $$\langle f, g \rangle = \int_\Omega f g \, \mathrm{d}\lambda \qquad \text{for all } f, g \in X.$$
+
+In all cases the scalar product also induces a canonical norm on $X$.
+
+</div>
+
+The scalar product also allows to define a further notion of convergence: a sequence $(x_n) \subset X$ **converges weakly** (in $X$) to $x \in X$ — we write $x_n \rightharpoonup x$ — if $\langle x_n, z \rangle_X \to \langle x, z \rangle_X$ for all $z \in X$. It generalises coordinatewise convergence in $\mathbb{R}^n$. In finite dimensional spaces strong and weak convergence are equivalent. In infinite dimensional spaces, strong convergence implies weak convergence, but the converse is not true. However, if a sequence $(x_n)$ converges weakly to $x \in X$ and in addition $\lVert x_n \rVert_X \to \lVert x \rVert_X$, then $(x_n)$ converges also strongly to $x$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.2.2</span><span class="math-callout__name">(Bolzano-Weierstrass)</span></p>
@@ -5001,6 +5217,10 @@ The scalar product also allows to define a further notion of convergence: a sequ
 Every bounded sequence in a Hilbert space has a weakly convergent subsequence.
 
 </div>
+
+Conversely, every weakly convergent sequence is bounded.
+
+Let us now consider bounded, linear operators $A \in \mathcal{L}(X, Y)$ on Hilbert spaces $X, Y$. Of particular interest is the special case $Y = \mathbb{R}$, i.e., the space $\mathcal{L}(X, \mathbb{R})$ of **bounded, linear functionals** on $X$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.2.3</span><span class="math-callout__name">(Riesz-Fischer)</span></p>
@@ -5013,7 +5233,7 @@ This theorem allows to define an **adjoint operator** $A^* \in \mathcal{L}(Y, X)
 
 #### A.2.2 Orthogonality and Orthogonal Systems
 
-Two elements $x, y \in X$ are **orthogonal**, if $\langle x, y \rangle_X = 0$. For any subset $U \subset X$, the **orthogonal complement** $U^\perp := \lbrace x \in X : \langle x, u \rangle_X = 0 \text{ for all } u \in U \rbrace$ is a closed subspace of $X$. If $U$ is a closed subspace, then $U = (U^\perp)^\perp$ and there exists an **orthogonal decomposition** $X = U \oplus U^\perp$, i.e., each element $x \in X$ can be uniquely decomposed as $x = u + u_\perp$, $u \in U$, $u_\perp \in U^\perp$.
+Two elements $x, y \in X$ are **orthogonal**, if $\langle x, y \rangle_X = 0$. For any subset $U \subset X$, the **orthogonal complement** $U^\perp := \lbrace x \in X : \langle x, u \rangle_X = 0 \text{ for all } u \in U \rbrace$ is a closed subspace of $X$. In particular, we have $X^\perp = \lbrace 0 \rbrace$ and $U \subset (U^\perp)^\perp$. If $U$ is a closed subspace, then $U = (U^\perp)^\perp$ (and thus also $\lbrace 0 \rbrace^\perp = X$) and there exists an **orthogonal decomposition** $X = U \oplus U^\perp$, i.e., each element $x \in X$ can be uniquely decomposed as $x = u + u_\perp$, $u \in U$, $u_\perp \in U^\perp$.
 
 The assignment $x \mapsto u$ defines the **orthogonal projection** $P_U \in \mathcal{L}(X, X)$ onto $U$. It has the following properties:
 
@@ -5023,13 +5243,26 @@ The assignment $x \mapsto u$ defines the **orthogonal projection** $P_U \in \mat
 4. $\lVert x - P_U x \rVert_X = \min_{u \in U} \lVert x - u \rVert_X$;
 5. $z = P_U x$ iff $z \in U$ and $z - u \in U^\perp$.
 
-For any $A \in \mathcal{L}(X, Y)$: $\mathcal{R}(A)^\perp = \mathcal{N}(A^\ast)$ and thus $\mathcal{N}(A^\ast)^\perp = \overline{\mathcal{R}(A)}$, and $\mathcal{R}(A^\ast)^\perp = \mathcal{N}(A)$ and thus $\mathcal{N}(A)^\perp = \overline{\mathcal{R}(A^\ast)}$.
+If the subspace $U$ is not closed, we only have $(U^\perp)^\perp = \overline{U} \supset U$. Thus, for any $A \in \mathcal{L}(X, Y)$: $\mathcal{R}(A)^\perp = \mathcal{N}(A^\ast)$ and thus $\mathcal{N}(A^\ast)^\perp = \overline{\mathcal{R}(A)}$, and $\mathcal{R}(A^\ast)^\perp = \mathcal{N}(A)$ and thus $\mathcal{N}(A)^\perp = \overline{\mathcal{R}(A^\ast)}$. The kernel of a bounded linear operator is always closed and $A$ is injective iff $\mathcal{R}(A^\ast)$ is dense in $X$.
 
-A set $U \subset X$ consisting of pairwise orthogonal elements is called an **orthogonal system**. If additionally $\langle x, y \rangle_X = \delta_{xy}$ for all $x, y \in U$, we speak of an **orthonormal system**. An orthonormal system is **complete** (called an **orthonormal basis (ONB)**) if there exists no orthonormal system $V \subset X$ with $U \subsetneq V$. In the case of equality in the **Bessel inequality**
+A set $U \subset X$ consisting of pairwise orthogonal elements is called an **orthogonal system**. If additionally $\langle x, y \rangle_X = \delta_{xy}$ for all $x, y \in U$, we speak of an **orthonormal system**. An orthonormal system is **complete** (called an **orthonormal basis (ONB)**) if there exists no orthonormal system $V \subset X$ with $U \subsetneq V$. Every orthonormal system $U \subset X$ satisfies the **Bessel inequality**
 
 $$\sum_{y \in U} |\langle x, y \rangle_X|^2 \le \lVert x \rVert_X^2 \qquad \text{for all } x \in X, \tag{A.1}$$
 
-$U$ is complete and $x = \sum_{y \in U} \langle x, y \rangle_X y$ for all $x \in X$. Every Hilbert space has an ONB. If the ONB is countable, the Hilbert space is called **separable**.
+with only countably many nonzero terms in the sum. In the case of equality, $U$ is complete and $x = \sum_{y \in U} \langle x, y \rangle_X y$ for all $x \in X$. Every Hilbert space has an ONB. If the ONB is countable, the Hilbert space is called **separable**. In that case, there exists a sequence $(u_n) \subset U$ such that $U = \operatorname{span}(u_n)$. It follows from the Bessel inequality that the sequence $(u_n)$ converges weakly to zero (but not strongly, since $\lVert u_n \rVert_X = 1$).
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example A.2.4</span><span class="math-callout__name">(ONB of $L^2([0,1])$)</span></p>
+
+Let $X = L^2([0, 1])$. An ONB $(u_n)$ for $X$ is given by
+
+$$u_n = \begin{cases} \sqrt{2} \sin(\pi (n+1) x) & n > 0 \text{ odd} \\ \sqrt{2} \cos(\pi n x) & n > 0 \text{ even} \\ 1 & n = 0. \end{cases}$$
+
+</div>
+
+Every closed subspace $U \subset X$ has an ONB $(u_n)$, which can be used to define the orthogonal projection onto $U$ by
+
+$$P_U x = \sum_{j=1}^{\infty} \langle x, u_j \rangle_X u_j.$$
 
 #### A.2.3 Compact Operators and the Spectral Theorem
 
@@ -5037,7 +5270,7 @@ In the same way as Hilbert spaces are a generalisation of finite dimensional vec
 
 An operator $A : X \to Y$ is said to be **compact**, if the image of any bounded sequence $(x_n) \subset X$ has a convergent subsequence $(Ax_{n_k})\_{k \ge 1} \subset Y$. Equivalently: $A$ is compact iff $A$ maps weakly convergent sequences in $X$ to strongly convergent sequences in $Y$ (also called **completely continuous**). Compact operators will be denoted by $K$.
 
-Clearly every linear operator is compact if $Y$ is finite dimensional. In particular, the identity operator $\mathrm{Id} : X \to X$ is compact iff $\dim(X) < \infty$. The space $K(X, Y)$ of all compact operators from $X$ to $Y$ is a closed subspace of $\mathcal{L}(X, Y)$. If $A, S \in \mathcal{L}(X, Y)$ and at least one of the two operators is compact, then $S \circ A$ is also compact. Finally, $A^*$ is compact iff $A$ is compact.
+Clearly every linear operator is compact if $Y$ is finite dimensional. In particular, the identity operator $\mathrm{Id} : X \to X$ is compact iff $\dim(X) < \infty$. The space $\mathcal{K}(X, Y)$ of all compact operators from $X$ to $Y$ is a closed subspace of $\mathcal{L}(X, Y)$ (and hence a Banach space with the operator norm), and the limit of a sequence of linear operators with finite dimensional range is also compact. If $A, S \in \mathcal{L}(X, Y)$ and at least one of the two operators is compact, then $S \circ A$ is also compact. Finally, $A^*$ is compact iff $A$ is compact (Schauder Fixed-Point Theorem).
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.2.5</span><span class="math-callout__name">(Integral Operators)</span></p>
@@ -5052,12 +5285,12 @@ For the adjoint operator $K^* \in \mathcal{L}(X, X)$ we have $[K^\ast y] (s) = \
 
 </div>
 
-The analogy between compact operators and matrices is primarily related to the fact that compact linear operators have only countably many eigenvalues.
+The analogy between compact operators and matrices is primarily related to the fact that compact linear operators have only countably many eigenvalues. (For bounded linear operators that is not necessarily the case!) We even have the following extension of the Schur decomposition for matrices.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.2.6</span><span class="math-callout__name">(Spectral Theorem)</span></p>
 
-Let $X$ be a Hilbert space let $K \in K(X, X)$ be self-adjoint. Then there exists an orthonormal system $(u_n) \subset X$ and a null sequence $(\lambda_n) \subset \mathbb{R} \setminus \lbrace 0 \rbrace$ with
+Let $X$ be a Hilbert space and let $K \in \mathcal{K}(X, X)$ be self-adjoint. Then there exists an orthonormal system $(u_n) \subset X$ and a null sequence $(\lambda_n) \subset \mathbb{R} \setminus \lbrace 0 \rbrace$ with
 
 $$Kx = \sum_{n=1}^{\infty} \lambda_n \langle x, u_n \rangle_X u_n \qquad \text{for all } x \in X.$$
 
@@ -5065,7 +5298,7 @@ The sequence $(u_n)$ forms an ONB for $\overline{\mathcal{R}(K)}$.
 
 </div>
 
-Letting $x = u_n$, we can see that $u_n$ is an eigenvector corresponding to the eigenvalue $\lambda_n$ with $Ku_n = \lambda_n u_n$. Typically, the eigenvalues and the corresponding eigenvectors are ordered such that $\|\lambda_1\| \ge \|\lambda_2\| \ge \ldots \ge 0$. It follows that $\lVert K \rVert_{\mathcal{L}(X,X)} = \|\lambda_1\|$.
+Letting $x = u_n$, we can see that $u_n$ is an eigenvector corresponding to the eigenvalue $\lambda_n$ with $Ku_n = \lambda_n u_n$. Typically, the eigenvalues and the corresponding eigenvectors are ordered such that $\lvert \lambda_1 \rvert \ge \lvert \lambda_2 \rvert \ge \ldots \ge 0$. It follows that $\lVert K \rVert_{\mathcal{L}(X,X)} = \lvert \lambda_1 \rvert$.
 
 ## Appendix B: Basic Concepts of Measure Theory
 
@@ -5137,6 +5370,13 @@ For a topological space $(\Omega, \mathcal{T})$ we call $\sigma(\mathcal{T})$ th
   <p class="math-callout__title"><span class="math-callout__label">Remark B.1.6</span></p>
 
 There exist sets $A \subseteq \mathbb{R}^d$ which do not belong to $\mathcal{B}(\mathbb{R}^d)$, i.e. $\mathcal{B}(\mathbb{R}^d) \neq 2^{\mathbb{R}^d}$. Since complements of open sets are closed (and closed sets are in general not open), the Euclidean topology on $\mathbb{R}^d$ is not a $\sigma$-algebra.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise B.1.7</span></p>
+
+Use Rmk. B.1.6 to show that $\mathcal{B}(\mathbb{R}^d)$ is not a topology.
 
 </div>
 
@@ -5238,7 +5478,7 @@ Since $\mathcal{E} = \lbrace (a, b] : a < b \rbrace$ generates $\mathcal{B}(\mat
 
 $$\lambda_d\left( \times_{j=1}^d (a_j, b_j] \right) = \prod_{j=1}^d (b_j - a_j) \qquad \forall a_j < b_j, \tag{B.3}$$
 
-which is again called the Lebesgue measure. Whenever $d$ is clear from the context, we drop the index and simply write $\lambda$ instead of $\lambda_d$. We also mention that $\bigotimes_{j=1}^d \mathcal{B}(\mathbb{R}) = \mathcal{B}(\mathbb{R}^d)$.
+which is again called the Lebesgue measure. Whenever $d$ is clear from the context, we drop the index and simply write $\lambda$ instead of $\lambda_d$. We also mention that $\bigotimes_{j=1}^d \mathcal{B}(\mathbb{R}) = \mathcal{B}(\mathbb{R}^d)$ (exercise).
 
 ### B.3 Measurability
 
@@ -5316,6 +5556,8 @@ Let $(\Omega, \mathcal{A})$ be a measurable space and let $f_n : \Omega \to \mat
 * if $f(\omega) := \lim_{n \to \infty} f_n(\omega) \in \mathbb{R}$ for all $\omega \in \Omega$, then $f$ is $\mathcal{A}$-measurable.
 
 </div>
+
+The proof is left as an exercise (Hint: use that $\mathcal{E} = \lbrace (a, \infty) : a \in \mathbb{R} \rbrace$ generates $\mathcal{B}(\mathbb{R})$ and write $\lim_n f_n = \sup_{n \in \mathbb{N}} \inf_{m \ge n} f_m$).
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.3.7</span><span class="math-callout__name">(Pettis Measurability Theorem, First Version)</span></p>
@@ -5490,6 +5732,6 @@ Let $f_n : \Omega \to V$ be a sequence of strongly $\mu$-measurable functions, a
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary B.3.16</span></p>
 
-Let $f : \Omega \to V$ be strongly $\mu$-measurable and let $W$ be another Banach space. If $\phi : V \to W$ is continuous, then $\phi \circ f : \Omega \to V$ is strongly $\mu$-measurable.
+Let $f : \Omega \to V$ be strongly $\mu$-measurable and let $W$ be another Banach space. If $\phi : V \to W$ is continuous, then $\phi \circ f : \Omega \to W$ is strongly $\mu$-measurable.
 
 </div>

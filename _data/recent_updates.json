@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-06-12",
+   "added": false
+  },
+  {
    "title": "Proving Compactness",
    "url": "/subpages/stuff_i_found_interesting/solving_methods/proving_operator_compactness/",
    "date": "2026-06-12",
@@ -35,12 +41,6 @@
    "url": "/notes/maths_topics/",
    "date": "2026-06-10",
    "added": true
-  },
-  {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-06-06",
-   "added": false
   },
   {
    "title": "Algorithms for Combinatorial Optimization",

@@ -5,6 +5,7 @@ date: 2026-04-20
 # excerpt: "Lecture notes on PDEs in data science: gradient flows, energy landscapes, existence, uniqueness, and stability, with a view toward applications in physics and machine learning."
 tags:
   - compactness
+  - compact-operators
   - operator-theory
   - functional-analysis
   - banach-space
@@ -23,7 +24,8 @@ This method directly builds on your previous query. If you can show that $T$ is 
 * **The Theorem:** A bounded linear operator on a separable Hilbert space (or a Banach space with the approximation property) is compact if and only if there exists a sequence of finite-rank operators $\lbrace T_n\rbrace$ such that $\lim_{n \to \infty} \Vert{}T - T_n\Vert{} = 0$.
 * **How to use it:** Construct a sequence of simpler, finite-dimensional operators $T_n$ (e.g., by truncating an infinite basis expansion) and prove that the operator norm of the error $\Vert{}T - T_n\Vert{}$ vanishes as $n \to \infty$.
 
-- [BIP: Sheet02, Exercise 1c](/subpages/books/numerical_methods_for_bip/problems/sheet02/)
+
+- [BIP: Sheet02, Exercise 2.1c](/subpages/books/numerical_methods_for_bip/problems/sheet02/)
 
 ## 2. The Sequential Compactness Definition
 
@@ -38,8 +40,8 @@ When your operator maps into a space of continuous functions (like $C(K)$), you 
 
 * **The Test:** The image of the unit ball $T(B_1(0))$ must be **uniformly bounded** and **equicontinuous**.
 * **How to use it:**
-1. Prove that for all $x$ with $\Vert{}x\Vert{} \leq 1$, the function $Tx$ is bounded by a constant independent of $x$.
-   2. Prove that for every $\varepsilon > 0$, there exists a $\delta > 0$ such that $\vert{}(Tx)(t_1) - (Tx)(t_2)\vert{} < \varepsilon$ whenever $\vert{}t_1 - t_2\vert{} < \delta$, uniformly for all $x$ in the unit ball.
+  * 1. Prove that for all $x$ with $\Vert{}x\Vert{} \leq 1$, the function $Tx$ is bounded by a constant independent of $x$.
+  * 2. Prove that for every $\varepsilon > 0$, there exists a $\delta > 0$ such that $\vert{}(Tx)(t_1) - (Tx)(t_2)\vert{} < \varepsilon$ whenever $\vert{}t_1 - t_2\vert{} < \delta$, uniformly for all $x$ in the unit ball.
 
 ## 4. Operator Composition and Ideals
 
