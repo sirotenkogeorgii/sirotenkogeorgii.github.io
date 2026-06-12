@@ -19,11 +19,13 @@ tags:
 
 3. Convexity for $\alpha \in [0, h]$
 
-4. Young inequality (general)
+4. **Young inequality (general)**
    
-   $$ab \leq \frac{a^p}{p} + \frac{b^q}{q} \qquad \forall a,b\in\mathbb{R}, \quad \forall p,q > 1: \frac{1}{p} + \frac{1}{q} = 1$$
+   $$ab \leq \frac{a^p}{p} + \frac{b^q}{q} \qquad \forall a,b\in\mathbb{R},$$
+   
+   $$\frac{1}{p} + \frac{1}{q} = 1 \qquad \forall p,q > 1$$
 
-5. Young inequality (frequent instance)
+5. **Young inequality (frequent instance)**
    
    $$ab \leq \frac{1}{2}a^2 + \frac{1}{2}b^2 \qquad \forall a,b\in\mathbb{R}$$
 
@@ -32,22 +34,30 @@ tags:
 8. Minkowski's Inequality
 9. Minkowski's Integral Inequality
 10. Fenchel Inequality
-11. Cauchy-Schwarz inequality for L^2 complex-valued functions
-12. Log and sqrt:
+11. Cauchy-Schwarz inequality for $L^2$ complex-valued functions
+12. **The Matrix Exponential**
+    
+    $$e^A = \sum_{k=0}^{\infty} \frac{A^k}{k!}$$
+
+13. **The Scalar Exponential**
+
+    $$e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!}$$
+
+15. **Log and sqrt:**
     
     $$\sqrt{x} - 1 \geq \frac{\log x}{2} \qquad \forall x\geq 0$$
 
-13. l1 < \sqrt n l2
+16. **$l1 < \sqrt n l2$**
     
     $$n\sum_{i=1}^n a_i^2 \;-\; \Big(\sum_{i=1}^n a_i\Big)^2 \;=\; \sum_{1\le i<j\le n} (a_i - a_j)^2$$
 
-14. for $p,q\geq 0$
+17. For $p,q\geq 0$
     
     $$\lvert p - q \rvert = \lvert \sqrt{p} - \sqrt{q} \rvert (\sqrt{p} + \sqrt{q})$$
 
     * derived from $a^2-b^2 = (a-b)(a+b)$
 
-15. Some algebraic inequality: 
+18. Some algebraic inequality: 
 
     $$1−(1−t)^k \leq \min(1,kt) \text{for } t\in[0,1]$$
 
@@ -59,12 +69,12 @@ tags:
 
 ## Tricks
 
-1. Constant function to integral to derivative:
+1. **Constant function to integral to derivative:**
    
     $$h \lVert \dfrac{x_l - x_{l-1}}{h} \rVert^2 = \int_{(l-1)h}^{lh} \lVert \dfrac{x_l - x_{l-1}}{h} \rVert^2 dt = \int_{(l-1)h}^{lh} \lVert \dfrac{d}{dt} \tilde{x}_h(t) \rVert^2 dt$$
 
-2. The standard trick is to split the kernel mass evenly between two Cauchy–Schwarz factors:
-   * The natural attempt — Cauchy–Schwarz in $y$ — fails because $K\in L^1$, not $L^2$
+2. **The standard trick is to split the kernel mass evenly between two Cauchy–Schwarz factors:**
+   * **The natural attempt — Cauchy–Schwarz in $y$ — fails because $K\in L^1$, not $L^2$**
      
      $$\lvert K(x-y) f(y)\rvert = \lvert K(x-y)\rvert^{1/2} \cdot \lvert K(x-y)\rvert^{1/2} \lvert f(y)\rvert$$
 

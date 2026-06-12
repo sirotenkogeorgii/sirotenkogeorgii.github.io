@@ -2918,7 +2918,11 @@ Let $A, B \in \mathbb{R}^{n \times n}$.
 <details markdown="1">
 <summary>Proof</summary>
 
-**(1)** Let $A = Q \Lambda Q^\top$ be the spectral decomposition, so $a_{ij} = \sum_{k=1}^n q_{ik} \lambda_k q_{jk}$ with $\lambda_k \geq 0$. For any nonzero $x \neq 0$:
+**(1)** Let $A = Q \Lambda Q^\top$ be the spectral decomposition, so 
+
+$$a_{ij} = \sum_{k=1}^n q_{ik} \lambda_k q_{jk}$$
+
+with $\lambda_k \geq 0$. For any nonzero $x \neq 0$:
 
 $$
 x^\top(A \circ B)x = \sum_{i,j=1}^n x_i x_j a_{ij} b_{ij} = \sum_{k=1}^n \lambda_k \sum_{i,j=1}^n b_{ij}(q_{ik}x_i)(q_{jk}x_j) = \sum_{k=1}^n \lambda_k (y^{(k)})^\top B y^{(k)} \geq 0,
@@ -2926,7 +2930,11 @@ $$
 
 where $y^{(k)} \coloneqq (q_{1k}x_1, \ldots, q_{nk}x_n)^\top$.
 
-**(2)** For positive definite $A, B$, the equality $x^\top(A \circ B)x = 0$ holds only when $y^{(k)} = 0$ for all $k$ (since $B$ is positive definite). Since $0 = \sum_{i,k=1}^n (y_i^{(k)})^2 = \sum_{i,k=1}^n (q_{ik}x_i)^2 = \sum_{i=1}^n x_i^2 \sum_{k=1}^n q_{ik}^2 = \sum_{i=1}^n x_i^2$, we must have $x = 0$.
+**(2)** For positive definite $A, B$, the equality $x^\top(A \circ B)x = 0$ holds only when $y^{(k)} = 0$ for all $k$ (since $B$ is positive definite). Since 
+
+$$0 = \sum_{i,k=1}^n (y_i^{(k)})^2 = \sum_{i,k=1}^n (q_{ik}x_i)^2 = \sum_{i=1}^n x_i^2 \sum_{k=1}^n q_{ik}^2 = \sum_{i=1}^n x_i^2,$$
+
+we must have $x = 0$.
 
 </details>
 </div>
@@ -2948,11 +2956,29 @@ $$\lVert A \circ B \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$$
 <details markdown="1">
 <summary>Proof</summary>
 
-For any square matrix $C$, $\lVert C \rVert_2^2 = \rho(C^\topC) \leq \lVert C^\topC \rVert_1 \leq \lVert C \rVert_1$. Setting $C \coloneqq A \circ B$, we get $\lVert A \circ B \rVert_2^2 \leq \lVert A^\top \circ B^\top \rVert_1 \cdot \lVert A \circ B \rVert_1$.
+For any square matrix $C$, 
 
-Now $\lVert A \circ B \rVert_1 = \max_j \sum_i |a_{ij} b_{ij}| = \max_j \langle |A_{*j}|, |B_{*j}| \rangle \leq \max_j \lVert A_{*j} \rVert_2 \cdot \lVert B_{*j} \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$ by Cauchy--Schwarz and the fact that $\max_j \sqrt{e_j^\top A^\top A e_j} \leq \sqrt{\lambda_1(A^\topA)} = \lVert A \rVert_2$.
+$$\lVert C \rVert_2^2 = \rho(C^\top C) \leq \lVert C^\top C \rVert_1 \leq \lVert C \rVert_1.$$
 
-Similarly $\lVert A^\top \circ B^\top \rVert_1 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$, giving $\lVert A \circ B \rVert_2^2 \leq \lVert A \rVert_2^2 \cdot \lVert B \rVert_2^2$.
+Setting $C \coloneqq A \circ B$, we get 
+
+$$\lVert A \circ B \rVert_2^2 \leq \lVert A^\top \circ B^\top \rVert_1 \cdot \lVert A \circ B \rVert_1.$$
+
+Now 
+
+$$\lVert A \circ B \rVert_1 = \max_j \sum_i |a_{ij} b_{ij}| = \max_j \langle |A_{*j}|, |B_{*j}| \rangle \leq \max_j \lVert A_{*j} \rVert_2 \cdot \lVert B_{*j} \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$$
+
+by Cauchy--Schwarz and the fact that 
+
+$$\max_j \sqrt{e_j^\top A^\top A e_j} \leq \sqrt{\lambda_1(A^\topA)} = \lVert A \rVert_2.$$
+
+Similarly 
+
+$$\lVert A^\top \circ B^\top \rVert_1 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2,$$
+
+giving 
+
+$$\lVert A \circ B \rVert_2^2 \leq \lVert A \rVert_2^2 \cdot \lVert B \rVert_2^2$$
 
 </details>
 </div>
@@ -2995,16 +3021,24 @@ The set $\mathcal{S}\_+$ forms a convex cone in the space of symmetric matrices 
 <details markdown="1">
 <summary>Proof</summary>
 
-The set $\mathcal{S}_+$ is closed under addition and nonnegative scalar multiplication, so it forms a convex cone. Its interior consists of positive definite matrices (since these are exactly the ones with all eigenvalues strictly positive, forming an open set).
+The set $\mathcal{S}\_{+}$ is closed under addition and nonnegative scalar multiplication, so it forms a convex cone. Its interior consists of positive definite matrices (since these are exactly the ones with all eigenvalues strictly positive, forming an open set).
 
-Every $A \in \mathcal{S}_+$ can be written via its spectral decomposition as $A = Q\Lambda Q^\top = \sum_{i=1}^n \lambda_i q_i q_i^\top$, where $q_i = Q_{*i}$. Thus every positive semidefinite matrix is a nonnegative combination of rank-$1$ matrices $xx^\top$.
+Every $A \in \mathcal{S}\_{+}$ can be written via its spectral decomposition as 
 
-It remains to show that matrices of the form $xx^\top$ are extreme. Suppose $xx^\top = \alpha A + \beta B$ where $A, B \in \mathcal{S}_+$ and $\alpha, \beta > 0$. Without loss of generality let $\lVert x \rVert_2 = 1$ and extend to an orthonormal basis $x, x_2, \ldots, x_n$. For each $i = 2, \ldots, n$: $0 = x_i^\top(xx^\top)x_i = \alpha x_i^\top A x_i + \beta x_i^\top B x_i \geq 0$, so $x_i^\top A x_i = x_i^\top B x_i = 0$. By Lemma 11.1, $Ax_i = Bx_i = 0$. This means $A$ and $B$ have rank at most $1$ and $\operatorname{Ker}(A) = \operatorname{Ker}(B) = \operatorname{Ker}(xx^\top)$, hence $A$ and $B$ must be positive multiples of $xx^\top$.
+$$A = Q\Lambda Q^\top = \sum_{i=1}^n \lambda_i q_i q_i^\top$$
+
+where $q_i = Q_{\ast i}$. Thus every positive semidefinite matrix is a nonnegative combination of rank-$1$ matrices $xx^\top$.
+
+It remains to show that matrices of the form $xx^\top$ are extreme. Suppose $xx^\top = \alpha A + \beta B$ where $A, B \in \mathcal{S}\_{+}$ and $\alpha, \beta > 0$. Without loss of generality let $\lVert x \rVert_2 = 1$ and extend to an orthonormal basis $x, x_2, \ldots, x_n$. For each $i = 2, \ldots, n$: 
+
+$$0 = x_i^\top(xx^\top)x_i = \alpha x_i^\top A x_i + \beta x_i^\top B x_i \geq 0,$$
+
+so $x_i^\top A x_i = x_i^\top B x_i = 0$. By Lemma 11.1, $Ax_i = Bx_i = 0$. This means $A$ and $B$ have rank at most $1$ and $\operatorname{Ker}(A) = \operatorname{Ker}(B) = \operatorname{Ker}(xx^\top)$, hence $A$ and $B$ must be positive multiples of $xx^\top$.
 
 </details>
 </div>
 
-If we extend the set $\mathcal{S}_+$ to a full space (by taking the intersection with a hyperplane), we obtain a geometric body called a **spectrahedron**.
+If we extend the set $\mathcal{S}\_{+}$ to a full space (by taking the intersection with a hyperplane), we obtain a geometric body called a **spectrahedron**.
 
 ### Löwner Ordering
 

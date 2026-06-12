@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Cookbook Tricks",
+   "url": "/notes/cookbook_tricks/",
+   "date": "2026-06-12",
+   "added": false
+  },
+  {
+   "title": "Linear Algebra III",
+   "url": "/subpages/books/linear_algebra/la3/",
+   "date": "2026-06-12",
+   "added": false
+  },
+  {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-06-12",
@@ -65,12 +77,6 @@
    "url": "/subpages/books/sde_hd/problems/",
    "date": "2026-06-03",
    "added": false
-  },
-  {
-   "title": "Cookbook Tricks",
-   "url": "/notes/cookbook_tricks/",
-   "date": "2026-06-01",
-   "added": true
   },
   {
    "title": "Problems from the Introduction to Geometric Deep Learning course",
@@ -172,12 +178,6 @@
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-05-20",
-   "added": false
-  },
-  {
-   "title": "Basic Category Theory",
-   "url": "/subpages/books/category_theory/basic_category_theory/",
-   "date": "2026-05-14",
    "added": false
   }
  ]
