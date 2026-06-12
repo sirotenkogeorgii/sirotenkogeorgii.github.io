@@ -13,6 +13,12 @@
    "added": true
   },
   {
+   "title": "Hilbert–Schmidt operators",
+   "url": "/subpages/math_topics/hilbert_schmidt_operator/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
    "title": "Linear Algebra III",
    "url": "/subpages/books/linear_algebra/la3/",
    "date": "2026-06-12",
@@ -173,12 +179,6 @@
    "url": "/subpages/stuff_i_found_interesting/when_does_taylor_fail/",
    "date": "2026-05-24",
    "added": true
-  },
-  {
-   "title": "random",
-   "url": "/notes/random/",
-   "date": "2026-05-24",
-   "added": false
   }
  ]
 }
