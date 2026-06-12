@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Proving Compactness",
+   "url": "/subpages/stuff_i_found_interesting/solving_methods/proving_operator_compactness/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
+   "title": "Solving Methods",
+   "url": "/notes/solving_methods/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-06-11",
@@ -165,18 +177,6 @@
   {
    "title": "Basic Category Theory",
    "url": "/subpages/books/category_theory/basic_category_theory/",
-   "date": "2026-05-14",
-   "added": false
-  },
-  {
-   "title": "Foundations of Schroedinger Bridges for Generative Modeling",
-   "url": "/subpages/books/schroedinger_bridges_generative_modeling/",
-   "date": "2026-05-14",
-   "added": false
-  },
-  {
-   "title": "Nonlinear Dynamics and Chaos (Strogatz)",
-   "url": "/subpages/books/strogatz_dynamical_systems/",
    "date": "2026-05-14",
    "added": false
   }
