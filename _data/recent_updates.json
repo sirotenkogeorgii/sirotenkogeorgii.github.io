@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "Hilbert–Schmidt operators",
+   "url": "/subpages/math_topics/hilber-schmidt_integral_operator/",
+   "date": "2026-06-12",
+   "added": true
+  },
+  {
    "title": "Linear Algebra III",
    "url": "/subpages/books/linear_algebra/la3/",
    "date": "2026-06-12",
@@ -172,12 +178,6 @@
    "title": "random",
    "url": "/notes/random/",
    "date": "2026-05-24",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
-   "date": "2026-05-20",
    "added": false
   }
  ]
