@@ -1,6 +1,24 @@
 {
  "entries": [
   {
+   "title": "Maths Topics",
+   "url": "/notes/maths_topics/",
+   "date": "2026-06-13",
+   "added": false
+  },
+  {
+   "title": "The Fourier Transform: A Prism for Functions",
+   "url": "/subpages/math_topics/fourier_transform/fourier_transform_gentle/",
+   "date": "2026-06-13",
+   "added": true
+  },
+  {
+   "title": "The Fourier Transform: Diagonalizing Translation",
+   "url": "/subpages/math_topics/fourier_transform/fourier_transform_rigorous/",
+   "date": "2026-06-13",
+   "added": true
+  },
+  {
    "title": "Cookbook Tricks",
    "url": "/notes/cookbook_tricks/",
    "date": "2026-06-12",
@@ -25,12 +43,6 @@
    "added": false
   },
   {
-   "title": "Maths Topics",
-   "url": "/notes/maths_topics/",
-   "date": "2026-06-12",
-   "added": false
-  },
-  {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-06-12",
@@ -45,18 +57,6 @@
   {
    "title": "Solving Methods",
    "url": "/notes/solving_methods/",
-   "date": "2026-06-12",
-   "added": true
-  },
-  {
-   "title": "The Fourier Transform: Diagonalizing Translation",
-   "url": "/subpages/math_topics/fourier_transform/",
-   "date": "2026-06-12",
-   "added": true
-  },
-  {
-   "title": "The Laplace Operator, or: How a Point Talks to Its Neighbors",
-   "url": "/subpages/math_topics/laplacian/",
    "date": "2026-06-12",
    "added": true
   },
