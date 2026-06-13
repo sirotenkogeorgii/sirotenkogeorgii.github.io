@@ -68,6 +68,11 @@ $$
 
 This is also the formula a computer uses to approximate $f''$ on a grid, and the fact that the error is $O(h^4)$ after dividing by $h^2$ (so $O(h^2)$ in the derivative itself) is why this "central difference" is so accurate. But the point for us is conceptual: **the second derivative is a comparison between a point and its neighbors.**
 
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/neighbor_average_1d.png' | relative_url }}" alt="Two panels. Left: a convex dip; the value f(x) at the centre (red dot) sits below the dashed chord joining its two neighbours, with the orange gap labelled one-half h squared f-double-prime. Right: a concave bump; the centre sits above the chord's midpoint." loading="lazy">
+  <figcaption>The slogan made literal. The dashed line joins the two neighbours $f(x-h)$ and $f(x+h)$; its midpoint (green square) is their average. On a convex dip (left) the centre $f(x)$ sits <em>below</em> that average, so $f''>0$ and the point "wants to rise"; on a bump (right) it sits <em>above</em>, so $f''<0$ and it "wants to flatten". The orange gap is exactly $\frac{1}{2}h^2 f''(x)$ — the second derivative is nothing but this point-versus-neighbours comparison.</figcaption>
+</figure>
+
 ## In higher dimensions, sum the comparisons in each direction
 
 Now a function $f(x_1, \dots, x_n)$ has neighbors in many directions, not just left and right. The most democratic thing to do is to run the one-dimensional comparison along each coordinate axis and add up the results. That sum is exactly
@@ -91,6 +96,11 @@ $$
 \Delta f(x) \;\approx\; (\text{average over neighbors}) - (\text{value at the point}).
 $$
 
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/grid_stencil.png' | relative_url }}" alt="Left: a 5-point stencil on a grid — a central node weighted minus four with four orthogonal neighbours weighted plus one, arrows pointing inward. Right: the same configuration as a star graph, a central node f(x) joined to four neighbour nodes, illustrating the graph Laplacian L = D minus A." loading="lazy">
+  <figcaption>The same slogan in higher dimensions and on networks. Running the one-dimensional comparison along each axis and adding gives the <strong>5-point stencil</strong> (left): the centre is weighed against the sum of its $2n$ neighbours. Strip away the grid and the identical rule lives on <em>any</em> graph as the <strong>graph Laplacian</strong> $L=D-A$ (right) — degree times value minus the neighbour sum, i.e. (up to a positive scale) value minus neighbour-average. The same idea, carried from $\mathbb{R}^n$ to arbitrary networks.</figcaption>
+</figure>
+
 ## Making "average over neighbors" exact
 
 The grid is a crutch. The honest, coordinate-free statement uses averages over a small sphere or ball. Write $\fint_{\partial B(x,r)} f$ for the average of $f$ over the sphere of radius $r$ centered at $x$. Then a short computation (Taylor expand and integrate; the odd terms vanish by symmetry) yields the clean asymptotic
@@ -107,6 +117,11 @@ $$
 
 You could *define* the Laplacian this way and never write a partial derivative — and this definition makes manifest that $\Delta$ doesn't care about your choice of axes.
 
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/mean_value.png' | relative_url }}" alt="Left: the bowl f = x squared plus y squared shown as a heatmap with three concentric sampling circles around the centre point. Right: a plot of the circle-average minus the centre value against radius r; the bowl's points follow an r-squared parabola while the harmonic function x squared minus y squared stays flat at zero for every radius." loading="lazy">
+  <figcaption>Making "average over neighbours" exact. Average $f$ over a small circle of radius $r$ and subtract the central value: for the bowl $f=x^2+y^2$ (so $\Delta f=4>0$) the surplus grows precisely like the predicted parabola $\frac{r^2}{2n}\Delta f = r^2$ (blue), while for the harmonic saddle $f=x^2-y^2$ (so $\Delta f=0$) the spherical average equals the centre at <em>every</em> radius (green). That flat green line is the mean value property in one picture.</figcaption>
+</figure>
+
 The most important special case earns its own name. A function with
 
 $$
@@ -114,6 +129,11 @@ $$
 $$
 
 is called **harmonic**. By the formula above, a harmonic function equals its own spherical averages, exactly, at every scale (this is the *mean value property*, and it holds non-infinitesimally for harmonic functions, not just to leading order). A harmonic function is in perfect equilibrium with its surroundings everywhere — it has no bumps trying to flatten and no dips trying to fill. This single property forces harmonic functions to be extraordinarily rigid: they are automatically smooth, they attain their max and min only on the boundary (the **maximum principle** — an interior bump would have to beat its own average, which it can't), and they are completely determined by their boundary values.
+
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/harmonic_max_principle.png' | relative_url }}" alt="A heatmap of a harmonic function on the unit square: the boundary is zero on three sides and a sine bump on the top edge; the interior is smooth with white contour lines, and both the maximum and the minimum are marked sitting on the boundary." loading="lazy">
+  <figcaption>A harmonic function ($\Delta u=0$) on a square, with $\sin(\pi x)$ imposed along the top edge and $0$ on the other three. Because every interior value must equal the average of its neighbours, no interior bump or dip can survive: the solution is glassily smooth and its <strong>maximum and minimum are forced onto the boundary</strong> — the maximum principle. This same picture is the steady state of heat flow on the square and the resting shape of a soap film stretched on this frame.</figcaption>
+</figure>
 
 ## Why *this* operator and not some other?
 
@@ -134,6 +154,11 @@ $$
 A point below its neighborly average ($\Delta u > 0$) warms up; a point above it ($\Delta u < 0$) cools down. Over time this relentlessly erases differences and smooths everything toward equilibrium. And what is the equilibrium, where $\partial_t u = 0$? Exactly $\Delta u = 0$ — a harmonic, perfectly-balanced steady state. The same equation, with $u$ a concentration instead of a temperature, describes diffusion of a chemical; this is why the heat equation and the diffusion equation are the same equation.
 
 Add a source term and you get **Poisson's equation** $\Delta u = -\rho$, which is the language of electrostatics ($\rho$ a charge density, $u$ the potential) and Newtonian gravity ($\rho$ a mass density). Swap the single time derivative for a second one and you get the **wave equation** $\partial_t^2 u = \Delta u$; multiply by $i$ in the right places and you get the **Schrödinger equation**. The Laplacian is the common grammatical core of the fundamental equations of physics, and the reason is always the same: each describes something local and isotropic, and $\Delta$ is the canonical local isotropic operator.
+
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/heat_diffusion.png' | relative_url }}" alt="Left: a bumpy temperature profile along a rod shown at five successive times, progressively smoothing toward its constant mean. Right: the same initial profile with small arrows at sample points, pointing up in green where the Laplacian is positive and down in red where it is negative." loading="lazy">
+  <figcaption>Diffusion as the slogan set in motion. Left: a jagged initial temperature relaxes, step by step, toward its flat equilibrium (the mean). Right: <em>why</em> it happens — at each point the sign of $\Delta u$ dictates the move. Where the point lies below its neighbours' average ($\Delta u>0$, green arrows) it warms; where it lies above ($\Delta u<0$, red arrows) it cools. The heat equation $\partial_t u=\Delta u$ is just every point drifting toward its local average at once.</figcaption>
+</figure>
 
 ## The energy viewpoint: $\Delta$ as a downhill direction
 
@@ -158,11 +183,21 @@ $$
 
 This "$\Delta$ is the gradient of an energy" perspective is the entry point to the entire modern theory of *gradient flows*, where one studies evolution equations as steepest descent on energy functionals, sometimes in exotic geometries on spaces of probability measures. But even at the elementary level it reframes $\Delta$ from "a pile of second derivatives" into "the direction in which a function should move to become smoother."
 
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/dirichlet_energy.png' | relative_url }}" alt="Left: a wrinkly function pinned at the endpoints zero and one, shown at successive times smoothing until it becomes the straight line u = x. Right: the Dirichlet energy plotted against time, decreasing monotonically to its minimum value of one-half." loading="lazy">
+  <figcaption>The energy view. With its endpoints pinned (the "frame"), a wrinkly profile flows by the heat equation and settles into the <strong>least-wrinkly shape the frame allows</strong> — here the straight line $u=x$, which is harmonic in one dimension. Right: the Dirichlet energy $E[u]=\frac{1}{2}\int|u'|^2\,dx$ falls monotonically to its minimum, because heat flow is exactly <strong>gradient descent on $E$</strong>, with $-\Delta u$ as the downhill direction. Soap films find their shape by minimising the very same energy.</figcaption>
+</figure>
+
 ## The probabilistic viewpoint: $\Delta$ and random walkers
 
 One more face of the same object, because it ties the knot. Picture a particle doing a **random walk**: at each tick it steps to a uniformly random neighbor on the grid. Ask how the *expected* value of some function $f$ of its position changes in one step. The answer is the average of $f$ over the neighbors minus the current value — which we have already identified as (a constant times) the discrete Laplacian. Take the continuum limit of finer and finer random walks and you get **Brownian motion**, and the operator that describes how expectations of $f$ evolve in time is exactly $\tfrac12 \Delta$.
 
 In this language, $\Delta$ (or $\tfrac12\Delta$) is the **generator of Brownian motion** — the infinitesimal rule by which random motion updates expectations. This gives a startlingly concrete meaning to harmonic functions: if $\Delta u = 0$ inside a region and you release a Brownian particle at $x$, then $u(x)$ equals the *expected value of $u$ at the random point where the particle first hits the boundary*. The mean value property and the maximum principle, which earlier looked like analytic facts, are now obvious probabilistic statements about averaging over random futures. And it explains the kinship between the heat equation and diffusion at the deepest level: heat *is* the aggregate of countless random walkers, and $\Delta$ is the law of their averaging.
+
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/brownian_harmonic.png' | relative_url }}" alt="A disk whose boundary circle is coloured by the boundary value g = cos(theta), blue on the left fading to red on the right. Seven random-walk trajectories start at an interior release point marked with a star and wander until they first strike the boundary. The estimated value at the release point, +0.44, matches the exact harmonic value 0.45." loading="lazy">
+  <figcaption>Harmonic functions as averages over random futures. Release a Brownian walker at the interior point $x_0$ (star) and let it wander until it first strikes the boundary, where it reads off the boundary value $g$. Averaging that exit value over many walkers reconstructs the harmonic function: here the estimate $u(x_0)\approx +0.44$ lands on the exact value $x_0=0.45$, since the harmonic extension of $g(\theta)=\cos\theta$ is simply $u(x,y)=x$. The mean value property and the maximum principle become obvious statements about averaging over random paths.</figcaption>
+</figure>
 
 ## The spectral viewpoint, and "hearing a drum"
 
@@ -180,7 +215,12 @@ $$
 \Delta\, e^{i\xi\cdot x} = -|\xi|^2\, e^{i\xi\cdot x}.
 $$
 
-So **in frequency space, $\Delta$ is simply multiplication by $-|\xi|^2$**. This is the most computational reason the Laplacian is beloved: the Fourier transform diagonalizes it, turning a differential operator into plain multiplication. High-frequency wiggles (large $|\xi|$) get hit hardest, which is the precise sense in which $\Delta$ measures and penalizes roughness — and the foundation for the whole apparatus of Sobolev spaces, where one measures the smoothness of a function by how fast its Fourier content decays, i.e. by how powers of $-\Delta$ act on it.
+So **in frequency space, $\Delta$ is simply multiplication by $-\lvert\xi\rvert^2$**. This is the most computational reason the Laplacian is beloved: the Fourier transform diagonalizes it, turning a differential operator into plain multiplication. High-frequency wiggles (large $\lvert\xi\rvert$) get hit hardest, which is the precise sense in which $\Delta$ measures and penalizes roughness — and the foundation for the whole apparatus of Sobolev spaces, where one measures the smoothness of a function by how fast its Fourier content decays, i.e. by how powers of $-\Delta$ act on it.
+
+<figure>
+  <img src="{{ '/assets/images/notes/laplacian/drum_modes.png' | relative_url }}" alt="Six heatmaps of the vibrational eigenmodes of the negative Laplacian on a square, each a product of sines sin(m pi x) times sin(n pi y), labelled by their mode numbers and eigenvalues and ordered from the lowest eigenvalue 2 pi squared up to 13 pi squared; higher eigenvalues show more nodal lines and finer ripples." loading="lazy">
+  <figcaption>The spectral view: the pure vibrational modes of a square drum, the eigenfunctions of $-\Delta\varphi=\lambda\varphi$. Each is a product of sines $\varphi_{m,n}=\sin(m\pi x)\sin(n\pi y)$ with eigenvalue $\lambda=(m^2+n^2)\pi^2$ — the squared frequency you would hear. Larger $\lambda$ means more nodal lines and finer ripples, the precise sense in which $-\Delta$ measures roughness. On all of $\mathbb{R}^n$ the same logic makes the plane waves $e^{i\xi\cdot x}$ the modes, with $\Delta e^{i\xi\cdot x}=-|\xi|^2 e^{i\xi\cdot x}$.</figcaption>
+</figure>
 
 ## What's really going on
 
@@ -197,13 +237,12 @@ The thread running through all of them is **averaging**: the Laplacian is the ma
 
 Two closing remarks on where this goes.
 
-**It generalizes in every direction you'd hope.** On a curved space — a sphere, or any Riemannian manifold — the same construction gives the **Laplace–Beltrami operator**, and now the curvature of the space leaves its fingerprint on how averages behave; this is the gateway to geometric analysis. Drop the requirement of a continuum entirely and the **graph Laplacian** $L = D - A$ (degree matrix minus adjacency matrix) is exactly our discrete "neighbor average minus center," now defined on any network — the engine behind spectral clustering, diffusion on graphs, and a great deal of modern data analysis and machine learning. There is even a **fractional Laplacian** $(-\Delta)^s$, defined cleanly through that frequency-space picture as multiplication by $|\xi|^{2s}$, which governs diffusion that proceeds by long jumps rather than local steps.
+**It generalizes in every direction you'd hope.** On a curved space — a sphere, or any Riemannian manifold — the same construction gives the **Laplace–Beltrami operator**, and now the curvature of the space leaves its fingerprint on how averages behave; this is the gateway to geometric analysis. Drop the requirement of a continuum entirely and the **graph Laplacian** $L = D - A$ (degree matrix minus adjacency matrix) is exactly our discrete "neighbor average minus center," now defined on any network — the engine behind spectral clustering, diffusion on graphs, and a great deal of modern data analysis and machine learning. There is even a **fractional Laplacian** $(-\Delta)^s$, defined cleanly through that frequency-space picture as multiplication by $\lvert \xi\rvert^{2s}$, which governs diffusion that proceeds by long jumps rather than local steps.
 
 **And it rewards re-reading.** The Laplacian is one of those objects whose definition you can learn in an afternoon and whose meaning you keep unpacking for years. Each time you meet it in a new subject — heat, soap films, electrostatics, random walks, vibrations, graphs, manifolds — you are not learning a new operator. You are meeting the same quiet, democratic idea once more: *look around, compare yourself to your neighbors, and move toward the average.*
 
 
-TODO: add examples to different parts
-TODO: add visualizations to different parts
+<!-- TODO: add examples to different parts
 TODO: add the papers: 
 * https://arxiv.org/pdf/1205.2629
 * The Goldilocks Zone: Towards Better Understanding of Neural Network Loss Landscapes
@@ -213,4 +252,4 @@ TODO: add PDE part
 TODO: add Schnorr part
 TODO: add examples of problems with laplacians
 TODO: add edge detection using laplacians
-TODO: add example with H_0^1([0,1])
+TODO: add example with H_0^1([0,1]) -->

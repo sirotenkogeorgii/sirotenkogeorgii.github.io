@@ -27,8 +27,6 @@ That single sentence is the whole subject. Everything below is just making it pr
 
 Let me set out the conventions first, the way one always should, and then we'll build the thing from scratch.
 
----
-
 ## A note on conventions (read this once, then forget it)
 
 There is no single "correct" Fourier transform; there is a family of them that differ only in where you sprinkle factors of $2\pi$. This causes endless confusion when comparing textbooks, so I'll pin down my choice now and use it consistently. I'll measure frequency in **cycles per unit length** (e.g. cycles per second, not radians per second), which makes all the constants vanish and the formulas symmetric:
@@ -42,8 +40,6 @@ $$
 The first formula is the **analysis** (decompose $f$ into frequencies); the second is the **synthesis** (rebuild $f$ from them). The variable $x$ lives in the *time* (or *space*) domain; the variable $\xi$ lives in the *frequency* domain. With this convention the two formulas are mirror images of each other — a hint that the time and frequency pictures are on completely equal footing. We'll see this is no accident.
 
 If that integral looks intimidating, don't worry. We're going to *derive* it, not memorize it.
-
----
 
 ## Warm-up: the music your ear already knows
 
@@ -236,8 +232,6 @@ with the spreads measured as standard deviations. In quantum mechanics, a partic
   <img src="{{ '/assets/images/notes/fourier_transform/gaussian_uncertainty.png' | relative_url }}" alt="Left: the Gaussian e^{-pi x squared} and its Fourier transform plotted on top of each other, perfectly identical. Right: a curve of time-spread versus frequency-spread forming a hyperbola, with the symmetric Gaussian marked at its balance point." loading="lazy">
   <figcaption>Left: with this normalisation the Gaussian $e^{-\pi x^2}$ is <em>its own</em> Fourier transform — the one shape that looks identical from both sides of the prism. Right: sweep through the family of Gaussians and the product of time-spread and frequency-spread stays pinned to the floor $\sigma_t\,\sigma_\xi \geq \tfrac{1}{4\pi}$, with the symmetric Gaussian sitting exactly at the optimal trade-off. That floor <em>is</em> Heisenberg's uncertainty principle.</figcaption>
 </figure>
-
----
 
 ## Step 6: A worked showcase — heat, melting away high frequencies
 

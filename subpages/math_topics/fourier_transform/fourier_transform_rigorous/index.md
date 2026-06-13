@@ -87,9 +87,29 @@ The formula $\widehat{f}(\xi) = \int f(x) e^{-2\pi i x\cdot\xi}\,dx$ requires th
 
 If $f \in L^1(\mathbb{R}^d)$ the defining integral converges absolutely for every $\xi$, and we read off immediately that $\|\widehat{f}\|_{\infty} \le \|f\|_1$ and that $\widehat{f}$ is continuous (dominated convergence). The substantive fact at this level is:
 
-**Riemann–Lebesgue.** If $f \in L^1$ then $\widehat{f} \in C_0(\mathbb{R}^d)$; that is, $\widehat{f}$ is continuous and $\widehat{f}(\xi) \to 0$ as $\lvert\xi\rvert \to \infty$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Riemann–Lebesgue)</span></p>
 
-*Key idea:* the result is obvious for a smooth bump (integrate by parts to gain decay), and these are dense in $L^1$, so the uniform bound $\|\widehat{f}\|_\infty \le \|f\|_1$ propagates the decay to all of $L^1$. The cleanest mechanical proof uses the translation identity: $e^{-2\pi i h\cdot\xi}\widehat f(\xi) = \widehat{\tau_h f}(\xi)$, and choosing $h = \xi/(2\lvert \xi\rvert^2)$ makes the exponential equal $-1$, so $2\widehat f(\xi) = \widehat{(f - \tau_h f)}(\xi)$; since $\|f - \tau_h f\|_1 \to 0$ as $h \to 0$ (continuity of translation in $L^1$), the right side is small for large $\lvert\xi\rvert$. $\square$
+If $f \in L^1$ then $\widehat{f} \in C_0(\mathbb{R}^d)$; that is, $\widehat{f}$ is continuous and $\widehat{f}(\xi) \to 0$ as $\lvert\xi\rvert \to \infty$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Idea</summary>
+
+The result is obvious for a smooth bump (integrate by parts to gain decay), and these are dense in $L^1$, so the uniform bound $\|\widehat{f}\|_\infty \le \|f\|_1$ propagates the decay to all of $L^1$. The cleanest mechanical proof uses the translation identity: 
+
+$$e^{-2\pi i h\cdot\xi}\widehat f(\xi) = \widehat{\tau_h f}(\xi),$$
+
+and choosing $h = \xi/(2\lvert \xi\rvert^2)$ makes the exponential equal $-1$, so 
+
+$$2\widehat f(\xi) = \widehat{(f - \tau_h f)}(\xi);$$
+
+since $\|f - \tau_h f\|_1 \to 0$ as $h \to 0$ (continuity of translation in $L^1$), the right side is small for large $\lvert\xi\rvert$.
+
+</details>
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/math_topics/fourier_transform/ft_riemann_lebesgue.png' | relative_url }}" alt="Left: a box indicator, a continuous tent function, and a smooth Gaussian. Right: the magnitudes of their Fourier transforms on a logarithmic scale; the box decays like one over xi, the tent like one over xi squared, and the Gaussian decays exponentially. All tend to zero." loading="lazy">
@@ -237,7 +257,10 @@ This is the explicit spectral decomposition promised earlier: the eigenvalue $(-
 
 A function and its transform cannot both be sharply localized. This is not quantum mysticism; it is a theorem about the incompatibility of the position operator $x$ and the frequency operator $\frac{1}{2\pi i}\partial_x$, and the Gaussian saturates it.
 
-**Heisenberg's inequality.** For $f \in \mathcal{S}(\mathbb{R})$ with $\|f\|_{L^2} = 1$,
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Heisenberg's inequality)</span></p>
+
+For $f \in \mathcal{S}(\mathbb{R})$ with $\|f\|_{L^2} = 1$,
 
 $$
 \left(\int_{\mathbb{R}} x^2\,|f(x)|^2\,dx\right)\left(\int_{\mathbb{R}} \xi^2\,|\widehat f(\xi)|^2\,d\xi\right) \;\ge\; \frac{1}{16\pi^2},
@@ -245,15 +268,41 @@ $$
 
 with equality if and only if $f$ is a Gaussian $C e^{-a x^2}$, $a > 0$.
 
-*Key idea:* integrate by parts to express the total mass as a position–momentum pairing, then apply Cauchy–Schwarz. Concretely, since $\frac{d}{dx}(x\lvert f\rvert^2) = \lvert f\rvert^2 + x(f'\bar f + f\bar f')$ and the boundary terms vanish by decay,
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Idea</summary>
+
+integrate by parts to express the total mass as a position–momentum pairing, then apply Cauchy–Schwarz. Concretely, since
+
+$$\frac{d}{dx}(x\lvert f\rvert^2) = \lvert f\rvert^2 + x(f'\bar f + f\bar f')$$
+
+and the boundary terms vanish by decay,
 
 $$
 1 = \int |f|^2\,dx = -\int x\,(f'\bar f + \overline{f'\bar f})\,dx = -2\,\mathrm{Re}\!\int x f'\,\bar f\,dx \le 2\,\|xf\|_{2}\,\|f'\|_{2}
 $$
 
-by Cauchy–Schwarz. Now Plancherel converts the derivative norm to a frequency moment: $\|f'\|_2 = \|\widehat{f'}\|_2 = \|2\pi i\xi\,\widehat f\|_2 = 2\pi\,\|\xi\widehat f\|_2$. Hence $1 \le 4\pi\,\|xf\|_2\,\|\xi\widehat f\|_2$, which is the claim after squaring. Equality requires equality in Cauchy–Schwarz, i.e. $f'(x) = -2a x\, f(x)$ for a constant $a$, whose only $L^2$ solutions are Gaussians. $\square$
+by Cauchy–Schwarz. Now Plancherel converts the derivative norm to a frequency moment: 
 
-Two remarks. First, the *content* of the proof is the commutator $[\,x,\,\tfrac{1}{2\pi i}\partial_x\,] = \tfrac{1}{2\pi i}\mathrm{Id} \ne 0$; the inequality is the analytic shadow of the operators failing to commute, and the same Cauchy–Schwarz argument with any pair of non-commuting self-adjoint operators is the general Robertson uncertainty relation. Second, the Gaussian appears as the extremizer for the same reason it appeared as the fixed point: it is the unique state in which position and frequency localization are perfectly balanced, the harmonic oscillator ground state.
+$$\|f'\|_2 = \|\widehat{f'}\|_2 = \|2\pi i\xi\,\widehat f\|_2 = 2\pi\,\|\xi\widehat f\|_2.$$
+
+Hence $1 \le 4\pi\,\|xf\|_2\,\|\xi\widehat f\|_2$, which is the claim after squaring. Equality requires equality in Cauchy–Schwarz, i.e. $f'(x) = -2a x\, f(x)$ for a constant $a$, whose only $L^2$ solutions are Gaussians. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Two remarks. First, the *content* of the proof is the commutator 
+
+$[\,x,\,\tfrac{1}{2\pi i}\partial_x\,] = \tfrac{1}{2\pi i}\mathrm{Id} \ne 0$
+
+the inequality is the analytic shadow of the operators failing to commute, and the same Cauchy–Schwarz argument with any pair of non-commuting self-adjoint operators is the general Robertson uncertainty relation. Second, the Gaussian appears as the extremizer for the same reason it appeared as the fixed point: it is the unique state in which position and frequency localization are perfectly balanced, the harmonic oscillator ground state.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/math_topics/fourier_transform/ft_uncertainty.png' | relative_url }}" alt="Left: a narrow Gaussian with a wide transform and a wide Gaussian with a narrow transform, illustrating the trade-off. Right: the hyperbola delta-x times delta-xi equal to one over four pi, with the region below it shaded as forbidden; several Gaussians sit exactly on the curve and a tent function sits above it." loading="lazy">
@@ -264,13 +313,25 @@ Two remarks. First, the *content* of the proof is the commutator $[\,x,\,\tfrac{
 
 One identity deserves singling out because it is the engine of analytic number theory, sampling theory, and the theory of theta functions.
 
-**Poisson summation.** For $f \in \mathcal{S}(\mathbb{R}^d)$,
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Poisson summation)</span></p>
+
+For $f \in \mathcal{S}(\mathbb{R}^d)$,
 
 $$
 \sum_{n \in \mathbb{Z}^d} f(n) \;=\; \sum_{k \in \mathbb{Z}^d} \widehat{f}(k).
 $$
 
-*Key idea:* periodize and expand in Fourier series. The function $F(x) = \sum_{n} f(x + n)$ is $\mathbb{Z}^d$-periodic and smooth, so it equals its Fourier series $F(x) = \sum_k c_k e^{2\pi i k\cdot x}$; computing the coefficient $c_k = \int_{[0,1]^d} F(x) e^{-2\pi i k\cdot x}\,dx$ and unfolding the periodization shows $c_k = \widehat f(k)$. Evaluating $F(0)$ both ways gives the identity. $\square$
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Idea</summary>
+
+Periodize and expand in Fourier series. The function $F(x) = \sum_{n} f(x + n)$ is $\mathbb{Z}^d$-periodic and smooth, so it equals its Fourier series $F(x) = \sum_k c_k e^{2\pi i k\cdot x}$; computing the coefficient $c_k = \int_{[0,1]^d} F(x) e^{-2\pi i k\cdot x}\,dx$ and unfolding the periodization shows $c_k = \widehat f(k)$. Evaluating $F(0)$ both ways gives the identity. $\square$
+
+</details>
+</div>
 
 The aesthetic payoff of the analyst's convention is on full display: the integer lattice is its *own* dual, with no stray constants. Applied to the Gaussian heat kernel this identity produces the **Jacobi theta transformation** $\theta(1/t) = \sqrt{t}\,\theta(t)$, which is the functional equation underlying the analytic continuation of the Riemann zeta function — a strikingly arithmetic consequence of the self-duality of the Gaussian. Applied to band-limited functions it yields the **Shannon sampling theorem**: a signal with no frequencies above $W$ is determined by its samples at spacing $1/(2W)$, because aliasing is precisely the overlapping of translated copies of $\widehat f$ in the Poisson sum.
 
@@ -294,7 +355,6 @@ A wide-sense stationary process has a covariance $K(x,y) = k(x - y)$ depending o
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Positive-definite kernels (Bochner))</span></p>
 
 Closely related, and the reason Gaussians are the default covariance kernel in spatial statistics and machine learning, is **Bochner's theorem**: a continuous function $\phi:\mathbb{R}^d \to \mathbb{C}$ is *positive-definite* — meaning $\sum_{j,k} s_j \overline{s_k}\,\phi(x_j - x_k) \ge 0$ for all finite node sets and all coefficients — *if and only if* it is the Fourier transform of a finite non-negative measure $\nu$, i.e. $\phi(t) = \int_{\mathbb{R}^d} e^{2\pi i\langle\xi, t\rangle}\,d\nu(\xi)$. One direction is a one-line computation and is the half used in practice: substituting the integral representation and interchanging the (finite) sum with the integral,
-
 
 $$
 \sum_{j,k} s_j \overline{s_k}\,\phi(x_j - x_k) = \int_{\mathbb{R}^d}\Big|\sum_{j} s_j\, e^{2\pi i\langle\xi, x_j\rangle}\Big|^2 d\nu(\xi)\ \ge\ 0,

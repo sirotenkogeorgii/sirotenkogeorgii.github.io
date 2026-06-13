@@ -25,6 +25,18 @@
    "added": true
   },
   {
+   "title": "The Laplace Operator, or: How a Point Talks to Its Neighbors",
+   "url": "/subpages/math_topics/laplacian/laplacian_gentle/",
+   "date": "2026-06-13",
+   "added": true
+  },
+  {
+   "title": "The Laplacian, or the Geometry of Averaging",
+   "url": "/subpages/math_topics/laplacian/laplacian_rigurous/",
+   "date": "2026-06-13",
+   "added": true
+  },
+  {
    "title": "Hilbert–Schmidt operators",
    "url": "/subpages/math_topics/hilber-schmidt_integral_operator/",
    "date": "2026-06-12",
@@ -167,18 +179,6 @@
    "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
    "date": "2026-05-24",
    "added": false
-  },
-  {
-   "title": "Proof Techniques",
-   "url": "/subpages/stuff_i_found_interesting/proof_techniques/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "Uniform Convergence",
-   "url": "/subpages/stuff_i_found_interesting/uniform_convergence/",
-   "date": "2026-05-24",
-   "added": true
   }
  ]
 }
