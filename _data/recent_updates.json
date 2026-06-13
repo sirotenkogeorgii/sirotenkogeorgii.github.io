@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Cookbook Tricks",
+   "url": "/notes/cookbook_tricks/",
+   "date": "2026-06-13",
+   "added": false
+  },
+  {
    "title": "Maths Topics",
    "url": "/notes/maths_topics/",
    "date": "2026-06-13",
@@ -17,12 +23,6 @@
    "url": "/subpages/math_topics/fourier_transform/fourier_transform_rigorous/",
    "date": "2026-06-13",
    "added": true
-  },
-  {
-   "title": "Cookbook Tricks",
-   "url": "/notes/cookbook_tricks/",
-   "date": "2026-06-12",
-   "added": false
   },
   {
    "title": "Hilbert–Schmidt operators",

@@ -66,6 +66,98 @@ tags:
       <!-- <figcaption>Left (b): the dual basis $\check e^1 = (1, -1)$, $\check e^2 = (0, 1)$ for the oblique basis $e_1, e_2$. Faded red lines are level sets of $\check e^1$ (diagonals along direction $e_2$); faded orange lines are level sets of $\check e^2$ (horizontals along $e_1$). Each covector $\check e^i$ kills $e_j$ for $j \ne i$. Right (c): the canonical basis under the canonical inner product is self-dual.</figcaption> -->
     </figure>
     
+19. **Apollonius's Theorem**
+    
+    $$\text{Side}_1^2 + \text{Side}_2^2 = 2 \cdot (\text{Median})^2 + 2 \cdot \left(\frac{\text{Base}}{2}\right)^2$$
+
+20. **Corollary of Appollonius's Theorem (useful for Gaussian kernels decomposition)**
+
+    $$\lVert t-x \rVert^2 + \lVert t-y \rVert^2 = 2 \left\lVert t - \frac{x+y}{2} \right\rVert^2 + 2 \left( \frac{\lVert x-y \rVert}{2} \right)^2$$
+
+21. **Euler–Poisson integral**
+
+    $$\int_{\infty}^{\infty} e^{-ax^2} = \sqrt{\frac{\pi}{a}}$$
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+This is one of the most famous—and cleverest—tricks in all of calculus. You cannot compute the antiderivative of $e^{-ax^2}$ using standard elementary functions, so trying to solve the 1D integral directly is a dead end.
+
+Instead, the trick is to **square the integral** and push it into two dimensions, where the geometry of the plane makes it trivial to solve.
+
+Here is the step-by-step mathematical derivation.
+
+**Step 1: Square the Integral**
+
+Let the integral we want to solve be $I$:
+
+$$I = \int_{-\infty}^\infty e^{-ax^2} dx$$
+
+Since $e^{-ax^2}$ is strictly positive, we know that $I > 0$. Let's square $I$. To keep the variables distinct, we will use $x$ for the first integral and $y$ for the second:
+
+$$I^2 = \left( \int_{-\infty}^\infty e^{-ax^2} dx \right) \left( \int_{-\infty}^\infty e^{-ay^2} dy \right)$$
+
+**Step 2: Combine into a Double Integral**
+
+Because the integrals are independent, we can combine them into a single double integral over the entire 2D Cartesian plane ($\mathbb{R}^2$):
+
+$$I^2 = \int_{-\infty}^\infty \int_{-\infty}^\infty e^{-ax^2} e^{-ay^2} dx dy$$
+
+Using the property of exponents ($e^A e^B = e^{A+B}$), this becomes:
+
+$$I^2 = \int_{-\infty}^\infty \int_{-\infty}^\infty e^{-a(x^2 + y^2)} dx dy$$
+
+**Step 3: Switch to Polar Coordinates**
+
+This is where the magic happens. The term $(x^2 + y^2)$ perfectly maps to the squared radius in polar coordinates.
+We make the standard substitution:
+
+* $r^2 = x^2 + y^2$
+* The area element $dx dy$ becomes $r dr d\theta$
+
+We also need to change the bounds. Integrating over the entire Cartesian plane ($x$ and $y$ from $-\infty$ to $\infty$) is exactly the same as integrating the radius from $0$ to $\infty$, and the angle from $0$ to $2\pi$:
+
+$$I^2 = \int_0^{2\pi} \int_0^\infty e^{-ar^2} r dr d\theta$$
+
+**Step 4: Evaluate the Integral**
+
+The problem is now trivial because that extra $r$ from the polar area element allows us to use simple u-substitution.
+
+Let's evaluate the inner integral with respect to $r$:
+
+$$\int_0^\infty e^{-ar^2} r dr$$
+
+Let $u = -ar^2$. Then $du = -2ar dr$, which means $r dr = -\frac{du}{2a}$.
+The integral becomes:
+
+$$\left[ -\frac{1}{2a} e^{-ar^2} \right]_0^\infty$$
+
+Evaluating this at the boundaries:
+
+* As $r \to \infty$, $e^{-ar^2} \to 0$.
+* At $r = 0$, $e^0 = 1$.
+
+So the inner integral evaluates to:
+
+$$0 - \left( -\frac{1}{2a} (1) \right) = \frac{1}{2a}$$
+
+Now, substitute this result back into the outer integral with respect to $\theta$:
+
+$$I^2 = \int_0^{2\pi} \frac{1}{2a} d\theta$$
+
+Since $\frac{1}{2a}$ is just a constant, evaluating the integral over $2\pi$ gives:
+
+$$I^2 = \frac{1}{2a} \cdot 2\pi = \frac{\pi}{a}$$
+
+**Step 5: Take the Square Root**
+
+We now have the value for $I^2$. Since we established at the very beginning that $I$ must be positive, we simply take the positive square root:
+
+$$I = \sqrt{\frac{\pi}{a}}$$
+
+</details>
+</div>
 
 ## Tricks
 
