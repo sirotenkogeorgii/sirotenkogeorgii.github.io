@@ -1,0 +1,162 @@
+<svg viewBox="0 0 940 720" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrS" markerWidth="9" markerHeight="9" refX="1" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M8,0 L0,4 L8,8 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrG" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#9aa1ac"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#1f2430}
+    .subt{font-size:11px;font-style:italic;fill:#7a828f}
+    .gelf-t{font-size:11.5px;font-style:italic;fill:#6b7280}
+    .gelf-f{font-size:10.5px;fill:#6b7280}
+    .root-t{font-size:15px;font-weight:700;fill:#ffffff}
+    .root-s{font-size:10.5px;font-style:italic;fill:#d7dcf2}
+    .root-f{font-size:11.5px;fill:#eef0fb}
+    .twin-t{font-size:14px;font-weight:700;fill:#ffffff}
+    .twin-s{font-size:10.5px;font-style:italic;fill:#dff0f1}
+    .twin-f{font-size:11.5px;fill:#eaf7f7}
+    .link{font-size:9.5px;fill:#6b7280}
+    .note{font-size:10px;font-style:italic;fill:#6b7280}
+    .bh-s{font-size:9.5px;fill:#7a828f}
+    .leaf-t{font-size:11px;font-weight:600;fill:#222834}
+    .leaf-f{font-size:9px;fill:#5b6370}
+    .kl-t{font-size:13.5px;font-weight:700;fill:#1f6b46}
+    .kl-s{font-size:10px;fill:#3a4a42}
+    .kl-f{font-size:11px;fill:#1f6b46}
+    .flow{font-size:9px;font-style:italic;fill:#7a828f}
+  </style>
+
+  <rect x="4" y="4" width="932" height="712" rx="16" fill="#fcfcfb" stroke="#e7e5df"/>
+
+  <text class="title" x="28" y="32">A map of decompositions</text>
+  <text class="subt" x="28" y="49">almost everything specializes one theorem</text>
+
+  <!-- Gelfand abstraction -->
+  <rect x="330" y="58" width="280" height="40" rx="10" fill="none" stroke="#c3c8d0" stroke-dasharray="5 4"/>
+  <text class="gelf-t" x="470" y="76" text-anchor="middle">Gelfand–Naimark (the abstraction)</text>
+  <text class="gelf-f" x="470" y="91" text-anchor="middle">commutative C*-algebra  ≅  C₀(spectrum)</text>
+  <path d="M455,98 L290,128" fill="none" stroke="#9aa1ac" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arrG)"/>
+
+  <!-- Root: spectral theorem -->
+  <rect x="60" y="130" width="400" height="86" rx="12" fill="#34408a" stroke="#2a3470"/>
+  <text class="root-t" x="260" y="156" text-anchor="middle">SPECTRAL THEOREM</text>
+  <text class="root-s" x="260" y="174" text-anchor="middle">(multiplication form: every nice operator = multiply by g)</text>
+  <text class="root-f" x="260" y="198" text-anchor="middle">A ≅ M_g          A = ∫ λ dE(λ)</text>
+
+  <!-- Twin: Lebesgue / simple functions -->
+  <rect x="560" y="130" width="345" height="86" rx="12" fill="#2f7d83" stroke="#266268"/>
+  <text class="twin-t" x="732" y="156" text-anchor="middle">Lebesgue integration</text>
+  <text class="twin-s" x="732" y="174" text-anchor="middle">simple functions — atoms of measure</text>
+  <text class="twin-f" x="732" y="198" text-anchor="middle">∫ f dμ = lim Σ aₖ · 1[Aₖ]</text>
+
+  <!-- equivalence link -->
+  <path d="M462,173 L558,173" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)" marker-start="url(#arrS)"/>
+  <text class="link" x="510" y="162" text-anchor="middle">same machinery</text>
+  <text class="link" x="510" y="190" text-anchor="middle">λ → E(Ω)</text>
+
+  <!-- discrete/continuous note -->
+  <text class="note" x="260" y="236" text-anchor="middle">discrete spectrum ⇒ sums   ·   continuous spectrum ⇒ integrals</text>
+
+  <!-- fan arrows to branch headers -->
+  <path d="M240,216 C200,240 175,248 158,262" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+  <path d="M270,216 L390,260" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+  <path d="M300,216 C520,250 700,250 780,262" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+
+  <!-- ===== Branch 1: symmetry ===== -->
+  <line x1="158" y1="308" x2="158" y2="474" stroke="#3b6fb0" stroke-width="2" opacity="0.28"/>
+  <rect x="32" y="264" width="252" height="44" rx="9" fill="#eef3fb" stroke="#3b6fb0"/>
+  <text x="158" y="286" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2c5688">Diagonalize a symmetry</text>
+  <text class="bh-s" x="158" y="300" text-anchor="middle">atoms = characters / irreducibles</text>
+
+  <rect x="36" y="316" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="48" cy="333" r="3" fill="#3b6fb0"/>
+  <text class="leaf-t" x="60" y="334">Fourier series</text>
+  <text class="leaf-f" x="60" y="349">characters e<tspan baseline-shift="super" font-size="7">inθ</tspan> — a sum</text>
+
+  <rect x="36" y="366" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="48" cy="383" r="3" fill="#3b6fb0"/>
+  <text class="leaf-t" x="60" y="384">Fourier transform</text>
+  <text class="leaf-f" x="60" y="399">e<tspan baseline-shift="super" font-size="7">iξx</tspan>, spectrum ℝ — an integral</text>
+
+  <rect x="36" y="416" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="48" cy="433" r="3" fill="#3b6fb0"/>
+  <text class="leaf-t" x="60" y="434">Spherical harmonics</text>
+  <text class="leaf-f" x="60" y="449">SO(3) representation</text>
+
+  <rect x="36" y="466" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="48" cy="483" r="3" fill="#3b6fb0"/>
+  <text class="leaf-t" x="60" y="484">Peter–Weyl</text>
+  <text class="leaf-f" x="60" y="499">L²(G) = ⊕ irreducibles</text>
+
+  <!-- ===== Branch 2: A*A ===== -->
+  <line x1="470" y1="308" x2="470" y2="474" stroke="#6a4ca3" stroke-width="2" opacity="0.28"/>
+  <rect x="344" y="264" width="252" height="44" rx="9" fill="#f2eefb" stroke="#6a4ca3"/>
+  <text x="470" y="286" text-anchor="middle" font-size="12.5" font-weight="700" fill="#583a8c">Feed A*A to the theorem</text>
+  <text class="bh-s" x="470" y="300" text-anchor="middle">atoms = rank-one ⟨v,·⟩u</text>
+
+  <rect x="348" y="316" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="360" cy="333" r="3" fill="#6a4ca3"/>
+  <text class="leaf-t" x="372" y="334">Singular value decomp.</text>
+  <text class="leaf-f" x="372" y="349">A = Σ σₙ ⟨vₙ,·⟩ uₙ</text>
+
+  <rect x="348" y="366" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="360" cy="383" r="3" fill="#6a4ca3"/>
+  <text class="leaf-t" x="372" y="384">Polar decomposition</text>
+  <text class="leaf-f" x="372" y="399">A = U|A|,  |A| = √(A*A)</text>
+
+  <rect x="348" y="416" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="360" cy="433" r="3" fill="#6a4ca3"/>
+  <text class="leaf-t" x="372" y="434">Finite-rank (best)</text>
+  <text class="leaf-f" x="372" y="449">‖A − Aₖ‖ = σₖ₊₁  (Eckart–Young)</text>
+
+  <rect x="348" y="466" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="360" cy="483" r="3" fill="#6a4ca3"/>
+  <text class="leaf-t" x="372" y="484">Schmidt · Schatten</text>
+  <text class="leaf-f" x="372" y="499">entanglement · trace-class, HS</text>
+
+  <!-- ===== Branch 3: failure ===== -->
+  <line x1="782" y1="308" x2="782" y2="474" stroke="#5f6b7a" stroke-width="2" opacity="0.28"/>
+  <rect x="656" y="264" width="252" height="44" rx="9" fill="#eef0f3" stroke="#5f6b7a"/>
+  <text x="782" y="286" text-anchor="middle" font-size="12.5" font-weight="700" fill="#49525f">When it fails to diagonalize</text>
+  <text class="bh-s" x="782" y="300" text-anchor="middle">no orthonormal eigenbasis</text>
+
+  <rect x="660" y="316" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="672" cy="333" r="3" fill="#5f6b7a"/>
+  <text class="leaf-t" x="684" y="334">Jordan form</text>
+  <text class="leaf-f" x="684" y="349">A = D + N  (finite-dim only)</text>
+
+  <rect x="660" y="366" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="672" cy="383" r="3" fill="#5f6b7a"/>
+  <text class="leaf-t" x="684" y="384">Riesz projections</text>
+  <text class="leaf-f" x="684" y="399">P = (1/2πi) ∮ (z−A)⁻¹ dz</text>
+
+  <rect x="660" y="416" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="672" cy="433" r="3" fill="#5f6b7a"/>
+  <text class="leaf-t" x="684" y="434">Spectral-type split</text>
+  <text class="leaf-f" x="684" y="449">H = H_pp ⊕ H_ac ⊕ H_sc</text>
+
+  <rect x="660" y="466" width="244" height="42" rx="8" fill="#ffffff" stroke="#e2e5ea"/>
+  <circle cx="672" cy="483" r="3" fill="#5f6b7a"/>
+  <text class="leaf-t" x="684" y="484">Direct integral</text>
+  <text class="leaf-f" x="684" y="499">H = ∫⊕ H_ξ dμ(ξ)</text>
+
+  <!-- arrows into KL confluence -->
+  <path d="M470,508 L470,598" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+  <text class="flow" x="478" y="556">σₙ ↓ 0</text>
+  <path d="M158,508 C158,560 250,598 358,600" fill="none" stroke="#9aa1ac" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arrG)"/>
+  <text class="flow" x="232" y="548">if stationary ⇒ Fourier</text>
+
+  <!-- KL confluence -->
+  <rect x="250" y="600" width="440" height="92" rx="12" fill="#eaf5ee" stroke="#2e7d5b" stroke-width="1.5"/>
+  <text class="kl-t" x="470" y="624" text-anchor="middle">Karhunen–Loève  /  Mercer</text>
+  <text class="kl-s" x="470" y="644" text-anchor="middle">covariance operator C — self-adjoint, trace-class</text>
+  <text class="kl-s" x="470" y="661" text-anchor="middle">spectral · SVD spectrum · Fourier (if stationary), at once</text>
+  <text class="kl-f" x="470" y="682" text-anchor="middle">X_t = Σ √λₙ ξₙ φₙ(t)</text>
+</svg>

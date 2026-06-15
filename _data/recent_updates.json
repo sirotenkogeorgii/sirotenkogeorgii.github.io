@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "The Weak Formulation: How to Solve a PDE by Lowering Your Standards",
+   "url": "/subpages/math_topics/weak_formulation/weak_formulation_rigorous/",
+   "date": "2026-06-15",
+   "added": true
+  },
+  {
+   "title": "Weak Formulations, or: How to Solve a Differential Equation Without Differentiating",
+   "url": "/subpages/math_topics/weak_formulation/weak_formulation_gentle/",
+   "date": "2026-06-15",
+   "added": true
+  },
+  {
    "title": "Cookbook Tricks",
    "url": "/notes/cookbook_tricks/",
    "date": "2026-06-13",
@@ -167,18 +179,6 @@
    "url": "/subpages/stuff_i_found_interesting/compactness_and_contradiction_tao/",
    "date": "2026-05-24",
    "added": true
-  },
-  {
-   "title": "Convex Conjugate",
-   "url": "/subpages/stuff_i_found_interesting/convex_conjugate/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "Mathematical Analysis (Klazar) — Semester 1",
-   "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
-   "date": "2026-05-24",
-   "added": false
   }
  ]
 }
