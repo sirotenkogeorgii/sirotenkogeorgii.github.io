@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "One idea, many faces: a tour of decompositions in functional analysis",
+   "url": "/subpages/math_topics/operator_decompositions/",
+   "date": "2026-06-15",
+   "added": true
+  },
+  {
    "title": "The Weak Formulation: How to Solve a PDE by Lowering Your Standards",
    "url": "/subpages/math_topics/weak_formulation/weak_formulation_rigorous/",
    "date": "2026-06-15",
@@ -171,12 +177,6 @@
   {
    "title": "Adding Geometry to a Vector Space",
    "url": "/subpages/stuff_i_found_interesting/adding_geometry_to_vector_space/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "Compactness and Contradiction (Tao)",
-   "url": "/subpages/stuff_i_found_interesting/compactness_and_contradiction_tao/",
    "date": "2026-05-24",
    "added": true
   }
