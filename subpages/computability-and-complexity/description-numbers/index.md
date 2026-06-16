@@ -5,7 +5,7 @@ noindex: true
 tags:
   - computer-science
   - computability
-  - turing-machines
+  - turing-machine
   - godel-numbering
   - halting-problem
   - undecidability

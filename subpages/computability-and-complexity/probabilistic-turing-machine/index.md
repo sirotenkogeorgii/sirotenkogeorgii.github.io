@@ -6,7 +6,7 @@ tags:
   - computer-science
   - computability
   - complexity
-  - turing-machines
+  - turing-machine
   - randomized-algorithms
   - probability
 ---

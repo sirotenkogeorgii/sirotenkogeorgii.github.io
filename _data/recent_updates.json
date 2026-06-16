@@ -1,6 +1,48 @@
 {
  "entries": [
   {
+   "title": "Description Numbers",
+   "url": "/subpages/computability-and-complexity/description-numbers/",
+   "date": "2026-06-16",
+   "added": false
+  },
+  {
+   "title": "Probabilistic Turing Machine",
+   "url": "/subpages/computability-and-complexity/probabilistic-turing-machine/",
+   "date": "2026-06-16",
+   "added": false
+  },
+  {
+   "title": "Reinforcement Learning",
+   "url": "/subpages/books/reinforcement_learning_sutton/",
+   "date": "2026-06-16",
+   "added": true
+  },
+  {
+   "title": "Reinforcement Learning (HD)",
+   "url": "/subpages/reinforcement_learning_hd/",
+   "date": "2026-06-16",
+   "added": false
+  },
+  {
+   "title": "The Galerkin Method: How a One-Line Orthogonality Tames Infinite Dimensions",
+   "url": "/subpages/math_topics/galerkin_method/galerkin_method_rigorous/",
+   "date": "2026-06-16",
+   "added": true
+  },
+  {
+   "title": "The Galerkin method, or: how to solve an infinite-dimensional equation with finitely many numbers",
+   "url": "/subpages/math_topics/galerkin_method/galerkin_method_gentle/",
+   "date": "2026-06-16",
+   "added": true
+  },
+  {
+   "title": "Universal Turing Machine",
+   "url": "/subpages/computability-and-complexity/universal-turing-machine/",
+   "date": "2026-06-16",
+   "added": false
+  },
+  {
    "title": "One idea, many faces: a tour of decompositions in functional analysis",
    "url": "/subpages/math_topics/operator_decompositions/",
    "date": "2026-06-15",
@@ -103,12 +145,6 @@
    "added": false
   },
   {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-06-11",
-   "added": false
-  },
-  {
    "title": "Algorithms for Combinatorial Optimization",
    "url": "/subpages/books/aco/",
    "date": "2026-06-05",
@@ -143,42 +179,6 @@
    "url": "/notes/stuff_i_found_interesting/",
    "date": "2026-05-30",
    "added": false
-  },
-  {
-   "title": "Optimal Transport Old and New",
-   "url": "/subpages/books/optimal_transport_old_and_new/",
-   "date": "2026-05-28",
-   "added": false
-  },
-  {
-   "title": "SDEs & Diffusion Models",
-   "url": "/subpages/books/sde_hd/",
-   "date": "2026-05-28",
-   "added": false
-  },
-  {
-   "title": "Why the exponential function is everywhere",
-   "url": "/subpages/stuff_i_found_interesting/exponential/",
-   "date": "2026-05-26",
-   "added": true
-  },
-  {
-   "title": "cheat sheet",
-   "url": "/notes/cheat_sheet/",
-   "date": "2026-05-25",
-   "added": false
-  },
-  {
-   "title": "A sum-of-squares proof of the l1–l2 comparison inequality",
-   "url": "/subpages/stuff_i_found_interesting/l1-l2-proof-without-inner-product/",
-   "date": "2026-05-24",
-   "added": true
-  },
-  {
-   "title": "Adding Geometry to a Vector Space",
-   "url": "/subpages/stuff_i_found_interesting/adding_geometry_to_vector_space/",
-   "date": "2026-05-24",
-   "added": true
   }
  ]
 }

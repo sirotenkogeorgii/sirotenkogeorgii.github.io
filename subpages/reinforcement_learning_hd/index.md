@@ -6,7 +6,7 @@ math: true
 tags:
   - machine-learning
   - reinforcement-learning
-  - markov-decision-processes
+  - markov-decision-process
   - multi-armed-bandits
   - dynamic-programming
   - temporal-difference-learning
@@ -190,7 +190,7 @@ The most natural estimator of $q_\ast(a)$ is the empirical mean of the rewards o
 Let $N_t(a)$ denote the number of times action $a$ has been selected before time $t$. The **sample-average estimate** of $q_\ast(a)$ is
 
 $$
-Q_t(a) \;=\; \frac{\sum_{i=1}^{t-1} R_i \, \mathbf{1}\{A_i = a\}}{\sum_{i=1}^{t-1} \mathbf{1}\{A_i = a\}}
+Q_t(a) \;=\; \frac{\sum_{i=1}^{t-1} R_i \, \mathbf{1}\lbrace A_i = a\rbrace}{\sum_{i=1}^{t-1} \mathbf{1}\lbrace A_i = a\rbrace}
 \;=\; \frac{1}{N_t(a)} \sum_{i<t:\, A_i = a} R_i.
 $$
 
@@ -211,14 +211,14 @@ In particular the true action value $q_\ast(a) = \mathbb{E}[R_t \mid A_t = a]$ d
 
 **Why the assumption matters here.** The convergence $Q_t(a) \to q_\ast(a)$ we just stated relies on it in two places:
 
-* the rewards $\{R_i : A_i = a\}$ sampled from arm $a$ are i.i.d. draws from one fixed distribution, so the LLN applies,
+* the rewards $\lbrace R_i : A_i = a\rbrace$ sampled from arm $a$ are i.i.d. draws from one fixed distribution, so the LLN applies,
 * the limit $q_\ast(a)$ that the sample mean converges to is itself a well-defined constant.
 
 If either of these breaks, sample averages are the wrong estimator.
 
 **Non-stationary, for contrast.** A non-stationary bandit is one where $q_\ast(a)$ is allowed to *drift over time*: the true means themselves change as the agent interacts. Classical examples are slot machines whose underlying probabilities shift, or a restaurant whose cook changes mid-year. In that regime, averaging *all* past rewards equally is actively harmful — ancient rewards from a stale regime pull the estimate just as strongly as fresh ones do. We return to this case in the section on constant step sizes, where the goal is no longer convergence to a fixed number but **tracking** a moving target.
 
-**Why "almost" was avoided.** Unlike LLN statements that speak of almost-sure convergence of arbitrary $(X_i)_{i \ge 1}$, here convergence of $Q_t(a)$ is contingent on the agent *actually sampling arm $a$ infinitely often* — $N_t(a) \to \infty$. A control rule that stops pulling arm $a$ after finitely many steps prevents convergence entirely, even in a stationary problem. The stationarity assumption concerns the environment; the "sample often enough" condition concerns the algorithm.
+**Why "almost" was avoided.** Unlike LLN statements that speak of almost-sure convergence of arbitrary $(X_i)\_{i \ge 1}$, here convergence of $Q_t(a)$ is contingent on the agent *actually sampling arm $a$ infinitely often* — $N_t(a) \to \infty$. A control rule that stops pulling arm $a$ after finitely many steps prevents convergence entirely, even in a stationary problem. The stationarity assumption concerns the environment; the "sample often enough" condition concerns the algorithm.
 
 </div>
 
@@ -5162,7 +5162,11 @@ $$
 G_{t:h} \;\doteq\; R_{t+1} + \gamma\Bigl(\, \bar V_{h-1}(S_{t+1}) + \rho_{t+1}\bigl[\, G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1}) \,\bigr] \Bigr),
 $$
 
-where $\bar V\_{h-1}(S\_{t+1}) \doteq \sum\_a \pi(a \mid S\_{t+1})\, Q\_{h-1}(S\_{t+1}, a)$. This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
+where 
+
+$$\bar V\_{h-1}(S\_{t+1}) \doteq \sum\_a \pi(a \mid S\_{t+1})\, Q\_{h-1}(S\_{t+1}, a).$$
+
+This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
 
 </div>
 
@@ -5179,7 +5183,9 @@ is the **surprise** beyond the current estimate. The construction splits the ret
 
 * $\bar V\_{h-1}(S\_{t+1})$ is the default expected value under $\pi$ — what we believe *before* seeing the sampled continuation.
 * $\rho\_{t+1}[\cdots]$ corrects only the *sampled deviation* from the current action-value estimate.
-* If $\rho\_{t+1} = 0$, the target falls back to $\bar V\_{h-1}(S\_{t+1})$ — **not zero** — because $\mathbb{E}\_b[\rho\_{t+1} Q\_{h-1}(S\_{t+1}, A\_{t+1}) \mid S\_{t+1}] = \bar V\_{h-1}(S\_{t+1})$.
+* If $\rho\_{t+1} = 0$, the target falls back to $\bar V\_{h-1}(S\_{t+1})$ — **not zero** — because 
+  
+  $$\mathbb{E}\_b[\rho\_{t+1} Q\_{h-1}(S\_{t+1}, A\_{t+1}) \mid S\_{t+1}] = \bar V\_{h-1}(S\_{t+1}).$$
 
 Subtracting $Q\_{h-1}$ is precisely what makes the importance-sampled piece a *zero-mean correction* on top of a low-variance baseline — the defining trick of a control variate.
 
@@ -5205,7 +5211,12 @@ Every row is the *same* skeleton — $n$ real rewards then a bootstrap — diffe
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — $n$-step Bootstrapping)</span></p>
 
 * **A spectrum, not two camps.** $n$-step methods span a continuum from one-step TD ($n = 1$) to Monte Carlo ($n = \infty$); intermediate $n$ is usually best, and they remain TD methods throughout.
-* **The $n$-step return is the central object.** $n$ real rewards plus a bootstrap, $G\_{t:t+n} = R\_{t+1} + \cdots + \gamma^{n-1}R\_{t+n} + \gamma^{n} V\_{t+n-1}(S\_{t+n})$; the **error-reduction property** ($\gamma^{n}$ contraction) guarantees soundness for the whole family.
+* **The $n$-step return is the central object.** $n$ real rewards plus a bootstrap, 
+  
+  $$G\_{t:t+n} = R\_{t+1} + \cdots + \gamma^{n-1}R\_{t+n} + \gamma^{n} V\_{t+n-1}(S\_{t+n});$$
+  
+  the **error-reduction property** ($\gamma^{n}$ contraction) guarantees soundness for the whole family.
+
 * **$n$ is a bias–variance dial.** Small $n$ = more bootstrapping (bias, low variance); large $n$ = more real reward (less bias, high variance). Larger $n$ needs a smaller $\alpha$.
 * **Faster control.** **$n$-step Sarsa** propagates credit back $n$ steps per episode, so a single trajectory teaches far more than one-step Sarsa does; **Expected Sarsa** trades the sampled last action for a lower-variance expectation.
 * **Off-policy needs reweighting.** **Importance sampling** corrects for following $b$ while learning $\pi$; **control variates** keep the update unbiased while cutting the variance that the raw ratios inject.
