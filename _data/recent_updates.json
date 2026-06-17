@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Reinforcement Learning (HD): Problem Sheet 5",
+   "url": "/subpages/reinforcement_learning_hd/problems/sheet05/",
+   "date": "2026-06-17",
+   "added": true
+  },
+  {
    "title": "Description Numbers",
    "url": "/subpages/computability-and-complexity/description-numbers/",
    "date": "2026-06-16",
@@ -171,12 +177,6 @@
   {
    "title": "Problems from the Introduction to Geometric Deep Learning course",
    "url": "/subpages/books/geometric_deep_learning_hd/problems/",
-   "date": "2026-05-30",
-   "added": false
-  },
-  {
-   "title": "Stuff I Found Interesting",
-   "url": "/notes/stuff_i_found_interesting/",
    "date": "2026-05-30",
    "added": false
   }
