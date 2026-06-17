@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Partial Differential Equations in Data Science",
+   "url": "/subpages/books/pdeds/",
+   "date": "2026-06-17",
+   "added": false
+  },
+  {
    "title": "Reinforcement Learning (HD): Problem Sheet 5",
    "url": "/subpages/reinforcement_learning_hd/problems/sheet05/",
    "date": "2026-06-17",
@@ -141,12 +147,6 @@
   {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-06-11",
-   "added": false
-  },
-  {
-   "title": "Partial Differential Equations in Data Science",
-   "url": "/subpages/books/pdeds/",
    "date": "2026-06-11",
    "added": false
   },

@@ -3465,7 +3465,7 @@ for every measurable function $F\colon X\to\mathbb R$ such that $F\circ m,\;F\ci
     <text x="650" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
     <text x="722" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
   </svg>
-  <figcaption><strong>Rearrangement: same destination pile, different routing.</strong> The source $(W,\lambda)$ carries four equal lumps of mass $\tfrac14$ (dots $1$–$4$, colour-coded). <strong>(a)</strong> The map $m$ ships them into two bins $a,b\subset X$ (lumps $1,2\to a$ and $3,4\to b$). <strong>(b)</strong> A rearrangement $\tilde m$ sends the <em>same</em> lumps along <em>different</em> arrows — note the crossings: lump $1$ now lands in $b$, lump $3$ in $a$. Yet each bin still ends up with height $\tfrac12$, so the two maps induce the identical push-forward $\tilde m\_\sharp\lambda=m\_\sharp\lambda$. The colours track <em>which</em> lump went where (not preserved); the bin <em>heights</em> track the mass distribution on $X$ (preserved). That invariance of heights, across all possible re-routings, is exactly the defining identity $\int\_W F\circ m\,d\lambda=\int\_W F\circ\tilde m\,d\lambda$.</figcaption>
+  <figcaption><strong>Rearrangement: same destination pile, different routing.</strong> The source $(W,\lambda)$ carries four equal lumps of mass $\tfrac14$ (dots $1$–$4$, colour-coded). <strong>(a)</strong> The map $m$ ships them into two bins $a,b\subset X$ (lumps $1,2\to a$ and $3,4\to b$). <strong>(b)</strong> A rearrangement $\tilde m$ sends the <em>same</em> lumps along <em>different</em> arrows — note the crossings: lump $1$ now lands in $b$, lump $3$ in $a$. Yet each bin still ends up with height $\tfrac12$, so the two maps induce the identical push-forward $\tilde m_\sharp\lambda=m_\sharp\lambda$. The colours track <em>which</em> lump went where (not preserved); the bin <em>heights</em> track the mass distribution on $X$ (preserved). That invariance of heights, across all possible re-routings, is exactly the defining identity $\int_W F\circ m\,d\lambda=\int_W F\circ\tilde m\,d\lambda$.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -3590,7 +3590,7 @@ for every measurable $F\colon W\to\mathbb R$ with $F\circ s,\,F\in L^1(\lambda)$
     <text x="428" y="306" fill="#dc2626" font-size="12.5" font-weight="600">✗ s#λ ≠ λ</text>
     <text x="428" y="324" fill="currentColor" fill-opacity="0.7" font-size="11.5">λ(s⁻¹A) ≠ λ(A),  so  |det ∇s| ≠ 1</text>
   </svg>
-  <figcaption><strong>Measure-preserving maps preserve the size of every set, not the labels of points.</strong> The domain $\Omega$ is cut into nine equal tiles. <strong>(a)</strong> A measure-preserving $s$ — here a $90^\circ$ rotation — relocates the tiles (follow the outlined red tile) but every tile keeps area $\tfrac19$, so the uniform measure is reproduced exactly: $s\_\sharp\lambda=\lambda$, equivalently $\lambda(s^{-1}(A))=\lambda(A)$ for every measurable $A$. <strong>(b)</strong> A map that compresses the top rows and stretches the bottom ones carries the <em>same</em> colours but rescales their areas; the dashed test set $A$ has a strictly larger preimage $s^{-1}(A)$, so $s\_\sharp\lambda\neq\lambda$ and $\lvert\det\nabla s\rvert\neq 1$. This is the picture behind the defining identity $\int\_W F\circ s\,d\lambda=\int\_W F\,d\lambda$: it holds in (a) because relabelling points never moves mass between regions, and fails in (b) because the regions themselves are resized.</figcaption>
+  <figcaption><strong>Measure-preserving maps preserve the size of every set, not the labels of points.</strong> The domain $\Omega$ is cut into nine equal tiles. <strong>(a)</strong> A measure-preserving $s$ — here a $90^\circ$ rotation — relocates the tiles (follow the outlined red tile) but every tile keeps area $\tfrac19$, so the uniform measure is reproduced exactly: $s_\sharp\lambda=\lambda$, equivalently $\lambda(s^{-1}(A))=\lambda(A)$ for every measurable $A$. <strong>(b)</strong> A map that compresses the top rows and stretches the bottom ones carries the <em>same</em> colours but rescales their areas; the dashed test set $A$ has a strictly larger preimage $s^{-1}(A)$, so $s_\sharp\lambda\neq\lambda$ and $\lvert\det\nabla s\rvert\neq 1$. This is the picture behind the defining identity $\int_W F\circ s\,d\lambda=\int_W F\,d\lambda$: it holds in (a) because relabelling points never moves mass between regions, and fails in (b) because the regions themselves are resized.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -3770,6 +3770,8 @@ $$
 \int_\Omega \tfrac12 |v(x,t)|^2\,dx \;=\; \int_\Omega \tfrac12 |v_0(x)|^2\,dx \qquad\text{for all }t\in[0,T).
 $$
 
+</div>
+
 <details class="proof" markdown="1">
 <summary>Proof — momentum equation, IBP, boundary &amp; incompressibility</summary>
 
@@ -3783,7 +3785,9 @@ $$
 \end{aligned}
 $$
 
-The convective term is a perfect gradient: using $v\cdot(v\cdot\nabla)v = v\_j\partial\_j v\_i\cdot v\_i = \tfrac12 v\_j\partial\_j\\|v\\|^2 = v\cdot\nabla(\tfrac12\\|v\\|^2)$,
+The convective term is a perfect gradient: using 
+
+$$v\cdot(v\cdot\nabla)v = v\_j\partial\_j v\_i\cdot v\_i = \tfrac12 v\_j\partial\_j\\|v\\|^2 = v\cdot\nabla(\tfrac12\\|v\\|^2),$$
 
 $$
 \frac{d}{dt}\int_\Omega\tfrac12|v|^2\,dx \;=\; -\int_\Omega v\cdot\nabla\bigl(\tfrac12|v|^2+p\bigr)\,dx.
@@ -3798,8 +3802,6 @@ $$
 The boundary integral vanishes by the free-slip condition $v\cdot n=0$; the bulk integral vanishes by incompressibility $\nabla\cdot v=0$. Hence kinetic energy is conserved. $\square$
 
 </details>
-
-</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Failure for weak solutions — Onsager's conjecture)</span></p>
@@ -3834,7 +3836,11 @@ $$
 
 The mechanical content of "incompressible" is that *no volume gets created or destroyed* as the fluid moves. Eulerian-side that says the velocity field has zero divergence; Lagrangian-side it says the flow map preserves volumes. These are the same statement viewed from two coordinate systems.
 
-Sketch of (2.12): for sufficiently smooth $v$, the Jacobian $J(t,x_0):=\det\nabla_{x_0}\phi(t,x_0)$ satisfies $\partial_t J = (\nabla\cdot v)(\phi(t,x_0),t)\cdot J$ (Liouville's formula). With $J(0,\cdot)=1$, the equation $\partial_t J=0$ is equivalent to $\nabla\cdot v=0$, giving $J\equiv 1$, i.e. $\phi(t,\cdot)\in G(\Omega)$.
+Sketch of (2.12): for sufficiently smooth $v$, the Jacobian $J(t,x_0):=\det\nabla_{x_0}\phi(t,x_0)$ satisfies 
+
+$$\partial_t J = (\nabla\cdot v)(\phi(t,x_0),t)\cdot J. \qquad \text{(Liouville's formula)}$$
+
+With $J(0,\cdot)=1$, the equation $\partial_t J=0$ is equivalent to $\nabla\cdot v=0$, giving $J\equiv 1$, i.e. $\phi(t,\cdot)\in G(\Omega)$.
 
 </div>
 
@@ -3846,7 +3852,11 @@ $$
 -(\nabla p)(x(t),t) \;=\; \rho\,\frac{d^2}{dt^2}x(t).
 $$
 
-Differentiating the trajectory identity $\frac{d}{dt}\phi(t,x_0)=v(\phi(t,x_0),t)$ once more in time gives, by the chain rule,
+Differentiating the trajectory identity 
+
+$\frac{d}{dt}\phi(t,x_0)=v(\phi(t,x_0),t)$ 
+
+once more in time gives, by the chain rule,
 
 $$
 \frac{d^2}{dt^2}\phi(t,x_0) \;=\; \partial_t v + (v\cdot\nabla)v,
@@ -4147,7 +4157,15 @@ If $c'$ is strictly convex, equality in Jensen's inequality forces the integrand
 
 If we replace the time interval $[0,1]$ by a general time interval $[0,T]$, what is the scaling in these statements?
 
-*Hint.* Jensen with the normalized measure $\frac{dt}{T}$ gives $\int_0^T c'(\dot z_t)\,dt \ge T\,c'\bigl(\frac{y-x}{T}\bigr)$. For $c'=\lvert\cdot\rvert^p$ this is $\lvert x-y\rvert^p/T^{p-1}$ — for $p>1$ travelling slower (larger $T$) is cheaper, while for $p=1$ the cost is independent of $T$.
+$$\int_0^T c'(\dot z_t)\,dt \ge T\,c'\bigl(\frac{y-x}{T}\bigr)$$
+
+For $c'=\lvert\cdot\rvert^p$ this is $\lvert x-y\rvert^p/T^{p-1}$ — for $p>1$ travelling slower (larger $T$) is cheaper, while for $p=1$ the cost is independent of $T$.
+
+*Hint.* Jensen with the normalized measure $\frac{dt}{T}$ gives 
+
+$$\int_0^T c'(\dot{z}_t)\ dt \geq Tc'(\frac{y-x}{T}).$$
+
+For $c'=\lvert \cdot \rvert^p$ this is $\lvert x-y\rvert^p / T^{P-1}$ — for $p>1$ travelling slower (larger $T$) is cheaper, while for $p=1$ the cost is independent of $T$.
 
 </div>
 
@@ -4167,7 +4185,15 @@ For the quadratic cost, Brenier's theorem (Theorem 13) and Proposition 25 combin
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 27</span><span class="math-callout__name">(Time-dependent optimal transportation theorem)</span></p>
 
-Let $c(x,y)=c'(y-x)=\lvert x-y\rvert^2$ in $\mathbb R^d$. Let $\mu$ and $\nu$ be two probability measures on $\mathbb R^d$ that are absolutely continuous with respect to the Lebesgue measure, and let $C((z_t)_t)=\int_0^1 c'(\dot z_t)\,dt$. Let $\nabla\varphi$ be the Brenier map, i.e., the unique gradient of a convex function such that $(\nabla\varphi)\_\sharp\mu=\nu$. Then the solution to the time-dependent optimal transport problem (2.17) is
+Let 
+
+$$c(x,y)=c'(y-x)=\lvert x-y\rvert^2 \text{ in } \mathbb R^d$$
+
+Let $\mu$ and $\nu$ be two probability measures on $\mathbb R^d$ that are absolutely continuous with respect to the Lebesgue measure, and let 
+
+$$C((z_t)_t)=\int_0^1 c'(\dot z_t)\,dt$$
+
+Let $\nabla\varphi$ be the Brenier map, i.e., the unique gradient of a convex function such that $(\nabla\varphi)\_\sharp\mu=\nu$. Then the solution to the time-dependent optimal transport problem (2.17) is
 
 $$
 T_t(x) = (1-t)x + t\nabla\varphi(x).
@@ -4206,7 +4232,11 @@ i.e., the displacement interpolation is the measure associated to the standard c
 This interpolation has remarkable features:
 
 * $\rho_t$ is a probability measure, and if $\mu$ and $\nu$ don't give mass to small sets, neither does $\rho_t$.
-* Since $(1-t)\,\mathrm{id}+t\nabla\varphi=\nabla\bigl((1-t)\tfrac{\lvert x\rvert^2}{2}+t\varphi\bigr)$ is itself the gradient of a convex function, Brenier's theorem implies that it is the **optimal** transport map from $\mu$ to $\rho_t$. The interpolation is built from restrictions of one optimal plan — travelling along it never wastes cost.
+* Since 
+  
+  $$(1-t)\,\mathrm{id}+t\nabla\varphi=\nabla\bigl((1-t)\tfrac{\lvert x\rvert^2}{2}+t\varphi\bigr)$$
+  
+  is itself the gradient of a convex function, Brenier's theorem implies that it is the **optimal** transport map from $\mu$ to $\rho_t$. The interpolation is built from restrictions of one optimal plan — travelling along it never wastes cost.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 28</span><span class="math-callout__name">(Properties of the displacement interpolation)</span></p>
@@ -4243,7 +4273,11 @@ We will often work with probability measures $\rho$ that are absolutely continuo
   <p class="math-callout__title"><span class="math-callout__label">Definition 29</span><span class="math-callout__name">(Displacement convexity for absolutely continuous measures)</span></p>
 
 1. A set $A\subset\mathcal P_{ac}(\mathbb R^d)$ is called **displacement convex** if $\mu,\nu\in A$ implies $[\mu,\nu]_t\in A$ for all $t\in(0,1)$.
-2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P_{ac}(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** if for any $\mu,\nu\in A$ and $\rho_t:=[\mu,\nu]_t$, the function $[0,1]\ni t\mapsto \mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$ is convex.
+2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P_{ac}(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** if for any $\mu,\nu\in A$ and $\rho_t:=[\mu,\nu]_t$, the function 
+   
+   $$[0,1]\ni t\mapsto \mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$$
+   
+   is convex.
 
 </div>
 
@@ -4255,14 +4289,22 @@ In the case of the quadratic cost $c(x,y)=\lvert x-y\rvert^2$, we can define dis
 Let $\sigma_t\colon\mathbb R^d\times\mathbb R^d\to\mathbb R^d$, $\sigma_t(x,y)=(1-t)x+ty$.
 
 1. A set $A\subset\mathcal P^2(\mathbb R^d)$ is called **displacement convex** if for all $\mu,\nu\in A$, all optimal (for the Kantorovich problem with $c(x,y)=\lvert x-y\rvert^2$) transference plans $\pi\in\Pi(\mu,\nu)$, and all $t\in(0,1)$, we have $\rho_t:=(\sigma_t)\_\sharp\pi\in A$.
-2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P^2(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** on $A$ if for any $\mu,\nu\in A$ and $\rho_t:=(\sigma_t)\_\sharp\pi$, the function $[0,1]\ni t\mapsto\mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$ is convex.
+2. Let $\mathcal F$ be a functional defined on a displacement convex subset $A$ of $\mathcal P^2(\mathbb R^d)$ with values in $\mathbb R\cup\lbrace+\infty\rbrace$. We call $\mathcal F$ **displacement convex** on $A$ if for any $\mu,\nu\in A$ and $\rho_t:=(\sigma_t)\_\sharp\pi$, the function 
+   
+   $$[0,1]\ni t\mapsto\mathcal F(\rho_t)\in\mathbb R\cup\lbrace+\infty\rbrace$$
+   
+   is convex.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Definition 30 generalises Definition 29)</span></p>
 
-When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so $(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]\_t$ and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
+When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so 
+
+$$(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]\_t$$
+
+and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
 
 </div>
 
@@ -4327,9 +4369,35 @@ respectively, of particles located at $x_1,\dots,x_N$. So $\mathcal V$ and $\mat
 
 Some more general, but basic, observations:
 
-1. If $U\ge 0$, the functional $\mathcal U\colon\mathcal P_{ac}(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined. It is **proper** (not identically $+\infty$) as soon as $U(0)=0$ and $U$ is not identically $+\infty$ on $(0,\infty)$. Indeed, pick $r>0$ with $U(r)<\infty$ and set $\rho:=r\,\mathbf 1_A$ with $\lvert A\rvert=1/r$; then $\mathcal U(\rho)=U(r)\,\lvert A\rvert=U(r)/r<\infty$, the region where $\rho=0$ contributing nothing because $U(0)=0$.
-2. If $V\ge -c>-\infty$, then $\mathcal V\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined.
-3. Similarly, if $W\ge -c>-\infty$, then $\mathcal W\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$ is well-defined.
+1. If $U\ge 0$, the functional 
+   
+   $$\mathcal U\colon\mathcal P_{ac}(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$$
+   
+   is well-defined. It is **proper** (not identically $+\infty$) as soon as $U(0)=0$ and $U$ is not identically $+\infty$ on $(0,\infty)$. Indeed, pick $r>0$ with $U(r)<\infty$ and set $\rho:=r\,\mathbf 1_A$ with $\lvert A\rvert=1/r$; then 
+   
+   $$\mathcal U(\rho)=U(r)\,\lvert A\rvert=U(r)/r<\infty,$$
+   
+   the region where $\rho=0$ contributing nothing because $U(0)=0$.
+
+2. If 
+   
+   $$V\ge -c>-\infty,$$
+   
+   then 
+   
+   $$\mathcal V\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$$
+   
+   is well-defined.
+
+3. Similarly, if 
+   
+   $$W\ge -c>-\infty,$$
+   
+   then 
+   
+   $$\mathcal W\colon\mathcal P(\mathbb R^d)\to\mathbb R\cup\lbrace+\infty\rbrace$$
+   
+   is well-defined.
 
 </div>
 
@@ -4361,8 +4429,17 @@ Condition (2.19) is **McCann's condition**, and it has a transparent geometric m
 
 Two standard checks:
 
-* **Entropy** $U(s)=s\log s$: $\Psi(r)=r^d\cdot r^{-d}\log(r^{-d})=-d\log r$ — convex and decreasing. ✓
-* **Power laws** $U(s)=s^m$, $m\ge 1$: $\Psi(r)=r^{d(1-m)}$ — convex and non-increasing. ✓ More generally, with the normalisation $U(s)=\frac{s^m}{m-1}$, condition (2.19) holds precisely for $m\ge 1-\frac1d$ — the exponent range of the porous-medium equation.
+* **Entropy** $U(s)=s\log s$: 
+  
+  $$\Psi(r)=r^d\cdot r^{-d}\log(r^{-d})=-d\log r$$
+  
+  is convex and decreasing. ✓
+
+* **Power laws** $U(s)=s^m$, $m\ge 1$: 
+  
+  $$\Psi(r)=r^{d(1-m)}$$
+  
+  is convex and non-increasing. ✓ More generally, with the normalisation $U(s)=\frac{s^m}{m-1}$, condition (2.19) holds precisely for $m\ge 1-\frac1d$ — the exponent range of the porous-medium equation.
 
 Note also that condition 2. and 3. compare cleanly: convexity of the density is *equivalent* to displacement convexity. This is in sharp contrast to convexity along *linear* interpolation: $\mathcal V$ is linear (hence trivially convex) along $(1-t)\mu+t\nu$ for *any* $V$, so linear convexity carries no information about $V$ — displacement convexity is the notion that actually sees the potential.
 
@@ -4593,7 +4670,7 @@ obtained by rewriting the velocity equation as a conservation law for the moment
 
 The Eulerian formulation (2.22)–(2.23) lets us compute derivatives of functionals **along the displacement interpolation** — for example the first and second derivatives of the internal energy, which were very hard to access in the Lagrangian viewpoint (where $\mathcal U(\rho_t)$ involves the Jacobian determinant of $T_t$).
 
-We focus on the Boltzmann entropy $\mathcal U(\rho)=\int\rho\log\rho$, i.e., $U(s)=s\log s$, so that $U'(s)=\log s+1$ and $U''(s)=\frac1s$. Formally — interchanging differentiation and integration and integrating by parts — the **first derivative** is
+We focus on the Boltzmann entropy $\mathcal U(\rho)=\int\rho\log\rho$, i.e., $U(s)=s\log s$, so that $U'(s)=\log s+1$ and $U^{''}(s)=\frac1s$. Formally — interchanging differentiation and integration and integrating by parts — the **first derivative** is
 
 $$
 \begin{aligned}
