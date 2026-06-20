@@ -16,6 +16,8 @@ tags:
   - prefix-free-turing-machine
   - compressibility
   - minimum-description-length
+  - halting-problem
+  - chaitin-constant
 ---
 
 # Algorithmic Randomness and Computable Analysis
@@ -2573,6 +2575,8 @@ $$K(w) \leq l(\sigma) + c_M = d(w) + c_M = f(w) + \underbrace{\tilde{c} + c_M}_{
 
 since $M$ is prefix-free, $\widetilde U$ simulates it with constant overhead $c_M$, giving $K(w) \le C_M(w) + c_M \le l(\sigma) + c_M$.
 
+*Remark:* $K(w) \le C_M(w) + c_M$ is valid, because $M$ is prefix-free and C_M(w) is *some* prefix-free code for $w$ (I believe it would be better to say $K_M$).
+
 </details>
 </div>
 
@@ -3130,9 +3134,94 @@ In this exercise, we prove in three steps that all Martin-Löf random sequences 
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Proof I</summary>
 
-TODO: solve it
+* If $L_i$ is empty, then trivially $\lambda(L_i) = 0 \le \lambda(\text{dom}(M))$.
+* If $L_i$ is non-empty, consider the output word $\sigma \in L_i$. Because $\sigma$ is in $L_i$, there exists an optimal code $\tau_\sigma$ of $\sigma$, then
+
+  $$l(\tau_\sigma) = C_M(\sigma) \leq l(\sigma) - i$$
+
+  Then 
+  
+  $$2^{-\tau_\sigma} \leq 2^{-(\sigma + i)} = 2^{-i}2^{-\sigma}$$
+
+  Summing over the whole $L_i$ and taking into account that the mapping $\sigma\mapsto\tau_\sigma$ is injective, we obtain
+
+  $$\sigma_{\sigma\in L_i} 2^{-l(\sigma)} \leq 2^{i}\sum_{\tau_\sigma:\sigma\in L_i} 2^{-\tau_\sigma} \leq 2^{i}\sum_{\tau\in \text{dom}(M)} 2^{-\tau}$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof II</summary>
+
+Let (U) be the fixed universal prefix-free machine defining prefix-free Kolmogorov complexity
+
+$$K(\sigma)=C_U(\sigma).$$
+
+The notes define $K$-incompressibility by bounds of the form
+
+$$K(X\upharpoonright n)\ge n-c$$
+
+for all $n$. 
+
+Define
+
+$$\widetilde L_i := \lbrace X\in{0,1}^{\mathbb N}:\exists n; K(X\upharpoonright n)<n-i\rbrace.$$
+
+Equivalently,
+
+$$\widetilde L_i = \bigcup_{\sigma:\ K(\sigma)<l(\sigma)-i}[![\sigma]!].$$
+
+So each $\widetilde L_i$ is open, because it is a union of basic cylinders.
+
+**Uniform enumerability.**
+
+Since $K$ is upper semicomputable, we can enumerate all pairs $(\sigma,k)$ such that $K(\sigma)\le k$. Hence we can uniformly enumerate all words satisfying
+
+$$K(\sigma)<l(\sigma)-i.$$
+
+Thus the sequence $(\widetilde L_i)\_i$ is uniformly effectively open.
+
+**Measure bound.**
+
+Let
+
+$$P_i:=\lbrace\sigma:K(\sigma)<l(\sigma)-i\rbrace.$$
+
+Because $K(\sigma)$ and $l(\sigma)-i$ are integers,
+
+$$K(\sigma)<l(\sigma)-i \quad\Longleftrightarrow\quad K(\sigma)\le l(\sigma)-(i+1).$$
+
+Therefore $P_i$ is exactly the set of words compressed by at least $i+1$ bits with respect to the universal prefix-free machine $U$. Applying part 1 with $M=U$,
+
+$$\sum_{\sigma\in P_i}2^{-l(\sigma)} \le 2^{-(i+1)}\lambda(\operatorname{dom}(U)).$$
+
+Since $U$ is prefix-free,
+
+$$\lambda(\operatorname{dom}(U))\le 1.$$
+
+Therefore
+
+$$\lambda(\widetilde L_i) \le \sum_{\sigma\in P_i}2^{-l(\sigma)} \le 2^{-(i+1)} \le 2^{-i}.$$
+
+Hence
+
+$$\boxed{\lambda(\widetilde L_i)\le 2^{-i}.}$$
+
+Thus $(\widetilde L_i)\_i$ is a uniformly enumerable sequence of open sets with the required measure bounds, so it is a Martin-Löf test. This matches the lecture-note form of a Martin-Löf test: uniformly enumerable open layers with $\lambda(M_i)\le 2^{-i}$. 
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof III</summary>
+
+Since every ML random real $A\in\lbrace 0,1\rbrace^{\mathbb{N}}$ escapes all layers of the ML test, for the test above we have that there exists a constant $c$ such that
+
+$$K(X \upharpoonright n) \geq n - c \qquad \forall n$$
 
 </details>
 </div>
@@ -3363,7 +3452,19 @@ For every $q$ the search halts, because (26) is eventually satisfied:
 
 $$\alpha \upharpoonright n = \max\lbrace 0.\sigma : l(\sigma) = n \text{ and } 0.\sigma \in L(\alpha)\rbrace.$$
 
-**(iii) $\Longrightarrow$ (i).** Exercise. $\square$
+**(iii) $\Longrightarrow$ (i).** Suppose $(a_n)$ is a computable rational sequence with
+
+$$|\alpha-a_n|<2^{-n}.$$
+
+If $\alpha$ is dyadic, it has a finite computable binary expansion, so we are done. Otherwise, to compute the first $k$ bits of $\alpha$, wait until for some $n$ the interval
+
+$$(a_n-2^{-n},a_n+2^{-n})$$
+
+is contained in one dyadic interval
+
+$$\left[\frac{j}{2^k},\frac{j+1}{2^k}\right)$$
+
+of length $2^{-k}$. This eventually happens because $\alpha$ is not on a dyadic boundary of level $k$. Then the binary expansion of $j$ of length $k$ gives $\alpha\upharpoonright k$. Hence the binary expansion of $\alpha$ is computable.
 
 </details>
 </div>
@@ -3468,7 +3569,25 @@ $$a_n := \sum_{\substack{q \,\in\, \operatorname{dom}(\widetilde M[n]) \\ l(q) <
 
 where $\widetilde M[n]$ is $\widetilde M$ run for $n$ steps, form a nondecreasing computable sequence converging to $\alpha$, i.e. a left-c.e. approximation.
 
-**(i) $\Longrightarrow$ (iii).** Exercise. $\square$
+**(i) $\Longrightarrow$ (iii).** 
+
+Let $\alpha$ be left-c.e. Choose a nondecreasing computable rational approximation $a_s\nearrow\alpha$. Then the left cut $L(\alpha)$ is c.e., so the dyadic rationals below $\alpha$ can be enumerated. Let $b_s$ be the maximum of the first $s$ enumerated dyadic rationals and $0$. Then
+
+$$0=b_0\le b_1\le b_2\le\cdots\nearrow\alpha,$$
+
+and each increment $\delta_s=b_{s+1}-b_s$ is dyadic. Write each positive dyadic $\delta_s$ as a finite sum
+
+$$\delta_s=\sum_i 2^{-d_{s,i}}.$$
+
+Enumerate the length requests $(d_{s,i},\lambda)$. Their Kraft sum is
+
+$$\sum_{s,i}2^{-d_{s,i}} =\sum_s(b_{s+1}-b_s) =\alpha\le 1.$$
+
+By the Kraft-Chaitin theorem, there is a computable prefix-free machine $\widetilde M$ with codewords of exactly these lengths. Therefore
+
+$$\sum_{\sigma\in\operatorname{dom}(\widetilde M)}2^{-l(\sigma)} =\alpha.$$
+
+So every left-c.e. real in $[0,1]$ is a halting probability.
 
 </details>
 </div>
@@ -3501,3 +3620,126 @@ The three notions of approximability introduced here nest, each layer being pinn
 </figure>
 
 In particular, the halting probability of a *universal* prefix-free machine — Chaitin's $\Omega$ — is left-c.e. but, as we will see, also $1$-random. It is precisely the promised "natural" example of a random sequence: the binary expansion of the limit of the slowest nondecreasing computable Cauchy sequence.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the halting problem TODO: put it to a proper place)</span></p>
+
+Knowing the first $N$ bits of $\Omega$, one could calculate the **halting problem** for all programs of a size up to $N$. Let the program $p$ for which the halting problem is to be solved be $N$ bits long. In **dovetailing** fashion, all programs of all lengths are run, until enough have halted to jointly contribute enough probability to match these first $N$ bits. If the program $p$ has not halted yet, then it never will, since its contribution to the halting probability would affect the first $N$ bits. Thus, the halting problem would be solved for $p$.
+
+Because many outstanding problems in **number theory**, such as **Goldbach's conjecture**, are equivalent to solving the halting problem for special programs (which would basically search for counter-examples and halt if one is found), knowing enough bits of Chaitin's constant would also imply knowing the answer to these problems. But as the halting problem is not generally solvable, calculating any but the first few bits of Chaitin's constant is not possible for a universal language. This reduces hard problems to impossible ones, much like trying to build an **oracle machine for the halting problem** would be.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Solovay domination property of $\Omega$)</span></p>
+
+Let $\alpha$ be the halting probability of a prefix-free Turing machine $\tilde{M}$, and let $\Omega$ be the halting probability of a universal Turing machine $\tilde{U}$. Let further $a_0,a_1,\dots$ be a fixed left-c.e. approximation of $\alpha$. 
+
+Show that there exists a left-c.e. approximation $w_0,w_1,\dots$ of $\Omega$ and a constant $c$ such that 
+
+$$a_{n+1}−a_n \leq c(w_{n+1}−w_n) \qquad \text{ for all } n.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+This is the Solovay domination property of $\Omega$.
+
+Let $\alpha$ be the halting probability of $\widetilde M$, and let $\widetilde U$ be universal. By universality, there is a fixed code $i_{\widetilde M}$ such that
+
+$$\widetilde U(i_{\widetilde M},\sigma)=\widetilde M(\sigma).$$
+
+Let $d=l(i_{\widetilde M})$. The part of $\Omega$ coming from this simulation is
+
+$$\sum_{\sigma\in\operatorname{dom}(\widetilde M)} 2^{-d-l(\sigma)} = 2^{-d}\alpha.$$
+
+Write the remaining contribution to $\Omega$ as $\beta$. Since it is also left-c.e., choose a left-c.e. approximation $b_n\nearrow\beta$. Define
+
+$$w_n:=2^{-d}a_n+b_n.$$
+
+Then $(w_n)$ is a nondecreasing computable approximation of
+
+$$2^{-d}\alpha+\beta=\Omega.$$
+
+Moreover,
+
+$$w_{n+1}-w_n = 2^{-d}(a_{n+1}-a_n)+(b_{n+1}-b_n) \ge 2^{-d}(a_{n+1}-a_n).$$
+
+Therefore
+
+$$a_{n+1}-a_n \le 2^d(w_{n+1}-w_n).$$
+
+So the required constant is $c=2^d$.
+
+</details>
+</div>
+
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The halting problem is Turing reducible to Chaitin’s $\Omega$)</span></p>
+
+Show that
+
+$$\emptyset' \leq_T \Omega,$$
+
+i.e. that the halting problem is Turing reducible to Chaitin’s Omega
+
+$$\Omega = \sum_{\sigma \in \operatorname{dom} \widetilde U} 2^{-l(\sigma)}.$$
+
+*Hint:* for a given $e$, build a prefix-free machine $\widetilde M$ such that
+
+$$\widetilde M(0^e1)\downarrow \quad \Longleftrightarrow \quad \Phi_e(e)\downarrow.$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(A watered-down Chaitin’s Omega)</span></p>
+
+Recall the statement of the **Kleene Second Recursion Theorem for prefix-free machines**:
+
+Let
+
+$$h : \subseteq \lbrace 0,1\rbrace^\ast \times \mathbb N \to \lbrace 0,1\rbrace^\ast$$
+
+be a partial computable function such that, for each $i$, the function $h(\cdot,i)$ is prefix-free. Then, from an index for $h$, we can compute an index $e$ such that
+
+$$\widetilde M_e(w) = h(w,e)$$
+
+for all $w$.
+
+For $r \in (0,1)$, define the **watered-down halting probability**
+
+$$\Omega^r = \sum_{\sigma \in \operatorname{dom} U} 2^{-l(\sigma)/r}.$$
+
+Show that
+
+$$K(\Omega^{1/2}\!\upharpoonright n) < \frac n2 + O(1).$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Four equivalent characterizations of Solovay reducibility for left-c.e. reals)</span></p>
+
+Let $\alpha$ and $\beta$ be left-c.e. reals. Show that the following four conditions are equivalent.
+
+* **(i)** There are a constant $c$ and a partial computable function $f : \subseteq \mathbb Q \to \mathbb Q$ such that, for every $q < \beta$ fulfills $f(q)\downarrow < \alpha$ and $\alpha - f(q) < c(\beta - q)$.
+
+* **(ii)** There exists a constant $c$ such that, for every pair of left-c.e. approximations $(a_n)\_{n \in \mathbb N}$ and $(b_n)\_{n \in \mathbb N}$ of $\alpha$ and $\beta$, respectively, there exists a computable function $g : \mathbb N \to \mathbb N$ such that $\alpha - a_{g(n)} < c(\beta - b_n)$ for all $n$.
+
+* **(iii)** For every left-c.e. approximation $(b_n)$, there exist a constant $d$ and a left-c.e. approximation $a_0 < a_1 < \cdots \to \alpha$ such that $a_s - a_{s-1} \leq d(b_s - b_{s-1})$ for all $s$.
+
+* **(iv)** There exist two left-c.e. approximations $(a_n)\_{n \in \mathbb N}$ and $(b_n)\_{n \in \mathbb N}$ of $\alpha$ and $\beta$, respectively, and a constant $c$ such that $\alpha - a_n < c(\beta - b_n)$ for all $n$.
+
+</div>
+
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+
+
+</details>
+</div>

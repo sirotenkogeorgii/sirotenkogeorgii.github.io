@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-06-20",
+   "added": false
+  },
+  {
    "title": "Partial Differential Equations in Data Science",
    "url": "/subpages/books/pdeds/",
    "date": "2026-06-17",
@@ -143,12 +149,6 @@
    "url": "/notes/solving_methods/",
    "date": "2026-06-12",
    "added": true
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-06-11",
-   "added": false
   },
   {
    "title": "Algorithms for Combinatorial Optimization",
