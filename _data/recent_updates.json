@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Maths Topics",
+   "url": "/notes/maths_topics/",
+   "date": "2026-06-21",
+   "added": false
+  },
+  {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-06-21",
@@ -33,6 +39,18 @@
   {
    "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 05",
    "url": "/subpages/books/numerical_methods_for_bip/problems/sheet05/",
+   "date": "2026-06-21",
+   "added": true
+  },
+  {
+   "title": "What is a tensor, really? One idea behind a confusing word",
+   "url": "/subpages/math_topics/tensors/tensors_rigorous/",
+   "date": "2026-06-21",
+   "added": true
+  },
+  {
+   "title": "What is a tensor? The many faces of one idea",
+   "url": "/subpages/math_topics/tensors/tensors_gentle/",
    "date": "2026-06-21",
    "added": true
   },
@@ -115,12 +133,6 @@
    "added": false
   },
   {
-   "title": "Maths Topics",
-   "url": "/notes/maths_topics/",
-   "date": "2026-06-13",
-   "added": false
-  },
-  {
    "title": "The Fourier Transform: A Prism for Functions",
    "url": "/subpages/math_topics/fourier_transform/fourier_transform_gentle/",
    "date": "2026-06-13",
@@ -167,18 +179,6 @@
    "url": "/subpages/stuff_i_found_interesting/solving_methods/proving_operator_compactness/",
    "date": "2026-06-12",
    "added": true
-  },
-  {
-   "title": "Solving Methods",
-   "url": "/notes/solving_methods/",
-   "date": "2026-06-12",
-   "added": true
-  },
-  {
-   "title": "Algorithms for Combinatorial Optimization",
-   "url": "/subpages/books/aco/",
-   "date": "2026-06-05",
-   "added": false
   }
  ]
 }
