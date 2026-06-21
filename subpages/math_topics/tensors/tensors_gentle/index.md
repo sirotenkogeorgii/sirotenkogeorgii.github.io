@@ -5,15 +5,23 @@ date: 2026-06-21
 tags: [linear-algebra, multilinear-algebra, functional-analysis, differential-geometry, machine-learning]
 ---
 
-> **Conventions.** All vector spaces are over a fixed field $k$ (read $\mathbb{R}$ or $\mathbb{C}$ if you like); they are finite-dimensional unless I say otherwise, and I will be explicit at the one point where infinite dimensions change the story qualitatively. I write $V^\ast$ for the dual space of linear functionals $V \to k$, I use the Einstein summation convention (a repeated index, once up and once down, is silently summed) from the point where it earns its keep, and I reserve the word *map* for functions that respect whatever structure is in play. Throughout, "$\cong$" means "canonically isomorphic," and I will be fussy about the word *canonical* because that fussiness is the whole subject.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Conventions</span><span class="math-callout__name"></span></p>
 
-If you have spent any time near mathematics, physics, or machine learning, you have met the word **tensor** wearing wildly different costumes, and nobody warned you they were the same person.
+All vector spaces are over a fixed field $k$ (read $\mathbb{R}$ or $\mathbb{C}$ if you like); they are finite-dimensional unless I say otherwise, and I will be explicit at the one point where infinite dimensions change the story qualitatively. I write $V^\ast$ for the dual space of linear functionals $V \to k$, I use the Einstein summation convention (a repeated index, once up and once down, is silently summed) from the point where it earns its keep, and I reserve the word *map* for functions that respect whatever structure is in play. Throughout, "$\cong$" means "canonically isomorphic," and I will be fussy about the word *canonical* because that fussiness is the whole subject.
 
-- A machine-learning engineer says a tensor is *an $n$-dimensional array of numbers*: a scalar is a rank-$0$ tensor, a vector a rank-$1$ tensor, a matrix a rank-$2$ tensor, and `np.zeros((3,4,5))` a rank-$3$ tensor.
-- A physicist says a tensor is *a thing that transforms correctly under a change of coordinates*, mutters about upper and lower indices, and writes $T^{i}{}\_{jk}$ as though that settled the matter.
-- An algebraist says a tensor is *an element of a tensor product space* $V \otimes W$, defined by a universal property, and is visibly uninterested in your coordinates.
-- A differential geometer says the metric, the curvature, and the stress–energy are tensors — meaning *tensor fields*, one tensor glued smoothly to each point of a manifold.
-- A functional analyst says, ominously, that there is *more than one* tensor product of two Banach spaces, and that telling them apart was good enough for a thesis by Grothendieck.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Introduction</span><span class="math-callout__name"></span></p>
+
+If you have spent any time near mathematics, physics, or machine learning, you have met the word **tensor** wearing wildly different costumes, and nobody warned you they were the same thing.
+
+- A machine-learning engineer says a tensor is **an $n$-dimensional array of numbers**: a scalar is a rank-$0$ tensor, a vector a rank-$1$ tensor, a matrix a rank-$2$ tensor, and `np.zeros((3,4,5))` a rank-$3$ tensor.
+- A physicist says a tensor is **a thing that transforms correctly under a change of coordinates**, mutters about upper and lower indices, and writes $T^{i}{}\_{jk}$ as though that settled the matter.
+- An algebraist says a tensor is **an element of a tensor product space** $V \otimes W$, defined by a universal property, and is visibly uninterested in your coordinates.
+- A differential geometer says the metric, the curvature, and the stress–energy are tensors — meaning **tensor fields**, one tensor glued smoothly to each point of a manifold.
+- A functional analyst says, ominously, that there is **more than one** tensor product of two Banach spaces, and that telling them apart was good enough for a thesis by Grothendieck.
 
 These are not five unrelated abuses of a popular word. They are five projections of a single object onto five different screens. The goal of this post is to build that object once, carefully, and then watch each costume fall out of it. The punchline, which I will state now and earn later, is:
 
@@ -21,22 +29,24 @@ These are not five unrelated abuses of a popular word. They are five projections
 
 Everything else — the array of components, the transformation law, the multilinear functional — is bookkeeping for that one trade.
 
+</div>
+
 ---
 
 ## 1. The real problem is multilinearity, not "high dimensions"
 
-Linear algebra is, almost by definition, the study of *linear* maps $T : V \to W$, the ones satisfying $T(\lambda u + v) = \lambda T(u) + T(v)$. This theory is spectacularly complete: a linear map between finite-dimensional spaces is captured entirely by a matrix, and everything we love (rank, eigenvalues, decompositions) lives downstream of that.
+Linear algebra is, almost by definition, the study of **linear** maps $T : V \to W$, the ones satisfying $T(\lambda u + v) = \lambda T(u) + T(v)$. This theory is spectacularly complete: a linear map between finite-dimensional spaces is captured entirely by a matrix, and everything we love (rank, eigenvalues, decompositions) lives downstream of that.
 
-But the moment you do anything *interesting* with more than one vector at a time, you leave the linear world:
+But the moment you do anything **interesting** with more than one vector at a time, you leave the linear world:
 
 - the dot product $\langle u, v\rangle$ is linear in $u$ for fixed $v$, and linear in $v$ for fixed $u$, but it is **not** linear in the pair $(u,v)$ jointly (doubling both quadruples the output);
 - matrix multiplication $(A,B) \mapsto AB$ is bilinear;
 - the determinant $\det(v_1, \dots, v_n)$, read as a function of its $n$ column vectors, is linear in each column separately;
-- area, volume, the cross product, moments of inertia, the Riemann curvature — all are *multilinear*, linear in each slot when the others are frozen.
+- area, volume, the cross product, moments of inertia, the Riemann curvature — all are **multilinear**, linear in each slot when the others are frozen.
 
-Call a map $b : V \times W \to U$ **bilinear** if it is linear in each argument separately. The trouble is that bilinear maps are second-class citizens of linear algebra: $V \times W$ is itself a vector space, but $b$ is emphatically *not* a linear map out of it (a linear map $V\times W \to U$ would have to satisfy $b(v_1+v_2, w_1+w_2) = b(v_1,w_1)+b(v_2,w_2)$, which is false — bilinearity gives cross terms). So all the heavy machinery built for linear maps simply does not apply to $b$.
+Call a map $b : V \times W \to U$ **bilinear** if it is linear in each argument separately. The trouble is that bilinear maps are second-class citizens of linear algebra: $V \times W$ is itself a vector space, but $b$ is emphatically **not** a linear map out of it (a linear map $V\times W \to U$ would have to satisfy $b(v_1+v_2, w_1+w_2) = b(v_1,w_1)+b(v_2,w_2)$, which is false — bilinearity gives cross terms). So all the heavy machinery built for linear maps simply does not apply to $b$.
 
-**The driving question.** Can we manufacture a *new* space, built out of $V$ and $W$, so that bilinear maps out of $V \times W$ become honest *linear* maps out of the new space? If so, we get to reuse the entire theory of linear maps to study multilinear phenomena. That new space is the tensor product, and the rest is detail.
+**The driving question.** Can we manufacture a **ndw** space, built out of $V$ and $W$, so that bilinear maps out of $V \times W$ become honest *linear* maps out of the new space? If so, we get to reuse the entire theory of linear maps to study multilinear phenomena. That new space is the tensor product, and the rest is detail.
 
 ---
 
@@ -44,20 +54,37 @@ Call a map $b : V \times W \to U$ **bilinear** if it is linear in each argument 
 
 Before the abstraction, the cheap and concrete picture — the one machine learning runs on.
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Multilinear maps are governed by tensors as $n$-dimensional array)</span></p>
+
 Fix bases $e_1, \dots, e_m$ of $V$ and $f_1, \dots, f_n$ of $W$. A bilinear form $b : V \times W \to k$ is completely determined by what it does to basis pairs, because bilinearity lets us expand:
+
 $$
 b\Big(\textstyle\sum_i x^i e_i,\ \sum_j y^j f_j\Big) \;=\; \sum_{i,j} x^i y^j \, b(e_i, f_j) \;=\; \sum_{i,j} B_{ij}\, x^i y^j,
 \qquad B_{ij} := b(e_i, f_j).
 $$
+
 So the entire bilinear form collapses to an $m \times n$ array of numbers $B_{ij}$. Push this further: a *trilinear* map needs a three-index array $T_{ijk}$, and a $p$-fold multilinear map needs a $p$-dimensional array. **There is your "tensor = $n$-dimensional array."** The number of indices is what ML calls the tensor's *rank* (a usage I will object to in §9), and each index ranges over the dimension of one factor.
 
-This picture is correct, useful, and a trap. It is a trap for the same reason that confusing a linear map with its matrix is a trap: **the array is a representation in a chosen basis, not the object itself.** Change the basis and every number in the box changes, even though the underlying multilinear map has not moved. A serious notion of "tensor" must say which arrays represent *the same* object — and that requirement is exactly the physicist's transformation law.
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Trap of this perspective</span><span class="math-callout__name">(Array is a representation in a chosen basis, not the object itself)</span></p>
+
+This picture is correct, useful, and a trap. It is a trap for the same reason that confusing a linear map with its matrix is a trap: 
+
+$$\boxed{\text{the array is a representation in a chosen basis, not the object itself.}}$$
+
+Change the basis and every number in the box changes, even though the underlying multilinear map has not moved. 
+* A serious notion of "tensor" must say which arrays represent **the same** object — and that requirement is exactly the physicist's transformation law.
+
+</div>
 
 ---
 
 ## 3. Second face: the transformation law, or "transforms correctly"
 
-Let us see how the box of numbers reacts to a change of basis, because that reaction *is* the physicist's definition.
+Let us see how the box of numbers reacts to a change of basis, because that reaction **is** the physicist's definition.
 
 Suppose we switch to a new basis $e'_i = A^j{}\_i\, e_j$ (the new basis vectors expressed in the old ones; $A$ is the invertible change-of-basis matrix). A vector $v$ has the same identity in both bases, $v = v^i e_i = v'^i e'_i$, and chasing the substitution gives
 
@@ -92,20 +119,25 @@ This is the law that the slogan *"a tensor is whatever transforms like a tensor"
 
 Here is the actual construction, and it is worth slowing down because it answers the §1 driving question on the nose.
 
-**The universal property (the definition that matters).**
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The universal property)</span></p>
+
 A **tensor product** of $V$ and $W$ is a vector space $V \otimes W$ together with a bilinear map
 
 $$
 \otimes : V \times W \to V \otimes W, \qquad (v, w) \mapsto v \otimes w,
 $$
 
-that is *universal* among bilinear maps: for **every** vector space $U$ and **every** bilinear map $b : V \times W \to U$, there exists a **unique** *linear* map $\tilde b : V \otimes W \to U$ making the triangle commute,
+that is **universal** among bilinear maps: for **every** vector space $U$ and **every** bilinear map $b : V \times W \to U$, there exists a **unique** **linear** map $\tilde b : V \otimes W \to U$ making the triangle commute,
 
 $$
 b(v, w) = \tilde b(v \otimes w) \quad \text{for all } v, w.
 $$
 
-Read that slowly, because it is the whole subject in one breath. It says: bilinear maps out of $V \times W$ are *the same data* as linear maps out of $V \otimes W$. The space $V \otimes W$ is precisely engineered to absorb the bilinearity, so that downstream you only ever see a linear map. **We traded multilinearity for linearity, exactly as promised.** Anything satisfying this property is unique up to a unique isomorphism — so it is legitimate to speak of *the* tensor product, and the universal property, not any particular construction, is its true identity card.
+</div>
+
+
+Read that slowly, because it is the whole subject in one breath. It says: bilinear maps out of $V \times W$ are **the same data** as linear maps out of $V \otimes W$. The space $V \otimes W$ is precisely engineered to absorb the bilinearity, so that downstream you only ever see a linear map. **We traded multilinearity for linearity, exactly as promised.** Anything satisfying this property is unique up to a unique isomorphism — so it is legitimate to speak of **the** tensor product, and the universal property, not any particular construction, is its true identity card.
 
 **A construction (to prove it exists).**
 Take the free vector space $F$ on the *set* $V \times W$ — formal finite linear combinations of symbols $(v, w)$, with no relations at all, so $(v_1 + v_2, w)$ and $(v_1, w) + (v_2, w)$ are stubbornly different elements. Now quotient by the subspace $R$ generated by all the relations bilinearity *should* satisfy:
@@ -123,11 +155,9 @@ Define $V \otimes W := F / R$ and $v \otimes w := [(v,w)]$. By construction $\ot
 
 1. *A basis, hence the array, reappears.* If $\lbrace e_i\rbrace$ is a basis of $V$ and $\lbrace f_j\rbrace$ a basis of $W$, then $\lbrace e_i \otimes f_j\rbrace$ is a basis of $V \otimes W$. Consequently
 
-$$
-\dim(V \otimes W) = \dim V \cdot \dim W,
-$$
+   $$\dim(V \otimes W) = \dim V \cdot \dim W,$$
 
-and a general element is $T = \sum_{i,j} T^{ij}\, e_i \otimes f_j$. **The numbers $T^{ij}$ are exactly the box of §2,** now understood as components with respect to a *specific basis of the tensor product*, and the transformation law of §3 is forced on them by how $e_i \otimes f_j$ changes when $e_i, f_j$ do. The three faces have started to merge.
+   and a general element is $T = \sum_{i,j} T^{ij}\, e_i \otimes f_j$. **The numbers $T^{ij}$ are exactly the box of §2,** now understood as components with respect to a *specific basis of the tensor product*, and the transformation law of §3 is forced on them by how $e_i \otimes f_j$ changes when $e_i, f_j$ do. The three faces have started to merge.
 
 2. *Most tensors are not simple.* Elements of the form $v \otimes w$ are called **simple** (or decomposable, or rank-one) tensors. They do **not** exhaust $V \otimes W$ — they form a thin nonlinear cone inside it, and the generic element is a genuine *sum* $\sum_k v_k \otimes w_k$ that cannot be collapsed to a single $v \otimes w$. This is the single most common misconception about tensor products. (Sharp statement: $v\otimes w = 0$ iff $v = 0$ or $w = 0$; and $v_1 \otimes w_1 = v_2 \otimes w_2 \neq 0$ iff $v_2 = \lambda v_1$ and $w_2 = \lambda^{-1} w_1$ for some scalar $\lambda$. So even the simple tensors have just a one-parameter redundancy, and everything else is honest sums.)
 
@@ -199,7 +229,7 @@ $$
 \qquad \text{(injective, the smallest).}
 $$
 
-Completing in these norms yields genuinely different Banach spaces $V \widehat{\otimes}_\pi W$ and $V \widehat{\otimes}_\varepsilon W$, and the gap between them is the entire content of Grothendieck's *Résumé*. Concretely and beautifully, for the duality with operators,
+Completing in these norms yields genuinely different Banach spaces $V \widehat{\otimes}\_\pi W$ and $V \widehat{\otimes}\_\varepsilon W$, and the gap between them is the entire content of Grothendieck's *Résumé*. Concretely and beautifully, for the duality with operators,
 
 $$
 V^\ast \,\widehat{\otimes}_\pi\, W \;\cong\; \{\text{nuclear operators } V \to W\}, \qquad

@@ -2,6 +2,13 @@
 title: Problems from the Introduction to Geometric Deep Learning course
 layout: default
 noindex: true
+tags:
+  - machine-learning
+  - geometric-deep-learning
+  - linear-algebra
+  - differential-geometry
+  - manifolds
+  - exercises
 ---
 
 <style>
@@ -39,6 +46,8 @@ and the **summation convention**: any index that appears once as a superscript a
 
 </div>
 
+### Dual basis in $\mathbb R^2$
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 1</span><span class="math-callout__name">(Dual basis in $\mathbb R^2$)</span></p>
 
@@ -68,120 +77,128 @@ Let $e_1, e_2$ be any basis.
 <details class="accordion" markdown="1">
 <summary>Solution 1 (a) — dual basis from the basis-change matrix</summary>
 
-**What we want, in words.** The defining condition $\langle \check e^i, e_j\rangle = \delta^i_j$ says: the covector $\check e^i$ "reads off the $i$-th coordinate of a vector in the basis $(e_1, e_2)$." Indeed, if $x = x^j e_j$ then by linearity $\langle \check e^i, x\rangle = x^j \langle \check e^i, e_j\rangle = x^j \delta^i_j = x^i$. So **the dual basis is the coordinate-extraction functional in the given primal basis**. With this in mind, finding $\check e^i$ is just the algebra of inverting a coordinate change.
+Let $e_i,e_j\in\widecheck{\mathcal{X}}$ be such that $\langle \widecheck e^i, e_j \rangle = \delta_j^i$. By definition,
 
-**Strategy.** Encode the basis as a single matrix $B$, recognise that the coordinate map $x \mapsto (x^1, x^2)$ is $B^{-1}$, then read the dual basis off the rows of $B^{-1}$.
+$$\langle \widecheck e_i, e_j\rangle = \langle \widecheck e_i, L^{-1}\widecheck e_j\rangle = l(L^{-1} \widecheck e_i, L^{-1}\widecheck e_j),$$
 
-**Step 1 — Encode the basis as a matrix.** Following Lemma A.2, pack the basis $(e_1, e_2)$ into the linear map
+Recall that $L = (B\widecheck{B})^{-1}$, which implies $L^{-1} = B\widecheck{B}$. Thus,
 
-$$
-B : \mathbb R^2 \to \mathcal X, \qquad B v = v^i e_i,
-\tag{$\star$}
-$$
+$$l(L^{-1} \widecheck e_i, L^{-1}\widecheck e_j) = l(B\underbrace{\widecheck{B} \widecheck e_i}_{=:u_i}, B\underbrace{\widecheck{B}\widecheck e_j}_{=:u_j}) = l(Bu_i, Bu_j).$$
 
-so that $B$ sends the canonical basis $\hat e_1 = \binom{1}{0},\ \hat e_2 = \binom{0}{1}$ of $\mathbb R^2$ to $e_1, e_2$. **As a matrix, the columns of $B$ are exactly the basis vectors $e_1, e_2$.** Conversely, $B^{-1} x$ returns the column of coordinates $(x^1, x^2)^T$ of $x$ in the basis $(e_1, e_2)$.
+Let $u_i = \widecheck{B} \widecheck e_i = \delta_i$ be an ansatz, then
 
-**Step 2 — Defining condition as a matrix equation.** Identify covectors $\check e^i \in \widecheck{\mathbb R^2}$ with **row vectors** (so that the pairing $\langle \check e^i, x\rangle$ is just the row-times-column product $\check e^i \cdot x$). Stack the two rows into a matrix $E^\vee \in \mathbb R^{2 \times 2}$ whose $i$-th *row* is $\check e^i$.
+$$l(Bu_i, Bu_j) = l(B\delta_i, B\delta_j) = l(e_i, e_j) = \langle Le_i, e_j\rangle = \langle \widecheck e_i, e_j\rangle = \delta_j^i.$$
 
-Then the $(i,j)$-entry of $E^\vee B$ is
+Thus,
 
-$$
-(E^\vee B)^i_{\ j} \;=\; (i\text{-th row of }E^\vee)\cdot(j\text{-th column of }B) \;=\; \check e^i \cdot e_j \;=\; \langle \check e^i, e_j\rangle.
-$$
+$$\widecheck e_i = \widecheck{B}^{-1}\delta_i.$$
 
-So the biorthogonality condition (0.2) is the single matrix equation
+</details>
 
-$$
-E^\vee\, B = I_2 \qquad \Longleftrightarrow \qquad E^\vee = B^{-1}.
-$$
+<figure class="math-figure">
+  <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Map schema between R d, X, and X dual in Lemma A.2">
+    <defs>
+      <marker id="arrow-gdl-a2-map-schema" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" fill="#5b6270" />
+      </marker>
+    </defs>
 
-**Step 3 — Read off the dual basis.** The dual covectors are the **rows of $B^{-1}$**. Viewed as column vectors via the canonical identification $\widecheck{\mathbb R^2} \cong \mathbb R^2$, this is the same as taking the columns of $(B^{-1})^T = B^{-T}$:
+    <g font-family="serif" fill="#1f2430">
+      <!-- Space labels -->
+      <g>
+        <rect x="72" y="52" width="160" height="68" rx="4" fill="#fff7e0" stroke="#a86f00" stroke-width="1.5" />
+        <text x="152" y="84" text-anchor="middle" font-size="24" font-style="italic">R<tspan baseline-shift="super" font-size="14">d</tspan></text>
+        <text x="152" y="104" text-anchor="middle" font-size="11" fill="#5b6270">coordinate space</text>
+      </g>
 
-$$
-\boxed{\ \check e^i \;=\; i\text{-th row of }B^{-1} \;=\; i\text{-th column of }B^{-T}.\ }
-$$
+      <g>
+        <rect x="428" y="52" width="160" height="68" rx="4" fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="1.5" />
+        <text x="508" y="86" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <text x="508" y="104" text-anchor="middle" font-size="11" fill="#5b6270">vector space</text>
+      </g>
 
-**Why this matches Lemma A.2.** Lemma A.2 states $L = (B \widecheck B)^{-1}$ — the duality mapping is determined by the basis-change matrix. Solving for the dual basis is then just the matrix inversion $B \mapsto B^{-1}$, and reading the rows of $B^{-1}$ extracts each individual dual covector. $\blacksquare$
+      <g>
+        <rect x="428" y="184" width="160" height="68" rx="4" fill="rgba(214,83,54,0.10)" stroke="#d65336" stroke-width="1.5" />
+        <text x="508" y="216" text-anchor="middle" font-size="25" font-style="italic">X</text>
+        <path d="M499 192 L505 187 L515 194" fill="none" stroke="#1f2430" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="508" y="236" text-anchor="middle" font-size="11" fill="#5b6270">covectors on X</text>
+      </g>
+
+      <!-- Maps -->
+      <g stroke="#5b6270" stroke-width="1.5" fill="none">
+        <line x1="232" y1="86" x2="428" y2="86" marker-end="url(#arrow-gdl-a2-map-schema)" />
+        <line x1="508" y1="120" x2="508" y2="184" marker-end="url(#arrow-gdl-a2-map-schema)" />
+        <line x1="428" y1="205" x2="224" y2="113" marker-end="url(#arrow-gdl-a2-map-schema)" />
+      </g>
+
+      <g font-size="18" font-style="italic" fill="#1f2430">
+        <text x="330" y="72" text-anchor="middle">B</text>
+        <text x="526" y="156" text-anchor="start">L</text>
+        <text x="326" y="179" text-anchor="middle">B</text>
+        <path d="M319 158 L324 154 L333 160" fill="none" stroke="#1f2430" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+
+      <text x="330" y="260" text-anchor="middle" font-size="12" fill="#5b6270">
+        The return arrow uses the transpose map after identifying (R^d) dual with R^d.
+      </text>
+    </g>
+  </svg>
+  <figcaption>The maps in Lemma A.2. The basis map $B : \mathbb R^d \to \mathcal X$ sends coordinate vectors to vectors in $\mathcal X$; the duality map $L : \mathcal X \to \widecheck{\mathcal X}$ lowers a vector to a covector; and the transposed map $\widecheck B : \widecheck{\mathcal X} \to \mathbb R^d$ returns coordinates after the standard identification $\widecheck{\mathbb R^d} \cong \mathbb R^d$.</figcaption>
+</figure>
+
+<details class="accordion" markdown="1">
+<summary>Solution 1 (a)</summary>
+
+<!-- Let $e_i,e_j\in\widecheck{\mathcal{X}}$ be such that $\langle \widecheck e^i, e_j \rangle = \delta_j^i$. By definition,
+
+$$\langle \widecheck e_i, e_j\rangle = \langle \widecheck e_i, L^{-1}\widecheck e_j\rangle = l(L^{-1} \widecheck e_i, L^{-1}\widecheck e_j),$$
+
+Recall that $L = (B\widecheck{B})^{-1}$, which implies $L^{-1} = B\widecheck{B}$. Thus,
+
+$$l(L^{-1} \widecheck e_i, L^{-1}\widecheck e_j) = l(B\underbrace{\widecheck{B} \widecheck e_i}_{=:u_i}, B\underbrace{\widecheck{B}\widecheck e_j}_{=:u_j}) = l(Bu_i, Bu_j).$$
+
+Let $u_i = \widecheck{B} \widecheck e_i = \delta_i$ be an ansatz, then
+
+$$l(Bu_i, Bu_j) = l(B\delta_i, B\delta_j) = l(e_i, e_j) = \langle Le_i, e_j\rangle = \langle \widecheck e_i, e_j\rangle = \delta_j^i.$$
+
+Thus,
+
+$$\widecheck e_i = \widecheck{B}^{-1}\delta_i.$$ -->
+
+The clean proof (metric‑free, as part (a) wants). 
+
+Use only $e_j=B\delta_j$ and the transpose relation $\langle\widecheck B,p,v\rangle=\langle p,Bv\rangle$: 
+
+$$\langle \widecheck B^{-1}\delta_i,;e_j\rangle =\langle \widecheck B^{-1}\delta_i,;B\delta_j\rangle =\langle \widecheck B,\widecheck B^{-1}\delta_i,;\delta_j\rangle =\langle \delta_i,\delta_j\rangle =\delta^i_j.$$
+
+So $\check e^i=\widecheck B^{-1}\delta_i$ = the $i$‑th row of $B^{-1}$, full stop — no $L$, no orthonormality. 
 
 </details>
 
 <details class="accordion" markdown="1">
-<summary>Solution 1 (b) — explicit computation for $e_1=(1,0),\ e_2=(1,1)$</summary>
+<summary>Solution 1 (b)</summary>
 
-We just apply the recipe from (a): form $B$ with the basis vectors as columns, invert, and read off the rows.
-
-**Step 1 — Form $B$.** With $e_1 = \binom{1}{0}$, $e_2 = \binom{1}{1}$, putting the basis vectors as columns gives
+**(b) Explicit computation.** With $e_1=\binom10,\ e_2=\binom11$,
 
 $$
-B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}.
+B=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+B^{-1}=\begin{pmatrix}1&-1\\0&1\end{pmatrix},
 $$
 
-**Step 2 — Invert $B$.** For a $2 \times 2$ matrix $\begin{pmatrix} a & b \\ c & d\end{pmatrix}$ with $\det = ad - bc$, the inverse is $\frac{1}{\det}\begin{pmatrix} d & -b \\ -c & a\end{pmatrix}$. Here $\det B = 1\cdot 1 - 1\cdot 0 = 1$, so
+so the rows give
 
 $$
-B^{-1} = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}.
+\boxed{\;\check e^1=(1,-1),\qquad \check e^2=(0,1).\;}
 $$
 
-**Step 3 — Read off the dual basis from the rows.** The rows of $B^{-1}$ are $(1, -1)$ and $(0, 1)$. Identifying $\widecheck{\mathbb R^2} \cong \mathbb R^2$ (writing the row $(a, b)$ as the column $\binom{a}{b}$):
-
-$$
-\check e^1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}, \qquad
-\check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}.
-$$
-
-**Step 4 — Sanity check via biorthogonality.** All four pairings must give the corresponding $\delta^i_j$:
-
-$$
-\begin{aligned}
-\langle \check e^1, e_1\rangle &= 1 \cdot 1 + (-1)\cdot 0 = 1, &
-\langle \check e^1, e_2\rangle &= 1 \cdot 1 + (-1)\cdot 1 = 0, \\
-\langle \check e^2, e_1\rangle &= 0 \cdot 1 + 1 \cdot 0 = 0, &
-\langle \check e^2, e_2\rangle &= 0 \cdot 1 + 1 \cdot 1 = 1.
-\end{aligned}
-$$
-
-So $\lbrace\check e^1, \check e^2\rbrace$ is indeed the dual basis. $\blacksquare$
-
-**Geometric reading — why $\check e^1 \ne e_1$.** A subtle point students often miss: even though we are using the canonical Euclidean dot product to evaluate the pairing, the dual basis $\check e^1$ is **not** equal to $e_1$. Look at the level set of $\check e^1$ as a linear functional: $\check e^1(x) = x^1 - x^2 = c$ are diagonal lines parallel to $e_2 = (1,1)$. The reason this is geometrically right: to "read off the $e_1$-component" of $x = x^1 e_1 + x^2 e_2$, you must travel *parallel to $e_2$* (the other basis vector) until you hit the $e_1$-axis — that's exactly what the diagonal level sets do.
-
-The lesson: the dual basis depends on the **whole** primal basis $(e_1, e_2)$ together, not just on $e_1$ alone — because $\check e^1$ has to kill $e_2$ as well as evaluate to 1 on $e_1$.
+Check: $\langle\check e^1,e_1\rangle=(1,-1)\!\cdot\!(1,0)=1$, $\langle\check e^1,e_2\rangle=(1,-1)\!\cdot\!(1,1)=0$, $\langle\check e^2,e_1\rangle=0$, $\langle\check e^2,e_2\rangle=1$. Note how $\check e^1$ already "knows" it must annihilate $e_2$ — that is the whole content of biorthogonality.
 
 </details>
 
 <details class="accordion" markdown="1">
-<summary>Solution 1 (c) — canonical Euclidean inner product and self-dual standard basis</summary>
+<summary>Solution 1 (c) </summary>
 
-**Reading the question carefully.** Part (c) keeps the *recipe* of (a), but adds a new structural piece: we equip $\widecheck{\mathcal X} = \mathcal X = \mathbb R^2$ with the **canonical** Euclidean inner product. Under this identification, every covector $p \in \widecheck{\mathcal X}$ corresponds to a unique vector $p^\sharp \in \mathcal X$ via Riesz: $\langle p, x\rangle = p^\sharp \cdot x$. The question is then: what does the dual basis look like as *vectors* in $\mathbb R^2$? We split this into two natural sub-cases.
 
-**Setup — what the canonical inner product buys us.** Under $\ell(x, x') = x \cdot x'$ (the dot product), the duality mapping $L : \mathcal X \to \widecheck{\mathcal X}$ acts as the identity in coordinates: $L = I$. So the Riesz isomorphism $L^{-1}$ between covectors and vectors is trivial — coordinates of a covector and of its representing vector are literally the same.
-
-**Case 1 — standard basis $(e_1, e_2) = (\hat e_1, \hat e_2)$.** Here $B = I$, so $B^{-1} = I$ and the rows of $I$ give
-
-$$
-\check e^1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix} = e_1, \qquad
-\check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix} = e_2.
-$$
-
-The standard basis is **self-dual** under the canonical inner product. This is the general principle: any basis that is *orthonormal* under $\ell$ coincides with its own dual basis, because $\ell(e_i, e_j) = \delta_{ij}$ is precisely the biorthogonality condition.
-
-**Case 2 — keep the basis from (b), reinterpret the dual as vectors.** If we keep $e_1 = \binom{1}{0},\ e_2 = \binom{1}{1}$ from part (b) but now view $\check e^i$ as living in $\mathcal X = \mathbb R^2$ via $L^{-1}$, then because $L = I$ the *coordinates are unchanged*:
-
-$$
-\check e^1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix} \in \mathbb R^2, \qquad
-\check e^2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix} \in \mathbb R^2.
-$$
-
-What changes is the **interpretation**: $\check e^i$ is now an honest *vector* in $\mathbb R^2$ (the unique vector representing the linear functional $x \mapsto \langle \check e^i, x\rangle$ via the canonical dot product). Biorthogonality reads as a dot-product identity:
-
-$$
-\check e^i \cdot e_j = \delta^i_j.
-$$
-
-Numerically identical to (b); conceptually, we have **promoted** each row of $B^{-1}$ from a covector (functional on $\mathcal X$) to a vector (element of $\mathcal X$).
-
-**Punchline — what depends on what.** The dual basis depends on the primal basis through $B^{-1}$, *not* on the choice of inner product (the formula $\check e^i = $ rows of $B^{-1}$ involves only $B$). The inner product enters only when we want to *identify* covectors with vectors via Riesz — and under the canonical inner product, that identification is the identity in coordinates. With a different inner product $\ell$ on $\mathcal X$, the same primal basis would yield the same dual *covectors* (same row vectors), but the *vectors* representing them would shift by $L^{-1}$.
-
-This separation — "primal basis $\leftrightarrow$ dual basis" is purely algebraic via $B^{-1}$; "covectors $\leftrightarrow$ vectors" is metric via $L$ — is the heart of Lemma A.2. $\blacksquare$
 
 </details>
 
@@ -194,6 +211,8 @@ This separation — "primal basis $\leftrightarrow$ dual basis" is purely algebr
 </figure>
 
 </details>
+
+### Orthogonal projections via $A^-$ and $A^+$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 2</span><span class="math-callout__name">(Orthogonal projections via $A^-$ and $A^+$)</span></p>
@@ -336,103 +355,25 @@ The general $M$ replaces $A^T$ by $\widecheck A M$, which is the "$m$-weighted" 
 <details class="accordion" markdown="1">
 <summary>Solution 2 (ii) — projection onto $\ker(A)$ and the meaning of $A^+$</summary>
 
-**The picture first.** Now $A : \mathcal X \to \mathcal Y$ is surjective with full rank, so $m \le n$ and the equation $Ax = y$ has *many* solutions: the solution set is an affine subspace $x_p + \ker(A)$ of dimension $n - m$. The kernel $\ker(A) \subset \mathcal X$ is now the "non-uniqueness" subspace, and we want the orthogonal projection onto it in the $\ell$-metric. The clever trick is to **find the orthogonal complement first** (it has a nice characterisation via duality) and then take the complement.
+Again, be definition, orthogonal projection means minimizing the norm in the following form, which we for simplicity square and multiply my $\frac{1}{2}$:
 
-**Strategy.** Use the $\ell$-orthogonal decomposition $\mathcal X = \ker(A) \oplus \ker(A)^{\perp_\ell}$. Write $x = x_K + x_\perp$. Find a formula for $x_\perp$, then $\Pi_{\ker(A)} x = x - x_\perp$.
+$$x^*_\perp = \arg\min_{x_\perp \in \text{Ker}(A)} \frac{1}{2}\lVert x - x_\perp \rVert^2$$
 
-**Step 1 — Identify $\ker(A)^{\perp_\ell}$ via the annihilator.** A vector $z \in \mathcal X$ lies in $\ker(A)^{\perp_\ell}$ iff $\ell(z, n) = 0$ for every $n \in \ker(A)$. Using $\ell(z, n) = \langle Lz, n\rangle$, this says
+Because optimizing over the set $\text{Ker}(A)$ systematically is not easy (how to do so?), we will optimize its Lagrangian in the following form:
 
-$$
-Lz \in \ker(A)^\circ \;:=\; \lbrace p \in \widecheck{\mathcal X} : \langle p, n\rangle = 0\ \forall n \in \ker(A)\rbrace
-$$
+$$x^*_\perp = \arg\min_{x_\perp \in \mathcal{X}} \frac{1}{2}\lVert x - x_\perp \rVert^2 + \langle y, Ax_\perp \rangle = \arg\min_{x_\perp \in \mathcal{X}} \mathcal{L}(x_\perp)$$
 
-— the **annihilator** of $\ker(A)$, i.e. the space of covectors that vanish on the kernel.
+Optimality conditions are
 
-**Step 2 — Annihilator $=$ range of transpose.** A classical duality result (rank-nullity in dual form):
+$$\frac{\partial \mathcal{L}}{\partial x_\perp}(x^*_\perp) = 0 \qquad \frac{\partial \mathcal{L}}{\partial y}(y^*) = 0,$$
 
-$$
-\ker(A)^\circ \;=\; \mathrm{rge}(\widecheck A) \;\subset\; \widecheck{\mathcal X}.
-$$
+where we have
 
-*Why:* The inclusion "⊇" is immediate: if $q = \widecheck A p$ then for $n \in \ker(A)$, $\langle q, n\rangle = \langle \widecheck A p, n\rangle = \langle p, An\rangle = \langle p, 0\rangle = 0$. The reverse inclusion follows by counting dimensions: $A$ surjective $\Rightarrow \widecheck A$ injective $\Rightarrow \dim \mathrm{rge}(\widecheck A) = m$, while $\dim \ker(A)^\circ = n - \dim \ker(A) = n - (n - m) = m$ by rank-nullity for annihilators. Two subspaces of equal dimension, one inside the other, are equal.
+$$\frac{\partial \mathcal{L}}{\partial x_\perp} = x - L^{-1}\widecheck{A}\widecheck{y} \overset{!}{=} 0 \qquad \frac{\partial \mathcal{L}}{\partial y} = Ax \overset{!}{=} 0,$$
 
-Plugging this into Step 1:
+From the first expression we obtain $x^\ast_\pert = x - L^{-1}\widecheck{A}\widecheck{y}^\ast$, and after plugging it into the second expression we obtain $y^\ast = (AL^{-1}\widecheck{A})^{-1}Ax$, then 
 
-$$
-\ker(A)^{\perp_\ell} \;=\; L^{-1}\bigl(\mathrm{rge}(\widecheck A)\bigr) \;=\; \lbrace L^{-1} \widecheck A p : p \in \widecheck{\mathcal Y}\rbrace.
-$$
-
-So every $x_\perp \in \ker(A)^{\perp_\ell}$ is of the form $x_\perp = L^{-1} \widecheck A\, p$ for **some** $p \in \widecheck{\mathcal Y}$. We've reduced finding $x_\perp \in \mathcal X$ (an $m$-dimensional ambient unknown) to finding $p \in \widecheck{\mathcal Y}$ (a genuinely $m$-dimensional unknown).
-
-**Step 3 — Determine $p$ from $A x_\perp = A x$.** Since $x = x_K + x_\perp$ with $x_K \in \ker(A)$, applying $A$ gives $A x = A x_\perp$ (the kernel part is killed). Substituting $x_\perp = L^{-1}\widecheck A p$:
-
-$$
-A L^{-1} \widecheck A\, p \;=\; A x.
-$$
-
-**Step 4 — Invert the operator $A L^{-1} \widecheck A$.** This operator $\widecheck{\mathcal Y} \to \mathcal Y$ is invertible: it is the "Gramian" of $\widecheck A$ in the $\ell^{-1}$-pairing,
-
-$$
-\langle p, A L^{-1} \widecheck A\, p\rangle \;=\; \langle \widecheck A p,\, L^{-1} \widecheck A p\rangle \;=\; \ell^{\ast}(\widecheck A p, \widecheck A p),
-$$
-
-(positive unless $\widecheck A p = 0$). And $\widecheck A p = 0$ iff $p \in \ker(\widecheck A)$, but $A$ surjective makes $\widecheck A$ injective, so $\widecheck A p = 0$ forces $p = 0$. Hence $A L^{-1} \widecheck A$ is symmetric positive-definite, hence invertible.
-
-Therefore
-
-$$
-p \;=\; (A L^{-1} \widecheck A)^{-1}\, A x, \qquad
-x_\perp \;=\; L^{-1} \widecheck A\, (A L^{-1} \widecheck A)^{-1}\, A x.
-$$
-
-**Step 5 — Read off $A^+$ and the projection.** Comparing with (A.13),
-
-$$
-\boxed{\ A^+ \;=\; L^{-1} \widecheck A\, (A L^{-1} \widecheck A)^{-1} \;\in\; \mathcal L(\mathcal Y, \mathcal X),\qquad x_\perp \;=\; A^+ A\, x.\ }
-$$
-
-So $A^+ A$ is the orthogonal projection onto $\ker(A)^{\perp_\ell}$, and the complementary projection is onto $\ker(A)$:
-
-$$
-\boxed{\ \Pi_{\ker(A)} \;=\; I - A^+ A \quad\text{(orthogonal projection onto $\ker(A)$ in the $\ell$-metric)}.\ }
-$$
-
-**Sanity properties.** The three projection conditions, again:
-
-  • *Right-inverse.* For any $y \in \mathcal Y$, $A A^+ y = A L^{-1}\widecheck A (A L^{-1}\widecheck A)^{-1} y = y$ — formula (A.14a). So $A^+ y$ is a genuine solution of $Ax = y$.
-
-  • *Idempotence.* $A^+ A$ takes $x \in \mathcal X$ to $x_\perp \in \ker(A)^{\perp_\ell}$. If we then apply $A^+ A$ again, $x_\perp$ is already in $\ker(A)^{\perp_\ell}$, so its "$\perp$-part" is itself: $(A^+ A)^2 = A^+ A$. Equivalently $(I - A^+ A)^2 = I - A^+ A$.
-
-  • *$\ell$-self-adjointness of $A^+ A$.* Using $\widecheck{L^{-1}} = L^{-1}$ (since $L$ is symmetric) and unfolding the definition, one checks $\ell(A^+ A x, x') = \ell(x, A^+ A x')$. So the projection is orthogonal *in the $\ell$-metric* (not just in the canonical inner product), as required.
-
-**Interpretation of $A^+$.** $A^+$ is the **minimum-norm solver** for the under-determined system $Ax = y$:
-
-  - The full solution set is the affine subspace $A^{-1}(\lbrace y\rbrace) = x_p + \ker(A)$, of dimension $n - m$.
-  - Among all solutions, $A^+ y$ is the unique one orthogonal to $\ker(A)$ in the $\ell$-metric — equivalently, the one with smallest $\ell$-norm $\sqrt{\ell(x, x)}$ (because adding any kernel component, $\ell$-orthogonal to $A^+ y$, can only increase the norm by Pythagoras).
-
-The decomposition $x = (I - A^+A)x + A^+A x$ then splits any $x$ into:
-  - $A^+ A x \in \ker(A)^{\perp_\ell}$, the "essential part" that fully determines $Ax$ (since $A(A^+ A x) = Ax$);
-  - $(I - A^+ A) x \in \ker(A)$, the kernel component that contributes nothing to $Ax$.
-
-In matrix terms with $L = I$, the transpose $\widecheck A$ is $A^T$ and the formulas become the textbook
-
-$$
-A^+ = A^T (A A^T)^{-1}, \qquad \Pi_{\ker(A)} = I - A^T(AA^T)^{-1}A.
-$$
-
-$\blacksquare$
-
-**Duality between (i) and (ii).** Compare the two cases at a glance:
-
-| | $A^-$ (injective case) | $A^+$ (surjective case) |
-|---|---|---|
-| Problem | over-determined $Ax = y$ | under-determined $Ax = y$ |
-| Strategy | minimise residual in $\mathcal Y$ | minimise solution norm in $\mathcal X$ |
-| Formula | $(\widecheck A M A)^{-1} \widecheck A M$ | $L^{-1}\widecheck A (A L^{-1} \widecheck A)^{-1}$ |
-| Projection | $AA^- = \Pi_{\mathrm{rge}(A)}$ (in $\mathcal Y$) | $I - A^+ A = \Pi_{\ker(A)}$ (in $\mathcal X$) |
-| Kills | the component of $y$ orthogonal to $\mathrm{rge}(A)$ | the kernel component of $x$ |
-
-The two cases are dual constructions, and the sheet's pseudo-inverse $C^\dagger = A^+ B^-$ glues them together for the rank-deficient case (factor $C = AB$ with $B$ injective and $A$ surjective, then invert each half via the appropriate one-sided inverse).
+$$x^\ast_\pert = x - L^{-1}\widecheck{A}\widecheck{y}^\ast = x - L^{-1}\widecheck{A}(AL^{-1}\widecheck{A})^{-1}Ax$$
 
 </details>
 
@@ -724,7 +665,7 @@ $$
 <details class="accordion" markdown="1">
 <summary>Solution 1 (i) — both sides live in $\mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y})$</summary>
 
-We track the arrows. Throughout, the transpose of $T \in \mathcal L(\mathcal U, \mathcal V)$ is the operator $\widecheck T \in \mathcal L(\widecheck{\mathcal V}, \widecheck{\mathcal U})$ fixed by TODO: why is this valid inequality
+We track the arrows. Throughout, the transpose of $T \in \mathcal L(\mathcal U, \mathcal V)$ is the operator $\widecheck T \in \mathcal L(\widecheck{\mathcal V}, \widecheck{\mathcal U})$ fixed by
 
 $$
 \langle p, T u\rangle = \langle \widecheck T p,\, u\rangle, \qquad \forall\, p \in \widecheck{\mathcal V},\ u \in \mathcal U.
@@ -738,7 +679,7 @@ A^{-} \in \mathcal L(\mathcal Y, \mathcal X)
 \widecheck{A^{-}} \in \mathcal L(\widecheck{\mathcal X}, \widecheck{\mathcal Y}).
 $$
 
-**Right-hand side $\widecheck A^{+}$.** The transpose $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$. Since $A$ is injective, $\widecheck A$ is *surjective* (the transpose of an injection is a surjection TODO: why?), so its orthogonal right-inverse $\widecheck A^{+}$ from Definition A.3(b) is defined. A right-inverse of a map $\widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ goes the other way:
+**Right-hand side $\widecheck A^{+}$.** The transpose $\widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})$. Since $A$ is injective, $\widecheck A$ is *surjective* (**the transpose of an injection is a surjection**), so its orthogonal right-inverse $\widecheck A^{+}$ from Definition A.3(b) is defined. A right-inverse of a map $\widecheck{\mathcal Y} \to \widecheck{\mathcal X}$ goes the other way:
 
 $$
 \widecheck A \in \mathcal L(\widecheck{\mathcal Y}, \widecheck{\mathcal X})
@@ -753,7 +694,7 @@ $$
 <details class="accordion" markdown="1">
 <summary>Solution 1 (ii) — dualizing the left-inverse $A^{-}$ via the pairing (0.1)</summary>
 
-**Two facts we will use.** The duality map $M$ is *symmetric*, $\langle M y, y'\rangle = m(y, y') = m(y', y) = \langle M y', y\rangle$, i.e. $\widecheck M = M$ (and likewise $\widecheck L = L$); and the double dual is the identity, $\widecheck{\widecheck A} = A$, under the reflexive identification $\widecheck{\widecheck{\mathcal X}} \cong \mathcal X$.
+**Two facts we will use.** The duality map $M$ is *symmetric*, $\langle M y, y'\rangle = m(y, y') = m(y', y) = \langle M y', y\rangle$, i.e. $\widecheck M = M$ (and likewise $\widecheck L = L$); and the double dual is the identity, $\widecheck{\widecheck A} = A$, under the reflexive identification $\widecheck{\widecheck{\mathcal X}} \cong \mathcal X$. TODO: the duality map M is symmetric, but why? Does any M\in\mathcal{L}(X,\widecheck X) induce a duality mapping? Is any M\in\mathcal{L}(X,\widecheck X) symmetric?
 
 Abbreviate the symmetric "$m$-Gramian" of $A$ by
 
@@ -1094,52 +1035,43 @@ where $(x_i, y_i)$ is any fixed input-output pair in the data (training) set $\m
 <details class="accordion" markdown="1">
 <summary>Solution 3 — the inverse Gramian collapses the correction to the $i$-th residual</summary>
 
-**Two ingredients.** We only need the closed form (1.6) of $W_{\mathcal D}$ and two facts:
+Using Theorem 1.2,
 
-  - the **action of a rank-one tensor** (A.42): for $\widecheck p \in \widecheck{\mathcal X}$ and $w \in \mathcal Y$, the operator $\widecheck p \otimes w \in \mathcal L(\mathcal X, \mathcal Y)$ acts by
+$$W_{\mathcal D} = U-G^{kl}(Lx_l)\otimes(Ux_k-y_k).$$
 
-$$
-(\widecheck p \otimes w)\,x = \langle \widecheck p,\, x\rangle\, w;
-$$
+Fix $i\in[n]$. Apply $W_{\mathcal D}$ to $x_i$:
 
-  - the **inverse-Gramian identity** (1.5b): $G^{kl}$ are the entries of $G^{-1}$, so $G_{jl}\,G^{lk} = \delta_j^{\,k}$ (the product $G^{-1}G = I$ in index form).
+W_{\mathcal D}x_i = Ux_i = G^{kl}\bigl((Lx_l)\otimes(Ux_k-y_k)\bigr)(x_i).
 
-**Apply $W_{\mathcal D}$ to a training input $x_i$.** Starting from (1.6) and using the tensor action with $\widecheck p = Lx_l$ and $w = Ux_k - y_k$:
+By the tensor-action rule,
 
-$$
-\begin{aligned}
-W_{\mathcal D}\,x_i
-&= Ux_i - G^{kl}\,\bigl[(Lx_l) \otimes (Ux_k - y_k)\bigr]\,x_i
-&&\text{(1.6)} \\
-&= Ux_i - G^{kl}\,\langle Lx_l,\, x_i\rangle\,(Ux_k - y_k)
-&&\text{(A.42)} \\
-&= Ux_i - G^{kl}\,G_{li}\,(Ux_k - y_k),
-&&\langle Lx_l, x_i\rangle = \ell(x_l, x_i) = G_{li}
-\end{aligned}
-$$
+$$(p\otimes y)(x)=p(x)y,$$
 
-where the indices $k, l \in [n]$ are summed (Einstein convention), and the last step is just the definition (1.5a) of the Gramian.
+so
 
-**The inverse Gramian collapses the sum.** Summing over $l$ is the matrix product $G^{-1}G$, so by (1.5b),
+$$\bigl((Lx_l)\otimes(Ux_k-y_k)\bigr)(x_i) = \langle Lx_l,x_i\rangle (Ux_k-y_k).$$
 
-$$
-\sum_{l} G^{kl}\,G_{li} = \delta_i^{\,k}.
-$$
+But
 
-Hence only the $k = i$ term of the remaining sum survives:
+$$\langle Lx_l,x_i\rangle=\ell(x_l,x_i)=G_{li}.$$
 
-$$
-W_{\mathcal D}\,x_i
-= Ux_i - \delta_i^{\,k}\,(Ux_k - y_k)
-= Ux_i - (Ux_i - y_i)
-= y_i.
-$$
+Therefore
 
-$$
-\boxed{\,W_{\mathcal D}\,x_i = y_i \quad \text{for every } i \in [n].\,}
-$$
+$$W_{\mathcal D}x_i = Ux_i-G^{kl}G_{li}(Ux_k-y_k).$$
 
-**Reading of the computation.** The reference operator $U$ would send $x_i$ to $Ux_i$, generally missing the target by the residual $Ux_i - y_i$. The correction term in (1.6) is engineered, via the inverse Gramian $G^{kl}$, so that evaluating at $x_i$ picks out *exactly* that residual and subtracts it — leaving $y_i$. The Gramian inversion is what untangles the non-orthogonal inputs; for $\ell$-orthogonal inputs $G$ is diagonal and the same cancellation is visible directly in (1.7).
+Since $(G^{kl})$ is the inverse Gramian,
+
+$$G^{kl}G_{li}=\delta_i^k.$$
+
+Hence
+
+$$W_{\mathcal D}x_i = Ux_i-\delta_i^k(Ux_k-y_k) = Ux_i-(Ux_i-y_i) = y_i.$$
+
+So
+
+$$\boxed{W_{\mathcal D}x_i=y_i.}$$
+
+The whole proof is just: apply the rank-one/tensor action formula, then use that $G^{kl}$ is the inverse of $G_{kl}$. The theorem defines $G_{kl}$, $G^{kl}$, and $W_{\mathcal D}$ exactly in this way. 
 
 </details>
 
@@ -1274,5 +1206,117 @@ $$
 &&\text{(0.21b)}
 \end{aligned}
 $$
+
+</div>
+
+---
+
+## Exercise Sheet 3
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 1</span></p>
+
+Let $\mathcal X = \mathbb R^d$ with $d \ge n$ and the scalar product $\langle Lx, x'\rangle$, where $\langle \cdot, \cdot\rangle$ is the canonical Euclidean scalar product and the matrix $0 \prec L \in \mathcal P^d \subset \mathbb R^{d \times d}$ is symmetric and positive-definite. Define the input and output data matrices
+
+$$
+X := (x_1, \dots, x_n) \in \mathbb R^{d \times n}
+\tag{0.1a}
+$$
+
+$$
+Y := (y_1, \dots, y_n) \in \mathbb R^{d \times n}.
+\tag{0.1b}
+$$
+
+Rewrite each of the three expressions for the operator $W_{\mathcal D}$ defined by Theorem 1.2 *solely in terms of the matrices $U, G, X, Y$ and corresponding operations*: multiplication, inversion, and transposition *written for this task only in the common form $x^\top, A^\top$ etc.* For example,
+
+$$
+(\check x \otimes y)(z)
+= \check x(z)y
+= \langle Lx, z\rangle y
+= y(Lx)^\top z
+= yx^\top Lz,
+\qquad
+\text{(recall: } L = L^\top\text{)}
+\tag{0.2}
+$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 2</span></p>
+
+Consider the scalar second-order ODE
+
+$$
+\ddot z(t) + \frac{1}{4}\dot z(t) + z(t) = 0,
+\qquad
+z(0) = 1,
+\qquad
+\dot z(0) = 0.
+\tag{0.3}
+$$
+
+**(a)** Set
+
+$$
+x(t) =
+\begin{pmatrix}
+z(t) \\
+\dot z(t)
+\end{pmatrix}
+\tag{0.4}
+$$
+
+and rewrite the ODE in the form
+
+$$
+\dot x(t) = Ax(t),
+\qquad
+x(0) = x_0.
+\tag{0.5}
+$$
+
+**(b)** Use the expression
+
+$$
+\exp_m(tA)
+= e^{-\frac{t}{8}}
+\begin{pmatrix}
+\cos(ct) + \frac{1}{8c}\sin(ct) & \frac{1}{c}\sin(ct) \\
+-\frac{1}{c}\sin(ct) & \cos(ct) - \frac{1}{8c}\sin(ct)
+\end{pmatrix},
+\qquad
+c = \frac{3}{8}\sqrt 7
+\tag{0.6}
+$$
+
+and display the solution $z(t) = x^1(t)$, $t \in [0, 20]$ based on the variation of constants formula.
+
+**(c)** Now consider the ODE
+
+$$
+\dot x(t) = Ax(t) + W(t),
+\qquad
+W(t) =
+\begin{pmatrix}
+W^1(t) \\
+W^2(t)
+\end{pmatrix},
+\qquad
+x(0) = x_0.
+\tag{0.7}
+$$
+
+Determine the minimal norm solution $t \mapsto W(t)$ as specified by Theorem 1.18 such that
+
+$$
+x(T) = x_T^*.
+\tag{0.8}
+$$
+
+You are *not* expected to evaluate the integrals. Just summarize and simplify the steps that eventually determine the final expression of $W(t)$ which basically involves terms of the transition function (matrix exponential), its transpose and an integral over such terms. Assume for simplicity that all duality mappings are given by unit matrices. Does the structure of the resulting expression of $W(t)$ look familiar to you? See also the proof of Theorem 1.18 for an answer.
+
+**(d)** Apply the 'variation of constants formula' to the ODE (0.7) and compute $x(T)$. What do you observe?
 
 </div>

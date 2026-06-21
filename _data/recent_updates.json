@@ -19,6 +19,12 @@
    "added": false
   },
   {
+   "title": "Problems from the Introduction to Geometric Deep Learning course",
+   "url": "/subpages/books/geometric_deep_learning_hd/problems/",
+   "date": "2026-06-21",
+   "added": false
+  },
+  {
    "title": "Problems from the NMBIP course",
    "url": "/subpages/books/numerical_methods_for_bip/problems/",
    "date": "2026-06-21",
@@ -173,12 +179,6 @@
    "url": "/subpages/books/linear_algebra/la3/",
    "date": "2026-06-12",
    "added": false
-  },
-  {
-   "title": "Proving Compactness",
-   "url": "/subpages/stuff_i_found_interesting/solving_methods/proving_operator_compactness/",
-   "date": "2026-06-12",
-   "added": true
   }
  ]
 }
