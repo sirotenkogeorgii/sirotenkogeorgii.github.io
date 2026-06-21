@@ -3376,6 +3376,11 @@ where $s$ is **measure-preserving** and $\nabla\psi$ is the gradient of a convex
 
 A real matrix decomposes uniquely (modulo non-invertibility) as an isometry composed with a symmetric positive-semidefinite stretch; a non-degenerate $L^2$ map decomposes uniquely as a measure-preserving rearrangement composed with a convex-gradient stretch. The "rotation" part now lives on the infinite-dimensional sphere $S(\Omega)\subset L^2(\Omega;\mathbb R^d)$, and the "stretch" is the optimal transport map from §2.3.
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_polar_factorization.png' | relative_url }}" alt="Two rows of three panels comparing the matrix polar decomposition A equals U P (top) with Brenier's polar factorization h equals grad-psi composed with s (bottom). Top row: a checkerboard-filled unit disk carrying a small two-arrow coordinate frame; after the symmetric positive-definite stretch P it becomes a tilted ellipse; after the orthogonal rotation U the ellipse is rigidly rotated. Bottom row: the same disk; after the measure-preserving rearrangement s (a rotation) the disk keeps its shape and every cell keeps its area while the coordinate frame visibly turns; after the convex-gradient stretch grad-psi the disk is deformed into a rounded barrel shape with resized cells. Grey arrows connect the panels left to right; coloured badges label each factor as orthogonal or measure-preserving (orange) and as symmetric-PD or convex-gradient stretch (purple and teal)." loading="lazy">
+  <figcaption><strong>Polar factorization is "isometry, then positive stretch" — in two parallel worlds.</strong> <em>Top (matrices).</em> The polar decomposition $A=UP$ acts on the unit disk by first applying the symmetric positive-definite stretch $P=\sqrt{A^\top A}$ (disk $\to$ tilted ellipse), then the orthogonal $U$ (a rigid rotation of that ellipse). <em>Bottom (maps).</em> Brenier's factorization $h=\nabla\psi\circ s$ first applies the measure-preserving rearrangement $s$ — here a rotation, so every cell keeps its area and only the little red/blue frame reveals the turn — then the convex-gradient stretch $\nabla\psi$, a curl-free (here nonlinear) deformation that resizes cells. The factors correspond, $U\leftrightarrow s$ (orthogonal $\leftrightarrow$ measure-preserving) and $P\leftrightarrow\nabla\psi$ (symmetric-PD stretch $\leftrightarrow$ convex-gradient stretch), even though convention writes the rotation outside for matrices ($A=UP$) but the stretch outside for maps ($h=\nabla\psi\circ s$). In both worlds the isometric factor is the <em>closest isometry</em> to the original object — the Frobenius-nearest orthogonal matrix, and (Theorem 22 below) the $L^2$-nearest measure-preserving map.</figcaption>
+</figure>
+
 Before stating the theorem, we set up the two building blocks: rearrangements and measure-preserving maps.
 
 #### Rearrangements and measure-preserving maps
@@ -3736,6 +3741,11 @@ Compare to matrices: for an invertible matrix $A$, the polar factor $U$ from $A=
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_polar_projection.png' | relative_url }}" alt="Two panels showing that the measure-preserving factor s is the orthogonal projection of h onto a sphere in L-squared. Left panel: a circle labelled S(Omega) represents the sphere of measure-preserving maps, all at equal distance from the origin; the identity sits on the circle, the point h sits outside it, and s — the nearest point of the circle to h, found by projecting radially — is marked with a right-angle symbol showing the residual h minus s is perpendicular to the circle; a dashed chord between two measure-preserving maps s1 and s2 has its midpoint strictly inside the circle, showing the set is curved. Right panel: a curve of the squared distance from h to a moving point s-prime on the sphere plotted against angle, with a single clear minimum at s-prime equal to s, and a box noting that this minimum value equals the size of the convex-gradient stretch grad-psi." loading="lazy">
+  <figcaption><strong>The measure-preserving factor is an orthogonal projection onto a sphere.</strong> Every $s\in S(\Omega)$ has the same $L^2$-norm $\|\mathrm{id}\|$ (Remark 21), so $S(\Omega)$ lies on a <em>sphere</em> in $L^2(\Omega;\mathbb R^d)$ — a genuinely curved set, as the dashed chord shows: the average $\tfrac12(s_1+s_2)$ falls strictly inside the sphere and is no longer measure-preserving. <em>Left:</em> for a non-degenerate $h$ (off the sphere), its measure-preserving factor $s$ is the <strong>nearest point of the sphere to $h$</strong> — the radial, orthogonal projection $s=\Pi_{S(\Omega)}(h)$, with the right-angle marker recording that the residual $h-s$ is orthogonal to the tangent of the sphere at $s$. That residual $h-s=(\nabla\psi-\mathrm{id})\circ s$ is exactly the displacement realised by the convex-gradient stretch. <em>Right:</em> sweeping a candidate $s'$ around the sphere, $\|h-s'\|_{L^2}^2$ has a unique minimiser at $s'=s$, and its value $\|h-s\|^2$ measures the size of the stretch $\nabla\psi$. This is statement (3) of Theorem 22, and the exact infinite-dimensional analogue of "$U$ is the Frobenius-closest orthogonal matrix to $A$". (Both panels are a finite-dimensional cartoon of the Hilbert-space geometry.)</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why "non-degenerate")</span></p>
 
@@ -3810,6 +3820,11 @@ Energy conservation in Proposition 23 is **not** true for *weak* solutions of Eu
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_euler_energy.png' | relative_url }}" alt="Two panels on energy in incompressible Euler. Left: a streamplot of a divergence-free, free-slip velocity field inside the unit square, with the field tangent to the boundary and a label that the divergence of v is zero in the interior. Right: kinetic energy normalised by its initial value plotted against time; a flat green line marks smooth solutions (or Hölder exponent above one third) where energy is conserved, and a dashed red curve that stays flat then decreases marks rough weak solutions with exponent below one third that dissipate energy, annotated as anomalous dissipation from convex integration." loading="lazy">
+  <figcaption><strong>Why smoothness is what conserves energy.</strong> <em>Left:</em> the two structural facts behind Proposition 23 — the field is incompressible ($\nabla\cdot v=0$) in the interior and free-slip ($v\cdot n=0$, i.e. tangent) on $\partial\Omega$ — are exactly what make the energy-flux terms $\int_{\partial\Omega}(v\cdot n)(\tfrac12|v|^2+p)$ and $\int_\Omega(\nabla\cdot v)(\tfrac12|v|^2+p)$ vanish, so $\frac{d}{dt}\int_\Omega\tfrac12|v|^2\,dx=0$. <em>Right:</em> the integration-by-parts that proves this needs smoothness. The <strong>Onsager dichotomy</strong> draws the line at Hölder exponent $\alpha=\tfrac13$: above it energy is conserved (green), below it convex-integration weak solutions (De Lellis–Székelyhidi, Isett) can dissipate energy anomalously (red dashed), even by a prescribed amount.</figcaption>
+</figure>
+
 ##### Eulerian vs Lagrangian, and the flow map
 
 Fluids (and physical systems generally) admit two complementary descriptions:
@@ -3843,6 +3858,11 @@ $$\partial_t J = (\nabla\cdot v)(\phi(t,x_0),t)\cdot J. \qquad \text{(Liouville'
 With $J(0,\cdot)=1$, the equation $\partial_t J=0$ is equivalent to $\nabla\cdot v=0$, giving $J\equiv 1$, i.e. $\phi(t,\cdot)\in G(\Omega)$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_euler_flowmap.png' | relative_url }}" alt="Two panels contrasting the Eulerian and Lagrangian views of the same incompressible flow. Left panel: streamlines of a divergence-free velocity field inside the unit square — the Eulerian description records a velocity vector at every fixed point. Right panel: the Lagrangian description follows particles; faint curves show particle trajectories from grey start points to purple end points, and a small orange square tile is carried by the flow map to a sheared, rotated teal region of the same area, labelled to show the Jacobian determinant equals one so every parcel keeps its volume." loading="lazy">
+  <figcaption><strong>Two pictures of one flow, and why incompressibility is "measure-preserving".</strong> <em>Left (Eulerian):</em> the unknown is the field $v(x,t)$ — a velocity attached to each fixed point of $\Omega$. <em>Right (Lagrangian):</em> the unknown is the flow map $\phi(t,\cdot)$, obtained by following each particle along $\dot x=v(x)$. A small square tile (orange) is carried to a sheared, rotated region (teal) — its shape changes, but its area is unchanged. That is precisely (2.12): $\nabla\cdot v=0\iff\det\nabla\phi\equiv 1\iff\phi(t,\cdot)\in G(\Omega)$, the Liouville identity $\partial_t J=(\nabla\cdot v)\,J$ with $J(0,\cdot)=1$. The flow is thus a <em>curve of measure-preserving maps</em> — the same $G(\Omega)$ on which the polar factorization projects.</figcaption>
+</figure>
 
 ##### The Lagrangian form of Euler
 
@@ -3894,6 +3914,11 @@ This is **Arnold's observation** (1966). It reframes Euler from "PDE for a vecto
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_arnold_geodesic.png' | relative_url }}" alt="A schematic of Arnold's interpretation of incompressible Euler as a geodesic on the group of volume-preserving diffeomorphisms. A curved blue line represents the manifold G(Omega). At a point phi(t) on the curve, a green tangent arrow is the velocity v. A red arrow points off the curve, representing the unconstrained acceleration; it is decomposed by a dashed parallelogram into a teal tangential component (the geodesic acceleration, along the curve) and a purple component pointing back toward the curve, labelled minus gradient of pressure — the Lagrange multiplier that projects the motion back onto the manifold. An orange point h sitting off the curve has a dotted arrow projecting it onto G(Omega), labelled as the polar factorization, i.e. projecting a non-measure-preserving map onto G(Omega)." loading="lazy">
+  <figcaption><strong>Arnold's picture: Euler is a geodesic, and pressure is the constraint force.</strong> Read $G(\Omega)$ as a curved manifold and the flow $\phi(t)$ as a curve on it, with velocity $\dot\phi=v$ tangent to $G(\Omega)$ (the tangent space being the divergence-free fields, with the $L^2$/kinetic-energy metric). The <em>unconstrained</em> acceleration $\partial_t v+(v\cdot\nabla)v$ (red) points off the manifold; splitting it gives a tangential part — the geodesic acceleration — and a normal part $-\nabla p\circ\phi$ (purple): the <strong>pressure is exactly the Lagrange multiplier</strong> that projects the motion back onto $G(\Omega)$, the curvature/Christoffel correction of the geodesic equation (2.10$'$). The same projection, applied to a single non-measure-preserving map $h$ (orange), <em>is</em> Brenier's polar factorization — which is why this discussion "sets the stage" for it.</figcaption>
+</figure>
+
 #### A more general statement
 
 Theorem 22 is the convenient form where source and target both live on $\Omega$ with Lebesgue measure. The general statement allows different domains and reference measures.
@@ -3942,6 +3967,11 @@ Also, $\sigma\in S(W,Y)$ all share the same $L^2$-norm (since $\\|\sigma\\|^2\_{
 #### Proof of Theorem 22
 
 The proof has a beautiful structural idea: **reduce the $L^2$-projection problem onto the curved set $S(W,Y)$ to the standard linear OT problem from §2.3, then read off the polar factorization from Brenier's theorem.**
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_polar_proof.png' | relative_url }}" alt="Two panels summarising the general polar factorization and its proof. Left panel: a commutative triangle with three measures — lambda on W at top left, nu on Y at top right, and mu equal to the push-forward of lambda by h, on X, at the bottom. An orange arrow s (measure-preserving) goes from lambda to nu, a teal arrow grad-psi (convex gradient) goes from nu to mu, and a purple arrow h goes directly from lambda to mu; a central box states h equals grad-psi composed with s. Right panel: a large ellipse labelled Pi(mu,nu), all couplings, the relaxed problem; inside it a smaller ellipse labelled deterministic plans from a single sigma in S(W,Y); a red star marks the Brenier optimum, which lives on the graph of grad-phi and is therefore deterministic, hence lies inside the smaller set; a box at the bottom states that the two minima coincide so s equals grad-phi composed with h solves the projection." loading="lazy">
+  <figcaption><strong>The proof in one picture.</strong> <em>Left:</em> Theorem 24 says the two factors close a triangle of measures — $s$ pushes $\lambda$ to $\nu$, $\nabla\psi$ pushes $\nu$ to $\mu=h_{\#}\lambda$, and the composite is $h=\nabla\psi\circ s$. <em>Right:</em> the proof's mechanism. Minimising the $L^2$-distance to $h$ over the curved set $S(W,Y)$ is the same as minimising over <em>deterministic</em> plans $\pi=(h,\sigma)_{\#}\lambda$ (problem 2.14); this sits inside the full coupling polytope $\Pi(\mu,\nu)$, whose minimisation is the linear Kantorovich problem (2.15), so $\min(2.15)\leq\min(2.14)$. But Brenier's optimum $\pi^\ast=(\mathrm{id},\nabla\varphi)_{\#}\mu$ lives on the <em>graph</em> of $\nabla\varphi$ — it is already deterministic, hence already inside the small set. The relaxation is therefore exact, and reading off the map gives $s=\nabla\varphi\circ h$ with $\nabla\psi=\nabla\varphi^\ast$.</figcaption>
+</figure>
 
 <details class="proof" markdown="1">
 <summary>Proof of Theorem 22 — four steps</summary>
@@ -4302,7 +4332,7 @@ Let $\sigma_t\colon\mathbb R^d\times\mathbb R^d\to\mathbb R^d$, $\sigma_t(x,y)=(
 
 When $\mu$ is absolutely continuous, the optimal plan is unique and induced by the Brenier map, $\pi=(\mathrm{id},\nabla\varphi)\_\sharp\mu$ (Theorem 13), so 
 
-$$(\sigma_t)\_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)\_\sharp\mu=[\mu,\nu]\_t$$
+$$(\sigma_t)_\sharp\pi=\bigl((1-t)\,\mathrm{id}+t\nabla\varphi\bigr)_\sharp\mu=[\mu,\nu]_t$$
 
 and the two definitions agree. Definition 30 simply replaces "follow the map" by "follow the plan": each infinitesimal mass element travels in a straight line from $x$ to $y$, where $(x,y)$ is distributed according to $\pi$. This covers the Dirac example above ($\pi=\delta_x\otimes\delta_y$, $\rho_t=\delta_{(1-t)x+ty}$) with no absolute continuity in sight.
 
@@ -4728,6 +4758,622 @@ For a general velocity field, $\operatorname{tr}((\nabla v)^2)=\partial_i v_j\,\
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where this is headed)</span></p>
 
 The two viewpoints assembled in this section — the Wasserstein space $\mathcal P^2(\mathbb R^d)$ with its displacement geodesics, and energy functionals that are displacement convex along them — are exactly the ingredients of Chapter 1, transplanted: a "Riemannian manifold" of measures and convex energies on it. The computation above ($\frac{d^2}{dt^2}\mathcal U(\rho_t)\ge 0$ along geodesics) is the measure-space analogue of $\nabla^2 E\succeq 0$, and it sets up the interpretation of diffusion-type PDEs as **gradient flows of displacement convex entropies on Wasserstein space**, where the uniqueness, stability, and asymptotics machinery of Chapter 1 can be brought to bear.
+
+</div>
+
+### 2.6 OT-metrics on the space of probability measures
+
+Sections 2.1–2.5 solved the optimal transport problem *between two fixed measures*. We now change perspective and ask what the optimal cost tells us about the **space of probability measures itself**: equipped with the transport cost, does $\mathcal P(\mathbb R^d)$ become a metric space — and, eventually, something like a Riemannian manifold? Throughout we work on the Euclidean state space $X=Y=\mathbb R^d$, although every statement carries over to a general Polish space (separable, complete, metric).
+
+Recall that the transport cost
+
+$$
+\mathcal T(\mu,\nu) := \min_{\pi\in\Pi(\mu,\nu)}\int_{X\times Y} c(x,y)\,d\pi(x,y)
+$$
+
+is well-defined (the minimum is attained, Proposition 12). We specialise to the family of cost functions $c(x,y)=\lvert x-y\rvert^p$ for $p\in[0,\infty)$ — including the edge case $\lvert x-y\rvert^0:=\mathbf 1\_{x\ne y}$ — and denote the associated total transport cost by
+
+$$
+\mathcal T_p(\mu,\nu) := \min_{\pi\in\Pi(\mu,\nu)}\int_{\mathbb R^d\times\mathbb R^d}\lvert x-y\rvert^p\,d\pi(x,y).
+$$
+
+It is then natural to restrict to the space $\mathcal P^p(\mathbb R^d)$ of all Borel probability measures with finite $p$-th moment, i.e. those $\mu\in\mathcal P(\mathbb R^d)$ with
+
+$$
+\int_{\mathbb R^d}\lvert x\rvert^p\,d\mu(x) < \infty.
+$$
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 35</span><span class="math-callout__name">(Wasserstein distances)</span></p>
+
+The transportation cost $\mathcal T\_p$ induces a distance in the following sense:
+
+1. For $p\in[1,\infty)$, $\;W\_p:=(\mathcal T\_p)^{1/p}$ is a metric on $\mathcal P^p(\mathbb R^d)$.
+2. For $p\in[0,1)$, $\;W\_p:=\mathcal T\_p$ is a metric on $\mathcal P^p(\mathbb R^d)$.
+
+</div>
+
+This metric is usually called the **Monge–Kantorovich** or **Wasserstein distance**. Two endpoints of the scale are already familiar: $W\_0$ is just (half of) the total-variation distance, and $W\_1$ admits the Kantorovich–Rubinstein dual representation
+
+$$
+W_1(\mu,\nu) = \sup_{\mathrm{Lip}\,f\le 1}\int_{\mathbb R^d} f\,d(\mu-\nu).
+$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 4</span><span class="math-callout__name">(Distance to a Dirac, and the variance)</span></p>
+
+Let $\mu\in\mathcal P^2(\mathbb R^d)$ and $a\in\mathbb R^d$. There is only **one** transference plan onto a Dirac mass — all of $\mu$ must travel to $a$ — so
+
+$$
+W_2^2(\mu,\delta_a) = \int_{\mathbb R^d}\lvert x-a\rvert^2\,d\mu(x).
+$$
+
+Minimising over $a$ recovers a classical fact: the unique minimiser of $a\mapsto W\_2(\mu,\delta\_a)$ is the **mean** $m=\int\_{\mathbb R^d} x\,d\mu(x)$, and the optimal value $W\_2^2(\mu,\delta\_m)$ is exactly the **variance** of $\mu$.
+
+</div>
+
+To establish Theorem 35 we must verify the metric axioms. For $\mu,\nu\in\mathcal P^p(\mathbb R^d)$ we need to check:
+
+1. **Well-definedness.** $W\_p(\mu,\nu)<+\infty$.
+2. **Positive definiteness.** $W\_p(\mu,\nu)\ge 0$ with equality iff $\mu=\nu$ (i.e. $\int\varphi\,d\mu=\int\varphi\,d\nu$ for all $\varphi\in C\_b(\mathbb R^d)$).
+3. **Symmetry.** $W\_p(\mu,\nu)=W\_p(\nu,\mu)$.
+4. **Triangle inequality.** $W\_p(\mu\_1,\mu\_3)\le W\_p(\mu\_1,\mu\_2)+W\_p(\mu\_2,\mu\_3)$.
+
+As usual, the only hard axiom is the **triangle inequality**.
+
+**Heuristic (via maps).** Suppose $p=2$ and that the measures $\mu\_i$ do not give mass to small sets. By Brenier's theorem (Theorem 13(ii)) we may pass from plans to **maps**: let $T\_{12},T\_{23}$ be the optimal maps with $(T\_{12})\_\sharp\mu\_1=\mu\_2$ and $(T\_{23})\_\sharp\mu\_2=\mu\_3$. Their composition $T\_{13}:=T\_{23}\circ T\_{12}$ is an admissible (not necessarily optimal) competitor for transporting $\mu\_1$ to $\mu\_3$, so the Minkowski/triangle inequality in $L^2(\mu\_1)$ gives
+
+$$
+\begin{aligned}
+W_2(\mu_1,\mu_3) &\le \Bigl(\int_{\mathbb R^d}\lvert x-T_{13}(x)\rvert^2\,d\mu_1(x)\Bigr)^{1/2}\\
+&\le \Bigl(\int_{\mathbb R^d}\lvert x-T_{12}(x)\rvert^2\,d\mu_1(x)\Bigr)^{1/2} + \Bigl(\int_{\mathbb R^d}\lvert T_{12}(x)-T_{13}(x)\rvert^2\,d\mu_1(x)\Bigr)^{1/2}\\
+&= \Bigl(\int_{\mathbb R^d}\lvert x-T_{12}(x)\rvert^2\,d\mu_1(x)\Bigr)^{1/2} + \Bigl(\int_{\mathbb R^d}\lvert y-T_{23}(y)\rvert^2\,d\mu_2(y)\Bigr)^{1/2}\\
+&= W_2(\mu_1,\mu_2) + W_2(\mu_2,\mu_3).
+\end{aligned}
+$$
+
+This blueprint is incomplete — we also want to allow singular measures such as Diracs, where transport *maps* need not exist — but it gives a very good picture of the proof. The one genuinely new ingredient is: in the language of **transference plans**, what replaces the composition $T\_{13}=T\_{23}\circ T\_{12}$? The answer is a *gluing* procedure, and the systematic indexing $\mu\_1,\mu\_2,\mu\_3$ is chosen precisely so that the gluing becomes a transparent statement about marginals in a product space.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 36</span><span class="math-callout__name">(Gluing lemma)</span></p>
+
+Let $\mu\_1,\mu\_2,\mu\_3$ be three probability measures on Polish spaces $X\_1,X\_2,X\_3$, respectively, and let $\pi\_{12}\in\Pi(\mu\_1,\mu\_2)$ and $\pi\_{23}\in\Pi(\mu\_2,\mu\_3)$ be two transference plans. Then there exists a probability measure $\pi\in\mathcal P(X\_1\times X\_2\times X\_3)$ with marginals $\pi\_{12}$ on $X\_1\times X\_2$ and $\pi\_{23}$ on $X\_2\times X\_3$.
+
+</div>
+
+We first prove Theorem 35 assuming the lemma, and then return to prove the lemma itself.
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 35 — triangle inequality via gluing</summary>
+
+We treat $p\in[1,\infty)$ and the triangle inequality; the remaining items follow more easily. Let $\mu\_1,\mu\_2,\mu\_3\in\mathcal P^p(\mathbb R^d)$. By Proposition 12 there exist **optimal** transference plans $\pi\_{12}\in\Pi(\mu\_1,\mu\_2)$ and $\pi\_{23}\in\Pi(\mu\_2,\mu\_3)$; write $X\_i$ for the respective supports. Let $\pi$ be the "triple coupling" furnished by the gluing lemma, and let $\pi\_{13}$ denote its marginal on $X\_1\times X\_3$. Then $\pi\_{13}\in\Pi(\mu\_1,\mu\_3)$, so it is an admissible transference plan between $\mu\_1$ and $\mu\_3$. Using the **Minkowski inequality** in $L^p(\pi)$ and the marginal conditions (suppressing the domains of integration for simplicity),
+
+$$
+\begin{aligned}
+W_p(\mu_1,\mu_3) &\le \Bigl(\int \lvert x_1-x_3\rvert^p\,d\pi_{13}(x_1,x_3)\Bigr)^{1/p}
+= \Bigl(\int \lvert x_1-x_3\rvert^p\,d\pi(x_1,x_2,x_3)\Bigr)^{1/p}\\
+&\le \Bigl(\int \lvert x_1-x_2\rvert^p\,d\pi(x_1,x_2,x_3)\Bigr)^{1/p} + \Bigl(\int \lvert x_2-x_3\rvert^p\,d\pi(x_1,x_2,x_3)\Bigr)^{1/p}\\
+&= \Bigl(\int \lvert x_1-x_2\rvert^p\,d\pi_{12}(x_1,x_2)\Bigr)^{1/p} + \Bigl(\int \lvert x_2-x_3\rvert^p\,d\pi_{23}(x_2,x_3)\Bigr)^{1/p}\\
+&= W_p(\mu_1,\mu_2) + W_p(\mu_2,\mu_3).
+\end{aligned}
+$$
+
+This is the triangle inequality. $\square$
+
+</details>
+
+Before proving the gluing lemma, we record a fact from probability/measure theory that does the real work.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Fact</span><span class="math-callout__name">(Disintegration of measures)</span></p>
+
+Loosely, any probability measure $\pi$ on a product space $X\times Y$ can be written as an **average of probability measures on the slices** $\lbrace x\rbrace\times Y$, $x\in X$ — equivalently, a slicing of $\pi$ into lower-dimensional conditional measures. More precisely: if $\pi\in\mathcal P(X\times Y)$ has marginal $\mu$ on $X$, then there exists a weakly measurable map $X\to\mathcal P(Y)$, $x\mapsto\pi\_x$, such that
+
+$$
+\pi = \mu\otimes(\pi_x)_{x\in X} = \int_X (\delta_x\otimes\pi_x)\,d\mu(x)
+$$
+
+in the precise sense that, for any $\varphi\in C\_b(X\times Y)$,
+
+$$
+\int_{X\times Y}\varphi(x,y)\,d\pi(x,y) = \int_X\Bigl(\int_Y\varphi(x,y)\,d\pi_x(y)\Bigr)d\mu(x).
+$$
+
+Alternatively, for any Borel set $A\subset X\times Y$,
+
+$$
+\pi(A) = \int_X \pi_x(A_x)\,d\mu(x),
+$$
+
+where $A\_x=\lbrace y\in Y:(x,y)\in A\rbrace$ denotes the $Y$-slice of $A$ at $x$.
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Lemma 36 — gluing via disintegration along the common marginal</summary>
+
+We disintegrate the two given measures $\pi\_{12}$ and $\pi\_{23}$ with respect to their **common marginal** $\mu\_2$. This gives weakly measurable families of probability measures $(\pi\_{12,x\_2})\_{x\_2}$ and $(\pi\_{23,x\_2})\_{x\_2}$ such that
+
+$$
+\pi_{12} = (\pi_{12,x_2})_{x_2}\otimes\mu_2 = \int_{X_2}(\pi_{12,x_2}\otimes\delta_{x_2})\,d\mu_2(x_2), \tag{2.24}
+$$
+
+$$
+\pi_{23} = \mu_2\otimes(\pi_{23,x_2})_{x_2} = \int_{X_2}(\delta_{x_2}\otimes\pi_{23,x_2})\,d\mu_2(x_2).
+$$
+
+Now we **glue** them over the common variable $x\_2$ by defining
+
+$$
+\pi := (\pi_{12,x_2})_{x_2}\otimes\mu_2\otimes(\pi_{23,x_2})_{x_2} = \int_{X_2}(\pi_{12,x_2}\otimes\delta_{x_2}\otimes\pi_{23,x_2})\,d\mu_2(x_2),
+$$
+
+i.e., for any $\varphi\in C\_b(X\_1\times X\_2\times X\_3)$,
+
+$$
+\int \varphi\,d\pi = \int_{X_2}\int_{X_1}\int_{X_3}\varphi(x_1,x_2,x_3)\,d\pi_{23,x_2}(x_3)\,d\pi_{12,x_2}(x_1)\,d\mu_2(x_2).
+$$
+
+It remains to check that $\pi$ has the desired marginals $\pi\_{12}$ and $\pi\_{23}$. By symmetry it suffices to check one of them, say that $\pi\_{12}$ is the $X\_1\times X\_2$ marginal. Take $\varphi\in C\_b(X\_1\times X\_2)$ (in words, $\varphi$ is independent of $x\_3$). Using that $\pi\_{23,x\_2}\in\mathcal P(X\_3)$ for $\mu\_2$-a.e. $x\_2$ and the disintegration formula (2.24),
+
+$$
+\begin{aligned}
+\int_{X_1\times X_2\times X_3}\varphi\,d\pi
+&= \int_{X_2}\int_{X_1}\varphi(x_1,x_2)\underbrace{\int_{X_3} d\pi_{23,x_2}(x_3)}_{=\,1}\,d\pi_{12,x_2}(x_1)\,d\mu_2(x_2)\\
+&= \int_{X_2}\int_{X_1}\varphi(x_1,x_2)\,d\pi_{12,x_2}(x_1)\,d\mu_2(x_2)\\
+&= \int_{X_1\times X_2}\varphi(x_1,x_2)\,d\pi_{12}(x_1,x_2),
+\end{aligned}
+$$
+
+which is precisely the condition that $\pi\_{12}$ is the marginal of $\pi$ on $X\_1\times X\_2$. $\square$
+
+</details>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_metric_gluing_triangle.png' | relative_url }}" alt="Two-panel figure. Left: a three-layer schematic with columns X1, X2, X3, each carrying weighted atoms; blue lines show the coupling pi_12 between X1 and X2 and red lines the coupling pi_23 between X2 and X3, sharing the common middle marginal mu2. A green kinked path x1 to x2 to x3 is highlighted, with its straight dashed green shadow on X1 times X3 marking the projected plan pi_13. Right: a bar chart comparing the direct distance W2 of mu1 and mu3 equal to 4.20 against the routed sum W2(mu1,mu2)+W2(mu2,mu3) equal to 4.99 for three Gaussians, with the slack 0.79 marked, illustrating the triangle inequality." loading="lazy">
+  <figcaption>Lemma 36 and the triangle inequality. <strong>Left.</strong> The gluing lemma stitches $\pi_{12}\in\Pi(\mu_1,\mu_2)$ and $\pi_{23}\in\Pi(\mu_2,\mu_3)$ over their shared marginal $\mu_2$ into a coupling on $X_1\times X_2\times X_3$; its projection $\pi_{13}$ (dashed) is an admissible plan between $\mu_1$ and $\mu_3$. <strong>Right.</strong> Applying Minkowski's inequality to $\pi_{13}$ gives $W_2(\mu_1,\mu_3)\le W_2(\mu_1,\mu_2)+W_2(\mu_2,\mu_3)$; here (three Gaussians) the cost routed through $\mu_2$ exceeds the direct cost by the shaded slack.</figcaption>
+</figure>
+
+#### Wasserstein distances and weak convergence
+
+Having established that $W\_p$ is a metric, we ask which **topology** it induces on the space of probability measures. We continue to work on the state space $X=\mathbb R^d$, but again the statements carry over almost verbatim to a Polish space. Recall that a sequence $(\mu\_n)\_n\subset\mathcal P(\mathbb R^d)$ converges **weakly** to a limit $\mu\in\mathcal P(\mathbb R^d)$, written $\mu\_n\rightharpoonup\mu$, if
+
+$$
+\int_{\mathbb R^d}\varphi\,d\mu_n \to \int_{\mathbb R^d}\varphi\,d\mu \qquad\text{for all }\varphi\in C_b(\mathbb R^d),
+$$
+
+i.e. against all bounded continuous test functions. The next two examples probe how $W\_p$-convergence relates to this notion.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5</span><span class="math-callout__name">(Dirac measures)</span></p>
+
+For a sequence of points $(x\_n)\_n\subset\mathbb R^d$ we know that $x\_n\to x$ if and only if $\delta\_{x\_n}\rightharpoonup\delta\_x$ weakly. It is easy to see that for any two points $x,y\in\mathbb R^d$,
+
+$$
+W_p(\delta_x,\delta_y) = \lvert x-y\rvert^{\min\lbrace 1,p\rbrace}.
+$$
+
+So in particular, for $p>0$, $\;W\_p(\delta\_{x\_n},\delta\_x)\to 0$ if and only if $x\_n\to x$, and by the comment above, if and only if $\delta\_{x\_n}\rightharpoonup\delta\_x$ weakly: on Diracs, Wasserstein convergence and weak convergence coincide.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_dirac_distance.png' | relative_url }}" alt="Two-panel figure. Left: W_p between two Dirac masses plotted against the ground distance r equal to absolute value of x minus y, for several p: p=0.5 is a concave square-root curve, p=1 and p=2 coincide as the straight line W_p=r, and p=0 is a flat line at height 1 (the indicator). Right: the exponent min(1,p) as a function of p, rising linearly from 0 then saturating at 1 for p at least 1, with the regimes p<1 (metric is T_p itself) and p>=1 (metric is T_p to the power 1/p) annotated." loading="lazy">
+  <figcaption>Example 5: $W_p(\delta_x,\delta_y)=|x-y|^{\min(1,p)}$. <strong>Left.</strong> For $p\ge 1$ every exponent collapses to $W_p=|x-y|$; for $p\in(0,1)$ one gets the concave $|x-y|^p$; and $p=0$ is the indicator $\mathbf 1_{x\ne y}$ (the total-variation endpoint). <strong>Right.</strong> The scaling exponent $\min(1,p)$ saturates at $p=1$ — the threshold where the metric switches from $\mathcal T_p$ itself to $(\mathcal T_p)^{1/p}$. In every case $W_p(\delta_{x_n},\delta_x)\to0$ exactly when $x_n\to x$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 6</span><span class="math-callout__name">(Oscillation)</span></p>
+
+Let $f\_n\colon\mathbb R\to\mathbb R$ be given by $f\_n(x)=1+\sin(2\pi n x)$, and define
+
+$$
+d\mu_n(x) = f_n(x)\,\chi_{[0,1]}(x)\,dx,
+$$
+
+with $\mu$ the Lebesgue measure on $[0,1]$. Then one can check that
+
+1. $W\_p(\mu\_n,\mu)\to 0$ (for $p>0$), and
+2. $\mu\_n\rightharpoonup\mu$ weakly.
+
+For (1), simply move the mass of each "hill" of the sine to the adjacent "valley" to get an upper bound — the required displacement is of order $1/n$. For (2), the rapid oscillation averages out: when $n$ is large the density does not vary much between a hill and the adjacent valley, so the integral against any fixed continuous test function is unaffected in the limit.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_oscillation_weak.png' | relative_url }}" alt="Two-panel figure. Left: the densities f_n(x)=1+sin(2 pi n x) on the interval [0,1] for n=1,2,4,8, oscillating ever faster around the dashed red uniform limit at density 1. Right: a log-log plot of W_1 and W_2 between mu_n and the uniform measure versus the frequency n, with the markers following a dotted reference line of slope minus one, showing decay proportional to 1/n." loading="lazy">
+  <figcaption>Example 6: oscillation and weak convergence. <strong>Left.</strong> The densities $f_n=1+\sin(2\pi n x)$ oscillate faster and faster about the uniform limit $\mu$. <strong>Right.</strong> Computed by 1D quantile transport, $W_p(\mu_n,\mu)\to0$ for $p=1,2$ at the rate $\sim 1/n$ (dotted slope-$-1$ guide): the mass only has to travel the $O(1/n)$ gap from each hill to the neighbouring valley.</figcaption>
+</figure>
+
+The two examples suggest that optimal-transport distances are closely linked to weak convergence. The precise statement adds a **tightness/moment** condition that prevents mass from escaping to infinity.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 37</span><span class="math-callout__name">(Wasserstein distances metrize weak convergence)</span></p>
+
+Let $p\in(0,\infty)$, let $(\mu\_n)\_n\subset\mathcal P^p(\mathbb R^d)$ and let $\mu\in\mathcal P(\mathbb R^d)$. Then the following statements are equivalent:
+
+1. $W\_p(\mu\_n,\mu)\to 0$ as $n\to\infty$.
+2. $\mu\_n\rightharpoonup\mu$ weakly, and $(\mu\_n)\_n$ satisfies the tightness condition
+
+   $$
+   \lim_{R\to\infty}\limsup_{n\to\infty}\int_{\mathbb R^d\setminus B_R}\lvert x\rvert^p\,d\mu_n(x)=0. \tag{2.25}
+   $$
+
+3. $\mu\_n\rightharpoonup\mu$ weakly, $\mu\in\mathcal P^p(\mathbb R^d)$, and
+
+   $$
+   \lim_{n\to\infty}\int_{\mathbb R^d}\lvert x\rvert^p\,d\mu_n(x)=\int_{\mathbb R^d}\lvert x\rvert^p\,d\mu(x)<\infty. \tag{2.26}
+   $$
+
+4. For any test function $\varphi\in C(\mathbb R^d)$ with $\lvert\varphi(x)\rvert\le C(1+\lvert x\rvert^p)$ for some finite $C$, it holds $\int\varphi\,d\mu<\infty$ and
+
+   $$
+   \lim_{n\to\infty}\int_{\mathbb R^d}\varphi\,d\mu_n=\int_{\mathbb R^d}\varphi\,d\mu.
+   $$
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_tightness_weak.png' | relative_url }}" alt="Two-panel figure. Left: a stem plot of the measures mu_n = (1 minus 1/n) delta_0 + (1/n) delta_n for n=2,4,8 — a large atom at 0 whose mass approaches 1 and a shrinking atom of mass 1/n escaping to x=n. Right: W_p of mu_n and delta_0 versus n for p=0.5 (decays like n to the minus one half), p=1 (constant equal to 1), and p=2 (grows like n to the one half), showing that although mu_n converges weakly to delta_0, W_p does not converge to 0 for p at least 1." loading="lazy">
+  <figcaption>Theorem 37 and the role of tightness. <strong>Left.</strong> $\mu_n=(1-\frac1n)\delta_0+\frac1n\delta_n$ sends a sliver of mass off to infinity. <strong>Right.</strong> For every bounded continuous test function $\int\varphi\,d\mu_n\to\varphi(0)$, so $\mu_n\rightharpoonup\delta_0$; yet $W_p(\mu_n,\delta_0)=n^{1-1/p}$ stays bounded away from $0$ — indeed grows — for $p\ge 1$. The moment/tightness condition (2.25) is exactly what rules this out.</figcaption>
+</figure>
+
+Instead of the full proof, we focus on the most important aspect, the equivalence of (i) with any of (ii)–(iv). To avoid technical difficulties and concentrate on the crucial ideas, we restrict to $p\ge 1$ and impose the simplifying assumption
+
+$$
+\operatorname{supp}\mu_n,\ \operatorname{supp}\mu \subset B_R \quad\text{for some }R<\infty. \tag{2.27}
+$$
+
+(Under (2.27), conditions (ii)–(iv) all reduce to plain weak convergence $\mu\_n\rightharpoonup\mu$.) Before proving that, under this assumption, $W\_p(\mu\_n,\mu)\to 0\iff\mu\_n\rightharpoonup\mu$, one preliminary observation lets us collapse all the exponents into one. By **Jensen's inequality**,
+
+$$
+1\le p_1\le p_2 \quad\Longrightarrow\quad W_{p_1}\le W_{p_2},
+$$
+
+and under the assumption $\operatorname{supp}\mu\subset B\_R$ there is a matching reverse inequality
+
+$$
+1\le p_1\le p_2 \quad\Longrightarrow\quad W_{p_2}\le R^{\,1-p_1/p_2}\,W_{p_1}^{\,p_1/p_2}
+$$
+
+(this is where the assumption comes in handy). Hence, under (2.27), all Wasserstein distances $W\_p$ with $p\ge 1$ induce the **same topology**, and it suffices to argue with $p=1$, where the Kantorovich–Rubinstein duality is available.
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 37 (under the simplifying assumption (2.27))</summary>
+
+By the equivalence of all $W\_p$, $p\ge 1$, just noted, it suffices to prove
+
+$$
+W_1(\mu_n,\mu)\to 0 \quad\Longleftrightarrow\quad \mu_n\rightharpoonup\mu,
+$$
+
+where we use the dual representation
+
+$$
+W_1(\mu_n,\mu) = \sup_{\mathrm{Lip}\,f\le 1}\int_{\mathbb R^d} f\,d(\mu_n-\mu). \tag{2.28}
+$$
+
+**Step 1: "$\Rightarrow$".** Assume $W\_1(\mu\_n,\mu)\to 0$. We want to show $\mu\_n\rightharpoonup\mu$ weakly, i.e. for any test function $\varphi\in C\_b(\mathbb R^d)$,
+
+$$
+\int_{\mathbb R^d}\varphi\,d\mu_n \to \int_{\mathbb R^d}\varphi\,d\mu. \tag{2.29}
+$$
+
+From (2.28), (2.29) already holds whenever $\varphi$ is **Lipschitz continuous** (choose $f=\varphi/\mathrm{Lip}\,\varphi$ in the non-trivial case $\varphi\not\equiv 0$). Now a general $\varphi\in C\_b(\mathbb R^d)$ can be squeezed between Lipschitz functions: there are sequences of Lipschitz functions $(a\_k)\_k$ pointwise increasing and $(b\_k)\_k$ pointwise decreasing with $a\_k\le\varphi\le b\_k$ and
+
+$$
+\lim_{k\to\infty}a_k = \varphi = \lim_{k\to\infty}b_k \quad\text{pointwise in }\mathbb R^d.
+$$
+
+Using the convergence for each fixed Lipschitz $b\_k$, and then the monotone convergence theorem,
+
+$$
+\limsup_{n\to\infty}\int_{\mathbb R^d}\varphi\,d\mu_n \le \liminf_{k\to\infty}\limsup_{n\to\infty}\int_{\mathbb R^d} b_k\,d\mu_n = \liminf_{k\to\infty}\int_{\mathbb R^d} b_k\,d\mu = \int_{\mathbb R^d}\varphi\,d\mu.
+$$
+
+Similarly, using the functions $a\_k$, one shows $\liminf\_{n\to\infty}\int\_{\mathbb R^d}\varphi\,d\mu\_n \ge \int\_{\mathbb R^d}\varphi\,d\mu$, which gives (2.29).
+
+**Step 2: "$\Leftarrow$".** Now assume $\mu\_n\rightharpoonup\mu$ weakly. We want to show
+
+$$
+W_1(\mu_n,\mu) = \sup_{\mathrm{Lip}\,f\le 1}\int_{\mathbb R^d} f\,d(\mu_n-\mu) \to 0 \quad\text{as }n\to\infty.
+$$
+
+By the definition of the supremum, for each $n\in\mathbb N$ we can find $f\_n$ with $\mathrm{Lip}\,f\_n\le 1$ such that
+
+$$
+W_1(\mu_n,\mu) \le \int_{\mathbb R^d} f_n\,d(\mu_n-\mu) + \frac1n. \tag{2.30}
+$$
+
+By subtracting a constant from $f\_n$ (irrelevant to the integral against $\mu\_n-\mu$) we may additionally assume $f\_n(0)=0$. By assumption (2.27), only the values of $f\_n$ on the bounded set $B\_R$ matter. Since $f\_n(0)=0$ and $\mathrm{Lip}\,f\_n\le 1$, we have $\sup\_{B\_R} f\_n\le R$. We extend $f\_n$ from $B\_R$ to all of $\mathbb R^d$ by setting $\bar f\_n(x):=f\_n\bigl(R\,x/\lvert x\rvert\bigr)$ for $x\in\mathbb R^d\setminus B\_R$; then $\bar f\_n$ retains $\mathrm{Lip}\,\bar f\_n\le 1$ and $\bar f\_n\le R$ on all of $\mathbb R^d$. By **Arzelà–Ascoli**, after passing to a subsequence if necessary, we find a function $\bar f$ with $\mathrm{Lip}\,\bar f\le 1$ and $\bar f\le R$ on $\mathbb R^d$ such that $\bar f\_n\to\bar f$ uniformly on every compact subset of $\mathbb R^d$; in particular $\bar f\in C\_b(\mathbb R^d)$. Hence we estimate
+
+$$
+\Bigl\lvert\int_{\mathbb R^d}\bar f_n\,d(\mu_n-\mu)\Bigr\rvert \le \Bigl\lvert\int_{\mathbb R^d}\bar f\,d(\mu_n-\mu)\Bigr\rvert + \Bigl(\sup_{B_R}\lvert\bar f_n-\bar f\rvert\Bigr)\bigl(\mu_n(\mathbb R^d)+\mu(\mathbb R^d)\bigr).
+$$
+
+Since $\mu\_n,\mu$ are probability measures and $\bar f\_n\to\bar f$ uniformly on $B\_R$, the second right-hand term vanishes as $n\to\infty$. The first vanishes because $\varphi=\bar f\in C\_b(\mathbb R^d)$ is a valid test function for the weak convergence $\mu\_n\rightharpoonup\mu$. With (2.30), this concludes the proof. $\square$
+
+</details>
+
+#### A first glimpse of the Riemannian structure: linearizing $W\_2$
+
+Finally, we address how the Wasserstein distance behaves under small **perturbations**, getting a first glimpse of the geometry it induces on the space of probability measures (the formal Riemannian calculus of Otto). Throughout this part we assume the two measures are absolutely continuous with respect to Lebesgue measure, $d\mu(x)=f(x)\,dx$ and $d\nu(y)=g(y)\,dy$.
+
+There are two natural ways to perturb $\mu$:
+
+* **Density perturbation.** Replace the density $f$ by $(1+\varepsilon h)f$, i.e. consider the measure $d\nu\_\varepsilon=(1+\varepsilon h)\,d\mu$; staying a probability measure forces $\int\_{\mathbb R^d} h\,d\mu=0$.
+* **Potential perturbation.** Let $\nabla\varphi$ be the unique Brenier potential with $(\nabla\varphi)\_\sharp\mu=\nu$ (Theorem 13(ii)), and perturb it, $\varphi\mapsto\varphi+\varepsilon\psi$, which gives rise to the new measure $\nu\_\varepsilon=\bigl(\nabla(\varphi+\varepsilon\psi)\bigr)\_\sharp\mu$.
+
+We want to formally understand how $W\_2$ behaves when $\mu$ is close to $\nu$ (this gives information on the tangent space) — i.e. when $f$ is close to $g$, or $\nabla\varphi$ is close to the identity. Hence we make the ansatz
+
+$$
+\varphi(x)=\varphi_\varepsilon(x)=\frac{\lvert x\rvert^2}{2}+\varepsilon\psi+O(\varepsilon^2), \qquad g(y)=g_\varepsilon(y)=\bigl(1+\varepsilon h(y)+O(\varepsilon^2)\bigr)f(y). \tag{2.31}
+$$
+
+Define $\nu\_\varepsilon=(\nabla\varphi\_\varepsilon)\_\sharp\mu$ the pushforwarded measure. Since $\nabla\varphi\_\varepsilon=\mathrm{id}+\varepsilon\nabla\psi+O(\varepsilon^2)$, the definition of the pushforward gives
+
+$$
+W_2^2(\mu,\nu_\varepsilon) = \int_{\mathbb R^d}\lvert x-\nabla\varphi_\varepsilon(x)\rvert^2\,d\mu = \int_{\mathbb R^d}\lvert \varepsilon\nabla\psi(x)+O(\varepsilon^2)\rvert^2\,d\mu(x) = \varepsilon^2\int_{\mathbb R^d}\lvert\nabla\psi(x)\rvert^2\,d\mu + O(\varepsilon^4).
+$$
+
+So, formally, we have the linearization
+
+$$
+\lim_{\varepsilon\downarrow 0}\frac{W_2(\mu,\nu_\varepsilon)}{\varepsilon} = \Bigl(\int_{\mathbb R^d}\lvert\nabla\psi\rvert^2\,d\mu\Bigr)^{1/2}, \tag{2.32}
+$$
+
+which describes how the Wasserstein distance changes locally — it is the **length of the tangent vector** generated by $\psi$. But can we characterise $\psi$ in terms of the density perturbation $h$? The answer is yes, and it involves the **Monge–Ampère equation**. If $\nu=(\nabla\varphi)\_\sharp\mu$ with densities $f$ and $g$ as above, then for any test function $\xi$,
+
+$$
+\int_{\mathbb R^d}\xi(y)g(y)\,dy = \int_{\mathbb R^d}\xi(y)\,d\nu(y) = \int_{\mathbb R^d}\xi(\nabla\varphi(x))\,d\mu(x) = \int_{\mathbb R^d}\xi(\nabla\varphi(x))f(x)\,dx. \tag{2.33}
+$$
+
+Furthermore, if $\nabla\varphi$ is smooth and bijective we can apply the transformation rule (change of variables) to compute
+
+$$
+\int_{\mathbb R^d}\xi(y)g(y)\,dy = \int_{\mathbb R^d}\xi(\nabla\varphi(x))\,g(\nabla\varphi(x))\det(D^2\varphi(x))\,dx. \tag{2.34}
+$$
+
+As $\xi$ was arbitrary, comparing (2.33) and (2.34) forces
+
+$$
+f(x) = g(\nabla\varphi(x))\det(D^2\varphi(x)). \tag{2.35}
+$$
+
+This is the so-called **Monge–Ampère equation**, which characterises $\varphi$ for given densities $f$ and $g$. The characterisation of $\psi$ in terms of $h$ can now be obtained by linearising (2.35).
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 9</span><span class="math-callout__name">(Linearization of the Monge–Ampère equation)</span></p>
+
+Plug the ansatz (2.31) into the Monge–Ampère equation (2.35) and compare the first-order terms in $\varepsilon$. Show that this formally yields
+
+$$
+L\psi = h, \qquad\text{where the differential operator } L \text{ is given by}\qquad L = -\Delta - \nabla\log(f)\cdot\nabla.
+$$
+
+</div>
+
+One can show, under additional regularity assumptions, that for $h$ with $\int\_{\mathbb R^d} h\,d\mu=0$ there exists a unique solution $\psi$ of $L\psi=h$; we call this solution $\psi=L^{-1}h$. The constraint $\int\_{\mathbb R^d} h\,d\mu=0$ is a **necessary** condition: the operator $L$ is self-adjoint in $L^2(d\mu)$, with the Dirichlet-form identity
+
+$$
+\int_{\mathbb R^d}(L\psi_1)\psi_2\,d\mu = \int_{\mathbb R^d}\nabla\psi_1\cdot\nabla\psi_2\,d\mu = \int_{\mathbb R^d}\psi_1(L\psi_2)\,d\mu, \tag{2.36}
+$$
+
+which, since $L\mathbf 1=0$, implies in particular (taking $\psi\_1=\psi$, $\psi\_2=\mathbf 1$)
+
+$$
+\int_{\mathbb R^d} h\,d\mu = \int_{\mathbb R^d}(L\psi)\,\mathbf 1\,d\mu = \int_{\mathbb R^d}\psi\,(L\mathbf 1)\,d\mu = 0.
+$$
+
+The self-adjointness of $L$ via (2.36) also gives rise to a clean characterisation through the **weighted $H^{-1}$ norm** with respect to the measure $\mu$. It holds formally that
+
+$$
+\|h\|_{H^{-1}(d\mu)}^2 = \int_{\mathbb R^d} h\,(L^{-1}h)\,d\mu, \tag{2.37}
+$$
+
+where the weighted $H^{-1}(d\mu)$ norm is defined as
+
+$$
+\|h\|_{H^{-1}(d\mu)} := \sup\Bigl\lbrace \int_{\mathbb R^d} hk\,d\mu \;:\; k\in C_c^\infty(\mathbb R^d),\ \|k\|_{\dot H^1(d\mu)}=1 \Bigr\rbrace,
+$$
+
+and the weighted $\dot H^1(d\mu)$ semi-norm as
+
+$$
+\|k\|_{\dot H^1(d\mu)} := \Bigl(\int_{\mathbb R^d}\lvert\nabla k\rvert^2\,d\mu\Bigr)^{1/2}.
+$$
+
+To see this, let $\psi:=L^{-1}h$. The Hölder inequality together with (2.36) implies
+
+$$
+\|h\|_{H^{-1}(d\mu)} = \sup_{\|k\|_{\dot H^1(d\mu)}=1}\int_{\mathbb R^d}(L\psi)k\,d\mu = \sup_{\|k\|_{\dot H^1(d\mu)}=1}\int_{\mathbb R^d}\nabla\psi\cdot\nabla k\,d\mu \le \Bigl(\int_{\mathbb R^d}\lvert\nabla\psi\rvert^2\,d\mu\Bigr)^{1/2}.
+$$
+
+Furthermore, one checks that this maximum is attained at $k=\psi/\|\psi\|\_{\dot H^1(d\mu)}$, i.e.
+
+$$
+\int_{\mathbb R^d} h\,\frac{L^{-1}h}{\|L^{-1}h\|_{\dot H^1(d\mu)}}\,d\mu = \int_{\mathbb R^d} h\,\frac{\psi}{\|\psi\|_{\dot H^1(d\mu)}}\,d\mu = \Bigl(\int_{\mathbb R^d}\lvert\nabla\psi\rvert^2\,d\mu\Bigr)^{1/2}. \tag{2.38}
+$$
+
+Combining the previous observation (2.32) with (2.38) and (2.37) yields
+
+$$
+\lim_{\varepsilon\downarrow 0}\frac{W_2(\mu,\nu_\varepsilon)}{\varepsilon} = \Bigl(\int_{\mathbb R^d}\lvert\nabla\psi\rvert^2\,d\mu\Bigr)^{1/2} = \Bigl(\int_{\mathbb R^d}(L^{-1}h)\,h\,d\mu\Bigr)^{1/2} = \|h\|_{H^{-1}(d\mu)}. \tag{2.39}
+$$
+
+In words: **to first order, the quadratic Wasserstein distance between $\mu$ and a small density perturbation equals the weighted $H^{-1}$ norm of the perturbation** — the metric tensor of Wasserstein space is the $\dot H^{-1}(d\mu)$ inner product. We make this observation partly rigorous in the following statement.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_linearize_h_minus1.png' | relative_url }}" alt="Two-panel figure. Left: the perturbed densities (1 plus eps h) times mu with h(x)=cos(2 pi x) on the interval [0,1] for eps=0.2, 0.4, 0.7, dipping and rising around the dashed uniform reference at 1. Right: the ratio W_2 of mu and nu_eps divided by eps, computed numerically versus eps, lying flat on the analytic horizontal line equal to the H to the minus one norm of h, which is 1 over (2 pi root 2), approximately 0.1125 — confirming the linearization." loading="lazy">
+  <figcaption>Equation (2.39): the Wasserstein metric tensor is the weighted $H^{-1}$ inner product. <strong>Left.</strong> Density perturbations $\nu_\varepsilon=(1+\varepsilon h)\mu$ of the uniform measure, $h=\cos(2\pi x)$. <strong>Right.</strong> The numerically computed slope $W_2(\mu,\nu_\varepsilon)/\varepsilon$ converges (here essentially exactly) to the analytic $\|h\|_{H^{-1}(d\mu)}=1/(2\pi\sqrt2)$, since $L=-\Delta$ for the uniform $\mu$ and $(-\Delta)^{-1}\cos(2\pi x)=\cos(2\pi x)/(2\pi)^2$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 38</span><span class="math-callout__name">(From the quadratic Wasserstein distance to the $H^{-1}$ norm)</span></p>
+
+Let $\mu\in\mathcal P\_2(\mathbb R^d)$ be absolutely continuous with respect to the Lebesgue measure, and let $h\in L^\infty(\mathbb R^d)$ with $\int\_{\mathbb R^d} h\,d\mu=0$. Then it holds
+
+$$
+\|h\|_{H^{-1}(d\mu)} \le \liminf_{\varepsilon\downarrow 0}\frac{W_2\bigl(\mu,(1+\varepsilon h)\mu\bigr)}{\varepsilon}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 39</span><span class="math-callout__name">(Converse)</span></p>
+
+The converse inequality is also true, but requires more assumptions and effort.
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 38 (with $h$ smooth and compactly supported)</summary>
+
+The first step is a density argument that lets us assume $h$ is smooth with compact support; this calculation is not too complicated but a bit tedious, and we leave it as an exercise, presenting the proof with $h$ smooth and compactly supported.
+
+Since $\|h\|\_{H^{-1}(d\mu)} \ge \|h\|\_{L^2(d\mu)}^2/\|h\|\_{\dot H^1(d\mu)}$, it is enough to prove
+
+$$
+\|h\|_{L^2(d\mu)}^2 \le \|h\|_{\dot H^1(d\mu)}\,\liminf_{\varepsilon\downarrow 0}\frac{W_2\bigl(\mu,(1+\varepsilon h)\mu\bigr)}{\varepsilon}.
+$$
+
+Denote $\mu\_\varepsilon:=(1+\varepsilon h)\mu$ and let $\pi\_\varepsilon$ be the optimal transport plan between $\mu$ and $\mu\_\varepsilon$. We simply use the marginal constraints of $\pi\_\varepsilon$ to calculate
+
+$$
+\|h\|_{L^2(d\mu)}^2 = \int_{\mathbb R^d} h^2\,d\mu = \int_{\mathbb R^d} h\,d\Bigl(\frac{\mu_\varepsilon-\mu}{\varepsilon}\Bigr) = \frac1\varepsilon\int_{\mathbb R^d}\bigl(h(x)-h(y)\bigr)\,d\pi_\varepsilon(x,y).
+$$
+
+Now a Taylor expansion of $h$ (possible since $h$ is smooth and compactly supported), together with Hölder's inequality, lets us estimate, with a constant $C>0$,
+
+$$
+\begin{aligned}
+\|h\|_{L^2(d\mu)}^2 &\le \frac1\varepsilon\int_{\mathbb R^d}\lvert\nabla h(x)\rvert\,\lvert x-y\rvert\,d\pi_\varepsilon(x,y) + \frac{C}{\varepsilon}\int_{\mathbb R^d}\lvert x-y\rvert^2\,d\pi_\varepsilon(x,y)\\
+&\le \|h\|_{\dot H^1(d\mu)}\,\frac{W_2(\mu,\mu_\varepsilon)}{\varepsilon} + C\,\frac{W_2^2(\mu,\mu_\varepsilon)}{\varepsilon}.
+\end{aligned}
+$$
+
+As $h$ is compactly supported, one can construct a (not optimal) transport plan between $\mu$ and $\mu\_\varepsilon$ that transfers $O(\varepsilon)$ mass over $O(1)$ distance. Hence $W\_2^2(\mu,\mu\_\varepsilon)\le\tilde C\varepsilon^2$ for some constant $\tilde C$, so the last term is $O(\varepsilon)$ and vanishes as $\varepsilon\downarrow 0$, which implies the statement of the theorem. $\square$
+
+</details>
+
+### 2.7 A dynamic formulation of optimal transport
+
+We have seen several equivalent versions of the optimal transportation problem, but all of them are **static**. However, there should be a way of formulating the transportation problem as a *process*, in which one moves the mass continuously over time from an initial distribution $\mu$ to a final distribution $\nu$. We focus again on the quadratic cost.
+
+Another motivation comes from differential geometry, where a Riemannian metric $g$ on a manifold $M$ induces a distance via shortest paths, i.e. via length (or, equivalently, energy) minimization:
+
+$$
+d_g(x,y) = \inf\Bigl\lbrace \int_0^1 \lvert\dot z_t\rvert_{g_{z_t}}\,dt \;:\; z\in C^1([0,1];M),\ z_0=x,\ z_1=y \Bigr\rbrace,
+$$
+
+or equivalently
+
+$$
+d_g^2(x,y) = \inf\Bigl\lbrace \int_0^1 \lvert\dot z_t\rvert_{g_{z_t}}^2\,dt \;:\; z\in C^1([0,1];M),\ z_0=x,\ z_1=y \Bigr\rbrace,
+$$
+
+where the latter (action / energy) minimization problem additionally selects **constant-speed geodesics**. In analogy to this finite-dimensional setting — and since we already know that the transportation problem with quadratic cost induces a distance $W\_2$ on the space $\mathcal P\_{ac}^2(\mathbb R^d)$ — we may ask whether this distance is itself induced by a metric tensor. In the finite-dimensional case the metric is the kinetic energy $\lvert\dot z\_t\rvert\_{g\_{z\_t}}^2=\lvert v\rvert^2$ of a particle of unit mass. Recall that in our case a natural way to evolve a distribution $\rho\_t$ is the continuity equation
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0,
+$$
+
+cf. Theorem 33. Hence the natural generalization of the kinetic energy in our case is $\int\lvert v\_t\rvert^2\,d\rho\_t$, integrated in time. Therefore, we set
+
+$$
+A(\rho,v) := \int_0^1\int_{\mathbb R^d}\lvert v_t(x)\rvert^2\,d\rho_t(x)\,dt.
+$$
+
+Then, given two measures $\mu,\nu\in\mathcal P\_{ac}^2(\mathbb R^d)$, we aim to minimize $A(\rho,v)$ over all pairs $(\rho,v)\in\mathcal M(\mu,\nu)$, the set of pairs satisfying
+
+$$
+\begin{aligned}
+&\rho\in C\bigl([0,1];\mathcal P_{ac}^2(\mathbb R^d)\bigr), \qquad v\in L^2(d\rho_t(x)\,dt),\\
+&\partial_t\rho_t+\nabla\cdot(\rho_t v_t)=0 \quad\text{distributionally}, \qquad \rho_0=\mu,\ \rho_1=\nu.
+\end{aligned}
+$$
+
+Then, indeed, the Wasserstein distance $W\_2$ can be formulated in terms of action minimization.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 40</span><span class="math-callout__name">(Benamou–Brenier formula)</span></p>
+
+Let $\mu,\nu\in\mathcal P\_{ac}^2(\mathbb R^d)$. Then
+
+$$
+W_2^2(\mu,\nu) = \inf_{(\rho,v)\in\mathcal M(\mu,\nu)} A(\rho,v).
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 40 — three steps</summary>
+
+**Step 1: Approximation.** The density $\rho$ and the velocity field $v$ can be assumed to be smooth:
+
+$$
+\inf_{(\rho,v)\in\mathcal M(\mu,\nu)} A(\rho,v) = \inf_{(\rho,v)\in\mathcal M(\mu,\nu)\text{ smooth}} A(\rho,v).
+$$
+
+We omit the proof of this (very nontrivial, but technical) step.
+
+**Step 2: Lower bound.** We claim that
+
+$$
+\inf_{(\rho,v)\in\mathcal M(\mu,\nu)\text{ smooth}} A(\rho,v) \ge W_2^2(\mu,\nu).
+$$
+
+So let $(\rho,v)\in\mathcal M(\mu,\nu)$ be smooth. By the method of characteristics (Theorem 33) we can define a family of diffeomorphisms $(T\_t)\_{t\in[0,1]}$ such that
+
+$$
+\frac{d}{dt}T_t = v_t\circ T_t \quad (0<t<1), \qquad T_0=\mathrm{id}.
+$$
+
+By the uniqueness statement in Theorem 33, $\rho\_t=(T\_t)\_\sharp\mu$. Hence
+
+$$
+\int_{\mathbb R^d}\lvert v_t(y)\rvert^2\,d\rho_t(y) = \int_{\mathbb R^d}\lvert v_t(T_t(x))\rvert^2\,d\mu(x) = \int_{\mathbb R^d}\Bigl\lvert\frac{d}{dt}T_t(x)\Bigr\rvert^2\,d\mu(x),
+$$
+
+and integration in time together with Fubini yields
+
+$$
+A(\rho,v) = \int_{\mathbb R^d}\Bigl(\int_0^1\Bigl\lvert\frac{d}{dt}T_t(x)\Bigr\rvert^2\,dt\Bigr)d\mu(x).
+$$
+
+By Jensen's inequality and the fundamental theorem of calculus,
+
+$$
+\int_0^1\Bigl\lvert\frac{d}{dt}T_t(x)\Bigr\rvert^2\,dt \ge \Bigl\lvert\int_0^1\frac{d}{dt}T_t(x)\,dt\Bigr\rvert^2 = \lvert T_1(x)-T_0(x)\rvert^2 = \lvert T_1(x)-x\rvert^2.
+$$
+
+Since $(T\_1)\_\sharp\mu=\nu$ and, by Brenier's theorem (Theorem 13), in our setting $W\_2$ is also given by the Monge problem, we get
+
+$$
+A(\rho,v) \ge \int_{\mathbb R^d}\lvert T_1(x)-x\rvert^2\,d\mu(x) \ge W_2^2(\mu,\nu).
+$$
+
+Taking the infimum on the left yields the lower bound.
+
+**Step 3: Upper bound.** Now we construct a pair $(\rho,v)\in\mathcal M$ for which the above estimate is actually an identity. By Brenier's theorem we can take the Brenier map $T=\nabla\varphi$; now we want to construct a smart pair $(\rho,v)$. Recalling that equality holds in Jensen's inequality if and only if the integrand is constant, we make the **constant-velocity ansatz**
+
+$$
+T_t(x) := (1-t)x + tT(x),
+$$
+
+and define $(\rho,v)$ via the method of characteristics (Theorem 33), i.e. $\rho\_t=(T\_t)\_\sharp\mu$. Since $T\_0=\mathrm{id}$ and $T\_1=T$, we have $(T\_0)\_\sharp\mu=\mu$ and $(T\_1)\_\sharp\mu=\nu$, hence $(\rho,v)\in\mathcal M$. Moreover, both inequalities in Step 2 become equalities. $\square$
+
+</details>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_benamou_brenier.png' | relative_url }}" alt="Two-panel figure. Left: a heatmap of the optimal density flow rho_t(x) in the position-time plane between two Gaussians, overlaid with straight white particle characteristics fanning out as the Gaussian widens — a constant-speed displacement geodesic. Right: the kinetic-energy rate, the integral of absolute value of v_t squared against d rho_t, over time t; the optimal geodesic is a flat green line with action A=W2 squared=12.50, while a reparametrized competitor (dashed purple) bulges upward with larger action A=15.00." loading="lazy">
+  <figcaption>Theorem 40 (Benamou–Brenier). <strong>Left.</strong> The minimizing flow $\rho_t$ moves each particle in a straight line at constant speed (the displacement geodesic $T_t=(1-t)\,\mathrm{id}+tT$); the white curves are the characteristics. <strong>Right.</strong> Among all flows with the same endpoints, the kinetic action $A(\rho,v)=\int_0^1\!\int|v_t|^2\,d\rho_t\,dt$ is minimized by constant speed (flat rate, $A=W_2^2$); any time-reparametrized competitor incurs a strictly larger action by Jensen's inequality.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The geodesic picture, and the bridge to Chapter 1)</span></p>
+
+The Benamou–Brenier formula recasts $W\_2$ as a **least-action / energy** functional, exactly as $d\_g^2$ in Riemannian geometry: its minimizers are the constant-speed geodesics of Wasserstein space, and Step 3 identifies them with the displacement interpolation $T\_t=(1-t)\,\mathrm{id}+tT$ of §2.5. Together with the linearization (2.39) — which exhibits $\dot H^{-1}(d\mu)$ as the metric tensor — this completes the formal Riemannian structure on $\mathcal P\_{ac}^2(\mathbb R^d)$ (Otto's calculus): the stage on which diffusion PDEs appear as **gradient flows of displacement-convex entropies**, and where the uniqueness, stability, and asymptotics machinery of Chapter 1 can be brought to bear.
 
 </div>
 
