@@ -1,10 +1,40 @@
 {
  "entries": [
   {
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-06-21",
+   "added": false
+  },
+  {
    "title": "Partial Differential Equations in Data Science",
    "url": "/subpages/books/pdeds/",
    "date": "2026-06-21",
    "added": false
+  },
+  {
+   "title": "Problems from the NMBIP course",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/",
+   "date": "2026-06-21",
+   "added": false
+  },
+  {
+   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 02",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet02/",
+   "date": "2026-06-21",
+   "added": true
+  },
+  {
+   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 04",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet04/",
+   "date": "2026-06-21",
+   "added": true
+  },
+  {
+   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 05",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet05/",
+   "date": "2026-06-21",
+   "added": true
   },
   {
    "title": "Algorithmic Randomness and Computable Analysis",
@@ -133,12 +163,6 @@
    "added": false
   },
   {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-06-12",
-   "added": false
-  },
-  {
    "title": "Proving Compactness",
    "url": "/subpages/stuff_i_found_interesting/solving_methods/proving_operator_compactness/",
    "date": "2026-06-12",
@@ -154,30 +178,6 @@
    "title": "Algorithms for Combinatorial Optimization",
    "url": "/subpages/books/aco/",
    "date": "2026-06-05",
-   "added": false
-  },
-  {
-   "title": "Linear Algebra I & II",
-   "url": "/subpages/books/linear_algebra/la12/",
-   "date": "2026-06-05",
-   "added": false
-  },
-  {
-   "title": "Introduction to Geometric Deep Learning",
-   "url": "/subpages/books/geometric_deep_learning_hd/",
-   "date": "2026-06-04",
-   "added": false
-  },
-  {
-   "title": "Problems from the SDEs & Diffusion Models course",
-   "url": "/subpages/books/sde_hd/problems/",
-   "date": "2026-06-03",
-   "added": false
-  },
-  {
-   "title": "Problems from the Introduction to Geometric Deep Learning course",
-   "url": "/subpages/books/geometric_deep_learning_hd/problems/",
-   "date": "2026-05-30",
    "added": false
   }
  ]

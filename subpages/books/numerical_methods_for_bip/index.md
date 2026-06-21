@@ -7,6 +7,11 @@ tags:
   - inverse-problems
   - bayesian-inference
   - numerical-methods
+  - singular-value-decomposition
+  - evidence-lower-bound
+  - markov-chain-monte-carlo
+  # - jeffreys-prior
+  # - fisher-information
 ---
 
 <style>
@@ -3199,7 +3204,11 @@ Consider two probability measures $\mu\_X$, $\tilde{\mu}\_X$ on the separable Ba
 
 $$\nu(A) := \frac{1}{Z} \int_V \mathbb{1}_A(x) \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x)$$
 
-as well as $Z := \int_V \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x)$ and define $\tilde{\nu}$, $\tilde{Z}$ analogously, but with $\mu_X$ replaced by $\tilde{\mu}_X$.
+as well as 
+
+$$Z := \int_V \pi_E(y - \Phi(x)) \, \mathrm{d}\mu_X(x)$$
+
+and define $\tilde{\nu}$, $\tilde{Z}$ analogously, but with $\mu_X$ replaced by $\tilde{\mu}\_X$.
 
 Then if $\min\lbrace Z, \tilde{Z} \rbrace > 0$
 
@@ -3309,7 +3318,9 @@ since $\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) = \mathbb{E}[(\sum_{j=1}^{n} s_j(a_{
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4.5.3</span><span class="math-callout__name">(Positive Semi-Definite Function)</span></p>
 
-A function $c : D \times D \to \mathbb{R}$ that satisfies (4.5.3) is called **positive semi-definite**.
+A function $c : D \times D \to \mathbb{R}$ that satisfies (4.5.3) is called **positive semi-definite**:
+
+$$\sum_{i,j=1}^{n} s_i s_j c(x_i, x_j) \ge 0 \qquad \forall x_i, x_j \in D, \ \forall s_i, s_j \in \mathbb{R}, \tag{4.5.3}$$
 
 </div>
 
@@ -3421,7 +3432,11 @@ $$T_c f(x) = \int_D c(x, y) f(y) \, \mathrm{d}y \qquad x \in D.$$
 <div class="math-callout math-callout--lemma" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 4.5.9</span><span class="math-callout__name">(Hilbert-Schmidt Integral Operator)</span></p>
 
-Let $c \in L^2(D \times D, \mathbb{R})$ be symmetric. Then $T_c : L^2(D) \to L^2(D)$ is a compact, self-adjoint operator.
+Let $c \in L^2(D \times D, \mathbb{R})$ be symmetric. Then, the associated **Hilbert-Schmidt integral operator** $T_c : L^2(D) \to L^2(D)$, defined for all $x\in D$ via
+
+$$T_c f(x) = \int_D c(x, y) f(y) \, \mathrm{d}y$$
+
+is a compact, self-adjoint operator.
 
 </div>
 
@@ -3818,12 +3833,119 @@ $$c(x, y) := \sum_{j \in \mathbb{N}} \ell_j \varphi_j(x) \varphi_j(y) \qquad \fo
 
 #### 4.5.5 Uninformative Priors
 
+* https://www.youtube.com/results?search_query=jeffreys+prior
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(We have no prior information about the target)</span></p>
+
 Suppose again that we wish to determine $X$ from the measurement $Y$. If we have no prior information about $X$, it is tempting to choose a uniform distribution as a prior. However, for example in case $X : \Omega \to \mathbb{R}$, this leads to an **improper** prior with density $\pi_X \equiv 1$, i.e. $\pi_X$ does not satisfy $\int_{\mathbb{R}} \pi_X(x) \, \mathrm{d}x = 1$. Improper priors may still be used, but are not in line with the theory discussed in this lecture. Furthermore, a uniform distribution should not be interpreted as being "uninformative":
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(My notes)</span></p>
+
+**My impression on this problem:** Is not the problem that with the uniform distribution as a prior all events get probability zero if the event space is not bounded and closed like [a,b], but if the whole space is a sample space, than the whole uniform measure vanishes over the space since it spreads uniformly. So, uniform measure is uninformative measure on [a,b], but not on the whole space.
+
+**Correction of my impression:** The problem is not that all individual events have probability zero. This already happens for ordinary continuous distributions such as the uniform distribution on $[0,1]$. The real problem is that there is no proper probability distribution on $\mathbb R$ with constant density. 
+
+$$\text{there is no probability measure on } \mathbb R \text{ with constant positive density.}$$
+
+If $\pi_X(x)=c$, then $\int_{\mathbb R} c dx$ is infinite for $c>0$ and zero for $c=0$. Hence a “uniform prior on $\mathbb R$” cannot be normalized to have total mass $1$. The improper prior $\pi_X\equiv 1$ should instead be understood as Lebesgue measure, which has infinite total mass.
+
+On a bounded interval such as $[a,b]$, the uniform distribution is a proper probability measure. But even there, calling it “uninformative” is coordinate-dependent.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.26</span><span class="math-callout__name">(Uniform Prior is Not Uninformative)</span></p>
 
-Suppose that we wish to find a parameter $X$. Assume that we know (a priori) that $X$ belongs to $[0, 1]$, but we know nothing else about $X$. We may choose the prior $X \sim \mathrm{uniform}(0, 1)$. Finding $X \in [0, 1]$ is equivalent to finding $X^2 \in [0, 1]$. Note that the RV $X^2$ is *not* uniformly distributed on $[0, 1]$: $\mathbb{P}[X^2 \le a] = \mathbb{P}[X \le \sqrt{a}] = \sqrt{a}$ and thus $X^2$ has density $\pi_{X^2}(x) = \frac{1}{2} \frac{1}{\sqrt{x}}$. Hence this prior "favours" smaller values of $X^2$ over larger values of $X^2$. This is counterintuitive: If we have no information about $X \in [0, 1]$, then we also shouldn't have any information about $X^2 \in [0, 1]$.
+Suppose that we wish to find a parameter $X$. Assume that we know (a priori) that $X$ belongs to $[0, 1]$, but we know nothing else about $X$. We may choose the prior $X \sim \mathrm{uniform}(0, 1)$. 
+
+* **Observation I:** Finding $X \in [0, 1]$ is equivalent to finding $X^2 \in [0, 1]$.
+* **Observation II:** The RV $X^2$ is *not* uniformly distributed on $[0, 1]$:
+
+  $$\mathbb{P}[X^2 \le a] = \mathbb{P}[X \le \sqrt{a}] = \sqrt{a}$$
+
+  and thus $X^2$ has density $\pi_{X^2}(x) = \frac{1}{2} \frac{1}{\sqrt{x}}$. 
+
+Hence this prior "favours" smaller values of $X^2$ over larger values of $X^2$. 
+
+**This is counterintuitive:** If we have no information about $X \in [0, 1]$, then we also shouldn't have any information about $X^2 \in [0, 1]$.
+
+#TODO: this example feels like a manipulation, because having a prior on X that it belongs only to [0,1] and is distributed there uniformaly is different from the prior on that it belongs only to [0,1] and is distributed there as \sqrt{x}. Yes, X^2 belongs to [0,1] <- X belongs to [0,1], but this is a new random variable although on the same support
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(My notes)</span></p>
+
+**My impression on this problem:** This example feels like a manipulation, because having a prior on $X$ that it belongs only to $[0,1]$ and is distributed there uniformaly is different from the prior on that it belongs only to $[0,1]$ and is distributed there as $\sqrt{x}$. Yes, $X$ belongs to $[0,1]$ $\implies$ $X^2$ belongs to $[0,1]$, but this is a new random variable although on the same support
+
+**Correction of my impression:** This example is not claiming that $X$ and $X^2$ are the same random variable. They are different random variables. The point is that, on $[0,1]$, they are equivalent parametrizations of the same unknown quantity, since the map $x\mapsto x^2$ is one-to-one. So, knowing $X$ is equivalent to knowing $X^2$, because $X=\sqrt{X^2}$.
+
+If we choose $X\sim\mathrm{Unif}(0,1)$, then the induced prior on $Z=X^2$ is not uniform:
+
+$$\mathbb P(Z\le a)=\mathbb P(X\le \sqrt a)=\sqrt a,$$
+
+so
+
+$$\pi_Z(z)=\frac{1}{2\sqrt z}.$$
+
+Thus this prior favors smaller values of $Z$.
+
+Conversely, if we chose $Z=X^2\sim\mathrm{Unif}(0,1)$, then the induced prior on $X=\sqrt Z$ would have density
+
+$$\pi_X(x)=2x,$$
+
+which favors larger values of $X$.
+
+Therefore a uniform prior is not intrinsically uninformative. It is uniform only with respect to a chosen parametrization. Under nonlinear reparametrizations, a uniform prior generally becomes non-uniform.
+
+So the main resolution is:
+
+$$\boxed{\text{Uniform does not mean “no information”; it means “flat in this chosen coordinate.”}}$$
+
+On $[0,1]$, uniform is a valid prior. But it is not coordinate-free. On $\mathbb R$, a uniform probability prior does not exist at all.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Partial Solution</span><span class="math-callout__name">(Then is there a coordinate-free uninformative prior?)</span></p>
+
+**Short answer:** there is no universal coordinate-free “uninformative prior.” But there are several principled substitutes.
+
+The clean distinction is:
+
+$$\text{a prior measure can be coordinate-free, but “uninformative” is not intrinsic.}$$
+
+A density such as $\pi(\theta))$ is always a density with respect to some reference measure, often Lebesgue measure in the chosen coordinate $\theta$. Under a change of variables, the density changes by the Jacobian. So “flat density” is not coordinate-free.
+
+The closest standard notion is the Jeffreys prior.
+
+For a statistical model
+
+$$p(y\mid \theta),$$
+
+define the Fisher information
+
+$$I(\theta) = \mathbb E_\theta\left[\left(\frac{\partial}{\partial \theta}\log p(Y\mid \theta)\right)^2\right].$$
+
+In one dimension, Jeffreys prior is
+
+$$\pi_J(\theta) \propto \sqrt{I(\theta)}.$$
+
+In dimension $d$,
+
+$$\pi_J(\theta) \propto \sqrt{\det I(\theta)}.$$
+
+This is invariant under smooth reparametrization. More geometrically, the Fisher information defines a Riemannian metric on parameter space, and Jeffreys prior is the corresponding volume element:
+
+$$d\Pi_J(\theta) \propto \sqrt{\det I(\theta)},d\theta.$$
+
+So if $\varphi = f(\theta)$, the prior transforms correctly. It does not matter whether you write the parameter as $\theta$, $\theta^2$, $\log \theta$, etc.
+
+**But important caveat:** Jeffreys prior is not “pure ignorance.” It depends on the likelihood model $p(y\mid \theta)$. So it is coordinate-invariant, but not model-free.
 
 </div>
 
@@ -3834,13 +3956,20 @@ Given a likelihood function $L(y, x) := \pi_{Y\mid X}(y\mid x)$ with $y \in \mat
 
 $$\pi_X(x) \propto \sqrt{\det(I_X(x))},$$
 
-where $I_X(x) \in \mathbb{R}^{n \times n}$ is the **expected Fisher information** of $X$
+where $I_X(x) \in \mathbb{R}^{n \times n}$ is the **expected Fisher information** of $X$:
 
 $$I_X(x) := \int_{\mathbb{R}^m} \nabla_x \ell(y, x) \cdot \nabla_x \ell(y, x)^\top \, \pi_{Y|X}(y|x) \, \mathrm{d}y, \qquad \ell(y, x) := \log L(y, x).$$
 
 </div>
 
-Jeffreys prior satisfies the following form of "invariance": Suppose that $X$ is a $\mathbb{R}^n$ valued RV and $g : \mathbb{R}^n \to \mathbb{R}^n$ is a diffeomorphism with nonnegative Jacobian determinant $\det Dg : \mathbb{R}^n \to (0, \infty)$. Then $\tilde{X} := g(X)$ is a RV representing another parametrization of $X$. To obtain a prior for the reparametrization $\tilde{X}$, we could now proceed in two ways: (i) given the prior $\pi_X(x) \propto \sqrt{\det(I_X(x))}$, the density of $\tilde{X}$ is obtained after a change of variables as $\pi_X(g^{-1}(\tilde{x})) \det Dg^{-1}(\tilde{x})$ (ii) we may set $\pi_{\tilde{X}}(\tilde{x}) = \sqrt{\det(I_{\tilde{X}}(\tilde{x}))}$ obtained with the reparametrized likelihood $\pi_{Y\mid\tilde{X}}(y\mid\tilde{x}) = \pi_{Y\mid X}(y\mid g^{-1}(\tilde{x}))$. It can be shown that both constructions lead to the same prior.
+Jeffreys prior satisfies the following form of "invariance": Suppose that $X$ is a $\mathbb{R}^n$ valued RV and $g : \mathbb{R}^n \to \mathbb{R}^n$ is a diffeomorphism with nonnegative Jacobian determinant $\det Dg : \mathbb{R}^n \to (0, \infty)$. Then $\tilde{X} := g(X)$ is a RV representing another parametrization of $X$. To obtain a prior for the reparametrization $\tilde{X}$, we could now proceed in two ways:
+
+* **(i)** Given the prior $\pi_X(x) \propto \sqrt{\det(I_X(x))}$, the density of $\tilde{X}$ is obtained after a change of variables as $\pi_X(g^{-1}(\tilde{x})) \det Dg^{-1}(\tilde{x})$ 
+* **(ii)** We may set $\pi_{\tilde{X}}(\tilde{x}) = \sqrt{\det(I_{\tilde{X}}(\tilde{x}))}$ obtained with the reparametrized likelihood 
+  
+  $$\pi_{Y\mid\tilde{X}}(y\mid\tilde{x}) = \pi_{Y\mid X}(y\mid g^{-1}(\tilde{x}))$$
+
+It can be shown that both constructions lead to the same prior.
 
 <figure>
   <img src="{{ '/assets/images/notes/bip/bip_jeffreys_prior.png' | relative_url }}" alt="Left: the flat density of a uniform random variable on [0, 1] together with the density of its square, which blows up like one over two square root of x near zero. Right: the U-shaped Jeffreys prior Beta(1/2, 1/2) for the Bernoulli success probability compared with the flat uniform density." loading="lazy">

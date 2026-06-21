@@ -29,6 +29,9 @@ tags:
 
 ---
 
+* [Exercise Sheet 4](/subpages/books/numerical_methods_for_bip/problems/sheet04/)
+* [Exercise Sheet 5](/subpages/books/numerical_methods_for_bip/problems/sheet05/)
+
 ## Exercise Sheet 0 — Warm-up Quiz
 
 ### Exercise 0.1: Bertrand's Paradox
