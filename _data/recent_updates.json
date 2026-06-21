@@ -1,14 +1,14 @@
 {
  "entries": [
   {
-   "title": "Maths Topics",
-   "url": "/notes/maths_topics/",
-   "date": "2026-06-21",
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-06-22",
    "added": false
   },
   {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
+   "title": "Maths Topics",
+   "url": "/notes/maths_topics/",
    "date": "2026-06-21",
    "added": false
   },

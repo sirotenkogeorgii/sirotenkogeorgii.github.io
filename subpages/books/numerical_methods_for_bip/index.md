@@ -31,6 +31,10 @@ tags:
 - TOC
 {:toc}
 
+## Problems
+
+[Selected Problems](/subpages/books/numerical_methods_for_bip/problems/)
+
 ## Chapter 1: Introduction
 
 ### 1.1 A Motivating Example
