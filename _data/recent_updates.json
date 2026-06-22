@@ -7,6 +7,18 @@
    "added": false
   },
   {
+   "title": "Stuff I Found Interesting",
+   "url": "/notes/stuff_i_found_interesting/",
+   "date": "2026-06-22",
+   "added": false
+  },
+  {
+   "title": "What is an integral, really? From Newton to measures, and back",
+   "url": "/subpages/stuff_i_found_interesting/measure_theoretic_integration/measure_theoretic_integration_gentle/",
+   "date": "2026-06-22",
+   "added": true
+  },
+  {
    "title": "Maths Topics",
    "url": "/notes/maths_topics/",
    "date": "2026-06-21",
@@ -167,18 +179,6 @@
    "url": "/subpages/math_topics/hilber-schmidt_integral_operator/",
    "date": "2026-06-12",
    "added": true
-  },
-  {
-   "title": "Hilbert–Schmidt operators",
-   "url": "/subpages/math_topics/hilbert_schmidt_operator/",
-   "date": "2026-06-12",
-   "added": true
-  },
-  {
-   "title": "Linear Algebra III",
-   "url": "/subpages/books/linear_algebra/la3/",
-   "date": "2026-06-12",
-   "added": false
   }
  ]
 }
