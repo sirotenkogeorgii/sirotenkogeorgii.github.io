@@ -2821,7 +2821,7 @@ For one-sided derivatives this computation does not change. $\square$
 
 The formula bears the name of the German philosopher, mathematician and polymath *Gottfried W. Leibniz (1646–1716)*. Together with I. Newton, Leibniz is considered to be the discoverer of the differential and integral calculus.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 14</span><span class="math-callout__name">(Derivatives of Ratios)</span></p>
 
 Let $a \in M \subset \mathbb{R}$, where $a$ is a limit point of $M$, and $f, g\colon M \to \mathbb{R}$ be functions. If $g(a) \neq 0$ and $g$ is continuous at $a$ then
@@ -2907,6 +2907,11 @@ $$\exists\, c \in (a, b)\colon\; f'(c) = 0.$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l08_rolle_theorem.png' | relative_url }}" alt="Rolle's theorem plot with equal endpoint values and a horizontal tangent at an interior point" loading="lazy">
+  <figcaption>Rolle's theorem. If the endpoints have the same value, then a non-constant continuous differentiable curve must turn around somewhere inside the interval; at that interior point $c$, the tangent is horizontal and $f'(c)=0$.</figcaption>
+</figure>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof</summary>
@@ -2942,7 +2947,17 @@ for some $c \in (a, b)$ and we are done. $\square$
 </details>
 </div>
 
-Geometrically, this theorem says that under the given assumptions there is always a tangent to $G\_f$ at some point $(c, f(c))$, $c \in (a, b)$, which is parallel to the secant $\kappa(a, f(a), b, f(b))$.
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l08_lagrange_theorem.png' | relative_url }}" alt="Lagrange mean value theorem plot with endpoint secant and a parallel tangent at an interior point" loading="lazy">
+  <figcaption>Lagrange's theorem. The endpoint secant has slope $(f(b)-f(a))/(b-a)$, and the theorem guarantees an interior point $c$ whose tangent has exactly that slope.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric interpretation of Lagrange's Mean Value Theorem)</span></p>
+
+Under the given assumptions there is always a tangent to $G\_f$ at some point $(c, f(c))$, $c \in (a, b)$, which is parallel to the secant $\kappa(a, f(a), b, f(b))$.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3</span><span class="math-callout__name">(Cauchy's Mean Value Theorem)</span></p>
@@ -2969,6 +2984,11 @@ for some $c \in (a, b)$ and we are done. $\square$
 
 </details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l08_cauchy_mean_value_theorem.png' | relative_url }}" alt="Cauchy mean value theorem plot showing functions f and g and a parametric curve whose tangent is parallel to the endpoint secant" loading="lazy">
+  <figcaption>Cauchy's mean value theorem. View $x$ as a parameter and draw the curve $(g(x), f(x))$. The theorem says that some tangent to this parametric curve is parallel to the secant joining the endpoint values.</figcaption>
+</figure>
 
 ## Derivatives and Monotonicity of Functions
 
@@ -2999,21 +3019,26 @@ for some $z \in (x, y) \subset I^0$. This inequality and $y - x > 0$ imply that 
 
 The proof of the following proposition is similar to the proof of Theorem 4 in Lecture 7 and therefore we omit it.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5</span><span class="math-callout__name">(Derivative and Monotonicity 2)</span></p>
 
 Let $a \in M \subset \mathbb{R}$, $f\colon M \to \mathbb{R}$ be a function and the one-sided derivatives below may be infinite. The following hold.
 
-1. When $a$ is a left limit point of $M$ and $f'\_-(a) < 0$, resp. $f'\_-(a) > 0$, then there exists a $\delta$ such that $f[P^-(a, \delta) \cap M] > \lbrace f(a) \rbrace$, resp. $< \lbrace f(a) \rbrace$.
-2. When $a$ is a right limit point of $M$ and $f'\_+(a) < 0$, resp. $f'\_+(a) > 0$, then there exists a $\delta$ such that $f[P^+(a, \delta) \cap M] < \lbrace f(a) \rbrace$, resp. $> \lbrace f(a) \rbrace$.
+1. When $a$ is a left limit point of $M$ and $f'\_-(a) < 0$, resp. $f'\_-(a) > 0$, then there exists a $\delta$ such that
+
+   $$f[P^-(a, \delta) \cap M] > \lbrace f(a) \rbrace, \text{ resp. } < \lbrace f(a) \rbrace.$$
+
+2. When $a$ is a right limit point of $M$ and $f'\_+(a) < 0$, resp. $f'\_+(a) > 0$, then there exists a $\delta$ such that
+
+   $$f[P^+(a, \delta) \cap M] < \lbrace f(a) \rbrace, \text{ resp. } > \lbrace f(a) \rbrace.$$
 
 </div>
 
-Last time we calculated that $(\vert x\vert )'\_-(0) = -1$ and $(\vert x\vert )'\_+(0) = 1$. Thus, according to the previous proposition, the function $\vert x\vert $ has a strict local minimum in 0. Of course, this is clear even without any theory.
+Last time we calculated that $(\vert x\vert )'\_{-}(0) = -1$ and $(\vert x\vert )'\_{+}(0) = 1$. Thus, according to the previous proposition, the function $\vert x\vert $ has a strict local minimum in 0. Of course, this is clear even without any theory.
 
 ## Extending Derivatives by Limits
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 6</span><span class="math-callout__name">(Extending Derivatives)</span></p>
 
 Let $a, b \in \mathbb{R}$ with $a < b$, $f\colon [a, b) \to \mathbb{R}$ be a continuous function that has finite derivative on the interval $(a, b)$ and let $\lim\_{x \to a} f'(x) =: L \in \mathbb{R}^\ast$. Then
@@ -3117,7 +3142,7 @@ The function $f^{(n)}$ is called the **order $n$ derivative** of the function $f
 
 So the function $f^{(0)}$ is $f$ itself and $f^{(1)}$ is its derivative $f'$. If $f^{(n-1)}\colon M \to \mathbb{R}$ is defined and has derivative at a point $b \in M$, finite or infinite, we still write $f^{(n)}(b) := (f^{(n-1)}(x))'(b) \in \mathbb{R}^\ast$ and call it the $n$-th derivative of the function $f$ at the point $b$. The function $f^{(2)}$, the second derivative of $f$, is also denoted as $f''$. For example, for $M = \mathbb{R}$, $(x \sin x)'' = (\sin x + x \cos x)' = 2\cos x - x \sin x$. Second derivatives can be used to justify existence of extremes of functions.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 9</span><span class="math-callout__name">($f''$ and Extremes)</span></p>
 
 Suppose that $a \in M$, that $M \subset \mathbb{R}$ is an open set, and that $f\colon M \to \mathbb{R}$ is a function with finite $f'\colon M \to \mathbb{R}$, $f'(a) = 0$ and $f''(a) \in \mathbb{R}^\ast$, possibly infinite. Then the following hold.
@@ -3195,7 +3220,7 @@ To prove this theorem, we need the following geometric lemma (left as an exercis
 </details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 13</span><span class="math-callout__name">(On Slopes)</span></p>
 
 Let $(a, a')$, $(b, b')$ and $(c, c')$ be in $\mathbb{R}^2$ and $a < b < c$. Then
@@ -3391,7 +3416,7 @@ Thus, according to Lemma 2, $p(x) = T\_n^{f,b}(x)$. $\square$
 
 </details>
 </div>
-
+`
 We state concisely the strengthened approximation.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -3407,6 +3432,9 @@ The notation $o(\dots)$ means that $\lim\_{x \to b} e(x)/(x - b)^n = 0$.
 
 ## Taylor Polynomials of Elementary Functions
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Several Taylor polynomials centered at 0)</span></p>
+
 We present several Taylor polynomials centered at 0. We justify these formulas, calculate a few limits with them, and discuss when the extension of Taylor polynomials of $f$ to an infinite series converges to $f(x)$. In the following formulas $n \in \mathbb{N}\_0$ is arbitrary.
 
 1. $f(x) = \exp x$ has TP $T\_n^{f,0}(x) = \sum\_{j=0}^{n} x^j/j!$.
@@ -3420,6 +3448,8 @@ We present several Taylor polynomials centered at 0. We justify these formulas, 
 9. $f(x) = \arccos x$ has TP $T\_{2n+1}^{f,0}(x) = \pi/2 - \sum\_{j=0}^{n} \binom{j-1/2}{j} x^{2j+1}/(2j+1)$.
 
 The TP of $\arctan x$ is obtained from the TP of its derivative $\arctan'(x) = \frac{1}{1+x^2}$. We get this TP from (partial sums of) the geometric series $\frac{1}{1+x^2} = 1 - x^2 + x^4 - \dots$, $x \in (-1, 1)$.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4</span><span class="math-callout__name">(TP of $f$ from TP of $f'$)</span></p>
@@ -3518,7 +3548,7 @@ Some of these expansions hold in larger domains. Expansion 4 with $a \in \mathbb
 Coefficients in Taylor series can often be interpreted combinatorially. We give without proof one example of many.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 7</span><span class="math-callout__name">(Bell Numbers $B\_n$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 7</span><span class="math-callout__name">(Bell Numbers $B_n$)</span></p>
 
 For any $x \in (-1, 1)$ it is true that
 
@@ -3528,11 +3558,25 @@ where $B\_n$ is the number of partitions of an $n$-element set.
 
 </div>
 
-For example, $B\_3 = 5$ because of the five partitions $\lbrace\lbrace 1, 2, 3 \rbrace\rbrace$, $\lbrace\lbrace 1, 2 \rbrace, \lbrace 3 \rbrace\rbrace$, $\lbrace\lbrace 1, 3 \rbrace, \lbrace 2 \rbrace\rbrace$, $\lbrace\lbrace 1 \rbrace, \lbrace 2, 3 \rbrace\rbrace$ and $\lbrace\lbrace 1 \rbrace, \lbrace 2 \rbrace, \lbrace 3 \rbrace\rbrace$ of the set $\lbrace 1, 2, 3 \rbrace$.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
+
+$B\_3 = 5$ because of the five partitions
+
+$$\lbrace\lbrace 1, 2, 3 \rbrace\rbrace, \lbrace\lbrace 1, 2 \rbrace, \lbrace 3 \rbrace\rbrace, \lbrace\lbrace 1, 3 \rbrace, \lbrace 2 \rbrace\rbrace, \lbrace\lbrace 1 \rbrace, \lbrace 2, 3 \rbrace\rbrace$$
+
+and $\lbrace\lbrace 1 \rbrace, \lbrace 2 \rbrace, \lbrace 3 \rbrace\rbrace$ of the set $\lbrace 1, 2, 3 \rbrace$.
+
+</div>
 
 ## Primitive Functions
 
-An interval $I \subset \mathbb{R}$ is **non-trivial** if $I \neq \emptyset, \lbrace a \rbrace$ for every $a \in \mathbb{R}$. Non-trivial are exactly those non-empty intervals, each point of which is their limit point.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition </span><span class="math-callout__name">(Non-trivial interval)</span></p>
+
+An interval $I \subset \mathbb{R}$ is **non-trivial** if $I \neq \emptyset and I\neq \lbrace a \rbrace$ for every $a \in \mathbb{R}$. Non-trivial are exactly those non-empty intervals, each point of which is their limit point.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 8</span><span class="math-callout__name">(Primitive Functions)</span></p>
@@ -3582,7 +3626,7 @@ In the rest of the lecture we prove that every continuous function has an antide
 We prove a theorem describing situations when one can swap limit for $n \to \infty$ and differentiation, without changing the result.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 10</span><span class="math-callout__name">(Pointwise Convergence $f\_n \to f$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 10</span><span class="math-callout__name">(Pointwise Convergence $f_n \to f$)</span></p>
 
 $M \subset \mathbb{R}$ is a set and $f, f\_n\colon M \to \mathbb{R}$ for $n \in \mathbb{N}$ are functions. When
 
@@ -3590,12 +3634,28 @@ $$\forall\, \varepsilon\; \forall\, x \in M\; \exists\, n_0\colon\; n \ge n_0 \;
 
 we write $f\_n \to f$ (on $M$) and say that the functions $f\_n$ **converge on $M$ pointwisely** to $f$.
 
-</div>
-
 Thus for every $x \in M$, $\lim f\_n(x) = f(x)$.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise Convergence)</span></p>
+
+Let $M = \mathbb{R}$ and let $f\_n(x) := x/n$. Then $f\_n \to 0$ pointwise on $\mathbb{R}$, because for every fixed $x \in \mathbb{R}$,
+
+$$\lim_{n \to \infty} f_n(x) = \lim_{n \to \infty} \frac{x}{n} = 0.$$
+
+In the $\varepsilon$-definition, the index $n\_0$ may depend on the chosen point $x$: for $x \ne 0$ it is enough to take $n\_0 > \lvert x\rvert /\varepsilon$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l09_pointwise_x_over_n.png' | relative_url }}" alt="Plots of f_n(x)=x/n and fixed-point errors decreasing with n" loading="lazy">
+  <figcaption>Pointwise convergence of $f_n(x)=x/n$. The curves flatten on any bounded viewing window, and the right panel shows that after fixing a point $x$, the error $|x|/n$ eventually falls below any prescribed $\varepsilon$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 11</span><span class="math-callout__name">(Uniform Convergence $f\_n \rightrightarrows f$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 11</span><span class="math-callout__name">(Uniform Convergence $f_n \rightrightarrows f$)</span></p>
 
 $M \subset \mathbb{R}$ is a set and $f, f\_n\colon M \to \mathbb{R}$ for $n \in \mathbb{N}$ are functions. When
 
@@ -3605,7 +3665,58 @@ we write $f\_n \rightrightarrows f$ (on $M$) and say that the functions $f\_n$ *
 
 </div>
 
-Now one requires more: single $n\_0$ works for every $x \in M$. Clearly, $f\_n \rightrightarrows f$ implies that $f\_n \to f$, but the converse in general does not hold.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uniform Convergence)</span></p>
+
+Let $M = [0, 1]$ and let $f\_n(x) := x/n$. Then $f\_n \rightrightarrows 0$ on $[0,1]$, because
+
+$$|f_n(x) - 0| = \frac{x}{n} \le \frac{1}{n} \quad \text{for every } x \in [0,1].$$
+
+Given $\varepsilon > 0$, one can choose $n\_0 > 1/\varepsilon$, and this single $n\_0$ works for all $x \in [0,1]$ at once.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l09_uniform_x_over_n.png' | relative_url }}" alt="Plots of f_n(x)=x/n on [0,1] and the uniform sup norm bound 1/n" loading="lazy">
+  <figcaption>Uniform convergence on $[0,1]$. The whole graph of $x/n$ lies below the single bound $1/n$, so once $1/n<\varepsilon$, the same $n_0$ works for every $x$ in the interval.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Uniform is stronger than pointwise)</span></p>
+
+$$f\_n \rightrightarrows f \implies f\_n \to f,$$
+
+but the converse in general **does not hold**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise but not Uniform)</span></p>
+
+Let $M = [0,1]$ and let $f\_n(x) := x^n$. Then $f\_n$ converges pointwise to
+
+$$f(x) =
+\begin{cases}
+0, & 0 \le x < 1,\\
+1, & x = 1.
+\end{cases}$$
+
+Indeed, $x^n \to 0$ for every fixed $x \in [0,1)$, while $1^n = 1$ for all $n$. But this convergence is not uniform. For every $n$ choose
+
+$$x_n := \left(\frac{1}{2}\right)^{1/n} \in [0,1).$$
+
+Then $f(x\_n)=0$ but $f\_n(x\_n)=1/2$, so
+
+$$|f_n(x_n)-f(x_n)| = \frac{1}{2}.$$
+
+Thus no matter how large $n$ is, there remains a point near $1$ where the error is at least $1/2$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l09_pointwise_not_uniform_x_power_n.png' | relative_url }}" alt="Plots of x^n on [0,1] and moving points near 1 where the error remains one half" loading="lazy">
+  <figcaption>Pointwise but not uniform convergence of $x^n$. For every fixed $x<1$ the values go to $0$, but the right panel marks moving points $x_n=(1/2)^{1/n}$ where the error stays equal to $1/2$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 12</span><span class="math-callout__name">(Swapping Limits — Moore–Osgood)</span></p>
@@ -3636,7 +3747,7 @@ and $\lim\_{x \to A} f(x) = a = \lim a\_n$. $\square$
 Here is the theorem that swaps limits and derivatives.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Swapping $d/dx$ and $\lim\_{n \to \infty}$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Swapping $d/dx$ and $\lim_{n \to \infty}$)</span></p>
 
 For $n \in \mathbb{N}$ let $f\_n\colon I \to \mathbb{R}$ be functions defined on a nontrivial interval $I \subset \mathbb{R}$ and such that the following three conditions hold.
 
@@ -3686,11 +3797,11 @@ To prove it we need one more tool.
 
 Let $M \subset \mathbb{R}$. The function $f\colon M \to \mathbb{R}$ is **uniformly continuous** (on $M$) if
 
-$$\forall\, \varepsilon\; \exists\, \delta\colon\; a \in M \;\Rightarrow\; f[U(a, \delta) \cap M] \subset U(f(a), \varepsilon).$$
-
-</div>
+$$\forall\, \varepsilon\; \exists\, \delta\colon\; \forall a \in M \;\Rightarrow\; f[U(a, \delta) \cap M] \subset U(f(a), \varepsilon).$$
 
 So one $\delta$ works for all points $a \in M$.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 15</span><span class="math-callout__name">(Continuity and Compactness)</span></p>
@@ -3703,13 +3814,60 @@ Let $M \subset \mathbb{R}$ be a compact set. If a function $f\colon M \to \mathb
 <details markdown="1">
 <summary>Proof</summary>
 
-We suppose that $M \subset \mathbb{R}$ is compact and that $f\colon M \to \mathbb{R}$ is not uniformly continuous. So there is an $\varepsilon > 0$ such that for every $n$ there are two points $a\_n, b\_n \in M$ such that $\vert a\_n - b\_n\vert  < 1/n$ but $\vert f(a\_n) - f(b\_n)\vert  \ge \varepsilon$. We use compactness of $M$ and select from $(a\_n)$ and $(b\_n)$ convergent subsequences with limits in $M$. For simplicity of notation we assume that both $(a\_n)$ and $(b\_n)$ already converge and have limits $\lim a\_n =: a \in M$ and $\lim b\_n =: b \in M$. From $\vert a\_n - b\_n\vert  < 1/n$ it follows that $a = b$. But from $\vert f(a\_n) - f(b\_n)\vert  \ge \varepsilon$ and the convergence of $(a\_n)$ and $(b\_n)$ to $a$ it follows that for every $\delta$,
+$$\text{Suppose } f \text{ is not uniformly continuous.}$$
 
-$$f[U(a, \delta) \cap M] \not\subset U(f(a), \varepsilon/2).$$
+Then there exists $\varepsilon>0$ such that for every $\delta>0$, there are $a,b\in M$ with
 
-Thus the function $f$ is not continuous at $a$ and $f$ is not continuous on $M$. $\square$
+$$|a-b|<\delta \quad\text{but}\quad |f(a)-f(b)|\ge \varepsilon.$$
+
+Choose $\delta_n=1/n$. Then for each $n$, there exist $a_n,b_n\in M$ such that
+
+$$|a_n-b_n|<\frac1n, \qquad |f(a_n)-f(b_n)|\ge \varepsilon.$$
+
+Since $M\subset \mathbb R$ is compact, $(a_n)$ has a convergent subsequence $a_{n_k}\to c\in M$. Moreover,
+
+$$|b_{n_k}-c| \le |b_{n_k}-a_{n_k}|+|a_{n_k}-c| \to 0,$$
+
+so also $b_{n_k}\to c$. By continuity of $f$ at $c$,
+
+$$f(a_{n_k})\to f(c), \qquad f(b_{n_k})\to f(c).$$
+
+Hence
+
+$$|f(a_{n_k})-f(b_{n_k})|\to0,$$
+
+contradicting
+
+$$|f(a_{n_k})-f(b_{n_k})|\ge \varepsilon.$$
+
+Therefore $f$ is uniformly continuous on $M$.
+
+$\square$
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The proof uses sequential continuity)</span></p>
+
+Sequential continuity is generally weaker than ordinary topological continuity
+
+**Sequential continuity** means: a function preserves limits of convergent sequences.
+
+Let $f:M\to \mathbb R$, where $M\subset \mathbb R$. We say that $f$ is **sequentially continuous at $c\in M$** if
+
+$$x_n\in M,\qquad x_n\to c \implies f(x_n)\to f(c)$$
+
+So in words:
+
+> whenever points $x_n$ approach $c$, their images $f(x_n)$ approach $f(c)$.
+
+For functions $f:M\subset\mathbb R\to \mathbb R$, ordinary $\varepsilon$-$\delta$ continuity and sequential continuity are equivalent:
+
+$$f \text{ is continuous at } c \iff \forall (x_n)\subset M,\ x_n\to c \implies f(x_n)\to f(c).$$
+
+We call it **sequential continuity** only because we are applying continuity to sequences.
+
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3740,38 +3898,91 @@ In a simpler way we prove this theorem later again by the Riemann integral.
 
 ## What Are Antiderivatives Good For?
 
-For computing areas $A\_f$ of domains $D\_f$ under graphs $G\_f$ of functions $f\colon I \to \mathbb{R}$ defined on nontrivial intervals $I \subset \mathbb{R}$. Recall that $G\_f = \lbrace(x, f(x)) \mid x \in I \rbrace \subset \mathbb{R}^2$ and that $I(c, d) \subset \mathbb{R}$ denotes the closed interval with the endpoints $c, d \in \mathbb{R}$. We define the **domain under** $G\_f$ as the plane set
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Introduction</span><span class="math-callout__name">(Graph, Domain under graph, Signed area)</span></p>
 
-$$D_f := \lbrace(x, y) \mid x \in I \;\land\; y \in I(0, f(x)) \rbrace \subset \mathbb{R}^2$$
+1. For computing areas $A\_f$ of domains $D\_f$ under graphs $G\_f$ of functions $f\colon I \to \mathbb{R}$ defined on nontrivial intervals $I \subset \mathbb{R}$. Recall that
 
-(so $G\_f \subset D\_f$). But what exactly is the plane **area** $A\_f \in \mathbb{R}$ of $D\_f$? First, $A\_f$ will be a *signed area*, the parts of $D\_f$ below the $x$-axis will contribute to $A\_f$ negatively and those above the $x$-axis positively. Second, $A\_f$ has not yet been defined in our lectures and for us it does not yet exist as a rigorous mathematical object. We bring it in existence only by a precise definition.
+   $$G_f = \lbrace(x, f(x)) \mid x \in I \rbrace \subset \mathbb{R}^2$$
 
-We give two definitions of $A\_f$ in Definition 5 and a third one in Definition 6.
+   and that $I(c, d) \subset \mathbb{R}$ denotes the closed interval with the endpoints $c, d \in \mathbb{R}$.
+
+2. We define the **domain under** $G\_f$ as the plane set
+
+   $$D_f := \lbrace(x, y) \mid x \in I \;\land\; y \in I(0, f(x)) \rbrace \subset \mathbb{R}^2 \qquad G_f \subset D_f$$
+
+3. But what exactly is the plane **area** $A\_f \in \mathbb{R}$ of $D\_f$?
+   1. First, $A\_f$ will be a **signed area**, the parts of $D\_f$ below the $x$-axis will contribute to $A\_f$ negatively and those above the $x$-axis positively.
+   2. Second, $A\_f$ has not yet been defined in our lectures and for us it does not yet exist as a rigorous mathematical object. We bring it in existence only by a precise definition.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_graph_domain_signed_area_relation.png' | relative_url }}" alt="Graph G_f as a curve, domain D_f as a filled plane set under the graph, and signed area A_f as positive area minus negative area" loading="lazy">
+  <figcaption>The three objects are related but not identical. $G_f$ is the graph curve, $D_f$ is the planar set made of vertical intervals between $0$ and $f(x)$, and $A_f$ is the signed number obtained by subtracting the area below the axis from the area above it.</figcaption>
+</figure>
 
 ## Riemann Sums and Telescoping PF Sums for $A\_f$
 
 We consider two setups, with functions $f\colon I \to \mathbb{R}$ where $I$ is an interval. The first one, in this passage, is of continuous functions $f\colon [a, b] \to \mathbb{R}$, for real numbers $a < b$.
 
-We select a **partition** $P = (a\_0, a\_1, \dots, a\_k)$ of $[a, b]$, $k \in \mathbb{N}$ and $a = a\_0 < a\_1 < \cdots < a\_k = b$, and define the corresponding **Riemann sum** as
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partition, Test points, Riemann sum, Norm of partition)</span></p>
+
+We select a **partition** of $[a, b]$ of the size $k \in \mathbb{N}$
+
+$$P = (a_0, a_1, \dots, a_k)  \qquad a = a_0 < a_1 < \cdots < a_k = b,$$
+
+and define the corresponding **Riemann sum** as
 
 $$R(P, \bar{t}, f) := \sum_{i=1}^{k} (a_i - a_{i-1}) \cdot f(t_i),$$
 
-where $\bar{t} = (t\_1, \dots, t\_k)$ with $t\_i \in [a\_{i-1}, a\_i]$ are any $k$ **test points** of $P$. This definition applies to any function $f\colon [a, b] \to \mathbb{R}$, not only to continuous ones. Note that $R(P, \bar{t}, f)$ is the signed area of the **bar graph** $B\_f \subset \mathbb{R}^2$ consisting of $k$ bars (rectangles),
+where $\bar{t} = (t\_1, \dots, t\_k)$ with $t\_i \in [a\_{i-1}, a\_i]$ are any $k$ **test points** of $P$.
 
-$$B_f := \bigcup_{i=1}^{k} [a_{i-1}, a_i] \times I(0, f(t_i)).$$
-
-Bars under the $x$-axis (i.e., with $f(t\_i) < 0$) contribute negative areas. We define the **norm of $P$** as
+We also define the **norm of $P$** as
 
 $$\Delta(P) := \max(\lbrace a_i - a_{i-1} \mid i = 1, 2, \dots, k \rbrace).$$
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Riemann sums are general)</span></p>
+
+The definition of **Riemann sum** applies to any function $f\colon [a,b]\to\mathbb{R}$, not only to continuous$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Riemann sum is signed area of the bar graph)</span></p>
+
+Note that $R(P, \bar{t}, f)$ is the signed area of the **bar graph** $B\_f \subset \mathbb{R}^2$ consisting of $k$ bars (rectangles),
+
+$$B_f := \bigcup_{i=1}^{k} [a_{i-1}, a_i] \times I(0, f(t_i)).$$
+
+Bars under the $x$-axis (i.e., with $f(t\_i) < 0$) contribute negative areas.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_signed_area_riemann_bars.png' | relative_url }}" alt="Signed area under a graph and a Riemann bar approximation with positive and negative rectangles" loading="lazy">
+  <figcaption>Signed area and its bar-graph approximation. Positive bars add area; bars below the axis subtract it. Refining the partition means making the bar graph track the curved domain more closely.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Partition norm controls the Riemann sum ragardless of partition and test points)</span></p>
+
+The important subtlety is that $R(P,\bar t,f)$ depends on two choices: the partition $P$ and the test points $\bar t$. The norm $\Delta(P)$ measures only the largest interval width. **Proposition 1 says that for continuous $f$ this single number controls all the remaining choices**: once every interval is short enough, no possible choice of test points can move the sum very much.
+
 The next proposition shows that all partitions with small norm and arbitrary test points yield similar Riemann sums.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 1</span><span class="math-callout__name">(On Riemann Sums)</span></p>
 
 Let $a, b \in \mathbb{R}$ with $a < b$ and $f\colon [a, b] \to \mathbb{R}$ be a continuous function. Then
 
-$$\forall\, \varepsilon\; \exists\, \delta\colon\; \Delta(P), \Delta(Q) < \delta \;\Rightarrow\; |R(P, \bar{t}, f) - R(Q, \bar{u}, f)| < \varepsilon$$
+$$\forall\, \varepsilon\; \exists\, \delta\colon\; \Delta(P), \Delta(Q) < \delta \implies |R(P, \bar{t}, f) - R(Q, \bar{u}, f)| < \varepsilon$$
 
 for any partitions $P$ and $Q$ of $[a, b]$ with any test points $\bar{t}$ and $\bar{u}$, respectively.
 
@@ -3781,7 +3992,21 @@ for any partitions $P$ and $Q$ of $[a, b]$ with any test points $\bar{t}$ and $\
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $a$, $b$ and $f$ be as stated, and let an $\varepsilon$ be given. By Theorem 15 in Lecture 9 we know that $f$ is uniformly continuous and therefore there is a $\delta$ such that for any $c, d \in [a, b]$, $\vert c - d\vert  < \delta \Rightarrow \vert f(c) - f(d)\vert  < \varepsilon/2(b - a)$. Now suppose that $P = (a\_0, a\_1, \dots, a\_k)$ is a partition of $[a, b]$ with test points $\bar{t}$, that $Q = (b\_0, b\_1, \dots, b\_l)$ is a partition of $[a, b]$ with test points $\bar{u}$, and that both $\Delta(P), \Delta(Q) < \delta$. We assume additionally that $P \subset Q$, i.e., that $a\_0 = b\_{i\_0} = a$, $a\_1 = b\_{i\_1}$, ..., $a\_k = b\_{i\_k} = b$ for some indices $i\_0 = 0 < i\_1 < \cdots < i\_k = l$. Later we reduce general partitions $P$ and $Q$ to this case. We have that
+Let $a$, $b$ and $f$ be as stated, and let an $\varepsilon$ be given. By Theorem 15 in Lecture 9 we know that $f$ is uniformly continuous and therefore there is a $\delta$ such that for any $c, d \in [a, b]$,
+
+$$\vert c - d\vert  < \delta \Rightarrow \vert f(c) - f(d)\vert  < \varepsilon/2(b - a).$$
+
+Now suppose that $P = (a\_0, a\_1, \dots, a\_k)$ is a partition of $[a, b]$ with test points $\bar{t}$, that $Q = (b\_0, b\_1, \dots, b\_l)$ is a partition of $[a, b]$ with test points $\bar{u}$, and that both $\Delta(P), \Delta(Q) < \delta$. We assume additionally that $P \subset Q$, i.e., that
+
+$$a_0 = b_{i_0} = a,$$
+
+$$a_1 = b_{i_1},$$
+
+$$\dots$$
+
+$$a_k = b_{i_k} = b$$
+
+for some indices $i\_0 = 0 < i\_1 < \cdots < i\_k = l$. Later we reduce general partitions $P$ and $Q$ to this case. We have that
 
 $$|R(P, \bar{t}, f) - R(Q, \bar{u}, f)| = \left|\sum_{r=1}^{k} \sum_{j=i_{r-1}+1}^{i_r} (b_j - b_{j-1}) \cdot (f(t_r) - f(u_j))\right|$$
 
@@ -3794,7 +4019,12 @@ $$|R(P, \bar{t}, f) - R(Q, \bar{u}, f)| \le |R(P, \bar{t}, f) - R(R, \bar{v}, f)
 </details>
 </div>
 
-Since for small $\Delta(P)$ the bar graph $B\_f$ closely approximates the domain $D\_f$, one can expect that $R(P, \bar{t}, f) \to A\_f$ as $\Delta(P) \to 0$. We define this limit formally.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smaller partition norm, better domain $D_f$ approximation by bar graph $B_f$)</span></p>
+
+Since for small $\Delta(P)$ the bar graph $B\_f$ closely approximates the domain $D\_f$, one can expect that $R(P, \bar{t}, f) \to A\_f$ as $\Delta(P) \to 0$.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2</span><span class="math-callout__name">(Limits of Riemann Sums)</span></p>
@@ -3803,13 +4033,24 @@ Let $a, b, L \in \mathbb{R}$, $a < b$ and $f\colon [a, b] \to \mathbb{R}$ be a f
 
 $$\lim \Delta(P_n) = 0 \;\Rightarrow\; \lim R(P_n, \overline{t(n)}, f) = L,$$
 
-we write $\lim\_{\Delta(P) \to 0} R(P, \bar{t}, f) = L$ and say that the **Riemann sums of $f$ have the limit $L$**.
+we write
+
+$$\lim_{\Delta(P) \to 0} R(P, \bar{t}, f) = L$$
+
+and say that the **Riemann sums of $f$ have the limit $L$**.
 
 </div>
 
 These limits are unique by definition and below we easily deduce from Proposition 1 that for continuous functions they always exist.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_riemann_mesh_convergence.png' | relative_url }}" alt="Scatter plots showing Riemann sums converging as mesh size decreases and pairs of fine partitions having small disagreement" loading="lazy">
+  <figcaption>Numerical picture of Proposition 1 and Corollary 3. The left panel compares random Riemann sums to the limiting value; the right panel compares two independently chosen sums. Both disagreements shrink as the mesh norm shrinks.</figcaption>
+</figure>
+
+So the limit is not tied to a privileged sequence of regular partitions. It is a robust limit over all fine partitions and all admissible test points. This is why Definition 2 can speak about $\Delta(P) \to 0$ rather than about one special procedure such as left endpoints, right endpoints or midpoints.
+
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3</span><span class="math-callout__name">(Limits of Riemann Sums Exist)</span></p>
 
 For every continuous function $f\colon [a, b] \to \mathbb{R}$, $a, b \in \mathbb{R}$ with $a < b$, the (finite) limit
@@ -3833,15 +4074,40 @@ Therefore also $\lim R(Q\_n, \overline{u(n)}, f) = L$. $\square$
 </details>
 </div>
 
-However, in this lecture we are more interested in Newton's approach to the areas $A\_f$. We express the summands $(a\_i - a\_{i-1}) \cdot f(t\_i)$ in Riemann sums in terms of any PF $F$ of the continuous $f$ as follows; we know that $F$ exists by the last theorem in Lecture 9. Let $P = (a\_0, a\_1, \dots, a\_k)$ be any partition of $[a, b]$. We use Lagrange's mean value theorem for $F$ and every interval $[a\_{i-1}, a\_i]$:
+However, in this lecture we are more interested in Newton's approach to the areas $A\_f$.
 
-$$\frac{F(a_i) - F(a_{i-1})}{a_i - a_{i-1}} = F'(c_i) = f(c_i)$$
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Riemann sums of continuous $f$ meets is primite function $F$)</span></p>
 
-for some point $c\_i \in (a\_{i-1}, a\_i)$. Thus
+* PF $F$ exists by the last theorem in Lecture 9.
+* $P = (a\_0, a\_1, \dots, a\_k)$ is **any** partition of $[a, b]$.
+* By **Lagrange's mean value theorem** for $F$ and every interval $[a\_{i-1}, a\_i]$:
 
-$$F(b) - F(a) = \sum_{i=1}^{k}(F(a_i) - F(a_{i-1})) = \sum_{i=1}^{k}(a_i - a_{i-1}) \cdot f(c_i) = R(P, \bar{c}, f),$$
+  $$\frac{F(a_i) - F(a_{i-1})}{a_i - a_{i-1}} = F'(c_i) = f(c_i)$$
 
-with the test points $\bar{c} = (c\_1, \dots, c\_k)$ of $P$. In view of Proposition 1 we get the following equality.
+  for some point $c\_i \in (a\_{i-1}, a\_i)$.
+
+* Thus, for the test points $\bar{c} = (c\_1, \dots, c\_k)$ of $P$
+
+  $$F(b) - F(a) = \sum_{i=1}^{k}(F(a_i) - F(a_{i-1})) = \sum_{i=1}^{k}(a_i - a_{i-1}) \cdot f(c_i) = R(P, \bar{c}, f),$$
+
+  $$\boxed{F(b) - F(a) = R(P, \bar{c}, f)}$$
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_newton_telescoping.png' | relative_url }}" alt="A primitive curve whose endpoint increments telescope and matching mean-value rectangles under its derivative" loading="lazy">
+  <figcaption>Newton's mechanism. The top plot shows increments of a primitive $F$; intermediate values cancel in the telescoping sum, leaving $F(b)-F(a)$. The bottom plot shows the same increments as rectangles with heights $f(c_i)$ supplied by the mean value theorem.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mean value theorem turns each primitive increment into one rectangle area)</span></p>
+
+This figure is the whole bridge between Newton and Riemann. The **mean value theorem turns each primitive increment into one rectangle area**, and the telescoping identity turns the sum of those rectangle areas into an endpoint difference. 
+
+</div>
+
+Proposition 1 then removes the special test points $c_i$ and permits arbitrary fine test points.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 4</span><span class="math-callout__name">(Riemann = Newton)</span></p>
@@ -3865,8 +4131,6 @@ Thus we get the stated limit. $\square$
 </details>
 </div>
 
-Now we can give two definitions of the area $A\_f$ of the domain $D\_f$ under $G\_f$ for any continuous function $f\colon [a, b] \to \mathbb{R}$. By the previous corollary they give for $A\_f$ the same value.
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5</span><span class="math-callout__name">(Area Under Graph)</span></p>
 
@@ -3877,9 +4141,25 @@ Let $f\colon [a, b] \to \mathbb{R}$, for real numbers $a < b$, be a continuous f
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Newton and Riemann are incomparable)</span></p>
+
 At first look these two definitions appear very differently, but we know from Corollary 4 that $A\_f$ is the same in both. The former is considerably simpler than the latter, but the latter works in certain cases when the former does not work. Later we will see that the scopes of both definitions are in fact incomparable.
 
-For example, if $f(x) = x^2\colon [-1, 1] \to \mathbb{R}$ then $F(x) = x^3/3$ is a primitive of $f$ on $[-1, 1]$. By Newton's definition the area of the domain $D\_f = \lbrace(x, y) \mid -1 \le x \le 1 \;\land\; 0 \le y \le x^2 \rbrace$ equals $A\_f = F(1) - F(-1) = 1/3 - (-1)^3/3 = 2/3$.
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Area Under Graph)</span></p>
+
+Let $f(x) = x^2\colon [-1, 1] \to \mathbb{R}$ then $F(x) = x^3/3$ is a primitive of $f$ on $[-1, 1]$. By Newton's definition the area of the domain
+
+$$D_f = \lbrace(x, y) \mid -1 \le x \le 1 \;\land\; 0 \le y \le x^2 \rbrace$$
+
+equals
+
+$$A_f = F(1) - F(-1) = 1/3 - (-1)^3/3 = 2/3.$$
+
+</div>
 
 ## The Newton Integral
 
@@ -3939,11 +4219,18 @@ does not exist because the limit of the primitive $\log x$ at 0 is not finite.
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_newton_endpoint_behavior.png' | relative_url }}" alt="Comparison of finite Newton integral for square root and divergent Newton integral for one over x near zero" loading="lazy">
+  <figcaption>Endpoint limits are part of the definition. The primitive of $\sqrt{x}$ has a finite limit at $0$, so the Newton integral over $(0,1)$ is finite. The primitive $\log x$ tends to $-\infty$, so $\int_0^1 dx/x$ is not a finite Newton integral.</figcaption>
+</figure>
+
+A primitive on the open interval is therefore not enough. To integrate over the whole interval one must also check what the primitive does at the endpoints. This is the same obstruction that later appears in improper integrals: truncations may make sense for every $\varepsilon>0$, while the limit as $\varepsilon \to 0$ still diverges.
+
 ## Proof of the Second Case of L'Hospital's Rule
 
 As an application of the Newton integral we prove the remaining case of l'Hospital's rule for $\lim\_{x \to A} g(x) = \pm\infty$ (Condition 2 in Theorem 7 in Lecture 8). We prove first an asymptotics for Newton integrals.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 8</span><span class="math-callout__name">(Asymptotics of (N) $\int$)</span></p>
 
 We assume that $f, g \in \mathrm{N}(a, b)$, $g > 0$ on $(a, b)$, that $f(x) = o(g(x))$ $(x \to a)$ and that $\lim\_{x \to a} \text{(N)} \int\_x^b g = +\infty$. Then
@@ -3967,11 +4254,11 @@ $$\stackrel{\text{both } \Rightarrow \text{s and Prop. 7}}{<} \frac{\varepsilon}
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9</span><span class="math-callout__name">(L'Hospital's Rule, Condition 2)</span></p>
 
-Let $A \in \mathbb{R}$. Let for a $\delta$ functions $f, g\colon P^+(A, \delta) \to \mathbb{R}$ have on $P^+(A, \delta)$ finite derivatives, $g' \neq 0$ on $P^+(A, \delta)$, and let $\lim\_{x \to A} g(x) = \pm\infty$. Then
+Let $A \in \mathbb{R}$. Let for a $\delta$ functions $f, g\colon P^{+}(A, \delta) \to \mathbb{R}$ have on $P^{+}(A, \delta)$ finite derivatives, $g' \neq 0$ on $P^{+}(A, \delta)$, and let $\lim\_{x \to A} g(x) = \pm\infty$. Then
 
 $$\lim_{x \to A} \frac{f(x)}{g(x)} = \lim_{x \to A} \frac{f'(x)}{g'(x)}$$
 
-if the last limit exists. This theorem also holds for left neighborhoods $P^-(A, \delta)$, ordinary neighborhoods $P(A, \delta)$ and for $A = \pm\infty$.
+if the last limit exists. This theorem also holds for left neighborhoods $P^{-}(A, \delta)$, ordinary neighborhoods $P(A, \delta)$ and for $A = \pm\infty$.
 
 </div>
 
@@ -3992,6 +4279,13 @@ For the left deleted neighborhoods $P^-(A, \delta)$ and for two-sided neighborho
 </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_lhospital_infinite_denominator.png' | relative_url }}" alt="Example of L'Hospital's rule with logarithm over reciprocal near zero and matching derivative ratio" loading="lazy">
+  <figcaption>Example for the infinite-denominator case: $f(x)=\log x$, $g(x)=1/x$ as $x\to0^+$. The denominator diverges much faster, and both $f/g=x\log x$ and $f'/g'=-x$ tend to $0$.</figcaption>
+</figure>
+
+The proof above expresses differences such as $f(\theta)-f(x)$ and $g(\theta)-g(x)$ as Newton integrals of $f'$ and $g'$. Proposition 8 then says that if $f'$ is small relative to $g'$, the accumulated integral of $f'$ is small relative to the accumulated integral of $g'$. That is the integral version of the usual derivative-ratio heuristic.
+
 ## The Stirling Formula
 
 One can prove the Stirling asymptotic formula
@@ -4000,14 +4294,27 @@ $$1 \cdot 2 \cdot \ldots \cdot n = n! \sim \sqrt{2\pi n} \left(\frac{n}{\mathrm{
 
 by using only the Newton integral (but it is not too simple).
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_stirling_formula.png' | relative_url }}" alt="Ratio of factorial to Stirling approximation tending to one and relative error decaying" loading="lazy">
+  <figcaption>Stirling's formula as an asymptotic statement. The ratio $n!/\bigl(\sqrt{2\pi n}(n/e)^n\bigr)$ tends to $1$, while the relative error decays roughly like the first correction term $1/(12n)$.</figcaption>
+</figure>
+
+The reason integrals enter Stirling's formula is that $\log(n!)=\sum_{k=1}^n \log k$ is a sum of samples of the function $\log x$. Estimating such sums by areas under graphs is exactly the Riemann/Newton theme of this lecture.
+
 ## The Darboux Property
 
-A function $f\colon I \to \mathbb{R}$, defined on an interval $I \subset \mathbb{R}$, has the **Darboux property** (or is **Darboux**) if it attains every intermediate value: if $a < b$ are in $I$ and $c$ is such that $f(a) < c < f(b)$ or $f(a) > c > f(b)$ then $c = f(d)$ for some $d \in (a, b)$. We proved earlier (Theorem 8 in Lecture 6) that continuous functions are Darboux. Now we extend it to a larger class of functions.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Darboux property)</span></p>
+
+A function $f\colon I \to \mathbb{R}$, defined on an interval $I \subset \mathbb{R}$, has the **Darboux property** (or is **Darboux**) if it attains every intermediate value: if $a < b$ are in $I$ and $c$ is such that $f(a) < c < f(b)$ or $f(a) > c > f(b)$ then $c = f(d)$ for some $d \in (a, b)$. 
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 10</span><span class="math-callout__name">(Derivatives Are Darboux)</span></p>
 
-Any function $f\colon I \to \mathbb{R}$, defined on an interval $I \subset \mathbb{R}$, with a primitive function has the Darboux property.
+* We proved earlier (Theorem 8 in Lecture 6) that continuous functions are Darboux. Now we extend it to a larger class of functions.
+* Any function $f\colon I \to \mathbb{R}$, defined on an interval $I \subset \mathbb{R}$, with a primitive function has the Darboux property.
 
 </div>
 
@@ -4028,13 +4335,66 @@ it follows (by Proposition 5 in Lecture 8) that $d \in (a, b)$. By another earli
 </details>
 </div>
 
-Since every continuous function has a primitive function and since there exist non-continuous functions which have primitives, the previous class of functions with the Darboux property is strictly larger than the class of continuous functions. The theorem is usually used in reverse: if a function does not have the Darboux property then it has no primitive function. For example, the signum function $\operatorname{sgn}(x)$ is not Darboux on any nontrivial interval $I \ni 0$ and therefore it does not have primitive there.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(No Darboux property $\implies$ No primitive function)</span></p>
+
+* Since every continuous function has a primitive function and since there exist non-continuous functions which have primitives, the previous class of functions with the Darboux property is strictly larger than the class of continuous functions. The theorem is usually used in reverse: if a function does not have the Darboux property then it has no primitive function.
+* Darboux property $\implies$ PF exists? While it is true that every function that is a derivative (primitive function) possesses the Darboux property, the converse is false. A function can satisfy the Darboux property (intermediate value property) without being a derivative. 
+
+$$\boxed{\text{The class of Darboux functions is strictly larger than the class of derivative functions.}}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-Darboux function)</span></p>
+
+The signum function $\operatorname{sgn}(x)$ is not Darboux on any nontrivial interval $I \ni 0$ and therefore it does not have primitive there.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Function with the Darboux property that does not have a primitive)</span></p>
+
+The most common example of a function with the Darboux property that **does not** have a primitive is the function
+
+$$f(x) = \sin(1/x)\quad f(0) = 0$$
+
+1. **Has the Darboux Property:** Even though $f(x)$ is discontinuous at $x=0$, it oscillates infinitely between $-1$ and $1$, causing it to hit every intermediate value. It perfectly satisfies the Darboux property.
+2. **Has No Primitive:** Derivatives are not allowed to have "essential" discontinuities of the first kind (e.g., jump discontinuities). Because the jump at the origin cannot be the derivative of any function, $f(x)$ has no primitive.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_darboux_derivative_vs_signum.png' | relative_url }}" alt="Oscillatory derivative with Darboux property contrasted with the sign function jump" loading="lazy">
+  <figcaption>Derivatives may be discontinuous, but they cannot jump over intermediate values. The left plot is a derivative with violent oscillation near $0$; the right plot is $\operatorname{sgn}(x)$, whose jump misses all values between $-1$ and $1$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Darboux property is necessary for PM to exists, Continuity is sufficient)</span></p>
+
+**Continuity is sufficient** for being a derivative of some primitive, but it is not necessary. **The Darboux property is necessary**:
+
+$$\boxed{\text{every derivative must have the intermediate value property.}}$$
+
+Thus a jump discontinuity immediately rules out the existence of a primitive, while oscillatory discontinuity alone does not.
+
+</div>
+
+TODO: the minimal set of properties for the function to have a primitive function
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Discontinuity allows to postpone attaining intermediate values)</span></p>
+
+* **Continuity** forces you attain all intermediate values $c$, when you go from $f(a)$ to $f(b)$.
+* **Discontinuity** allows to postpone attaining intermediate values (or even not attain at all).
+
+</div>
 
 ## Linearity of Antiderivatives
 
 Recall that the notation $F = \int f$ for two functions $F, f\colon I \to \mathbb{R}$ means that $F$ is a primitive of $f$.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 11</span><span class="math-callout__name">(Linearity of $\int$)</span></p>
 
 Suppose that $f, g\colon I \to \mathbb{R}$ are functions defined on a nontrivial interval $I \subset \mathbb{R}$ and that $a, b \in \mathbb{R}$. Then
@@ -4056,6 +4416,8 @@ $$\int fG = FG - \int Fg,$$
 
 meaning that if $H$ is a primitive of $Fg$ then $FG - H$ is a primitive of $fG$.
 
+$$\boxed{\text{Integration by parts is the integral equivalent of the product rule for derivatives.}}$$
+
 </div>
 
 <div class="accordion" markdown="1">
@@ -4069,13 +4431,71 @@ $$(FG - H)' = F'G + FG' - H' = fG + Fg - Fg = fG. \quad \square$$
 </details>
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integration by Parts)</span></p>
+
+</div>
+
 One can write the integration by parts formula also as $\int F'G = FG - \int FG'$. Note how the prime moves from $F$ to $G$. For example,
 
 $$\int \log x = \int x' \log x = x \log x - \int x(\log x)' = x \log x - \int \frac{x}{x} = x \log x - x.$$
 
-Or $\int x \sin x = \int x(-\cos x)' = -x\cos x + \int x' \cos x = -x\cos x + \sin x.$
+Or 
+
+$$\int x \sin x = \int x(-\cos x)' = -x\cos x + \int x' \cos x = -x\cos x + \sin x.$$
 
 It is usually easy to check the result by taking the derivative.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_integration_by_parts.png' | relative_url }}" alt="Integration by parts for x sin x on zero to pi with area and primitive plots" loading="lazy">
+  <figcaption>Integration by parts in the example $\int x\sin x$. We choose the factor whose derivative becomes simpler ($x\mapsto1$) and integrate the other factor ($\sin x=(-\cos x)'$). The primitive $-x\cos x+\sin x$ differentiates back to $x\sin x$.</figcaption>
+</figure>
+
+## Boundary conditions
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Boundary term is the price for swaping difficult integral)</span></p>
+
+The price of the integration by parts is a boundary/product term, you don't get this simplification for free. This is why the formula is most useful when differentiating one factor simplifies it and integrating the other factor is still manageable.
+
+In advanced physics and vector calculus (such as using the Divergence Theorem or Stokes' Theorem), this concept scales up. A multi-dimensional volume integral is transformed into a boundary surface integral.Physicists refer to this as a "boundary" or "surface" term because it entirely dictates the flux or behavior of a system at the physical edges of a domain (e.g., assuming a wave function goes to zero at $\pm \infty$). If the boundary term vanishes, the "net" change across the boundary is zero, which simplifies calculations, but at the specific edges, that boundary term still physically represents the exchanged energy or particles.
+
+Different boundary conditions exist specifically to resolve, evaluate, or eliminate this boundary term so that the differential equation can be solved. Without these boundary conditions, the boundary term remains an unknown variable, meaning you have more unknowns than equations.
+
+</div>
+
+### Why the Boundary Term Demands a Condition
+
+When you scale up integration by parts to higher dimensions (using the Divergence Theorem or Green's Identities), you get a volume integral balanced by a surface/boundary integral:
+
+$$\int_{\Omega} (\nabla^2 u) v \, d\Omega = \underbrace{\int_{\partial \Omega} v \left( \frac{\partial u}{\partial n} \right) d\Gamma}_{\text{The Boundary Term}} - \int_{\Omega} \nabla u \cdot \nabla v \, d\Omega$$ 
+
+* $\partial \Omega$ is the boundary (the edge) of the domain.
+* $\frac{\partial u}{\partial n}$ is the normal derivative (the flux or flow across that edge).
+* $v$ is a test function (representing arbitrary variations).
+
+To solve this equation, you must know what happens at the boundary. Dirichlet and Neumann conditions are simply two different ways of handling this exact term.
+
+### How They Handle the Term
+
+#### 1. Dirichlet Conditions (Fixed Values)
+
+* **The Rule:** You specify the exact value of the solution at the boundary ($u = f$).
+* **Handling the Term:** Because the value of $u$ is strictly fixed at the edge, it cannot vary. Therefore, the test function $v$ (which represents variations) must equal zero ($v = 0$) along the boundary.
+* **The Result:** The entire boundary term vanishes to zero ($0 \times \frac{\partial u}{\partial n} = 0$). You eliminate the price term completely.
+* **Physical Example:** A guitar string tied down tightly at both ends, or a metal plate with edges kept sitting in ice water.
+
+#### 2. Neumann Conditions (Fixed Flux)
+
+* **The Rule:** You specify the derivative or flow at the boundary ($\frac{\partial u}{\partial n} = g$).
+* **Handling the Term:** Instead of eliminating the term, you substitute a known value into it. You replace the unknown $\frac{\partial u}{\partial n}$ with your known function $g$.
+* **The Result:** The boundary term becomes a known, calculable value ($\int_{\partial \Omega} v g \, d\Gamma$). You "pay" the price using a known quantity.
+* **Physical Example:** An insulated thermos where no heat can escape ($\frac{\partial u}{\partial n} = 0$, called a homogeneous Neumann condition), or a heating element pumping a constant amount of energy through a wall.
+
+### The Engineering Connection: The Weak Form
+
+* In engineering software (like Finite Element Analysis used to simulate car crashes, bridge stresses, or aerodynamics), this exact process is called deriving the Weak Form of a differential equation. 
+* Engineers use integration by parts specifically to generate this boundary term. They do this because it provides a dedicated mathematical slot where they can inject real-world boundary physics (like forces, insulation, or fixed anchors) directly into the math.
 
 ## Integration by Substitution
 
@@ -4087,7 +4507,9 @@ This is another useful technique for computing primitives. The formula has two f
 If $I, J \subset \mathbb{R}$ are nontrivial intervals, $g\colon I \to J$, $f\colon J \to \mathbb{R}$ and $g$ has on $I$ finite $g'$, then the following hold.
 
 1. If $F = \int f$ on $J$ then $F(g) = \int f(g) \cdot g'$ on $I$.
-2. If $g$ is onto and $g' \neq 0$ on $I$ then one has the implication $G = \int f(g) \cdot g'$ on $I \;\Rightarrow\; G(g^{-1}) = \int f$ on $J$.
+2. If $g$ is onto and $g' \neq 0$ on $I$ then one has the implication 
+   
+   $$G = \int f(g) \cdot g'$ \text{ on } I \implies G(g^{-1}) = \int f \text{ on } J.$$
 
 </div>
 
@@ -4113,14 +4535,43 @@ $$\frac{F(ax + b)}{a} = \int f(ax + b) \quad \text{on } J := (I - b)/a.$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l10_substitution_semicircle.png' | relative_url }}" alt="Substitution t equals sin x transforming semicircle integrand into cosine squared" loading="lazy">
+  <figcaption>Substitution for the semicircle example. The change of variables $t=\sin x$ transforms $\sqrt{1-t^2}$ into $\cos x$, and the horizontal stretching contributes the extra factor $dt=\cos x\,dx$, giving $\cos^2 x$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Substitution: $\int\sqrt{1-t^2}$)</span></p>
 
-What is $\int f := \int \sqrt{1 - t^2}$ on $J = (-1, 1)$? We plug in for $t$ the function $g(x) := \sin x\colon I := (-\pi/2, \pi/2) \to J$. We get by integration by parts that
+What is 
 
-$$\int f(g) \cdot g' = \int \cos^2 x = \int (\sin x)' \cos x = \sin x \cdot \cos x - \int \sin x (\cos x)' = \sin x \cdot \cos x + \int (1 - \cos^2 x) = \sin x \cdot \cos x + x - \int \cos^2 x$$
+$$\int f := \int \sqrt{1 - t^2}$$
 
-and therefore $\int f(g) \cdot g' = \int \cos^2 x = \frac{\sin x \cdot \cos x + x}{2} =: G(x)$. Thus by the second formula and since $\cos x = \sqrt{1 - \sin^2 x}$ on $I$,
+on $J = (-1, 1)$? We plug in for $t$ the function 
+
+$$g(x) := \sin x\colon I := (-\pi/2, \pi/2) \to J.$$
+
+We get by integration by parts that
+
+$$
+\begin{aligned}
+\int f(g) \cdot g' &= \int \cos^2 x \\
+&= \int (\sin x)' \cos x \\
+&= \sin x \cdot \cos x - \int \sin x (\cos x)' \\
+&= \sin x \cdot \cos x + \int (1 - \cos^2 x) \\
+&= \sin x \cdot \cos x + x - \int \cos^2 x
+\end{aligned}
+$$
+
+and therefore 
+
+$$\int f(g) \cdot g' = \int \cos^2 x = \frac{\sin x \cdot \cos x + x}{2} =: G(x).$$
+
+Thus by the second formula and since 
+
+$$\cos x = \sqrt{1 - \sin^2 x} \text{ on } I,$$
+
+we obtain
 
 $$\int f = \int \sqrt{1 - t^2} = G(g^{-1}) = \frac{t\sqrt{1 - t^2} + \arcsin t}{2}.$$
 
@@ -4161,7 +4612,7 @@ $$\text{(N)} \int_B^A f = -\text{(N)} \int_A^B f$$
 
 if $f \in \mathrm{N}(A, B)$.
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2</span><span class="math-callout__name">(Additivity of Integral)</span></p>
 
 If $A, B, C \in \mathbb{R}^\ast$ and $f \in \mathrm{N}(\min(A, B, C), \max(A, B, C))$ then
@@ -4172,7 +4623,7 @@ that is, $\text{(N)} \int\_A^B f + \text{(N)} \int\_B^C f + \text{(N)} \int\_C^A
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3</span><span class="math-callout__name">(Linearity of Integral)</span></p>
 
 If $A$ and $B$ are in $\mathbb{R}^\ast$, $a, b \in \mathbb{R}$ and $f, g \in \mathrm{N}(A, B)$ then
@@ -4184,7 +4635,7 @@ $$\text{(N)} \int_A^B (af + bg) = a \cdot \text{(N)} \int_A^B f + b \cdot \text{
 ## Integration by Parts for the General Newton Integral
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 4</span><span class="math-callout__name">($\text{(N)} \int\_A^B$ by Parts)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 4</span><span class="math-callout__name">($\text{(N)} \int_A^B$ by Parts)</span></p>
 
 Consider four functions $f, g, F, G\colon (A, B) \to \mathbb{R}$, where $A < B$ are in $\mathbb{R}^\ast$, such that $F$, resp. $G$, is a primitive of $f$, resp. $g$. Then the equality
 
@@ -4216,7 +4667,7 @@ Therefore $I\_n = n! = \prod\_{j=1}^n j$ for every $n \in \mathbb{N}\_0$. This r
 ## Integration by Substitution for the General Newton Integral
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 5</span><span class="math-callout__name">($\text{(N)} \int\_A^B f$ by Substitution)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 5</span><span class="math-callout__name">($\text{(N)} \int_A^B f$ by Substitution)</span></p>
 
 If $A < B$ and $C < D$ are in $\mathbb{R}^\ast$, $g\colon (A, B) \to (C, D)$, $f\colon (C, D) \to \mathbb{R}$ and $g$ has on $(A, B)$ finite $g'$, then the following two claims are true.
 
