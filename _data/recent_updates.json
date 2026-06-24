@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-06-24",
+   "added": false
+  },
+  {
    "title": "Mathematical Analysis (Klazar) — Semester 1",
    "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
    "date": "2026-06-24",
@@ -171,12 +177,6 @@
   {
    "title": "The Laplace Operator, or: How a Point Talks to Its Neighbors",
    "url": "/subpages/math_topics/laplacian/laplacian_gentle/",
-   "date": "2026-06-13",
-   "added": true
-  },
-  {
-   "title": "The Laplacian, or the Geometry of Averaging",
-   "url": "/subpages/math_topics/laplacian/laplacian_rigurous/",
    "date": "2026-06-13",
    "added": true
   }
