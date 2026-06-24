@@ -3070,6 +3070,33 @@ Deferred to Sheet 3, Exercise 2.
 </details>
 </div>
 
+TODO: finish it
+
+$$F(bin(n)) := -\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
+
+By the definition of the content measure:
+
+> An **information content measure** is a partial function $F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ that satisfies
+>
+> $$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+
+Then for a single $bin(n) \in \operatorname{dom}(F)$ we get:
+
+$$2^{-F(bin(n))} = 2^{\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}} = \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
+
+$$\sum_{bin(n)\in\operatorname{dom}(F)}\ \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)} \leq \sum_{\sigma\in\lbrace 0,1\rbrace^\ast} 2^{-K(\sigma)} \leq 1$$
+
+
+---
+
+Since $K$ is the minimal among infomration content measures, and $F$ is an in information content measure, there is a constant $c$ such that
+
+$$K(bin(n)) \leq F(bin(n)) + c$$
+
+---
+
+
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(3.7.1 — Almost every word is incompressible)</span></p>
 
@@ -3621,8 +3648,49 @@ The three notions of approximability introduced here nest, each layer being pinn
 
 In particular, the halting probability of a *universal* prefix-free machine — Chaitin's $\Omega$ — is left-c.e. but, as we will see, also $1$-random. It is precisely the promised "natural" example of a random sequence: the binary expansion of the limit of the slowest nondecreasing computable Cauchy sequence.
 
+We single this real out, together with its canonical approximation.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.10 — Chaitin's $\Omega$)</span></p>
+
+The halting probability of a *universal* prefix-free Turing machine $\widetilde U$,
+
+$$\Omega := \sum_{\sigma \in \operatorname{dom}(\widetilde U)} 2^{-l(\sigma)},$$
+
+is called **Chaitin's $\Omega$**. Running $\widetilde U$ for $s$ steps and collecting the codewords that have already halted gives the nondecreasing computable approximation $w\_0, w\_1, \dots$ of $\Omega$,
+
+$$w_s := \sum_{\substack{\sigma \,\in\, \operatorname{dom}(\widetilde U[s]) \\ l(\sigma) \le s}} 2^{-l(\sigma)}.$$
+
+Since $(w\_s)$ is a *monotone nondecreasing computable* approximation, the existence of $(w\_s)$ already shows that $\Omega$ is a **left-c.e. real**. It is, however, *noncomputable* — this is the content of the next proposition.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(5.11 — $\Omega$ and the halting problem)</span></p>
+
+The halting problem is Turing equivalent to $\Omega$:
+
+$$\emptyset' \equiv_T \Omega.$$
+
+In particular $\Omega$ is noncomputable, so it is a left-c.e. real that is not computable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+This is Sheet 5, Exercise 1, both directions of which are spelled out in the exercises on Chaitin's $\Omega$ below.
+
+For $\Omega \le\_T \emptyset'$: the approximation $(w\_s)$ is computable, and $\emptyset'$ can decide, for each $n$, the (c.e.) question of whether the first $n$ bits of $w\_s$ have stabilized, so $\emptyset'$ computes $\Omega \upharpoonright n$ for every $n$.
+
+For $\emptyset' \le\_T \Omega$: this is the dovetailing argument recorded in the remark below — knowing $\Omega \upharpoonright N$ lets one run all programs until enough halting weight accumulates to match these $N$ bits, after which no further program of length $\le N$ can halt, deciding the halting problem for all such programs.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the halting problem TODO: put it to a proper place)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the halting problem)</span></p>
 
 Knowing the first $N$ bits of $\Omega$, one could calculate the **halting problem** for all programs of a size up to $N$. Let the program $p$ for which the halting problem is to be solved be $N$ bits long. In **dovetailing** fashion, all programs of all lengths are run, until enough have halted to jointly contribute enough probability to match these first $N$ bits. If the program $p$ has not halted yet, then it never will, since its contribution to the halting probability would affect the first $N$ bits. Thus, the halting problem would be solved for $p$.
 
@@ -3740,6 +3808,610 @@ Let $\alpha$ and $\beta$ be left-c.e. reals. Show that the following four condit
 <summary>Proof</summary>
 
 
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.)</span></p>
+
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (i)</summary>
+
+Let $\alpha$ be computable. From $n$ one can compute $\alpha\upharpoonright n$, so
+
+$$K(\alpha\upharpoonright n)\le K(\operatorname{bin}(n))+O(1).$$
+
+Conversely, from $\alpha\upharpoonright n$ one can compute its length $n$, hence $\operatorname{bin}(n)$. Therefore
+
+$$K(\operatorname{bin}(n))\le K(\alpha\upharpoonright n)+O(1).$$
+
+Thus
+
+$$K(\alpha\upharpoonright n)=K(\operatorname{bin}(n))\pm O(1).$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (ii)</summary>
+
+If $\sigma\in T_c$ and $\rho\sqsubseteq\sigma$, then every $\tau\sqsubseteq\rho$ is also a prefix of $\sigma$, so $\rho\in T_c$. Hence $T_c$ is a binary tree.
+
+Moreover $K$ is computable in $\emptyset'$: with the halting oracle, one can decide which programs halt and search for the shortest one producing a given word. Therefore the finite condition
+
+$$\forall \tau\sqsubseteq\sigma, K(\tau)\le K(\operatorname{bin}(l(\tau)))+c$$
+
+is decidable in $\emptyset'$. Thus $T_c$ is $\emptyset'$-computable.
+
+</details>
+</div>
+
+
+
+**Exercise 3.3.**
+Using the corrected level version, let (l(\sigma)=n) and (\sigma\in T_c). Then
+
+[
+K(\sigma)\le K(\operatorname{bin}(n))+c.
+]
+
+Chaitin’s counting theorem says that for some constant (d),
+
+[
+#{\sigma\in{0,1}^n:
+K(\sigma)\le n+K(\operatorname{bin}(n))-r}
+\le 2^{n-r+d}.
+]
+
+Put (r=n-c). Then
+
+[
+#{\sigma:l(\sigma)=n,\ \sigma\in T_c}
+\le 2^{c+d}
+]
+
+for all sufficiently large (n). Enlarging the constant to cover the finitely many small (n), we get a uniform bound (N).
+
+**Exercise 3.4.**
+If (A) satisfies
+
+[
+K(A\upharpoonright n)\le K(\operatorname{bin}(n))+c
+]
+
+for all (n), then every prefix (A\upharpoonright n) lies in (T_c), so (A) is a path in (T_c).
+
+By Exercise 3.3, each level of (T_c) has at most (N) nodes. Hence (T_c) has at most (N) infinite paths: if there were (N+1) distinct paths, then at some sufficiently large level their prefixes would be (N+1) distinct nodes. Therefore there are only finitely many paths. A path among finitely many paths is isolated: take a level after which it has separated from all the other paths.
+
+So (A) is an isolated path in (T_c).
+
+**Exercise 3.5.**
+Let (A) be an isolated path in a computable tree (T). Let (\rho\sqsubset A) be an isolating prefix. We may hard-code (\rho).
+
+To compute (A\upharpoonright n), search for a level (m\ge n) such that all nodes (\tau\in T) of length (m) extending (\rho) have the same prefix of length (n). Such an (m) must exist; otherwise, by König’s lemma, there would be another infinite path extending (\rho), contradicting isolation. Since (T) is computable, the finite search at each level is effective. Output the common length-(n) prefix. Thus (A) is computable.
+
+**Exercise 3.6.**
+Let (\alpha=0.A) be K-trivial. Then for some (c),
+
+[
+K(A\upharpoonright n)\le K(\operatorname{bin}(n))+c
+]
+
+for all (n). By Exercise 3.4, (A) is an isolated path in (T_c). By Exercise 3.2, (T_c) is (\emptyset')-computable. Relativizing Exercise 3.5, every isolated path in an (\emptyset')-computable tree is (\emptyset')-computable. Hence
+
+[
+A\le_T\emptyset',
+]
+
+so (A\in\Delta^0_2). By the course theorem that c.a. reals are exactly the reals with (\Delta^0_2) binary expansion, (\alpha) is computably approximable.
+
+**Exercise 4.**
+This is the Solovay domination property of (\Omega).
+
+Let (\alpha) be the halting probability of (\widetilde M), and let (\widetilde U) be universal. By universality, there is a fixed code (i_{\widetilde M}) such that
+
+[
+\widetilde U(i_{\widetilde M},\sigma)=\widetilde M(\sigma).
+]
+
+Let (d=l(i_{\widetilde M})). The part of (\Omega) coming from this simulation is
+
+[
+\sum_{\sigma\in\operatorname{dom}(\widetilde M)}
+2^{-d-l(\sigma)}
+================
+
+2^{-d}\alpha.
+]
+
+Write the remaining contribution to (\Omega) as (\beta). Since it is also left-c.e., choose a left-c.e. approximation (b_n\nearrow\beta). Define
+
+[
+w_n:=2^{-d}a_n+b_n.
+]
+
+Then ((w_n)) is a nondecreasing computable approximation of
+
+[
+2^{-d}\alpha+\beta=\Omega.
+]
+
+Moreover,
+
+[
+w_{n+1}-w_n
+===========
+
+2^{-d}(a_{n+1}-a_n)+(b_{n+1}-b_n)
+\ge
+2^{-d}(a_{n+1}-a_n).
+]
+
+Therefore
+
+[
+a_{n+1}-a_n
+\le
+2^d(w_{n+1}-w_n).
+]
+
+So the required constant is (c=2^d).
+
+### Basics of Computability Theory and Prefix-Free Machines
+
+The randomness proof for $\Omega$ rests on a small toolkit of classical computability results — the $s$-$m$-$n$ theorem, the fixed-point theorem, and two forms of Kleene's recursion theorem. We collect them here, the last one in the prefix-free form that the proof actually uses.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.12 — $s$-$m$-$n$ theorem)</span></p>
+
+Let $g(\cdot,\cdot)$ be a partially computable two-argument function on words. Then there exists a *totally* computable function $s(\cdot)$ such that
+
+$$M_{s(x)}(y) = g(x,y) \qquad \text{for all } x, y.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $M$ be a Turing machine computing $g$, and fix a word $x$. Build a machine $N$ that, on input $y$, first writes the pair $(x, y)$ onto the input tape of $M$ and then simulates $M$ on it. An index for $N$ can be computed from $x$; call it $s(x)$. Then $s$ is total computable and $M\_{s(x)}(y) = M(x,y) = g(x,y)$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.13 — Fixed-point theorem)</span></p>
+
+Let $f$ be a totally computable function. Then there exists an index $e$ such that
+
+$$M_e(x) = M_{f(e)}(x) \qquad \text{for all } x.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By the $s$-$m$-$n$ theorem, fix a total computable function $d$ such that
+
+$$M_{d(e)}(k) := M_{M_e(e)}(k) \quad \text{whenever } M_e(e)\downarrow$$
+
+(and $M\_{d(e)}(k)\uparrow$ in case $M\_e(e)\uparrow$). Choose $i$ with $M\_i = f \circ d$ and put $n = d(i)$. Since $M\_i$ is total, $M\_i(i) = (f\circ d)(i) = f(n)$, so
+
+$$M_n = M_{d(i)} = M_{M_i(i)} = M_{f(n)}.$$
+
+Thus $n$ is a fixed point of $f$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.14 — Kleene's second recursion theorem)</span></p>
+
+Let $g(\cdot,\cdot)$ be a partially computable two-argument function of words. Then there exists an index $e$ such that
+
+$$M_e(y) = g(e,y) \qquad \text{for all } y.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By the $s$-$m$-$n$ theorem, fix a total computable function $s(\cdot)$ with $g(x,y) = M\_{s(x)}(y)$ for all $x, y$. Applying the fixed-point theorem to $s$ yields an index $e$ with $M\_e(y) = M\_{s(e)}(y) = g(e,y)$ for every $y$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(5.15 — Recursion theorem for prefix-free machines)</span></p>
+
+Let
+
+$$h : \subseteq \lbrace 0,1\rbrace^\ast \times \mathbb{N} \to \lbrace 0,1\rbrace^\ast$$
+
+be a partial computable function such that, for each $e$, the section $h(\cdot, e)$ is prefix-free. Then there exists an index $e$ such that
+
+$$\widetilde M_e = h(\cdot, e).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Apply the recursion theorem (Theorem 5.14) to $h$, read as $g(e, y) := h(y, e)$: there is an index $e$ with $M\_e(\cdot) = h(\cdot, e)$. Since $h(\cdot, e)$ is prefix-free by hypothesis, the machine $M\_e$ is prefix-free; so, by the construction in the proof of Theorem 2.20, its prefix-free counterpart $\widetilde M\_e$ coincides with $M\_e$. Hence $\widetilde M\_e = h(\cdot, e)$.
+
+</details>
+</div>
+
+## Randomness of Reals
+
+In algorithmic randomness a real in $[0,1]$ is studied through its binary expansion. For a non-dyadic real this expansion is unique. For a dyadic rational there are two binary names, such as
+
+$$0.1000\dots = 0.0111\dots,$$
+
+and we use the terminating expansion by convention. This convention does not affect randomness: dyadic rationals have computable binary expansions, hence are never Martin-Löf random.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(6.1 — Martin-Löf random real)</span></p>
+
+A real $\alpha \in [0,1]$ is **Martin-Löf random** if its chosen binary expansion $A$ is a Martin-Löf random sequence. Equivalently, by the Levin-Schnorr characterization,
+
+$$\exists c\ \forall n\qquad K(\alpha \upharpoonright n) \ge n - c,$$
+
+where $\alpha \upharpoonright n$ denotes the first $n$ bits of the binary expansion of $\alpha$.
+
+</div>
+
+The geometric picture is the same as for Cantor space: a finite prefix $\sigma$ names the dyadic interval of all reals whose binary expansion begins with $\sigma$. Randomness of a real says that no effective sequence of very small open covers can keep trapping the point.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="Binary prefixes of a real as nested dyadic intervals">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="330" y="25" text-anchor="middle" font-weight="600">A binary expansion is a nested address on [0, 1]</text>
+
+      <!-- Number line -->
+      <line x1="60" y1="255" x2="600" y2="255" stroke="#444" stroke-width="1.2" />
+      <g stroke="#444" stroke-width="1">
+        <line x1="60" y1="249" x2="60" y2="263" />
+        <line x1="195" y1="249" x2="195" y2="263" />
+        <line x1="330" y1="249" x2="330" y2="263" />
+        <line x1="465" y1="249" x2="465" y2="263" />
+        <line x1="600" y1="249" x2="600" y2="263" />
+      </g>
+      <g font-size="11" fill="#444" text-anchor="middle">
+        <text x="60" y="280">0</text>
+        <text x="195" y="280">1/4</text>
+        <text x="330" y="280">1/2</text>
+        <text x="465" y="280">3/4</text>
+        <text x="600" y="280">1</text>
+      </g>
+
+      <!-- Nested prefix intervals for A starts 101 -->
+      <rect x="330" y="70" width="270" height="28" fill="rgba(29,78,216,0.08)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="465" y="89" text-anchor="middle">prefix 1: interval [1/2, 1], length 2^-1</text>
+
+      <rect x="330" y="115" width="135" height="28" fill="rgba(60,120,40,0.10)" stroke="#3d7a26" stroke-width="1.5" />
+      <text x="397.5" y="134" text-anchor="middle">prefix 10: length 2^-2</text>
+
+      <rect x="397.5" y="160" width="67.5" height="28" fill="rgba(168,111,0,0.10)" stroke="#a86f00" stroke-width="1.5" />
+      <text x="431.25" y="179" text-anchor="middle" font-size="11">prefix 101</text>
+
+      <rect x="414.375" y="202" width="16.875" height="22" fill="rgba(214,83,54,0.10)" stroke="#d65336" stroke-width="1.4" />
+      <text x="422.8" y="218" text-anchor="middle" font-size="10">1011...</text>
+
+      <!-- Projection lines -->
+      <g stroke="#5b6270" stroke-dasharray="2 3" stroke-width="0.8">
+        <line x1="330" y1="98" x2="330" y2="255" />
+        <line x1="600" y1="98" x2="600" y2="255" />
+        <line x1="397.5" y1="188" x2="397.5" y2="255" />
+        <line x1="465" y1="188" x2="465" y2="255" />
+      </g>
+
+      <!-- alpha marker -->
+      <line x1="423" y1="54" x2="423" y2="263" stroke="#d65336" stroke-width="1.7" />
+      <circle cx="423" cy="255" r="4" fill="#d65336" />
+      <text x="423" y="300" text-anchor="middle" fill="#d65336" font-weight="600">alpha = 0.1011...</text>
+
+      <!-- Dyadic ambiguity callout -->
+      <g>
+        <rect x="62" y="58" width="220" height="78" rx="6" fill="rgba(91,98,112,0.06)" stroke="#cbd2e0" />
+        <text x="172" y="82" text-anchor="middle" font-weight="600" fill="#5b6270">dyadic boundary</text>
+        <text x="172" y="103" text-anchor="middle" font-size="11">0.1000... = 0.0111...</text>
+        <text x="172" y="122" text-anchor="middle" font-size="11">both names are computable</text>
+      </g>
+      <line x1="330" y1="137" x2="330" y2="255" stroke="#5b6270" stroke-dasharray="5 4" stroke-width="1.2" />
+    </g>
+  </svg>
+  <figcaption>A real $\alpha = 0.A$ is located by nested dyadic intervals determined by the prefixes $A \upharpoonright n$. The cylinder $[\![\sigma]\!]$ in Cantor space becomes the interval of reals whose binary expansion begins with $\sigma$. Dyadic endpoints have two names, but these exceptional points are computable and therefore irrelevant to Martin-Löf randomness.</figcaption>
+</figure>
+
+The same definition can be stated directly on the real line. A **Martin-Löf test for reals** is a uniformly c.e. sequence of open sets $(U_i)_{i\ge 1}$ in $[0,1]$, each presented as a c.e. union of dyadic intervals, such that
+
+$$\lambda(U_i) \le 2^{-i}.$$
+
+A real $\alpha$ is Martin-Löf random iff
+
+$$\alpha \notin \bigcap_i U_i$$
+
+for every such test. Under the identification $[\![\sigma]\!] \leftrightarrow [0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$, this is exactly the Cantor-space definition transported to the unit interval.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="Martin-Lof tests on reals as shrinking open covers">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="340" y="26" text-anchor="middle" font-weight="600">A real fails randomness if an effective null test traps it forever</text>
+
+      <!-- Layer labels -->
+      <text x="42" y="82" text-anchor="end" font-weight="600" fill="#1d4ed8">U1</text>
+      <text x="42" y="152" text-anchor="end" font-weight="600" fill="#3d7a26">U2</text>
+      <text x="42" y="222" text-anchor="end" font-weight="600" fill="#a86f00">U3</text>
+
+      <!-- Axes for each layer -->
+      <g stroke="#444" stroke-width="1">
+        <line x1="60" y1="82" x2="620" y2="82" />
+        <line x1="60" y1="152" x2="620" y2="152" />
+        <line x1="60" y1="222" x2="620" y2="222" />
+      </g>
+
+      <!-- U1 intervals total schematic <= 1/2 -->
+      <g fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.4">
+        <rect x="105" y="66" width="80" height="32" />
+        <rect x="315" y="66" width="190" height="32" />
+      </g>
+      <text x="530" y="86" font-size="11" fill="#1d4ed8">measure at most 1/2</text>
+
+      <!-- U2 intervals total <= 1/4 -->
+      <g fill="rgba(60,120,40,0.12)" stroke="#3d7a26" stroke-width="1.4">
+        <rect x="133" y="136" width="44" height="32" />
+        <rect x="370" y="136" width="90" height="32" />
+      </g>
+      <text x="530" y="156" font-size="11" fill="#3d7a26">measure at most 1/4</text>
+
+      <!-- U3 intervals total <= 1/8 -->
+      <g fill="rgba(168,111,0,0.13)" stroke="#a86f00" stroke-width="1.4">
+        <rect x="148" y="206" width="20" height="32" />
+        <rect x="404" y="206" width="42" height="32" />
+      </g>
+      <text x="530" y="226" font-size="11" fill="#a86f00">measure at most 1/8</text>
+
+      <!-- Trapped alpha marker -->
+      <line x1="420" y1="48" x2="420" y2="260" stroke="#d65336" stroke-width="1.8" />
+      <circle cx="420" cy="82" r="4" fill="#d65336" />
+      <circle cx="420" cy="152" r="4" fill="#d65336" />
+      <circle cx="420" cy="222" r="4" fill="#d65336" />
+      <text x="420" y="284" text-anchor="middle" fill="#d65336" font-weight="600">nonrandom alpha</text>
+      <text x="420" y="304" text-anchor="middle" fill="#5b6270" font-size="11">alpha lies in every U_i</text>
+
+      <!-- Escaping beta marker -->
+      <line x1="250" y1="48" x2="250" y2="260" stroke="#5b6270" stroke-width="1.3" stroke-dasharray="4 4" />
+      <text x="250" y="284" text-anchor="middle" fill="#5b6270" font-weight="600">random candidate beta</text>
+      <text x="250" y="304" text-anchor="middle" fill="#5b6270" font-size="11">escapes this test</text>
+
+      <!-- Bottom scale -->
+      <line x1="60" y1="330" x2="620" y2="330" stroke="#444" stroke-width="1.2" />
+      <g stroke="#444" stroke-width="1">
+        <line x1="60" y1="324" x2="60" y2="338" />
+        <line x1="340" y1="324" x2="340" y2="338" />
+        <line x1="620" y1="324" x2="620" y2="338" />
+      </g>
+      <g text-anchor="middle" font-size="11" fill="#444">
+        <text x="60" y="352">0</text>
+        <text x="340" y="352">1/2</text>
+        <text x="620" y="352">1</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption>A Martin-Löf test on $[0,1]$ is an effective sequence of open covers whose measures shrink like $2^{-i}$. A nonrandom real is one that remains inside every layer of at least one such test. A random real need not avoid every interval in every layer, but for each test it must miss at least one layer.</figcaption>
+</figure>
+
+This point of view also explains why computable reals cannot be random. If a computable procedure prints the first $n$ bits of $\alpha$, then the single interval determined by that prefix has measure $2^{-n}$. Taking one such interval at each level gives an effective Martin-Löf test that covers $\alpha$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Computable reals are null-test visible)</span></p>
+
+If $\alpha$ is computable, then the sequence
+
+$$U_i := [\![\alpha \upharpoonright i]\!]$$
+
+is a Martin-Löf test, since $\lambda(U_i)=2^{-i}$ and the intervals are uniformly computable. Moreover $\alpha \in U_i$ for every $i$. Hence no computable real is Martin-Löf random.
+
+</div>
+
+With the toolkit above in hand, we can finally exhibit the promised *natural* example of a random real — Chaitin's $\Omega$. Its approximation is left-c.e., but the increments encode halting information so densely that no effective null test can predict all of its bits.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="Chaitin Omega as a monotone halting probability approximation">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="340" y="26" text-anchor="middle" font-weight="600">Omega is approached from below by accumulating halting weight</text>
+
+      <!-- Staircase axes -->
+      <line x1="70" y1="285" x2="620" y2="285" stroke="#444" stroke-width="1.2" />
+      <line x1="70" y1="60" x2="70" y2="285" stroke="#444" stroke-width="1.2" />
+      <text x="620" y="306" text-anchor="end" font-size="11" fill="#444">stage s</text>
+      <text x="50" y="64" text-anchor="end" font-size="11" fill="#444">value</text>
+
+      <!-- Omega line -->
+      <line x1="70" y1="90" x2="620" y2="90" stroke="#d65336" stroke-width="1.7" />
+      <text x="626" y="94" font-size="12" fill="#d65336" font-weight="600">Omega</text>
+
+      <!-- Staircase w_s -->
+      <polyline points="70,270 130,270 130,240 205,240 205,220 285,220 285,180 360,180 360,158 450,158 450,122 535,122 535,108 620,108" fill="none" stroke="#1d4ed8" stroke-width="2.4" />
+      <g fill="#1d4ed8">
+        <circle cx="130" cy="240" r="3.5" />
+        <circle cx="205" cy="220" r="3.5" />
+        <circle cx="285" cy="180" r="3.5" />
+        <circle cx="360" cy="158" r="3.5" />
+        <circle cx="450" cy="122" r="3.5" />
+        <circle cx="535" cy="108" r="3.5" />
+      </g>
+      <text x="330" y="320" text-anchor="middle" fill="#1d4ed8" font-weight="600">w_s = sum of weights of programs seen halting by stage s</text>
+
+      <!-- Gap annotation -->
+      <line x1="560" y1="90" x2="560" y2="108" stroke="#a86f00" stroke-width="1.6" />
+      <line x1="552" y1="90" x2="568" y2="90" stroke="#a86f00" stroke-width="1.6" />
+      <line x1="552" y1="108" x2="568" y2="108" stroke="#a86f00" stroke-width="1.6" />
+      <text x="548" y="104" text-anchor="end" fill="#a86f00" font-size="11">unknown remaining weight</text>
+
+      <!-- Halting programs boxes -->
+      <g>
+        <rect x="90" y="48" width="116" height="34" rx="5" fill="rgba(29,78,216,0.07)" stroke="#1d4ed8" />
+        <text x="148" y="69" text-anchor="middle" font-size="11">program halts</text>
+        <line x1="148" y1="82" x2="130" y2="236" stroke="#1d4ed8" stroke-dasharray="3 3" />
+      </g>
+      <g>
+        <rect x="230" y="48" width="116" height="34" rx="5" fill="rgba(29,78,216,0.07)" stroke="#1d4ed8" />
+        <text x="288" y="69" text-anchor="middle" font-size="11">more weight</text>
+        <line x1="288" y1="82" x2="285" y2="176" stroke="#1d4ed8" stroke-dasharray="3 3" />
+      </g>
+      <g>
+        <rect x="400" y="48" width="126" height="34" rx="5" fill="rgba(29,78,216,0.07)" stroke="#1d4ed8" />
+        <text x="463" y="69" text-anchor="middle" font-size="11">late short program?</text>
+        <line x1="463" y1="82" x2="450" y2="118" stroke="#1d4ed8" stroke-dasharray="3 3" />
+      </g>
+
+      <!-- Stable bits bar -->
+      <g>
+        <rect x="96" y="200" width="62" height="18" fill="rgba(91,98,112,0.08)" stroke="#cbd2e0" />
+        <text x="127" y="214" text-anchor="middle" font-size="10">few bits stable</text>
+        <rect x="390" y="200" width="150" height="18" fill="rgba(60,120,40,0.10)" stroke="#3d7a26" />
+        <text x="465" y="214" text-anchor="middle" font-size="10">longer prefix stabilized</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption>The canonical approximation $w_s \nearrow \Omega$ adds the weights $2^{-l(\sigma)}$ of programs that have halted by stage $s$. Knowing a long prefix of $\Omega$ bounds the remaining unseen halting weight, which decides halting for all sufficiently short programs. Conversely, the proof below shows that if those prefixes were compressible, one could force a late halting contribution large enough to contradict the alleged stability of the prefix.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(6.2 — Chaitin's $\Omega$ is Martin-Löf random)</span></p>
+
+Chaitin's $\Omega$ is Martin-Löf random.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For every constant $c$ we define a partial computable function $f^c$ from words to words, enumerating its graph stage by stage.
+
+**Stage $s$.** If there exist a number $n \le s$ and a word $\tau$ such that
+
+$$K(\tau) < l(\tau) - n \quad\text{and}\quad \widetilde U(\tau)[s]\downarrow = w_s \upharpoonright n,$$
+
+then choose a word $\sigma$ *not* in the range of $\widetilde U[s]$ and set $f^c(\tau) := \sigma$.
+
+(Formally, $f^c$ is computed by enumerating its domain and, whenever $\tau$ appears at some enumeration step, returning the value assigned to it.)
+
+Each $f^c$ is prefix-free by construction, and the family is uniform in $c$, so the recursion theorem for prefix-free machines (Theorem 5.15) applies to $(f^0, f^1, \dots)$: there is an index $e$ with
+
+$$\widetilde M_e(\tau) = f^e(\tau) \qquad \text{for all } \tau.$$
+
+We claim that $K(\Omega \upharpoonright n) \ge n - e$ for every $n$. Suppose not, for some $n$. Then $\Omega \upharpoonright n$ has a short code $\tau$, i.e.
+
+$$l(\tau) < n - e \quad\text{and}\quad \widetilde U(\tau)\downarrow = \Omega \upharpoonright n.$$
+
+Since $\Omega$ is noncomputable — in particular not a dyadic rational — there is a stage $s$ with
+
+$$\widetilde U(\tau)[s]\downarrow = w_s \upharpoonright n = \Omega \upharpoonright n. \tag{$\ast$}$$
+
+At that stage the defining condition of $f^e$ is satisfied by this $n$ and $\tau$, so $f^e(\tau) = \sigma$ is defined with $\sigma \notin \operatorname{range}(\widetilde U[s])$. Because $\widetilde M\_e$ is simulated by $\widetilde U$ with coding constant $e$, there is a word $\nu$ with
+
+$$l(\nu) < l(\tau) + e \quad\text{and}\quad \widetilde U(\nu) = \widetilde M_e(\tau) = \sigma.$$
+
+As $\sigma \notin \operatorname{range}(\widetilde U[s])$, we have $\nu \notin \operatorname{dom}(\widetilde U[s])$, hence $\nu \in \operatorname{dom}(\widetilde U) \setminus \operatorname{dom}(\widetilde U[s])$. Therefore
+
+$$\Omega - w_s = \sum_{\rho \,\in\, \operatorname{dom}(\widetilde U)\,\setminus\,\operatorname{dom}(\widetilde U[s])} 2^{-l(\rho)} \ge 2^{-l(\nu)},$$
+
+so $\Omega$ and $w\_s$ must already disagree within their first $l(\nu)$ bits: $\Omega \upharpoonright l(\nu) \ne w\_s \upharpoonright l(\nu)$. But
+
+$$l(\nu) < l(\tau) + e < (n - e) + e = n,$$
+
+so $(\ast)$ forces $\Omega \upharpoonright l(\nu) = w\_s \upharpoonright l(\nu)$ — a contradiction.
+
+Hence $K(\Omega \upharpoonright n) \ge n - e$ for all $n$; $\Omega$ is incompressible up to an additive constant, and therefore Martin-Löf random.
+
+</details>
+</div>
+
+## Solovay Reducibility
+
+The fact that $\Omega$ is random is not an isolated accident: any left-c.e. real whose approximation converges "at least as fast" as that of $\Omega$ inherits its randomness. The right notion of "at least as fast" is *Solovay reducibility*.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(7.1 — Solovay reducibility)</span></p>
+
+A real $\alpha$ is **Solovay reducible** to a real $\beta$, written $\alpha \le\_S \beta$, if there exists a partial computable function $g : \subseteq \mathbb{Q} \to \mathbb{Q}$ such that
+
+$$0 < \alpha - g(q)\downarrow < \beta - q \qquad \text{for every } q < \beta.$$
+
+</div>
+
+Since $g$ maps the left cut of $\beta$ into the left cut of $\alpha$, it is natural to restrict this reducibility to the class of left-c.e. reals. There it turns into a statement about *speed of convergence*: informally, $\alpha \le\_S \beta$ holds iff some left-c.e. approximation of $\alpha$ converges no slower than a given left-c.e. approximation of $\beta$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(7.2 — Speed-of-convergence characterizations)</span></p>
+
+Let $\alpha$ and $\beta$ be left-c.e. reals. The following are equivalent.
+
+- **(i)** $\alpha \le\_S \beta$.
+- **(ii)** There is a constant $c$ such that, for every pair of left-c.e. approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(b\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\beta$, there is a computable function $g : \mathbb{N} \to \mathbb{N}$ with $\alpha - a\_{g(n)} < c(\beta - b\_n)$ for all $n$.
+- **(iii)** For every left-c.e. approximation $(b\_n)$ of $\beta$ there are a constant $d$ and a left-c.e. approximation $a\_0 < a\_1 < \cdots \to \alpha$ such that $a\_s - a\_{s-1} \le d(b\_s - b\_{s-1})$ for all $s$.
+- **(iv)** There exist left-c.e. approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(b\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\beta$ and a constant $c$ such that $\alpha - a\_n < c(\beta - b\_n)$ for all $n$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 5, Exercise 3 — the four implications are carried out in the exercise on the equivalent characterizations of Solovay reducibility for left-c.e. reals above.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(7.3 — Solovay reducibility transfers randomness upward)</span></p>
+
+If $\alpha$ is a Martin-Löf random real and $\alpha \le\_S \beta$, then $\beta$ is Martin-Löf random as well.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $\alpha$ be Martin-Löf random with $\alpha \le\_S \beta$ via a function $g$ and a constant which, without loss of generality, we take to be a power of two, $c = 2^N$:
+
+$$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta. \tag{$\dagger$}$$
+
+Assume toward a contradiction that $\beta$ is **not** Martin-Löf random, and fix a Martin-Löf test $L = (L\_1, L\_2, \dots)$ that covers $\beta$, so $\beta \in L\_i$ for every $i$. We construct a Martin-Löf test $M = (M\_{N+1}, M\_{N+2}, \dots)$ that covers $\alpha$, contradicting its randomness.
+
+**Construction.** For every basic interval $[l, r] := [\![\sigma]\!]$ enumerated into $L\_i$ with $i \ge N+1$, try to compute $g(l)$. If $g(l)\downarrow$, enumerate the interval
+
+$$[\,g(l),\; g(l) + 2^N(r - l)\,]$$
+
+into $M\_i$ (computably realized as a single dyadic node $[\![\tau]\!]$ or a finite disjoint union $[\![\tau\_1]\!] \cup [\![\tau\_2]\!] \cup \cdots$).
+
+**$M$ is a Martin-Löf test.** Each $M\_i$ is uniformly c.e. open, and for every $i$
+
+$$\lambda(M_i) = \sum_{I \in M_i} \lambda(I) \;\le\; \sum_{\substack{[l,r]\in L_i \\ g(l)\downarrow}} \lambda\big([\,g(l),\, g(l) + 2^N(r-l)\,]\big) \;\le\; \sum_{[l,r]\in L_i} 2^N \lambda([l,r]) \;=\; 2^N \lambda(L_i) \;\le\; 2^{N-i}.$$
+
+Thus the $i$-th layer has measure at most $2^{N-i} = 2^{-(i-N)}$, so $M$ (indexed from $i = N+1$) is a legitimate Martin-Löf test.
+
+**$M$ covers $\alpha$.** Since $\beta \in L\_i$ for all $i$, fix for each $i \ge N+1$ an interval $[l, r] \in L\_i$ with $\beta \in [l, r]$. As $\beta$ is irrational, $l < \beta < r$; taking $q = l < \beta$ in $(\dagger)$ gives $g(l)\downarrow$ and
+
+$$g(l) < \alpha < g(l) + 2^N(\beta - l) < g(l) + 2^N(r - l).$$
+
+Hence the interval $[\,g(l),\, g(l) + 2^N(r-l)\,]$ enumerated into $M\_i$ contains $\alpha$. So $\alpha \in M\_i$ for every $i \ge N+1$, i.e. $M$ covers $\alpha$.
+
+Then $\alpha$ is not Martin-Löf random — a contradiction. Therefore $\beta$ is Martin-Löf random. $\square$
 
 </details>
 </div>

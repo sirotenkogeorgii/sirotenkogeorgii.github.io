@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-06-25",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-06-24",
@@ -83,12 +89,6 @@
    "url": "/subpages/math_topics/tensors/tensors_gentle/",
    "date": "2026-06-21",
    "added": true
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-06-20",
-   "added": false
   },
   {
    "title": "Reinforcement Learning (HD): Problem Sheet 5",
