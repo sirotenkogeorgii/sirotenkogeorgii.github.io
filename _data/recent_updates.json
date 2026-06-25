@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "The Variational Principles of Mechanics — Cornelius Lanczos",
+   "url": "/subpages/books/the_variational_principles_of_mechanics/",
+   "date": "2026-06-25",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-06-24",
@@ -171,12 +177,6 @@
   {
    "title": "The Fourier Transform: Diagonalizing Translation",
    "url": "/subpages/math_topics/fourier_transform/fourier_transform_rigorous/",
-   "date": "2026-06-13",
-   "added": true
-  },
-  {
-   "title": "The Laplace Operator, or: How a Point Talks to Its Neighbors",
-   "url": "/subpages/math_topics/laplacian/laplacian_gentle/",
    "date": "2026-06-13",
    "added": true
   }

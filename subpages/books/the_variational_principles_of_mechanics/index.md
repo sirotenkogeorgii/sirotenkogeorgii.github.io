@@ -12,6 +12,10 @@ tags:
 
 # The Variational Principles of Mechanics — Cornelius Lanczos
 
+**Table of Contents**
+- TOC
+{:toc}
+
 ## Introduction
 
 ### 1. The Variational Approach to Mechanics
@@ -175,6 +179,11 @@ Another fundamental difference concerns **auxiliary conditions**. It frequently 
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/viewpoint-vectorial-vs-analytical.png' | relative_url }}" alt="Vectorial versus analytical viewpoint" loading="lazy">
+  <figcaption><strong>Two viewpoints on the same system.</strong> A bead constrained to a wire under gravity. <em>Left</em> — the vectorial picture resolves every force at the particle: the weight $m\mathbf{g}$, the constraint reaction $\mathbf{N}$, and the tangential drive $\mathbf{F}_{\mathrm{tang}}$. <em>Right</em> — the analytical picture keeps only one scalar, the potential $V(q)=m\,g\,y(q)$, spread over the constraint manifold; a single coordinate $q$ along the wire fixes the whole configuration, and the forces follow by differentiation.</figcaption>
+</figure>
+
 ### 2. Generalized Coordinates
 
 In the elementary vectorial treatment of mechanics the abstract concept of a "coordinate" does not enter the picture. The method is essentially geometrical in character. Vector methods are eminently useful in problems of statics, but for problems of motion the number of such problems which can be solved by pure vector methods is relatively small.
@@ -230,6 +239,16 @@ $$\varphi_i(q_1, q_2, \ldots, q_n) = 0, \quad (i = 1, \ldots, m).$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/generalized-coordinates-cartesian-polar.png' | relative_url }}" alt="A Kepler orbit in Cartesian and polar coordinates" loading="lazy">
+  <figcaption><strong>Freedom in the choice of coordinates.</strong> The same Kepler orbit $r=p/(1+e\cos\theta)$ described first on a rectangular mesh $(x,y)$ and then on a polar mesh $(r,\theta)$. Both are legitimate generalized coordinates; the polar set is <em>adapted</em> to the problem, collapsing the orbit into a single clean relation between $r$ and $\theta$.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/degrees-of-freedom-gallery.png' | relative_url }}" alt="Degrees of freedom of several mechanical systems" loading="lazy">
+  <figcaption><strong>Counting degrees of freedom.</strong> The number $n=3N-m$ of independent parameters needed to fix a configuration, for a range of systems — from the one-dimensional piston to the six-dimensional free rigid body. Each panel indicates the independent motions (arrows) the system may execute.</figcaption>
+</figure>
+
 ### 3. The Configuration Space
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -252,6 +271,11 @@ For the purposes of the calculus of variations such "topological" properties of 
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/configuration-space-c-curve.png' | relative_url }}" alt="A double pendulum and its C-curve in configuration space" loading="lazy">
+  <figcaption><strong>The configuration space and the C-curve.</strong> A double pendulum (left) has two degrees of freedom $q_1=\theta_1$, $q_2=\theta_2$. Its entire instantaneous state is one point — the C-point — of the two-dimensional configuration space (right), and the motion in time traces out the C-curve from $t_1$ to $t_2$.</figcaption>
+</figure>
+
 ### 4. Mapping of the Space on Itself
 
 Since the significance of the $n$ generalized coordinates $q\_1, \ldots, q\_n$ is not specified beyond the requirement that it shall allow a complete characterization of the system, we may choose another set of quantities $\bar{q}\_1, \bar{q}\_2, \ldots, \bar{q}\_n$ as generalized coordinates. There must exist a functional relationship between the two sets expressible in the form:
@@ -270,6 +294,11 @@ $$d\bar{q}_i = \sum_{k=1}^{n} \frac{\partial f_i}{\partial q_k} \, dq_k.$$
 No matter what functional relations exist between the two sets of coordinates, their *differentials* are always *linearly* dependent. The functional determinant $\Delta$ is just the determinant of these linear equations. Geometrically this determinant represents the ratio of the volume $\bar{\tau}$ of the new parallelepiped to the volume $\tau$ of the original one. The non-vanishing of $\Delta$ ensures that the entire neighborhood of $P$ shall be mapped on the entire neighborhood of $\bar{P}$, which is necessary for the one-to-one correspondence.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/point-transformation-jacobian.png' | relative_url }}" alt="A point transformation and the Jacobian as a local volume ratio" loading="lazy">
+  <figcaption><strong>A point transformation and its Jacobian.</strong> A change of generalized coordinates $\bar q_i=f_i(q)$ maps the space onto itself. An infinitesimal cell of volume $\tau$ is carried to a cell of volume $\bar\tau$, and the Jacobian $\Delta=\det(\partial f_i/\partial q_k)$ is exactly the local ratio $\bar\tau/\tau$ (shading); its non-vanishing guarantees the one-to-one correspondence between neighbourhoods.</figcaption>
+</figure>
 
 ### 5. Kinetic Energy and Riemannian Geometry
 
@@ -319,6 +348,11 @@ which is now truly Riemannian. *The mechanical problem is translated into a prob
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/kinetic-energy-riemann-metric.png' | relative_url }}" alt="The kinetic-energy metric drawn as a field of ellipses" loading="lazy">
+  <figcaption><strong>Kinetic energy as a Riemannian metric.</strong> For the double pendulum the kinetic energy fixes a line element $ds^2=\sum a_{ik}(q)\,dq_i\,dq_k$ on configuration space, with $T=\tfrac12(ds/dt)^2$. Each ellipse shows the directions of motion of unit kinetic cost at that point; because the coefficients $a_{ik}$ vary with position the geometry is genuinely Riemannian, and the red path's length is measured by this position-dependent metric.</figcaption>
+</figure>
+
 ### 6. Holonomic and Non-holonomic Mechanical Systems
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -363,6 +397,11 @@ If this relation is satisfied identically for all values of $q\_1$ and $q\_2$, t
 Holonomic conditions can be attacked in *two* ways: we can eliminate $m$ of the variables and reduce the problem to $n - m$ independent variables, or we can operate with a surplus number of variables and retain the given relations as auxiliary conditions. Non-holonomic conditions necessitate the *second* form of treatment --- a reduction in variables is not possible.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/holonomic-rolling-ball.png' | relative_url }}" alt="A ball rolled around a closed loop returns reoriented" loading="lazy">
+  <figcaption><strong>Non-holonomy made visible.</strong> A ball rolling without slipping is carried around a closed loop on the plane. It returns to the <em>same contact point</em> but with a <em>rotated orientation</em>: the body frame (coloured arrows) no longer coincides with the start frame (grey). Because the orientation change cannot be undone by any relabelling of position, the rolling constraint is non-holonomic — the differential relations between the angles and $x,y$ are not integrable. A larger enclosed loop produces a larger net reorientation.</figcaption>
+</figure>
 
 ### 7. Work Function and Generalized Force
 
@@ -417,6 +456,11 @@ $$F_i = \frac{\partial U}{\partial q_i} - \frac{d}{dt}\frac{\partial U}{\partial
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/work-function-generalized-force.png' | relative_url }}" alt="Force field from a work function; monogenic versus polygenic" loading="lazy">
+  <figcaption><strong>Work function and generalized force.</strong> <em>Left</em> — a single scalar work function $U(q_1,q_2)$ generates the whole force field through $F_i=\partial U/\partial q_i$. <em>Right</em> — the work done around a closed loop distinguishes <strong>monogenic</strong> forces (derived from $U$; the loop integral $\oint F\cdot dr$ returns to zero) from <strong>polygenic</strong> forces such as friction (no scalar potential; the loop integral does not close).</figcaption>
+</figure>
+
 ### 8. Scleronomic and Rheonomic Systems. The Law of the Conservation of Energy
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -461,6 +505,11 @@ If either kinetic energy or work function or both are rheonomic (time-dependent)
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/scleronomic-vs-rheonomic-energy.png' | relative_url }}" alt="Energy conserved for a fixed wire, not for a moving wire" loading="lazy">
+  <figcaption><strong>Why time-independence buys energy conservation.</strong> A bead slides on a parabolic wire. <em>Left</em> — when the wire is fixed (scleronomic) the total energy $E=T+V$ is exactly conserved; when the wire is driven up and down on a schedule $y\to y+h(t)$ (rheonomic) it is not. <em>Right</em> — the integrated energy: flat for the scleronomic system, drifting for the rheonomic one, because the moving constraint does work on the bead.</figcaption>
+</figure>
+
 ## Chapter II: The Calculus of Variations
 
 ### 1. The General Nature of Extremum Problems
@@ -475,6 +524,11 @@ Mathematically we speak of an "extremum problem" whenever the largest or smalles
 From the formal viewpoint the problem of minimizing a definite integral is considered as the proper domain of the calculus of variations, while the problem of minimizing a function belongs to ordinary calculus. Historically, the two problems arose simultaneously and a clear-cut distinction was not made till the time of Lagrange, who developed the technique of the calculus of variations. The famous problem of Dido, well known to the ancient geometers, was a variational problem which involved the minimization of an integral. Hero of Alexandria derived the law of reflection from the principle that a light ray emitted at $A$ and proceeding to $B$ after reflection from a mirror reaches its destination in the shortest possible time. Fermat extended this principle to derive the law of refraction. The problem of the "brachistochrone" --- the curve of quickest descent --- was proposed by John Bernoulli and solved independently by him, Newton and Leibniz. The basic differential equation of variational problems was discovered by Euler and Lagrange. A general method for the solution of variational problems was introduced by Lagrange in his *Mécanique Analytique* (1788).
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/extremum-reflection-refraction.png' | relative_url }}" alt="Reflection as shortest path and refraction as least time" loading="lazy">
+  <figcaption><strong>Extremum problems in nature.</strong> <em>Left</em> — Hero's law of reflection: the actual ray takes the <em>shortest</em> path from $A$ to the mirror to $B$, obtained by reflecting $A$ to its image $A'$. <em>Right</em> — Fermat's principle of <em>least time</em> across an interface; the travel time $T(x)$ is minimized at the crossing point that obeys Snell's law, and the straight path is slower.</figcaption>
+</figure>
 
 ### 2. The Stationary Value of a Function
 
@@ -511,6 +565,11 @@ $$\frac{\partial F}{\partial u_k} = 0, \quad (k = 1, 2, \ldots, n).$$
 These equations determine the *position* of a stationary value rather than the stationary value itself. If we have found the $n$ values $u\_1, \ldots, u\_n$ which satisfy these $n$ equations, we can substitute them in $F$ to obtain the stationary value of the function.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/stationary-value-tangent-plane.png' | relative_url }}" alt="A surface with a horizontal tangent plane at a stationary point" loading="lazy">
+  <figcaption><strong>The stationary value of a function.</strong> At a stationary point the tangent plane is horizontal: the rate of change vanishes in <em>every</em> direction, i.e. all partial derivatives $\partial F/\partial u_k$ are zero. These equations locate the point; substituting it into $F$ gives the stationary value itself.</figcaption>
+</figure>
 
 ### 3. The Second Variation
 
@@ -552,6 +611,11 @@ To test whether $\delta^2 F$ can change sign, one checks whether the equation $\
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/second-variation-min-max-saddle.png' | relative_url }}" alt="Minimum, maximum and saddle surfaces" loading="lazy">
+  <figcaption><strong>The sign of the second variation.</strong> At a stationary point the behaviour is governed by $\delta^2F=\epsilon^2\sum (\partial^2F/\partial u_i\partial u_k)\,a_i a_k$. A positive-definite form gives a minimum (bowl), a negative-definite form a maximum (dome), and an indefinite form gives neither — a saddle, where $F$ rises in some directions and falls in others.</figcaption>
+</figure>
+
 ### 4. Stationary Value Versus Extremum Value
 
 We should keep well in mind the difference between stationary value and extremum and the mutual relation of these two problems.
@@ -566,6 +630,11 @@ We have investigated the question of an extremum under the condition that we are
 For the general aims of dynamics, problems of motion require merely the stationary value, and not necessarily the minimum, of a certain definite integral.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/stationary-vs-extremum.png' | relative_url }}" alt="Inflection point versus boundary minimum" loading="lazy">
+  <figcaption><strong>Stationary is not the same as extremum.</strong> <em>Left</em> — $y=x^3$ has a horizontal tangent at the origin (stationary) yet no extremum there. <em>Right</em> — on a bounded domain a function may attain its minimum on the boundary with non-zero slope: an extremum that is <em>not</em> a stationary point, because the displacement there is not reversible.</figcaption>
+</figure>
 
 ### 5. Auxiliary Conditions. The Lagrangian $\lambda$-method
 
@@ -622,6 +691,11 @@ together with the $m$ auxiliary conditions, giving $n + m$ equations for the $n 
 The method of Lagrange permits the use of surplus coordinates --- a great convenience in many considerations of mechanics. It preserves the full symmetry of all coordinates by making it unnecessary to distinguish between dependent and independent variables.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/lagrange-multiplier-tangency.png' | relative_url }}" alt="Level curves tangent to a constraint with collinear gradients" loading="lazy">
+  <figcaption><strong>Lagrange's $\lambda$-method.</strong> Minimizing $F$ on a constraint curve $f=0$: at the solution a level curve of $F$ is <em>tangent</em> to the constraint, so the gradients are collinear, $\nabla F=-\lambda\,\nabla f$. The multiplier $\lambda$ converts the constrained problem into the free stationarity of $\bar F=F+\lambda f$, preserving the symmetry of all coordinates.</figcaption>
+</figure>
 
 ### 6. Non-holonomic Auxiliary Conditions
 
@@ -693,6 +767,16 @@ This equation is the necessary and sufficient condition for the integral $I = \i
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/brachistochrone-cycloid-race.png' | relative_url }}" alt="The brachistochrone cycloid against a line and an arc" loading="lazy">
+  <figcaption><strong>The brachistochrone.</strong> Among all curves joining $A$ to $B$, the cycloid is the curve of quickest descent. <em>Left</em> — the cycloid (found by matching the endpoint) beats both the straight line and a circular arc; the dots mark equal-time positions, with the cycloid bead pulling ahead. <em>Right</em> — horizontal progress versus elapsed time confirms the ordering of arrival times, $t_{\text{cycloid}}<t_{\text{arc}}<t_{\text{line}}$.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/euler-polygon-discretization.png' | relative_url }}" alt="Euler's polygonal approximation of an extremal curve" loading="lazy">
+  <figcaption><strong>Euler's polygonal method.</strong> The integral is approximated by replacing the curve with a polygon $y_0,\dots,y_{n+1}$ and the derivative by the difference quotient $z_k=(y_{k+1}-y_k)/(x_{k+1}-x_k)$. Setting $\partial S'/\partial y_k=0$ for the one varied ordinate and letting the mesh shrink (right) yields, in the limit, the Euler–Lagrange differential equation.</figcaption>
+</figure>
+
 ### 8. The Fundamental Processes of the Calculus of Variations
 
 Lagrange realized that the problem of minimizing a definite integral requires specific tools, different from those of the ordinary calculus. With the help of these tools we can attack the problem directly, instead of reverting to the limiting process by which Euler obtained the solution.
@@ -726,6 +810,11 @@ $$[\delta f(x)]_{x=a} = 0, \quad [\delta f(x)]_{x=b} = 0.$$
 We then speak of a "variation between definite limits."
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/variation-of-a-function.png' | relative_url }}" alt="An extremal and nearby varied functions pinned at the endpoints" loading="lazy">
+  <figcaption><strong>Varying a function between fixed end-points.</strong> The trial functions $\bar f(x)=f(x)+\epsilon\phi(x)$ differ from the extremal by the variation $\delta y=\epsilon\phi(x)$. The variation is free in the interior but pinned to zero at the boundaries, $\delta y(a)=\delta y(b)=0$, since the end ordinates are prescribed.</figcaption>
+</figure>
 
 ### 9. The Commutative Properties of the $\delta$-process
 
@@ -764,6 +853,11 @@ $$\delta \int_a^b F(x)\,dx = \int_a^b \delta F(x)\,dx.$$
 Variation and integration are **permutable** processes.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/commute-delta-derivative.png' | relative_url }}" alt="Commutative diagram of variation and differentiation" loading="lazy">
+  <figcaption><strong>Variation commutes with differentiation.</strong> Differentiating the varied function and varying the derivative reach the same result, $\frac{d}{dx}\delta y=\delta\frac{dy}{dx}=\epsilon\phi'(x)$ — the two routes around the square agree. The plot shows the actual variation $\epsilon\phi$ and its derivative $\epsilon\phi'$.</figcaption>
+</figure>
 
 ### 10. The Stationary Value of a Definite Integral Treated by the Calculus of Variations
 
@@ -827,6 +921,11 @@ which vanishes if $y$ and $y'$ are prescribed at the two end-points.
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/fundamental-lemma-bump.png' | relative_url }}" alt="A localized bump samples a candidate function" loading="lazy">
+  <figcaption><strong>The fundamental lemma of the calculus of variations.</strong> A localized bump $\phi$ concentrated near $\xi$ makes $\int E\phi\,dx$ sample the value $E(\xi)$. Since the variation $\phi$ is otherwise arbitrary, $\int E\phi\,dx=0$ for <em>all</em> such bumps forces $E(x)\equiv 0$ — which is exactly the Euler–Lagrange equation $E(x)=\partial F/\partial y-\frac{d}{dx}(\partial F/\partial y')=0$.</figcaption>
+</figure>
+
 ### 11. The Euler--Lagrange Differential Equations for $n$ Degrees of Freedom
 
 In mechanics the problem of variation presents itself in the following form. Find the stationary value of a definite integral
@@ -872,6 +971,11 @@ $$q_k = q_k(A_1, \ldots, A_n; B_1, \ldots, B_n; t).$$
 The constants $A\_k$ and $B\_k$ can be adjusted to the given boundary conditions. In mechanical problems more frequently *initial conditions* take the place of boundary conditions. The freedom of $2n$ constants of integration allows all the initial position coordinates and velocities to be prescribed arbitrarily.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/action-landscape-trial-paths.png' | relative_url }}" alt="Action over a family of trial paths, stationary at the true path" loading="lazy">
+  <figcaption><strong>Hamilton's principle as a stationary point.</strong> For a harmonic oscillator with fixed end-points, a one-parameter family of trial paths $q_\alpha=q^*+\alpha\sin(\pi t/T)$ deforms the true path $q^*$. The action $S(\alpha)=\int_0^T(\tfrac12\dot q^2-\tfrac12 q^2)\,dt$ is stationary exactly at $\alpha=0$: the actual motion is the one that makes the action stationary.</figcaption>
+</figure>
 
 ### 12. Variation with Auxiliary Conditions
 
@@ -960,6 +1064,11 @@ $$\int_{t_1}^{t_2} f(q_1, \ldots, q_n; \dot{q}_1, \ldots, \dot{q}_n; t)\,dt = C.
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/isoperimetric-dido.png' | relative_url }}" alt="The circle maximizes area among curves of fixed perimeter" loading="lazy">
+  <figcaption><strong>Dido's isoperimetric problem.</strong> Among all closed curves of a given perimeter, the circle encloses the greatest area. <em>Left</em> — circle, square and equilateral triangle of equal perimeter, the circle winning. <em>Right</em> — for a family of ellipses of fixed perimeter the enclosed area peaks at aspect ratio $1$ (the circle), touching the isoperimetric bound $L^2/4\pi$.</figcaption>
+</figure>
+
 ### 15. The Calculus of Variations and Boundary Conditions. The Problem of the Elastic Bar
 
 In all our previous considerations we were essentially interested in the *differential equations* which can be deduced as the solution of the problem that a given definite integral shall assume a stationary value. The derivation of these equations by the method of integration by parts revealed that the variation of a definite integral is composed of two parts, namely, an integral extended over the given range, *plus a boundary term*. We did not pay much attention to this boundary term, since we assumed boundary conditions which made it vanish. But actually there are situations where this boundary term plays a more active role.
@@ -1015,6 +1124,11 @@ $$\int_0^l \rho(x)\,dx = 0, \quad \int_0^l \rho(x)\,x\,dx = 0.$$
 The physical significance of these conditions is that *the sum of the forces and the sum of the moments of the forces acting on the bar are zero*. These are the integrability conditions of the boundary value problem, furnished here by the calculus of variations.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/variational_principles_of_mechanics/elastic-bar-boundary-conditions.png' | relative_url }}" alt="Deflection of a loaded elastic bar under four boundary regimes" loading="lazy">
+  <figcaption><strong>The loaded elastic bar and its boundary conditions.</strong> Numerical solutions of $k\,y''''=\rho(x)$ for four support regimes. The variational problem supplies exactly the right number of conditions: <em>imposed</em> ones from the physical supports, plus <em>natural</em> ones from the boundary term of $\delta I$. The free–free bar is solvable only because the (self-equilibrated) load satisfies $\int\rho\,dx=\int\rho\,x\,dx=0$ — zero net force and zero net moment.</figcaption>
+</figure>
 
 ## Chapter III: The Principle of Virtual Work
 
