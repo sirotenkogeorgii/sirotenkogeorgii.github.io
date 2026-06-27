@@ -3543,7 +3543,7 @@ $$
 
 with the goal of estimating $v\_\pi(s)$ for every nonterminal $s$. Both methods are instances of the same incremental-mean template 
 
-$$V(S\_t) \leftarrow V(S\_t) + \alpha\,[\,\text{target} - V(S\_t)\,]$$
+$$V(S_t) \leftarrow V(S_t) + \alpha\,[\,\text{target} - V(S_t)\,]$$
 
 they differ only in the **target**:
 
@@ -5143,7 +5143,12 @@ G_{t:h} \;\doteq\; \rho_t\,\bigl(R_{t+1} + \gamma\, G_{t+1:h}\bigr) + (1 - \rho_
 $$
 
 * If $\rho\_t = 0$, the target becomes $V\_{h-1}(S\_t)$ — the *current estimate* — so **no spurious change** is made.
-* Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$ (because $\mathbb{E}\_b[\rho\_t \mid S\_t = s] = \sum\_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum\_a \pi(a\mid s) = 1$). So the control variate has **zero conditional expectation**: it **does not bias** the update — it only reduces variance.
+* Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$
+  * because
+
+    $$\mathbb{E}\_b[\rho\_t \mid S\_t = s] = \sum\_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum\_a \pi(a\mid s) = 1.$$
+
+    So the control variate has **zero conditional expectation**: it **does not bias** the update — it only reduces variance.
 
 </div>
 
@@ -5164,7 +5169,7 @@ $$
 
 where 
 
-$$\bar V\_{h-1}(S\_{t+1}) \doteq \sum\_a \pi(a \mid S\_{t+1})\, Q\_{h-1}(S\_{t+1}, a).$$
+$$\bar V_{h-1}(S_{t+1}) \doteq \sum_a \pi(a \mid S_{t+1})\, Q_{h-1}(S_{t+1}, a).$$
 
 This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
 
@@ -5222,5 +5227,2131 @@ Every row is the *same* skeleton — $n$ real rewards then a bootstrap — diffe
 * **Off-policy needs reweighting.** **Importance sampling** corrects for following $b$ while learning $\pi$; **control variates** keep the update unbiased while cutting the variance that the raw ratios inject.
 
 **Bridge ahead.** Choosing a single $n$ is itself a compromise — short returns are biased, long ones noisy. The next step removes the choice by *averaging over all $n$ at once* with an exponentially weighted geometric mixture, giving **TD($\lambda$)** and **eligibility traces**: a mechanism that achieves the $n$-step backup incrementally and online, without storing the trajectory, carrying this lecture's TD-error and bias–variance lessons into the function-approximation setting.
+
+</div>
+
+## Lecture 8: Planning and Learning with Tabular Methods
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Unifying model-free and model-based RL)</span></p>
+
+Every method so far has improved value estimates from **real experience**: Monte Carlo from complete returns, TD and $n$-step methods from sampled transitions. Dynamic Programming (Lecture 4) was the exception — it improved values *without acting*, by sweeping a known model of the environment. This lecture closes the gap between those two worlds.
+
+The organising claim is simple:
+
+> *Planning and learning are the same operation — a **backup** that improves a value estimate — applied to two different sources of experience. Learning backs up **real** transitions; planning backs up **simulated** ones produced by a model.*
+
+The build-up is:
+
+1. **Models and planning.** What a model is (distribution vs. sample), and what it means to *plan* with one.
+2. **Dyna.** Interleaving acting, model learning, direct RL, and planning in one loop.
+3. **When the model is wrong.** How imperfect models fail, and how exploration repairs them (Dyna-Q+).
+4. **Search control.** *Where* to spend planning updates: prioritized sweeping (backward, error-driven) and trajectory sampling / RTDP (forward, on-policy).
+5. **Decision-time planning.** Spending computation on the *current* state only: heuristic search, rollout, and Monte Carlo Tree Search.
+
+</div>
+
+### Models and Planning
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Both learning and planning are backups)</span></p>
+
+Earlier lectures emphasised **learning from real experience**. We now add a **model** and ask how to learn from *simulated* experience as well. This unifies the two families seen so far:
+
+* **model-free methods** — TD and Monte Carlo, which learn from real transitions;
+* **model-based methods** — dynamic programming and search, which compute from a model.
+
+The central message: planning and learning are closer than they first appear. **Both improve value estimates by backing up information from successor states** — they differ mainly in *where the experience comes from*.
+
+</div>
+
+It helps to locate the new method against everything covered so far. The only genuinely new row is the last one — a method that is **model-based but does not assume the model is given**, learning it from experience instead.
+
+| Method | Model-based | True model | Bootstrapping | Prediction | Control |
+| :----- | :---------: | :--------: | :-----------: | :--------: | :-----: |
+| Dynamic Programming (DP) | Yes | Yes | Yes | Yes | Yes |
+| Monte Carlo (MC) | No | No | No | Yes | Yes |
+| TD prediction: TD(0), $n$-step TD | No | No | Yes | Yes | No |
+| TD control: Sarsa, $n$-step Sarsa | No | No | Yes | No | Yes |
+| TD control: Expected Sarsa | No | No | Yes | No | Yes |
+| TD control: Q-learning, Double Q | No | No | Yes | No | Yes |
+| **Dyna-Q / learned-model planning** | **Yes** | **No** | **Yes** | No | **Yes** |
+
+#### What Is a Model?
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Model of the environment)</span></p>
+
+A **model** is anything the agent can use to predict what the environment does next — given a state and action, it returns information about the resulting next state and reward. Models come in two flavours:
+
+* **Distribution model.** Represents *all* possible next state–reward pairs together with their probabilities: formally $\hat p(s', r \mid s, a)$. It carries complete information but is harder to obtain and store.
+* **Sample model.** Produces a *single* sampled outcome $(s,a) \mapsto (S', R)$ drawn according to the true dynamics. It is easier to simulate from and often far easier to obtain in practice (e.g. a game engine or physics simulator).
+
+A distribution model can always *generate* samples; a sample model cannot recover the full distribution. Either kind can be used to **simulate experience**: starting from any state–action pair, a model can produce a transition, and chaining transitions produces an entire simulated trajectory.
+
+</div>
+
+#### What Is Planning?
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Planning)</span></p>
+
+**Planning** is any computational process that takes a *model* as input and produces or improves a *policy*:
+
+$$
+\text{model} \;\longrightarrow\; \text{simulated experience} \;\longrightarrow\; \text{backups} \;\longrightarrow\; \text{better policy}.
+$$
+
+The model simulates experience; the agent backs up values through that simulated experience; the improved values yield better decisions. This is exactly the learning loop with the data source swapped — which is why a single backup rule can serve both.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(Planning is learning from imagined experience)</span></p>
+
+Once planning is framed as *backups over simulated transitions*, every value-update rule from the earlier lectures — TD(0), Sarsa, Q-learning, expected updates — becomes a candidate **planning** rule. The model just replaces the environment as the generator of $(S, A, R, S')$ tuples.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Learning and planning use the same backup; learning receives real transitions from the environment, while planning receives simulated transitions from a model">
+    <rect x="55" y="45" width="185" height="62" rx="8" class="box"></rect>
+    <text x="147" y="72" text-anchor="middle" font-size="15">Environment</text>
+    <text x="147" y="91" text-anchor="middle" font-size="12" class="muted">real transition</text>
+
+    <rect x="55" y="210" width="185" height="62" rx="8" class="green"></rect>
+    <text x="147" y="237" text-anchor="middle" font-size="15">Model</text>
+    <text x="147" y="256" text-anchor="middle" font-size="12" class="muted">simulated transition</text>
+
+    <rect x="330" y="105" width="170" height="70" rx="8" class="accent"></rect>
+    <text x="415" y="133" text-anchor="middle" font-size="15">Same backup</text>
+    <text x="415" y="154" text-anchor="middle" font-size="12" class="muted">update value estimate</text>
+
+    <rect x="590" y="105" width="175" height="70" rx="8" class="box"></rect>
+    <text x="678" y="133" text-anchor="middle" font-size="15">Improved policy</text>
+    <text x="678" y="154" text-anchor="middle" font-size="12" class="muted">better action choice</text>
+
+    <path d="M240,76 C282,76 292,120 326,130" class="strong-line" marker-end="url(#backup-source-arrow)"></path>
+    <path d="M240,241 C282,241 292,161 326,150" class="strong-line" marker-end="url(#backup-source-arrow)"></path>
+    <line x1="502" y1="140" x2="586" y2="140" class="strong-line" marker-end="url(#backup-source-arrow)"></line>
+
+    <text x="282" y="67" text-anchor="middle" font-size="12" class="muted">learning</text>
+    <text x="284" y="232" text-anchor="middle" font-size="12" class="muted">planning</text>
+    <text x="415" y="235" text-anchor="middle" font-size="13" class="muted">The data source changes; the backup machinery does not.</text>
+
+    <defs>
+      <marker id="backup-source-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Planning is not a new kind of value update. It is the familiar backup operation applied to model-generated experience instead of environment-generated experience.</figcaption>
+</figure>
+
+### Dyna: Integrating Learning and Planning
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(The Dyna recipe)</span></p>
+
+Dyna interleaves four ideas in one online loop:
+
+1. **Act** and learn from **real** experience (direct RL).
+2. **Learn a model** from that same real experience.
+3. Use the model to **simulate** additional experience.
+4. **Learn again** from the simulated experience (planning).
+
+The point is *data efficiency*: Dyna turns **one real transition into many learning opportunities** by replaying its consequences through a learned model, rather than discarding each transition after a single update.
+
+</div>
+
+#### The Dyna Architecture
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 360" role="img" aria-label="Dyna architecture: real experience updates both the value function (direct RL) and the model (model learning); the model generates simulated experience that updates the value function (planning); the value function drives acting in the environment">
+    <!-- Value/policy box -->
+    <rect x="300" y="20" width="220" height="48" rx="8" class="accent"></rect>
+    <text x="410" y="49" text-anchor="middle" font-size="15">Policy / value functions</text>
+
+    <!-- Experience node -->
+    <ellipse cx="410" cy="180" rx="78" ry="30" class="box"></ellipse>
+    <text x="410" y="178" text-anchor="middle" font-size="14">real</text>
+    <text x="410" y="195" text-anchor="middle" font-size="14">experience</text>
+
+    <!-- Model box -->
+    <rect x="610" y="156" width="150" height="48" rx="8" class="green"></rect>
+    <text x="685" y="185" text-anchor="middle" font-size="15">Model</text>
+
+    <!-- Environment box -->
+    <rect x="300" y="300" width="220" height="48" rx="8" class="box"></rect>
+    <text x="410" y="329" text-anchor="middle" font-size="15">Environment</text>
+
+    <!-- direct RL update: experience -> value (left, up) -->
+    <line x1="360" y1="156" x2="360" y2="70" class="strong-line" marker-end="url(#ah)"></line>
+    <text x="250" y="116" text-anchor="middle" font-size="12" class="muted">direct RL</text>
+    <text x="250" y="132" text-anchor="middle" font-size="12" class="muted">update</text>
+
+    <!-- planning update: model/simulated -> value (right, up) -->
+    <line x1="560" y1="156" x2="470" y2="70" class="strong-line" marker-end="url(#ah)"></line>
+    <text x="585" y="116" text-anchor="middle" font-size="12" class="muted">planning</text>
+    <text x="585" y="132" text-anchor="middle" font-size="12" class="muted">update</text>
+
+    <!-- model learning: experience -> model -->
+    <line x1="488" y1="180" x2="606" y2="180" class="line" marker-end="url(#ah)"></line>
+    <text x="548" y="170" text-anchor="middle" font-size="12" class="muted">model learning</text>
+
+    <!-- search control / simulated experience: model -> experience -->
+    <line x1="606" y1="196" x2="488" y2="196" class="line" marker-end="url(#ah)"></line>
+    <text x="548" y="220" text-anchor="middle" font-size="12" class="muted">search control</text>
+
+    <!-- acting loop: value -> environment -> experience -->
+    <line x1="410" y1="300" x2="410" y2="212" class="line" marker-end="url(#ah)"></line>
+    <text x="455" y="258" text-anchor="middle" font-size="12" class="muted">acting</text>
+
+    <defs>
+      <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The Dyna loop. Real experience feeds <em>two</em> learners — direct RL (value function) and model learning. The model then produces simulated experience that feeds the same value function through planning. <strong>Search control</strong> decides which state–action pairs to simulate next.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The four Dyna processes)</span></p>
+
+* **Acting** — interact with the environment to gather real experience.
+* **Direct RL** — update the value function from real experience.
+* **Model learning** — improve the model from real experience.
+* **Planning** — update the value function from simulated experience.
+
+A fifth, easily overlooked role is **search control**: the planner must also decide *which* state–action pairs to simulate next. This question — *where* to spend planning effort — drives the second half of the lecture.
+
+</div>
+
+#### Tabular Dyna-Q
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tabular Dyna-Q)</span></p>
+
+In **tabular Dyna-Q** the three value-touching processes share one update rule:
+
+* real experience updates $Q$ directly;
+* real experience also updates a deterministic model $\hat M(S, A) = (R, S')$;
+* planning then performs $n$ extra Q-learning-style updates on *model-generated* transitions.
+
+The shared backup is the Q-learning update,
+
+$$
+Q(S, A) \;\leftarrow\; Q(S, A) + \alpha\Bigl[\, R + \gamma \max_{a} Q(S', a) - Q(S, A) \,\Bigr],
+$$
+
+applied identically whether $(S, A, R, S')$ came from the environment or from $\hat M$. **Only the source of experience changes** — the learning machinery is the same.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Tabular Dyna-Q)</span></p>
+
+**Maintain:** action values $Q(s,a)$; a model $\hat M(s,a) = (r, s')$; the set of previously seen state–action pairs.
+
+For each real step:
+
+1. Choose $A$ from current state $S$ by $\varepsilon$-greedy on $Q$.
+2. Execute $A$; observe reward $R$ and next state $S'$.
+3. **Direct RL update:**
+   $$
+   Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max_{a} Q(S', a) - Q(S, A)\,\bigr].
+   $$
+4. **Model learning:** store $\hat M(S, A) \leftarrow (R, S')$.
+5. **Planning — repeat $n$ times:**
+   * sample a previously seen pair $(\tilde S, \tilde A)$;
+   * retrieve $(\tilde R, \tilde S') = \hat M(\tilde S, \tilde A)$;
+   * update $Q(\tilde S, \tilde A)$ with the *same* rule as step 3.
+6. $S \leftarrow S'$.
+
+The parameter $n$ is the number of planning updates per real step; $n = 0$ recovers ordinary one-step Q-learning (direct RL only).
+
+</div>
+
+#### Example: The Dyna Maze
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dyna maze — planning buys speed)</span></p>
+
+A gridworld agent must reach a goal $G$ from a start $S$ around a few walls. Holding the **real** experience stream fixed and varying only the number of planning steps:
+
+* $n = 0$ (direct RL only) needs many episodes before the steps-per-episode curve falls toward the optimal path length.
+* $n = 5$ converges substantially faster.
+* $n = 50$ reaches near-optimal behaviour in a handful of episodes.
+
+More planning per real step propagates each observed transition much further before the agent takes its next action — so the policy improves dramatically faster for the *same* amount of real interaction.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Planning races ahead of the agent)</span></p>
+
+Compare the policy after the first episode. **Without planning** ($n = 0$), only a tiny region near the goal has been backed up — value information has barely spread. **With planning** ($n = 50$), value has already propagated far back toward the start, so much of the route is laid out *while the agent is still near where it began*.
+
+Planning lets value information race ahead of the agent's physical location: each real step is replayed enough times for its consequences to reach states the agent has not recently visited.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 340" role="img" aria-label="Dyna maze propagation comparing no planning to many planning updates; value information spreads farther from the goal when planning is used">
+    <text x="205" y="42" text-anchor="middle" font-size="15">n = 0: direct RL only</text>
+    <text x="615" y="42" text-anchor="middle" font-size="15">n = 50: many simulated backups</text>
+
+    <!-- left maze -->
+    <g transform="translate(65,70)">
+      <rect x="0" y="0" width="280" height="180" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <rect x="0" y="0" width="35" height="30" class="box"></rect><rect x="35" y="0" width="35" height="30" class="box"></rect><rect x="70" y="0" width="35" height="30" class="box"></rect><rect x="105" y="0" width="35" height="30" class="box"></rect><rect x="140" y="0" width="35" height="30" class="box"></rect><rect x="175" y="0" width="35" height="30" class="box"></rect><rect x="210" y="0" width="35" height="30" class="box"></rect><rect x="245" y="0" width="35" height="30" class="box"></rect>
+      <rect x="0" y="30" width="35" height="30" class="box"></rect><rect x="35" y="30" width="35" height="30" class="box"></rect><rect x="70" y="30" width="35" height="30" class="box"></rect><rect x="105" y="30" width="35" height="30" class="box"></rect><rect x="140" y="30" width="35" height="30" class="box"></rect><rect x="175" y="30" width="35" height="30" class="box"></rect><rect x="210" y="30" width="35" height="30" class="box"></rect><rect x="245" y="30" width="35" height="30" class="box"></rect>
+      <rect x="0" y="60" width="35" height="30" class="box"></rect><rect x="35" y="60" width="35" height="30" class="box"></rect><rect x="70" y="60" width="35" height="30" class="box"></rect><rect x="105" y="60" width="35" height="30" class="box"></rect><rect x="140" y="60" width="35" height="30" class="box"></rect><rect x="175" y="60" width="35" height="30" class="box"></rect><rect x="210" y="60" width="35" height="30" class="box"></rect><rect x="245" y="60" width="35" height="30" class="green"></rect>
+      <rect x="0" y="90" width="35" height="30" class="accent"></rect><rect x="35" y="90" width="35" height="30" class="box"></rect><rect x="70" y="90" width="35" height="30" class="box"></rect><rect x="105" y="90" width="35" height="30" class="box"></rect><rect x="140" y="90" width="35" height="30" class="box"></rect><rect x="175" y="90" width="35" height="30" fill="#172033"></rect><rect x="210" y="90" width="35" height="30" class="amber"></rect><rect x="245" y="90" width="35" height="30" class="green"></rect>
+      <rect x="0" y="120" width="35" height="30" class="box"></rect><rect x="35" y="120" width="35" height="30" class="box"></rect><rect x="70" y="120" width="35" height="30" fill="#172033"></rect><rect x="105" y="120" width="35" height="30" fill="#172033"></rect><rect x="140" y="120" width="35" height="30" fill="#172033"></rect><rect x="175" y="120" width="35" height="30" fill="#172033"></rect><rect x="210" y="120" width="35" height="30" class="box"></rect><rect x="245" y="120" width="35" height="30" class="box"></rect>
+      <rect x="0" y="150" width="35" height="30" class="box"></rect><rect x="35" y="150" width="35" height="30" class="box"></rect><rect x="70" y="150" width="35" height="30" class="box"></rect><rect x="105" y="150" width="35" height="30" class="box"></rect><rect x="140" y="150" width="35" height="30" class="box"></rect><rect x="175" y="150" width="35" height="30" class="box"></rect><rect x="210" y="150" width="35" height="30" class="box"></rect><rect x="245" y="150" width="35" height="30" class="box"></rect>
+      <text x="17" y="110" text-anchor="middle" font-size="13">S</text>
+      <text x="262" y="80" text-anchor="middle" font-size="13">G</text>
+      <path d="M229,104 L247,104" class="strong-line" marker-end="url(#dyna-maze-arrow)"></path>
+      <text x="140" y="210" text-anchor="middle" font-size="12" class="muted">only states near the goal get useful backups</text>
+    </g>
+
+    <!-- right maze -->
+    <g transform="translate(475,70)">
+      <rect x="0" y="0" width="280" height="180" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <rect x="0" y="0" width="35" height="30" class="box"></rect><rect x="35" y="0" width="35" height="30" class="box"></rect><rect x="70" y="0" width="35" height="30" class="box"></rect><rect x="105" y="0" width="35" height="30" class="box"></rect><rect x="140" y="0" width="35" height="30" class="box"></rect><rect x="175" y="0" width="35" height="30" class="box"></rect><rect x="210" y="0" width="35" height="30" class="box"></rect><rect x="245" y="0" width="35" height="30" class="green"></rect>
+      <rect x="0" y="30" width="35" height="30" class="box"></rect><rect x="35" y="30" width="35" height="30" class="box"></rect><rect x="70" y="30" width="35" height="30" class="box"></rect><rect x="105" y="30" width="35" height="30" class="box"></rect><rect x="140" y="30" width="35" height="30" class="amber"></rect><rect x="175" y="30" width="35" height="30" class="amber"></rect><rect x="210" y="30" width="35" height="30" class="green"></rect><rect x="245" y="30" width="35" height="30" class="green"></rect>
+      <rect x="0" y="60" width="35" height="30" class="amber"></rect><rect x="35" y="60" width="35" height="30" class="amber"></rect><rect x="70" y="60" width="35" height="30" class="amber"></rect><rect x="105" y="60" width="35" height="30" class="amber"></rect><rect x="140" y="60" width="35" height="30" class="amber"></rect><rect x="175" y="60" width="35" height="30" class="green"></rect><rect x="210" y="60" width="35" height="30" class="green"></rect><rect x="245" y="60" width="35" height="30" class="green"></rect>
+      <rect x="0" y="90" width="35" height="30" class="accent"></rect><rect x="35" y="90" width="35" height="30" class="amber"></rect><rect x="70" y="90" width="35" height="30" class="amber"></rect><rect x="105" y="90" width="35" height="30" class="amber"></rect><rect x="140" y="90" width="35" height="30" class="amber"></rect><rect x="175" y="90" width="35" height="30" fill="#172033"></rect><rect x="210" y="90" width="35" height="30" class="green"></rect><rect x="245" y="90" width="35" height="30" class="green"></rect>
+      <rect x="0" y="120" width="35" height="30" class="box"></rect><rect x="35" y="120" width="35" height="30" class="box"></rect><rect x="70" y="120" width="35" height="30" fill="#172033"></rect><rect x="105" y="120" width="35" height="30" fill="#172033"></rect><rect x="140" y="120" width="35" height="30" fill="#172033"></rect><rect x="175" y="120" width="35" height="30" fill="#172033"></rect><rect x="210" y="120" width="35" height="30" class="box"></rect><rect x="245" y="120" width="35" height="30" class="box"></rect>
+      <rect x="0" y="150" width="35" height="30" class="box"></rect><rect x="35" y="150" width="35" height="30" class="box"></rect><rect x="70" y="150" width="35" height="30" class="box"></rect><rect x="105" y="150" width="35" height="30" class="box"></rect><rect x="140" y="150" width="35" height="30" class="box"></rect><rect x="175" y="150" width="35" height="30" class="box"></rect><rect x="210" y="150" width="35" height="30" class="box"></rect><rect x="245" y="150" width="35" height="30" class="box"></rect>
+      <text x="17" y="110" text-anchor="middle" font-size="13">S</text>
+      <text x="262" y="80" text-anchor="middle" font-size="13">G</text>
+      <path d="M20,104 C82,70 160,70 244,75" class="strong-line" marker-end="url(#dyna-maze-arrow)"></path>
+      <text x="140" y="210" text-anchor="middle" font-size="12" class="muted">simulated backups spread value far along the route</text>
+    </g>
+
+    <defs>
+      <marker id="dyna-maze-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>In the Dyna maze, planning changes the speed of propagation, not the real experience stream. Extra simulated backups push the goal information back toward the start before the agent physically revisits those states.</figcaption>
+</figure>
+
+### When the Model Is Wrong
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Models are usually imperfect)</span></p>
+
+So far the model behaved kindly: it started empty and then filled with *correct* transitions. In practice a learned model can be **wrong** because
+
+* the environment is stochastic and only finitely sampled,
+* data is limited,
+* function approximation generalises badly, or
+* the environment itself **changes** over time.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(A wrong model is dangerous)</span></p>
+
+Planning amplifies whatever the model believes. **A bad model can make planning compute a bad policy faster** — the same mechanism that propagates correct information efficiently will propagate incorrect information just as efficiently. The remedy is not to trust the model blindly but to keep *testing* it against reality.
+
+</div>
+
+#### Failure Mode 1: The Blocking Maze
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Blocking maze — the model becomes too optimistic)</span></p>
+
+A short path exists for a while, then the environment changes and that path is **blocked**. The agent's model still records the old, now-impossible transition.
+
+* Standard **Dyna-Q** eventually adapts: real experience overwrites the stale entry once the agent stumbles into the wall.
+* **Dyna-Q+** adapts *faster*, because it keeps re-testing long-untried transitions and so rediscovers the change sooner.
+
+The lesson: *exploration in planning is about checking whether the model is still right*, not only about chasing reward.
+
+</div>
+
+#### Failure Mode 2: The Shortcut Maze
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortcut maze — the model is too pessimistic)</span></p>
+
+Now the environment change *opens* a new, shorter path. The agent's model says no shortcut exists, so planning keeps reinforcing the old longer route and the agent may **never discover** the improvement.
+
+Standard Dyna-Q has no incentive to revisit a region it believes it already understands. Dyna-Q+, by contrast, periodically rechecks neglected actions and can find the new path.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Failure mode</span><span class="math-callout__name">(Outdated models suppress their own repair)</span></p>
+
+The shortcut maze exposes the core danger: **if planning trusts an outdated model too much, it can suppress the very exploration needed to repair that model.** The agent is confident precisely where it is wrong, and confidence kills the exploration that would correct it.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Two stale-model failures: blocking maze closes an old short path; shortcut maze opens a new path that the model does not know about">
+    <text x="205" y="42" text-anchor="middle" font-size="15">Blocking: old path closes</text>
+    <text x="615" y="42" text-anchor="middle" font-size="15">Shortcut: new path opens</text>
+
+    <g transform="translate(65,70)">
+      <rect x="0" y="0" width="280" height="160" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <rect x="0" y="0" width="40" height="40" class="accent"></rect><rect x="40" y="0" width="40" height="40" class="amber"></rect><rect x="80" y="0" width="40" height="40" class="amber"></rect><rect x="120" y="0" width="40" height="40" class="amber"></rect><rect x="160" y="0" width="40" height="40" class="red"></rect><rect x="200" y="0" width="40" height="40" class="green"></rect><rect x="240" y="0" width="40" height="40" class="green"></rect>
+      <rect x="0" y="40" width="40" height="40" class="box"></rect><rect x="40" y="40" width="40" height="40" class="box"></rect><rect x="80" y="40" width="40" height="40" class="box"></rect><rect x="120" y="40" width="40" height="40" fill="#172033"></rect><rect x="160" y="40" width="40" height="40" fill="#172033"></rect><rect x="200" y="40" width="40" height="40" fill="#172033"></rect><rect x="240" y="40" width="40" height="40" class="green"></rect>
+      <rect x="0" y="80" width="40" height="40" class="box"></rect><rect x="40" y="80" width="40" height="40" class="box"></rect><rect x="80" y="80" width="40" height="40" class="box"></rect><rect x="120" y="80" width="40" height="40" class="box"></rect><rect x="160" y="80" width="40" height="40" class="box"></rect><rect x="200" y="80" width="40" height="40" class="box"></rect><rect x="240" y="80" width="40" height="40" class="green"></rect>
+      <rect x="0" y="120" width="40" height="40" class="box"></rect><rect x="40" y="120" width="40" height="40" class="box"></rect><rect x="80" y="120" width="40" height="40" class="box"></rect><rect x="120" y="120" width="40" height="40" class="box"></rect><rect x="160" y="120" width="40" height="40" class="box"></rect><rect x="200" y="120" width="40" height="40" class="box"></rect><rect x="240" y="120" width="40" height="40" class="box"></rect>
+      <text x="20" y="25" text-anchor="middle" font-size="13">S</text>
+      <text x="260" y="25" text-anchor="middle" font-size="13">G</text>
+      <text x="180" y="25" text-anchor="middle" font-size="17">×</text>
+      <path d="M22,20 C70,18 114,18 155,20" class="strong-line" stroke-dasharray="5 4" marker-end="url(#stale-model-arrow)"></path>
+      <text x="140" y="195" text-anchor="middle" font-size="12" class="muted">model still believes the dashed path works</text>
+    </g>
+
+    <g transform="translate(475,70)">
+      <rect x="0" y="0" width="280" height="160" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <rect x="0" y="0" width="40" height="40" class="accent"></rect><rect x="40" y="0" width="40" height="40" class="amber"></rect><rect x="80" y="0" width="40" height="40" class="amber"></rect><rect x="120" y="0" width="40" height="40" class="amber"></rect><rect x="160" y="0" width="40" height="40" class="amber"></rect><rect x="200" y="0" width="40" height="40" class="green"></rect><rect x="240" y="0" width="40" height="40" class="green"></rect>
+      <rect x="0" y="40" width="40" height="40" class="box"></rect><rect x="40" y="40" width="40" height="40" class="box"></rect><rect x="80" y="40" width="40" height="40" class="box"></rect><rect x="120" y="40" width="40" height="40" fill="#172033"></rect><rect x="160" y="40" width="40" height="40" fill="#172033"></rect><rect x="200" y="40" width="40" height="40" fill="#172033"></rect><rect x="240" y="40" width="40" height="40" class="green"></rect>
+      <rect x="0" y="80" width="40" height="40" class="box"></rect><rect x="40" y="80" width="40" height="40" class="box"></rect><rect x="80" y="80" width="40" height="40" class="amber"></rect><rect x="120" y="80" width="40" height="40" class="amber"></rect><rect x="160" y="80" width="40" height="40" class="green"></rect><rect x="200" y="80" width="40" height="40" class="green"></rect><rect x="240" y="80" width="40" height="40" class="green"></rect>
+      <rect x="0" y="120" width="40" height="40" class="box"></rect><rect x="40" y="120" width="40" height="40" class="box"></rect><rect x="80" y="120" width="40" height="40" class="box"></rect><rect x="120" y="120" width="40" height="40" class="box"></rect><rect x="160" y="120" width="40" height="40" class="box"></rect><rect x="200" y="120" width="40" height="40" class="box"></rect><rect x="240" y="120" width="40" height="40" class="box"></rect>
+      <text x="20" y="25" text-anchor="middle" font-size="13">S</text>
+      <text x="260" y="25" text-anchor="middle" font-size="13">G</text>
+      <path d="M22,20 C62,74 116,98 235,98" class="strong-line" marker-end="url(#stale-model-arrow)"></path>
+      <path d="M22,20 C72,18 138,18 195,20" class="line" stroke-dasharray="5 4" marker-end="url(#stale-model-arrow)"></path>
+      <text x="140" y="195" text-anchor="middle" font-size="12" class="muted">new route exists, but the stale model plans the old one</text>
+    </g>
+
+    <defs>
+      <marker id="stale-model-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Planning amplifies the model. If the model is stale, it can keep rehearsing a blocked route or ignore a newly opened shortcut until exploration forces a correction.</figcaption>
+</figure>
+
+#### Dyna-Q+: Exploration as Model Maintenance
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dyna-Q+ exploration bonus)</span></p>
+
+**Dyna-Q+** adds an exploration bonus *inside planning*. If a transition has not been tried for $\tau$ time steps, planning treats its reward as
+
+$$
+r^{+} = r + \kappa \sqrt{\tau},
+$$
+
+for a small $\kappa > 0$. Long-untried state–action pairs accrue extra value, so the agent is encouraged to recheck parts of the world it has neglected — which is exactly how it discovers that the environment has changed.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Dyna-Q+ — change from Dyna-Q)</span></p>
+
+Dyna-Q+ keeps the entire Dyna-Q loop and adds one piece of bookkeeping and one change to planning.
+
+**Extra state.** For every pair, track $\tau(s, a)$ — the number of time steps since $(s, a)$ was last tried.
+
+**Planning change.** During planning, use the bonus-augmented reward
+
+$$
+r^{+} = r + \kappa \sqrt{\tau(s, a)}
+$$
+
+in place of the stored reward $r$. Recently tried actions receive a negligible bonus; long-neglected actions become worth rechecking.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(Curiosity as model upkeep)</span></p>
+
+Dyna-Q+ explores **not just for reward, but to test whether its model has gone stale**. The $\sqrt{\tau}$ bonus is a form of *computational curiosity*: it makes "I haven't checked this in a while" a reason to act, which keeps the model honest in non-stationary environments.
+
+</div>
+
+### Prioritized Sweeping
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Uniform random planning wastes effort)</span></p>
+
+Dyna-Q samples the state–action pairs to plan from *uniformly at random*. This is easy but often **inefficient**:
+
+* early in learning, almost every update changes nothing, because most values are still zero and the backed-up target is zero too;
+* when one state's value changes a lot, only its **predecessors** are immediately affected;
+* so planning should concentrate where value changes are likely to propagate next, not spread itself evenly.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Work backward from what just changed)</span></p>
+
+If one state suddenly becomes important — its value jumps — then the states that *lead into it* are the ones whose values are now stale. So back up **into the predecessors** of any state whose value just changed, and recurse. This focuses computation on the frontier where information is actually moving.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prioritized sweeping)</span></p>
+
+**Prioritized sweeping** focuses planning **backward** from states whose values have changed. It maintains a **priority queue** of state–action pairs keyed by the magnitude of their Bellman error:
+
+* a large Bellman error $\Rightarrow$ high priority;
+* after updating a pair, examine its **predecessors** and compute how much *their* values would change;
+* push important predecessors onto the queue.
+
+In short: **do the most urgent backups first.**
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 360" role="img" aria-label="Prioritized sweeping backs up from a changed state to its predecessors using a priority queue of Bellman errors">
+    <rect x="330" y="125" width="150" height="70" rx="8" class="green"></rect>
+    <text x="405" y="153" text-anchor="middle" font-size="15">changed state</text>
+    <text x="405" y="174" text-anchor="middle" font-size="12" class="muted">large new value</text>
+
+    <rect x="80" y="55" width="140" height="52" rx="8" class="box"></rect>
+    <text x="150" y="86" text-anchor="middle" font-size="13">predecessor A</text>
+    <rect x="80" y="150" width="140" height="52" rx="8" class="box"></rect>
+    <text x="150" y="181" text-anchor="middle" font-size="13">predecessor B</text>
+    <rect x="80" y="245" width="140" height="52" rx="8" class="box"></rect>
+    <text x="150" y="276" text-anchor="middle" font-size="13">predecessor C</text>
+
+    <path d="M220,81 C265,90 288,122 326,143" class="line" marker-end="url(#ps-arrow)"></path>
+    <path d="M220,176 L326,163" class="line" marker-end="url(#ps-arrow)"></path>
+    <path d="M220,271 C265,250 288,204 326,179" class="line" marker-end="url(#ps-arrow)"></path>
+
+    <path d="M330,160 C285,160 260,176 224,176" class="strong-line" stroke-dasharray="5 4" marker-end="url(#ps-arrow)"></path>
+    <text x="275" y="205" text-anchor="middle" font-size="12" class="muted">sweep backward</text>
+
+    <rect x="560" y="55" width="185" height="245" rx="8" class="accent"></rect>
+    <text x="652" y="86" text-anchor="middle" font-size="15">Priority queue</text>
+    <rect x="585" y="112" width="135" height="38" rx="6" class="red"></rect>
+    <text x="652" y="136" text-anchor="middle" font-size="12">B: |δ| = 0.91</text>
+    <rect x="585" y="162" width="135" height="38" rx="6" class="amber"></rect>
+    <text x="652" y="186" text-anchor="middle" font-size="12">A: |δ| = 0.42</text>
+    <rect x="585" y="212" width="135" height="38" rx="6" class="box"></rect>
+    <text x="652" y="236" text-anchor="middle" font-size="12">C: |δ| = 0.08</text>
+    <text x="652" y="274" text-anchor="middle" font-size="12" class="muted">pop highest first</text>
+
+    <line x1="481" y1="160" x2="556" y2="130" class="strong-line" marker-end="url(#ps-arrow)"></line>
+    <text x="520" y="116" text-anchor="middle" font-size="12" class="muted">enqueue</text>
+
+    <defs>
+      <marker id="ps-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Prioritized sweeping is search control, not a new target. A value change at one state makes its predecessors suspicious; the queue orders those predecessor backups by urgency.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Prioritized sweeping — deterministic environment)</span></p>
+
+Initialise $Q(s,a)$, a model $\hat M(s,a)$, and an empty priority queue $PQueue$. For a small threshold $\theta > 0$, loop forever:
+
+1. $S \leftarrow$ current (nonterminal) state; $A \leftarrow$ policy$(S, Q)$.
+2. Execute $A$; observe $R, S'$, and store $\hat M(S, A) \leftarrow (R, S')$.
+3. Compute the priority $P \leftarrow \lvert R + \gamma \max\_{a} Q(S', a) - Q(S, A) \rvert$.
+4. If $P > \theta$, insert $(S, A)$ into $PQueue$ with priority $P$.
+5. Repeat $n$ times while $PQueue$ is nonempty:
+   * pop the highest-priority pair $(S, A)$; retrieve $(R, S') = \hat M(S, A)$;
+   * update $Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max\_{a} Q(S', a) - Q(S, A)\,\bigr]$;
+   * for each predicted predecessor $(\bar S, \bar A)$ of $S$ with reward $\bar R$, compute
+     $$
+     P \leftarrow \bigl\lvert \bar R + \gamma \max_{a} Q(S, a) - Q(\bar S, \bar A) \bigr\rvert;
+     $$
+   * if $P > \theta$, insert $(\bar S, \bar A)$ into $PQueue$ with priority $P$.
+
+On large gridworlds, prioritized sweeping can reach the optimal solution with **orders of magnitude fewer updates** than uniform Dyna-Q — **search control matters as much as the update rule itself.**
+
+</div>
+
+#### Expected vs Sample Updates
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Expected vs sample update)</span></p>
+
+For control, the two ways to back up a single $(s, a)$ are:
+
+* **Expected update** — average over *all* possible successors weighted by the model:
+  $$
+  Q(s, a) \leftarrow \sum_{s', r} \hat p(s', r \mid s, a)\bigl[\, r + \gamma \max_{a'} Q(s', a')\,\bigr].
+  $$
+* **Sample update** — use *one* sampled transition:
+  $$
+  Q(s, a) \leftarrow Q(s, a) + \alpha\bigl[\, R + \gamma \max_{a'} Q(S', a') - Q(s, a)\,\bigr].
+  $$
+
+Expected updates are **exact given the model** but cost work proportional to the branching factor. Sample updates are **noisy but cheap**, and pay off when computation — not data — is the bottleneck, since many cheap sample updates can outrun a few expensive expected ones.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Expected update averages all possible successors while sample update backs up one sampled successor">
+    <text x="205" y="42" text-anchor="middle" font-size="15">Expected update</text>
+    <text x="615" y="42" text-anchor="middle" font-size="15">Sample update</text>
+
+    <g transform="translate(60,75)">
+      <circle cx="145" cy="42" r="24" class="accent"></circle>
+      <text x="145" y="47" text-anchor="middle" font-size="13">(s,a)</text>
+      <circle cx="50" cy="155" r="22" class="green"></circle>
+      <circle cx="145" cy="155" r="22" class="green"></circle>
+      <circle cx="240" cy="155" r="22" class="green"></circle>
+      <line x1="133" y1="63" x2="64" y2="135" class="strong-line" marker-end="url(#expected-sample-arrow)"></line>
+      <line x1="145" y1="66" x2="145" y2="129" class="strong-line" marker-end="url(#expected-sample-arrow)"></line>
+      <line x1="157" y1="63" x2="226" y2="135" class="strong-line" marker-end="url(#expected-sample-arrow)"></line>
+      <text x="50" y="160" text-anchor="middle" font-size="12">s1</text>
+      <text x="145" y="160" text-anchor="middle" font-size="12">s2</text>
+      <text x="240" y="160" text-anchor="middle" font-size="12">s3</text>
+      <text x="92" y="103" text-anchor="middle" font-size="11" class="muted">p=.2</text>
+      <text x="166" y="103" text-anchor="middle" font-size="11" class="muted">p=.5</text>
+      <text x="208" y="103" text-anchor="middle" font-size="11" class="muted">p=.3</text>
+      <rect x="17" y="220" width="256" height="42" rx="8" class="box"></rect>
+      <text x="145" y="246" text-anchor="middle" font-size="12">average every branch</text>
+    </g>
+
+    <g transform="translate(470,75)">
+      <circle cx="145" cy="42" r="24" class="accent"></circle>
+      <text x="145" y="47" text-anchor="middle" font-size="13">(s,a)</text>
+      <circle cx="50" cy="155" r="22" class="box"></circle>
+      <circle cx="145" cy="155" r="22" class="green"></circle>
+      <circle cx="240" cy="155" r="22" class="box"></circle>
+      <line x1="133" y1="63" x2="64" y2="135" class="line" stroke-dasharray="5 4"></line>
+      <line x1="145" y1="66" x2="145" y2="129" class="strong-line" marker-end="url(#expected-sample-arrow)"></line>
+      <line x1="157" y1="63" x2="226" y2="135" class="line" stroke-dasharray="5 4"></line>
+      <text x="50" y="160" text-anchor="middle" font-size="12">s1</text>
+      <text x="145" y="160" text-anchor="middle" font-size="12">S'</text>
+      <text x="240" y="160" text-anchor="middle" font-size="12">s3</text>
+      <rect x="17" y="220" width="256" height="42" rx="8" class="box"></rect>
+      <text x="145" y="246" text-anchor="middle" font-size="12">back up one draw</text>
+    </g>
+
+    <defs>
+      <marker id="expected-sample-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Expected updates spend more computation per backup to remove sampling noise. Sample updates are cheaper and noisy, so a fixed compute budget can buy many more of them.</figcaption>
+</figure>
+
+### Trajectory Sampling and RTDP
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Two criteria for where to update)</span></p>
+
+We now have *two* complementary answers to the question "**where** should planning spend its updates?"
+
+* **Prioritized sweeping** (already seen) — works **backward** from states whose value just changed. Criterion: **Bellman-error magnitude**. Goal: propagate new information to the predecessors that depend on it. *"Fix what is most wrong first."*
+* **Trajectory sampling** (next) — works **forward** from the current state along the policy. Criterion: **on-policy visitation**. Goal: concentrate compute on states the agent actually reaches. *"Work on what is most relevant."*
+
+One is error-driven and backward; the other is distribution-driven and forward. They are **complementary**, and can be combined.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On-policy trajectory sampling can win big)</span></p>
+
+Generating updates by **following the current policy** focuses effort on the states that matter under that policy and ignores unreachable ones. Empirically, on-policy trajectory sampling often wins **early**: on large problems it reaches good values far faster than uniform sweeps, which waste computation on states the policy never visits. Uniform sweeps may catch up eventually on *small* problems, but on large state spaces, focusing updates where the policy actually goes is a major advantage.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Real-Time Dynamic Programming, RTDP)</span></p>
+
+**RTDP** is an on-policy, trajectory-sampling version of value iteration. It
+
+* follows **real or simulated** trajectories from the start state;
+* at each visited state performs a value-iteration-style **expected update**;
+* always acts greedily with respect to the current value function.
+
+The contrast with classical DP is purely one of *coverage*:
+
+* **DP** — expected backups over *many / all* states each sweep;
+* **RTDP** — expected backups *only along sampled trajectories*.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(RTDP — sketch)</span></p>
+
+**Maintain:** state values $V(s)$ and a transition model $\hat p$.
+
+For each trial:
+
+1. Start at an initial state $S$.
+2. Repeat until terminal:
+   * choose a greedy action under the current model,
+     $$
+     A \in \arg\max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
+     $$
+   * update the value with an expected backup,
+     $$
+     V(S) \leftarrow \max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
+     $$
+   * move to the next state $S'$.
+
+Because it only ever backs up states reachable under greedy play, RTDP can solve goal-directed problems while leaving most of the state space untouched.
+
+</div>
+
+#### The Space of Updates
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Two axes organise every method)</span></p>
+
+Every backup discussed in this course can be placed on two axes:
+
+* **sample vs expected** — does the backup use one sampled successor, or average over all of them?
+* **one-step (shallow) vs deep** — does it look one step ahead, or simulate far into the future?
+
+|  | **Sample updates** | **Expected updates** |
+| :--- | :--- | :--- |
+| **One step** | Dyna-Q | RTDP / DP |
+| **Deep** | Rollout, MCTS | Heuristic search |
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 420" role="img" aria-label="Two-axis map of backup methods: sample versus expected updates and shallow versus deep updates">
+    <line x1="150" y1="330" x2="705" y2="330" class="line" marker-end="url(#update-space-arrow)"></line>
+    <line x1="150" y1="330" x2="150" y2="65" class="line" marker-end="url(#update-space-arrow)"></line>
+    <text x="428" y="380" text-anchor="middle" font-size="14">width of update: sample → expected</text>
+    <text x="65" y="205" text-anchor="middle" font-size="14" transform="rotate(-90 65 205)">depth of update: shallow → deep</text>
+
+    <rect x="185" y="210" width="210" height="85" rx="8" class="accent"></rect>
+    <text x="290" y="240" text-anchor="middle" font-size="15">Dyna-Q</text>
+    <text x="290" y="263" text-anchor="middle" font-size="12" class="muted">sample, one-step</text>
+
+    <rect x="455" y="210" width="210" height="85" rx="8" class="green"></rect>
+    <text x="560" y="240" text-anchor="middle" font-size="15">RTDP / DP</text>
+    <text x="560" y="263" text-anchor="middle" font-size="12" class="muted">expected, one-step</text>
+
+    <rect x="185" y="95" width="210" height="85" rx="8" class="amber"></rect>
+    <text x="290" y="125" text-anchor="middle" font-size="15">Rollout / MCTS</text>
+    <text x="290" y="148" text-anchor="middle" font-size="12" class="muted">sample trajectories</text>
+
+    <rect x="455" y="95" width="210" height="85" rx="8" class="box"></rect>
+    <text x="560" y="125" text-anchor="middle" font-size="15">Heuristic search</text>
+    <text x="560" y="148" text-anchor="middle" font-size="12" class="muted">deep tree + leaf heuristic</text>
+
+    <line x1="425" y1="80" x2="425" y2="315" stroke="#dbe1ee" stroke-width="2" stroke-dasharray="6 5"></line>
+    <line x1="170" y1="195" x2="685" y2="195" stroke="#dbe1ee" stroke-width="2" stroke-dasharray="6 5"></line>
+    <text x="260" y="350" text-anchor="middle" font-size="12" class="muted">sample</text>
+    <text x="560" y="350" text-anchor="middle" font-size="12" class="muted">expected</text>
+    <text x="125" y="265" text-anchor="end" font-size="12" class="muted">shallow</text>
+    <text x="125" y="140" text-anchor="end" font-size="12" class="muted">deep</text>
+
+    <defs>
+      <marker id="update-space-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The lecture's methods differ less by algebra than by backup geometry: how wide the update is and how far into the future it looks.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The backup shape hides search control)</span></p>
+
+Two methods can share the *same* backup diagram yet behave completely differently, because they update **different states in a different order**. The backup shape says *how* one value is computed; **search control** says *which* values get computed and *when*:
+
+* **uniform sweep** — fair but unfocused, spreads updates evenly;
+* **prioritized sweeping** — concentrates on the largest Bellman error;
+* **trajectory sampling / RTDP** — concentrates where the policy goes;
+* **decision-time planning** — pours all effort onto the *current* state.
+
+The backup diagram is only half the story; the distribution of effort across states is the other half.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 440" role="img" aria-label="Four search-control patterns: uniform sweep, prioritized sweeping, trajectory sampling, and decision-time planning">
+    <text x="205" y="38" text-anchor="middle" font-size="15">Uniform sweep</text>
+    <text x="615" y="38" text-anchor="middle" font-size="15">Prioritized sweeping</text>
+    <text x="205" y="238" text-anchor="middle" font-size="15">Trajectory sampling / RTDP</text>
+    <text x="615" y="238" text-anchor="middle" font-size="15">Decision-time planning</text>
+
+    <g transform="translate(95,60)">
+      <rect x="0" y="0" width="220" height="135" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <circle cx="35" cy="35" r="12" class="amber"></circle><circle cx="85" cy="35" r="12" class="amber"></circle><circle cx="135" cy="35" r="12" class="amber"></circle><circle cx="185" cy="35" r="12" class="amber"></circle>
+      <circle cx="35" cy="80" r="12" class="amber"></circle><circle cx="85" cy="80" r="12" class="amber"></circle><circle cx="135" cy="80" r="12" class="amber"></circle><circle cx="185" cy="80" r="12" class="amber"></circle>
+      <text x="110" y="120" text-anchor="middle" font-size="12" class="muted">updates spread evenly</text>
+    </g>
+
+    <g transform="translate(505,60)">
+      <rect x="0" y="0" width="220" height="135" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <circle cx="35" cy="35" r="12" class="box"></circle><circle cx="85" cy="35" r="12" class="red"></circle><circle cx="135" cy="35" r="12" class="amber"></circle><circle cx="185" cy="35" r="12" class="box"></circle>
+      <circle cx="35" cy="80" r="12" class="box"></circle><circle cx="85" cy="80" r="12" class="red"></circle><circle cx="135" cy="80" r="12" class="amber"></circle><circle cx="185" cy="80" r="12" class="box"></circle>
+      <path d="M150,35 C125,35 110,35 98,35" class="strong-line" marker-end="url(#search-control-arrow)"></path>
+      <text x="110" y="120" text-anchor="middle" font-size="12" class="muted">largest errors first</text>
+    </g>
+
+    <g transform="translate(95,260)">
+      <rect x="0" y="0" width="220" height="135" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <circle cx="35" cy="35" r="12" class="accent"></circle><circle cx="85" cy="35" r="12" class="accent"></circle><circle cx="135" cy="35" r="12" class="accent"></circle><circle cx="185" cy="35" r="12" class="green"></circle>
+      <circle cx="35" cy="80" r="12" class="box"></circle><circle cx="85" cy="80" r="12" class="box"></circle><circle cx="135" cy="80" r="12" class="box"></circle><circle cx="185" cy="80" r="12" class="green"></circle>
+      <path d="M35,35 L85,35 L135,35 L185,35 L185,80" class="strong-line" fill="none" marker-end="url(#search-control-arrow)"></path>
+      <text x="110" y="120" text-anchor="middle" font-size="12" class="muted">follow reachable trajectories</text>
+    </g>
+
+    <g transform="translate(505,260)">
+      <rect x="0" y="0" width="220" height="135" rx="8" fill="#ffffff" stroke="#dbe1ee"></rect>
+      <circle cx="110" cy="30" r="15" class="accent"></circle>
+      <line x1="100" y1="43" x2="55" y2="85" class="strong-line"></line>
+      <line x1="110" y1="45" x2="110" y2="88" class="strong-line"></line>
+      <line x1="120" y1="43" x2="165" y2="85" class="line"></line>
+      <circle cx="55" cy="96" r="12" class="green"></circle>
+      <circle cx="110" cy="100" r="12" class="green"></circle>
+      <circle cx="165" cy="96" r="12" class="box"></circle>
+      <text x="110" y="120" text-anchor="middle" font-size="12" class="muted">focus on this root state</text>
+    </g>
+
+    <defs>
+      <marker id="search-control-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Search control decides the distribution of computation. The same backup can be weak or powerful depending on whether updates are scattered uniformly, pulled by error, pushed along trajectories, or concentrated on the present decision.</figcaption>
+</figure>
+
+### Decision-Time Planning
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Background vs decision-time planning)</span></p>
+
+Planning can be used in two fundamentally different ways:
+
+* **Background planning** — gradually improve a value function or policy that will be *reused across many states*. Example: Dyna. Planning runs "in the background", building reusable knowledge.
+* **Decision-time planning** — plan *specifically for the current state*, use the result to choose **one action now**, then discard most of the work and start again next step.
+
+Background planning learns reusable knowledge; decision-time planning **spends computation directly on the current choice**. The methods below — heuristic search, rollout, and MCTS — are all decision-time.
+
+</div>
+
+#### Heuristic Search
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Heuristic search)</span></p>
+
+**Heuristic search** plans at decision time by building a look-ahead tree from the current state:
+
+1. search forward from the current state;
+2. expand a look-ahead tree **selectively** (only promising lines);
+3. back up values from the leaves toward the root;
+4. choose the best root action.
+
+Leaf nodes are evaluated with a **heuristic** value estimate $\hat v$ rather than expanded indefinitely. It is, in effect, a deeper greedy policy: instead of asking only "what happens next?", it asks "what happens after that, and after that?"
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Backing up a small look-ahead tree)</span></p>
+
+Take a tree rooted at $s$ with $\gamma = 1$. From $s$, action $a\_1$ leads to node $x$ and action $a\_2$ to a leaf valued $4$. From $x$, action $b\_1$ leads through a **stochastic** action $o\_1$ to leaves $\lbrace 12, 2\rbrace$ with equal probability, and $b\_2$ to a leaf valued $6$. Backing up bottom-up:
+
+* **average** at the stochastic node $o\_1$: $\;\mathbb{E} = 0.5(12) + 0.5(2) = 7$;
+* **max** at each decision node: $v(m) = \max(7, 5) = 7$, then $v(x) = \max(7, 6) = 7$;
+* at the root: $Q(s, a\_1) = 7$, $Q(s, a\_2) = 4 \Rightarrow$ play $a\_1$.
+
+Bottom-up, the operators **alternate**: *average* at stochastic (chance) nodes, *max* at decision nodes. Expanding only promising lines — selective depth — is what makes the search *heuristic* rather than exhaustive.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 420" role="img" aria-label="Heuristic search tree with max backups at decision nodes and average backups at chance nodes">
+    <circle cx="410" cy="45" r="22" class="accent"></circle>
+    <text x="410" y="50" text-anchor="middle" font-size="14">s</text>
+    <text x="410" y="18" text-anchor="middle" font-size="12" class="muted">choose max at root</text>
+
+    <line x1="394" y1="61" x2="278" y2="120" class="strong-line"></line>
+    <line x1="426" y1="61" x2="542" y2="120" class="line"></line>
+    <text x="322" y="85" text-anchor="middle" font-size="12" class="muted">a1</text>
+    <text x="500" y="85" text-anchor="middle" font-size="12" class="muted">a2</text>
+
+    <circle cx="260" cy="135" r="22" class="accent"></circle>
+    <text x="260" y="140" text-anchor="middle" font-size="14">x</text>
+    <rect x="515" y="113" width="70" height="45" rx="8" class="box"></rect>
+    <text x="550" y="140" text-anchor="middle" font-size="14">v=4</text>
+
+    <line x1="248" y1="154" x2="188" y2="215" class="strong-line"></line>
+    <line x1="272" y1="154" x2="335" y2="215" class="line"></line>
+    <text x="209" y="182" text-anchor="middle" font-size="12" class="muted">b1</text>
+    <text x="317" y="182" text-anchor="middle" font-size="12" class="muted">b2</text>
+
+    <circle cx="175" cy="232" r="20" class="amber"></circle>
+    <text x="175" y="237" text-anchor="middle" font-size="13">o1</text>
+    <rect x="315" y="211" width="70" height="42" rx="8" class="box"></rect>
+    <text x="350" y="237" text-anchor="middle" font-size="14">v=6</text>
+
+    <line x1="163" y1="249" x2="112" y2="310" class="line"></line>
+    <line x1="187" y1="249" x2="238" y2="310" class="line"></line>
+    <text x="125" y="282" text-anchor="middle" font-size="11" class="muted">0.5</text>
+    <text x="224" y="282" text-anchor="middle" font-size="11" class="muted">0.5</text>
+
+    <rect x="75" y="315" width="70" height="42" rx="8" class="green"></rect>
+    <text x="110" y="341" text-anchor="middle" font-size="14">12</text>
+    <rect x="205" y="315" width="70" height="42" rx="8" class="green"></rect>
+    <text x="240" y="341" text-anchor="middle" font-size="14">2</text>
+
+    <rect x="475" y="235" width="260" height="118" rx="8" class="box"></rect>
+    <text x="605" y="266" text-anchor="middle" font-size="13">chance node: average</text>
+    <text x="605" y="291" text-anchor="middle" font-size="13">0.5 · 12 + 0.5 · 2 = 7</text>
+    <text x="605" y="320" text-anchor="middle" font-size="13">decision nodes: max</text>
+    <text x="605" y="343" text-anchor="middle" font-size="13">max(7, 6) = 7; max(7, 4) = 7</text>
+
+    <path d="M110,315 C155,285 183,272 175,255" class="strong-line" stroke-dasharray="5 4" marker-end="url(#heuristic-arrow)"></path>
+    <path d="M175,210 C185,175 220,152 238,141" class="strong-line" stroke-dasharray="5 4" marker-end="url(#heuristic-arrow)"></path>
+    <path d="M260,112 C300,70 360,56 388,49" class="strong-line" stroke-dasharray="5 4" marker-end="url(#heuristic-arrow)"></path>
+
+    <text x="320" y="330" text-anchor="middle" font-size="12" class="muted">dashed arrows show bottom-up backup flow</text>
+
+    <defs>
+      <marker id="heuristic-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Heuristic search builds a finite look-ahead tree, evaluates leaves, then backs values up toward the root. Decision nodes take maxima; chance nodes take expectations.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Heuristic search)</span></p>
+
+At the current state $s$:
+
+1. build a look-ahead tree rooted at $s$;
+2. expand promising actions up to a depth or budget limit;
+3. evaluate leaves with a heuristic or value estimate $\hat v$;
+4. back up values from leaves to root (max at decision nodes, expectation at chance nodes);
+5. choose the root action with the largest backed-up value.
+
+**Key idea:** spend computation on the *current decision only* — do not sweep the whole state space.
+
+</div>
+
+#### Rollout Algorithms
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Rollout algorithm)</span></p>
+
+A **rollout algorithm** is decision-time Monte Carlo planning. For each candidate action available now:
+
+* simulate many trajectories that begin with that action;
+* after the first action, follow a fixed **rollout policy**;
+* estimate the action's value by the **average return** of those trajectories;
+* pick the best-looking current action.
+
+Rollout does **not** learn a full global value function — it estimates *just enough* to decide what to do now, then throws the estimates away and repeats at the next state.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Rollout)</span></p>
+
+**Inputs:** current state $s$; rollout policy $\pi$; number of simulations $K$ per candidate action.
+
+1. For each action $a \in \mathcal{A}(s)$:
+   * simulate $K$ trajectories starting with $a$;
+   * follow $\pi$ after the first step;
+   * average the returns,
+     $$
+     \hat q(s, a) = \frac{1}{K} \sum_{i=1}^{K} G^{(i)}.
+     $$
+2. Choose the action with the largest $\hat q(s, a)$.
+
+A better rollout policy $\pi$ gives a better estimate; more simulations $K$ reduce its variance.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 360" role="img" aria-label="Rollout planning simulates multiple trajectories for each candidate action and averages returns to choose the current action">
+    <circle cx="100" cy="175" r="24" class="accent"></circle>
+    <text x="100" y="180" text-anchor="middle" font-size="14">s</text>
+    <text x="100" y="130" text-anchor="middle" font-size="12" class="muted">current state</text>
+
+    <rect x="210" y="55" width="80" height="42" rx="8" class="box"></rect>
+    <rect x="210" y="154" width="80" height="42" rx="8" class="green"></rect>
+    <rect x="210" y="253" width="80" height="42" rx="8" class="box"></rect>
+    <text x="250" y="81" text-anchor="middle" font-size="13">a1</text>
+    <text x="250" y="180" text-anchor="middle" font-size="13">a2</text>
+    <text x="250" y="279" text-anchor="middle" font-size="13">a3</text>
+
+    <line x1="123" y1="162" x2="206" y2="82" class="line"></line>
+    <line x1="124" y1="175" x2="206" y2="175" class="strong-line"></line>
+    <line x1="123" y1="188" x2="206" y2="269" class="line"></line>
+
+    <path d="M295,76 C370,35 460,35 535,68" class="line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,76 C370,78 455,88 535,90" class="line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,76 C370,112 455,112 535,103" class="line" marker-end="url(#rollout-arrow)"></path>
+
+    <path d="M295,175 C370,132 460,134 535,154" class="strong-line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,175 C370,175 455,174 535,175" class="strong-line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,175 C370,218 455,218 535,196" class="strong-line" marker-end="url(#rollout-arrow)"></path>
+
+    <path d="M295,274 C370,232 460,236 535,253" class="line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,274 C370,274 455,276 535,274" class="line" marker-end="url(#rollout-arrow)"></path>
+    <path d="M295,274 C370,315 455,315 535,296" class="line" marker-end="url(#rollout-arrow)"></path>
+
+    <rect x="575" y="50" width="175" height="65" rx="8" class="box"></rect>
+    <text x="662" y="78" text-anchor="middle" font-size="13">mean return</text>
+    <text x="662" y="99" text-anchor="middle" font-size="13">mean(a1)=3.8</text>
+    <rect x="575" y="143" width="175" height="65" rx="8" class="green"></rect>
+    <text x="662" y="171" text-anchor="middle" font-size="13">mean return</text>
+    <text x="662" y="192" text-anchor="middle" font-size="13">mean(a2)=5.4</text>
+    <rect x="575" y="236" width="175" height="65" rx="8" class="box"></rect>
+    <text x="662" y="264" text-anchor="middle" font-size="13">mean return</text>
+    <text x="662" y="285" text-anchor="middle" font-size="13">mean(a3)=4.1</text>
+
+    <text x="405" y="330" text-anchor="middle" font-size="12" class="muted">after the first action, every trajectory follows the rollout policy π</text>
+
+    <defs>
+      <marker id="rollout-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Rollout planning is flat decision-time Monte Carlo: estimate each candidate root action by simulated returns, then take the action with the largest average.</figcaption>
+</figure>
+
+#### Monte Carlo Tree Search
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Monte Carlo Tree Search, MCTS)</span></p>
+
+**MCTS** improves on plain rollout by **saving and refining statistics in a partial search tree** instead of restarting from scratch each time. It repeats four steps while time remains:
+
+1. **Selection** — from the root, descend the *existing* tree by the **tree policy** to a node with an untried action.
+2. **Expansion** — add one new node.
+3. **Simulation** — roll out from that node to the end using the **rollout policy**, returning a return $G$.
+4. **Backup** — propagate $G$ up the visited path, updating each node's statistics.
+
+MCTS focuses simulation effort on **promising prefixes** rather than restarting every trajectory from the root.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 320" role="img" aria-label="MCTS search tree: a root node with visit counts N and mean values Q, an in-memory tree, and a dashed frontier where rollouts begin; the tree policy selects inside the tree and the rollout policy takes over beyond the frontier">
+    <!-- root -->
+    <circle cx="380" cy="40" r="20" class="accent"></circle>
+    <text x="380" y="20" text-anchor="middle" font-size="12" class="muted">N=40</text>
+
+    <!-- level 1 -->
+    <line x1="380" y1="60" x2="250" y2="120" class="strong-line"></line>
+    <line x1="380" y1="60" x2="510" y2="120" class="line"></line>
+    <circle cx="250" cy="135" r="18" class="accent"></circle>
+    <text x="250" y="113" text-anchor="middle" font-size="12" class="muted">N=28, Q=.70</text>
+    <circle cx="510" cy="135" r="18" class="box" stroke-dasharray="4 3"></circle>
+    <text x="510" y="113" text-anchor="middle" font-size="12" class="muted">N=12, Q=.30</text>
+
+    <!-- level 2 -->
+    <line x1="250" y1="153" x2="180" y2="210" class="strong-line"></line>
+    <line x1="250" y1="153" x2="320" y2="210" class="line"></line>
+    <circle cx="180" cy="225" r="16" class="accent"></circle>
+    <text x="180" y="205" text-anchor="middle" font-size="12" class="muted">N=18, Q=.80</text>
+    <circle cx="320" cy="225" r="16" class="box" stroke-dasharray="4 3"></circle>
+    <text x="320" y="205" text-anchor="middle" font-size="11" class="muted">N=10</text>
+
+    <!-- level 3 (frontier) -->
+    <line x1="180" y1="241" x2="180" y2="285" class="strong-line"></line>
+    <circle cx="180" cy="298" r="14" class="box" stroke-dasharray="4 3"></circle>
+    <text x="150" y="302" text-anchor="end" font-size="11" class="muted">N=3</text>
+
+    <!-- rollout arrow from a frontier node -->
+    <line x1="320" y1="241" x2="320" y2="288" class="line" stroke-dasharray="3 3" marker-end="url(#mah)"></line>
+    <text x="430" y="270" text-anchor="middle" font-size="12" class="muted">rollouts start here</text>
+    <text x="430" y="288" text-anchor="middle" font-size="12" class="muted">(dashed = frontier)</text>
+
+    <defs>
+      <marker id="mah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The MCTS tree lives in memory: each node stores a visit count $N$ and a mean value $Q$. It is <strong>partial and local</strong> (only states reachable from now), <strong>grown from scratch</strong> (one node per iteration), and split by a frontier — the <strong>tree policy</strong> acts inside, the <strong>rollout policy</strong> beyond.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(One MCTS iteration in detail)</span></p>
+
+A single iteration touches the tree as follows:
+
+1. **Select** — from the root, descend the existing tree by the tree policy to a node with an untried action.
+2. **Expand** — add *one* new node.
+3. **Simulate** — roll out from it to the end, returning a return $G$.
+4. **Backup** — along the path just taken, increment each visit count and fold $G$ into each running mean:
+   $$
+   N \leftarrow N + 1, \qquad Q \leftarrow Q + \tfrac{1}{N}\,(G - Q).
+   $$
+
+The rollout trajectory itself is **not stored** — only the statistics on the in-tree nodes are kept. The tree thus stores only the slice of the future worth thinking about for the decision in front of the agent.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 390" role="img" aria-label="One MCTS iteration selects a path, expands a new node, simulates a rollout, and backs up the return to update N and Q">
+    <text x="410" y="35" text-anchor="middle" font-size="15">One MCTS iteration: select → expand → simulate → backup</text>
+
+    <circle cx="410" cy="80" r="22" class="accent"></circle>
+    <text x="410" y="85" text-anchor="middle" font-size="13">root</text>
+    <text x="410" y="50" text-anchor="middle" font-size="12" class="muted">N: 40→41</text>
+
+    <line x1="397" y1="98" x2="300" y2="158" class="strong-line"></line>
+    <line x1="423" y1="98" x2="520" y2="158" class="line"></line>
+    <circle cx="285" cy="170" r="20" class="accent"></circle>
+    <text x="285" y="175" text-anchor="middle" font-size="12">A</text>
+    <text x="285" y="143" text-anchor="middle" font-size="12" class="muted">N: 28→29</text>
+    <circle cx="535" cy="170" r="20" class="box"></circle>
+    <text x="535" y="175" text-anchor="middle" font-size="12">B</text>
+
+    <line x1="274" y1="187" x2="220" y2="242" class="strong-line"></line>
+    <line x1="296" y1="187" x2="350" y2="242" class="line"></line>
+    <circle cx="208" cy="255" r="18" class="accent"></circle>
+    <text x="208" y="260" text-anchor="middle" font-size="12">C</text>
+    <text x="208" y="229" text-anchor="middle" font-size="12" class="muted">N: 18→19</text>
+    <circle cx="362" cy="255" r="18" class="box"></circle>
+    <text x="362" y="260" text-anchor="middle" font-size="12">D</text>
+
+    <line x1="208" y1="273" x2="208" y2="315" class="strong-line"></line>
+    <circle cx="208" cy="335" r="17" class="green"></circle>
+    <text x="208" y="340" text-anchor="middle" font-size="12">new</text>
+    <text x="260" y="339" text-anchor="start" font-size="12" class="muted">expand: N 0→1, Q 0→G</text>
+
+    <path d="M225,335 C340,365 470,340 590,300" class="line" stroke-dasharray="5 4" marker-end="url(#mcts-iter-arrow)"></path>
+    <text x="440" y="363" text-anchor="middle" font-size="12" class="muted">simulate rollout beyond the frontier</text>
+
+    <rect x="590" y="250" width="145" height="58" rx="8" class="amber"></rect>
+    <text x="662" y="276" text-anchor="middle" font-size="13">return</text>
+    <text x="662" y="297" text-anchor="middle" font-size="13">G = 1</text>
+
+    <path d="M610,248 C490,188 345,170 305,170" class="strong-line" stroke-dasharray="5 4" marker-end="url(#mcts-iter-arrow)"></path>
+    <path d="M305,158 C360,120 388,105 403,100" class="strong-line" stroke-dasharray="5 4" marker-end="url(#mcts-iter-arrow)"></path>
+    <text x="590" y="190" text-anchor="middle" font-size="12" class="muted">backup G along selected path</text>
+    <text x="590" y="211" text-anchor="middle" font-size="12" class="muted">Q ← Q + (G − Q)/N</text>
+
+    <defs>
+      <marker id="mcts-iter-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>One MCTS iteration stores only the new tree node and the updated statistics on the selected path. The rollout is used for its return, then discarded.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Choosing the real move, then moving on)</span></p>
+
+After the simulation budget is spent, pick the real move by
+
+$$
+\arg\max_{a} N(s_0, a),
+$$
+
+the **most-visited** root action — *not* the one with the highest mean $Q$. Why most visits rather than best mean?
+
+* the tree policy already uses $Q$ during search, so promising moves keep attracting simulations and accumulate high $N$;
+* a high $Q$ on *few* visits may just be luck — $N$ is the more robust signal.
+
+**Then move on (decision-time):** play the chosen action, observe the true $s', r$, **reuse the subtree** under that move as the new root, and replan from $s'$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(Why MCTS mattered)</span></p>
+
+MCTS combines several ideas this lecture has built up:
+
+* it marries **decision-time planning** with **incremental sample-based value estimation**;
+* it stores only a **partial tree** near the current state;
+* it avoids globally approximating action values everywhere;
+* it **reuses previous simulations** to guide future exploration.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Decision-time planning: heuristic search → rollout → MCTS)</span></p>
+
+| | **Heuristic search** | **Rollout** | **MCTS** |
+| :--- | :--- | :--- | :--- |
+| Structure built | fixed-depth tree | none — flat trajectories | tree, grown 1 node/iter |
+| Leaf value from | heuristic $\hat v$ | full rollout return | rollout return, then stored |
+| Backup | one max/expectation pass | average of $K$ returns | incremental running mean |
+| Search control | expand to depth $d$ | $K$ sims per action (uniform) | selection: explore/exploit |
+| Memory kept? | no (rebuilt each move) | no | **yes** — reused next move |
+| More compute means | deeper $d$ | larger $K$ | more iterations |
+
+Heuristic search needs a good $\hat v$; rollout drops it for sampled returns; **MCTS keeps the sampled returns and adds a reusable tree plus selective search on top.**
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Method map — what each idea adds)</span></p>
+
+| Method | Core idea | Strength | Main limitation |
+| :--- | :--- | :--- | :--- |
+| Dyna-Q | learn and plan with the same update rule | makes each real step more valuable | depends on model quality |
+| Dyna-Q+ | exploration bonus in planning | adapts to change better | more exploratory cost |
+| Prioritized sweeping | back up urgent predecessors first | great search efficiency | needs predecessor bookkeeping |
+| Expected updates | exact given the model | no sampling error | can be expensive |
+| Sample updates | cheap stochastic backups | many backups quickly | noisy |
+| RTDP | on-policy value iteration by trajectories | focuses on relevant states | best for goal-directed structure |
+| Rollout | simulate candidate actions now | strong decision-time planning | little long-term memory |
+| MCTS | build and reuse a partial search tree | focused effort at decision time | more machinery / tuning |
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(The dimensions view)</span></p>
+
+All of Part I of the course fits in a single design space spanned by two axes:
+
+* **horizontal axis — width of the update:** *sample* $\leftrightarrow$ *expected* (one successor vs. all of them);
+* **vertical axis — depth of the update:** *shallow* $\leftrightarrow$ *deep* (one step vs. full return).
+
+The four corners are familiar: **TD learning** (sample, shallow), **dynamic programming** (expected, shallow), **Monte Carlo** (sample, deep), and **exhaustive search** (expected, deep). Every planning method in this lecture is just a different position — and a different *search control* — in the same space.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — Planning and Learning)</span></p>
+
+* **A model lets us create simulated experience.** Distribution models give probabilities; sample models give one outcome and are usually easier to obtain.
+* **Planning and learning share machinery.** Both back up values; they differ only in whether the experience is real or simulated — so the same update rule serves both.
+* **Dyna integrates direct RL, model learning, and planning** in one loop, turning each real transition into many updates.
+* **Models can be wrong**, and planning amplifies their errors; **exploration (Dyna-Q+) is model maintenance**, re-testing stale transitions to keep the model honest.
+* **Search control is crucial** — *where* you spend updates matters enormously. Prioritized sweeping works backward by Bellman error; trajectory sampling / RTDP works forward by on-policy visitation.
+* **Sample updates can outperform expected updates** when computation, not data, is the bottleneck.
+* **Decision-time planning** — heuristic search, rollout, and **MCTS** — shows increasingly focused ways to spend computation on the *current* decision.
+
+**Final message.** *Planning is reinforcement learning applied to imagined experience.* Once that equivalence is clear, the whole tabular toolkit — backups, bootstrapping, exploration, and search control — transfers directly to the model-based setting, setting up the move from tables to **function approximation** in Part II.
+
+</div>
+
+## Lecture 9: On-Policy Prediction with Function Approximation
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(From tables to parameterized functions)</span></p>
+
+Part I closed by reframing planning as *reinforcement learning on imagined experience* — but every method so far, real or simulated, stored **one number per state** (or per state–action pair). This lecture opens Part II by removing that assumption. We keep the *prediction* problem — estimate $v\_\pi$ for a fixed policy $\pi$ — but replace the lookup table $V(s)$ by a **parameterized function** $\hat v(s,\mathbf{w}) \approx v\_\pi(s)$ whose weight vector $\mathbf{w}$ has far fewer components than there are states.
+
+The build-up is:
+
+1. **Why tabular methods break.** When the state space is large or continuous, a table is both too big to store *and* too sparse to fill — almost every state is seen at most once.
+2. **The objective.** Once we cannot be exactly right everywhere, we must say *which errors matter*. This gives the **mean-squared value error** $\overline{\text{VE}}$, weighted by how often the policy visits each state.
+3. **Stochastic gradient descent.** Minimize $\overline{\text{VE}}$ by SGD; understand why **bootstrapping** breaks the true-gradient guarantee and forces **semi-gradient** methods.
+4. **Linear methods.** The cleanest, most analyzable case — gradient equals the feature vector, the objective is convex, and on-policy TD has a convergence guarantee with a known error bound.
+5. **Feature construction.** State aggregation, Fourier bases, coarse / tile coding, and RBFs — the design choices that usually matter more than the algorithm.
+6. **Nonlinear approximation.** Neural networks lift the feature-design burden but lose the theory, leaning on a toolbox of stability tricks instead.
+
+The guiding question of the lecture is:
+
+> *How do we evaluate a policy when we cannot store one number per state, and almost every state we encounter is effectively new?*
+
+</div>
+
+### Why Tabular Methods Break
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(The double trouble with tables)</span></p>
+
+Tabular RL stores one number per state and works only when the state set is small **and** every relevant state is visited many times. Real problems violate both conditions: their states are **continuous** (sensors, joint angles), **very high-dimensional** (images, structured descriptions), or **combinatorial** (positions of many objects). Two failures strike at once:
+
+* **(a) Memory.** A table indexed by states is simply too large to store.
+* **(b) Coverage.** Most states are seen *at most once* — so even if memory were free, repeated visits would never accumulate to refine each entry.
+
+Trouble (b) is the deeper one: it survives even infinite memory, and it is what forces us to **generalize** rather than merely compress.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(How astronomically large an image state space is)</span></p>
+
+Suppose the state is a small grayscale image, $84 \times 84$ pixels, each pixel one of $256$ levels. The number of possible configurations is
+
+$$
+256^{\,84 \times 84} \;=\; 256^{\,7056},
+$$
+
+which is astronomically larger than the number of atoms in the observable universe. No table can index such a set, and no agent could ever revisit a particular image. The only way forward is to **act sensibly in states never seen before**, by exploiting regularities learned from the states that *were* seen.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Generalization is the central issue)</span></p>
+
+In large state spaces *almost every* encountered state is effectively new. Learning must therefore rely on **using experience in one set of states to make predictions in many others**. This is exactly what function approximation buys us:
+
+* a **compact** representation — far fewer parameters than states;
+* **controlled sharing** of information across states — one experience can improve the estimate at many related states at once.
+
+Generalization is not a bonus here; it is the only thing that makes the problem learnable at all.
+
+</div>
+
+### From Tables to Parameterized Functions
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parameterized value function)</span></p>
+
+Replace the table $V(s)$ by a parameterized approximation
+
+$$
+\hat v(s,\mathbf{w}) \;\approx\; v_\pi(s), \qquad \mathbf{w} \in \mathbb{R}^{d}, \qquad d \ll |\mathcal{S}|,
+$$
+
+where $\mathbf{w}$ is the **weight vector**, updated incrementally. Three consequences follow immediately from $d \ll \lvert\mathcal{S}\rvert$:
+
+* with far fewer parameters than states, **exact** equality $\hat v = v\_\pi$ is impossible in general;
+* one weight change affects the prediction at **many** states at once — so generalization is automatic;
+* this is also the *cost* of generalization: updates **couple** states. Reducing the error at one state cannot leave all the others untouched.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Examples of function approximators)</span></p>
+
+The form of $\hat v$ is a free design choice. Common families:
+
+* **Linear in features:** $\hat v(s,\mathbf{w}) = \mathbf{w}^\top \mathbf{x}(s)$ — a weighted sum of fixed features. Most of the theory lives here.
+* **Neural networks:** $\hat v(s,\mathbf{w})$ a multi-layer nonlinear function of $\mathbf{w}$.
+* **Decision / regression trees.**
+* **Memory-based / kernel methods.**
+
+Anything differentiable in $\mathbf{w}$ can be plugged into the gradient machinery below; the linear and neural cases dominate practice.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(The "$s \mapsto u$" update view)</span></p>
+
+Every prediction update we have ever seen has the same shape
+
+$$
+S_t \;\mapsto\; U_t,
+$$
+
+read as: *"the value at $S\_t$ should look more like the target $U\_t$."* The methods differ only in the **target** $U\_t$:
+
+* **Monte Carlo:** $U\_t = G\_t$.
+* **TD(0):** $U\_t = R\_{t+1} + \gamma\,\hat v(S\_{t+1},\mathbf{w})$.
+* **$n$-step TD:** $U\_t = G\_{t:t+n}$.
+* **DP:** $U\_t = \mathbb{E}\_\pi[\,R\_{t+1} + \gamma\,\hat v(S\_{t+1},\mathbf{w}) \mid S\_t\,]$.
+
+**The reframing:** RL produces a stream of training examples $S\_t \mapsto U\_t$, and a function approximator just has to fit them. The twist is that in ordinary regression the targets are external labels handed to us by an *oracle*; here we **compute the targets ourselves**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why RL approximation is harder than supervised learning)</span></p>
+
+Plugging a regression method into RL is not as innocent as the $S\_t\mapsto U\_t$ view suggests. Three difficulties have no analogue in ordinary supervised learning:
+
+* **We learn online**, from states visited under the **state-visitation distribution** $d\_\pi$. Nearby examples are *correlated*, coverage is uneven, and the shared weights couple the effects of different updates.
+* **Bootstrapping makes the target depend on the current weights:** $U\_t = R\_{t+1} + \gamma\,\hat v(S\_{t+1},\mathbf{w}\_t)$. The "label" therefore **moves as we learn** — we are chasing a target we are simultaneously editing.
+* **In control, the value function feeds back into the policy**, which changes the future data distribution — the problem is *nonstationary* by construction.
+
+The three recurring headaches are thus **coupled updates**, **moving targets / bootstrapping bias**, and **nonstationarity**. Keep them in mind; the rest of the lecture is largely about taming them.
+
+</div>
+
+### The Prediction Objective $\overline{\text{VE}}$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(From a tabular update to a loss function)</span></p>
+
+The tabular prediction update
+
+$$
+V(S_t) \;\leftarrow\; V(S_t) + \alpha\,[\,U_t - V(S_t)\,]
+$$
+
+gives each state its **own** estimate; updating $S\_t$ leaves $V(s)$ for every other state untouched. With function approximation
+
+$$
+\hat v(s,\mathbf{w}) \approx v_\pi(s),
+$$
+
+a *single* weight vector $\mathbf{w}$ is shared across many states, so changing $\mathbf{w}$ to improve one state can change predictions elsewhere. This raises a question that simply did not exist in the tabular world: **when you cannot be right everywhere, what should count as the best compromise across states?**
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mean-squared value error $\overline{\text{VE}}$)</span></p>
+
+Choose a non-negative **state weighting** $\mu(s)$ saying how much we care about being accurate at each state, with
+
+$$
+\mu(s) \geq 0, \qquad \sum_s \mu(s) = 1.
+$$
+
+The objective is the **mean-squared value error**
+
+$$
+\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .
+$$
+
+For **on-policy prediction** the natural choice is $\mu(s) = $ *how often policy $\pi$ visits state $s$.* States we visit often weigh more — both because we have more data there **and** because those are the states relevant to evaluating $\pi$ in the first place.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What distribution is $\mu$?)</span></p>
+
+$\mu$ is not an arbitrary modelling knob — it is the state distribution *generated by the prediction problem we actually run*:
+
+* In a **continuing task**, assuming the Markov chain induced by $\pi$ is ergodic, $\mu(s)$ is the **long-run fraction of time** spent in $s$ while following $\pi$ — the stationary distribution $d\_\pi$.
+* In an **episodic task**, $\mu(s)$ depends on **both** the start-state distribution and $\pi$.
+
+A practical consequence: changing *where episodes start* changes which states are visited often, which changes $\mu$ — and therefore changes what counts as a good approximation. Same policy and same environment can yield a different $\overline{\text{VE}}$ landscape under a different start distribution.
+
+</div>
+
+### Stochastic Gradient Descent
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(From $\overline{\text{VE}}$ to an SGD update)</span></p>
+
+The objective is a $\mu$-weighted sum over **all** states:
+
+$$
+\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .
+$$
+
+Differentiating keeps the same $\mu$-weighting, and the $\mu$-weighted sum is exactly an expectation over $S \sim \mu$:
+
+$$
+\nabla_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w})
+\;=\; -2\sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(s,\mathbf{w})
+\;=\; -2\,\mathbb{E}_{S \sim \mu}\!\bigl[\,(v_\pi(S) - \hat v(S,\mathbf{w}))\,\nabla_{\mathbf{w}}\hat v(S,\mathbf{w})\,\bigr].
+$$
+
+Under on-policy sampling, visited states occur with long-run frequency $\mu(s)$, so the **visited state is itself a stochastic sample** of this expectation:
+
+$$
+-\tfrac{1}{2}\,\nabla_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w})
+\;\approx\; \bigl[\,v_\pi(S_t) - \hat v(S_t,\mathbf{w})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}).
+$$
+
+Following this sample gradient downhill on the per-sample squared error gives, assuming for now that we know $v\_\pi$,
+
+$$
+\mathbf{w}_{t+1}
+\;=\; \mathbf{w}_t - \alpha\,\nabla_{\mathbf{w}}\tfrac{1}{2}\bigl[\,v_\pi(S_t) - \hat v(S_t,\mathbf{w}_t)\,\bigr]^2
+\;=\; \mathbf{w}_t + \alpha\,\bigl[\,v_\pi(S_t) - \hat v(S_t,\mathbf{w}_t)\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_t).
+$$
+
+The step is deliberately **small**: driving the error at $S\_t$ all the way to zero in one move would worsen the errors at every other state sharing those parameters.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Convergence with a sample target $U_t$)</span></p>
+
+We never actually know $v\_\pi(S\_t)$, so substitute a **target** $U\_t$:
+
+$$
+\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \hat v(S_t,\mathbf{w}_t)\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_t).
+$$
+
+If the target is **correct in expectation** (unbiased),
+
+$$
+\mathbb{E}[\,U_t \mid S_t = s\,] \;=\; v_\pi(s),
+$$
+
+then under standard stochastic-approximation conditions — a Robbins–Monro step-size schedule $\alpha\_t$ that decreases to zero but not too quickly — the weights converge to a **local minimum** of $\overline{\text{VE}}$:
+
+$$
+\mathbf{w}_t \;\to\; \mathbf{w}^\ast, \qquad \mathbf{w}^\ast \text{ a local minimum of } \overline{\text{VE}}.
+$$
+
+*Caveats.* Bootstrapping targets are generally **biased**, so they fall outside this guarantee. And in nonstationary problems one often keeps a **constant** step size $\alpha$ instead, so the estimate keeps adapting rather than fully converging.
+
+</div>
+
+### Monte Carlo with Function Approximation
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Gradient Monte Carlo)</span></p>
+
+With $U\_t = G\_t$ (the actual return) the target is **unbiased**, so the SGD theorem applies directly. The update is
+
+$$
+\mathbf{w} \;\leftarrow\; \mathbf{w} + \alpha\,\bigl[\,G_t - \hat v(S_t,\mathbf{w})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}).
+$$
+
+**One episode:**
+
+1. Generate $S\_0, A\_0, R\_1, \dots, R\_T, S\_T$ following $\pi$.
+2. For $t = 0, 1, \dots, T-1$: apply the update above with the realized return $G\_t$.
+
+**Pro:** true SGD on $\overline{\text{VE}}$ — converges to a local optimum (and, in the linear case, the global one). **Con:** must wait until the episode ends, and the returns are **high variance**.
+
+</div>
+
+### Bootstrapping and Semi-Gradients
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bootstrapping breaks the SGD guarantee)</span></p>
+
+TD(0)'s target depends on $\mathbf{w}\_t$ **itself**:
+
+$$
+U_t \;=\; R_{t+1} + \gamma\,\hat v(S_{t+1},\mathbf{w}_t).
+$$
+
+A *true* gradient method would differentiate through **both** appearances of the approximation — $\hat v(S\_t,\cdot)$ and $\hat v(S\_{t+1},\cdot)$. But the bootstrapped target is not an external label; it moves with $\mathbf{w}$. Worse, because the target is a biased estimate of $v\_\pi$, the unbiasedness condition $\mathbb{E}[U\_t \mid S\_t] = v\_\pi(S\_t)$ fails, so the convergence theorem no longer covers it.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Semi-gradient TD(0))</span></p>
+
+The practical compromise: take the gradient with respect to the prediction **but treat the target as a constant** (do *not* differentiate through $\hat v(S\_{t+1},\cdot)$). This gives the **semi-gradient TD(0)** update
+
+$$
+\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,R_{t+1} + \gamma\,\hat v(S_{t+1},\mathbf{w}_t) - \hat v(S_t,\mathbf{w}_t)\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_t).
+$$
+
+It is "semi"-gradient because only **half** the dependence on $\mathbf{w}$ — the prediction half — is followed; the target half is frozen. In exchange for giving up the clean SGD guarantee, it learns **online**, with **lower variance**, and works in **continuing** tasks.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Gradient MC vs. semi-gradient TD — the big picture)</span></p>
+
+| | **Gradient MC** | **Semi-gradient TD** |
+| :--- | :--- | :--- |
+| Target $U\_t$ | $G\_t$ (unbiased) | $R\_{t+1} + \gamma\,\hat v(S\_{t+1},\mathbf{w})$ (biased) |
+| True gradient? | yes | only "half" |
+| Convergence (general) | yes (local optimum) | not guaranteed |
+| Convergence (linear, on-policy) | yes ($\overline{\text{VE}}$ optimum) | yes (TD fixed point) |
+| Variance | high | lower |
+| Online / continuing | no | yes |
+
+The trade is the familiar one: MC is **sound but slow and noisy**; TD is **fast and low-variance but biased**, and keeps its guarantees only in the linear on-policy corner.
+
+</div>
+
+### Linear Function Approximation
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Feature map and linear value function)</span></p>
+
+A **feature** is a function from states to numbers, $x\_i : \mathcal{S} \to \mathbb{R}$. Stack $d$ of them into a **feature vector** $\mathbf{x}(s) \in \mathbb{R}^{d}$, **chosen by us and then fixed**. The linear value function reads the value off as a weighted sum of features:
+
+$$
+\hat v(s,\mathbf{w}) \;=\; \mathbf{w}^\top \mathbf{x}(s) \;=\; \sum_{i=1}^{d} w_i\, x_i(s).
+$$
+
+Any raw state — a position, an image, a board — is first turned into a numeric vector by the hand-designed map $\mathbf{x}(\cdot)$; only the weights $\mathbf{w}$ are learned.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 300" role="img" aria-label="Pipeline: a raw state (position, image or board) passes through a fixed hand-designed feature map x(s) to produce a feature vector in R^d, which a linear read-out w transpose x turns into a single value. Only w is learned.">
+    <!-- raw state inputs -->
+    <text x="95" y="40" text-anchor="middle" font-size="13" class="muted">raw state s</text>
+    <rect x="20" y="60" width="150" height="44" rx="8" class="box"></rect>
+    <text x="95" y="87" text-anchor="middle" font-size="13">position (x, y)</text>
+    <rect x="20" y="128" width="150" height="44" rx="8" class="box"></rect>
+    <text x="95" y="155" text-anchor="middle" font-size="13">image / pixels</text>
+    <rect x="20" y="196" width="150" height="44" rx="8" class="box"></rect>
+    <text x="95" y="223" text-anchor="middle" font-size="13">board layout</text>
+
+    <!-- arrows into feature map -->
+    <line x1="170" y1="82"  x2="285" y2="140" class="line" marker-end="url(#fa-arrow)"></line>
+    <line x1="170" y1="150" x2="285" y2="150" class="line" marker-end="url(#fa-arrow)"></line>
+    <line x1="170" y1="218" x2="285" y2="162" class="line" marker-end="url(#fa-arrow)"></line>
+
+    <!-- feature map block -->
+    <rect x="290" y="110" width="130" height="84" rx="10" class="accent"></rect>
+    <text x="355" y="145" text-anchor="middle" font-size="14" font-weight="700">feature map</text>
+    <text x="355" y="166" text-anchor="middle" font-size="13">x(·)</text>
+    <text x="355" y="184" text-anchor="middle" font-size="11" class="muted">fixed, hand-designed</text>
+
+    <!-- feature vector -->
+    <line x1="420" y1="152" x2="475" y2="152" class="line" marker-end="url(#fa-arrow)"></line>
+    <text x="512" y="70" text-anchor="middle" font-size="12" class="muted">feature vector x(s) ∈ ℝᵈ</text>
+    <rect x="486" y="84"  width="52" height="20" class="box"></rect>
+    <rect x="486" y="106" width="52" height="20" class="box"></rect>
+    <rect x="486" y="128" width="52" height="20" class="accent"></rect>
+    <rect x="486" y="150" width="52" height="20" class="accent"></rect>
+    <rect x="486" y="172" width="52" height="20" class="box"></rect>
+    <rect x="486" y="194" width="52" height="20" class="box"></rect>
+    <rect x="486" y="216" width="52" height="20" class="accent"></rect>
+
+    <!-- linear read-out -->
+    <line x1="538" y1="152" x2="600" y2="152" class="line" marker-end="url(#fa-arrow)"></line>
+    <rect x="604" y="124" width="150" height="56" rx="10" class="green"></rect>
+    <text x="679" y="148" text-anchor="middle" font-size="13">value (a number)</text>
+    <text x="679" y="169" text-anchor="middle" font-size="13">v̂ = wᵀx(s)</text>
+    <text x="679" y="206" text-anchor="middle" font-size="11" class="muted">only w is learned</text>
+
+    <defs>
+      <marker id="fa-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The state is mapped through a <strong>fixed</strong> feature map $\mathbf{x}(\cdot)$ into a numeric vector; the value is a linear read-out $\mathbf{w}^\top\mathbf{x}(s)$. Learning only adjusts $\mathbf{w}$ — the features are designed in advance and never change.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A tiny worked feature map)</span></p>
+
+Let the state be a 1-D position $s \in [0,1]$. Choose **three** features — soft "bumps" centred at $0.25, 0.5, 0.75$:
+
+$$
+x_i(s) \;=\; \exp\!\Bigl(-\tfrac{(s - c_i)^2}{2\sigma^2}\Bigr), \qquad \sigma = 0.15.
+$$
+
+At $s = 0.4$ the three features fire by different amounts, so the value is a weighted blend:
+
+$$
+\mathbf{x}(0.4) \approx (0.61,\, 0.80,\, 0.07)^\top, \qquad \hat v(0.4,\mathbf{w}) = 0.61\,w_1 + 0.80\,w_2 + 0.07\,w_3.
+$$
+
+**Reading the vector:** each weight $w\_i$ "owns" a region of state space. A state's value blends the weights whose features it activates — so nearby states (firing the *same* features) get *similar* values automatically. That automatic local similarity is precisely the generalization we wanted.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The gradient is the feature vector)</span></p>
+
+With a fixed feature map, the value is linear in $\mathbf{w}$, so its gradient is just the feature vector:
+
+$$
+\nabla_{\mathbf{w}}\,\hat v(s,\mathbf{w}) \;=\; \nabla_{\mathbf{w}}\,\mathbf{w}^\top\mathbf{x}(s) \;=\; \mathbf{x}(s).
+$$
+
+Two clean consequences:
+
+* $\overline{\text{VE}}$ is **convex in $\mathbf{w}$** — a *single* optimum, no local minima.
+* The semi-gradient update moves $\mathbf{w}$ **directly along $\mathbf{x}(s)$**.
+
+**Take-home:** almost all convergence guarantees in RL with function approximation are for the *linear* case.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(The linear update rules)</span></p>
+
+Substituting $\nabla\_{\mathbf{w}}\hat v(S\_t,\mathbf{w}) = \mathbf{x}\_t$ with $\mathbf{x}\_t \doteq \mathbf{x}(S\_t)$, the general update collapses to
+
+$$
+\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \mathbf{w}_t^\top \mathbf{x}_t\,\bigr]\,\mathbf{x}_t .
+$$
+
+The method is chosen entirely by the target:
+
+* **Gradient Monte Carlo:** $U\_t = G\_t$.
+* **Semi-gradient TD(0):** $U\_t = R\_{t+1} + \gamma\,\mathbf{w}\_t^\top \mathbf{x}\_{t+1}$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Linear semi-gradient TD converges to the TD fixed point)</span></p>
+
+Semi-gradient TD uses bootstrapping, so it is **not** ordinary gradient descent on $\overline{\text{VE}}$. Yet in one important case there *is* a guarantee:
+
+$$
+\textbf{linear function approximation } + \textbf{ on-policy data.}
+$$
+
+Then semi-gradient TD(0) converges to a **TD fixed point** $\mathbf{w}\_{TD}$, where predictions stop changing **on average**. This is not, in general, the weight vector that minimizes $\overline{\text{VE}}$ — but its error is **bounded relative to the best achievable** with these features:
+
+$$
+\overline{\text{VE}}(\mathbf{w}_{TD}) \;\leq\; \frac{1}{1-\gamma}\,\min_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w}).
+$$
+
+The guarantee is special to the **linear, on-policy** setting (Sutton 1988; Tsitsiklis & Van Roy 1997). With nonlinear approximation or off-policy data, TD can become **unstable**. The factor $\tfrac{1}{1-\gamma}$ can be large for $\gamma$ near $1$, so "bounded" does not mean "tight".
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">($n$-step semi-gradient TD)</span></p>
+
+The $n$-step return target carries over unchanged, now bootstrapping from the *approximate* value:
+
+$$
+G_{t:t+n} \;=\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}\,\hat v(S_{t+n},\mathbf{w}_{t+n-1}),
+$$
+
+with update
+
+$$
+\mathbf{w}_{t+n} \;=\; \mathbf{w}_{t+n-1} + \alpha\,\bigl[\,G_{t:t+n} - \hat v(S_t,\mathbf{w}_{t+n-1})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_{t+n-1}).
+$$
+
+**Bias / variance dial.** Small $n$ means more bootstrapping ⇒ low variance, high bias; large $n$ approaches Monte Carlo ⇒ low bias, high variance. The same dial governs **both** linear and nonlinear $\hat v$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Choosing $n$ — the bias–variance trade-off)</span></p>
+
+Sweeping $n$ traces the textbook bias–variance curve: **bias decreases** with $n$, **variance grows** with $n$, and their sum — the total error — is **U-shaped**, minimized at some *intermediate* $n$. The best value is **problem-dependent**: it depends on how long you train and how stable the step size $\alpha$ is. The lesson is the same as in plain $n$-step TD — neither extreme ($n=1$ or $n=\infty$) is usually best.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Which on-policy prediction methods converge?)</span></p>
+
+For on-policy prediction with function approximation, the strongest clean guarantees are for **linear** methods:
+
+| Method | Converges? | Where it converges |
+| :--- | :--- | :--- |
+| Gradient Monte Carlo | Yes | local minimum of $\overline{\text{VE}}$ |
+| Linear gradient MC | Yes | **global** minimum of $\overline{\text{VE}}$ |
+| Linear semi-gradient TD(0), on-policy | Yes | TD fixed point |
+| $n$-step semi-gradient TD, linear, on-policy | Yes | TD-like fixed point |
+| Nonlinear semi-gradient TD | No general guarantee | can be unstable |
+| Off-policy + bootstrapping + FA | Not in general | can diverge |
+
+The pattern: **linearity buys global optima for gradient methods and bounded-error fixed points for semi-gradient methods**; leave the linear on-policy corner and the guarantees evaporate.
+
+</div>
+
+### Feature Construction for Linear Methods
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Features are everything)</span></p>
+
+The set of functions a linear model can represent — its **hypothesis space** — is exactly the span of the features:
+
+$$
+\hat v(\cdot,\mathbf{w}) \in \operatorname{span}\{\,x_1(\cdot), \dots, x_d(\cdot)\,\}.
+$$
+
+If $v\_\pi$ lies **outside** this span, no $\mathbf{w}$ recovers it exactly. Feature design therefore answers two questions at once:
+
+* **Capacity:** can the basis express the regularities of $v\_\pi$?
+* **Generalization:** which states should *share* parameters (and so be forced to have related values)?
+
+Good features encode **domain knowledge** as useful priors: a robot's location suggests spatial features; pole-balancing suggests angle, angular velocity, **and their product**. Because the algorithm is fixed once the features are chosen, *choosing features is often more important than choosing the algorithm.*
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(State aggregation — the simplest linear method)</span></p>
+
+**State aggregation** partitions states into groups and learns one weight per group — the simplest possible feature map. With one-hot indicator features
+
+$$
+x_i(s) = \mathbf{1}[\,s \in \text{group } i\,], \qquad \hat v(s,\mathbf{w}) = w_{g(s)},
+$$
+
+where $g(s)$ is the group of $s$. Properties:
+
+* $\nabla\_{\mathbf{w}}\hat v(s,\mathbf{w})$ is a **one-hot** vector;
+* updating one group does **not** affect any other — exactly the tabular non-interaction, at coarser granularity;
+* within each group $\hat v$ is **constant** — the approximation is a **staircase**.
+
+It is the degenerate, zero-generalization end of the feature-design spectrum: groups share nothing across boundaries.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1000-state random walk with state aggregation)</span></p>
+
+States $1, \dots, 1000$, episodes start at $500$. From each non-terminal state the agent jumps **uniformly** to one of the $\pm 100$ nearest neighbours; reward is $-1$ on left-termination, $+1$ on right-termination, $0$ otherwise. The true $v\_\pi$ is nearly **linear** in the state index.
+
+**Approximation:** $10$ groups of $100$ states each, one weight per group. Gradient MC with this aggregation learns a **staircase**: within each block of $100$ states the estimate is flat, so it tracks the underlying line only block-by-block. It also reveals a subtle bias — within a block the learned value is pulled toward the values of the states *most visited* under $\mu$ (here, the block's interior near the center), not a plain average. The staircase is the visible price of zero within-group generalization.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fourier cosine basis)</span></p>
+
+For a 1-D state $s \in [0,1]$ and integer order $i \geq 0$, the **Fourier cosine features** are
+
+$$
+x_i(s) \;=\; \cos(i\pi s).
+$$
+
+Here $i = 0$ is the constant feature; higher $i$ gives **higher frequency**. Stacking orders $0, \dots, n$ gives a basis; e.g. for $n = 3$,
+
+$$
+\mathbf{x}(s) = \bigl(1,\, \cos\pi s,\, \cos 2\pi s,\, \cos 3\pi s\bigr)^\top .
+$$
+
+Low-frequency terms capture broad structure; higher-frequency terms add finer detail. For a $k$-dimensional state $s = (s\_1, \dots, s\_k) \in [0,1]^k$, choose a frequency vector $\mathbf{c} \in \{0, \dots, n\}^k$ per feature,
+
+$$
+x_{\mathbf{c}}(s) \;=\; \cos\bigl(\pi\, \mathbf{c}^\top s\bigr) \;=\; \cos\bigl(\pi(c_1 s_1 + \cdots + c_k s_k)\bigr).
+$$
+
+A **zero** entry in $\mathbf{c}$ ignores that dimension; **larger** entries oscillate faster; the **ratio** of entries sets the orientation of the wave. A useful per-feature step-size rescaling is $\alpha\_i = \alpha / \lVert \mathbf{c}^{(i)} \rVert\_2$ (and $\alpha\_i = \alpha$ when $\mathbf{c}^{(i)} = \mathbf{0}$), so high-frequency features are not over-stepped.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coarse coding)</span></p>
+
+**Coarse coding** uses **binary indicators of overlapping regions** (e.g. circles covering the state space):
+
+$$
+x_i(s) \in \{0,1\}, \qquad x_i(s) = 1 \iff s \in \text{region } i .
+$$
+
+The **generalization mechanism** is geometric:
+
+* an update at $s$ moves the weight of every feature **active** at $s$;
+* this affects every *other* state where that feature is also active;
+* the **strength** of generalization between two states is proportional to the **number of features they share**.
+
+Two states inside many common regions generalize strongly; two states sharing one region generalize weakly; states sharing none do not generalize at all.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coarse coding on a 1-D interval)</span></p>
+
+Let $s \in [0,1]$ (say, a cartpole position). Cover the interval with overlapping regions
+
+$$
+[0.0,0.3],\quad [0.2,0.5],\quad [0.4,0.7],\quad [0.6,0.9],\quad [0.8,1.0].
+$$
+
+Each region is one binary feature. If $s = 0.45$ lies in regions $2$ and $3$, then
+
+$$
+\mathbf{x}(0.45) = (0, 1, 1, 0, 0)^\top, \qquad \hat v(0.45,\mathbf{w}) = \mathbf{w}^\top\mathbf{x}(0.45) = w_2 + w_3 .
+$$
+
+**Controlled generalization:** updating at $s = 0.45$ changes only $w\_2$ and $w\_3$. It therefore *also* nudges nearby states that share those active features, such as $s' = 0.35$, but leaves far-away states such as $s'' = 0.95$ untouched.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 250" role="img" aria-label="Coarse coding on a line: five overlapping intervals act as binary features. The query point at 0.45 falls inside intervals 2 and 3, so its feature vector activates those two features; a nearby point at 0.35 shares one of them, a far point at 0.95 shares none.">
+    <!-- axis -->
+    <line x1="60" y1="170" x2="760" y2="170" class="line"></line>
+    <text x="60"  y="200" text-anchor="middle" font-size="12" class="muted">0.0</text>
+    <text x="760" y="200" text-anchor="middle" font-size="12" class="muted">1.0</text>
+
+    <!-- helper: x = 60 + 700*s -->
+    <!-- intervals as rounded bars at staggered heights -->
+    <rect x="60"  y="60"  width="210" height="16" rx="8" class="box"></rect>
+    <text x="165" y="54" text-anchor="middle" font-size="11" class="muted">region 1 [0.0,0.3]</text>
+    <rect x="200" y="84"  width="210" height="16" rx="8" class="accent"></rect>
+    <text x="305" y="118" text-anchor="middle" font-size="11" class="muted">region 2 [0.2,0.5]</text>
+    <rect x="340" y="108" width="210" height="16" rx="8" class="accent"></rect>
+    <text x="445" y="78" text-anchor="middle" font-size="11" class="muted">region 3 [0.4,0.7]</text>
+    <rect x="480" y="84"  width="210" height="16" rx="8" class="box"></rect>
+    <text x="585" y="54" text-anchor="middle" font-size="11" class="muted">region 4 [0.6,0.9]</text>
+    <rect x="620" y="60"  width="140" height="16" rx="8" class="box"></rect>
+    <text x="700" y="118" text-anchor="middle" font-size="11" class="muted">region 5 [0.8,1.0]</text>
+
+    <!-- query points: s=0.45 -> x=375 ; s=0.35 -> x=305 ; s=0.95 -> x=725 -->
+    <line x1="375" y1="50" x2="375" y2="178" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 3"></line>
+    <circle cx="375" cy="170" r="6" fill="#b91c1c"></circle>
+    <text x="375" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">s = 0.45</text>
+
+    <circle cx="305" cy="170" r="5" fill="#047857"></circle>
+    <text x="305" y="222" text-anchor="middle" font-size="12" fill="#047857">s' = 0.35</text>
+
+    <circle cx="725" cy="170" r="5" class="muted" fill="#64748b"></circle>
+    <text x="725" y="222" text-anchor="middle" font-size="12" class="muted">s'' = 0.95</text>
+  </svg>
+  <figcaption>Coarse coding: the query $s=0.45$ activates the two highlighted regions, so $\mathbf{x}(0.45)=(0,1,1,0,0)^\top$. The nearby point $s'=0.35$ shares region 2 (weak generalization); the far point $s''=0.95$ shares none (no generalization).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Receptive-field width: speed now vs. accuracy later)</span></p>
+
+For a *fixed* set of feature centres, the **width** of each receptive field controls **how broadly** a single update spreads:
+
+* **Narrow** fields ⇒ updates stay **local** (sharp, slow-spreading);
+* **Broad** fields ⇒ updates have **smooth, global** influence.
+
+The key subtlety: width sets the **initial generalization speed**, but the **final accuracy** is governed mostly by the **number** of features, not their width. Wide fields learn fast and coarse early; the asymptote depends on how finely the features tile the space.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tile coding — structured coarse coding)</span></p>
+
+**Tile coding** uses **multiple tilings** (partitions) of the state space. Each tiling cuts the space into $m$ **non-overlapping** tiles; with $n$ tilings there are $m \times n$ feature weights. Key facts:
+
+* a *single* tiling alone is exactly **state aggregation** (non-overlapping groups);
+* **multiple offset tilings** create overlapping receptive fields **without overhead**: a query state activates **exactly one tile per tiling**, so exactly $n$ features fire — sparse and binary;
+* the features are $O(\#\text{tilings})$ active per state, giving a cheap, fast update.
+
+Because the active set is always $n$ tiles, the step size has a simple, interpretable form
+
+$$
+\alpha \;=\; \frac{1}{\tau\, n},
+$$
+
+where $n$ is the number of tilings: each update changes the prediction by about a $1/\tau$ fraction of the TD error, so $\tau$ is roughly the **number of samples we want to average over**. Hashing multi-dimensional tile coordinates into a fixed-size weight vector avoids storing every possible tile.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Tile coding: a continuous 2D state space covered by four offset square-grid tilings drawn in different colors. A single query point falls inside exactly one tile of each tiling, so four tiles overlap at the point and together represent it.">
+    <text x="200" y="28" text-anchor="middle" font-size="14">continuous 2-D state space</text>
+    <!-- base region -->
+    <rect x="60" y="50" width="280" height="240" rx="6" fill="#f8fafc" stroke="#dbe1ee"></rect>
+
+    <!-- tiling 1 (blue) offset 0 -->
+    <g stroke="#2c3e94" stroke-width="1.4" fill="none" opacity="0.85">
+      <line x1="60"  y1="130" x2="340" y2="130"></line>
+      <line x1="60"  y1="210" x2="340" y2="210"></line>
+      <line x1="140" y1="50"  x2="140" y2="290"></line>
+      <line x1="220" y1="50"  x2="220" y2="290"></line>
+    </g>
+    <!-- tiling 2 (amber) offset -->
+    <g stroke="#b45309" stroke-width="1.4" fill="none" opacity="0.8">
+      <line x1="60"  y1="155" x2="340" y2="155"></line>
+      <line x1="60"  y1="235" x2="340" y2="235"></line>
+      <line x1="165" y1="50"  x2="165" y2="290"></line>
+      <line x1="245" y1="50"  x2="245" y2="290"></line>
+    </g>
+    <!-- tiling 3 (green) offset -->
+    <g stroke="#047857" stroke-width="1.4" fill="none" opacity="0.8">
+      <line x1="60"  y1="105" x2="340" y2="105"></line>
+      <line x1="60"  y1="185" x2="340" y2="185"></line>
+      <line x1="115" y1="50"  x2="115" y2="290"></line>
+      <line x1="195" y1="50"  x2="195" y2="290"></line>
+    </g>
+
+    <!-- query point -->
+    <circle cx="185" cy="170" r="6" fill="#b91c1c"></circle>
+    <text x="185" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">query state s</text>
+
+    <!-- right-hand explanation -->
+    <text x="585" y="80" text-anchor="middle" font-size="13" font-weight="700">3 offset tilings</text>
+    <text x="585" y="110" text-anchor="middle" font-size="13">⇒ exactly 3 active tiles</text>
+    <rect x="430" y="140" width="310" height="120" rx="10" class="box"></rect>
+    <text x="585" y="168" text-anchor="middle" font-size="13">one tile per tiling fires at s</text>
+    <text x="585" y="192" text-anchor="middle" font-size="13">sparse binary features</text>
+    <text x="585" y="216" text-anchor="middle" font-size="13">nearby states share many tiles</text>
+    <text x="585" y="240" text-anchor="middle" font-size="13">far states share few or none</text>
+  </svg>
+  <figcaption>Tile coding with offset tilings. The query state activates <strong>exactly one tile per tiling</strong>; offsetting the tilings turns the union of activations into graded generalization — nearby states share many active tiles, distant states share few or none.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why tile coding beats a single coarse partition)</span></p>
+
+Fix the memory budget so the comparison is fair: $\#\text{weights} = \#\text{tilings} \times \#\text{tiles per tiling}$. On the 1000-state random walk:
+
+* **State aggregation:** $1$ tiling $\times\ 1000$ tiles $= 1000$ weights — a coarse staircase.
+* **Tile coding:** $50$ tilings $\times\ 20$ tiles $= 1000$ weights — far lower error.
+
+Same memory, very different behaviour. The reason is **graded generalization**: offset tilings make nearby states share many active tiles and far states share few or none, so the value surface is smooth where it should be and still localized. A single tiling can only do one or the other.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Radial basis functions)</span></p>
+
+**RBFs** are the continuous version of coarse coding — Gaussian bumps instead of hard indicators:
+
+$$
+x_i(s) \;=\; \exp\!\Bigl(-\frac{\lVert s - c_i \rVert^2}{2\sigma_i^2}\Bigr),
+$$
+
+centred at $c\_i$ with width $\sigma\_i$. Advantages and limits:
+
+* feature responses are **smooth and differentiable** (graded, not 0/1);
+* but in **high dimensions** they are expensive and suffer edge effects — the very regime where tile coding's hard edges are also hard, so RBFs do not help much there.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Feature-construction cheat sheet)</span></p>
+
+| Family | Strength | Weakness |
+| :--- | :--- | :--- |
+| State aggregation | trivial, exact gradient | coarse staircase |
+| Polynomials | familiar, simple | global, scales as $(n+1)^k$ |
+| Fourier cosine | smooth, strong empirically | ringing at discontinuities |
+| Coarse coding | local generalization | must design receptive fields |
+| Tile coding | sparse, fast, flexible | axis-aligned bias |
+| RBFs | smooth, differentiable | expensive, edge effects |
+
+**Bottom line:** choosing features is often more important than choosing the algorithm — and **tile coding is the classical workhorse**.
+
+</div>
+
+### Nonlinear Function Approximation: Neural Networks
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why move beyond linear methods)</span></p>
+
+Linear methods are the cleanest, most analyzable case — but limited:
+
+* the **hypothesis space is fixed** by the features we chose;
+* **hand-engineering features** for high-dimensional inputs (images, audio) is impractical;
+* real problems demand **representation learning** — the agent should *discover* useful features.
+
+The trade-off of going nonlinear: **power ↑, theory ↓, stability ↓**. Much of modern deep RL is effort spent patching the stability problems this trade creates.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Feedforward neural network and a single unit)</span></p>
+
+A **feedforward network** stacks layers: the **input layer** is the features (or the raw observation), the **hidden layers** are *learned* feature representations, and the **output** is the scalar $\hat v(s,\mathbf{w})$ (or a vector of action values). Each "semi-linear" unit computes a weighted sum followed by a nonlinear activation:
+
+$$
+z = \mathbf{w}^\top \mathbf{x} + b, \qquad a = \phi(z).
+$$
+
+Common activations:
+
+* **Sigmoid:** $\phi(z) = 1/(1 + e^{-z})$.
+* **tanh:** zero-centred.
+* **ReLU:** $\max(0, z)$ — the modern default.
+
+The crucial difference from the linear case is that the hidden layers' features are **learned together with the weights**, not fixed in advance.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Nonlinearity is mandatory; universal approximation)</span></p>
+
+**Claim.** A network of purely *linear* units is itself a linear function. *Proof sketch:* if layer $\ell$ computes $\mathbf{a}^{(\ell)} = W^{(\ell)}\mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)}$ with no nonlinearity, unrolling all $L$ layers gives
+
+$$
+\mathbf{a}^{(L)} \;=\; \Bigl(\textstyle\prod_{\ell=L}^{1} W^{(\ell)}\Bigr)\mathbf{a}^{(0)} + \tilde{\mathbf{b}},
+$$
+
+which is again **affine** in $\mathbf{a}^{(0)}$ — stacking adds no expressiveness. The nonlinear activations are what make depth meaningful.
+
+**Universal approximation (Cybenko, 1989).** A *single* hidden layer with enough sigmoid units can approximate any continuous function on a compact domain to arbitrary accuracy.
+
+**Catch:** expressiveness is *not* the bottleneck — **optimization** is. Being able to represent $v\_\pi$ in principle says nothing about being able to *find* the weights that do.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Training by SGD via backpropagation)</span></p>
+
+The same generic update rule applies, with the gradient now flowing through many layers:
+
+$$
+\mathbf{w} \;\leftarrow\; \mathbf{w} + \alpha\,\delta_t\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}), \qquad \delta_t = U_t - \hat v(S_t,\mathbf{w}).
+$$
+
+The gradient $\nabla\_{\mathbf{w}}\hat v$ is computed by **backpropagation**, in two passes:
+
+* **Forward pass.** Compute every layer's activations and store them.
+* **Backward pass.** Apply the chain rule, layer by layer, to compute $\partial L / \partial w$ for every weight.
+
+**Difficulties for deep networks:** **vanishing / exploding gradients** — mitigated by residual connections, batch normalization, and careful initialization.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The deadly triad)</span></p>
+
+Three properties that, **together**, can make TD-style updates **diverge**:
+
+* **Function approximation** — so updates couple states;
+* **Bootstrapping** — so targets depend on $\mathbf{w}$;
+* **Off-policy** learning — so the update distribution is "wrong" (we update along a distribution that does not match the policy generating the targets).
+
+Any **two** are usually safe; it is the **combination of all three** that risks divergence. *Caveat:* with deep nets and bootstrapping, even *on-policy* learning can wobble, which is why deep RL leans so heavily on engineering tricks to stay stable.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 720 330" role="img" aria-label="The deadly triad shown as three overlapping circles labelled function approximation, bootstrapping, and off-policy learning. Their common intersection in the middle is labelled risk of divergence.">
+    <text x="360" y="36" text-anchor="middle" font-size="16" font-weight="700">The Deadly Triad</text>
+    <circle cx="290" cy="150" r="105" fill="rgba(44,62,148,0.12)" stroke="#2c3e94" stroke-width="2"></circle>
+    <circle cx="430" cy="150" r="105" fill="rgba(180,83,9,0.12)" stroke="#b45309" stroke-width="2"></circle>
+    <circle cx="360" cy="245" r="105" fill="rgba(185,28,28,0.10)" stroke="#b91c1c" stroke-width="2"></circle>
+
+    <text x="225" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">Function</text>
+    <text x="225" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">approximation</text>
+    <text x="500" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">Bootstrapping</text>
+    <text x="360" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Off-policy</text>
+    <text x="360" y="318" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">training</text>
+
+    <text x="360" y="180" text-anchor="middle" font-size="12" font-weight="700">risk of</text>
+    <text x="360" y="197" text-anchor="middle" font-size="12" font-weight="700">divergence</text>
+  </svg>
+  <figcaption>The deadly triad: function approximation, bootstrapping, and off-policy training. Any two together are usually safe; the central region — all three at once — is where TD updates can diverge.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Six stability tricks that make deep RL work)</span></p>
+
+Modern deep RL stays stable by a toolbox of engineering fixes, each targeting a specific failure of naive SGD on bootstrapped, correlated data:
+
+1. **Target networks.** The bootstrap target $U\_t = R\_{t+1} + \gamma\max\_a \hat v(S\_{t+1},\mathbf{w}\_t)$ uses the *same* weights we are updating — a feedback loop that can spiral. **Fix:** keep a frozen copy $\mathbf{w}^- = \theta^-$ used **only** to compute targets, refreshed $\mathbf{w}^- \leftarrow \mathbf{w}$ every $C$ steps (DQN). A momentarily *stationary* target turns a moving-goalpost problem into ordinary supervised regression between refreshes.
+2. **Experience replay.** Consecutive transitions are **highly correlated** (the agent moves smoothly), violating the i.i.d. assumption and wasting each rare experience after one use. **Fix:** store transitions $(S, A, R, S')$ in a **replay buffer** and sample a uniform random minibatch per update — this **decorrelates** samples *and* makes each transition **reusable** (data efficiency).
+3. **Batch normalization.** As lower layers learn, the distribution of inputs to higher layers keeps shifting (**internal covariate shift**). **Fix:** per minibatch, normalize a layer's pre-activations to mean $0$, variance $1$, then rescale by learned $\gamma, \beta$: $\hat z = (z - \mu\_B)/\sqrt{\sigma\_B^2 + \epsilon}$, $\tilde z = \gamma\hat z + \beta$. Well-scaled signals keep gradients healthy and allow larger steps.
+4. **Residual / skip connections.** In very deep stacks gradients shrink as they propagate back (**vanishing gradients**). **Fix:** add an identity skip around a block, $\mathbf{y} = F(\mathbf{x}) + \mathbf{x}$, so the block only learns the **residual** $F(\mathbf{x})$ and gradients get a short-circuit straight to earlier layers.
+5. **Gradient clipping.** A single sharp target error (common with bootstrapping) can produce a huge gradient that throws the weights far off. **Fix:** cap the gradient norm at a threshold $c$, $\mathbf{g} \leftarrow \mathbf{g}\cdot\min\!\bigl(1, c/\lVert\mathbf{g}\rVert\bigr)$ — direction is kept, only the length is limited.
+6. **Dropout.** Units **co-adapt**, so the network overfits and generalizes poorly. **Fix:** on each training pass randomly "drop" each hidden unit with probability $p$; at test time use the full network with weights scaled to match. Training a different random sub-network each step is like averaging an **ensemble**, forcing each unit to be individually useful.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Deep convolutional networks)</span></p>
+
+For high-dimensional **spatial** inputs (images, sensor arrays), convolutional networks (LeCun et al. 1998) stack convolutional and subsampling layers, then fully-connected layers. Two structural priors do the heavy lifting:
+
+* **Weight sharing** across spatial locations — the same filter is applied everywhere, drastically cutting parameters;
+* **Subsampling** for spatial invariance — small shifts of the input do not change the output much.
+
+The whole stack is trainable **end-to-end** by ordinary backpropagation, so the convolutional features are learned, not designed.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Linear vs. nonlinear approximation)</span></p>
+
+| | **Linear** | **Neural networks** |
+| :--- | :--- | :--- |
+| Expressiveness | limited by features | very high |
+| Theory | strong | weak |
+| Stability | high (on-policy) | fragile |
+| Computation | cheap | expensive |
+| Feature engineering | needed | largely automatic |
+
+The two columns are the two ends of the **power vs. stability** trade: linear methods give guarantees and demand hand-built features; neural networks learn the features but forfeit the theory.
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What we learned)</span></p>
+
+1. **Tabular methods do not scale** — we have to approximate.
+2. Approximation forces us to choose an **objective**: the $\mu$-weighted mean-squared value error $\overline{\text{VE}}$.
+3. **Gradient methods** on $\overline{\text{VE}}$ are well behaved when targets are **unbiased** (Monte Carlo).
+4. **Bootstrapping introduces bias** ⇒ **semi-gradient** methods, which give up the clean SGD guarantee for speed and online learning.
+5. **Linear + on-policy** ⇒ semi-gradient TD converges to the **TD fixed point** — stable, though not the $\overline{\text{VE}}$ minimizer (within the $\tfrac{1}{1-\gamma}$ bound).
+6. **Feature design encodes domain knowledge** — often mattering more than the choice of algorithm; **tile coding** is a workhorse.
+7. **Neural networks** lift the feature-design burden but lose the theory, leaning on **stability tricks** instead.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Three axes of approximate prediction)</span></p>
+
+Almost every algorithm in modern RL is a particular point in one 3-D design space:
+
+| Axis | Choices | Trade-off |
+| :--- | :--- | :--- |
+| Function class | linear / NN / memory-based | power vs. stability |
+| Update target $U\_t$ | MC / TD($n$) / TD(0) | bias vs. variance |
+| Features (linear) | aggregation / tile / Fourier / RBF | locality vs. smoothness |
+
+Choosing a prediction method *is* choosing a coordinate on these three axes. The control methods of the next lectures inherit the very same axes, plus the policy-improvement loop on top.
 
 </div>

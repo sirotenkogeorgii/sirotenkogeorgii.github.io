@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Reinforcement Learning (HD)",
+   "url": "/subpages/reinforcement_learning_hd/",
+   "date": "2026-06-27",
+   "added": false
+  },
+  {
+   "title": "The Gramian in Infinite Dimensions",
+   "url": "/subpages/stuff_i_found_interesting/gramian_in_infinite_dim/",
+   "date": "2026-06-27",
+   "added": true
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-06-25",
@@ -121,12 +133,6 @@
    "added": true
   },
   {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-06-16",
-   "added": false
-  },
-  {
    "title": "The Galerkin Method: How a One-Line Orthogonality Tames Infinite Dimensions",
    "url": "/subpages/math_topics/galerkin_method/galerkin_method_rigorous/",
    "date": "2026-06-16",
@@ -171,12 +177,6 @@
   {
    "title": "The Fourier Transform: A Prism for Functions",
    "url": "/subpages/math_topics/fourier_transform/fourier_transform_gentle/",
-   "date": "2026-06-13",
-   "added": true
-  },
-  {
-   "title": "The Fourier Transform: Diagonalizing Translation",
-   "url": "/subpages/math_topics/fourier_transform/fourier_transform_rigorous/",
    "date": "2026-06-13",
    "added": true
   }
