@@ -27,7 +27,7 @@ To pass to infinite dimensions, replace the discrete list by a continuum of elem
 | Elements | a finite set $\{v\_1, \dots, v\_n\}$ | a continuum of profiles $\{\phi\_x\}\_{x \in \Omega}$ |
 | Indexing | integer rows/columns $(i, j)$ | continuous indices $(x, y)$ |
 | Entry / action | $G\_{ij} = \langle v\_i, v\_j \rangle$ | $(Kf)(x) = \int k(x,y)\, f(y)\, dy$ |
-| Structure | symmetric (Hermitian) PSD matrix | self-adjoint, positive, compact operator |
+| Structure | symmetric (Hermitian) PSD matrix | self-adjoint, positive operator (compact under Mercer-type hypotheses) |
 
 When the "vectors" are functions in a space like $L^2$, the discrete entries $G\_{ij}$ become a continuous **kernel** $k(x,y)$, and matrix multiplication becomes integration against that kernel:
 
@@ -43,7 +43,7 @@ A natural first guess is that the infinite analogue should just be $\langle x, y
 
 $$(Gv)_i = \sum_j G_{ij}\, v_j.$$
 
-So the kernel integral is the *entire* matrix–vector multiplication. The value at $x$ is the continuous dot product of the "row" $k(x,\cdot)$ with the input $f(\cdot)$ — not a single rank-one term $\langle u, v\rangle\, v$, which is a projection, an altogether different object.
+So the kernel integral is the *entire* matrix–vector multiplication. The value at $x$ is the continuous dot product of the "row" $k(x,\cdot)$ with the input $f(\cdot)$ — not a single rank-one term $\langle v, u\rangle\, u$ — a rank-one operator (an orthogonal projection only when $\|u\| = 1$), an altogether different object.
 
 $$
 \begin{array}{ccc}
@@ -89,6 +89,12 @@ $$k(x,y) = \sum_{n=0}^{\infty} \frac{(xy)^n}{n!} = e^{xy}.$$
 
 Same recipe, finite or infinite: plug the index into $\Phi$, take the inner product, read off the Gramian entry.
 
+The same machinery explains the popular **Gaussian RBF kernel** $k(x,y) = e^{-\|x - y\|^2}$. Factoring
+
+$$e^{-\|x - y\|^2} = e^{-\|x\|^2}\, e^{-\|y\|^2}\, e^{2\langle x, y\rangle}$$
+
+and Taylor-expanding the last factor shows its feature map carries *every* polynomial power of the input, each damped by a Gaussian envelope. A tempting but incorrect gloss is that this space therefore "contains all smooth functions" — it does not; the Gaussian RKHS is a comparatively small space of real-analytic functions. What is true is **universality**: the space is *dense* in the continuous functions on any compact set, so it can approximate them arbitrarily well rather than represent them exactly.
+
 #TODO: add visualizations (a finite feature vector growing into an infinite feature profile)
 
 ## The basis illusion: features are not basis vectors
@@ -123,7 +129,7 @@ In every case $\Phi(x\_i)$ is a data point written in "feature language," not a 
 
 In infinite-dimensional spaces, features come in three flavours, only the first of which behaves like a basis.
 
-1. **A genuine basis (discrete).** In a separable Hilbert space indexed by integers — e.g. the Fourier system $\phi\_n(x) = e^{i n x}$ in $\ell^2$ — the features form a Riesz or orthonormal basis. They act just like finite basis vectors; there are merely countably many.
+1. **A genuine basis (discrete).** In a separable Hilbert space indexed by integers (the model space is $\ell^2$) — e.g. $L^2$ of the circle with the Fourier system $\phi\_n(x) = e^{i n x}$, an orthogonal basis (orthonormal after the $1/\sqrt{2\pi}$ scaling) — the features form a Riesz or orthonormal basis. They act just like finite basis vectors; there are merely countably many.
 2. **Overcomplete frames.** You can have a spanning set carrying redundancy, e.g. Morlet wavelets. A frame is not a basis — there is no unique way to expand a function in it — yet it still represents functions stably. In finite dimensions redundancy only gives you a linearly dependent set; in infinite dimensions a frame is a tool in its own right.
 3. **Continuous "no-basis" systems.** When the features are indexed by a continuum they often cannot be a basis at all. The point-evaluation features $\Phi(x) = \delta(\cdot - x)$ have formal "Gramian" $\langle \delta\_x, \delta\_y\rangle = \delta(x - y)$, but the Dirac delta is a distribution — it does not even live in $L^2$. These features sit *outside* the space they describe; making them rigorous is exactly what **rigged Hilbert spaces** are for.
 
