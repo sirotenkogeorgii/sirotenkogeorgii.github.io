@@ -76,6 +76,8 @@ Finding the shortest possible curve between two points amounts to specifying a *
 
 </div>
 
+TODO: visualization
+
 ## Normed Spaces
 
 We use a lot of terminology from real analysis and linear algebra. Let us redefine a few key terms.
@@ -160,7 +162,7 @@ A norm induces a metric, so we can think of our normed space as a metric space. 
 
 Let $\lVert \cdot \rVert$ be a norm on a vector space $V$. Then
 
-$$\lVert v - w \rVert := d(v, w)$$
+$$d(v, w) := \lVert v - w \rVert$$
 
 defines a metric on $V$, called the **metric induced by the norm**.
 
@@ -237,6 +239,88 @@ The "unit balls" $B(0, 1)$ under these norms have different shapes in $\mathbb{R
   <figcaption>Unit balls $B(0,1)$ in $\mathbb{R}^2$ for the three canonical norms. As $p$ grows, the ball "puffs out" from the diamond ($p=1$) through the circle ($p=2$) toward the square ($p=\infty$), with each one inscribed in or circumscribing the next.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hölder's Inequality)</span></p>
+
+Suppose that $n \in \mathbb{N}$, and let
+
+$$a_k, b_k \in \mathbb{R}, \qquad 1 \le k \le n.$$
+
+Prove that if $1 < p < \infty$ and
+
+$$\frac{1}{p} + \frac{1}{q} = 1,$$
+
+then
+
+$$\sum_{k=1}^n |a_k b_k| \le \left(\sum_{k=1}^n |a_k|^p\right)^{1/p} \left(\sum_{k=1}^n |b_k|^q\right)^{1/q}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Hint</summary>
+
+Prove that if $A,B > 0$ and $t \in (0,1)$, then
+
+$$A^t B^{1-t} \le tA + (1-t)B$$
+
+by showing the function
+
+$$f(x) := tx + (1-t)B - x^t B^{1-t}, \qquad x > 0,$$
+
+has a minimum at $x = B$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Minkowski's Inequality)</span></p>
+
+Suppose that $n \in \mathbb{N}$, and let
+
+$$a_k, b_k \in \mathbb{R}, \qquad 1 \le k \le n.$$
+
+Prove that if $1 \le p < \infty$, then
+
+$$\left(\sum_{k=1}^n |a_k + b_k|^p\right)^{1/p} \le \left(\sum_{k=1}^n |a_k|^p\right)^{1/p} + \left(\sum_{k=1}^n |b_k|^p\right)^{1/p}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Hint</summary>
+
+By the triangle inequality,
+
+$$\sum_{k=1}^n |a_k + b_k|^p \le \sum_{k=1}^n |a_k|\,|a_k+b_k|^{p-1} + \sum_{k=1}^n |b_k|\,|a_k+b_k|^{p-1}.$$
+
+Now apply Hölder’s inequality.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Hölder and Minkowski Inequalities: Intergral forms)</span></p>
+
+
+</div>
+
 ### Norms on Function Spaces
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -255,19 +339,16 @@ For example, $C_\infty([0, 1]) = C([0, 1])$ because all continuous functions on 
 
 Here two notation are conflated:
 
-* $C^\infty$: **The Space of Smooth Functions**
-* $C_\infty or C_0$: **The Space of Functions Vanishing at Infinity**
-* $C_b$: **The Space of Continuous Bounded Functions**
-* $C_\infty$: in this course means "**The Space of Continuous Functions that can be measured by the $\infty$-norm**"
+1. $C^\infty$: **The Space of Smooth Functions**
+2. $C_\infty or C_0$: **The Space of Functions Vanishing at Infinity**
+3. $C_b$: **The Space of Continuous Bounded Functions**
+4. $C_\infty$: In this course it means "**The Space of Continuous Functions that can be measured by the $\infty$-norm**". It is essentailly common $C_b$.
+
+**A Note on Cross-Notation.** While this notation is perfectly sound and well-defined inside this coursework, keep in mind that it is an author-specific choice. In other other analysis textbooks (like those by Walter Rudin or Gerald Folland), they will use $C_b(X)$ for bounded continuous functions, reserving $C_0(X)$ or $C_\infty(X)$ for functions vanishing at infinity.
 
 * **The Logic Behind the Subscript:** In this specific notation system, the subscript $\infty$ does not stand for "vanishing at infinity". Instead, the subscript directly references the supremum norm (also called the $\infty$-norm, $\Vert\cdot\Vert_\infty$) used to equip the space.
-* The Domain Context: Because the metric space $X$ is arbitrary (and not necessarily locally compact, like $\mathbb{R}^n$), defining functions that "vanish at infinity" wouldn't make sense on general spaces. Therefore, the textbook/instructor chooses $C_\infty(X)$ to mean "continuous functions that can be measured by the $\infty$-norm". 
-* The Compact Example: The statement correctly notes that $C_\infty([0, 1]) = C([0, 1])$. Because the interval $[0, 1]$ is compact, the Extreme Value Theorem guarantees that every continuous function on it is automatically bounded.
-
-**A Note on Cross-Notation**
-
-While this notation is perfectly sound and well-defined inside your coursework, keep in mind that it is an author-specific choice.
-If you read other analysis textbooks (like those by Walter Rudin or Gerald Folland), they will use $C_b(X)$ for bounded continuous functions, reserving $C_0(X)$ or $C_\infty(X)$ for functions vanishing at infinity.
+* **The Domain Context:** Because the metric space $X$ is arbitrary (and not necessarily locally compact, like $\mathbb{R}^n$), defining functions that "vanish at infinity" wouldn't make sense on general spaces. Therefore, the textbook/instructor chooses $C_\infty(X)$ to mean "continuous functions that can be measured by the $\infty$-norm". 
+* **The Compact Example:** The statement correctly notes that $C_\infty([0, 1]) = C([0, 1])$. Because the interval $[0, 1]$ is compact, the Extreme Value Theorem guarantees that every continuous function on it is automatically bounded.
 
 </div>
 
@@ -279,8 +360,8 @@ The space of continuous functions on a topological space $X$ that can be measure
 </div>
 
 <div class="accordion" markdown="1">
-<details>
-<summary>Proof</summary>
+<details markdown="1">
+<summary>Solution</summary>
 
 **1. Define the Supremum Norm**
 
@@ -391,49 +472,57 @@ TODO:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Don't confuse $\ell^p$ and $L^p$)</span></p>
 
-The primary difference is that $\ell^p$ is a sequence space (discrete) while $L^p$ is a function space (continuous). Both are generalized vector spaces equipped with p-norms, but they operate on fundamentally different underlying measure spaces. [1, 2] 
+The primary difference is that $\ell^p$ is a sequence space (discrete) while $L^p$ is a function space (continuous). Both are generalized vector spaces equipped with p-norms, but they operate on fundamentally different underlying measure spaces.
 Mathematically, $\ell^p$ is actually a specific, special case of $L^p$ where the domain is the set of natural numbers $\mathbb{N}$ equipped with the discrete counting measure.
-------------------------------
+
 ## Direct Comparison Overview
 
-| Feature [3, 4, 5, 6, 7] | $\ell^p$ Space (Sequences) | $L^p$ Space (Functions) |
+| Feature | $\ell^p$ Space (Sequences) | $L^p$ Space (Functions) |
 |---|---|---|
 | Element Type | Infinite sequences of numbers, $x = (x_1, x_2, x_3, \dots)$ | Functions over a domain, f(x) |
 | Domain Type | Discrete index set (e.g., $\mathbb{N}$ or $\mathbb{Z}$) | Continuous domain (e.g., an interval $[a, b]$ or $\mathbb{R}^n$) |
 | Summation Tool | Infinite series ($\sum$) | Lebesgue integral ($\int$) |
 | Inclusions (p < q) | $\ell^p \subset \ell^q$ (Smaller p is more restrictive) | $L^q \subset L^p$ (On finite measure spaces like $[0,1]$) |
 
-------------------------------
 ## 1. The $\ell^p$ Spaces (Discrete)
-The space $\ell^p$ (often spoken as "little L-p") consists of all infinite sequences of real or complex numbers whose absolute values raised to the p-th power have a finite sum. [8] 
+
+The space $\ell^p$ (often spoken as "little L-p") consists of all infinite sequences of real or complex numbers whose absolute values raised to the p-th power have a finite sum.
 
 * Condition: A sequence $x = (x_n)_{n=1}^\infty$ belongs to $\ell^p$ if:
+
 $$\Vert{}x\Vert{}_p = \left( \sum_{n=1}^\infty \vert{}x_n\vert{}^p \right)^{1/p} < \infty$$ 
+
 * Intuition: For the sum to remain finite, the terms $x_n$ must decay to 0 as n → ∞.
 
 ## 2. The $L^p$ Spaces (Continuous)
-The space $L^p$ (often spoken as "big L-p") consists of equivalence classes of measurable functions whose absolute values raised to the p-th power have a finite Lebesgue integral over a measure space $(X, \mu)$. [9, 10] 
+
+The space $L^p$ (often spoken as "big L-p") consists of equivalence classes of measurable functions whose absolute values raised to the p-th power have a finite Lebesgue integral over a measure space $(X, \mu)$.
 
 * Condition: A function $f: X \to \mathbb{C}$ belongs to $L^p(X)$ if:
-$$\Vert{}f\Vert{}_p = \left( \int_X \vert{}f(x)\vert{}^p \, d\mu \right)^{1/p} < \infty$$ 
-* Intuition: For the integral to remain finite, the function cannot blow up too severely, and if the domain is infinite (like $\mathbb{R}$), it generally must decay toward 0 at infinity. [11] 
 
-------------------------------
+$$\Vert{}f\Vert{}_p = \left( \int_X \vert{}f(x)\vert{}^p \, d\mu \right)^{1/p} < \infty$$ 
+
+* Intuition: For the integral to remain finite, the function cannot blow up too severely, and if the domain is infinite (like $\mathbb{R}$), it generally must decay toward 0 at infinity. 
+
 ## 3. Understanding the Reversed Inclusion Properties
+
 One of the most confusing aspects when learning functional analysis at MIT or similar institutions is how their inclusion behaviors flip completely.
-## Why $\ell^p \subset \ell^q$ when p < q
-If a sequence converges for a smaller power p, its terms must eventually drop below 1. When you raise numbers smaller than 1 to a higher power q, they get smaller ($\vert{}x_n\vert{}^q \le \vert{}x_n\vert{}^p$). Therefore, the sum stays finite. [12] 
+
+## Why $\ell^p \subset \ell^q$ when $p < q$
+
+If a sequence converges for a smaller power p, its terms must eventually drop below 1. When you raise numbers smaller than 1 to a higher power q, they get smaller ($\vert{}x_n\vert{}^q \le \vert{}x_n\vert{}^p$). Therefore, the sum stays finite.
 
 * Example: The sequence $x_n = \frac{1}{n}$ is not in $\ell^1$ (harmonic series diverges), but it is in $\ell^2$ because $\sum \frac{1}{n^2} < \infty$.
 
-## Why $L^q \subset L^p$ on finite domains when p < q
-For functions on a bounded domain (like $[0,1]$), the primary threat to a finite integral is a vertical asymptote (the function blowing up to infinity at a point). Higher powers q make singularities blow up much faster, making it harder for the function to integrate cleanly. [13] 
+## Why $L^q \subset L^p$ on finite domains when $p < q$
 
-* Example: On the domain $(0,1]$, the function $f(x) = \frac{1}{\sqrt{x}}$ is in L¹ because $\int_0^1 x^{-1/2} dx = 2$. However, it is not in L² because $\int_0^1 x^{-1} dx$ blows up logarithmically to infinity.
+For functions on a bounded domain (like $[0,1]$), the primary threat to a finite integral is a vertical asymptote (the function blowing up to infinity at a point). Higher powers q make singularities blow up much faster, making it harder for the function to integrate cleanly.
 
-------------------------------
-## ✅ Summary of Identity
-Both spaces share the elegant property of being complete normed vector spaces (Banach spaces) for all 1 ≤ p ≤ ∞, and they form a Hilbert space exclusively when p=2. [14, 15] 
+* Example: On the domain $(0,1]$, the function $f(x) = \frac{1}{\sqrt{x}}$ is in $L^1$ because $\int_0^1 x^{-1/2} dx = 2$. However, it is not in $L^2$ because $\int_0^1 x^{-1} dx$ blows up logarithmically to infinity.
+
+## Summary of Identity
+
+Both spaces share the elegant property of being complete normed vector spaces (Banach spaces) for all 1 ≤ p ≤ ∞, and they form a Hilbert space exclusively when p=2. 
 
 </div>
 
@@ -492,6 +581,21 @@ The same technique can be used to show that the $\ell^p$ spaces are Banach, and 
 $$c_0 = \lbrace a \in \ell^\infty : \lim_{j \to \infty} a_j = 0 \rbrace$$
 
 is Banach.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Cauchy's Wrong Theorem)</span></p>
+
+Cauchy once published:
+
+> The pointwise limit of a sequence of continuous functions must always be a continuous function,
+
+which is wrong. But if we make the convergence stronger, then it works. Specifically, if the convergence is uniform, the statement is true:
+
+> The limit of a uniformly convergent sequence of continuous functions is itself continuous.
+
+The space $C_\infty$ is a space of **continuous** functions, equipped with the **supremum norm**. The supremum norm implies uniform convergence by definition, which implies that any Cauchy sequence of continuous function with the uniform norm converges to the continuous function, making the space $C_\infty$ complete.
 
 </div>
 
@@ -899,7 +1003,78 @@ The Open Mapping Theorem implies the Closed Graph Theorem, and we can also show 
 
 ## The Hahn-Banach Theorem
 
-Each of the results so far has been trying to answer a question, and the **Hahn-Banach Theorem** asks whether the dual space of a general nontrivial normed space is trivial. We want to know whether there are any normed spaces whose space of functionals $\mathcal{B}(V, \mathbb{K})$ contains only the zero function.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(The Hahn-Banach Theorem)</span></p>
+
+Each of the results so far has been trying to answer a question, and the **Hahn-Banach Theorem** answers the question whether the dual space of a general nontrivial normed space is trivial. We want to know whether there are any normed spaces whose space of functionals $\mathcal{B}(V, \mathbb{K})$ contains only the zero function.
+
+It proves that the dual space of any non-trivial normed space is always **rich and highly non-trivial**, containing plenty of continuous linear functionals to completely separate and distinguish every single vector in the space.
+
+**1. What a Trivial Dual Space Would Mean**
+
+The dual space $X^\ast$ consists of all continuous linear functionals $f: X \to \mathbb{R}$.
+If the dual space were trivial, it would mean that the only continuous linear functional in existence is the zero functional:
+
+$$f(x) = 0 \quad \text{for all } x \in X$$ 
+
+If this were true, geometry in abstract spaces would collapse. Every single vector would collapse to zero under evaluation, meaning you could never use functionals to measure distances, define coordinates, or separate points.
+
+**2. How Hahn-Banach Constructs Non-Zero Functionals**
+
+To prove the dual space is not trivial, we just need to find at least one continuous linear functional that is not identically zero. Hahn-Banach lets us manufacture these at will. 
+
+Suppose you have a non-trivial normed space $X$, and you pick any non-zero vector x₀ ∈ X (x₀ ≠ 0).
+
+   1. **Step 1:** Start Small. Create a tiny 1-dimensional subspace $M$ spanned by your vector x₀. Every vector in this subspace looks like c ⋅ x₀ for some scalar c.
+   2. **Step 2:** Define a Functional on $M$. Define a linear functional $f$ on this tiny subspace by setting:
+   
+      $$f(c \cdot x_0) = c \Vert{}x_0\Vert{}$$ 
+
+      Notice that for the specific vector x₀ (where c=1), $f(x_0) = \Vert{}x_0\Vert{}$. Since x₀ ≠ 0, its norm is positive, so f(x₀) ≠ 0. This functional is clearly non-zero, and its norm on M is exactly 1.
+   3. **Step 3:** Apply Hahn-Banach. The Hahn-Banach theorem says you can extend this $f$ from the tiny subspace M to a new functional F defined on the entire space X, without changing its norm ($\Vert{}F\Vert{} = \Vert{}f\Vert{} = 1$).
+
+Because $F$ is an extension of $f$, it inherits the exact same value at x₀:
+
+$$F(x_0) = \Vert{}x_0\Vert{} \neq 0$$ 
+
+**3. The Consequence: The Dual Space Separates Points**
+
+Because we can do this for any non-zero vector, Hahn-Banach guarantees that $X^\ast$ is packed with non-zero functionals.
+
+In fact, it yields a massive geometric corollary known as total separation:
+
+If you have two distinct vectors $x$ and $y$ ($x\neq y$), then $x - y \neq 0$. By applying the construction above to the vector $x-y$, Hahn-Banach guarantees there exists a continuous linear functional $F \in X^\ast$ such that:
+
+$$F(x - y) \neq 0 \implies F(x) \neq F(y)$$ 
+
+Without Hahn-Banach, we would constantly worry if infinite-dimensional spaces were "blind" environments where no continuous linear measurements could be made. Hahn-Banach guarantees that the dual space always has enough "eyes" ($F \in X^\ast$) to perfectly distinguish every single unique point in the space.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Two main perspectives on Hahn-Banach Theorem)</span></p>
+
+The **Hahn-Banach theorem** is a cornerstone of functional analysis that guarantees you can extend a mathematical rule (a linear functional) from a small subspace to an entire vector space without losing its core properties. It essentially ensures that abstract vector spaces have a sufficiently "rich" structure to be analyzed. 
+
+The theorem tells us two main things:
+
+* **The Extension Principle:** If you have a bounded linear function operating on a small part of a larger space, you can always extend it to the entire space while preserving its bound or "norm".
+* **The Separation Principle:** In geometric terms, it proves that we can use linear functions (hyperplanes) to separate distinct points or disjoint convex shapes.
+
+The theorem relies on the **Axiom of Choice**, meaning its proof requires assuming it is possible to make an infinite number of choices, even without an explicit rule to make them. 
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Hahn-Banach matters?)</span></p>
+
+In infinite-dimensional spaces, things get incredibly complicated and intuition from 3D space often fails. Hahn-Banach provides the scaffolding needed to:
+
+* **Create Dual Spaces:** It guarantees that every normed vector space has "enough" continuous linear functionals to study the space itself.
+* **Define Distances and Norms:** It gives us the ability to rigorously show that if two vectors are distinct, there is a functional that can tell them apart.
+* **Optimization and Physics:** The separation theorem is heavily used in convex optimization, economics, and quantum mechanics to find optimal solutions (like pricing models or shortest paths) when constrained by boundaries or limits.
+
+</div>
 
 ### Zorn's Lemma and Hamel Bases
 
@@ -968,7 +1143,13 @@ If $V$ is a vector space, then it has a Hamel basis.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hahn-Banach)</span></p>
 
-Let $V$ be a normed space, and let $M \subset V$ be a subspace. If $u : M \to \mathbb{C}$ is a linear map such that $\lvert u(t) \rvert \le C \lVert t \rVert$ for all $t \in M$ (i.e., $u$ is a bounded linear functional on $M$), then there exists a **continuous extension** $U : V \to \mathbb{C}$ (an element of $V' = \mathcal{B}(V, \mathbb{C})$) such that $U\vert_M = u$ and $\lVert U(t) \rVert \le C \lVert t \rVert$ for all $t \in V$ (with the same constant $C$).
+Let $V$ be a normed space, and let $M \subset V$ be a subspace. If 
+
+$$u : M \to \mathbb{C} \quad\text{is a linear map with}\quad \lvert u(t) \rvert \le C \lVert t \rVert \quad \forall t \in M,$$
+
+i.e., $u$ is a bounded linear functional on $M$, then there exists a **continuous extension** $U : V \to \mathbb{C}$ (an element of $V' = \mathcal{B}(V, \mathbb{C})$) such that with the same constant $C$
+
+$$U\vert_M = u \quad \text{and}\quad \lVert U(t) \rVert \le C \lVert t \rVert \quad \forall t \in V.$$
 
 </div>
 
@@ -977,7 +1158,11 @@ The key intermediate step is extending by one dimension at a time:
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(One-Dimensional Extension)</span></p>
 
-Let $V$ be a normed space, $M \subset V$ a subspace, and $u : M \to \mathbb{C}$ linear with $\lvert u(t) \rvert \le C \lVert t \rVert$ for all $t \in M$. If $x \notin M$, then there exists $u' : M' \to \mathbb{C}$ linear on $M' = M + \mathbb{C}x = \lbrace t + ax : t \in M, a \in \mathbb{C} \rbrace$, with $u'\vert_M = u$ and $\lvert u'(t') \rvert \le C \lVert t' \rVert$ for all $t' \in M'$.
+Let $V$ be a normed space, $M \subset V$ a subspace, and $u : M \to \mathbb{C}$ linear with $\lvert u(t) \rvert \le C \lVert t \rVert$ for all $t \in M$. If $x \notin M$, then there exists $u' : M' \to \mathbb{C}$ linear on 
+
+$$M' = M + \mathbb{C}x = \lbrace t + ax : t \in M, a \in \mathbb{C} \rbrace,$$
+
+with $u'\vert_M = u$ and $\lvert u'(t') \rvert \le C \lVert t' \rVert$ for all $t' \in M'$.
 
 </div>
 
@@ -1017,6 +1202,27 @@ Let $V$ be a normed space. For all $v \in V \setminus \lbrace 0 \rbrace$, there 
     <summary>proof</summary>
     <p>Define $u : \mathbb{C}v \to \mathbb{C}$ by $u(\lambda v) = \lambda \lVert v \rVert$. Then $\lvert u(t) \rvert \le \lVert t \rVert$ for all $t \in \mathbb{C}v$, and $u(v) = \lVert v \rVert$. By Hahn-Banach, extend $u$ to $f \in V'$ with $\lVert f(t) \rVert \le \lVert t \rVert$ for all $t \in V$. So $\lVert f \rVert \le 1$, and since $f(v) = \lVert v \rVert$, applying $f$ to $v / \lVert v \rVert$ gives $f(v/\lVert v \rVert) = 1$, so $\lVert f \rVert = 1$. $\square$</p>
   </details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(For $x\neq y$ in normed space $\exists$ continuous linear functional $f$ s.t. $f(x)\neq f(y)$.)</span></p>
+
+Original [math.stackexchange](https://math.stackexchange.com/questions/333231/hahn-banach-theorem).
+
+**Question:**
+
+> It is stated often that the Hahn Banach Theorem makes the study of the dual space "interesting". What does this exactly mean though? I.e what is exactly meant by "interesting"?
+> 
+> I am puzzled as to why it follows immediately from Hahn-Banach that the dual of a (non-zero) normed vector space is non-trivial.
+
+**Answer:**
+
+A consequence of Hahn Banach is that linear functionals separate points. This implies a certain richness of the space of linear functionals.
+
+Separating points means that given two distinct points $x$ and $y$ there is a continuous linear functional $f$ such that $f(x)\neq f(y)$.
+
+To prove that there is such a functional, consider the one-dimensional subspace $\mathbb{C}(x-y)$ (complex multiples of $x-y$). You can easily show that on this subspace $f(\lambda(x-y))=\lambda\|x-y\|$ defines a continuous linear functional. You can then extend this to your whole space by Hahn-Banach and by linearity it will follow that $f(x)-f(y)=f(x-y)=\|x-y\|\neq 0$, so $f(𝑥)\neq f(𝑦)$, as desired.
+
 </div>
 
 ### Double Dual and Reflexivity
@@ -1086,7 +1292,10 @@ With the general discussion of Banach spaces concluded, we now move to **Lebesgu
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Motivation II</span><span class="math-callout__name"></span></p>
 
-Our goal is to make a new definition of integration that is more general than Riemann integration: it will still be a method of calculating area under a curve, but built up in a way that allows for more powerful formalism. The approach: start with **indicator functions** $1_E$ (equal to 1 on $E$ and 0 otherwise), define the integral of $1_E$ to be the **measure** $m(E)$ of $E$, and build up from there.
+Our goal is to make a new definition of integration that is more general than Riemann integration: it will still be a method of calculating area under a curve, but built up in a way that allows for more powerful formalism. The approach: 
+1. Start with **indicator functions** $1_E$ (equal to $1$ on $E$ and $0$ otherwise),
+2. Define the integral of $1_E$ to be the **measure** $m(E)$ of $E$,
+3. Build up from there.
 
 </div>
 
@@ -1207,23 +1416,39 @@ $$A \subset \mathbb{R} \quad\text{is countable}\quad \implies m^*(A) = 0.$$
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>Enumerate $A = \lbrace a_n : n \in \mathbb{N} \rbrace$. For each $n$, let $I_n = (a_n - \varepsilon/2^{n+1}, a_n + \varepsilon/2^{n+1})$, which has length $\varepsilon/2^n$. Then $A \subset \bigcup_n I_n$, so $m^*(A) \le \sum_n \varepsilon/2^n = \varepsilon$. Taking $\varepsilon \to 0$ gives $m^*(A) = 0$. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Enumerate 
+
+$$A = \lbrace a_n : n \in \mathbb{N} \rbrace.$$
+
+For each $n$, let 
+
+$$I_n = (a_n - \varepsilon/2^{n+1}, a_n + \varepsilon/2^{n+1}),$$
+
+which has length $\varepsilon/2^n$. Then 
+
+$$A \subset \bigcup_n I_n \implies m^*(A) \le \sum_n \varepsilon/2^n = \varepsilon.$$
+
+Taking $\varepsilon \to 0$ gives $m^\ast(A) = 0$.
+
+</details>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary </span><span class="math-callout__name">($\mathbb{Q}$ has outer measure zero)</span></p>
 
-$m^*(\mathbb{Q}) = 0$, even though $\mathbb{Q}$ is dense in $\mathbb{R}$.
+$$m^*(\mathbb{Q}) = 0,$$
+
+even though $\mathbb{Q}$ is dense in $\mathbb{R}$.
 
 </div>
 
 ### Properties of Outer Measure
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Monotonicity of Outer Measure)</span></p>
 
 $$A \subset B \implies m^\ast(A) \le m^\ast(B).$$
@@ -1233,35 +1458,76 @@ $$A \subset B \implies m^\ast(A) \le m^\ast(B).$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Countable Subadditivity)</span></p>
 
-Let $\lbrace A_n \rbrace$ be a countable collection of subsets of $\mathbb{R}$, not necessarily disjoint. Then
+$$\lbrace A_n \rbrace_{n\in\mathbb{N}} \subset \mathbb{R} \implies m^*\!\left(\bigcup_n A_n\right) \le \sum_n m^*(A_n),$$
 
-$$m^*\!\left(\bigcup_n A_n\right) \le \sum_n m^*(A_n).$$
+where a countable collection $A_n \rbrace_{n\in\mathbb{N}} \subset \mathbb{R}$ is not necessarily disjoint.
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>We may assume all $m^*(A_n)$ are finite and $\sum_n m^*(A_n) < \infty$. Fix $\varepsilon > 0$. For each $n$, choose a covering $\lbrace I_{nk} \rbrace_{k \in \mathbb{N}}$ of $A_n$ with $\sum_k \ell(I_{nk}) < m^*(A_n) + \varepsilon/2^n$. Then $\lbrace I_{nk} \rbrace_{n,k}$ covers $\bigcup_n A_n$, so</p>
-    $$m^*\!\left(\bigcup_n A_n\right) \le \sum_{n,k} \ell(I_{nk}) = \sum_n \sum_k \ell(I_{nk}) < \sum_n \left(m^*(A_n) + \frac{\varepsilon}{2^n}\right) = \sum_n m^*(A_n) + \varepsilon.$$
-    <p>Taking $\varepsilon \to 0$ gives the result. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We may assume all $m^\ast(A_n)$ are finite and $\sum_n m^\ast(A_n) < \infty$. Fix $\varepsilon > 0$. For each $n$, choose a covering $\lbrace I_{nk} \rbrace_{k \in \mathbb{N}}$ of $A_n$ with 
+
+$$\sum_k \ell(I_{nk}) < m^\ast(A_n) + \varepsilon/2^n.$$
+
+Then $\lbrace I_{nk} \rbrace_{n,k}$ covers $\bigcup_n A_n$, so
+    
+$$m^*\!\left(\bigcup_n A_n\right) \le \sum_{n,k} \ell(I_{nk}) = \sum_n \sum_k \ell(I_{nk}) < \sum_n \left(m^*(A_n) + \frac{\varepsilon}{2^n}\right) = \sum_n m^*(A_n) + \varepsilon.$$
+
+Taking $\varepsilon \to 0$ gives the result.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Failure of Equality in Countable Subadditivity for Non-Measurable Sets)</span></p>
+
+Even if the sequence of sets $\lbrace A_n\rbrace$ is perfectly **disjoint**, you can absolutely still end up with a strict inequality:
+
+$$m^*\!\left(\bigcup_n A_n\right) < \sum_n m^*(A_n)$$
+
+Disjointness alone is not enough to guarantee equality. To get that exact equality (which is called **Countable Additivity**), the sets must be disjoint *and* they must be **Lebesgue measurable**.
+
+Here is exactly why that happens, and how it connects back to the core definition of measurability.
+
+Because the Lebesgue outer measure $m^\ast$ is only **subadditive**, it fundamentally overestimates the "size" of highly pathological, non-measurable sets. When non-measurable sets are disjoint, they can be so infinitely tangled together that their combined union actually has a strictly smaller outer measure than the sum of their individual outer measures.
+
+it could be proven that strict inequality happens using the exact logic from Carathéodory's criterion.
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Outer Measure of Intervals)</span></p>
 
-If $I$ is an interval of $\mathbb{R}$, then $m^*(I) = \ell(I)$.
+If $I$ is an interval of $\mathbb{R}$, then $m^\ast(I) = \ell(I)$.
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof sketch</summary>
-    <p><strong>$m^*(I) \le \ell(I)$:</strong> For a closed bounded interval $[a, b]$, cover it by $(a - \varepsilon, b + \varepsilon)$, giving $m^*(I) \le \ell(I) + 2\varepsilon$ for any $\varepsilon > 0$.</p>
-    <p><strong>$\ell(I) \le m^*(I)$:</strong> Suppose $\lbrace I_n \rbrace$ is a collection of open intervals covering $[a, b]$. By Heine-Borel, a finite subcollection $\lbrace J_1, \dots, J_N \rbrace$ suffices. Rearrange so that $J_i$ and $J_{i+1}$ always overlap. Then $\sum \ell(I_n) \ge \sum_{k=1}^{K} \ell(J_k) \ge b - a = \ell(I)$ by a telescoping argument on the overlapping intervals.</p>
-    <p>Other interval types follow by approximation: $[a + \varepsilon, b - \varepsilon] \subset I \subset [a - \varepsilon, b + \varepsilon]$. Infinite intervals have infinite outer measure. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+* $m^\ast(I) \le \ell(I)$
+ 
+  For a closed bounded interval $[a, b]$, cover it by $(a - \varepsilon, b + \varepsilon)$, giving $m^\ast(I) \le \ell(I) + 2\varepsilon$ for any $\varepsilon > 0$.
+
+* $\ell(I) \le m^\ast(I)$
+
+  Suppose $\lbrace I_n \rbrace$ is a collection of open intervals covering $[a, b]$. By Heine-Borel, a finite subcollection $\lbrace J_1, \dots, J_N \rbrace$ suffices. Rearrange so that $J_i$ and $J_{i+1}$ always overlap. Then 
+
+  $$\sum \ell(I_n) \ge \sum_{k=1}^{K} \ell(J_k) \ge b - a = \ell(I)$$
+  
+  by a telescoping argument on the overlapping intervals.
+
+* Other interval types follow by approximation: 
+  
+  $$[a + \varepsilon, b - \varepsilon] \subset I \subset [a - \varepsilon, b + \varepsilon].$$
+  
+  Infinite intervals have infinite outer measure.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1273,11 +1539,20 @@ $$m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$$
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>If $m^*(A) = \infty$, take $O = \mathbb{R}$. Otherwise, let $\lbrace I_n \rbrace$ be open intervals covering $A$ with $\sum \ell(I_n) \le m^*(A) + \varepsilon$. Then $O = \bigcup_n I_n$ is open, $A \subset O$, and by subadditivity $m^*(O) \le \sum m^*(I_n) \le \sum \ell(I_n) \le m^*(A) + \varepsilon$. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+* If $m^\ast(A) = \infty$, take $O = \mathbb{R}$. 
+* Otherwise, let $\lbrace I_n \rbrace$ be open intervals covering $A$ with 
+  
+  $$\sum \ell(I_n) \le m^\ast(A) + \varepsilon.$$
+  
+  Then $O = \bigcup_n I_n$ is open, $A \subset O$, and by subadditivity 
+  
+  $$m^\ast(O) \le \sum m^\ast(I_n) \le \sum \ell(I_n) \le m^\ast(A) + \varepsilon.$$
+
+</details>
 </div>
 
 ### Lebesgue Measurable Sets
@@ -1287,7 +1562,7 @@ $$m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$$
 
 A set $E \subset \mathbb{R}$ is **Lebesgue measurable** if for all $A \subset \mathbb{R}$,
 
-$$m^*(A) = \underrbace{m^*(A \cap E)}_{overlap out. measure} + \underbrace{m^*(A \cap E^c)}_{A's own out. measure}.$$
+$$m^*(A) = \underbrace{m^*(A \cap E)}_{\text{overlap out. measure}} + \underbrace{m^*(A \cap E^c)}_{\text{A's own out. measure}}.$$
 
 In other words, $E$ is well-behaved in that it always cuts any set $A$ into reasonable parts. Since subadditivity gives 
 
@@ -1319,27 +1594,61 @@ $$m^\ast(E) = 0 \implies E \quad\text{is measurable}$$
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>Since $A \cap E \subset E$, monotonicity gives $m^*(A \cap E) \le m^*(E) = 0$. So $m^*(A \cap E) + m^*(A \cap E^c) = m^*(A \cap E^c) \le m^*(A)$ (since $A \cap E^c \subset A$). This is the measurability condition. $\square$</p>
-  </details>
-</div>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-Every open set and every closed set is measurable. More generally:
+Since $A \cap E \subset E$, monotonicity gives 
+
+$$m^\ast(A \cap E) \le m^\ast(E) = 0.$$
+
+So 
+
+$$m^\ast(A \cap E) + m^\ast(A \cap E^c) = m^\ast(A \cap E^c) \le m^\ast(A)$$
+
+since $A \cap E^c \subset A$. This is the measurability condition.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite Union of Measurable Sets)</span></p>
+
+$$\text{Every open set and every closed set is measurable.}$$ 
+
+More generally:
 
 $$E_1, E_2 \quad\text{are measurable sets} \implies E_1 \cup E_2 \quad\text{is measurable}$$
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>Let $A \subset \mathbb{R}$ be arbitrary. Since $E_2$ is measurable, $m^*(A \cap E_1^c) = m^*(A \cap E_1^c \cap E_2) + m^*(A \cap E_1^c \cap E_2^c)$. Note $E_1^c \cap E_2^c = (E_1 \cup E_2)^c$ by de Morgan, and $A \cap (E_1 \cup E_2) = (A \cap E_1) \cup (A \cap E_2 \cap E_1^c)$. So $m^*(A \cap (E_1 \cup E_2)) \le m^*(A \cap E_1) + m^*(A \cap E_2 \cap E_1^c)$. Using measurability of $E_1$: $m^*(A \cap E_1) + m^*(A \cap E_1^c) = m^*(A)$. Substituting and rearranging gives $m^*(A \cap (E_1 \cup E_2)) + m^*(A \cap (E_1 \cup E_2)^c) \le m^*(A)$. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $A \subset \mathbb{R}$ be arbitrary. Since $E_2$ is measurable, 
+
+$$m^*(A \cap E_1^c) = m^*(A \cap E_1^c \cap E_2) + m^*(A \cap E_1^c \cap E_2^c).$$
+
+Note by de Morgan 
+
+$$E_1^c \cap E_2^c = (E_1 \cup E_2)^c$$
+
+$$A \cap (E_1 \cup E_2) = (A \cap E_1) \cup (A \cap E_2 \cap E_1^c).$$
+
+So 
+
+$$m^*(A \cap (E_1 \cup E_2)) \le m^*(A \cap E_1) + m^*(A \cap E_2 \cap E_1^c).$$
+
+Using measurability of $E_1$: 
+
+$$m^*(A \cap E_1) + m^*(A \cap E_1^c) = m^*(A).$$
+
+Substituting and rearranging gives 
+
+$$m^*(A \cap (E_1 \cup E_2)) + m^*(A \cap (E_1 \cup E_2)^c) \le m^*(A)$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1352,47 +1661,59 @@ $$E_1, \dots, E_n \quad\text{are measurable}\implies \bigcup_{k=1}^{n} E_k \quad
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Not all sets are measurable: Vitali set)</span></p>
 
-The Vitali set is the classic example of a **non-measurable set of real numbers**. It was constructed by Italian mathematician Giuseppe Vitali in 1905 to prove that it is impossible for the Lebesgue measure to assign a meaningful "length" to every single subset of real numbers without sacrificing basic geometric intuition. [1, 2, 3] 
-To understand the Vitali set, you can break down its definition, construction, and why it breaks the rules of measure theory. [4] 
-------------------------------
+The Vitali set is the classic example of a **non-measurable set of real numbers**. It was constructed by Italian mathematician Giuseppe Vitali in 1905 to prove that it is impossible for the Lebesgue measure to assign a meaningful "length" to every single subset of real numbers without sacrificing basic geometric intuition.
+To understand the Vitali set, you can break down its definition, construction, and why it breaks the rules of measure theory.
+
 ## 1. The Core Idea: An Equivalence Relation
-The Vitali set is built inside the interval $[0, 1]$ using an equivalence relation based on rational numbers. [5, 6] 
+
+The Vitali set is built inside the interval $[0, 1]$ using an equivalence relation based on rational numbers.
 We define a relation $\sim$ on the real numbers such that two numbers $x$ and $y$ are equivalent if their difference is a rational number:
+
 $$x \sim y \iff x - y \in \mathbb{Q}$$ 
-This relation partitions the entire set of real numbers into completely disjoint "equivalence classes." Every real number belongs to exactly one class. For example, all rational numbers form one class, while numbers like $\pi, \pi+1, \pi-3.5$ belong to another class. [7] 
-------------------------------
+
+This relation partitions the entire set of real numbers into completely disjoint "equivalence classes." Every real number belongs to exactly one class. For example, all rational numbers form one class, while numbers like $\pi, \pi+1, \pi-3.5$ belong to another class.
+
 ## 2. The Step-by-Step Construction
 
    1. Partition the Interval: Look only at the real numbers inside the interval $[0, 1]$. The equivalence relation divides this interval into infinitely many disjoint classes.
-   2. Apply the Axiom of Choice: Use the [Axiom of Choice](https://en.wikipedia.org/wiki/Axiom_of_choice) to pick exactly one representative real number from each and every equivalence class. [8] 
-   3. Form the Set: Gather all of these chosen representative points into a new set. This set $V \subset [0, 1]$ is a Vitali set. [9] 
+   2. Apply the Axiom of Choice: Use the [Axiom of Choice](https://en.wikipedia.org/wiki/Axiom_of_choice) to pick exactly one representative real number from each and every equivalence class.
+   3. Form the Set: Gather all of these chosen representative points into a new set. This set $V \subset [0, 1]$ is a Vitali set.
 
-By design, no two distinct elements $x, y \in V$ have a rational difference (because we only picked one element per class). Furthermore, every real number in $[0, 1]$ is at a rational distance from exactly one element in $V$. [10, 11] 
-------------------------------
+By design, no two distinct elements $x, y \in V$ have a rational difference (because we only picked one element per class). Furthermore, every real number in $[0, 1]$ is at a rational distance from exactly one element in $V$.
+
 ## 3. Why It Is Non-Measurable (The Contradiction)
-To see why the Vitali set cannot have an actual measure, imagine shifting the set $V$ by every rational number $q$ inside the interval $[-1, 1]$. Let $q_1, q_2, q_3, \dots$ be an enumeration of all rational numbers between $-1$ and $1$. [12] 
+
+To see why the Vitali set cannot have an actual measure, imagine shifting the set $V$ by every rational number $q$ inside the interval $[-1, 1]$. Let $q_1, q_2, q_3, \dots$ be an enumeration of all rational numbers between $-1$ and $1$.
 We create shifted copies of the Vitali set:
-$$V_k = V + q_k = \{x + q_k \mid x \in V\}$$ 
+
+$$V_k = V + q_k = \lbrace x + q_k \mid x \in V\rbrace$$ 
+
 Because of how $V$ was constructed, these shifted sets possess two critical properties:
 
    1. They are completely disjoint: No two shifted sets overlap ($V_i \cap V_j = \emptyset$ for $i \neq j$).
    2. They bound the interval: Their countable union is trapped between $-1$ and $2$, but completely covers the original interval $[0, 1]$:
-   $$[0, 1] \subseteq \bigcup_{k=1}^{\infty} V_k \subseteq [-1, 2]$$ [13, 14] 
+   
+      $$[0, 1] \subseteq \bigcup_{k=1}^{\infty} V_k \subseteq [-1, 2]$$
 
 ## The Math Breakdown
-If the Vitali set were measurable, its Lebesgue measure $\mu(V)$ would have to be a fixed non-negative number. Because Lebesgue measure is translation-invariant, shifting the set doesn't change its size, meaning every copy has the exact same measure: $\mu(V_k) = \mu(V)$. [15] 
+
+If the Vitali set were measurable, its Lebesgue measure $\mu(V)$ would have to be a fixed non-negative number. Because Lebesgue measure is translation-invariant, shifting the set doesn't change its size, meaning every copy has the exact same measure: $\mu(V_k) = \mu(V)$.
 Because the sets are disjoint, the measure of their union must equal the sum of their individual measures (countable additivity):
+
 $$\mu\left(\bigcup_{k=1}^{\infty} V_k\right) = \sum_{k=1}^{\infty} \mu(V_k) = \sum_{k=1}^{\infty} \mu(V)$$ 
+
 Using our interval boundaries from above, the total measure of the union must sit between the length of $[0, 1]$ (which is $1$) and the length of $[-1, 2]$ (which is $3$):
+
 $$1 \le \sum_{k=1}^{\infty} \mu(V) \le 3$$ 
+
 This creates an impossible mathematical paradox:
 
 * If $\mu(V) = 0$, then adding up infinite zeros equals $0$. But $0$ is not $\ge 1$.
 * If $\mu(V) > 0$ (no matter how small), adding it up infinitely many times equals $\infty$. But $\infty$ is not $\le 3$.
 
-------------------------------
-## Restating the Answer## ✅ Conclusion
-Because assigning any real number or zero to the measure of the Vitali set results in a logical contradiction ($1 \le 0 \le 3$ or $1 \le \infty \le 3$), the Vitali set cannot be assigned an actual measure. It is strictly non-measurable, though its Lebesgue outer measure is known to be greater than zero. [16] 
+## Conclusion
+
+Because assigning any real number or zero to the measure of the Vitali set results in a logical contradiction ($1 \le 0 \le 3$ or $1 \le \infty \le 3$), the Vitali set cannot be assigned an actual measure. It is strictly non-measurable, though its Lebesgue outer measure is known to be greater than zero.
 
 </div>
 
@@ -1441,7 +1762,7 @@ is the smallest $\sigma$-algebra containing all open subsets of $\mathbb{R}$, ca
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(WWhy is Borel $\sigma$-algebra defined as an intersection?)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why is Borel $\sigma$-algebra defined as an intersection?)</span></p>
 
 > Why is Borel $\sigma$-algebra defined as an intersection of all $\sigma$-algebras containing all real open sets, if we can just define Borel $\sigma$-algebra as a $\sigma$-algebra containing only all real open sets and not any other sets?
 
@@ -1535,6 +1856,255 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
   </details>
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Let $f:\mathbb{R}\to\mathbb{R}$. Prove that the collection of sets
+
+$$\mathcal{A} = \lbrace E \subset \mathbb{R} \mid f^{-1}(E) \text{ is Lebesgue measurable}\rbrace$$
+
+is a $\sigma$-algebra.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+*Interesting observation:* the exercise is solvable without any knowledge of measurable functions.
+
+1. $\emptyset \in \mathcal{A}$
+  1. $f$ is a function from $\mathbb{R}$ to $\mathbb{R}$
+  2. $\implies$ nothing is mapped to $\emptyset\not\in\mathbb{R}$
+  3. $\implies$ $f^{-1}(\emptyset) = \emptyset$, which is Lebesgue measurable by Lemma (Basic Measurability Facts).
+  
+2. $E \in \mathcal{A} \implies E^c \in \mathcal{A}$
+   1. Here it is useful to study the relationship between $(f^{-1}(E))^c$ and $f^{-1}(E^c)$.
+   2. $f^{-1}(E)$ is Lebesgue measurable $\implies$ $(f^{-1}(E))^c$ is Lebesgue measurable by Lemma (Basic Measurability Facts).
+   3. Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c$.
+   4. $\implies$ $E^c \in \mathcal{A}$. 
+
+3. Countable $E_1, \dots \in \mathcal{A} \implies \Cup_{i=1} E_i \in \mathcal{A}$
+   1. $f^{-1}(Cup_{i=1} E_i) = Cup_{i=1} f^{-1}(E_i)$
+   2. Each $f^{-1}(E_i)$ is Lebesgue measurable
+   3. The countable union of Lebesgue measurable is Lebesgue measurable
+   4. $\implies$ $f^{-1}(Cup_{i=1} E_i)$ is Lebesgue measurable
+   5. $\implies$ $\Cup_{i=1} E_i \in \mathcal{A}$
+
+Old 2.3:
+
+> Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c \cup \lbrace \emptyset \rbrace$
+> * Note that the function $f$ is not necessarily surjective, i.e. some values of $E^c$ might have an empty set preimage. 
+> * If $f$ is sujective, then $f^{-1}(E^c) = (f^{-1}(E))^c$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Misconceptions in Step 3: $f^{-1}(E^c) = (f^{-1}(E))^c$)</span></p>
+
+In the initial solution, where was a couple of set-theory misconceptions in Step 3 regarding the empty set and surjectivity.
+* First, a preimage $f^{-1}(E^c)$ is a collection of elements from the **domain** $\mathbb{R}$. The empty set $\emptyset$ is a set, not a real number, so we wouldn't take the union with the set $\lbrace \emptyset\rbrace$.
+* Second, my concern about surjectivity is a common trap, but it actually doesn't affect the preimage here. If there is some value $y \in E^c$ that is **never** hit by the function $f$, its individual preimage is just empty. It simply contributes **nothing** to the overall set $f^{-1}(E^c)$. It doesn't break the equality.
+
+In fact, the relationship 
+
+$$\boxed{f^{-1}(E^c) = (f^{-1}(E))^c}$$ 
+
+is a universal set theory identity that is strictly true for **all** functions, regardless of whether they are surjective!
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Let $E \subset \mathbb{R}$, and assume that $m^\ast(E) \le \infty$. Prove that $E$ is measurable if and only if for every $\varepsilon > 0$ there exists a finite union of open intervals $U$ such that $m^\ast(U\Delta E) < \varepsilon$.
+
+*Hint:* To prove the converse direction, let $A \subset\mathbb R$, and prove that for every $\varepsilon > 0$,
+
+$$m^* (A \cap E) + m^*(A \cap Ec) \leq m^*(A) + \varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Direction $\Rightarrow$:**
+
+Assume $E$ is measurable and $m^*(E) < \infty$. Let $\varepsilon > 0$.
+
+**1. Bounding the Overestimate**
+By the definition of outer measure (approximation by open sets), there exists a countable collection of open intervals $U_i$ such that $E \subset \bigcup_{i=1}^\infty U_i$ and:
+
+$$m^*\left(\bigcup_{i=1}^\infty U_i\right) < m^*(E) + \frac{\varepsilon}{2}$$
+
+Let $O = \bigcup_{i=1}^\infty U_i$. Because $E$ is Lebesgue measurable, Carathéodory's criterion guarantees that:
+
+$$m^*(O) = m^*(O \cap E) + m^*(O \cap E^c) = m^*(E) + m^*(O \setminus E)$$
+
+Substituting this into our approximation bound yields:
+
+$$m^*(E) + m^*(O \setminus E) < m^*(E) + \frac{\varepsilon}{2}$$
+
+Because $m^*(E) < \infty$, we can subtract it from both sides to obtain:
+
+$$m^*(O \setminus E) < \frac{\varepsilon}{2}$$
+
+**2. Bounding the Tail**
+Since $m^*(E)$ is finite, $m^*(O)$ is also finite. By the continuity of measure from below (or the convergence of the sum of lengths), we can find a finite integer $n$ such that the measure of the remaining tail is small. Let $U = \bigcup_{i=1}^n U_i$. Then $O \setminus U \subset \bigcup_{i=n+1}^\infty U_i$, and we can choose $n$ large enough so that:
+
+$$m^*(O \setminus U) < \frac{\varepsilon}{2}$$
+
+**3. The Symmetric Difference**
+We evaluate the symmetric difference $U \Delta E$:
+
+$$m^*(U \Delta E) = m^*((U \setminus E) \cup (E \setminus U)) \le m^*(U \setminus E) + m^*(E \setminus U)$$
+
+We bound each term separately:
+
+* Since $U \subset O$, we have $U \setminus E \subset O \setminus E$. Thus, $m^*(U \setminus E) \le m^*(O \setminus E) < \frac{\varepsilon}{2}$.
+* Since $E \subset O$, any element in $E$ that is not in $U$ must be in $O$ but not in $U$. Thus, $E \setminus U \subset O \setminus U$. This gives $m^*(E \setminus U) \le m^*(O \setminus U) < \frac{\varepsilon}{2}$.
+
+Summing these bounds gives the final result:
+
+$$m^*(U \Delta E) < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$$
+
+**Direction $\Leftarrow$:**
+
+By the subadditivity of the outer measure, for any test set $A$:
+
+$$m^*(A) = m^*((A \cap E) \cup (A \cap E^c)) \le m^*(A \cap E) + m^*(A \cap E^c)$$
+
+To prove measurability via Carathéodory's criterion, we only need to prove the opposite inequality to establish equality:
+
+$$m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A)$$
+
+The problem explicitly states we can assume $U$ (a finite union of open intervals) is measurable. Using $U$ as the measurable set and $A$ as the test set in Carathéodory's criterion, we have strict equality:
+
+$$m^*(A) = m^*(A \cap U) + m^*(A \cap U^c)$$
+
+We establish the subset bounds using the error region $U \Delta E$:
+
+1. $A \cap E \subseteq (A \cap U) \cup (A \cap (U \Delta E))$
+
+   $$\implies m^*(A \cap E) \le m^*(A \cap U) + m^*(A \cap (U \Delta E)) \le m^*(A \cap U) + \varepsilon$$
+
+2. $A \cap E^c \subseteq (A \cap U^c) \cup (A \cap (U \Delta E))$
+
+   $$\implies m^*(A \cap E^c) \le m^*(A \cap U^c) + m^*(A \cap (U \Delta E)) \le m^*(A \cap U^c) + \varepsilon$$
+
+Summing these inequalities yields:
+
+$$m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A \cap U) + m^*(A \cap U^c) + 2\varepsilon$$
+
+Substituting the Carathéodory equality for $U$:
+
+$$m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A) + 2\varepsilon$$
+
+Because $\varepsilon > 0$ is arbitrary, as $\varepsilon \to 0$, we obtain:
+
+$$m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A)$$
+
+Thus, $E$ is Lebesgue measurable.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Littlewood’s first principle)</span></p>
+
+The result from the exercise above is known as **Littlewood’s first principle**
+
+$$\boxed{\text{Every measurable set is nearly a finite union of open intervals.}}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Translation and scale invariance of measurable sets)</span></p>
+
+Let $E$ be a measurable set.
+
+* **(a)** Prove that for all $x \in \mathbb{R}$, $E + x$ is measurable.
+* **(b)** Prove that for all $r > 0$, $rE := \lbrace ry \mid  y \in E\rbrace$ is measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Exercise 3(a)**
+
+By Carathéodory's criterion, a set $M$ is Lebesgue measurable if and only if for any arbitrary test set $A \subset \mathbb{R}$, the following holds:
+
+$$m^*(A) = m^*(A \cap M) + m^*(A \cap M^c)$$
+
+Let $A \subset \mathbb{R}$ be an arbitrary test set. Since $E$ is assumed to be measurable, the criterion must hold for the shifted test set $A-x$:
+
+$$m^*(A-x) = m^*((A-x) \cap E) + m^*((A-x) \cap E^c)$$
+
+Because the Lebesgue outer measure is translation-invariant, we immediately know $m^*(A-x) = m^*(A)$.
+
+Next, we express the intersections on the right-hand side as global translations of sets. A point $y$ belongs to $(A-x) \cap E$ if and only if $y \in A-x$ and $y \in E$. This is equivalent to stating $y+x \in A$ and $y+x \in E+x$. Thus, we can factor the translation out of the intersection:
+
+$$(A-x) \cap E = (A \cap (E+x)) - x$$
+
+Applying the translation invariance of outer measure to this set yields:
+
+$$m^*((A-x) \cap E) = m^*((A \cap (E+x)) - x) = m^*(A \cap (E+x))$$
+
+We apply the same logic to the complement. Since set complements behave cleanly under translation, $(E+x)^c = E^c + x$. Therefore:
+
+$$(A-x) \cap E^c = (A \cap (E^c+x)) - x = (A \cap (E+x)^c) - x$$
+
+Taking the outer measure and applying translation invariance again:
+
+$$m^*((A-x) \cap E^c) = m^*((A \cap (E+x)^c) - x) = m^*(A \cap (E+x)^c)$$
+
+Finally, substituting these translation-invariant measures back into our initial Carathéodory equation gives:
+
+$$m^*(A) = m^*(A \cap (E+x)) + m^*(A \cap (E+x)^c)$$
+
+Because $A$ was entirely arbitrary, this satisfies the criterion. Thus, $E+x$ is measurable.
+
+**Exercise 3(b)**
+
+Let $A \subset \mathbb{R}$ be an arbitrary test set. Since $E$ is measurable, we can apply Carathéodory's criterion using the scaled test set $\frac{1}{r}A$:
+
+$$m^*\left(\frac{1}{r}A\right) = m^*\left(\frac{1}{r}A \cap E\right) + m^*\left(\frac{1}{r}A \cap E^c\right)$$
+
+Recall that the Lebesgue outer measure scales linearly: for any set $S$ and positive constant $c$, $m^*(cS) = c \cdot m^*(S)$. Therefore, $m^*\left(\frac{1}{r}A\right) = \frac{1}{r}m^*(A)$.
+
+Next, we rewrite the intersections by factoring out the scalar $\frac{1}{r}$. A point $y$ is in $\frac{1}{r}A \cap E$ if and only if $ry \in A$ and $ry \in rE$. This set equivalence can be written as:
+
+$$\frac{1}{r}A \cap E = \frac{1}{r}(A \cap rE)$$
+
+Applying the linear scaling property of outer measure gives:
+
+$$m^*\left(\frac{1}{r}A \cap E\right) = m^*\left(\frac{1}{r}(A \cap rE)\right) = \frac{1}{r}m^*(A \cap rE)$$
+
+Similarly, for the complement, notice that scaling and complements commute: $(rE)^c = r(E^c)$. Therefore:
+
+$$\frac{1}{r}A \cap E^c = \frac{1}{r}(A \cap rE^c) = \frac{1}{r}(A \cap (rE)^c)$$
+
+Taking the outer measure of this complement set yields:
+
+$$m^*\left(\frac{1}{r}A \cap E^c\right) = m^*\left(\frac{1}{r}(A \cap (rE)^c)\right) = \frac{1}{r}m^*(A \cap (rE)^c)$$
+
+Substitute these linearly scaled measures back into our initial Carathéodory equation:
+
+$$\frac{1}{r}m^*(A) = \frac{1}{r}m^*(A \cap rE) + \frac{1}{r}m^*(A \cap (rE)^c)$$
+
+Since $r > 0$, we can safely multiply the entire equation by $r$ to obtain:
+
+$$m^*(A) = m^*(A \cap rE) + m^*(A \cap (rE)^c)$$
+
+Because $A$ was arbitrary, this establishes Carathéodory's criterion. Thus, $rE$ is measurable.
+
+</details>
+</div>
+
 ## Measurable Functions
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -1550,74 +2120,75 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
 
 <figure class="math-figure">
   <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" width="760" role="img" aria-labelledby="lebesgue-sketch-title lebesgue-sketch-desc">
-    <title id="lebesgue-sketch-title">Sketch of Lebesgue range slicing</title>
-    <desc id="lebesgue-sketch-desc">A hand-sketch-style diagram showing horizontal range strips, one selected strip between f_i and f_i plus one, the preimage in the domain, and its measure.</desc>
+    <title id="lebesgue-sketch-title">Range pieces and their preimages in the domain</title>
+    <desc id="lebesgue-sketch-desc">A diagram with a vertical range interval and a vertical domain line. Three range pieces have preimages that are respectively a single point, one interval, and two disjoint intervals.</desc>
     <defs>
-      <marker id="lebesgue-sketch-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <marker id="lebesgue-domain-to-range-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
         <path d="M 0 0 L 8 4 L 0 8 Z" fill="#1b8f5a" />
       </marker>
-      <marker id="lebesgue-sketch-arrow-orange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-        <path d="M 0 0 L 8 4 L 0 8 Z" fill="#d96b2b" />
-      </marker>
     </defs>
-    <rect x="45" y="38" width="670" height="335" rx="10" fill="#fbfcff" stroke="#e3e7f0" />
-    <g stroke="#eef1f7" stroke-width="1">
-      <line x1="130" y1="70" x2="130" y2="330" />
-      <line x1="250" y1="70" x2="250" y2="330" />
-      <line x1="370" y1="70" x2="370" y2="330" />
-      <line x1="490" y1="70" x2="490" y2="330" />
-      <line x1="610" y1="70" x2="610" y2="330" />
-      <line x1="88" y1="80" x2="660" y2="80" />
-      <line x1="88" y1="115" x2="660" y2="115" />
-      <line x1="88" y1="150" x2="660" y2="150" />
-      <line x1="88" y1="185" x2="660" y2="185" />
-      <line x1="88" y1="220" x2="660" y2="220" />
-      <line x1="88" y1="255" x2="660" y2="255" />
-      <line x1="88" y1="290" x2="660" y2="290" />
-      <line x1="88" y1="325" x2="660" y2="325" />
+    <rect x="42" y="34" width="676" height="346" rx="10" fill="#fbfcff" stroke="#e3e7f0" />
+
+    <text x="92" y="62" font-size="16" font-weight="600" fill="#d96b2b">range interval</text>
+    <text x="470" y="62" font-size="16" font-weight="600" fill="#1b8f5a">domain line</text>
+
+    <g stroke="#333" stroke-width="2" fill="none">
+      <line x1="170" y1="86" x2="170" y2="322" />
+      <line x1="540" y1="86" x2="540" y2="322" />
+    </g>
+    <g stroke="#d96b2b" stroke-width="2.5" fill="none">
+      <line x1="156" y1="86" x2="184" y2="86" />
+      <line x1="156" y1="322" x2="184" y2="322" />
+    </g>
+    <g stroke="#1b8f5a" stroke-width="2.5" fill="none">
+      <line x1="526" y1="86" x2="554" y2="86" />
+      <line x1="526" y1="322" x2="554" y2="322" />
+    </g>
+    <text x="105" y="91" font-size="15" fill="#d96b2b">fᵢ₊₁</text>
+    <text x="123" y="327" font-size="15" fill="#d96b2b">fᵢ</text>
+    <text x="552" y="91" font-size="14" fill="#1b8f5a">E</text>
+
+    <g fill="rgba(217,107,43,0.18)" stroke="#d96b2b" stroke-width="1.4">
+      <rect x="138" y="104" width="64" height="44" />
+      <rect x="138" y="178" width="64" height="54" />
+      <rect x="138" y="260" width="64" height="46" />
+    </g>
+    <text x="155" y="130" font-size="13" fill="#d96b2b">I₁</text>
+    <text x="155" y="210" font-size="13" fill="#d96b2b">I₂</text>
+    <text x="155" y="288" font-size="13" fill="#d96b2b">I₃</text>
+    <text x="84" y="205" font-size="14" fill="#d96b2b" transform="rotate(-90 84 205)">[fᵢ, fᵢ₊₁]</text>
+
+    <g stroke="#ccd4e2" stroke-width="1" stroke-dasharray="4 5">
+      <line x1="202" y1="126" x2="530" y2="126" />
+      <line x1="202" y1="205" x2="530" y2="205" />
+      <line x1="202" y1="283" x2="530" y2="283" />
     </g>
 
-    <g stroke="#333" stroke-width="1.7" fill="none">
-      <line x1="100" y1="330" x2="670" y2="330" />
-      <line x1="100" y1="330" x2="100" y2="60" />
+    <g stroke="#1b8f5a" stroke-width="7" stroke-linecap="round" fill="none">
+      <line x1="540" y1="188" x2="540" y2="222" />
+      <line x1="540" y1="258" x2="540" y2="273" />
+      <line x1="540" y1="296" x2="540" y2="315" />
     </g>
-    <polygon points="670,330 660,326 660,334" fill="#333" />
-    <polygon points="100,60 96,70 104,70" fill="#333" />
-    <text x="674" y="335" font-size="13" fill="#555">domain</text>
-    <text x="72" y="66" font-size="13" fill="#555">range</text>
+    <circle cx="540" cy="126" r="6" fill="#1b8f5a" stroke="#0f6f43" stroke-width="1.4" />
 
-    <g fill="rgba(44,62,148,0.10)" stroke="#2c3e94" stroke-width="1.2">
-      <rect x="100" y="80" width="410" height="35" />
-      <rect x="100" y="115" width="470" height="35" />
-      <rect x="100" y="150" width="450" height="35" />
-      <rect x="100" y="220" width="445" height="35" />
-      <rect x="100" y="255" width="500" height="35" />
-      <rect x="100" y="290" width="385" height="35" />
+    <g stroke="#1b8f5a" stroke-width="1.6" fill="none" marker-end="url(#lebesgue-domain-to-range-arrow)">
+      <path d="M 532 126 C 442 126 304 126 205 126" />
+      <path d="M 532 205 C 442 205 304 205 205 205" />
+      <path d="M 532 265 C 450 264 307 280 205 283" />
+      <path d="M 532 305 C 452 306 310 288 205 283" />
     </g>
-    <rect x="100" y="185" width="505" height="35" fill="rgba(217,107,43,0.24)" stroke="#d96b2b" stroke-width="2" />
 
-    <path d="M 510 80 C 605 96 535 127 570 150 C 618 181 612 209 605 220 C 572 257 625 275 600 290 C 555 317 510 323 485 325" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round" />
-    <path d="M 100 185 L 605 185 M 100 220 L 605 220" stroke="#d96b2b" stroke-width="1.8" />
-    <path d="M 86 185 L 100 185 M 86 220 L 100 220" stroke="#d96b2b" stroke-width="2.4" />
-    <text x="54" y="190" font-size="14" fill="#d96b2b">fᵢ₊₁</text>
-    <text x="74" y="224" font-size="14" fill="#d96b2b">fᵢ</text>
+    <text x="558" y="131" font-size="12" fill="#1b8f5a">E₁ = f⁻¹(I₁) is one point</text>
+    <text x="558" y="209" font-size="12" fill="#1b8f5a">E₂ = f⁻¹(I₂) is an interval</text>
+    <text x="558" y="278" font-size="12" fill="#1b8f5a">E₃ = f⁻¹(I₃)</text>
+    <text x="558" y="296" font-size="12" fill="#1b8f5a">has two disjoint parts</text>
 
-    <path d="M 110 201 C 170 198 205 201 257 199 C 325 197 378 200 438 198 C 498 196 545 199 595 196" fill="none" stroke="#d96b2b" stroke-width="2.2" stroke-dasharray="5 5" />
-    <text x="166" y="206" font-size="15" fill="#d96b2b">split: [fᵢ, fᵢ₊₁]</text>
-
-    <g fill="rgba(27,143,90,0.22)" stroke="#1b8f5a" stroke-width="1.8">
-      <rect x="100" y="336" width="505" height="18" />
-    </g>
-    <line x1="352" y1="220" x2="352" y2="336" stroke="#1b8f5a" stroke-width="2" marker-end="url(#lebesgue-sketch-arrow)" />
-    <text x="250" y="374" font-size="15" fill="#1b8f5a">find preimage: Eᵢ = f⁻¹([fᵢ, fᵢ₊₁])</text>
-
-    <path d="M 100 362 L 100 382 M 605 362 L 605 382 M 100 372 L 605 372" stroke="#1b8f5a" stroke-width="2.2" fill="none" />
-    <text x="485" y="395" font-size="15" fill="#1b8f5a">measure m(Eᵢ)</text>
-    <text x="515" y="158" font-size="14" fill="#222">graph of f</text>
-    <path d="M 544 161 C 558 168 574 174 594 184" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#lebesgue-sketch-arrow-orange)" />
-    <text x="437" y="54" font-size="15" fill="#c0392b">m(f⁻¹([fᵢ, fᵢ₊₁]))</text>
+    <text x="226" y="101" font-size="13" fill="#555">f(E₁) ⊂ I₁</text>
+    <text x="226" y="181" font-size="13" fill="#555">f(E₂) ⊂ I₂</text>
+    <text x="226" y="259" font-size="13" fill="#555">f(E₃) ⊂ I₃</text>
+    <text x="156" y="352" font-size="14" fill="#c0392b">m(f⁻¹([fᵢ,fᵢ₊₁])) measures all these preimage pieces in the domain</text>
   </svg>
-  <figcaption>Sketch version of the same idea: choose neighboring range levels $f_i$ and $f_{i+1}$, take the horizontal strip between them, find its preimage $E_i=f^{-1}([f_i,f_{i+1}])$, and measure that domain set.</figcaption>
+  <figcaption>Sketch version of the idea: split the range interval $[f_i,f_{i+1}]$ into pieces $I_k$. Their preimages on the domain line can have different shapes: a point, an interval, or several disjoint pieces. Lebesgue's construction measures those preimages.</figcaption>
 </figure>
 
 <figure class="math-figure">
@@ -1708,14 +2279,22 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name"></span></p>
 
-Throughout the discussion of measurable functions and Lebesgue integration, we work with the **extended real numbers** $[-\infty, \infty] = \mathbb{R} \cup \lbrace -\infty, \infty \rbrace$, and we allow functions to take on the values $\pm \infty$. The arithmetic rules are: $x \pm \infty = \pm \infty$ for $x \in \mathbb{R}$, $0(\pm \infty) = 0$, and $x(\pm \infty) = \pm \infty$ for $x > 0$.
+Throughout the discussion of measurable functions and Lebesgue integration, we work with the **extended real numbers** $[-\infty, \infty] = \mathbb{R} \cup \lbrace -\infty, \infty \rbrace$, and we allow functions to take on the values $\pm \infty$. The arithmetic rules are: 
+
+$$x \pm \infty = \pm \infty \forall x \in \mathbb{R},$$ 
+
+$$0(\pm \infty) = 0, \quad x(\pm \infty) = \pm \infty \quad \forall x > 0.$$
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lebesgue Measurable Function)</span></p>
 
-Let $E \subset \mathbb{R}$ be measurable, and let $f : E \to [-\infty, \infty]$ be a function. Then $f$ is **Lebesgue measurable** if for all $\alpha \in \mathbb{R}$, $f^{-1}((\alpha, \infty]) \in \mathcal{M}$ (i.e., the preimage is a measurable set).
+Let $E \subset \mathbb{R}$ be measurable, and let $f : E \to [-\infty, \infty]$ be a function. Then $f$ is **Lebesgue measurable** if 
+
+$$\forall \alpha \in \mathbb{R}:\quad f^{-1}((\alpha, \infty]) \in \mathcal{M}$$ 
+
+i.e., the preimage is a measurable set.
 
 </div>
 
@@ -1724,10 +2303,10 @@ Let $E \subset \mathbb{R}$ be measurable, and let $f : E \to [-\infty, \infty]$ 
 
 Let $E \subset \mathbb{R}$ be measurable and $f : E \to [-\infty, \infty]$. The following are equivalent:
 
-1. For all $\alpha \in \mathbb{R}$, $f^{-1}((\alpha, \infty]) \in \mathcal{M}$.
-2. For all $\alpha \in \mathbb{R}$, $f^{-1}([\alpha, \infty]) \in \mathcal{M}$.
-3. For all $\alpha \in \mathbb{R}$, $f^{-1}([-\infty, \alpha)) \in \mathcal{M}$.
-4. For all $\alpha \in \mathbb{R}$, $f^{-1}([-\infty, \alpha]) \in \mathcal{M}$.
+1. For all $\alpha \in \mathbb{R}$: $f^{-1}((\alpha, \infty]) \in \mathcal{M}$.
+2. For all $\alpha \in \mathbb{R}$: $f^{-1}([\alpha, \infty]) \in \mathcal{M}$.
+3. For all $\alpha \in \mathbb{R}$: $f^{-1}([-\infty, \alpha)) \in \mathcal{M}$.
+4. For all $\alpha \in \mathbb{R}$: $f^{-1}([-\infty, \alpha]) \in \mathcal{M}$.
 
 </div>
 
@@ -2104,14 +2683,16 @@ The assumption of pointwise convergence here is much weaker than the uniform con
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Computing Integrals via Simple Approximations)</span></p>
 
-Let $f \in L^+(E)$, and let $\lbrace \phi_n \rbrace$ be a sequence of simple functions with $0 \le \phi_1 \le \phi_2 \le \cdots \le f$ and $\phi_n \to f$ pointwise. Then $\int_E f = \lim_{n \to \infty} \int_E \phi_n$.
+Let $f \in L^+(E)$, and let $\lbrace \phi_n \rbrace$ be a sequence of simple functions with $0 \le \phi_1 \le \phi_2 \le \cdots \le f$ and $\phi_n \to f$ pointwise. Then 
+
+$$\int_E f = \lim_{n \to \infty} \int_E \phi_n$$
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Additivity of the Nonnegative Integral)</span></p>
 
-$$f, g \in L^+(E) \implies \int_E (f + g) = \int_E f + \int_E g$$$
+$$f, g \in L^+(E) \implies \int_E (f + g) = \int_E f + \int_E g$$
 
 </div>
 
@@ -2126,14 +2707,18 @@ $$f, g \in L^+(E) \implies \int_E (f + g) = \int_E f + \int_E g$$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Countable Additivity of the Integral)</span></p>
 
-Let $\lbrace f_n \rbrace$ be a sequence in $L^+(E)$. Then $\int_E \sum_n f_n = \sum_n \int_E f_n$.
+Let $\lbrace f_n \rbrace$ be a sequence in $L^+(E)$. Then 
+
+$$\int_E \sum_n f_n = \sum_n \int_E f_n$$
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Zero Integral Characterization)</span></p>
 
-Let $f \in L^+(E)$. Then $\int_E f = 0$ if and only if $f = 0$ almost everywhere on $E$.
+Let $f \in L^+(E)$. Then
+
+$$\int_E f = 0 \quad\iff\quad f = 0 \quad\text{almost everywhere on } E.$$
 
 </div>
 
@@ -2155,7 +2740,7 @@ If $\lbrace f_n \rbrace$ is a sequence in $L^+(E)$ with $f_1 \le f_2 \le \cdots$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Finite Integral Implies Finite a.e.)</span></p>
 
-If $f \in L^+(E)$ and $\int_E f < \infty$, then $\lbrace x \in E : f(x) = \infty \rbrace$ has measure zero.
+$$f \in L^+(E) \text{ and } \int_E f < \infty \implies \lbrace x \in E : f(x) = \infty \rbrace \quad\text{has measure zero}.$$
 
 </div>
 
@@ -2436,7 +3021,9 @@ In other words, the space of continuous functions $C([a, b])$ is dense in $L^p([
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 139</span><span class="math-callout__name">(Riesz–Fischer)</span></p>
 
-For all $1 \le p \le \infty$, $L^p(E)$ is a Banach space.
+For all $1 \le p \le \infty$, 
+
+$$L^p(E) \quad\text{is a Banach space.}$$
 
 </div>
 
@@ -3215,7 +3802,15 @@ On $\ell^2$, an operator described by a double sequence $\lbrace A_{ij} \rbrace$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 188</span><span class="math-callout__name">(Integral Operators on $L^2$)</span></p>
 
-Let $K \in C([0, 1] \times [0, 1])$, and define $A : L^2([0, 1]) \to L^2([0, 1])$ via $Af(x) = \int_0^1 K(x, y) f(y)\,dy$. Then the adjoint is $A^* g(x) = \int_0^1 \overline{K(y, x)} g(y)\,dy$ — flipping the indices and taking a complex conjugate.
+Let $K \in C([0, 1] \times [0, 1])$, and define $A : L^2([0, 1]) \to L^2([0, 1])$ via 
+
+$$Af(x) = \int_0^1 K(x, y) f(y)\,dy$$
+
+Then the adjoint is 
+
+$$A^* g(x) = \int_0^1 \overline{K(y, x)} g(y)\,dy$$
+
+— flipping the indices and taking a complex conjugate.
 
 </div>
 

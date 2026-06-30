@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-07-01",
+   "added": false
+  },
+  {
    "title": "Stuff I Found Interesting",
    "url": "/notes/stuff_i_found_interesting/",
    "date": "2026-06-30",
@@ -28,12 +34,6 @@
    "title": "The Variational Principles of Mechanics — Cornelius Lanczos",
    "url": "/subpages/books/the_variational_principles_of_mechanics/",
    "date": "2026-06-25",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
-   "date": "2026-06-24",
    "added": false
   },
   {
