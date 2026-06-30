@@ -18,3 +18,5 @@ date: 2024-10-20
 - [Generalization of Gramian matrix to infinite dimensions](/subpages/stuff_i_found_interesting/gramian_in_infinite_dim/)
 
 - [Measure-Theoretic Integration Gentle](/subpages/stuff_i_found_interesting/measure_theoretic_integration/measure_theoretic_integration_gentle/)
+
+- [Vitali Set](/subpages/stuff_i_found_interesting/vitali_set/)

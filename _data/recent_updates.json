@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Stuff I Found Interesting",
+   "url": "/notes/stuff_i_found_interesting/",
+   "date": "2026-06-30",
+   "added": false
+  },
+  {
    "title": "Reinforcement Learning (HD)",
    "url": "/subpages/reinforcement_learning_hd/",
    "date": "2026-06-27",
@@ -39,12 +45,6 @@
   {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-06-22",
-   "added": false
-  },
-  {
-   "title": "Stuff I Found Interesting",
-   "url": "/notes/stuff_i_found_interesting/",
    "date": "2026-06-22",
    "added": false
   },
