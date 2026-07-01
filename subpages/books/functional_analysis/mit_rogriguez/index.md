@@ -76,7 +76,33 @@ Finding the shortest possible curve between two points amounts to specifying a *
 
 </div>
 
-TODO: visualization
+<figure class="math-figure">
+  <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" width="640" role="img" aria-labelledby="functional-curve-title functional-curve-desc">
+    <title id="functional-curve-title">Many curves join two points; assigning each its length is a functional</title>
+    <desc id="functional-curve-desc">Two fixed points A and B are joined by several candidate curves drawn in gray and one straight green curve marked as the shortest path. A caption notes that mapping each curve to its length is a functional on an infinite-dimensional space.</desc>
+    <rect x="20" y="20" width="600" height="260" rx="10" fill="#fbfcff" stroke="#e3e7f0" />
+
+    <g fill="none" stroke="#b7c0d0" stroke-width="2">
+      <path d="M 120,215 Q 350,70 520,120" />
+      <path d="M 120,215 C 250,150 420,265 520,120" />
+      <path d="M 120,215 Q 300,258 520,120" />
+      <path d="M 120,215 C 220,255 330,85 520,120" />
+    </g>
+
+    <path d="M 120,215 L 520,120" fill="none" stroke="#1b8f5a" stroke-width="3.5" />
+
+    <g fill="#2c3550">
+      <circle cx="120" cy="215" r="6" />
+      <circle cx="520" cy="120" r="6" />
+    </g>
+    <text x="100" y="240" font-size="15" fill="#2c3550">A</text>
+    <text x="530" y="112" font-size="15" fill="#2c3550">B</text>
+
+    <text x="288" y="58" font-size="13" fill="#7a8394">candidate paths γ</text>
+    <text x="360" y="182" font-size="13" fill="#1b8f5a" font-weight="600">shortest path γ*</text>
+  </svg>
+  <figcaption>Each path joining $A$ and $B$ is a function $\gamma : [0, 1] \to \mathbb{R}^2$, and assigning it a number — its length $L(\gamma) = \int_0^1 \lvert \gamma'(t) \rvert \, dt$ — is a <strong>functional</strong>. Because specifying an entire curve takes infinitely many real numbers, minimizing $L$ is an optimization over an infinite-dimensional space: exactly the setting functional analysis is built to handle.</figcaption>
+</figure>
 
 ## Normed Spaces
 
@@ -460,13 +486,16 @@ The sequence $\left\lbrace \frac{1}{j} \right\rbrace_{j=1}^{\infty}$ is in $\ell
 
 </div>
 
-<div class="accordion" markdown="1">
-<details>
-<summary>Proof</summary>
-
-TODO:
-
-</details>
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>For $1 \le p < \infty$, the $p$-th power of the norm of $\lbrace 1/j \rbrace$ is a $p$-series:</p>
+    $$\lVert \lbrace 1/j \rbrace \rVert_p^p = \sum_{j=1}^{\infty} \left\lvert \frac{1}{j} \right\rvert^p = \sum_{j=1}^{\infty} \frac{1}{j^p}.$$
+    <p>By the integral test, $\sum_{j=1}^{\infty} j^{-p}$ converges if and only if $\int_1^{\infty} x^{-p}\,dx = \frac{1}{p-1}$ is finite, i.e. if and only if $p > 1$. So for every $p > 1$ we have $\lVert \lbrace 1/j \rbrace \rVert_p = \left( \sum_{j=1}^{\infty} j^{-p} \right)^{1/p} < \infty$, hence $\lbrace 1/j \rbrace \in \ell^p$.</p>
+    <p>For $p = 1$ the same computation gives the harmonic series</p>
+    $$\lVert \lbrace 1/j \rbrace \rVert_1 = \sum_{j=1}^{\infty} \frac{1}{j} = \infty,$$
+    <p>which diverges, so $\lbrace 1/j \rbrace \notin \ell^1$. $\square$</p>
+  </details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -619,7 +648,14 @@ If $\sum_n v_n$ is absolutely summable, then the sequence of partial sums $\left
 
 </div>
 
-#TODO: prove it
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Let $\varepsilon > 0$. Write $T_n = \sum_{m=1}^{n} \lVert v_m \rVert$ for the partial sums of the norms. Absolute summability means $\lbrace T_n \rbrace$ converges in $\mathbb{R}$, and a convergent real sequence is Cauchy, so there is an $N$ with $\lvert T_n - T_k \rvert < \varepsilon$ for all $n > k \ge N$. For such $n, k$, the triangle inequality gives</p>
+    $$\left\lVert \sum_{m=1}^{n} v_m - \sum_{m=1}^{k} v_m \right\rVert = \left\lVert \sum_{m=k+1}^{n} v_m \right\rVert \le \sum_{m=k+1}^{n} \lVert v_m \rVert = T_n - T_k < \varepsilon.$$
+    <p>Hence the partial sums $\left\lbrace \sum_{m=1}^{n} v_m \right\rbrace$ form a Cauchy sequence in $V$. $\square$</p>
+  </details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Banach $\iff$ Absolutely Summable Series are Summable)</span></p>
@@ -1614,10 +1650,6 @@ since $A \cap E^c \subset A$. This is the measurability condition.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite Union of Measurable Sets)</span></p>
 
-$$\text{Every open set and every closed set is measurable.}$$ 
-
-More generally:
-
 $$E_1, E_2 \quad\text{are measurable sets} \implies E_1 \cup E_2 \quad\text{is measurable}$$
 
 </div>
@@ -1658,8 +1690,10 @@ $$E_1, \dots, E_n \quad\text{are measurable}\implies \bigcup_{k=1}^{n} E_k \quad
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Not all sets are measurable: Vitali set)</span></p>
+So far we only know that *finite* unions of measurable sets are measurable. That **open and closed sets are themselves measurable** — and hence that the Borel $\sigma$-algebra sits inside $\mathcal{M}$ — is proved later, once we show that half-lines are measurable; see the Theorem *(The Borel $\sigma$-Algebra is Measurable)* in the [Lebesgue Measure](#lebesgue-measure) section below.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Not all sets are measurable: Vitali set)</span></p>
 
 The Vitali set is the classic example of a **non-measurable set of real numbers**. It was constructed by Italian mathematician Giuseppe Vitali in 1905 to prove that it is impossible for the Lebesgue measure to assign a meaningful "length" to every single subset of real numbers without sacrificing basic geometric intuition.
 To understand the Vitali set, you can break down its definition, construction, and why it breaks the rules of measure theory.
@@ -1714,204 +1748,6 @@ This creates an impossible mathematical paradox:
 ## Conclusion
 
 Because assigning any real number or zero to the measure of the Vitali set results in a logical contradiction ($1 \le 0 \le 3$ or $1 \le \infty \le 3$), the Vitali set cannot be assigned an actual measure. It is strictly non-measurable, though its Lebesgue outer measure is known to be greater than zero.
-
-</div>
-
-### Algebras and $\sigma$-Algebras
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Algebra and $\sigma$-Algebra)</span></p>
-
-* A nonempty collection $\mathcal{A} \subset \mathcal{P}(\mathbb{R})$ is an **algebra** on $\mathbb{R}$ if:
-  1. $\mathbb{R} \in \mathcal{A}$;
-  2. $E \in \mathcal{A}$, then $E^c := \mathbb{R} \setminus E \in \mathcal{A}$;
-  3. $E_1, \dots, E_n \in \mathcal{A}$, then
-     
-     $$\bigcup_{k=1}^n E_k \in \mathcal{A}.$$
-
-* An algebra $\mathcal{A}$ is a **$\sigma$-algebra** if it is additionally closed under countable unions: whenever $\lbrace E_n\rbrace_{n=1}^{\infty} \subset \mathcal{A}$,
-  
-  $$\bigcup_{n=1}^{\infty} E_n \in \mathcal{A}.$$
-
-</div>
-
-Algebras are closed under complements and finite unions; $\sigma$-algebras are additionally closed under countable unions. By de Morgan's laws, closure under countable unions and complements implies closure under countable intersections.
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\sigma$-Algebras)</span></p>
-
-* The simplest $\sigma$-algebra is $\mathcal{A} = \lbrace \varnothing, \mathbb{R} \rbrace$,
-* The largest is $\mathcal{A} = \mathcal{P}(\mathbb{R})$. 
-* The **cocountable $\sigma$-algebra** 
-
-  $$\mathcal{A} = \lbrace E \subset \mathbb{R} : E \text{ or } E^c \text{ is countable} \rbrace$$
-
-  is another example.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Borel $\sigma$-Algebra)</span></p>
-
-The intersection of all $\sigma$-algebras containing all open subsets of $\mathbb{R}$,
-
-$$\mathcal{B} = \bigcap_{\mathcal{A} \in \Sigma} \mathcal{A}, \quad \text{where } \Sigma = \lbrace \mathcal{A} : \mathcal{A} \text{ is a } \sigma\text{-algebra containing all open subsets of } \mathbb{R} \rbrace,$$
-
-is the smallest $\sigma$-algebra containing all open subsets of $\mathbb{R}$, called the **Borel $\sigma$-algebra**. It is closed under complements and countable unions.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why is Borel $\sigma$-algebra defined as an intersection?)</span></p>
-
-> Why is Borel $\sigma$-algebra defined as an intersection of all $\sigma$-algebras containing all real open sets, if we can just define Borel $\sigma$-algebra as a $\sigma$-algebra containing only all real open sets and not any other sets?
-
-Because a **sigma-algebra cannot contain only open sets** unless the open sets are already closed under complements. On $\mathbb R$, they are not.
-
-A sigma-algebra $\mathcal A$ on $\mathbb R$ must satisfy:
-
-$$A\in \mathcal A \implies \mathbb R\setminus A\in \mathcal A,$$
-
-and it must also be closed under countable unions.
-
-So if $\mathcal A$ contains all open sets, then since
-
-$$(0,1)\in \mathcal A,$$
-
-it must also contain
-
-$$\mathbb R\setminus (0,1)=(-\infty,0]\cup[1,\infty),$$
-
-which is **not open**.
-
-**Thus “the sigma-algebra containing only all open sets and no other sets” does not exist.**
-
-The right idea is:
-
-$$\mathcal B(\mathbb R) = \text{the smallest sigma-algebra containing all open subsets of }\mathbb R.$$
-
-To define “smallest” rigorously, we take the intersection of all sigma-algebras containing the open sets:
-
-$$\mathcal B(\mathbb R) := \bigcap_{\substack{\mathcal A\text{ sigma-algebra}\ \mathcal O(\mathbb R)\subseteq \mathcal A}} \mathcal A.$$
-
-This works because an intersection of sigma-algebras is again a sigma-algebra.
-
-So the Borel sigma-algebra contains exactly the sets that are **forced** to be present once we demand:
-
-1. all open sets are measurable;
-2. complements are measurable;
-3. countable unions are measurable.
-
-For example, once all open sets are included, we automatically get closed sets, because complements of open sets are closed. Then we also get countable unions of closed sets, countable intersections of open sets, countable sets like $\mathbb Q$, and many more.
-
-So the point is:
-
-$$\boxed{\text{Borel sets are not just open sets; they are everything generated from open sets by sigma-algebra operations.}}$$
-
-The intersection definition is just the rigorous way to say “generated by the open sets, and nothing extra unless forced.”
-
-</div>
-
-### The Measurable Sets Form a $\sigma$-Algebra
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Disjointification)</span></p>
-
-Let $\mathcal{A}$ be an algebra, and let $\lbrace E_n \rbrace$ be a countable collection of elements of $\mathcal{A}$. Then there exists a disjoint countable collection $\lbrace F_n \rbrace$ of elements of $\mathcal{A}$ such that $\bigcup_n E_n = \bigcup_n F_n$.
-
-</div>
-
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>Let $G_n = \bigcup_{k=1}^{n} E_k$, so $G_1 \subset G_2 \subset \cdots$ and $\bigcup_n E_n = \bigcup_n G_n$. Define $F_1 = G_1$ and $F_{n+1} = G_{n+1} \setminus G_n$ for $n \ge 1$. The $F_n$ are pairwise disjoint, each $F_n \in \mathcal{A}$ (since $\mathcal{A}$ is closed under finite unions and complements), and $\bigcup_{k=1}^{n} F_k = G_n$, so $\bigcup_n F_n = \bigcup_n G_n = \bigcup_n E_n$. $\square$</p>
-  </details>
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite Additivity for Measurable Sets)</span></p>
-
-Let $A \subset \mathbb{R}$, and let $E_1, \dots, E_n$ be disjoint measurable sets. Then
-
-$$m^*\!\left(A \cap \left[\bigcup_{k=1}^{n} E_k\right]\right) = \sum_{k=1}^{n} m^*(A \cap E_k).$$
-
-</div>
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Measurable Sets Form a $\sigma$-Algebra)</span></p>
-
-The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
-
-</div>
-
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>We already know $\mathcal{M}$ is an algebra. By the disjointification lemma, it suffices to show closure under countable disjoint unions. Let $\lbrace E_n \rbrace$ be pairwise disjoint measurable sets with $E = \bigcup_{n=1}^{\infty} E_n$. We need $m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A)$ for all $A \subset \mathbb{R}$.</p>
-    <p>Since $\bigcup_{n=1}^{N} E_n$ is measurable (finite union),</p>
-    $$m^*(A) = m^*\!\left(A \cap \bigcup_{n=1}^{N} E_n\right) + m^*\!\left(A \cap \left[\bigcup_{n=1}^{N} E_n\right]^c\right).$$
-    <p>Since $\left[\bigcup_{n=1}^{N} E_n\right]^c \supset E^c$, we get $m^*(A) \ge m^*(A \cap \bigcup_{n=1}^{N} E_n) + m^*(A \cap E^c)$. By finite additivity, $m^*(A \cap \bigcup_{n=1}^{N} E_n) = \sum_{n=1}^{N} m^*(A \cap E_n)$. Letting $N \to \infty$:</p>
-    $$m^*(A) \ge \sum_{n=1}^{\infty} m^*(A \cap E_n) + m^*(A \cap E^c) \ge m^*\!\left(\bigcup_n (A \cap E_n)\right) + m^*(A \cap E^c) = m^*(A \cap E) + m^*(A \cap E^c),$$
-    <p>where the last step uses countable subadditivity. $\square$</p>
-  </details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
-
-Let $f:\mathbb{R}\to\mathbb{R}$. Prove that the collection of sets
-
-$$\mathcal{A} = \lbrace E \subset \mathbb{R} \mid f^{-1}(E) \text{ is Lebesgue measurable}\rbrace$$
-
-is a $\sigma$-algebra.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-*Interesting observation:* the exercise is solvable without any knowledge of measurable functions.
-
-1. $\emptyset \in \mathcal{A}$
-  1. $f$ is a function from $\mathbb{R}$ to $\mathbb{R}$
-  2. $\implies$ nothing is mapped to $\emptyset\not\in\mathbb{R}$
-  3. $\implies$ $f^{-1}(\emptyset) = \emptyset$, which is Lebesgue measurable by Lemma (Basic Measurability Facts).
-  
-2. $E \in \mathcal{A} \implies E^c \in \mathcal{A}$
-   1. Here it is useful to study the relationship between $(f^{-1}(E))^c$ and $f^{-1}(E^c)$.
-   2. $f^{-1}(E)$ is Lebesgue measurable $\implies$ $(f^{-1}(E))^c$ is Lebesgue measurable by Lemma (Basic Measurability Facts).
-   3. Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c$.
-   4. $\implies$ $E^c \in \mathcal{A}$. 
-
-3. Countable $E_1, \dots \in \mathcal{A} \implies \Cup_{i=1} E_i \in \mathcal{A}$
-   1. $f^{-1}(Cup_{i=1} E_i) = Cup_{i=1} f^{-1}(E_i)$
-   2. Each $f^{-1}(E_i)$ is Lebesgue measurable
-   3. The countable union of Lebesgue measurable is Lebesgue measurable
-   4. $\implies$ $f^{-1}(Cup_{i=1} E_i)$ is Lebesgue measurable
-   5. $\implies$ $\Cup_{i=1} E_i \in \mathcal{A}$
-
-Old 2.3:
-
-> Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c \cup \lbrace \emptyset \rbrace$
-> * Note that the function $f$ is not necessarily surjective, i.e. some values of $E^c$ might have an empty set preimage. 
-> * If $f$ is sujective, then $f^{-1}(E^c) = (f^{-1}(E))^c$.
-
-</details>
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Misconceptions in Step 3: $f^{-1}(E^c) = (f^{-1}(E))^c$)</span></p>
-
-In the initial solution, where was a couple of set-theory misconceptions in Step 3 regarding the empty set and surjectivity.
-* First, a preimage $f^{-1}(E^c)$ is a collection of elements from the **domain** $\mathbb{R}$. The empty set $\emptyset$ is a set, not a real number, so we wouldn't take the union with the set $\lbrace \emptyset\rbrace$.
-* Second, my concern about surjectivity is a common trap, but it actually doesn't affect the preimage here. If there is some value $y \in E^c$ that is **never** hit by the function $f$, its individual preimage is just empty. It simply contributes **nothing** to the overall set $f^{-1}(E^c)$. It doesn't break the equality.
-
-In fact, the relationship 
-
-$$\boxed{f^{-1}(E^c) = (f^{-1}(E))^c}$$ 
-
-is a universal set theory identity that is strictly true for **all** functions, regardless of whether they are surjective!
 
 </div>
 
@@ -2103,6 +1939,327 @@ $$m^*(A) = m^*(A \cap rE) + m^*(A \cap (rE)^c)$$
 Because $A$ was arbitrary, this establishes Carathéodory's criterion. Thus, $rE$ is measurable.
 
 </details>
+</div>
+
+### Algebras and $\sigma$-Algebras
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Algebra and $\sigma$-Algebra)</span></p>
+
+* A nonempty collection $\mathcal{A} \subset \mathcal{P}(\mathbb{R})$ is an **algebra** on $\mathbb{R}$ if:
+  1. $\mathbb{R} \in \mathcal{A}$;
+  2. $E \in \mathcal{A}$, then $E^c := \mathbb{R} \setminus E \in \mathcal{A}$;
+  3. $E_1, \dots, E_n \in \mathcal{A}$, then
+     
+     $$\bigcup_{k=1}^n E_k \in \mathcal{A}.$$
+
+* An algebra $\mathcal{A}$ is a **$\sigma$-algebra** if it is additionally closed under countable unions: whenever $\lbrace E_n\rbrace_{n=1}^{\infty} \subset \mathcal{A}$,
+  
+  $$\bigcup_{n=1}^{\infty} E_n \in \mathcal{A}.$$
+
+</div>
+
+Algebras are closed under complements and finite unions; $\sigma$-algebras are additionally closed under countable unions. By de Morgan's laws, closure under countable unions and complements implies closure under countable intersections.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\sigma$-Algebras)</span></p>
+
+* The simplest $\sigma$-algebra is 
+  
+  $$\mathcal{A} = \lbrace \varnothing, \mathbb{R} \rbrace$$
+
+* The largest is 
+  
+  $$\mathcal{A} = \mathcal{P}(\mathbb{R})$$
+
+* The **cocountable $\sigma$-algebra** 
+
+  $$\mathcal{A} = \lbrace E \subset \mathbb{R} : E \text{ or } E^c \text{ is countable} \rbrace$$
+
+  is another example.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Borel $\sigma$-Algebra)</span></p>
+
+The intersection of all $\sigma$-algebras containing all open subsets of $\mathbb{R}$,
+
+$$\mathcal{B} = \bigcap_{\mathcal{A} \in \Sigma} \mathcal{A}, \quad \text{where } \Sigma = \lbrace \mathcal{A} : \mathcal{A} \text{ is a } \sigma\text{-algebra containing all open subsets of } \mathbb{R} \rbrace,$$
+
+is the smallest $\sigma$-algebra containing all open subsets of $\mathbb{R}$, called the **Borel $\sigma$-algebra**. It is closed under complements and countable unions.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why is Borel $\sigma$-algebra defined as an intersection?)</span></p>
+
+> Why is Borel $\sigma$-algebra defined as an intersection of all $\sigma$-algebras containing all real open sets, if we can just define Borel $\sigma$-algebra as a $\sigma$-algebra containing only all real open sets and not any other sets?
+
+Because a **sigma-algebra cannot contain only open sets** unless the open sets are already closed under complements. On $\mathbb R$, they are not.
+
+A sigma-algebra $\mathcal A$ on $\mathbb R$ must satisfy:
+
+$$A\in \mathcal A \implies \mathbb R\setminus A\in \mathcal A,$$
+
+and it must also be closed under countable unions.
+
+So if $\mathcal A$ contains all open sets, then since
+
+$$(0,1)\in \mathcal A,$$
+
+it must also contain
+
+$$\mathbb R\setminus (0,1)=(-\infty,0]\cup[1,\infty),$$
+
+which is **not open**.
+
+**Thus “the sigma-algebra containing only all open sets and no other sets” does not exist.**
+
+The right idea is:
+
+$$\mathcal B(\mathbb R) = \text{the smallest sigma-algebra containing all open subsets of }\mathbb R.$$
+
+To define “smallest” rigorously, we take the intersection of all sigma-algebras containing the open sets:
+
+$$\mathcal B(\mathbb R) := \bigcap_{\substack{\mathcal A\text{ sigma-algebra}\ \mathcal O(\mathbb R)\subseteq \mathcal A}} \mathcal A.$$
+
+This works because an intersection of sigma-algebras is again a sigma-algebra.
+
+So the Borel sigma-algebra contains exactly the sets that are **forced** to be present once we demand:
+
+1. all open sets are measurable;
+2. complements are measurable;
+3. countable unions are measurable.
+
+For example, once all open sets are included, we automatically get closed sets, because complements of open sets are closed. Then we also get countable unions of closed sets, countable intersections of open sets, countable sets like $\mathbb Q$, and many more.
+
+So the point is:
+
+$$\boxed{\text{Borel sets are not just open sets; they are everything generated from open sets by sigma-algebra operations.}}$$
+
+The intersection definition is just the rigorous way to say “generated by the open sets, and nothing extra unless forced.”
+
+</div>
+
+### The Measurable Sets Form a $\sigma$-Algebra
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Disjointification)</span></p>
+
+Let $\mathcal{A}$ be an algebra, and let $\lbrace E_n \rbrace$ be a countable collection of elements of $\mathcal{A}$. Then there exists a disjoint countable collection $\lbrace F_n \rbrace$ of elements of $\mathcal{A}$ such that $\bigcup_n E_n = \bigcup_n F_n$.
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Let $G_n = \bigcup_{k=1}^{n} E_k$, so $G_1 \subset G_2 \subset \cdots$ and $\bigcup_n E_n = \bigcup_n G_n$. Define $F_1 = G_1$ and $F_{n+1} = G_{n+1} \setminus G_n$ for $n \ge 1$. The $F_n$ are pairwise disjoint, each $F_n \in \mathcal{A}$ (since $\mathcal{A}$ is closed under finite unions and complements), and $\bigcup_{k=1}^{n} F_k = G_n$, so $\bigcup_n F_n = \bigcup_n G_n = \bigcup_n E_n$. $\square$</p>
+  </details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite Additivity for Measurable Sets)</span></p>
+
+Let $A \subset \mathbb{R}$, and let $E_1, \dots, E_n$ be disjoint measurable sets. Then
+
+$$m^*\!\left(A \cap \left[\bigcup_{k=1}^{n} E_k\right]\right) = \sum_{k=1}^{n} m^*(A \cap E_k).$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Measurable Sets Form a $\sigma$-Algebra)</span></p>
+
+The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>We already know $\mathcal{M}$ is an algebra. By the disjointification lemma, it suffices to show closure under countable disjoint unions. Let $\lbrace E_n \rbrace$ be pairwise disjoint measurable sets with $E = \bigcup_{n=1}^{\infty} E_n$. We need $m^*(A \cap E) + m^*(A \cap E^c) \le m^*(A)$ for all $A \subset \mathbb{R}$.</p>
+    <p>Since $\bigcup_{n=1}^{N} E_n$ is measurable (finite union),</p>
+    $$m^*(A) = m^*\!\left(A \cap \bigcup_{n=1}^{N} E_n\right) + m^*\!\left(A \cap \left[\bigcup_{n=1}^{N} E_n\right]^c\right).$$
+    <p>Since $\left[\bigcup_{n=1}^{N} E_n\right]^c \supset E^c$, we get $m^*(A) \ge m^*(A \cap \bigcup_{n=1}^{N} E_n) + m^*(A \cap E^c)$. By finite additivity, $m^*(A \cap \bigcup_{n=1}^{N} E_n) = \sum_{n=1}^{N} m^*(A \cap E_n)$. Letting $N \to \infty$:</p>
+    $$m^*(A) \ge \sum_{n=1}^{\infty} m^*(A \cap E_n) + m^*(A \cap E^c) \ge m^*\!\left(\bigcup_n (A \cap E_n)\right) + m^*(A \cap E^c) = m^*(A \cap E) + m^*(A \cap E^c),$$
+    <p>where the last step uses countable subadditivity. $\square$</p>
+  </details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Image of Lebesgue measurable sets forms $\sigma$-algebra)</span></p>
+
+Let $f:\mathbb{R}\to\mathbb{R}$. Prove that the collection of sets
+
+$$\mathcal{A} = \lbrace E \subset \mathbb{R} \mid f^{-1}(E) \text{ is Lebesgue measurable}\rbrace$$
+
+is a $\sigma$-algebra.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+*Interesting observation:* the exercise is solvable without any knowledge of measurable functions.
+
+1. $\emptyset \in \mathcal{A}$
+  1. $f$ is a function from $\mathbb{R}$ to $\mathbb{R}$
+  2. $\implies$ nothing is mapped to $\emptyset\not\in\mathbb{R}$
+  3. $\implies$ $f^{-1}(\emptyset) = \emptyset$, which is Lebesgue measurable by Lemma (Basic Measurability Facts).
+  
+2. $E \in \mathcal{A} \implies E^c \in \mathcal{A}$
+   1. Here it is useful to study the relationship between $(f^{-1}(E))^c$ and $f^{-1}(E^c)$.
+   2. $f^{-1}(E)$ is Lebesgue measurable $\implies$ $(f^{-1}(E))^c$ is Lebesgue measurable by Lemma (Basic Measurability Facts).
+   3. Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c$.
+   4. $\implies$ $E^c \in \mathcal{A}$. 
+
+3. Countable $E_1, \dots \in \mathcal{A} \implies \Cup_{i=1} E_i \in \mathcal{A}$
+   1. $f^{-1}(Cup_{i=1} E_i) = Cup_{i=1} f^{-1}(E_i)$
+   2. Each $f^{-1}(E_i)$ is Lebesgue measurable
+   3. The countable union of Lebesgue measurable is Lebesgue measurable
+   4. $\implies$ $f^{-1}(Cup_{i=1} E_i)$ is Lebesgue measurable
+   5. $\implies$ $\Cup_{i=1} E_i \in \mathcal{A}$
+
+Old 2.3:
+
+> Because every $x\in (f^{-1}(E))^c$ is mapped to some $f(x)\in E^c$, we obtain $f^{-1}(E^c) = (f^{-1}(E))^c \cup \lbrace \emptyset \rbrace$
+> * Note that the function $f$ is not necessarily surjective, i.e. some values of $E^c$ might have an empty set preimage. 
+> * If $f$ is sujective, then $f^{-1}(E^c) = (f^{-1}(E))^c$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Misconceptions in Step 3: $f^{-1}(E^c) = (f^{-1}(E))^c$)</span></p>
+
+In the initial solution, where was a couple of set-theory misconceptions in Step 3 regarding the empty set and surjectivity.
+* First, a preimage $f^{-1}(E^c)$ is a collection of elements from the **domain** $\mathbb{R}$. The empty set $\emptyset$ is a set, not a real number, so we wouldn't take the union with the set $\lbrace \emptyset\rbrace$.
+* Second, my concern about surjectivity is a common trap, but it actually doesn't affect the preimage here. If there is some value $y \in E^c$ that is **never** hit by the function $f$, its individual preimage is just empty. It simply contributes **nothing** to the overall set $f^{-1}(E^c)$. It doesn't break the equality.
+
+In fact, the relationship 
+
+$$\boxed{f^{-1}(E^c) = (f^{-1}(E))^c}$$ 
+
+is a universal set theory identity that is strictly true for **all** functions, regardless of whether they are surjective!
+
+</div>
+
+### Lebesgue Measure
+
+We now know that $\mathcal{M}$ is a $\sigma$-algebra of "well-behaved" sets, but two things are still missing. First, we have not verified that $\mathcal{M}$ actually contains the sets we care about (open sets, closed sets, and everything built from them). Second, the object we have been carrying around, the outer measure $m^\ast$, is only *subadditive* on arbitrary sets; we have not recorded the *exact* additivity and the two convergence properties that make it an honest measure once restricted to $\mathcal{M}$. We settle both now.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Half-Lines are Measurable)</span></p>
+
+For every $a \in \mathbb{R}$, the half-line $(a, \infty)$ is Lebesgue measurable.
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Fix an arbitrary $A \subset \mathbb{R}$; we may assume $m^\ast(A) < \infty$ (otherwise the measurability inequality is trivial). Write $A_1 = A \cap (a, \infty)$ and $A_2 = A \cap (-\infty, a]$. Given $\varepsilon > 0$, choose open intervals $\lbrace I_n \rbrace$ with $A \subset \bigcup_n I_n$ and $\sum_n \ell(I_n) \le m^\ast(A) + \varepsilon$ (possible by the definition of outer measure as an infimum).</p>
+    <p>Split each cover interval at the point $a$: let $I_n' = I_n \cap (a, \infty)$ and $I_n'' = I_n \cap (-\infty, a)$. Each is an interval (or empty), and since they partition $I_n$ up to the single point $a$, their lengths satisfy $\ell(I_n') + \ell(I_n'') = \ell(I_n)$. The collection $\lbrace I_n' \rbrace$ covers $A_1$ and $\lbrace I_n'' \rbrace$ covers $A_2$, so by the definition of outer measure and the Theorem (Countable Subadditivity),</p>
+    $$m^\ast(A_1) + m^\ast(A_2) \le \sum_n \ell(I_n') + \sum_n \ell(I_n'') = \sum_n \ell(I_n) \le m^\ast(A) + \varepsilon.$$
+    <p>Letting $\varepsilon \to 0$ yields $m^\ast(A \cap (a, \infty)) + m^\ast(A \cap (a, \infty)^c) \le m^\ast(A)$, which is exactly the measurability condition for $(a, \infty)$. $\square$</p>
+  </details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Borel $\sigma$-Algebra is Measurable)</span></p>
+
+Every open set is Lebesgue measurable. Consequently the Borel $\sigma$-algebra is contained in the Lebesgue $\sigma$-algebra:
+
+$$\mathcal{B} \subset \mathcal{M}.$$
+
+In particular every open, closed, $F_\sigma$, and $G_\delta$ set is measurable.
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>By the previous theorem $(a, \infty) \in \mathcal{M}$, and since $\mathcal{M}$ is closed under complements, $(-\infty, a] \in \mathcal{M}$. Then</p>
+    $$(-\infty, b) = \bigcup_{n=1}^{\infty} \left(-\infty, \, b - \tfrac{1}{n}\right] \in \mathcal{M}$$
+    <p>is a countable union of measurable sets, and</p>
+    $$(a, b) = (a, \infty) \cap (-\infty, b) \in \mathcal{M}$$
+    <p>is a finite intersection of measurable sets (a $\sigma$-algebra is closed under finite intersections, being closed under complements and countable unions). Every open subset of $\mathbb{R}$ is a countable union of open intervals, so every open set is measurable. Thus $\mathcal{M}$ is a $\sigma$-algebra containing every open set; since the Borel $\sigma$-algebra $\mathcal{B}$ is by definition the *smallest* such $\sigma$-algebra, $\mathcal{B} \subset \mathcal{M}$. $\square$</p>
+  </details>
+</div>
+
+This is what justifies the claim made earlier that "every open set and every closed set is measurable" — and it means the measurable sets are a strictly richer collection than the Borel sets, since $\mathcal{M}$ also contains every set of outer measure zero.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lebesgue Measure)</span></p>
+
+For a measurable set $E \in \mathcal{M}$, the **Lebesgue measure** of $E$ is its outer measure,
+
+$$m(E) := m^\ast(E).$$
+
+That is, $m$ is the outer measure $m^\ast$ with its domain restricted from all of $\mathcal{P}(\mathbb{R})$ down to $\mathcal{M}$.
+
+</div>
+
+Restricting the symbol $m$ to measurable sets is precisely what buys us the exact additivity that $m^\ast$ fails to have on arbitrary sets.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Monotonicity and Intervals)</span></p>
+
+If $A, B \in \mathcal{M}$ with $A \subset B$, then $m(A) \le m(B)$. Moreover, every interval $I$ is measurable with $m(I) = \ell(I)$.
+
+</div>
+
+Monotonicity is inherited directly from the Lemma (Monotonicity of Outer Measure). The interval formula combines the Proposition (Outer Measure of Intervals), which gives $m^\ast(I) = \ell(I)$, with the fact that intervals are Borel and hence measurable.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Countable Additivity of Lebesgue Measure)</span></p>
+
+Let $\lbrace E_n \rbrace$ be a countable collection of **pairwise disjoint** measurable sets. Then
+
+$$m\!\left(\bigcup_{n=1}^{\infty} E_n\right) = \sum_{n=1}^{\infty} m(E_n).$$
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>The Theorem (Countable Subadditivity) gives "$\le$" for free, so it remains to prove "$\ge$". Applying the Proposition (Finite Additivity for Measurable Sets) with test set $A = \mathbb{R}$ shows that for every $N$,</p>
+    $$m\!\left(\bigcup_{n=1}^{N} E_n\right) = \sum_{n=1}^{N} m(E_n).$$
+    <p>Since $\bigcup_{n=1}^{N} E_n \subset \bigcup_{n=1}^{\infty} E_n$, monotonicity gives</p>
+    $$m\!\left(\bigcup_{n=1}^{\infty} E_n\right) \ge \sum_{n=1}^{N} m(E_n) \qquad \text{for every } N.$$
+    <p>Letting $N \to \infty$ yields $m\!\left(\bigcup_{n=1}^{\infty} E_n\right) \ge \sum_{n=1}^{\infty} m(E_n)$, completing the proof. $\square$</p>
+  </details>
+</div>
+
+This is exactly the *exact additivity* that we listed among the desired properties of a measure but could not obtain for $m^\ast$ on general sets — disjointness alone was not enough; the sets also had to be measurable.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Continuity of Measure from Below)</span></p>
+
+Let $\lbrace E_k \rbrace$ be a countable collection of measurable sets that is increasing, $E_1 \subset E_2 \subset \cdots$. Then
+
+$$m\!\left(\bigcup_{k=1}^{\infty} E_k\right) = \lim_{n \to \infty} m(E_n).$$
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Disjointify the tower: set $F_1 = E_1$ and $F_k = E_k \setminus E_{k-1}$ for $k \ge 2$. Because $\mathcal{M}$ is a $\sigma$-algebra, each $F_k$ is measurable, and the $F_k$ are pairwise disjoint with</p>
+    $$\bigcup_{k=1}^{n} F_k = E_n \qquad \text{and} \qquad \bigcup_{k=1}^{\infty} F_k = \bigcup_{k=1}^{\infty} E_k.$$
+    <p>By countable additivity applied twice (to the finite and the infinite disjoint unions),</p>
+    $$m\!\left(\bigcup_{k=1}^{\infty} E_k\right) = \sum_{k=1}^{\infty} m(F_k) = \lim_{n \to \infty} \sum_{k=1}^{n} m(F_k) = \lim_{n \to \infty} m(E_n). \quad\square$$
+  </details>
+</div>
+
+This is the statement invoked (by the name "continuity of measure") in the proofs of the Monotone Convergence Theorem and the Zero-Integral Characterization further below.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuity from Above Needs Finite Measure)</span></p>
+
+The dual statement for a *decreasing* tower $E_1 \supset E_2 \supset \cdots$, namely $m\!\left(\bigcap_k E_k\right) = \lim_n m(E_n)$, is **not** true without the extra hypothesis $m(E_1) < \infty$. The standard counterexample is $E_n = [n, \infty)$: here $\bigcap_n E_n = \varnothing$, so the left side is $0$, yet $m(E_n) = \infty$ for every $n$, so the right side is $\infty$.
+
 </div>
 
 ## Measurable Functions
@@ -2442,7 +2599,14 @@ If $E \subset \mathbb{R}$ is measurable, a complex-valued function $f : E \to \m
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Algebra of Complex Measurable Functions)</span></p>
 
-If $f, g : E \to \mathbb{C}$ are measurable functions and $\alpha \in \mathbb{C}$, then $\alpha f$, $f + g$, $fg$, $\bar{f}$, and $\lvert f \rvert$ are all measurable.
+If $f, g : E \to \mathbb{C}$ are measurable functions and $\alpha \in \mathbb{C}$, then 
+* $\alpha f$, 
+* $f + g$, 
+* $fg$, 
+* $\bar{f}$,
+* $\lvert f \rvert$
+  
+are all measurable.
 
 </div>
 
@@ -2484,6 +2648,17 @@ If $f : E \to [0, \infty]$ is a nonnegative measurable function, then there exis
 * (b) $\lim_{n \to \infty} \phi_n(x) = f(x)$ for all $x \in E$ (pointwise convergence).
 * (c) For all $B \ge 0$, $\phi_n \to f$ converges uniformly on $\lbrace x \in E : f(x) \le B \rbrace$.
 
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Build $\phi_n$ with resolution $2^{-n}$ and range $[0, 2^n]$. Define</p>
+    $$E_n^k = \lbrace x \in E : k 2^{-n} < f(x) \le (k+1)2^{-n} \rbrace \quad (0 \le k \le 2^{2n} - 1), \qquad F_n = f^{-1}((2^n, \infty]),$$
+    <p>and set $\phi_n = \sum_{k=0}^{2^{2n}-1} (k 2^{-n}) \chi_{E_n^k} + 2^n \chi_{F_n}$. Then $0 \le \phi_n \le f$ by construction.</p>
+    <p><strong>Monotonicity (a):</strong> If $x \in E_n^k$ then $k2^{-n} < f(x) \le (k+1)2^{-n}$, which implies $x \in E_{n+1}^{2k} \cup E_{n+1}^{2k+1}$. In both cases $\phi_{n+1}(x) \ge (2k)2^{-(n+1)} = k2^{-n} = \phi_n(x)$. Similarly for $x \in F_n$.</p>
+    <p><strong>Convergence (b) and (c):</strong> On the set $\lbrace x : f(x) \le 2^n \rbrace$, we have $0 \le f(x) - \phi_n(x) \le 2^{-n}$. For any $x$ with $f(x) < \infty$, eventually $f(x) \le 2^n$ for large $n$, giving pointwise convergence. For $f(x) = \infty$, $\phi_n(x) = 2^n \to \infty$. On $\lbrace f(x) \le B \rbrace \subset \lbrace f(x) \le 2^N \rbrace$ for $N$ large enough, the bound $2^{-n}$ gives uniform convergence. $\square$</p>
+  </details>
 </div>
 
 <figure class="math-figure">
@@ -2559,17 +2734,6 @@ If $f : E \to [0, \infty]$ is a nonnegative measurable function, then there exis
   </div>
   <figcaption>Each $\phi_n$ slices the range into bands of height $2^{-n}$ and assigns the lower edge of whichever band $f(x)$ falls into. Refining $n \mapsto n+1$ subdivides every band in two, so $\phi_n \le \phi_{n+1} \le f$ pointwise; on $\{f \le B\}$ the gap $f - \phi_n \le 2^{-n}$ shrinks uniformly. The shaded region is the area under $\phi_n$, which converges to $\int f$ by monotone convergence.</figcaption>
 </figure>
-
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>Build $\phi_n$ with resolution $2^{-n}$ and range $[0, 2^n]$. Define</p>
-    $$E_n^k = \lbrace x \in E : k 2^{-n} < f(x) \le (k+1)2^{-n} \rbrace \quad (0 \le k \le 2^{2n} - 1), \qquad F_n = f^{-1}((2^n, \infty]),$$
-    <p>and set $\phi_n = \sum_{k=0}^{2^{2n}-1} (k 2^{-n}) \chi_{E_n^k} + 2^n \chi_{F_n}$. Then $0 \le \phi_n \le f$ by construction.</p>
-    <p><strong>Monotonicity (a):</strong> If $x \in E_n^k$ then $k2^{-n} < f(x) \le (k+1)2^{-n}$, which implies $x \in E_{n+1}^{2k} \cup E_{n+1}^{2k+1}$. In both cases $\phi_{n+1}(x) \ge (2k)2^{-(n+1)} = k2^{-n} = \phi_n(x)$. Similarly for $x \in F_n$.</p>
-    <p><strong>Convergence (b) and (c):</strong> On the set $\lbrace x : f(x) \le 2^n \rbrace$, we have $0 \le f(x) - \phi_n(x) \le 2^{-n}$. For any $x$ with $f(x) < \infty$, eventually $f(x) \le 2^n$ for large $n$, giving pointwise convergence. For $f(x) = \infty$, $\phi_n(x) = 2^n \to \infty$. On $\lbrace f(x) \le B \rbrace \subset \lbrace f(x) \le 2^N \rbrace$ for $N$ large enough, the bound $2^{-n}$ gives uniform convergence. $\square$</p>
-  </details>
-</div>
 
 ### Extension to General Functions
 
