@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Partial Differential Equations in Data Science",
+   "url": "/subpages/books/pdeds/",
+   "date": "2026-07-02",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-07-01",
@@ -57,12 +63,6 @@
   {
    "title": "Maths Topics",
    "url": "/notes/maths_topics/",
-   "date": "2026-06-21",
-   "added": false
-  },
-  {
-   "title": "Partial Differential Equations in Data Science",
-   "url": "/subpages/books/pdeds/",
    "date": "2026-06-21",
    "added": false
   },

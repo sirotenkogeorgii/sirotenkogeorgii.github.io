@@ -15,6 +15,10 @@ tags:
   - convexity
   - optimal-transport
   - monge-problem
+  - wasserstein-gradient-flow
+  - jko-scheme
+  - fokker-planck
+  - log-sobolev
 ---
 
 # Partial Differential Equations in Data Science
@@ -3398,87 +3402,12 @@ for every measurable function $F\colon X\to\mathbb R$ such that $F\circ m,\;F\ci
 
 </div>
 
-<figure>
-  <svg width="100%" viewBox="0 0 760 380" role="img" aria-label="Rearrangement. Panel a: a map m sends four equal mass-lumps from a source W to two bins a and b in a target X. Panel b: a rearrangement m-tilde sends the same lumps along different, crossing arrows, yet the two bins end up with the same heights, so both maps induce the same push-forward measure on X." style="display:block;height:auto;max-width:720px;margin:0.5rem auto;font-size:14px;">
-    <defs>
-      <marker id="ra-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M1 1L9 5L1 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </marker>
-    </defs>
-
-    <line x1="380" y1="44" x2="380" y2="356" stroke="currentColor" stroke-opacity="0.18" stroke-dasharray="4 5"/>
-    <line x1="40" y1="240" x2="720" y2="240" stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="2 5"/>
-    <text x="720" y="234" text-anchor="end" fill="currentColor" fill-opacity="0.5" font-size="11">equal bin heights</text>
-
-    <!-- Panel (a) -->
-    <text x="30" y="34" fill="currentColor" font-weight="600">(a) map m</text>
-    <text x="60" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">source W, λ</text>
-    <text x="286" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">target X</text>
-
-    <line x1="74" y1="92"  x2="222" y2="300" stroke="#3b82f6" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="74" y1="150" x2="222" y2="260" stroke="#22c55e" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="74" y1="210" x2="294" y2="300" stroke="#f59e0b" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="74" y1="270" x2="294" y2="260" stroke="#ef4444" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-
-    <circle cx="60" cy="90"  r="12" fill="#3b82f6"/>
-    <circle cx="60" cy="150" r="12" fill="#22c55e"/>
-    <circle cx="60" cy="210" r="12" fill="#f59e0b"/>
-    <circle cx="60" cy="270" r="12" fill="#ef4444"/>
-    <text x="60" y="94"  text-anchor="middle" fill="#fff" font-size="12" font-weight="600">1</text>
-    <text x="60" y="154" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">2</text>
-    <text x="60" y="214" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">3</text>
-    <text x="60" y="274" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">4</text>
-
-    <rect x="224" y="280" width="52" height="40" rx="4" fill="#3b82f6" fill-opacity="0.85" stroke="#3b82f6"/>
-    <rect x="224" y="240" width="52" height="40" rx="4" fill="#22c55e" fill-opacity="0.85" stroke="#22c55e"/>
-    <rect x="296" y="280" width="52" height="40" rx="4" fill="#f59e0b" fill-opacity="0.85" stroke="#f59e0b"/>
-    <rect x="296" y="240" width="52" height="40" rx="4" fill="#ef4444" fill-opacity="0.85" stroke="#ef4444"/>
-
-    <line x1="214" y1="320" x2="358" y2="320" stroke="currentColor" stroke-opacity="0.35"/>
-    <text x="250" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">a</text>
-    <text x="322" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">b</text>
-    <text x="250" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
-    <text x="322" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
-
-    <!-- Panel (b) -->
-    <text x="410" y="34" fill="currentColor" font-weight="600">(b) m̃ — a rearrangement of m</text>
-    <text x="460" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">source W, λ</text>
-    <text x="686" y="70" text-anchor="middle" fill="currentColor" fill-opacity="0.7" font-size="12">target X</text>
-
-    <line x1="474" y1="92"  x2="696" y2="260" stroke="#3b82f6" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="474" y1="150" x2="624" y2="300" stroke="#22c55e" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="474" y1="210" x2="624" y2="260" stroke="#f59e0b" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-    <line x1="474" y1="270" x2="696" y2="300" stroke="#ef4444" stroke-opacity="0.75" stroke-width="2" marker-end="url(#ra-arrow)"/>
-
-    <circle cx="460" cy="90"  r="12" fill="#3b82f6"/>
-    <circle cx="460" cy="150" r="12" fill="#22c55e"/>
-    <circle cx="460" cy="210" r="12" fill="#f59e0b"/>
-    <circle cx="460" cy="270" r="12" fill="#ef4444"/>
-    <text x="460" y="94"  text-anchor="middle" fill="#fff" font-size="12" font-weight="600">1</text>
-    <text x="460" y="154" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">2</text>
-    <text x="460" y="214" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">3</text>
-    <text x="460" y="274" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">4</text>
-
-    <rect x="624" y="280" width="52" height="40" rx="4" fill="#22c55e" fill-opacity="0.85" stroke="#22c55e"/>
-    <rect x="624" y="240" width="52" height="40" rx="4" fill="#f59e0b" fill-opacity="0.85" stroke="#f59e0b"/>
-    <rect x="696" y="280" width="52" height="40" rx="4" fill="#ef4444" fill-opacity="0.85" stroke="#ef4444"/>
-    <rect x="696" y="240" width="52" height="40" rx="4" fill="#3b82f6" fill-opacity="0.85" stroke="#3b82f6"/>
-
-    <line x1="614" y1="320" x2="758" y2="320" stroke="currentColor" stroke-opacity="0.35"/>
-    <text x="650" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">a</text>
-    <text x="722" y="337" text-anchor="middle" fill="currentColor" fill-opacity="0.8" font-size="12">b</text>
-    <text x="650" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
-    <text x="722" y="353" text-anchor="middle" fill="currentColor" fill-opacity="0.55" font-size="11">mass ½</text>
-  </svg>
-  <figcaption><strong>Rearrangement: same destination pile, different routing.</strong> The source $(W,\lambda)$ carries four equal lumps of mass $\tfrac14$ (dots $1$–$4$, colour-coded). <strong>(a)</strong> The map $m$ ships them into two bins $a,b\subset X$ (lumps $1,2\to a$ and $3,4\to b$). <strong>(b)</strong> A rearrangement $\tilde m$ sends the <em>same</em> lumps along <em>different</em> arrows — note the crossings: lump $1$ now lands in $b$, lump $3$ in $a$. Yet each bin still ends up with height $\tfrac12$, so the two maps induce the identical push-forward $\tilde m_\sharp\lambda=m_\sharp\lambda$. The colours track <em>which</em> lump went where (not preserved); the bin <em>heights</em> track the mass distribution on $X$ (preserved). That invariance of heights, across all possible re-routings, is exactly the defining identity $\int_W F\circ m\,d\lambda=\int_W F\circ\tilde m\,d\lambda$.</figcaption>
-</figure>
-
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">($\tilde{m}$ is also measurable)</span></p>
 
-Short answer: as literally written the definition does **not** force $\tilde{m}$ to be measurable, and it also cannot detect non-measurability — but that is an expository gap, not a real choice. The intended object is a measurable map, and you genuinely need that for the statement to mean anything. Here is the anatomy of why.
+As literally written the definition does **not** force $\tilde{m}$ to be measurable, and it also cannot detect non-measurability — but that is an expository gap, not a real choice. The intended object is a measurable map, and you genuinely need that for the statement to mean anything. Here is the anatomy of why.
 
-[Longer answer by Opus 3.8 high](https://claude.ai/share/0e6bae76-a2df-4b6c-a783-d55e6c83aa2c)
+[Longer answer by Opus 4.8 high](https://claude.ai/share/0e6bae76-a2df-4b6c-a783-d55e6c83aa2c)
 
 </div>
 
@@ -3491,6 +3420,121 @@ The condition is best understood through its consequence: testing against every 
 * **Special case.** In 1D, the "monotone rearrangement" of a function is the unique increasing rearrangement — the quantile function of the push-forward measure. This is exactly the same construction.
 
 </div>
+
+<figure>
+  <svg width="100%" viewBox="0 0 720 560" role="img" aria-label="Rearrangement versus measure-preserving, from one shared source distribution. Every row starts from the identical uniform source lambda on Omega, drawn as four equal colour-coded lumps. Row a: a measure-preserving self-map s permutes the lumps, so the image histogram is again four equal bars, the same uniform lambda. Row b: a map m piles two lumps into the first cell and one each into the next two, producing a peaked image mu with bar heights two, one, one, zero. Row c: a rearrangement m-tilde of m routes different lumps but produces the identical peaked mu, so it is a valid rearrangement of m, yet because mu differs from lambda it is not measure-preserving." style="display:block;height:auto;max-width:700px;margin:0.5rem auto;font-size:14px;">
+    <defs>
+      <marker id="rmp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="context-stroke" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- ===== title ===== -->
+    <text x="28" y="28" fill="currentColor" font-weight="600" font-size="15">Same source λ on Ω in every row — what reaches each cell? (all maps Ω→Ω)</text>
+    <text x="28" y="48" fill="currentColor" fill-opacity="0.62" font-size="12">bar height = mass landing in the cell;  colour = which source lump it came from</text>
+
+    <!-- column headers -->
+    <text x="125" y="118" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11.5">source λ (uniform)</text>
+    <text x="453" y="118" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11.5">image distribution</text>
+
+    <!-- ============================================================ -->
+    <!-- Row (a): MEASURE-PRESERVING                                   -->
+    <!-- ============================================================ -->
+    <text x="34" y="167" fill="currentColor" fill-opacity="0.75" font-size="13" font-weight="600">(a)</text>
+
+    <!-- source: 4 equal lumps (uniform) -->
+    <rect x="64"  y="150" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="96"  y="150" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="128" y="150" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="160" y="150" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="58" y1="176" x2="192" y2="176" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- map arrow -->
+    <line x1="210" y1="163" x2="372" y2="163" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" marker-end="url(#rmp-arrow)"/>
+    <text x="291" y="151" text-anchor="middle" fill="currentColor" font-style="italic" font-size="13">s</text>
+    <text x="291" y="186" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11">permutation (bijection)</text>
+
+    <!-- image: still uniform (colours permuted, heights unchanged) -->
+    <rect x="392" y="150" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="424" y="150" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="456" y="150" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="488" y="150" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="386" y1="176" x2="520" y2="176" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <!-- track the blue lump: source cell 1 -> image cell 4, area kept -->
+    <rect x="64"  y="150" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6"/>
+    <rect x="488" y="150" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6"/>
+
+    <!-- badge -->
+    <text x="540" y="156" fill="#16a34a" font-size="12.5" font-weight="600">✓ measure-preserving</text>
+    <text x="540" y="173" fill="currentColor" fill-opacity="0.78" font-size="11.5">s#λ = λ  (image = source)</text>
+    <text x="540" y="190" fill="currentColor" fill-opacity="0.55" font-size="11">= a rearrangement of the identity</text>
+
+    <!-- divider -->
+    <line x1="40" y1="226" x2="700" y2="226" stroke="currentColor" stroke-opacity="0.15" stroke-dasharray="3 5"/>
+    <text x="64" y="256" fill="currentColor" fill-opacity="0.7" font-size="11.5">(b) &amp; (c) — two different maps, the <tspan font-weight="600">same</tspan> peaked image μ ⇒ rearrangements of each other:</text>
+
+    <!-- ============================================================ -->
+    <!-- Row (b): reference map m  (many-to-one, peaks mass)           -->
+    <!-- ============================================================ -->
+    <text x="34" y="329" fill="currentColor" fill-opacity="0.75" font-size="13" font-weight="600">(b)</text>
+
+    <!-- source -->
+    <rect x="64"  y="312" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="96"  y="312" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="128" y="312" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="160" y="312" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="58" y1="338" x2="192" y2="338" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <line x1="210" y1="325" x2="372" y2="325" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" marker-end="url(#rmp-arrow)"/>
+    <text x="291" y="313" text-anchor="middle" fill="currentColor" font-style="italic" font-size="13">m</text>
+    <text x="291" y="348" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11">lumps 1,2 → cell 1</text>
+
+    <!-- image μ: heights (2,1,1,0); cell1 = blue over green -->
+    <rect x="392" y="312" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="392" y="286" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="424" y="312" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="456" y="312" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="386" y1="338" x2="520" y2="338" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <text x="540" y="320" fill="currentColor" font-size="12.5" font-weight="600">reference map m</text>
+    <text x="540" y="337" fill="currentColor" fill-opacity="0.78" font-size="11.5">m#λ = μ = (½, ¼, ¼, 0)</text>
+
+    <!-- ============================================================ -->
+    <!-- Row (c): rearrangement m-tilde of m                          -->
+    <!-- ============================================================ -->
+    <text x="34" y="491" fill="currentColor" fill-opacity="0.75" font-size="13" font-weight="600">(c)</text>
+
+    <!-- source -->
+    <rect x="64"  y="474" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="96"  y="474" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="128" y="474" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="160" y="474" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="58" y1="500" x2="192" y2="500" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <line x1="210" y1="487" x2="372" y2="487" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" marker-end="url(#rmp-arrow)"/>
+    <text x="291" y="475" text-anchor="middle" fill="currentColor" font-style="italic" font-size="13">m̃</text>
+    <text x="291" y="510" text-anchor="middle" fill="currentColor" fill-opacity="0.6" font-size="11">lumps 3,4 → cell 1</text>
+
+    <!-- image μ: SAME heights (2,1,1,0), different colours: cell1 = amber over red -->
+    <rect x="392" y="474" width="26" height="26" fill="#f59e0b" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="392" y="448" width="26" height="26" fill="#ef4444" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="424" y="474" width="26" height="26" fill="#3b82f6" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <rect x="456" y="474" width="26" height="26" fill="#22c55e" fill-opacity="0.85" stroke="currentColor" stroke-opacity="0.35"/>
+    <line x1="386" y1="500" x2="520" y2="500" stroke="currentColor" stroke-opacity="0.35"/>
+
+    <text x="540" y="466" fill="#16a34a" font-size="12.5" font-weight="600">✓ rearrangement of m</text>
+    <text x="540" y="483" fill="currentColor" fill-opacity="0.78" font-size="11.5">m̃#λ = m#λ = μ (same heights)</text>
+    <text x="540" y="500" fill="#dc2626" font-size="12" font-weight="600">✗ not measure-preserving</text>
+    <text x="540" y="516" fill="currentColor" fill-opacity="0.6" font-size="11">μ ≠ λ — distribution changed</text>
+  </svg>
+  <figcaption><strong>Rearrangement vs. measure-preserving, from one shared source.</strong> Every row begins from the <em>identical</em> uniform source $\lambda$ on the same space $\Omega$ — four equal lumps of mass $\tfrac14$ (blue, green, amber, red) — so "is it measure-preserving?" is a meaningful question for each map. <strong>(a)</strong> A <em>measure-preserving</em> $s\colon\Omega\to\Omega$ is a bijection (here a permutation): it relabels which lump sits where, but every cell still holds mass $\tfrac14$, so the image is again the uniform $\lambda$. That is the whole content of $s_\sharp\lambda=\lambda$ (the outlined blue lump moves cell $1\to$ cell $4$ keeping its area). <strong>(b)</strong> A map $m$ that <em>piles</em> lumps $1,2$ into one cell produces a <em>peaked</em> image $\mu=(\tfrac12,\tfrac14,\tfrac14,0)$. <strong>(c)</strong> A <em>rearrangement</em> $\tilde m$ of $m$ routes <em>different</em> lumps (here $3,4$) into that cell, yet builds the <em>identical</em> $\mu$ — compare the bar <em>heights</em> in (b) and (c) (equal) against the <em>colours</em> (different). So $\tilde m_\sharp\lambda=m_\sharp\lambda=\mu$ makes $\tilde m$ a genuine rearrangement of $m$; but $\mu\neq\lambda$, so $\tilde m$ is <em>not</em> measure-preserving. <strong>The one-line distinction:</strong> measure-preserving compares a self-map's image to the <em>same</em> $\lambda$ it started from, whereas "rearrangement" compares two maps' images to <em>each other</em> — a common target $\mu$ that may differ from $\lambda$. Equivalently, <em>a measure-preserving map is exactly a rearrangement of the identity</em> ($\mu=\lambda$, since $\mathrm{id}_\sharp\lambda=\lambda$); a general rearrangement replaces $\mathrm{id}$ by an arbitrary reference map $m$. Proposition 20 below makes this bridge precise.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_rearrangement_vs_mp.png' | relative_url }}" alt="Three transport plots sharing one source law lambda equal to a standard normal, drawn as a blue bell-curve marginal along the bottom of every panel. Each panel shows a map as a curve coloured by source location x (blue for low x through red for high x), with the resulting image law drawn as a marginal along the left edge. Panel a: the map s of x equals minus x is a straight descending line; its left marginal is the same blue bell as the source, so the distribution is unchanged and the map is measure-preserving. Panel b: the monotone transport map m is an increasing curve flattening near two plateaus; its left marginal is a bimodal orange law mu with two humps, clearly different from the source. Panel c: the map m-tilde equals m composed with s is a decreasing curve; its left marginal is the identical bimodal orange mu, so it produces the same image as m but routes high source values to the lower mode instead of the upper one. The badges read: a measure-preserving; b reference rearrangement with image mu not equal to lambda; c rearrangement of m but not measure-preserving." loading="lazy">
+  <figcaption><strong>The same contrast, now with honest probability distributions.</strong> A transport reading of the schematic above: every panel starts from the <em>identical</em> source law $\lambda=\mathcal N(0,1)$ (the blue bell along the bottom), and the colour of the map curve marks the source location $x$ — so you can literally see where each part of $\lambda$ is sent. The image law is the marginal along the left edge (filled curve = exact push-forward density; faint band = histogram of $120{,}000$ pushed samples, a numerical sanity check). <strong>(a)</strong> The measure-preserving $s(x)=-x$ sends $\lambda$ back to $\lambda$: the left marginal is again the bell, $s_\sharp\lambda=\lambda$ — only the colours flip (high $x$ in red now sits at the bottom). <strong>(b)</strong> The monotone transport map $m$ pushes $\lambda$ onto a <em>bimodal</em> $\mu$ (the increasing OT map / quantile rearrangement of the Remark above). <strong>(c)</strong> The map $\tilde m=m\circ s$ — that is, $m$ pre-composed with the measure-preserving reflection of panel (a), which is exactly Proposition 20(i) below — produces the <em>identical</em> $\mu$: compare the two left marginals in (b) and (c) (same bimodal shape) against the curves (one increasing, one decreasing, so the warm/red high-$x$ mass lands in the <em>opposite</em> mode). Hence $\tilde m_\sharp\lambda=m_\sharp\lambda=\mu$ makes $\tilde m$ a genuine rearrangement of $m$, yet $\mu\neq\lambda$ means neither is measure-preserving. In one line: <em>measure-preserving</em> = "image law equals the source law"; <em>rearrangement</em> = "image law equals some <em>other</em> map's image law" — and that common target may be any $\mu$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 18</span><span class="math-callout__name">(Measure-preserving maps)</span></p>
@@ -3597,6 +3641,32 @@ for every measurable $F\colon W\to\mathbb R$ with $F\circ s,\,F\in L^1(\lambda)$
   </svg>
   <figcaption><strong>Measure-preserving maps preserve the size of every set, not the labels of points.</strong> The domain $\Omega$ is cut into nine equal tiles. <strong>(a)</strong> A measure-preserving $s$ — here a $90^\circ$ rotation — relocates the tiles (follow the outlined red tile) but every tile keeps area $\tfrac19$, so the uniform measure is reproduced exactly: $s_\sharp\lambda=\lambda$, equivalently $\lambda(s^{-1}(A))=\lambda(A)$ for every measurable $A$. <strong>(b)</strong> A map that compresses the top rows and stretches the bottom ones carries the <em>same</em> colours but rescales their areas; the dashed test set $A$ has a strictly larger preimage $s^{-1}(A)$, so $s_\sharp\lambda\neq\lambda$ and $\lvert\det\nabla s\rvert\neq 1$. This is the picture behind the defining identity $\int_W F\circ s\,d\lambda=\int_W F\,d\lambda$: it holds in (a) because relabelling points never moves mass between regions, and fails in (b) because the regions themselves are resized.</figcaption>
 </figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(measure-preserving maps)</span></p>
+
+Throughout, $\lambda$ is Lebesgue measure; for the smooth ones the quickest check is the criterion below, $\lvert\det\nabla s\rvert=1$.
+
+**On the circle / interval $[0,1)$.**
+
+* **Identity** $s(x)=x$. Trivially $s_\sharp\lambda=\lambda$ — and recall that the measure-preserving maps are *exactly* the rearrangements of the identity.
+* **Reflection** $s(x)=1-x$. A bijection with $\lvert s'\rvert=1$: it flips the interval but moves no mass between sets of equal length.
+* **Rotation of the circle** $s(x)=x+a \bmod 1$. Shifts every point by $a$ with no compression ($\lvert s'\rvert=1$); for irrational $a$ this is the classic ergodic rotation.
+* **Doubling map** $s(x)=2x \bmod 1$. Measure-preserving yet **not invertible**: each $y$ has the two preimages $\tfrac y2$ and $\tfrac{y+1}2$, so $\lambda(s^{-1}(A))=\tfrac12\lambda(A)+\tfrac12\lambda(A)=\lambda(A)$. This is exactly the gap that forces the invertibility hypothesis in Proposition 20(ii) — a measure-preserving map need not be a bijection.
+
+**On a domain $\Omega\subset\mathbb R^d$ (volume).**
+
+* **Rigid motions** — rotations, reflections, and (on the torus) translations. Isometries have $\lvert\det\nabla s\rvert=1$, hence preserve volume.
+* **Shear** $s(x,y)=(x+y,\,y)$, or more generally $(x+f(y),\,y)$. Here $\det\nabla s=1$, so it is area-preserving even though it is **not** an isometry: measure preservation constrains *volume*, not *distances or angles*.
+* **Arnold's cat map** $s(x,y)=(2x+y,\,x+y)\bmod 1$ on the torus $\mathbb T^2$. A linear automorphism with $\det=1$ — area-preserving and famously chaotic.
+
+**From dynamics (the thread of this section).**
+
+* **Flows of divergence-free fields (Liouville).** If $\dot x=v(x)$ with $\nabla\cdot v=0$, the time-$t$ flow $\phi_t\colon\Omega\to\Omega$ has $\det\nabla\phi_t\equiv1$, so *every* $\phi_t$ is measure-preserving. This is exactly the incompressibility $\iff$ measure-preserving statement (2.12) used later for Euler; Hamiltonian flows on phase space are the canonical instance.
+
+**Non-examples** (to sharpen the boundary): any genuine dilation $s(x)=cx$ with $\lvert c\rvert\neq1$ (scales volume by $\lvert c\rvert^d$); the squash/stretch of panel (b) above, where $\lvert\det\nabla s\rvert\neq1$; and any constant map, which collapses all the mass onto a single point.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The unit-Jacobian characterisation)</span></p>
@@ -5374,6 +5444,699 @@ and define $(\rho,v)$ via the method of characteristics (Theorem 33), i.e. $\rho
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The geodesic picture, and the bridge to Chapter 1)</span></p>
 
 The Benamou–Brenier formula recasts $W\_2$ as a **least-action / energy** functional, exactly as $d\_g^2$ in Riemannian geometry: its minimizers are the constant-speed geodesics of Wasserstein space, and Step 3 identifies them with the displacement interpolation $T\_t=(1-t)\,\mathrm{id}+tT$ of §2.5. Together with the linearization (2.39) — which exhibits $\dot H^{-1}(d\mu)$ as the metric tensor — this completes the formal Riemannian structure on $\mathcal P\_{ac}^2(\mathbb R^d)$ (Otto's calculus): the stage on which diffusion PDEs appear as **gradient flows of displacement-convex entropies**, and where the uniqueness, stability, and asymptotics machinery of Chapter 1 can be brought to bear.
+
+</div>
+
+## Chapter 3: Gradient Flows in the Space of Probability Measures
+
+Everything is now in place to make good on the promise that closed Chapter 2. Chapter 1 built a robust theory of gradient flows whose existence mechanism — minimizing movements — needs only two ingredients: an *energy* to descend and a *distance* to penalize movement. Chapter 2 supplied exactly these ingredients on the space of probability measures: the distance $W\_2$, its geodesics (displacement interpolation), a notion of convexity adapted to them (displacement convexity), and finally a formal Riemannian structure (the Benamou–Brenier formula, Theorem 40). In this chapter we combine the two: we define **gradient flows in the space of probability measures** — first heuristically, via Otto's Riemannian picture (§3.1), then rigorously, via the minimizing movements scheme (§3.2) — and we transplant the long-term asymptotics of §1.6 to this setting (§3.3). The punchline: familiar diffusion equations — the heat equation, the Fokker–Planck equation, the porous medium equation — *are* gradient flows; not of a Dirichlet-type energy in $L^2$, but of **entropy-type functionals in Wasserstein space**.
+
+### 3.1 Heuristic motivation
+
+We want to use the Wasserstein distance to define gradient flows in the space of probability measures. We have already seen that the distance $W\_2$ is induced by a metric tensor given by the kinetic energy $\int\lvert v\rvert^2\,d\rho$ (Theorem 40), which would allow us to write down the minimizing movements scheme as in §1.8 right away. Before doing that, it is instructive to first argue on a heuristic level.
+
+The Benamou–Brenier formula suggests that, at least heuristically, we may think of the space $\mathcal P^2\_{ac}(\mathbb R^d)$ as a **Riemannian manifold** and apply to it the formalism of gradient flows on Riemannian manifolds from §1.10.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Otto's formal Riemannian structure on $\mathcal M=\mathcal P^2\_{ac}(\mathbb R^d)$)</span></p>
+
+Let $\mathcal M = \mathcal P^2\_{ac}(\mathbb R^d)$.
+
+1. The **tangent space** $T\_\rho\mathcal M$ at $\rho\in\mathcal M$ can be identified with the set of all velocity fields $v$ with $\int\lvert v\rvert^2\,d\rho<\infty$: an infinitesimal variation $\delta\rho$ of the density (a signed quantity of zero total mass) is represented by any velocity field $v$ satisfying the *linearized continuity equation* $\delta\rho+\nabla\cdot(\rho v)=0$.
+2. The **metric tensor** is the kinetic energy, $g\_\rho(v,w)=\int v\cdot w\,d\rho$. On variations, since many velocity fields represent the same $\delta\rho$, one takes the most economical representative:
+
+$$
+g_\rho(\delta\rho,\delta\rho) = \inf\Bigl\{\int_{\mathbb R^d}\lvert v\rvert^2\,d\rho\colon\ v\in L^2(\rho),\ \delta\rho+\nabla\cdot(\rho v)=0\Bigr\}.
+$$
+
+</div>
+
+This is precisely the structure that the linearization of $W\_2$ exhibited in (2.39) — there the infimum came out as the $\dot H^{-1}(d\mu)$-norm of the perturbation, attained at a *gradient* velocity field — and it is the metric tensor whose induced geodesic distance the Benamou–Brenier formula (Theorem 40) identifies as $W\_2$.
+
+Using §1.10, we can formally define the gradient flow
+
+$$
+\begin{cases}
+\dfrac{d}{dt}\rho(t) = -\nabla_g E(\rho(t)) & \text{for } t\in(0,T),\\[0.4em]
+\rho(0) = \rho_0,
+\end{cases}
+\tag{3.1}
+$$
+
+of a functional $E\colon\mathcal P^2\_{ac}(\mathbb R^d)\to\mathbb R$ as a curve $[0,T)\ni t\mapsto \rho(t)=\rho\_t\in\mathcal P^2\_{ac}(\mathbb R^d)$ that satisfies the continuity equation
+
+$$
+\partial_t\rho_t + \nabla\cdot(\rho_t v_t) = 0,
+\tag{3.2}
+$$
+
+where we have to link the velocity field $v\_t$ to the differential of the energy functional $E$ via the defining relation of the Riemannian gradient: for any $\zeta$ in the tangent space $T\_{\rho\_t}\mathcal M$, i.e., $\zeta+\nabla\cdot(\rho\_t w)=0$ for some velocity field $w$, we require
+
+$$
+g_{\rho_t}(\partial_t\rho_t,\zeta) = -\,dE(\rho_t).\zeta.
+$$
+
+Using the definition of the metric tensor $g\_{\rho\_t}$ on the left-hand side (both tangent vectors are represented by their velocity fields $v\_t$ and $w$), and the definition of the differential $dE(\rho\_t).\zeta=\frac{d}{ds}\big\vert\_{s=0}E(\rho\_t+s\zeta)$ on the right-hand side, this is equivalent to
+
+$$
+\int_{\mathbb R^d} v_t\cdot w\,d\rho_t = -\frac{d}{ds}\Big|_{s=0}E(\rho_t+s\zeta).
+$$
+
+For given energy functionals $E$, the right-hand side can be computed explicitly, and we usually bring it into the form
+
+$$
+\frac{d}{ds}\Big|_{s=0}E(\rho_t+s\zeta) = \int_{\mathbb R^d}\frac{\delta E}{\delta\rho}(\rho_t)\,\zeta\,dx,
+$$
+
+i.e., $\frac{\delta E}{\delta\rho}$ is (the $L^2$ representation of) the **first variation** of $E$, or the **$L^2$-gradient** of $E$. Using $\zeta+\nabla\cdot(\rho\_t w)=0$, we can integrate by parts to get
+
+$$
+\int_{\mathbb R^d} v_t\cdot w\,d\rho_t = -\int_{\mathbb R^d}\nabla\frac{\delta E}{\delta\rho}(\rho_t)\cdot w\,d\rho_t.
+$$
+
+Since $w$ was arbitrary, we get
+
+$$
+v_t = -\nabla\frac{\delta E}{\delta\rho}(\rho_t).
+\tag{3.3}
+$$
+
+In other words, reading the pair (3.2)–(3.3) as the tangent-vector representation of the gradient,
+
+$$
+\nabla_{W_2}E(\rho) = -\nabla\cdot\Bigl(\rho\,\nabla\frac{\delta E}{\delta\rho}\Bigr).
+\tag{3.4}
+$$
+
+Summarizing, the gradient flow (3.1) can be written as
+
+$$
+\begin{cases}
+\partial_t\rho_t = \nabla\cdot\Bigl(\rho_t\,\nabla\dfrac{\delta E}{\delta\rho}(\rho_t)\Bigr) & \text{for } t\in(0,T),\\[0.4em]
+\rho(0) = \rho_0.
+\end{cases}
+\tag{3.5}
+$$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sanity check: the energy dissipates)</span></p>
+
+Along the flow (3.5), a formal computation gives
+
+$$
+\frac{d}{dt}E(\rho_t) = \int\frac{\delta E}{\delta\rho}\,\partial_t\rho_t\,dx = \int\frac{\delta E}{\delta\rho}\,\nabla\cdot\Bigl(\rho_t\nabla\frac{\delta E}{\delta\rho}\Bigr)dx = -\int\Bigl\lvert\nabla\frac{\delta E}{\delta\rho}(\rho_t)\Bigr\rvert^2 d\rho_t \;\leq\; 0.
+$$
+
+The energy decreases, and the dissipation rate is exactly the squared norm of the gradient in the metric $g$ — the defining signature $\frac{d}{dt}E=-\lVert\nabla\_g E\rVert\_g^2$ of a gradient flow, as in $\mathbb R^N$ (§1.9). We will meet this quantity again as $\mathcal D(t)$ in §3.3.
+
+</div>
+
+Next, we want to understand this with some specific examples. Note that the energies below are exactly the three canonical functionals of §2.5 — internal, potential, and interaction energy — whose displacement convexity we characterized in Theorem 32.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 7</span><span class="math-callout__name">(The Wasserstein gradient flow zoo)</span></p>
+
+1. **Boltzmann entropy & linear diffusion.** Let $E(\rho)=\int\_{\mathbb R^d}\rho\log\rho\,dx$ be the Boltzmann entropy. Then $\frac{\delta E}{\delta\rho}(\rho)=1+\log\rho$, hence $\rho\nabla\frac{\delta E}{\delta\rho}=\rho\nabla\log\rho=\nabla\rho$, and the gradient flow (3.5) is the **heat equation**
+
+   $$
+   \partial_t\rho_t = \Delta\rho_t.
+   $$
+
+2. **Boltzmann entropy and potential & Fokker–Planck.** For $E(\rho)=\int\_{\mathbb R^d}\rho\log\rho\,dx+\int\_{\mathbb R^d}V\,d\rho$, we have $\frac{\delta E}{\delta\rho}=1+\log\rho+V$ and
+
+   $$
+   \partial_t\rho_t = \Delta\rho_t + \nabla\cdot(\rho_t\nabla V).
+   $$
+
+3. **Power laws & porous medium.** For $E(\rho)=\frac{1}{m-1}\int\rho^m$ with $m>1$, we get $\frac{\delta E}{\delta\rho}=\frac{m}{m-1}\rho^{m-1}$, hence $\rho\nabla\frac{\delta E}{\delta\rho}=m\rho^{m-1}\nabla\rho=\nabla(\rho^m)$ and
+
+   $$
+   \partial_t\rho = \Delta\rho^m,
+   $$
+
+   the **porous medium equation** (for $m<1$: the fast diffusion equation).
+
+4. **Interaction energies & McKean–Vlasov.** For $E(\rho)=\frac12\iint W(x-y)\,d\rho(x)\,d\rho(y)$ with an even interaction kernel $W$, we get $\frac{\delta E}{\delta\rho}=W\ast\rho$ (the factor $\frac12$ cancels because $\rho$ appears twice), and
+
+   $$
+   \partial_t\rho_t = \nabla\cdot\bigl(\rho\,\nabla(\rho\ast W)\bigr),
+   $$
+
+   the **McKean–Vlasov** (or aggregation) equation.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(One equation, several gradient structures — why bother?)</span></p>
+
+The heat equation was already a gradient flow before this chapter: it is the $L^2$-gradient flow of the Dirichlet energy $\frac12\int\lvert\nabla\rho\rvert^2\,dx$. So what does the new structure buy? The value of a gradient-flow structure lies in the **convexity of its energy along the geodesics of its geometry** — that is what powered uniqueness, stability, and long-term asymptotics in Chapter 1. The Boltzmann entropy is displacement convex (§2.5), and the entropy-plus-potential energy of Example 7.2 is even $\lambda$-displacement convex for $\lambda$-convex $V$ (Lemma 44 below) — *uniformly* convex in the Wasserstein geometry, with no smallness or spectral condition. The Dirichlet energy enjoys nothing comparable for these equations once a potential or nonlinearity enters. Choosing the geometry in which the energy is convex is what makes the machinery of Chapter 1 applicable; that is exactly the program of §3.3.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(What is heuristic here)</span></p>
+
+Every step of this section was formal: $\mathcal P^2\_{ac}(\mathbb R^d)$ is not a manifold (it is infinite-dimensional, and has no obvious charts), the identification of tangent vectors with velocity fields was not justified, curves $t\mapsto\rho\_t$ were assumed as smooth as the computations demanded, and $\frac{\delta E}{\delta\rho}$ was manipulated freely. The heuristics are nevertheless the *right* ones — and the way to make them rigorous is the same as in Chapter 1: bypass the differential structure entirely and run minimizing movements, which only needs the two robust ingredients $E$ and $W\_2$. This is the subject of the next section.
+
+</div>
+
+### 3.2 Minimizing movements for probability measures — the JKO scheme
+
+For a rigorous treatment of gradient flows in the space of probability measures, we want to run the minimizing movements scheme from §1.4 and §1.8, which in this context is called the **JKO scheme** (due to Jordan–Kinderlehrer–Otto).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(JKO scheme)</span></p>
+
+Given initial conditions $\rho\_0\in\mathcal P^2\_{ac}(\mathbb R^d)$ and a time-step size $h>0$, we iteratively solve, for $\ell=1,2,\dots$,
+
+$$
+\rho_\ell^{(h)} \in \operatorname*{arg\,min}_{\rho\in\mathcal P^2_{ac}(\mathbb R^d)}\Bigl\{E(\rho) + \frac{1}{2h}W_2^2\bigl(\rho,\rho_{\ell-1}^{(h)}\bigr)\Bigr\}.
+\tag{3.6}
+$$
+
+This is the scheme (1.10) verbatim, with the ambient space $(\mathbb R^N,\lvert\cdot\rvert)$ replaced by $(\mathcal P^2\_{ac}(\mathbb R^d),W\_2)$.
+
+</div>
+
+In this section, we focus on the case of the **Fokker–Planck equation**
+
+$$
+\partial_t\rho_t = \nabla\cdot(\rho_t\nabla V) + \frac1\beta\Delta\rho_t,
+\tag{3.7}
+$$
+
+i.e.,
+
+$$
+E(\rho) = \int_{\mathbb R^d}V\,d\rho + \frac1\beta\int_{\mathbb R^d}\rho\log\rho\,dx,
+\tag{3.8}
+$$
+
+where $V\in C^\infty(\mathbb R^d)$ with $V\geq 0$ and $\lvert\nabla V\rvert\leq C(V+1)$ (a growth condition that rules out super-exponentially exploding potentials).
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Diffusing particles in a potential, and the Gibbs measure)</span></p>
+
+The Fokker–Planck equation describes the evolution of the distribution of diffusing particles in a given potential $V$:
+
+$$
+dX_t = -\nabla V(X_t)\,dt + \sqrt{2\beta^{-1}}\,dW_t,
+$$
+
+with given initial conditions $X\_0\sim\rho\_0$. Here $W\_t$ is the $d$-dimensional Brownian motion and $\beta>0$ is the **inverse temperature**: the drift $-\nabla V$ pulls particles downhill, thermal noise of strength $\beta^{-1}$ kicks them around, and (3.7) is the evolution of the law of $X\_t$.
+
+Under suitable conditions on $V$, there is a unique stationary solution $\bar\rho=\bar\rho(x)$ of the Fokker–Planck equation, and it is given by the **Gibbs distribution**
+
+$$
+\bar\rho(x) = \frac1Z\exp(-\beta V(x)),
+$$
+
+where the normalizing constant
+
+$$
+Z = \int_{\mathbb R^d}\exp(-\beta V(x))\,dx
+$$
+
+is called the **partition function**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 41</span><span class="math-callout__name">(The scheme is well-defined)</span></p>
+
+For any $\rho\_{\ell-1}^{(h)}\in\mathcal P^2\_{ac}(\mathbb R^d)$, there exists a unique minimizer $\rho\_\ell^{(h)}$ of (3.6). Moreover, $\rho\_\ell^{(h)}\in\mathcal P^2\_{ac}(\mathbb R^d)$, so the scheme can be iterated.
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 41 (sketch: direct method and convexity)</summary>
+
+This is the direct method of the calculus of variations (the template of §§1.4, 2.2) plus convexity.
+
+**Existence.** Along a minimizing sequence $(\rho\_k)$, the penalization term keeps the second moments $\int\lvert x\rvert^2\,d\rho\_k$ bounded; this gives tightness (Markov's inequality), so after a subsequence $\rho\_k\rightharpoonup\rho$ narrowly. On sets of bounded second moment the entropy is bounded below (compare with a Gaussian), so the functional is proper and bounded below. All three terms are lower semi-continuous along this convergence: $\int V\,d\rho$ since $V\geq0$ is continuous, the entropy by convexity of $s\mapsto s\log s$, and $W\_2^2(\cdot,\rho\_{\ell-1}^{(h)})$ as in §2.6. Hence the limit $\rho$ is a minimizer.
+
+**Uniqueness.** The functional is strictly convex along *linear* interpolations $(1-t)\rho^0+t\rho^1$: the potential term is linear, the entropy is strictly convex (strict convexity of $s\mapsto s\log s$), and $\rho\mapsto W\_2^2(\rho,\rho\_{\ell-1}^{(h)})$ is convex — take the corresponding convex combination of optimal plans as a competitor. Two distinct minimizers would give a strictly better midpoint, a contradiction.
+
+**Regularity of the minimizer.** The minimum value is finite, so the entropy of $\rho\_\ell^{(h)}$ is finite, forcing absolute continuity; the $W\_2^2$-term is finite, forcing a finite second moment. Hence $\rho\_\ell^{(h)}\in\mathcal P^2\_{ac}(\mathbb R^d)$. $\square$
+
+</details>
+
+As in the finite-dimensional case in Chapter 1 (cf. (1.34)), we get the a priori estimate — by comparing the minimizer $\rho\_\ell^{(h)}$ with the competitor $\rho\_{\ell-1}^{(h)}$ in (3.6) and summing over $\ell=1,\dots,L$ —
+
+$$
+E\bigl(\rho_L^{(h)}\bigr) + \frac12 h\sum_{\ell=1}^L\biggl(\frac{W_2\bigl(\rho_\ell^{(h)},\rho_{\ell-1}^{(h)}\bigr)}{h}\biggr)^2 \leq E(\rho_0).
+\tag{3.9}
+$$
+
+We interpolate our discretization piecewise constantly in time:
+
+$$
+\rho_h(t) := \rho_\ell^{(h)}\quad\text{for } t\in[\ell h,(\ell+1)h).
+$$
+
+Then we get compactness of these functions, and the limit solves the Fokker–Planck equation:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 42</span><span class="math-callout__name">(JKO iterates converge to the Fokker–Planck flow; Jordan–Kinderlehrer–Otto '98)</span></p>
+
+Let $\rho\_0\in\mathcal P^2\_{ac}(\mathbb R^d)$ with $E(\rho\_0)<\infty$. As $h\to0$,
+
+$$
+\rho_h \rightharpoonup \rho \quad\text{weakly in } L^1(\mathbb R^d) \text{ for all } t>0,
+$$
+
+where $\rho\in C^\infty(\mathbb R^d\times(0,\infty))$ is the unique solution to
+
+$$
+\partial_t\rho = \nabla\cdot(\rho\nabla V) + \frac1\beta\Delta\rho
+$$
+
+with initial conditions
+
+$$
+\rho(t)\to\rho_0 \quad\text{in } L^1(\mathbb R^d) \text{ as } t\to0,
+$$
+
+and
+
+$$
+M(\rho),\,E(\rho)\in L^\infty_{loc}\bigl((0,\infty)\bigr),
+$$
+
+where $M(\rho)=\int\_{\mathbb R^d}\lvert x\rvert^2\,d\rho(x)$ denotes the second moment.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the second-moment bound is part of the statement)</span></p>
+
+The bound on the second moment $M(\rho)$ is important to get the *uniqueness*: there are strange non-uniqueness issues for the diffusion equation without growth conditions at $\infty$ (Tychonov's classical examples: nonzero solutions of the heat equation with zero initial data, growing like $e^{c\lvert x\rvert^2}$). The moment bound places the limit in a uniqueness class; it comes for free from the scheme, since (3.9) controls how far mass can travel.
+
+</div>
+
+*Proof structure.* The proof proceeds in five steps:
+
+1. **Compactness.** $\rho\_h\rightharpoonup\rho$ weakly in $L^1(\mathbb R^d\times(0,T))$ for any $T<\infty$, with $\rho(t)\in\mathcal P^2\_{ac}(\mathbb R^d)$ for a.e. $t>0$ and $\operatorname{ess\,sup}\_{t\in(0,T)}\int\_{\mathbb R^d}\lvert x\rvert^2\,d\rho(x,t)<\infty$ for any $T<\infty$.
+2. **PDE.** The limit $\rho$ satisfies the Fokker–Planck equation in the distributional form
+
+   $$
+   \partial_t\rho + \nabla\cdot j = 0,
+   \tag{3.10}
+   $$
+
+   $$
+   j = -\rho\nabla V - \frac1\beta\nabla\rho.
+   \tag{3.11}
+   $$
+
+3. **Regularity.** Parabolic regularity theory upgrades the distributional solution to $\rho\in C^\infty(\mathbb R^d\times(0,\infty))$.
+4. **Upgraded convergence.** From convergence in space-time to weak-$L^1$ convergence at every fixed time $t>0$, and attainment of the initial data.
+5. **Uniqueness.** Within the class $M(\rho),E(\rho)\in L^\infty\_{loc}$, solutions are unique; hence the full family (not just subsequences) converges.
+
+We will focus on **Step 2**, which contains the key idea: the Euler–Lagrange equation of the minimization problem (3.6) turns into the PDE. For notational simplicity, we omit the superscript $(h)$.
+
+The variations we can afford in $\mathcal P^2\_{ac}(\mathbb R^d)$ are not additive ($\rho+s\zeta$ may fail to be non-negative) but **transportational**: we push the density along a flow. The derivative of the energy under such variations we essentially know; the new ingredient is the derivative of the squared Wasserstein distance:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 43</span><span class="math-callout__name">(Derivative of $W\_2^2$ along transport variations)</span></p>
+
+Let $\mu,\nu\in\mathcal P^2(\mathbb R^d)$ and $\xi\in C\_c^\infty(\mathbb R^d;\mathbb R^d)$. Let $T\_s$ solve $\frac{d}{ds}T\_s=\xi\circ T\_s$, $T\_0=\mathrm{id}$, and set $\rho\_s:=(T\_s)\_\sharp\mu$, i.e., $\rho\_s$ is the solution to $\partial\_s\rho\_s+\nabla\cdot(\rho\_s\xi)=0$ (Theorem 33). Then
+
+$$
+\frac{d}{ds}\Big|_{s=0}\frac12 W_2^2(\rho_s,\nu) = \int_{\mathbb R^d\times\mathbb R^d}(x-y)\cdot\xi(x)\,d\pi(x,y),
+\tag{3.14}
+$$
+
+where $\pi\in\Pi(\mu,\nu)$ is an optimal transport plan between $\mu$ and $\nu$.
+
+</div>
+
+We postpone the proof of the proposition and first carry out Step 2.
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 42, Step 2 (the Euler–Lagrange equation becomes the PDE)</summary>
+
+**Part 1: the constitutive relation (3.11).** Let $\xi\in C\_c^\infty(\mathbb R^d;\mathbb R^d)$ and let $T\_s$ solve $\frac{d}{ds}T\_s=\xi\circ T\_s$, $T\_0=\mathrm{id}$. Then, by the method of characteristics (Theorem 33), $\rho\_s:=(T\_s)\_\sharp\rho\_\ell$ satisfies $\partial\_s\rho\_s+\nabla\cdot(\rho\_s\xi)=0$ and $\rho\_s\vert\_{s=0}=\rho\_\ell$. Since $s$ ranges over both signs, the perturbation is two-sided, so by optimality of $\rho\_\ell$ in (3.6) it has to hold that
+
+$$
+\frac{d}{ds}\Big|_{s=0}\Bigl(E(\rho_s) + \frac{1}{2h}W_2^2(\rho_s,\rho_{\ell-1})\Bigr) = 0.
+\tag{3.12}
+$$
+
+For the energy term we compute, using the change-of-variables formula $\rho\_s(T\_s(x))\det\nabla T\_s(x)=\rho\_\ell(x)$ exactly as in the Eulerian entropy computation of §2.5,
+
+$$
+E(\rho_s) = \int_{\mathbb R^d} V\circ T_s\,d\rho_\ell + \frac1\beta\int_{\mathbb R^d}\rho_\ell\log\frac{\rho_\ell}{\det\nabla T_s}\,dx,
+$$
+
+and since $\frac{d}{ds}\big\vert\_{s=0}T\_s=\xi$ and $\frac{d}{ds}\big\vert\_{s=0}\det\nabla T\_s=\nabla\cdot\xi$,
+
+$$
+\frac{d}{ds}\Big|_{s=0}E(\rho_s) = \int_{\mathbb R^d}\xi\cdot\nabla V\,d\rho_\ell - \frac1\beta\int_{\mathbb R^d}\nabla\cdot\xi\,d\rho_\ell.
+\tag{3.13}
+$$
+
+Plugging (3.13) and (3.14) (with $\mu=\rho\_\ell$ and $\nu=\rho\_{\ell-1}$) into (3.12), we get
+
+$$
+\int_{\mathbb R^d}\xi\cdot\nabla V\,d\rho_\ell - \frac1\beta\int_{\mathbb R^d}\nabla\cdot\xi\,d\rho_\ell + \int_{\mathbb R^d\times\mathbb R^d}\frac{x-y}{h}\cdot\xi(x)\,d\pi_\ell(x,y) = 0,
+$$
+
+where $\pi\_\ell\in\Pi(\rho\_\ell,\rho\_{\ell-1})$ is an optimal plan. To read the last term as a spatial integral, disintegrate the plan with respect to its first marginal, $d\pi\_\ell(x,y)=\pi\_{\ell,x}(dy)\,d\rho\_\ell(x)$ with probability measures $\pi\_{\ell,x}$, and define the **approximate velocity and mass flux**
+
+$$
+v_\ell(x) := \int_{\mathbb R^d}\frac{x-y}{h}\,\pi_{\ell,x}(dy),
+\qquad
+j_\ell := \rho_\ell\,v_\ell.
+$$
+
+Then the above identity becomes
+
+$$
+\int_{\mathbb R^d}\xi\cdot\nabla V\,d\rho_\ell - \frac1\beta\int_{\mathbb R^d}\nabla\cdot\xi\,d\rho_\ell + \int_{\mathbb R^d}\xi\cdot j_\ell\,dx = 0.
+\tag{3.15}
+$$
+
+The definition of $j\_\ell$ makes sense since $\frac{x-y}{h}$ can be viewed as the velocity of a particle that traveled from $y$ to $x$ during one time step; averaging over the plan gives the mean velocity $v\_\ell$, and weighting by the density gives the mass flux. The sign is consistent since $x\sim\rho\_\ell$ corresponds to the time $\ell h$ and $y\sim\rho\_{\ell-1}$ corresponds to the time $(\ell-1)h$. We also interpolate $j\_\ell$ in time:
+
+$$
+j_h(t) := j_\ell \quad\text{for } t\in[\ell h,(\ell+1)h).
+$$
+
+From the a priori estimate and Jensen's inequality (recall that $\pi\_{\ell,x}$ is a probability measure on $\mathbb R^d$), we get, for any $T<\infty$ with $L:=\lceil T/h\rceil$,
+
+$$
+\begin{aligned}
+\int_0^T\!\!\int_{\mathbb R^d}\frac{\lvert j_h\rvert^2}{\rho_h}\,dx\,dt
+&\leq h\sum_{\ell=1}^L\int_{\mathbb R^d}\Bigl\lvert\int_{\mathbb R^d}\frac{x-y}{h}\,\pi_{\ell,x}(dy)\Bigr\rvert^2 d\rho_\ell(x)\\
+&\leq h\sum_{\ell=1}^L\int_{\mathbb R^d}\int_{\mathbb R^d}\Bigl\lvert\frac{x-y}{h}\Bigr\rvert^2\,d\pi_\ell(x,y)
+= h\sum_{\ell=1}^L\biggl(\frac{W_2(\rho_\ell,\rho_{\ell-1})}{h}\biggr)^2
+\leq C(T),
+\end{aligned}
+$$
+
+uniformly in $h$, where the last step is (3.9) together with the fact that $E$ is bounded below on sets of bounded second moment (Gaussian comparison for the entropy, $V\geq0$), and the second moments stay bounded on $[0,T]$ by (3.9) and the triangle inequality for $W\_2$. By Cauchy–Schwarz, $\int\_0^T\!\int\lvert j\_h\rvert\,dx\,dt\leq\sqrt{T\,C(T)}$, with the same estimate on any measurable subset (with $T$ replaced by its measure), so $(j\_h)\_h$ is bounded and uniformly integrable in $L^1(\mathbb R^d\times(0,T))$. Hence, after passing to a subsequence, $j\_h\rightharpoonup j$ weakly in $L^1(\mathbb R^d\times(0,T))$ for some flux $j$ (Dunford–Pettis). Testing (3.15) against $h\,\varphi(\ell h)$ for $\varphi\in C\_c((0,\infty))$, summing over $\ell$, and passing to the limit (using Step 1 for the $\rho\_h$-terms) yields
+
+$$
+\int_0^\infty\!\!\int_{\mathbb R^d}\varphi\,\xi\cdot\nabla V\,d\rho\,dt - \frac1\beta\int_0^\infty\!\!\int_{\mathbb R^d}\varphi\,\nabla\cdot\xi\,d\rho\,dt + \int_0^\infty\!\!\int_{\mathbb R^d}\varphi\,\xi\cdot j\,dx\,dt = 0,
+$$
+
+which is precisely the distributional formulation of (3.11).
+
+**Part 2: the continuity equation (3.10).** Let $\zeta\in C\_c^\infty(\mathbb R^d)$ and $\ell\in\mathbb N$. Then we write, with the same optimal plan $\pi\_\ell\in\Pi(\rho\_\ell,\rho\_{\ell-1})$ (using its marginals),
+
+$$
+\int_{\mathbb R^d}\zeta\,\frac{\rho_\ell-\rho_{\ell-1}}{h}\,dx = \int_{\mathbb R^d\times\mathbb R^d}\frac{\zeta(x)-\zeta(y)}{h}\,d\pi_\ell(x,y).
+$$
+
+By Taylor's theorem,
+
+$$
+\frac{\zeta(x)-\zeta(y)}{h} = \frac{x-y}{h}\cdot\nabla\zeta(x) + O\Bigl(\lVert\nabla^2\zeta\rVert_\infty\,\frac{\lvert x-y\rvert^2}{h}\Bigr).
+$$
+
+Hence
+
+$$
+\begin{aligned}
+\int_{\mathbb R^d}\zeta\,\frac{\rho_\ell-\rho_{\ell-1}}{h}\,dx
+&= \int_{\mathbb R^d\times\mathbb R^d}\frac{x-y}{h}\cdot\nabla\zeta(x)\,d\pi_\ell(x,y)
++ O\Bigl(\lVert\nabla^2\zeta\rVert_\infty\int_{\mathbb R^d\times\mathbb R^d}\frac{\lvert x-y\rvert^2}{h}\,d\pi_\ell(x,y)\Bigr)\\
+&= \int_{\mathbb R^d}j_\ell\cdot\nabla\zeta\,dx + O\Bigl(\lVert\nabla^2\zeta\rVert_\infty\,\frac1h W_2^2(\rho_\ell,\rho_{\ell-1})\Bigr).
+\end{aligned}
+$$
+
+Now let $\zeta\in C\_c^\infty(\mathbb R^d\times(0,\infty))$ and apply the above estimate to $\zeta(\cdot,\ell h)$. Multiplying the resulting estimate by $h$, summing over $\ell$, and summing by parts on the left-hand side yields
+
+$$
+-h\sum_{\ell=1}^\infty\int_{\mathbb R^d}\frac{\zeta(\cdot,(\ell+1)h)-\zeta(\cdot,\ell h)}{h}\,d\rho_\ell
+= h\sum_{\ell=1}^\infty\int_{\mathbb R^d}j_\ell\cdot\nabla\zeta(\cdot,\ell h)\,dx
++ O\Bigl(\lVert\nabla^2\zeta\rVert_\infty\, h\sum_{\ell}\frac1h W_2^2(\rho_\ell,\rho_{\ell-1})\Bigr).
+$$
+
+In the limit $h\to0$, the error term vanishes: the sum $\sum\_\ell\frac1h W\_2^2(\rho\_\ell,\rho\_{\ell-1})$ is bounded uniformly in $h$ by the a priori estimate (3.9), and it carries the extra prefactor $h$. The other two terms converge to their expected continuum counterparts, and we obtain
+
+$$
+-\int_0^\infty\!\!\int_{\mathbb R^d}\partial_t\zeta\,d\rho\,dt = \int_0^\infty\!\!\int_{\mathbb R^d}j\cdot\nabla\zeta\,dx\,dt,
+$$
+
+which is precisely the distributional formulation of (3.10). $\square$
+
+</details>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 43</summary>
+
+Write $\pi\_s:=(T\_s,\mathrm{id})\_\sharp\pi$. Since $\pi\in\Pi(\mu,\nu)$, we have $\pi\_s\in\Pi(\rho\_s,\nu)$ — an *admissible*, though not necessarily optimal, plan between $\rho\_s$ and $\nu$. Hence $W\_2^2(\rho\_s,\nu)\leq\int\lvert T\_s(x)-y\rvert^2\,d\pi$, while $W\_2^2(\mu,\nu)=\int\lvert x-y\rvert^2\,d\pi$ *exactly*, since $\pi$ itself is optimal. So we can estimate the difference quotient for $s>0$:
+
+$$
+\frac1s\Bigl(W_2^2(\rho_s,\nu) - W_2^2(\mu,\nu)\Bigr)
+\leq \int_{\mathbb R^d\times\mathbb R^d}\frac1s\Bigl(\lvert T_s(x)-y\rvert^2 - \lvert x-y\rvert^2\Bigr)\,d\pi(x,y).
+$$
+
+Since $T\_0=\mathrm{id}$ and $\lvert T\_s(x)-x\rvert\leq s\lVert\xi\rVert\_\infty$, the integrand is dominated by $\lVert\xi\rVert\_\infty\bigl(2\lvert x-y\rvert+\lVert\xi\rVert\_\infty\bigr)\in L^1(\pi)$ (finite second moments), so by the dominated convergence theorem
+
+$$
+\begin{aligned}
+\limsup_{s\downarrow0}\frac1s\Bigl(W_2^2(\rho_s,\nu)-W_2^2(\mu,\nu)\Bigr)
+&\leq \int_{\mathbb R^d\times\mathbb R^d}\frac{\partial}{\partial s}\Big|_{s=0}\lvert T_s(x)-y\rvert^2\,d\pi(x,y)\\
+&= \int_{\mathbb R^d\times\mathbb R^d}2(x-y)\cdot\frac{\partial}{\partial s}\Big|_{s=0}T_s(x)\,d\pi(x,y)\\
+&= \int_{\mathbb R^d\times\mathbb R^d}2(x-y)\cdot\xi(x)\,d\pi(x,y).
+\end{aligned}
+$$
+
+Finally, by replacing $\xi$ by $-\xi$ in the above argument, we get the reverse inequality
+
+$$
+\liminf_{s\downarrow0}\frac1s\Bigl(W_2^2(\rho_s,\nu)-W_2^2(\mu,\nu)\Bigr) \geq \int_{\mathbb R^d\times\mathbb R^d}2(x-y)\cdot\xi(x)\,d\pi(x,y),
+$$
+
+and the claim follows after dividing by $2$. (To spell out the last step: since $\xi$ is autonomous, $T\_{-s}$ is the flow of $-\xi$ and transports $\rho\_s$ back to $\mu$; running the upper-bound argument from $\rho\_s$ with an optimal plan $\tilde\pi\_s\in\Pi(\rho\_s,\nu)$ and using that $\tilde\pi\_s\to\pi$ as $s\to0$ — optimal plans are stable, and for our application $\mu=\rho\_\ell$ is absolutely continuous, so its optimal plan is *unique* by Brenier's theorem (Theorem 13) — yields exactly the displayed lower bound.) $\square$
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The flux bound is a discrete Benamou–Brenier action)</span></p>
+
+The quantity that made the compactness argument for the flux work,
+
+$$
+\int_0^T\!\!\int_{\mathbb R^d}\frac{\lvert j_h\rvert^2}{\rho_h}\,dx\,dt = \int_0^T\!\!\int_{\mathbb R^d}\lvert v_h\rvert^2\,d\rho_h\,dt,
+$$
+
+is exactly the **kinetic action** of the Benamou–Brenier formula (Theorem 40), evaluated along the discrete curve. The a priori estimate (3.9) is thus the Wasserstein incarnation of the discrete energy-dissipation estimate (1.34): *the scheme produces curves of finite action*, and finite action is precisely the compactness currency of the dynamic formulation of §2.7. The heuristic picture of §3.1 — gradient flows dissipate kinetic energy — is quietly doing rigorous work here.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/wgf_jko_fokker_planck.png' | relative_url }}" alt="Two-panel figure on the JKO scheme for the Ornstein-Uhlenbeck Fokker-Planck equation. Left: Gaussian density snapshots of the JKO iterates at increasing iteration numbers, colored from dark purple at time zero to yellow at time 3.2, sliding from an initial narrow Gaussian centered at 2.2 toward the standard Gibbs Gaussian shaded in grey; dotted black curves show the exact solution at the same times, slightly ahead of the iterates. Right: log-log plot of the Wasserstein-2 error at time one against the step size h, a straight blue line of slope one next to a dashed grey slope-one guide." loading="lazy">
+  <figcaption>Theorem 42 on the Ornstein–Uhlenbeck example ($V=\frac{1}{2}x^2$, $\beta=1$), where the flow stays Gaussian and the JKO step (3.6) is explicit. <strong>Left.</strong> JKO iterates $\rho_\ell^{(h)}$ ($h=0.2$, solid, colored by time) against the exact Fokker–Planck solution at the same times (dotted): the scheme tracks the flow and relaxes to the Gibbs measure $\bar\rho$ (shaded). The iterates lag slightly behind the exact solution — the implicit step moves less than the flow, an $O(h)$ effect. <strong>Right.</strong> The $W_2$-error at $t=1$ decays linearly in $h$: the first-order rate familiar from the quantitative theory of minimizing movements (Theorem 6, §1.7).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What the variational scheme buys)</span></p>
+
+Three structural features come for free and would be non-trivial to engineer into a generic discretization:
+
+* **Constraints are built into the state space.** Every iterate is a probability density — non-negativity and unit mass are never imposed, they are where the scheme lives.
+* **The energy decreases monotonically,** by (3.9) — the scheme is unconditionally stable, exactly as its finite-dimensional ancestor (§1.4).
+* **Nothing used smoothness of the PDE.** The scheme consumes only $E$ and $W\_2$; it runs verbatim for the porous-medium and McKean–Vlasov energies of Example 7, and this robustness is what powers modern applications (sampling algorithms, mean-field limits of neural networks) where the "PDE" may be too singular to discretize directly.
+
+</div>
+
+### 3.3 Long-term asymptotics
+
+In analogy to Chapter 1 (§1.6, Theorem 3), it is natural to ask whether the Wasserstein gradient flow of $\lambda$-displacement convex energies converges to the unique minimizer in the long-term limit $t\to\infty$.
+
+In this section, we will answer this question affirmatively in the case of the Fokker–Planck equation. To reduce clutter we set $\beta=1$ (the general case follows by rescaling $V$ and $\lambda$). Let
+
+$$
+E(\rho) = \int_{\mathbb R^d}V\,d\rho + \int_{\mathbb R^d}\rho\log\rho\,dx.
+$$
+
+We have already seen that the Wasserstein gradient flow of $E$ is the Fokker–Planck equation
+
+$$
+\partial_t\rho = \nabla\cdot(\rho\nabla V) + \Delta\rho,
+$$
+
+and that the steady state is the Gibbs measure
+
+$$
+\bar\rho = \frac1Z e^{-V},\qquad Z = \int_{\mathbb R^d}e^{-V(x)}\,dx.
+$$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The energy gap is a relative entropy)</span></p>
+
+Substituting $V=-\log\bar\rho-\log Z$ into $E$ gives, for any $\rho\in\mathcal P^2\_{ac}(\mathbb R^d)$,
+
+$$
+E(\rho) = \int\rho\log\frac{\rho}{\bar\rho}\,dx - \log Z,
+\qquad\text{in particular}\qquad
+E(\rho)-E(\bar\rho) = \int\rho\log\frac{\rho}{\bar\rho}\,dx = \mathrm{KL}(\rho\,\Vert\,\bar\rho).
+$$
+
+The energy gap is the **Kullback–Leibler divergence** (relative entropy) with respect to the Gibbs measure. By Jensen's inequality it is non-negative and vanishes only at $\rho=\bar\rho$ — so $\bar\rho$ is the unique minimizer of $E$, and "convergence of the energy" below means decay of the relative entropy, the standard notion of convergence to equilibrium in statistics and information theory.
+
+</div>
+
+Since $W\_2$-geodesics are the displacement interpolations of §2.5, the correct strengthening of displacement convexity (Definition 30) mirrors uniform convexity (1.16):
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\lambda$-displacement convexity)</span></p>
+
+A functional $E$ on $\mathcal P^2(\mathbb R^d)$ is called **$\lambda$-displacement convex** ($\lambda\in\mathbb R$) if along every displacement interpolation $\rho\_t=[\mu,\nu]\_t$ (Definition 30),
+
+$$
+E(\rho_t) \leq (1-t)E(\mu) + tE(\nu) - \frac{\lambda}{2}t(1-t)\,W_2^2(\mu,\nu),
+\qquad t\in[0,1].
+$$
+
+For $\lambda=0$ this recovers displacement convexity; for $\lambda>0$ the quadratic margin is the Wasserstein analogue of uniform convexity (1.16). Likewise, we call $V\colon\mathbb R^d\to\mathbb R$ **$\lambda$-convex** if $V-\frac{\lambda}{2}\lvert\cdot\rvert^2$ is convex — i.e., $V$ is uniformly convex with parameter $\lambda$ in the sense of (1.16).
+
+</div>
+
+We have the following convexity statement.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 44</span><span class="math-callout__name">(Uniform convexity transfers from $V$ to $E$)</span></p>
+
+If $V\colon\mathbb R^d\to[0,\infty)$ is $\lambda$-convex, then the energy $E$ is $\lambda$-displacement convex.
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Lemma 44</summary>
+
+Split $E=\mathcal V+\mathcal U$ into potential and internal (entropy) part and treat the two terms separately, as in the proof of Theorem 32.
+
+**Potential part.** Along $\rho\_t=(\sigma\_t)\_\sharp\pi$ with $\sigma\_t(x,y)=(1-t)x+ty$ and $\pi\in\Pi(\mu,\nu)$ optimal, $\lambda$-convexity of $V$ gives pointwise
+
+$$
+V\bigl((1-t)x+ty\bigr) \leq (1-t)V(x) + tV(y) - \frac{\lambda}{2}t(1-t)\lvert x-y\rvert^2,
+$$
+
+and integrating against $\pi$,
+
+$$
+\int V\,d\rho_t \leq (1-t)\int V\,d\mu + t\int V\,d\nu - \frac{\lambda}{2}t(1-t)\int\lvert x-y\rvert^2\,d\pi
+= (1-t)\mathcal V(\mu) + t\mathcal V(\nu) - \frac{\lambda}{2}t(1-t)W_2^2(\mu,\nu),
+$$
+
+where the last equality uses the optimality of $\pi$. (This is the proof of Theorem 32, part 2, upgraded by the quadratic margin.)
+
+**Entropy part.** The Boltzmann entropy is displacement convex ($\lambda=0$): $U(s)=s\log s$ satisfies McCann's criterion (2.19), as verified in §2.5.
+
+Adding the two inequalities yields the claim. $\square$
+
+</details>
+
+This suggests that we can apply the methods from Chapter 1 in this case, too. Indeed, we have the following exponential convergence to equilibrium.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 45</span><span class="math-callout__name">(Exponential convergence to the Gibbs measure)</span></p>
+
+Let $V\colon\mathbb R^d\to[0,\infty)$ be $\lambda$-convex for some $\lambda>0$. Let $\rho\_0\in\mathcal P^2\_{ac}(\mathbb R^d)$ with $E(\rho\_0)<\infty$, and let $\rho\in C^\infty(\mathbb R^d\times(0,\infty))$ be the solution to the Fokker–Planck equation (Theorem 42). Then $\rho\_t$ converges exponentially fast to the steady state:
+
+$$
+E(\rho_t) - E(\bar\rho) \leq e^{-2\lambda t}\bigl(E(\rho_0)-E(\bar\rho)\bigr)
+$$
+
+and
+
+$$
+W_2^2(\rho_t,\bar\rho) \leq \frac{2}{\lambda}\,e^{-2\lambda t}\bigl(E(\rho_0)-E(\bar\rho)\bigr).
+$$
+
+</div>
+
+For the proof we need algebraic and differential relations between an energy gap, a dissipation, and a distance, exactly as in Chapter 1. The crucial algebraic relation is the following **"logarithmic Sobolev inequality"**:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 46</span><span class="math-callout__name">(Logarithmic Sobolev inequality)</span></p>
+
+Let $V\colon\mathbb R^d\to[0,\infty)$ be $\lambda$-convex for some $\lambda>0$. Then for any $\rho\in\mathcal P^2\_{ac}(\mathbb R^d)$ it holds that
+
+$$
+E(\rho) - E(\bar\rho) \leq \frac{1}{2\lambda}\int_{\mathbb R^d}\frac{\lvert\nabla\rho+\rho\nabla V\rvert^2}{\rho}\,dx.
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 45 (taking Lemma 44 and Proposition 46 for granted)</summary>
+
+Denote
+
+$$
+\begin{aligned}
+\mathcal E(t) &:= E(\rho_t) - E(\bar\rho) \;\geq\; 0,\\
+\mathcal D(t) &:= \int_{\mathbb R^d}\frac{\lvert\nabla\rho_t+\rho_t\nabla V\rvert^2}{\rho_t}\,dx \;\geq\; 0,\\
+\mathcal H(t) &:= W_2^2(\rho_t,\bar\rho) \;\geq\; 0.
+\end{aligned}
+$$
+
+Then we want to show
+
+$$
+\mathcal E(t) \leq e^{-2\lambda t}\,\mathcal E(0)
+\qquad\text{and}\qquad
+\mathcal H(t) \leq \frac{2}{\lambda}\,e^{-2\lambda t}\,\mathcal E(0).
+$$
+
+The proof runs on the same three relations as Theorem 3 (whose roles they replicate one-to-one):
+
+1. **Differential relation (energy–dissipation).** Along the flow, $\dot{\mathcal E}(t)=-\mathcal D(t)$. This is the dissipation computation of §3.1 for this specific energy: $\nabla\frac{\delta E}{\delta\rho}=\nabla V+\nabla\log\rho$, so $\int\lvert\nabla\frac{\delta E}{\delta\rho}\rvert^2\,d\rho\_t=\mathcal D(t)$. (Exercise 10 (i).)
+2. **Algebraic relation I (log-Sobolev).** $\mathcal E(t)\leq\frac{1}{2\lambda}\mathcal D(t)$ — this is Proposition 46 applied to $\rho\_t$.
+3. **Algebraic relation II (Talagrand-type inequality).** $\frac{\lambda}{2}\mathcal H(t)\leq\mathcal E(t)$, which follows from the $\lambda$-displacement convexity of $E$ (Lemma 44) together with the minimality of $\bar\rho$. (Exercise 10 (ii).)
+
+Given these, the argument is verbatim that of Theorem 3: combining 1. and 2.,
+
+$$
+\dot{\mathcal E}(t) = -\mathcal D(t) \leq -2\lambda\,\mathcal E(t),
+$$
+
+so Gronwall's inequality yields $\mathcal E(t)\leq e^{-2\lambda t}\mathcal E(0)$; and then 3. translates the energy decay into the distance decay, $\mathcal H(t)\leq\frac{2}{\lambda}\mathcal E(t)\leq\frac{2}{\lambda}e^{-2\lambda t}\mathcal E(0)$. $\square$
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 10</span><span class="math-callout__name">(Completing the proof of Theorem 45)</span></p>
+
+Carry out the two steps that the proof above takes for granted (besides Lemma 44 and Proposition 46):
+
+1. **Energy–dissipation identity.** Show that along smooth, positive solutions of the Fokker–Planck equation, $\frac{d}{dt}E(\rho\_t)=-\mathcal D(t)$. *Hint: differentiate under the integral, integrate by parts, and use $\nabla V+\nabla\log\rho=\frac{\nabla\rho+\rho\nabla V}{\rho}$.*
+2. **Talagrand-type inequality.** Show that $\lambda$-displacement convexity of $E$ (Lemma 44) implies $\frac{\lambda}{2}W\_2^2(\rho,\bar\rho)\leq E(\rho)-E(\bar\rho)$ for all $\rho\in\mathcal P^2\_{ac}(\mathbb R^d)$. *Hint: write the $\lambda$-convexity inequality along the displacement interpolation $\rho\_t=[\bar\rho,\rho]\_t$, use $E(\rho\_t)\geq E(\bar\rho)$, divide by $t$, and let $t\downarrow0$.*
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why "logarithmic Sobolev" — and Łojasiewicz once more)</span></p>
+
+Two readings of Proposition 46 place it in familiar landscapes.
+
+**Information theory.** By the relative-entropy remark above, $\mathcal E=\mathrm{KL}(\rho\,\Vert\,\bar\rho)$; and $\mathcal D=\int\rho\,\lvert\nabla\log\frac{\rho}{\bar\rho}\rvert^2\,dx$ is the **relative Fisher information**. Proposition 46 is thus the classical statement "entropy is controlled by Fisher information under the Bakry–Émery condition $\nabla^2V\succeq\lambda\,\mathrm{Id}$"; for the quadratic potential $V=\frac{\lambda}{2}\lvert x\rvert^2$ (Gaussian $\bar\rho$) it is Gross's original logarithmic Sobolev inequality — hence the name.
+
+**Łojasiewicz geometry.** By (3.4) and the metric tensor of §3.1, $\mathcal D(t)$ is exactly the squared norm of the Wasserstein gradient, $\mathcal D=\lVert\nabla\_{W\_2}E(\rho)\rVert\_{g\_\rho}^2$. Proposition 46 therefore reads
+
+$$
+E(\rho)-E(\bar\rho) \leq \frac{1}{2\lambda}\,\bigl\|\nabla_{W_2}E(\rho)\bigr\|^2_{g_\rho},
+$$
+
+which is precisely the **Łojasiewicz inequality with exponent $\theta=\frac12$** (§1.6, and (KL) in Appendix A) on Wasserstein space — the non-degenerate case, which is exactly the regime that yields exponential convergence. The desingularization framework of Appendix A thus applies word-for-word in infinite dimensions; log-Sobolev inequalities *are* Łojasiewicz inequalities for the entropy.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/wgf_exponential_convergence.png' | relative_url }}" alt="Two-panel semilog figure on exponential convergence of the Fokker-Planck flow for the quadratic potential. Left: four decaying lines over time t; the energy gap in blue and the squared Wasserstein distance in green decay as straight lines on the log scale, each hugging its dashed theoretical bound in grey and orange. Right: for a pure variance relaxation, the halved dissipation in purple stays above the energy gap in blue with a shaded margin of roughly a factor two, illustrating the log-Sobolev inequality." loading="lazy">
+  <figcaption>Theorem 45 and Proposition 46 on the Ornstein–Uhlenbeck flow ($V=\frac{1}{2}x^2$, so $\lambda=1$, $\bar\rho=\mathcal N(0,1)$). <strong>Left.</strong> Starting from $\rho_0=\mathcal N(2.2,\,0.45^2)$: the energy gap $\mathcal E(t)$ and the squared distance $\mathcal H(t)=W_2^2(\rho_t,\bar\rho)$ decay at the predicted rate $e^{-2\lambda t}$; the dashed guides are the two bounds of Theorem 45, nearly saturated here because for a quadratic potential the mean relaxes at exactly the rate $\lambda$. <strong>Right.</strong> The log-Sobolev inequality $\mathcal E\le\frac{1}{2\lambda}\mathcal D$ (Proposition 46) along a pure variance relaxation ($\rho_0=\mathcal N(0,\,0.35^2)$): the dissipation curve stays above the gap by a visible margin (shaded, asymptotically a factor $2$) — and the decay is even faster than the worst-case $e^{-2\lambda t}$, namely $e^{-4\lambda t}$, since the mean is already equilibrated.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where this leaves us)</span></p>
+
+The three chapters now close into a single arc. Chapter 1 established the gradient-flow trinity — existence by minimizing movements, uniqueness and stability from convexity, exponential asymptotics from uniform convexity plus Gronwall. Chapter 2 built a geometry on $\mathcal P(\mathbb R^d)$ in which entropies are the convex energies and $W\_2$ measures the cost of motion. This chapter verified that the finite-dimensional playbook survives the transplant essentially unchanged: the JKO scheme is minimizing movements (Theorem 42 ↔ Theorem 8), $\lambda$-displacement convexity is uniform convexity (Lemma 44 ↔ (1.16)), and the log-Sobolev inequality is the Łojasiewicz/uniform-convexity estimate that drives exponential relaxation (Theorem 45 ↔ Theorem 3). What is genuinely new is the *interpretation*: solutions of diffusion equations are steepest descents of entropy, convergence to the Gibbs measure is decay of relative entropy, and functional inequalities of information theory become statements of metric geometry.
 
 </div>
 
