@@ -11,6 +11,7 @@ tags:
   - dynamic-programming
   - temporal-difference-learning
   - monte-carlo
+  - policy-gradients
 ---
 
 <style>
@@ -7353,5 +7354,826 @@ Almost every algorithm in modern RL is a particular point in one 3-D design spac
 | Features (linear) | aggregation / tile / Fourier / RBF | locality vs. smoothness |
 
 Choosing a prediction method *is* choosing a coordinate on these three axes. The control methods of the next lectures inherit the very same axes, plus the policy-improvement loop on top.
+
+</div>
+
+## Lecture 10: Policy Gradient Methods
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(From learned values to learned policies)</span></p>
+
+Every control method so far — from $\varepsilon$-greedy bandits through Sarsa, Q-learning, and their function-approximation versions — follows the same recipe: *learn action values, then act (nearly) greedily on them*. The policy is implicit, a by-product of the value estimates. This lecture flips the arrangement: we parameterize the **policy itself**, $\pi(a \mid s, \boldsymbol{\theta})$, and improve it by **gradient ascent** on a scalar performance measure $J(\boldsymbol{\theta}) = v\_{\pi\_{\boldsymbol{\theta}}}(s\_0)$. We already met the stateless seed of this idea in the **gradient bandits** of Lecture 2; here it grows into a full MDP method. The build-up:
+
+1. **Why parameterize the policy?** Smooth approach to determinism, genuinely stochastic optima, and policies that are simpler than their value functions.
+2. **Soft-max in action preferences.** The workhorse parameterization $\pi(a \mid s, \boldsymbol{\theta}) \propto e^{h(s,a,\boldsymbol{\theta})}$.
+3. **The short corridor.** A tiny counterexample where *every* $\varepsilon$-greedy action-value method loses to a modest stochastic policy.
+4. **The policy gradient theorem.** The central result: a formula for $\nabla J$ that does **not** require differentiating the state distribution.
+5. **REINFORCE.** Turning the theorem into a Monte Carlo algorithm, one sampled state–action pair at a time.
+6. **Baselines.** Same expected gradient, drastically lower variance.
+
+The guiding question of the lecture:
+
+> *How can we follow the gradient of expected return with respect to the policy parameters, even though the state distribution itself depends on the policy?*
+
+The arc continues in the next lecture: bootstrapping the return estimate turns REINFORCE-with-baseline into **actor–critic** methods, and a Gaussian policy handles **continuous** action spaces.
+
+</div>
+
+### Motivation: Why Parameterize the Policy?
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parameterized policy)</span></p>
+
+So far we learned $q(s, a)$ and then acted greedily or $\varepsilon$-greedily on it,
+
+$$
+\pi(s) = \arg\max_a q(s, a) \qquad \text{or} \qquad \varepsilon\text{-greedy on } q.
+$$
+
+Now we parameterize the policy **directly**:
+
+$$
+\pi(a \mid s, \boldsymbol{\theta}) \;\doteq\; \Pr\lbrace A_t = a \mid S_t = s,\ \boldsymbol{\theta}_t = \boldsymbol{\theta}\rbrace,
+\qquad \boldsymbol{\theta} \in \mathbb{R}^{d'},
+$$
+
+where $\pi(\cdot \mid s, \boldsymbol{\theta})$ is a probability distribution over actions for every state, differentiable in $\boldsymbol{\theta}$. Note the division of labour between the two parameter vectors we now carry:
+
+* $\boldsymbol{\theta} \in \mathbb{R}^{d'}$ — the **policy** parameters;
+* $\mathbf{w} \in \mathbb{R}^{d}$ — the weights of a value function $\hat v(s, \mathbf{w})$, which *may* still be used to **help learn** $\boldsymbol{\theta}$ but is **not required for action selection**.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The new objective: gradient ascent on performance)</span></p>
+
+Choose a scalar performance measure $J(\boldsymbol{\theta})$ and follow its gradient:
+
+$$
+\boldsymbol{\theta}_{t+1} \;=\; \boldsymbol{\theta}_t + \alpha\, \widehat{\nabla J(\boldsymbol{\theta}_t)},
+$$
+
+where $\widehat{\nabla J(\boldsymbol{\theta}\_t)}$ is a *stochastic estimate* whose expectation approximates the true gradient of $J$ at $\boldsymbol{\theta}\_t$. Every method of this form is a **policy-gradient method**, whether or not it also learns a value function. Methods that learn *both* a parameterized policy and a value function are called **actor–critic** methods — the policy is the *actor*, the value function the *critic*.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 780 360" role="img" aria-label="Two ways to get a policy: the value-based route learns q and derives an implicit policy by maximization; the policy-based route learns the policy directly and acts by sampling from it, with an optional critic that helps learn the parameters but is not needed to act.">
+    <text x="190" y="38" text-anchor="middle" font-size="16" font-weight="700">Value-based</text>
+    <text x="590" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#2c3e94">Policy-based</text>
+
+    <rect x="80" y="60" width="220" height="52" rx="8" class="box"></rect>
+    <text x="190" y="91" text-anchor="middle" font-size="14" font-weight="700">learn  q(s, a)</text>
+
+    <rect x="80" y="152" width="220" height="52" rx="8" class="box"></rect>
+    <text x="190" y="174" text-anchor="middle" font-size="13">derive policy:</text>
+    <text x="190" y="193" text-anchor="middle" font-size="13">arg maxₐ q(s, a)</text>
+
+    <rect x="80" y="244" width="220" height="52" rx="8" class="box"></rect>
+    <text x="190" y="266" text-anchor="middle" font-size="13">act</text>
+    <text x="190" y="285" text-anchor="middle" font-size="12" class="muted">(deterministic / ε-greedy)</text>
+
+    <line x1="190" y1="112" x2="190" y2="148" class="line" marker-end="url(#pg-flow-arrow)"></line>
+    <line x1="190" y1="204" x2="190" y2="240" class="line" marker-end="url(#pg-flow-arrow)"></line>
+
+    <line x1="390" y1="60" x2="390" y2="150" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 6"></line>
+    <line x1="390" y1="215" x2="390" y2="330" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 6"></line>
+    <text x="390" y="176" text-anchor="middle" font-size="12" font-style="italic" class="muted">policy is</text>
+    <text x="390" y="194" text-anchor="middle" font-size="12" font-style="italic" class="muted">implicit</text>
+
+    <rect x="480" y="60" width="220" height="52" rx="8" class="accent"></rect>
+    <text x="590" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#2c3e94">learn  π(a | s, θ)</text>
+    <text x="590" y="101" text-anchor="middle" font-size="14" font-weight="700" fill="#2c3e94">directly</text>
+
+    <rect x="480" y="152" width="220" height="52" rx="8" class="box"></rect>
+    <text x="590" y="174" text-anchor="middle" font-size="13">act</text>
+    <text x="590" y="193" text-anchor="middle" font-size="12" class="muted">(sample from π)</text>
+
+    <rect x="480" y="256" width="220" height="72" rx="8" class="green"></rect>
+    <text x="590" y="278" text-anchor="middle" font-size="12" fill="#047857">optional critic  v̂(s, w)</text>
+    <text x="590" y="296" text-anchor="middle" font-size="12" fill="#047857">helps learn θ;</text>
+    <text x="590" y="314" text-anchor="middle" font-size="12" fill="#047857">not needed to act</text>
+
+    <line x1="590" y1="112" x2="590" y2="148" class="line" marker-end="url(#pg-flow-arrow)"></line>
+    <line x1="590" y1="252" x2="590" y2="212" stroke="#047857" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#pg-critic-arrow)"></line>
+
+    <defs>
+      <marker id="pg-flow-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+      <marker id="pg-critic-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#047857"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Two ways to get a policy. On the value-based route the policy is implicit — it is read off the value estimates by (near-)maximization. On the policy-based route the policy is the learned object itself; a value function is at most an optional helper for the update, never needed to select actions.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Three reasons to parameterize the policy)</span></p>
+
+1. **Approach determinism smoothly.** $\varepsilon$-greedy *always* selects a random action with probability $\varepsilon$; a parameterized policy can drive the optimal-action probabilities to $1$ continuously, without a hand-tuned exploration schedule.
+2. **Represent stochastic optima.** Under function approximation or partial observability the best policy may be *genuinely* stochastic — think of bluffing in poker: any deterministic bluffing rule is exploitable.
+3. **Sometimes the policy is simpler than the value function.** Action preferences can be far easier to represent than a full $q\_\ast$; the policy only has to rank actions, not predict returns accurately.
+
+**Bonus:** policy parameterization handles *continuous* action spaces naturally — a theme we return to in the next lecture.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(The challenge)</span></p>
+
+Performance depends on **both** the action probabilities **and** the resulting state distribution. The latter is a function of the unknown environment: changing $\boldsymbol{\theta}$ changes where the policy goes, and we cannot differentiate through dynamics we do not know. Computing $\nabla J$ therefore *looks like* it may require a model of the environment. Resolving this tension is exactly the job of the policy gradient theorem below.
+
+</div>
+
+### Policy Parameterization: Soft-max in Action Preferences
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Action preferences and the soft-max policy)</span></p>
+
+For a discrete action space, define numerical **action preferences** $h(s, a, \boldsymbol{\theta}) \in \mathbb{R}$ and set
+
+$$
+\pi(a \mid s, \boldsymbol{\theta}) \;\doteq\; \frac{e^{h(s,a,\boldsymbol{\theta})}}{\sum_b e^{h(s,b,\boldsymbol{\theta})}}.
+$$
+
+The denominator is a normalizer: for any fixed $s$, $\pi(\cdot \mid s, \boldsymbol{\theta})$ is a probability distribution over actions. Two standard choices for the preferences:
+
+* **Linear in features:**
+
+$$
+h(s, a, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a), \qquad \mathbf{x}(s, a) \in \mathbb{R}^{d'},
+$$
+
+  with state–action feature vectors $\mathbf{x}(s,a)$ built by any of the constructions from Lecture 9.
+* **Nonlinear:** $h(s, a, \boldsymbol{\theta})$ represented by a neural network with weights $\boldsymbol{\theta}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why preferences, not action values?)</span></p>
+
+Preferences are **relative**: adding the same constant to every preference in a state changes nothing — only differences matter. This is precisely the freedom action values lack: a soft-max over *values* would tie the action probabilities to the *scale* of the returns, so approaching determinism would require a hand-tuned temperature schedule. With preferences, the optimal action's preference can simply **grow relative to the others**, so $\pi(a^\ast \mid s) \to 1$ on its own. This is the same shift-invariance we proved for the gradient-bandit soft-max in Lecture 2 — $h(s, a, \boldsymbol{\theta})$ generalizes the bandit preferences $H\_t(a)$ from a table over actions to a parameterized function of state *and* action.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Soft-max vs. $\varepsilon$-greedy)</span></p>
+
+Side by side:
+
+* **$\varepsilon$-greedy on $q$-values:** always at least $\varepsilon$ random; tiny changes in $q$ can flip the greedy action *discontinuously*; cannot represent arbitrary non-trivial stochastic policies.
+* **Soft-max in preferences:** probabilities change *smoothly* with $\boldsymbol{\theta}$; can approach a deterministic optimum; can also remain stochastic if that is what is optimal.
+
+The smoothness is not cosmetic: to follow $\nabla\_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$ we need a **continuous, differentiable** dependence of $\pi$ on $\boldsymbol{\theta}$. A discontinuous policy class has no usable gradient.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pg_softmax_vs_epsgreedy.png' | relative_url }}" alt="Soft-max policy probability rising smoothly with the preference gap, versus the epsilon-greedy step function that can only occupy two probability levels and jumps at the decision boundary" loading="lazy">
+  <figcaption>Why "smooth" matters. $\varepsilon$-greedy can only reach two probability levels and <em>jumps</em> at the decision boundary; the soft-max moves $\pi(\text{right} \mid s)$ continuously with $\theta$ — exactly what $\nabla_\theta J$ needs — and it can approach a deterministic optimum.</figcaption>
+</figure>
+
+### A Motivating Example: the Short Corridor
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 250" role="img" aria-label="Short corridor with switched actions: three nonterminal states in a row followed by a goal. Reward is minus one per step. In the middle state the actions are reversed, and all three states share the same features so they look identical to the agent.">
+    <text x="140" y="48" text-anchor="middle" font-size="12" class="muted">reward −1 per step</text>
+
+    <circle cx="140" cy="120" r="34" class="accent"></circle>
+    <text x="140" y="126" text-anchor="middle" font-size="15" font-weight="700">S₀</text>
+    <text x="140" y="180" text-anchor="middle" font-size="12" class="muted">start</text>
+
+    <circle cx="310" cy="120" r="34" class="amber"></circle>
+    <text x="310" y="126" text-anchor="middle" font-size="15" font-weight="700">S₁</text>
+
+    <circle cx="480" cy="120" r="34" class="box"></circle>
+    <text x="480" y="126" text-anchor="middle" font-size="15" font-weight="700">S₂</text>
+
+    <rect x="580" y="86" width="110" height="68" rx="10" class="green"></rect>
+    <text x="635" y="126" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">goal</text>
+
+    <line x1="178" y1="108" x2="272" y2="108" class="line" marker-end="url(#pg-corridor-arrow)"></line>
+    <text x="225" y="98" text-anchor="middle" font-size="11" class="muted">right</text>
+    <line x1="348" y1="108" x2="442" y2="108" class="line" marker-end="url(#pg-corridor-arrow)"></line>
+    <line x1="518" y1="108" x2="576" y2="108" class="line" marker-end="url(#pg-corridor-arrow)"></line>
+    <text x="547" y="98" text-anchor="middle" font-size="11" class="muted">right</text>
+
+    <path d="M285,158 C260,190 215,190 190,158" stroke="#b45309" stroke-width="2.5" fill="none" marker-end="url(#pg-corridor-arrow-amber)"></path>
+    <text x="310" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">right → moves left!</text>
+    <text x="310" y="214" text-anchor="middle" font-size="12" fill="#b45309">actions reversed here</text>
+
+    <text x="380" y="240" text-anchor="middle" font-size="12" class="muted">all three nonterminal states share the same features — to the agent they look identical</text>
+
+    <defs>
+      <marker id="pg-corridor-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+      <marker id="pg-corridor-arrow-amber" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#b45309"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The short corridor with switched actions: three nonterminal states, actions <code>left</code>/<code>right</code>, reward $-1$ per step, undiscounted episodic ($\gamma = 1$). In the middle state the actions are reversed.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Short corridor with switched actions)</span></p>
+
+The corridor has three nonterminal states and a goal; the reward is $-1$ per step, so maximizing return means reaching the goal fast. Two twists make it interesting:
+
+* In the **middle** state the actions are **reversed**: `right` moves left and `left` moves right.
+* All nonterminal states **share the same action features**,
+
+$$
+\mathbf{x}(s, \text{right}) = [1, 0]^\top, \qquad \mathbf{x}(s, \text{left}) = [0, 1]^\top,
+$$
+
+  so under this representation the states are *indistinguishable* and every policy must behave identically in all of them.
+
+**Why action-value methods lose here.** Since the states look identical, a deterministic policy must treat them the same way — and always-right loops forever in the middle state, while always-left never leaves the start. An $\varepsilon$-greedy action-value method can only realize
+
+$$
+\pi(\text{right}) \in \lbrace \varepsilon/2,\ 1 - \varepsilon/2 \rbrace ,
+$$
+
+and for $\varepsilon = 0.1$ the better of the two choices earns expected return about $-44$. A **stochastic** policy, by contrast, can learn *any* $p = \pi(\text{right}) \in (0,1)$; the closed-form performance is
+
+$$
+J(p) \;=\; -\frac{2(2 - p)}{p(1 - p)},
+$$
+
+maximized at $p^\ast = 2 - \sqrt{2} \approx 0.59$ with $J(p^\ast) \approx -11.6$ — roughly *four times better* than anything $\varepsilon$-greedy can reach.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pg_short_corridor_objective.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stochasticity is not just exploration noise)</span></p>
+
+Until now, randomness in the policy was a *means* — exploration bolted onto an essentially deterministic target policy. The short corridor shows it can be the *end*: under function approximation (aliased states) the **best representable policy is itself stochastic**, and the optimal action probabilities are specific numbers, not "greedy plus noise". Only a method that can *search the space of stochastic policies* — moving action probabilities smoothly — can find $p^\ast$. That is precisely what policy-gradient methods do.
+
+</div>
+
+### The Performance Objective
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Start-state performance objective, episodic)</span></p>
+
+Assume every episode starts in a fixed state $s\_0$. Define the performance of $\boldsymbol{\theta}$ as the value of the start state under the policy it induces:
+
+$$
+J(\boldsymbol{\theta}) \;\doteq\; v_{\pi_{\boldsymbol{\theta}}}(s_0)
+\;=\; \mathbb{E}_{\pi_{\boldsymbol{\theta}}}\!\left[\, \sum_{t=0}^{T-1} \gamma^{t} R_{t+1} \,\middle|\, S_0 = s_0 \right].
+$$
+
+For undiscounted episodic examples (like the short corridor) set $\gamma = 1$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(The technical obstacle)</span></p>
+
+$J(\boldsymbol{\theta})$ depends on the *state distribution* induced by $\pi\_{\boldsymbol{\theta}}$, which in turn depends on the unknown dynamics $p(s', r \mid s, a)$. Differentiating $J$ naively would require knowing how a change in $\boldsymbol{\theta}$ shifts the whole distribution of visited states — a quantity we can neither compute nor sample without a model. What we need is a gradient formula that **does not require differentiating the state distribution**.
+
+</div>
+
+### The Policy Gradient Theorem
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Policy gradient theorem — episodic case)</span></p>
+
+For any differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$,
+
+$$
+\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta}),
+$$
+
+where $\mu$ is the **on-policy state distribution** under $\pi\_{\boldsymbol{\theta}}$ — the same visitation weighting that appeared in the $\overline{\text{VE}}$ objective of Lecture 9. Using $\nabla \pi(a \mid s, \boldsymbol{\theta}) = \pi(a \mid s, \boldsymbol{\theta})\, \nabla \log \pi(a \mid s, \boldsymbol{\theta})$, the same statement reads as an expectation:
+
+$$
+\nabla J(\boldsymbol{\theta}) \;\propto\; \mathbb{E}_{S \sim \mu,\; A \sim \pi(\cdot \mid S, \boldsymbol{\theta})}\bigl[\, q_\pi(S, A)\, \nabla \log \pi(A \mid S, \boldsymbol{\theta}) \,\bigr].
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the theorem as a procedure)</span></p>
+
+The expectation form is a recipe with three steps:
+
+1. **Sample a state** $S \sim \mu$ — i.e. from *where the policy actually goes* (states the policy visits often carry more weight);
+2. **Sample an action** $A \sim \pi(\cdot \mid S, \boldsymbol{\theta})$ — *what the policy actually does there*;
+3. **Adjust the log-probability**: push $\log \pi(A \mid S, \boldsymbol{\theta})$ *up* in proportion to $q\_\pi(S, A)$ — strongly up for high-value actions, down for negative-value ones.
+
+**Why this matters.** The right-hand side involves only $\nabla \pi$ — how changing $\boldsymbol{\theta}$ changes the **action probabilities**. The effect of $\boldsymbol{\theta}$ on the future **state distribution** $\mu(s)$ appears nowhere: the theorem has already accounted for it. This is what makes model-free policy-gradient learning possible.
+
+</div>
+
+#### Proof of the Policy Gradient Theorem
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Proof setup)</span></p>
+
+We suppress the dependence of $\pi$ on $\boldsymbol{\theta}$, and all gradients are with respect to $\boldsymbol{\theta}$. Recall from Lecture 3:
+
+$$
+v_\pi(s) = \sum_a \pi(a \mid s)\, q_\pi(s, a),
+\qquad
+q_\pi(s, a) = \sum_{s', r} p(s', r \mid s, a)\bigl[ r + \gamma\, v_\pi(s') \bigr].
+$$
+
+We want $\nabla J(\boldsymbol{\theta}) = \nabla v\_\pi(s\_0)$, so we expand $\nabla v\_\pi(s)$ for an arbitrary state $s$. The plan:
+
+1. apply the **product rule** to $v\_\pi(s)$;
+2. use the **Bellman equation** for $q\_\pi$ to expand $\nabla q\_\pi$;
+3. **unroll** the resulting recursion — $\nabla v\_\pi$ at one state is expressed through $\nabla v\_\pi$ at successor states.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 1/5 — apply the product rule)</span></p>
+
+Differentiate $v\_\pi(s) = \sum\_a \pi(a \mid s)\, q\_\pi(s,a)$ using the product rule:
+
+$$
+\nabla v_\pi(s)
+= \nabla\!\left[ \sum_a \pi(a \mid s)\, q_\pi(s, a) \right]
+= \sum_a \Bigl[ \underbrace{\nabla \pi(a \mid s)\, q_\pi(s, a)}_{\text{action-selection term}}
+\;+\; \underbrace{\pi(a \mid s)\, \nabla q_\pi(s, a)}_{\text{future-value term}} \Bigr].
+$$
+
+The first term involves the policy gradient *at* $s$ — this is the part we want. The second term still hides $\nabla v\_\pi$ at successor states inside $\nabla q\_\pi$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 2/5 — differentiate $q\_\pi$ via Bellman)</span></p>
+
+In the Bellman equation for $q\_\pi$, the dynamics $p(s', r \mid s, a)$ and the reward value $r$ do **not** depend on $\boldsymbol{\theta}$ — only $v\_\pi(s')$ does:
+
+$$
+\begin{aligned}
+\nabla q_\pi(s, a)
+&= \sum_{s', r} p(s', r \mid s, a)\, \nabla \bigl[ r + \gamma\, v_\pi(s') \bigr] \\
+&= \sum_{s', r} p(s', r \mid s, a)\, \gamma\, \nabla v_\pi(s') \\
+&= \gamma \sum_{s'} p(s' \mid s, a)\, \nabla v_\pi(s').
+\end{aligned}
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 3/5 — a one-step recursion in $\nabla v\_\pi$)</span></p>
+
+Substitute Step 2 into Step 1:
+
+$$
+\nabla v_\pi(s)
+= \underbrace{\sum_a \nabla \pi(a \mid s)\, q_\pi(s, a)}_{=:\ \varphi(s)}
+\;+\; \gamma \sum_a \pi(a \mid s) \sum_{s'} p(s' \mid s, a)\, \nabla v_\pi(s').
+$$
+
+Define the **local term** and the **transition kernel under $\pi$**:
+
+$$
+\varphi(s) \doteq \sum_a \nabla \pi(a \mid s)\, q_\pi(s, a),
+\qquad
+P_\pi(s' \mid s) \doteq \sum_a \pi(a \mid s)\, p(s' \mid s, a).
+$$
+
+The recursion becomes
+
+$$
+\nabla v_\pi(s) \;=\; \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \nabla v_\pi(s').
+$$
+
+**Same shape as Bellman:** this is a Bellman-style recursion for the *gradient* of the value function, with $\varphi(s)$ playing the role of the immediate reward.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 4/5 — unroll the recursion)</span></p>
+
+Apply the same identity to the future state $s'$, substitute back, and repeat. After one substitution,
+
+$$
+\nabla v_\pi(s)
+= \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \varphi(s')
++ \gamma^2 \sum_{s''} \underbrace{\sum_{s'} P_\pi(s' \mid s) P_\pi(s'' \mid s')}_{=\ \Pr(s \to s'',\, 2,\, \pi)} \nabla v_\pi(s''),
+$$
+
+and after $K$ unrollings,
+
+$$
+\nabla v_\pi(s)
+= \sum_{k=0}^{K-1} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x)
+\;+\; \gamma^K \sum_x \Pr(s \to x,\, K,\, \pi)\, \nabla v_\pi(x),
+$$
+
+where $\Pr(s \to x, k, \pi)$ is the probability of being in state $x$ after $k$ steps when starting from $s$ and following $\pi$. The accumulated sum collects the local policy-gradient contributions $\varphi(x)$ along the way; the leftover recursion term vanishes as $K \to \infty$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 5/5 — from $\nabla v\_\pi(s\_0)$ to $\mu$)</span></p>
+
+Letting $K \to \infty$,
+
+$$
+\nabla v_\pi(s) = \sum_{k=0}^{\infty} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x)
+= \sum_x \left( \sum_{k=0}^{\infty} \gamma^k \Pr(s \to x,\, k,\, \pi) \right) \varphi(x).
+$$
+
+Set $s = s\_0$ and define the **discounted expected visitation count**
+
+$$
+\eta(x) \;\doteq\; \sum_{k=0}^{\infty} \gamma^k \Pr(s_0 \to x,\, k,\, \pi)
+$$
+
+("add up the probability of being in state $x$ at every future time step, with later time steps discounted"). Substituting $\varphi(x) = \sum\_a \nabla \pi(a \mid x)\, q\_\pi(x, a)$:
+
+$$
+\nabla J(\boldsymbol{\theta}) = \nabla v_\pi(s_0)
+= \sum_x \eta(x) \sum_a \nabla \pi(a \mid x)\, q_\pi(x, a).
+$$
+
+**Normalize.** Define $C \doteq \sum\_{x'} \eta(x')$ and $\mu(x) = \eta(x)/C$. Then
+
+$$
+\nabla J(\boldsymbol{\theta})
+= C \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x)
+\;\propto\; \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x). \qquad \blacksquare
+$$
+
+$C$ is the total discounted visitation mass; if $\gamma = 1$ in an episodic task, $C$ is the expected episode length. The constant is absorbed into the step size $\alpha$ during gradient ascent, which is why the theorem is stated with $\propto$ rather than $=$.
+
+</div>
+
+### REINFORCE: Monte-Carlo Policy Gradient
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(State sampling — the outer sum becomes an on-policy average)</span></p>
+
+For clarity, consider first the undiscounted episodic case ($\gamma = 1$). The policy-gradient theorem says
+
+$$
+\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
+\;=\; \mathbb{E}_{S \sim \mu}\!\left[ \sum_a q_\pi(S, a)\, \nabla \pi(a \mid S, \boldsymbol{\theta}) \right].
+$$
+
+This is where **on-policy sampling** earns its keep: when we generate episodes using the *current* policy $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$, the visited states $S\_t$ *are* samples from $\mu$. An empirical average over visited on-policy states therefore approximates the state expectation for free — no reweighting, no importance sampling.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Action sampling — from $q\_\pi$ to the sampled return $G\_t$)</span></p>
+
+Now fix one sampled on-policy state $S\_t$. The inner sum over actions is not yet an expectation over the *sampled* action — fix that by multiplying and dividing by $\pi(a \mid S\_t, \boldsymbol{\theta})$:
+
+$$
+\begin{aligned}
+\sum_a q_\pi(S_t, a)\, \nabla \pi(a \mid S_t, \boldsymbol{\theta})
+&= \sum_a \pi(a \mid S_t, \boldsymbol{\theta})\, q_\pi(S_t, a)\, \frac{\nabla \pi(a \mid S_t, \boldsymbol{\theta})}{\pi(a \mid S_t, \boldsymbol{\theta})} \\
+&= \sum_a \pi(a \mid S_t, \boldsymbol{\theta})\, q_\pi(S_t, a)\, \nabla \ln \pi(a \mid S_t, \boldsymbol{\theta}) \\
+&= \mathbb{E}_{A \sim \pi(\cdot \mid S_t)}\bigl[\, q_\pi(S_t, A)\, \nabla \ln \pi(A \mid S_t, \boldsymbol{\theta}) \,\bigr].
+\end{aligned}
+$$
+
+The action $A\_t \sim \pi(\cdot \mid S\_t, \boldsymbol{\theta})$ generated during the episode is a sample from exactly this expectation. One unknown remains: $q\_\pi(S\_t, A\_t)$. But by definition $q\_\pi(S\_t, A\_t) = \mathbb{E}\_\pi[\, G\_t \mid S\_t, A\_t \,]$, so the observed **Monte Carlo return** $G\_t$ is an unbiased sample of it. One on-policy time step thus yields a Monte Carlo sample of the *full* policy gradient:
+
+$$
+\widehat{\nabla J} \;\propto\; G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why later actions get the extra $\gamma^t$)</span></p>
+
+For the *discounted* start-state objective, the sample direction at time $t$ picks up an additional weight:
+
+$$
+\text{sample direction at time } t \;=\; \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
+$$
+
+The key point is the **perspective of the objective** $J(\boldsymbol{\theta}) = v\_\pi(s\_0) = \mathbb{E}\_\pi[G\_0]$. We are asking: *"how much does the action at time $t$ matter for $G\_0$?"* Take the action $A\_3$ as an example. Its consequences unfold in
+
+$$
+G_3 = R_4 + \gamma R_5 + \gamma^2 R_6 + \cdots,
+$$
+
+the future return *from time 3 onward*. But inside the original objective $G\_0$, that same future is **delayed**:
+
+$$
+\gamma^3 G_3 = \gamma^3 R_4 + \gamma^4 R_5 + \gamma^5 R_6 + \cdots
+$$
+
+So $G\_t$ estimates $q\_\pi(S\_t, A\_t)$ — the *quality* of the action — while $\gamma^t$ weights *how much time $t$ contributes* to $J(\boldsymbol{\theta}) = \mathbb{E}[G\_0]$. An action can only influence $G\_0$ through its delayed, $\gamma^t$-weighted slice, so its update carries the same $\gamma^t$.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 760 300" role="img" aria-label="A chain of states and actions over one episode, with bars of geometrically decreasing height below each action showing that the weight on the action's update decays like gamma to the power t.">
+    <circle cx="95" cy="55" r="21" class="accent"></circle>
+    <text x="95" y="60" text-anchor="middle" font-size="13" font-weight="700">S₀</text>
+    <circle cx="205" cy="55" r="21" class="box"></circle>
+    <text x="205" y="60" text-anchor="middle" font-size="13" font-weight="700">S₁</text>
+    <circle cx="315" cy="55" r="21" class="box"></circle>
+    <text x="315" y="60" text-anchor="middle" font-size="13" font-weight="700">S₂</text>
+    <circle cx="425" cy="55" r="21" class="box"></circle>
+    <text x="425" y="60" text-anchor="middle" font-size="13" font-weight="700">S₃</text>
+    <circle cx="535" cy="55" r="21" class="box"></circle>
+    <text x="535" y="60" text-anchor="middle" font-size="13" font-weight="700">S₄</text>
+    <circle cx="645" cy="55" r="21" class="box"></circle>
+    <text x="645" y="60" text-anchor="middle" font-size="13" font-weight="700">S₅</text>
+
+    <line x1="118" y1="55" x2="180" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="149" y="40" text-anchor="middle" font-size="11" class="muted">A₀</text>
+    <line x1="228" y1="55" x2="290" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="259" y="40" text-anchor="middle" font-size="11" class="muted">A₁</text>
+    <line x1="338" y1="55" x2="400" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="369" y="40" text-anchor="middle" font-size="11" class="muted">A₂</text>
+    <line x1="448" y1="55" x2="510" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="479" y="40" text-anchor="middle" font-size="11" class="muted">A₃</text>
+    <line x1="558" y1="55" x2="620" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="589" y="40" text-anchor="middle" font-size="11" class="muted">A₄</text>
+    <line x1="668" y1="55" x2="715" y2="55" class="line" marker-end="url(#pg-credit-arrow)"></line>
+    <text x="730" y="60" font-size="11" class="muted">end</text>
+
+    <text x="60" y="160" text-anchor="middle" font-size="11" class="muted">weight on</text>
+    <text x="60" y="176" text-anchor="middle" font-size="11" class="muted">the action's</text>
+    <text x="60" y="192" text-anchor="middle" font-size="11" class="muted">update</text>
+
+    <rect x="127" y="115" width="44" height="130" fill="#0f9b6c" opacity="0.85"></rect>
+    <text x="149" y="107" text-anchor="middle" font-size="12" fill="#0f9b6c" font-weight="700">γ⁰</text>
+    <rect x="237" y="141" width="44" height="104" fill="#0f9b6c" opacity="0.85"></rect>
+    <text x="259" y="133" text-anchor="middle" font-size="12" fill="#0f9b6c" font-weight="700">γ¹</text>
+    <rect x="347" y="162" width="44" height="83" fill="#0f9b6c" opacity="0.85"></rect>
+    <text x="369" y="154" text-anchor="middle" font-size="12" fill="#0f9b6c" font-weight="700">γ²</text>
+    <rect x="457" y="178" width="44" height="67" fill="#0f9b6c" opacity="0.85"></rect>
+    <text x="479" y="170" text-anchor="middle" font-size="12" fill="#0f9b6c" font-weight="700">γ³</text>
+    <rect x="567" y="192" width="44" height="53" fill="#0f9b6c" opacity="0.85"></rect>
+    <text x="589" y="184" text-anchor="middle" font-size="12" fill="#0f9b6c" font-weight="700">γ⁴</text>
+
+    <line x1="100" y1="245" x2="680" y2="245" stroke="#64748b" stroke-width="1.5"></line>
+    <text x="380" y="280" text-anchor="middle" font-size="12" class="muted">the contribution of Aₜ to the start-state objective G₀ is discounted by γᵗ</text>
+
+    <defs>
+      <marker id="pg-credit-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Credit assignment over time: the update for the action taken at time $t$ is weighted by $\gamma^t$, because that is exactly how much of the action's future the start-state objective $G_0$ still "sees".</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(The REINFORCE update)</span></p>
+
+The REINFORCE update for the discounted episodic case is
+
+$$
+\boldsymbol{\theta}_{t+1} \;\doteq\; \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
+$$
+
+Using $\nabla \ln \pi = \nabla \pi / \pi$, this is equivalently
+
+$$
+\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \underbrace{\frac{\nabla \pi(A_t \mid S_t, \boldsymbol{\theta}_t)}{\pi(A_t \mid S_t, \boldsymbol{\theta}_t)}}_{\text{eligibility vector}}.
+$$
+
+In words: *increase the log-probability of the sampled action $A\_t$ in state $S\_t$, scaled by its return estimate $G\_t$ and its time weight $\gamma^t$.* The division by $\pi(A\_t \mid S\_t, \boldsymbol{\theta}\_t)$ in the eligibility vector also corrects for how often the action would be chosen anyway: frequently-taken actions get proportionally smaller pushes, so favourites do not win merely by being sampled more.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(REINFORCE is credit assignment over time)</span></p>
+
+Think of one episode as a chain of decisions
+
+$$
+S_0 \xrightarrow{\ A_0\ } S_1 \xrightarrow{\ A_1\ } S_2 \xrightarrow{\ A_2\ } \cdots \xrightarrow{\ A_{T-1}\ } \text{end}.
+$$
+
+At every time step the policy asks: *"should I make this sampled action more or less likely next time?"* REINFORCE answers with $\Delta \boldsymbol{\theta}\_t \propto G\_t\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$, whose two factors have clean roles:
+
+* $G\_t$ — *increase or decrease?* The observed quality of everything that followed the action;
+* $\nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$ — *which direction in parameter space* increases $\pi(A\_t \mid S\_t)$.
+
+Locally: $G\_t > 0 \Rightarrow$ make $A\_t$ more likely in $S\_t$; $G\_t < 0 \Rightarrow$ make it less likely.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(REINFORCE — Monte-Carlo policy-gradient control, episodic)</span></p>
+
+**Input:** a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$.
+**Parameter:** step size $\alpha > 0$. Initialise $\boldsymbol{\theta} \in \mathbb{R}^{d'}$.
+
+Loop forever (for each episode):
+
+1. Generate an episode $S\_0, A\_0, R\_1, \dots, S\_{T-1}, A\_{T-1}, R\_T$ following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
+2. Loop for each step of the episode, $t = 0, 1, \dots, T-1$:
+   * $G \leftarrow \sum\_{k=t+1}^{T} \gamma^{k-t-1} R\_k$  (this is $G\_t$);
+   * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha\, \gamma^{t}\, G\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$.
+
+**Intuition:** try an action according to your current stochastic policy. See how good the outcome was. If the outcome was good, make that action more likely next time; if it was bad, make it less likely.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Eligibility vector for the soft-max linear policy)</span></p>
+
+For $\pi(a \mid s, \boldsymbol{\theta}) \propto e^{\boldsymbol{\theta}^\top \mathbf{x}(s,a)}$,
+
+$$
+\ln \pi(a \mid s, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a) - \ln \sum_b e^{\boldsymbol{\theta}^\top \mathbf{x}(s, b)}.
+$$
+
+Differentiating,
+
+$$
+\nabla \ln \pi(a \mid s, \boldsymbol{\theta})
+= \mathbf{x}(s, a) - \frac{\sum_b e^{\boldsymbol{\theta}^\top \mathbf{x}(s,b)}\, \mathbf{x}(s, b)}{\sum_b e^{\boldsymbol{\theta}^\top \mathbf{x}(s,b)}}
+= \mathbf{x}(s, a) - \sum_b \pi(b \mid s, \boldsymbol{\theta})\, \mathbf{x}(s, b).
+$$
+
+**Interpretation:** the eligibility vector points from the **expected feature vector under $\pi$** toward the **feature vector of the action actually taken**. (This is the state-dependent generalization of the soft-max derivative we computed for gradient bandits in Lecture 2.)
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One REINFORCE step by hand)</span></p>
+
+**Setup.** Short corridor, features $\mathbf{x}(s, \text{right}) = [1, 0]^\top$, $\mathbf{x}(s, \text{left}) = [0, 1]^\top$, current parameters $\boldsymbol{\theta} = [0.4,\, -0.1]^\top$, step size $\alpha = 0.1$, $\gamma = 1$.
+
+**Policy.**
+
+$$
+\pi(\text{right} \mid s) = \frac{e^{0.4}}{e^{0.4} + e^{-0.1}} = \frac{1.492}{1.492 + 0.905} \approx 0.622.
+$$
+
+**Suppose** we observe $A\_t = \text{right}$ and the rest of the episode produced $G\_t = -7$.
+
+**Eligibility.**
+
+$$
+\nabla \ln \pi(\text{right} \mid s, \boldsymbol{\theta})
+= \underbrace{\begin{bmatrix} 1 \\ 0 \end{bmatrix}}_{\mathbf{x}(s,\text{right})}
+- \underbrace{0.622}_{\pi(\text{right} \mid s)} \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+- \underbrace{0.378}_{\pi(\text{left} \mid s)} \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+= \begin{bmatrix} 0.378 \\ -0.378 \end{bmatrix}.
+$$
+
+**Update.**
+
+$$
+\boldsymbol{\theta} \;\leftarrow\; \boldsymbol{\theta} + \alpha\, G_t\, \nabla \ln \pi
+= \begin{bmatrix} 0.4 \\ -0.1 \end{bmatrix}
++ 0.1 \cdot (-7) \cdot \begin{bmatrix} 0.378 \\ -0.378 \end{bmatrix}
+= \begin{bmatrix} 0.135 \\ 0.165 \end{bmatrix}.
+$$
+
+$\Rightarrow$ $\pi(\text{right} \mid s)$ drops from $0.622$ to $\approx 0.493$. A negative return $\Rightarrow$ decrease the chosen action's probability — exactly the local interpretation above.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pg_reinforce_learning_curves.png' | relative_url }}" alt="Learning curves of REINFORCE on the short corridor for three step sizes: the middle step size converges near the optimum, the smallest converges more slowly, and the largest plateaus well below the optimum" loading="lazy">
+  <figcaption>REINFORCE on the short corridor ($\gamma = 1$, $\theta_0$ chosen so that $\pi(\text{right}) \approx 0.05$; episodes capped at 500 steps; smoothed average of 200 runs). $\alpha = 2^{-13}$ converges toward $v_*(s_0)$; $\alpha = 2^{-14}$ converges more slowly; $\alpha = 2^{-12}$ is too aggressive — in a fraction of runs the noisy updates temporarily collapse $\pi(\text{right})$ toward $0$, and the average pays for it.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(REINFORCE — what we can guarantee, and what it costs)</span></p>
+
+* **Unbiased:** the sample direction is an unbiased estimator of the policy-gradient direction, up to the theorem's constant of proportionality.
+* **Convergent:** $\boldsymbol{\theta}\_t$ converges to a *local* optimum of $J$ under the standard stochastic-approximation step-size conditions and suitable regularity assumptions.
+* **Slow:** the return $G\_t$ has **high variance**, so learning is slow — and, as the experiment above shows, sensitive to the step size.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(Variance is the practical bottleneck)</span></p>
+
+The same parameter step depends on the **entire random future trajectory**: every reward from $t+1$ to the end of the episode enters $G\_t$. Two episodes that visit similar state–action sequences can still produce very different returns — and hence very different updates. This single weakness motivates the two classical fixes: **baselines** (below) and **bootstrapping** (next lecture, actor–critic).
+
+</div>
+
+### REINFORCE with Baseline
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Subtracting a baseline does not change the gradient)</span></p>
+
+Start from the policy-gradient theorem and subtract an arbitrary **state-dependent baseline** $b(s)$ from $q\_\pi$:
+
+$$
+\sum_s \mu(s) \sum_a \bigl( q_\pi(s, a) - b(s) \bigr)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
+= \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
+- \sum_s \mu(s) \sum_a b(s)\, \nabla \pi(a \mid s, \boldsymbol{\theta}).
+$$
+
+For each fixed state $s$, the subtracted term vanishes because the action probabilities always sum to one:
+
+$$
+\sum_a b(s)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
+= b(s)\, \nabla \sum_a \pi(a \mid s, \boldsymbol{\theta})
+= b(s)\, \nabla 1 = 0.
+$$
+
+Therefore the policy gradient theorem **also holds with a baseline**:
+
+$$
+\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a \bigl( q_\pi(s, a) - b(s) \bigr)\, \nabla \pi(a \mid s, \boldsymbol{\theta}).
+$$
+
+(The bandit ancestor of this trick: subtracting the running average reward $\bar R\_t$ in the gradient-bandit update of Lecture 2.)
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why baselines reduce variance)</span></p>
+
+The discounted episodic update with a baseline is
+
+$$
+\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t} \bigl( G_t - b(S_t) \bigr)\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
+$$
+
+* Adding $-b(s)\, \nabla \ln \pi$ to the estimator does **not** change its mean — that is the derivation above.
+* But it can **drastically change its variance**. A good baseline removes *common-mode noise*: if all actions in $s$ lead to a high return, the update should reflect the **relative** preference among actions, not the absolute return size.
+
+**Natural choice:** $b(s) = \hat v(s, \mathbf{w})$, a learned state-value estimate. Then $G\_t - \hat v(S\_t, \mathbf{w})$ is approximately the **advantage** of the chosen action — *was this action better or worse than what we typically achieve from this state?*
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pg_baseline_variance_histograms.png' | relative_url }}" alt="Two histograms of update signals collected early in training: raw returns are large and widely spread, while advantages after subtracting the learned baseline are small and concentrated around zero" loading="lazy">
+  <figcaption>What a baseline actually does (update signals collected early in training on the short corridor). Subtracting $b(S_t)$ leaves the expected gradient untouched but removes the common-mode part of the return: the update reflects how much <em>better than typical</em> the action was, not the raw return level.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(REINFORCE with baseline — episodic)</span></p>
+
+**Input:** a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$ and a differentiable value function $\hat v(s, \mathbf{w})$.
+**Parameters:** step sizes $\alpha^{\boldsymbol{\theta}} > 0$ and $\alpha^{\mathbf{w}} > 0$. Initialise $\boldsymbol{\theta}$, $\mathbf{w}$.
+
+Loop forever (for each episode):
+
+1. Generate an episode $S\_0, A\_0, R\_1, \dots, S\_{T-1}, A\_{T-1}, R\_T$ following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
+2. Loop for each step of the episode, $t = 0, 1, \dots, T-1$:
+   * $G \leftarrow \sum\_{k=t+1}^{T} \gamma^{k-t-1} R\_k$;
+   * $\delta \leftarrow G - \hat v(S\_t, \mathbf{w})$;
+   * $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\, \delta\, \nabla \hat v(S\_t, \mathbf{w})$;
+   * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha^{\boldsymbol{\theta}}\, \gamma^{t}\, \delta\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$.
+
+Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v$ onto observed returns, as in Lecture 9) is often easy to tune; $\alpha^{\boldsymbol{\theta}}$ depends on the reward scale and the policy parameterization and is the delicate one.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remarks on the baseline — and what it is <em>not</em>)</span></p>
+
+* The baseline is usually a **learned value function**, $b(s) = \hat v(s, \mathbf{w})$, updated by Monte Carlo regression $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G\_t - \hat v(S\_t, \mathbf{w}) \bigr) \nabla \hat v(S\_t, \mathbf{w})$.
+* The policy update uses an **advantage-like signal** $G\_t - \hat v(S\_t, \mathbf{w})$: we ask whether the action was *better or worse than expected*, not whether the return was large in absolute terms.
+* This does **not** turn the method into a value-based method. The policy $\pi(a \mid s, \boldsymbol{\theta})$ is still the **actor** — the value function never selects actions, it only sharpens the update. (Since $\hat v$ here evaluates but does not yet *bootstrap*, it is not a critic in the strict actor–critic sense; that step comes next lecture.)
+* With **neural networks**, replace the linear preferences by logits: $h\_{\boldsymbol{\theta}}(s, a) = \text{NN}\_{\boldsymbol{\theta}}(s)\_a$ and $\pi(a \mid s, \boldsymbol{\theta}) = \operatorname{softmax}(h\_{\boldsymbol{\theta}}(s))\_a$; the gradients $\nabla \ln \pi$ are then computed by backpropagation.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pg_reinforce_baseline_comparison.png' | relative_url }}" alt="Learning curves comparing plain REINFORCE with REINFORCE plus a learned baseline on the short corridor; the baseline version converges within about a hundred episodes while plain REINFORCE takes many hundreds" loading="lazy">
+  <figcaption>Baseline in practice (short corridor; smoothed average of 200 runs). Plain REINFORCE at its best step size $\alpha = 2^{-13}$ takes hundreds of episodes; REINFORCE with a learned scalar baseline ($\alpha^\theta = 2^{-9}$, $\alpha^w = 2^{-6}$) converges much faster. Same expected gradient direction, lower variance — the baseline itself introduces no bias.</figcaption>
+</figure>
+
+### Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What we learned)</span></p>
+
+1. **Policies can be learned directly.** Parameterize $\pi(a \mid s, \boldsymbol{\theta})$ and do gradient ascent on $J(\boldsymbol{\theta}) = v\_{\pi\_{\boldsymbol{\theta}}}(s\_0)$; a value function becomes optional machinery for the update, not the decision-maker.
+2. **Soft-max in preferences** gives a smooth, differentiable policy class that can approach determinism *and* represent stochastic optima — $\varepsilon$-greedy can do neither.
+3. **The short corridor** shows the stakes: under state aliasing the best representable policy is genuinely stochastic, and every $\varepsilon$-greedy action-value method is beaten by a modest stochastic policy ($-11.6$ vs. $-44$).
+4. **The policy gradient theorem** is the enabling result: $\nabla J \propto \sum\_s \mu(s) \sum\_a q\_\pi(s,a) \nabla \pi(a \mid s, \boldsymbol{\theta})$ — no derivative of the state distribution required.
+5. **REINFORCE** samples the theorem: states from on-policy visitation, actions from the policy, $q\_\pi$ from the Monte Carlo return; the $\gamma^t$ weight is the objective's own credit assignment over time.
+6. **REINFORCE is unbiased but high-variance** — it works, but slowly and with delicate step sizes.
+7. **A baseline** $b(s) = \hat v(s, \mathbf{w})$ subtracts common-mode noise: identical expected gradient, much lower variance, dramatically faster learning.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Where this goes next: actor–critic and continuous actions)</span></p>
+
+Two threads are left deliberately hanging:
+
+* The baseline $\hat v(s, \mathbf{w})$ *evaluates* states but never *bootstraps* — the update still waits for the full Monte Carlo return $G\_t$. Replacing $G\_t$ by the one-step target $R\_{t+1} + \gamma \hat v(S\_{t+1}, \mathbf{w})$ turns the value function into a true **critic** and REINFORCE into an **actor–critic** method: online, incremental, and with the bias–variance dial of Lecture 7 back in our hands.
+* Nothing in the policy-gradient machinery requires a finite action set. With a **Gaussian policy** — mean and standard deviation as parameterized functions of the state — the same theorem handles **continuous action spaces** directly.
+
+Both are the subject of the next lecture.
 
 </div>
