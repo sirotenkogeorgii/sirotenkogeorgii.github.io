@@ -1537,7 +1537,7 @@ it could be proven that strict inequality happens using the exact logic from Car
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Outer Measure of Intervals)</span></p>
 
-If $I$ is an interval of $\mathbb{R}$, then $m^\ast(I) = \ell(I)$.
+$$I \text{ is interval in } \mathbb{R} \implies m^\ast(I) = \ell(I).$$
 
 </div>
 
@@ -1580,7 +1580,7 @@ $$m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$$
 <summary>Proof</summary>
 
 * If $m^\ast(A) = \infty$, take $O = \mathbb{R}$. 
-* Otherwise, let $\lbrace I_n \rbrace$ be open intervals covering $A$ with 
+* Otherwise, let $\lbrace I_n \rbrace$ be open intervals covering $A$ with the following property (possible, because outer measure is defined as an infimum of the sum of the interval length covering $A$)
   
   $$\sum \ell(I_n) \le m^\ast(A) + \varepsilon.$$
   
@@ -1695,70 +1695,20 @@ So far we only know that *finite* unions of measurable sets are measurable. That
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Not all sets are measurable: Vitali set)</span></p>
 
-The Vitali set is the classic example of a **non-measurable set of real numbers**. It was constructed by Italian mathematician Giuseppe Vitali in 1905 to prove that it is impossible for the Lebesgue measure to assign a meaningful "length" to every single subset of real numbers without sacrificing basic geometric intuition.
-To understand the Vitali set, you can break down its definition, construction, and why it breaks the rules of measure theory.
-
-## 1. The Core Idea: An Equivalence Relation
-
-The Vitali set is built inside the interval $[0, 1]$ using an equivalence relation based on rational numbers.
-We define a relation $\sim$ on the real numbers such that two numbers $x$ and $y$ are equivalent if their difference is a rational number:
-
-$$x \sim y \iff x - y \in \mathbb{Q}$$ 
-
-This relation partitions the entire set of real numbers into completely disjoint "equivalence classes." Every real number belongs to exactly one class. For example, all rational numbers form one class, while numbers like $\pi, \pi+1, \pi-3.5$ belong to another class.
-
-## 2. The Step-by-Step Construction
-
-   1. Partition the Interval: Look only at the real numbers inside the interval $[0, 1]$. The equivalence relation divides this interval into infinitely many disjoint classes.
-   2. Apply the Axiom of Choice: Use the [Axiom of Choice](https://en.wikipedia.org/wiki/Axiom_of_choice) to pick exactly one representative real number from each and every equivalence class.
-   3. Form the Set: Gather all of these chosen representative points into a new set. This set $V \subset [0, 1]$ is a Vitali set.
-
-By design, no two distinct elements $x, y \in V$ have a rational difference (because we only picked one element per class). Furthermore, every real number in $[0, 1]$ is at a rational distance from exactly one element in $V$.
-
-## 3. Why It Is Non-Measurable (The Contradiction)
-
-To see why the Vitali set cannot have an actual measure, imagine shifting the set $V$ by every rational number $q$ inside the interval $[-1, 1]$. Let $q_1, q_2, q_3, \dots$ be an enumeration of all rational numbers between $-1$ and $1$.
-We create shifted copies of the Vitali set:
-
-$$V_k = V + q_k = \lbrace x + q_k \mid x \in V\rbrace$$ 
-
-Because of how $V$ was constructed, these shifted sets possess two critical properties:
-
-   1. They are completely disjoint: No two shifted sets overlap ($V_i \cap V_j = \emptyset$ for $i \neq j$).
-   2. They bound the interval: Their countable union is trapped between $-1$ and $2$, but completely covers the original interval $[0, 1]$:
-   
-      $$[0, 1] \subseteq \bigcup_{k=1}^{\infty} V_k \subseteq [-1, 2]$$
-
-## The Math Breakdown
-
-If the Vitali set were measurable, its Lebesgue measure $\mu(V)$ would have to be a fixed non-negative number. Because Lebesgue measure is translation-invariant, shifting the set doesn't change its size, meaning every copy has the exact same measure: $\mu(V_k) = \mu(V)$.
-Because the sets are disjoint, the measure of their union must equal the sum of their individual measures (countable additivity):
-
-$$\mu\left(\bigcup_{k=1}^{\infty} V_k\right) = \sum_{k=1}^{\infty} \mu(V_k) = \sum_{k=1}^{\infty} \mu(V)$$ 
-
-Using our interval boundaries from above, the total measure of the union must sit between the length of $[0, 1]$ (which is $1$) and the length of $[-1, 2]$ (which is $3$):
-
-$$1 \le \sum_{k=1}^{\infty} \mu(V) \le 3$$ 
-
-This creates an impossible mathematical paradox:
-
-* If $\mu(V) = 0$, then adding up infinite zeros equals $0$. But $0$ is not $\ge 1$.
-* If $\mu(V) > 0$ (no matter how small), adding it up infinitely many times equals $\infty$. But $\infty$ is not $\le 3$.
-
-## Conclusion
+The Vitali set ([my post about it](subpages/stuff_i_found_interesting/vitali_set/index.md)) is the classic example of a **non-measurable set of real numbers**. It was constructed by Italian mathematician Giuseppe Vitali in 1905 to prove that it is impossible for the Lebesgue measure to assign a meaningful "length" to every single subset of real numbers without sacrificing basic geometric intuition.
 
 Because assigning any real number or zero to the measure of the Vitali set results in a logical contradiction ($1 \le 0 \le 3$ or $1 \le \infty \le 3$), the Vitali set cannot be assigned an actual measure. It is strictly non-measurable, though its Lebesgue outer measure is known to be greater than zero.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Measurable set is nearly a finite union of open intervals)</span></p>
 
 Let $E \subset \mathbb{R}$, and assume that $m^\ast(E) \le \infty$. Prove that $E$ is measurable if and only if for every $\varepsilon > 0$ there exists a finite union of open intervals $U$ such that $m^\ast(U\Delta E) < \varepsilon$.
 
 *Hint:* To prove the converse direction, let $A \subset\mathbb R$, and prove that for every $\varepsilon > 0$,
 
-$$m^* (A \cap E) + m^*(A \cap Ec) \leq m^*(A) + \varepsilon.$$
+$$m^* (A \cap E) + m^*(A \cap E^c) \leq m^*(A) + \varepsilon.$$
 
 </div>
 
@@ -2087,7 +2037,7 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Countable intersections** of Lebesgue measurable sets are Lebesgue measurable)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Countable intersections of Lebesgue measurable sets are Lebesgue measurable)</span></p>
 
 **Countable intersections** of Lebesgue measurable sets are Lebesgue measurable.
 
@@ -2097,6 +2047,21 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
 <details markdown="1">
 <summary>Proof</summary>
 
+The reason is that the Lebesgue measurable sets form a **$\sigma$-algebra**. By definition, a $\sigma$-algebra is closed under:
+
+$$\text{complements},\qquad \text{countable unions}.$$
+
+From these two closure properties, countable intersections follow by De Morgan’s law:
+
+$$\bigcap_{n=1}^{\infty} E_n = \left(\bigcup_{n=1}^{\infty} E_n^c\right)^c.$$
+
+If each $E_n$ is Lebesgue measurable, then each complement $E_n^c$ is Lebesgue measurable; the countable union $\bigcup_n E_n^c$ is Lebesgue measurable; and therefore its complement is also Lebesgue measurable.
+
+So in the earlier step,
+
+$$\lbrace f\ge \alpha\rbrace = \bigcap_{n=1}^{\infty}\lbrace f>\alpha-1/n\rbrace,$$
+
+the right-hand side is measurable because it is a **countable intersection** of measurable sets. This is exactly the kind of closure property your notes use when working with Lebesgue measurable sets and preimages of functions. 
 
 </details>
 </div>
@@ -2130,7 +2095,7 @@ is a $\sigma$-algebra.
    4. $\implies$ $E^c \in \mathcal{A}$. 
 
 3. Countable $E_1, \dots \in \mathcal{A} \implies \Cup_{i=1} E_i \in \mathcal{A}$
-   1. $f^{-1}(Cup_{i=1} E_i) = Cup_{i=1} f^{-1}(E_i)$
+   1. $f^{-1}(\Cup_{i=1} E_i) = \Cup_{i=1} f^{-1}(E_i)$
    2. Each $f^{-1}(E_i)$ is Lebesgue measurable
    3. The countable union of Lebesgue measurable is Lebesgue measurable
    4. $\implies$ $f^{-1}(Cup_{i=1} E_i)$ is Lebesgue measurable
@@ -2162,7 +2127,16 @@ is a universal set theory identity that is strictly true for **all** functions, 
 
 ### Lebesgue Measure
 
-We now know that $\mathcal{M}$ is a $\sigma$-algebra of "well-behaved" sets, but two things are still missing. First, we have not verified that $\mathcal{M}$ actually contains the sets we care about (open sets, closed sets, and everything built from them). Second, the object we have been carrying around, the outer measure $m^\ast$, is only *subadditive* on arbitrary sets; we have not recorded the *exact* additivity and the two convergence properties that make it an honest measure once restricted to $\mathcal{M}$. We settle both now.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Lebesgue Measure)</span></p>
+
+We now know that $\mathcal{M}$ is a $\sigma$-algebra of "well-behaved" sets, but two things are still missing: 
+* First, we have not verified that $\mathcal{M}$ actually contains the sets we care about (open sets, closed sets, and everything built from them). 
+* Second, the object we have been carrying around, the outer measure $m^\ast$, is only **subadditive** on arbitrary sets; we have not recorded the **exact** additivity and the two convergence properties that make it an honest measure once restricted to $\mathcal{M}$. 
+
+We settle both now.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Half-Lines are Measurable)</span></p>
@@ -2176,7 +2150,7 @@ For every $a \in \mathbb{R}$, the half-line $(a, \infty)$ is Lebesgue measurable
     <summary>proof</summary>
     <p>Fix an arbitrary $A \subset \mathbb{R}$; we may assume $m^\ast(A) < \infty$ (otherwise the measurability inequality is trivial). Write $A_1 = A \cap (a, \infty)$ and $A_2 = A \cap (-\infty, a]$. Given $\varepsilon > 0$, choose open intervals $\lbrace I_n \rbrace$ with $A \subset \bigcup_n I_n$ and $\sum_n \ell(I_n) \le m^\ast(A) + \varepsilon$ (possible by the definition of outer measure as an infimum).</p>
     <p>Split each cover interval at the point $a$: let $I_n' = I_n \cap (a, \infty)$ and $I_n'' = I_n \cap (-\infty, a)$. Each is an interval (or empty), and since they partition $I_n$ up to the single point $a$, their lengths satisfy $\ell(I_n') + \ell(I_n'') = \ell(I_n)$. The collection $\lbrace I_n' \rbrace$ covers $A_1$ and $\lbrace I_n'' \rbrace$ covers $A_2$, so by the definition of outer measure and the Theorem (Countable Subadditivity),</p>
-    $$m^\ast(A_1) + m^\ast(A_2) \le \sum_n \ell(I_n') + \sum_n \ell(I_n'') = \sum_n \ell(I_n) \le m^\ast(A) + \varepsilon.$$
+    $$m^\ast(A) \leq m^\ast(A_1) + m^\ast(A_2) \le \sum_n \ell(I_n') + \sum_n \ell(I_n'') = \sum_n \ell(I_n) \le m^\ast(A) + \varepsilon.$$
     <p>Letting $\varepsilon \to 0$ yields $m^\ast(A \cap (a, \infty)) + m^\ast(A \cap (a, \infty)^c) \le m^\ast(A)$, which is exactly the measurability condition for $(a, \infty)$. $\square$</p>
   </details>
 </div>
@@ -2203,7 +2177,12 @@ In particular every open, closed, $F_\sigma$, and $G_\delta$ set is measurable.
   </details>
 </div>
 
-This is what justifies the claim made earlier that "every open set and every closed set is measurable" — and it means the measurable sets are a strictly richer collection than the Borel sets, since $\mathcal{M}$ also contains every set of outer measure zero.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Measurable sets are a strictly richer collection than the Borel sets)</span></p>
+
+This is what justifies the claim made earlier that "every open set and every closed set is measurable" — and it means the **measurable sets are a strictly richer collection than the Borel sets**, since $\mathcal{M}$ also contains every set of outer measure zero.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lebesgue Measure)</span></p>
@@ -2221,7 +2200,8 @@ Restricting the symbol $m$ to measurable sets is precisely what buys us the exac
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Monotonicity and Intervals)</span></p>
 
-If $A, B \in \mathcal{M}$ with $A \subset B$, then $m(A) \le m(B)$. Moreover, every interval $I$ is measurable with $m(I) = \ell(I)$.
+* If $A, B \in \mathcal{M}$ with $A \subset B$, then $m(A) \le m(B)$. 
+* Moreover, every interval $I$ is measurable with $m(I) = \ell(I)$.
 
 </div>
 
@@ -2249,6 +2229,68 @@ $$m\!\left(\bigcup_{n=1}^{\infty} E_n\right) = \sum_{n=1}^{\infty} m(E_n).$$
 
 This is exactly the *exact additivity* that we listed among the desired properties of a measure but could not obtain for $m^\ast$ on general sets — disjointness alone was not enough; the sets also had to be measurable.
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Inclusion-exclusion principle of Lebesgue measure)</span></p>
+
+Prove that if $E$ and $F$ are measurable sets, then
+
+$$m(E \cup F) + m(E \cap F) = m(E) + m(F).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+By breaking the sets down into disjoint components, we can bypass the subadditivity of the outer measure and directly leverage the finite additivity property of the Lebesgue measure.
+
+**Step 1: Define the disjoint components**
+
+Let us decompose $E$ and $F$ into three pairwise disjoint sets based on your logic:
+
+* $B = E \cap F$ (the intersection)
+* $A = E \setminus F = E \cap F^c$ (the part of $E$ exclusively outside of $F$)
+* $C = F \setminus E = F \cap E^c$ (the part of $F$ exclusively outside of $E$)
+
+**Step 2: Establish measurability of the components**
+
+Because $E$ and $F$ are given as Lebesgue measurable sets, and the collection of Lebesgue measurable sets forms a $\sigma$-algebra, they are closed under complements and finite intersections. Therefore, the sets $A$, $B$, and $C$ are all perfectly measurable.
+
+**Step 3: Express the original sets as disjoint unions**
+
+We can now reconstruct our original sets using disjoint unions of these new components:
+
+* $E = A \cup B$
+* $F = C \cup B$
+* $E \cup F = A \cup B \cup C$
+
+**Step 4: Apply finite additivity**
+
+Because $A$, $B$, and $C$ are pairwise disjoint and measurable, we can apply the finite additivity property of the Lebesgue measure to our equations from Step 3:
+
+$$m(E) = m(A) + m(B)$$
+
+$$m(F) = m(C) + m(B)$$
+
+$$m(E \cup F) = m(A) + m(B) + m(C)$$
+
+**Step 5: Algebraic substitution**
+
+Now, we evaluate the left side of the target equation by substituting in our expanded measures:
+
+$$m(E \cup F) + m(E \cap F) = (m(A) + m(B) + m(C)) + m(B)$$
+
+Since all measures yield non-negative values in $[0, \infty]$, we can freely rearrange the terms (this algebraic rearrangement remains valid even if any of the sets have an infinite measure):
+
+$$m(E \cup F) + m(E \cap F) = (m(A) + m(B)) + (m(C) + m(B))$$
+
+Finally, substitute $m(E)$ and $m(F)$ back into the right side of the equation:
+
+$$m(E \cup F) + m(E \cap F) = m(E) + m(F)$$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Continuity of Measure from Below)</span></p>
 
@@ -2273,7 +2315,77 @@ This is the statement invoked (by the name "continuity of measure") in the proof
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuity from Above Needs Finite Measure)</span></p>
 
-The dual statement for a *decreasing* tower $E_1 \supset E_2 \supset \cdots$, namely $m\!\left(\bigcap_k E_k\right) = \lim_n m(E_n)$, is **not** true without the extra hypothesis $m(E_1) < \infty$. The standard counterexample is $E_n = [n, \infty)$: here $\bigcap_n E_n = \varnothing$, so the left side is $0$, yet $m(E_n) = \infty$ for every $n$, so the right side is $\infty$.
+The dual statement for a **decreasing** tower $E_1 \supset E_2 \supset \cdots$, namely
+
+$m\left(\bigcap_k E_k\right) = \lim_n m(E_n),$
+
+is **not** true without the extra hypothesis $m(E_1) < \infty$. The standard counterexample is $E_n = [n, \infty)$: here $\bigcap_n E_n = \varnothing$, so the left side is $0$, yet $m(E_n) = \infty$ for every $n$, so the right side is $\infty$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Continuity from Above)</span></p>
+
+Prove continuity from above for Lebesgue measure: if $\lbrace E_n\rbrace\_{n=1}^{\infty}$ is a countable collection of measurable sets, $m(E_1) < \infty$, and
+
+$$E_1 \supset E_2 \supset \cdots,$$
+
+then
+
+$$m\left(\bigcap_k E_k\right) = \lim_{n \to \infty} m(E_n).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Define the disjoint sequence of sets for the difference between consecutive layers:
+
+$$F_{i} := E_{i-1} \setminus E_i \quad \text{for } i \ge 2.$$
+
+By construction, the sets $F_i$ are pairwise disjoint. The $n$-th set in the sequence can be expressed by subtracting the union of these outer layers from the initial set:
+
+$$E_n = E_1 \setminus \bigcup_{i=2}^n F_i$$
+
+Because $m(E_1) < \infty$ and $\bigcup_{i=2}^n F_i \subset E_1$, the measure of the set difference is strictly well-defined, allowing us to write:
+
+$$m(E_n) = m\left(E_1 \setminus \bigcup_{i=2}^n F_i\right) = m(E_1) - m\left(\bigcup_{i=2}^n F_i\right)$$
+
+Applying this decomposition to the infinite intersection, and invoking countable additivity on the disjoint union of $F_i$, we obtain the final result:
+
+$$\boxed{
+\begin{matrix}
+m\left(\bigcap_{k=1}^\infty E_k\right) = m\left(E_1 \setminus \bigcup_{i=2}^\infty F_i\right) = m(E_1) - m\left(\bigcup_{i=2}^\infty F_i\right) \\
+= m(E_1) - \lim_{n \to \infty} m\left(\bigcup_{i=2}^n F_i\right) = \lim_{n \to \infty} \left( m(E_1) - m\left(\bigcup_{i=2}^n F_i\right) \right) = \lim_{n \to \infty} m(E_n)
+\end{matrix}
+}$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Justifying the Limit Jump)</span></p>
+
+In the initial draft of the solution, writing the equality 
+
+$$m\left(E_1 \setminus \bigcup_{i=1}^\infty F_i\right) = \lim_{n \to \infty} m\left(E_1 \setminus \bigcup_{i=1}^n F_i\right)$$
+
+in one step was a logical leap because it inherently assumed the very property you were trying to prove: **continuity from above**. You cannot pass a limit through the measure of a decreasing sequence of sets without first proving that the measure operation permits it.
+
+In the revised proof, the limit jump is completely justified because the burden of the limit is shifted from a *decreasing* sequence of sets to an *increasing* sequence of **pairwise disjoint** sets.
+
+By isolating the term $m\left(\bigcup_{i=2}^\infty F_i\right)$, you can invoke the fundamental axiom of **countable additivity** for Lebesgue measure. Countable additivity states that the measure of a countable union of disjoint sets is exactly the infinite series of their individual measures:
+
+
+$$m\left(\bigcup_{i=2}^\infty F_i\right) = \sum_{i=2}^\infty m(F_i)$$
+
+In real analysis, an infinite series is rigorously defined as the limit of its partial sums. Therefore, you can safely write:
+
+
+$$\sum_{i=2}^\infty m(F_i) = \lim_{n \to \infty} \sum_{i=2}^n m(F_i) = \lim_{n \to \infty} m\left(\bigcup_{i=2}^n F_i\right)$$
+
+By using the disjoint layers $F_i$, you successfully bypassed the unproven "continuity from above" by relying on the already established "countable additivity" (which is equivalent to continuity from below) to rigorously justify evaluating the limit.
 
 </div>
 
@@ -2453,9 +2565,11 @@ The dual statement for a *decreasing* tower $E_1 \supset E_2 \supset \cdots$, na
 
 Throughout the discussion of measurable functions and Lebesgue integration, we work with the **extended real numbers** $[-\infty, \infty] = \mathbb{R} \cup \lbrace -\infty, \infty \rbrace$, and we allow functions to take on the values $\pm \infty$. The arithmetic rules are: 
 
-$$x \pm \infty = \pm \infty \forall x \in \mathbb{R},$$ 
+$$x \pm \infty = \pm \infty \quad \forall x \in \mathbb{R},$$ 
 
-$$0(\pm \infty) = 0, \quad x(\pm \infty) = \pm \infty \quad \forall x > 0.$$
+$$0(\pm \infty) = 0,$$
+
+$$x(\pm \infty) = \pm \infty \quad \forall x > 0.$$
 
 </div>
 
@@ -2587,7 +2701,12 @@ If $E, F \subset \mathbb{R}$ are two measurable sets, then the indicator functio
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Algebra of Measurable Functions)</span></p>
 
-Let $E \subset \mathbb{R}$ be measurable, and suppose $f, g : E \to \mathbb{R}$ are two measurable functions and $c \in \mathbb{R}$. Then $cf$, $f + g$, and $fg$ are all measurable functions.
+Let $E \subset \mathbb{R}$ be measurable, and suppose $f, g : E \to \mathbb{R}$ are two measurable functions and $c \in \mathbb{R}$. Then 
+* $cf$, 
+* $f + g$,
+* $fg$
+
+are all measurable functions.
 
 </div>
 
@@ -2971,7 +3090,9 @@ $$\int_E f = 0 \quad\iff\quad f = 0 \quad\text{almost everywhere on } E.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Monotone Convergence — a.e. Version)</span></p>
 
-If $\lbrace f_n \rbrace$ is a sequence in $L^+(E)$ with $f_1 \le f_2 \le \cdots$ a.e. on $E$ and $\lim f_n = f$ a.e. on $E$, then $\int_E f = \lim_{n \to \infty} \int_E f_n$.
+If $\lbrace f_n \rbrace$ is a sequence in $L^+(E)$ with $f_1 \le f_2 \le \cdots$ a.e. on $E$ and $\lim f_n = f$ a.e. on $E$, then 
+
+$$\int_E f = \lim_{n \to \infty} \int_E f_n$$
 
 </div>
 
