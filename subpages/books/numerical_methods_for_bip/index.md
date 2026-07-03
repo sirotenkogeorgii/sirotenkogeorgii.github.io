@@ -4148,6 +4148,44 @@ $$\left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi_h(a)] \right| \le Ch^
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 5.2.6</summary>
+
+The two measures $\nu$ and $\nu\_h$ satisfy the assumptions of Theorem 4.4.1. Thus, the bound on the Hellinger distance follows directly by applying the bound (5.2.6) in Theorem 4.4.1.
+
+For the bound on the posterior expectations, we note first that due to the additive Gaussian noise assumption, for any measurable function $f : L^\infty(D) \to \mathbb{R}^m$ and for $q \in \mathbb{N}$,
+
+$$\left| \mathbb{E}_\nu[f(a)^q] \right| \le \mathbb{E}_\nu\big[|f(a)|^q\big] \le \frac{1}{Z_\nu} \mathbb{E}_{\mu_a}\big[|f(a)|^q\big], \tag{5.2.9}$$
+
+which follows immediately by taking the supremum of the Radon-Nikodym derivative out of the integral and bounding it by $\frac{1}{Z\_\nu}$, where $Z\_\nu$ is the normalization constant for $\nu$ (as in (4.4.1b)). The analogous bound holds for $\nu\_h$.
+
+Now we use the triangle inequality to separate the error into the FE error in the posterior measure and the FE error in approximating the target functional, i.e.
+
+$$\left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi_h(a)] \right| \le \left| \mathbb{E}_{\nu_h}[\Psi(a) - \Psi_h(a)] \right| + \left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi(a)] \right| \tag{5.2.10}$$
+
+The bound on the first term follows from (5.2.9) and (5.2.6) (with $G$ instead of $B$). For the second term, we proceed as in the proof of Lemma 3.5.7, i.e.
+
+$$\begin{aligned} \left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi(a)] \right| &\le 2D_{\mathrm{H}}(\nu, \nu_h) \left( \int_\Omega |\Psi(a)|^2 \left( \frac{\mathrm{d}\nu}{\mathrm{d}\mu_a} + \frac{\mathrm{d}\nu_h}{\mathrm{d}\mu_a} \right) \mathrm{d}\mu_a \right)^{1/2} \\ &\le Ch^2 \lVert G \rVert_{H^{-1}(D)} \lVert u \rVert_{L^2(\Omega; H_0^1(D))}, \end{aligned}$$
+
+where in the last step we have used (5.2.7), (5.2.9) and the boundedness of $G$. The result then follows from Theorem 5.2.1.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The error pipeline: from mesh size to posterior bias)</span></p>
+
+Theorem 5.2.6 is the payoff of the whole section, and it is worth pausing on what it actually chains together. Three separate approximation steps happen, and each contributes its own factor:
+
+1. **The PDE solve.** Replacing $u$ by the FE solution $u\_h$ costs $O(h)$ in the $H^1$-norm, but $O(h^2)$ for *functionals* $Bu$ of the solution (Theorem 5.2.5). The doubled rate for functionals is the classical Aubin-Nitsche duality argument from FE theory: $u - u\_h$ is Galerkin-orthogonal to the FE space, so testing it against the solution of a dual problem gains an extra power of $h$.
+2. **The likelihood.** The posterior density depends on $a$ only through the forward map $\Phi(a) = Bu$. Since the Gaussian likelihood is locally Lipschitz in $\Phi$, an $O(h^2)$ perturbation of the forward map perturbs the posterior by $O(h^2)$ in Hellinger distance — this is exactly the stability Theorem 4.4.1, applied with $\Phi\_1 = \Phi$ and $\Phi\_2 = \Phi\_h$. Well-posedness of the Bayesian inverse problem is thus not just an abstract nicety: it is the mechanism that transfers discretisation error into posterior bias *without amplification*.
+3. **The quantity of interest.** Hellinger distance is precisely the metric that controls differences of expectations of square-integrable functionals (Lemma 3.5.7); it converts the $O(h^2)$ distance between the measures into an $O(h^2)$ bias in the posterior expectation.
+
+The structural point to remember: **the posterior bias inherits the functional rate $h^2$, not the energy rate $h$**, because the data only ever "sees" the PDE solution through the bounded linear functionals $B$ (and the QoI through $G$). This $\alpha = 2$ bias rate is exactly what enters the complexity theorems for MC, MLMC and QMC in Section 5.4.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.2.7</span></p>
 
@@ -4238,7 +4276,7 @@ e.g. if the measurement error $E_n$ is assumed to decrease as $n$ increases, suc
 
 $$\nu_n(\mathrm{d}x) = \frac{1}{Z_n} \exp\left( -n\left(\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2\right) \right) \mu_x(\mathrm{d}x), \quad Z_n := \int_{\mathbb{R}^s} \exp\left( -n\left(\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2\right) \right) \mu_x(\mathrm{d}x).$$
 
-We can see that the weight function concentrates more and more around the MAP point $x_{\mathrm{MAP},n}$ as $n \to \infty$.
+We can see that the weight function concentrates more and more around the MAP point $x\_{\mathrm{MAP},n}$ as $n \to \infty$. It is a classical result [Wong, 2001] that integrals with respect to such a measure $\nu\_n$ can be well approximated via integrals with respect to the Laplace approximation, but even a stronger convergence result can be proved. We will only state the result informally and refer to the original paper for a complete statement and for the proof.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.3.3</span><span class="math-callout__name">(Convergence of Laplace Approximation)</span></p>
@@ -4254,11 +4292,28 @@ $$D_{\mathrm{H}}(\nu_n, \mathcal{L}_{\nu_n}) \le Cn^{-1/2}.$$
 
 The scaled posterior log-likelihood in (5.3.5) is the same as the generalised Tikhonov functional (cf. Sect. 2.5)
 
-$$\Psi_{\alpha,\delta}(x) := \frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma - \alpha \log \pi_X(x) \tag{5.3.6}$$
+$$\Psi_{\alpha,\delta}(x) := \frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 - \alpha \log \pi_X(x) \tag{5.3.6}$$
 
 with penalisation functional $\log \pi_X : \mathbb{R}^s \to \mathbb{R}$, with noise level $\delta = \frac{1}{n}$ and with regularisation parameter $\alpha = \frac{1}{n}$. In the Bayesian setting, adding the regularisation parameter corresponds to "flattening" the prior distribution $\pi_X$ to $\pi_X^{1/n}$ as $n \to \infty$, thus reducing its influence. Note also that the choice $\alpha = 1/n$ for a Gaussian prior in (5.3.6) and for $\delta = 1/n$ leads to a convergent regularisation method in the sense of Sect. 2.4, since $\delta/\sqrt{\alpha} \to 0$ as $\delta \to 0$.
 
 </div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What the Laplace approximation actually does — and when to trust it)</span></p>
+
+The definition looks technical, but the underlying move is a single idea: **replace the negative log-posterior by its second-order Taylor expansion at the mode**. Writing $\pi\_{X\mid Y}(x\mid y) \propto e^{-\Psi(x)}$ and expanding
+
+$$\Psi(x) \approx \Psi(x_{\mathrm{MAP}}) + \underbrace{\nabla \Psi(x_{\mathrm{MAP}})^\top (x - x_{\mathrm{MAP}})}_{= 0 \text{ at the minimiser}} + \frac{1}{2} (x - x_{\mathrm{MAP}})^\top \nabla^2 \Psi(x_{\mathrm{MAP}}) (x - x_{\mathrm{MAP}}),$$
+
+the exponential of the right-hand side is exactly an unnormalised Gaussian density with mean $x\_{\mathrm{MAP}}$ and covariance $(\nabla^2 \Psi(x\_{\mathrm{MAP}}))^{-1}$ — which is (5.3.4). Three consequences are worth internalising:
+
+* **Exactness in the linear Gaussian case.** If $\Phi(x) = Ax$ and the prior is Gaussian, then $\Psi$ is *globally* quadratic, the Taylor expansion has no remainder, and the Laplace approximation coincides with the true posterior of Theorem 5.3.1 (in particular $x\_{\mathrm{CM}} = x\_{\mathrm{MAP}}$). The Laplace approximation therefore measures, in a precise sense, "how far from linear-Gaussian" the problem is.
+* **Why the small-noise limit helps.** Theorem 5.3.3 is a Bernstein-von-Mises-type statement: as $n \to \infty$ the posterior mass concentrates in an $O(n^{-1/2})$-neighbourhood of $x\_{\mathrm{MAP},n}$, and on such shrinking neighbourhoods any smooth $\Psi\_n$ is dominated by its quadratic part — the cubic Taylor remainder is what produces the rate $n^{-1/2}$ (hence the $C^3$ assumption). Concentration, usually a *curse* for sampling methods (see Section 5.5.3), is exactly what makes the Laplace approximation *better*.
+* **Its role in this course is a preconditioner, not a final answer.** The Laplace approximation is cheap (one optimisation run plus one Hessian), and it is a Gaussian — so we can sample from it, evaluate its density, and use it as a reference measure: as importance distribution (Section 5.5.3), as proposal distribution for MCMC (Section 5.6), or as the update rule in the extended Kalman filter (Section 5.8). The pattern "solve an optimisation problem, then correct the Gaussian ansatz by sampling" recurs throughout the rest of the chapter.
+
+</div>
+
+There is more rigorous mathematical theory on the topic of posterior consistency [Ghosal & van der Vaart, 2017], but we will not discuss this any further. The explicit form of the posterior measure in the linear Gaussian case and the Laplace approximation play a central role in filtering, in the (extended) Kalman filter, and we will come back to this point in Section 5.8.
 
 ### 5.4 High-Dimensional Quadrature
 
@@ -4291,7 +4346,37 @@ $$\mathbb{E}\left[\left|\widehat{F(X)}_N - \mathbb{E}[F(X)]\right|^2\right] = \f
 
 </div>
 
-As discussed in Section 5.2, if $V$ is infinite dimensional or $F$ is given as $F(X) = \Psi(\mathcal{G}(X))$ for some operator $\mathcal{G} : V \to W$ and an infinite dimensional latent space $W$ with $\Psi : W \to \mathbb{R}$, it is necessary in practice to discretise the problem. The general setting is then that $X_s : \Omega \to V_s := \mathbb{R}^s$ and $F_h : V_s \to \mathbb{R}$ are approximations of $X$ and $F$ with $\mu_{X_s} \ll \mu_X$, parametrised by some parameters $h > 0$ and $s \in \mathbb{N}$, e.g. the FE mesh width and the truncation dimension for the Karhunen-Loève expansion. For simplicity, let us consider only the case $X_s = X$ and denote by $Q := F(X)$ and $Q_h := F_h(X)$ the quantity of interest and its approximation.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 5.4.1</summary>
+
+The convergence results (5.4.1) and (5.4.2) follow directly from the Law of Large Numbers and the Central Limit Theorem. To see (5.4.3), note that due to the independence of the $X^{(i)}$,
+
+$$\begin{aligned}
+\mathbb{E}\left[\left|\frac{1}{N}\sum_{i=1}^N F(X^{(i)}) - \mathbb{E}[F(X)]\right|^2\right]
+&= \frac{1}{N^2} \mathbb{E}\left[\left(\sum_{i=1}^N \Big(F(X^{(i)}) - \mathbb{E}[F(X)]\Big)\right)^2\right] \\
+&= \frac{1}{N^2} \sum_{i=1}^N \sum_{j=1}^N \mathbb{E}\Big[\big(F(X^{(i)}) - \mathbb{E}[F(X)]\big)\big(F(X^{(j)}) - \mathbb{E}[F(X)]\big)\Big] \\
+&= \frac{1}{N^2} \sum_{i=1}^N \mathbb{E}\Big[\big(F(X^{(i)}) - \mathbb{E}[F(X)]\big)^2\Big] \\
+&\qquad + \frac{1}{N^2} \sum_{i \neq j} \underbrace{\mathbb{E}\Big[F(X^{(i)}) - \mathbb{E}[F(X)]\Big]}_{=0} \, \underbrace{\mathbb{E}\Big[F(X^{(j)}) - \mathbb{E}[F(X)]\Big]}_{=0} \\
+&= \frac{1}{N^2} \sum_{i=1}^N \mathrm{Var}\big(F(X^{(i)})\big) = \frac{1}{N} \mathrm{Var}(F(X)).
+\end{aligned}$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why Monte Carlo "beats" the curse of dimensionality — and what it costs)</span></p>
+
+The remarkable feature of (5.4.3) is what it does *not* contain: the dimension $s$ of the integration domain. A tensor-product quadrature rule with $n$ points per direction and order $k$ achieves error $O(n^{-k})$ with $N = n^s$ points, i.e. error $O(N^{-k/s})$ — the rate collapses as $s$ grows. The MC rate $N^{-1/2}$ (in root-mean-square) is dimension-independent: the same estimator, the same analysis, whether $s = 3$ or $s = 10^6$ or $V$ is a function space.
+
+The price is twofold, and both points drive the rest of this chapter:
+
+* **The rate is slow.** $N^{-1/2}$ means one extra digit of accuracy costs a factor $100$ in samples. All improvements below (MLMC, QMC) attack precisely this: MLMC reduces the *constant* $\mathbb{V}$ by shifting variance to cheap coarse levels, QMC improves the *rate* towards $N^{-1}$ by giving up on independent random points.
+* **The constant is a variance.** The error is governed by $\mathbb{V}(F(X))$, not by smoothness of $F$. This is robust (no derivatives needed) but also means MC cannot exploit smoothness — which is exactly the information QMC uses (Assumption 5.4.8).
+
+</div>
+
+As discussed in Section 5.2, if $V$ is infinite dimensional or $F$ is given as $F(X) = \Psi(\mathcal{G}(X))$ for some operator $\mathcal{G} : V \to W$ and an infinite dimensional latent space $W$ with $\Psi : W \to \mathbb{R}$, it is necessary in practice to discretise the problem. The operator $\mathcal{G}$ could be the Radon transform and $\Psi$ the restriction operator to the measurement along a single line, or $\mathcal{G}$ could be the solution operator for the elliptic PDE that takes the diffusion coefficient $a$ to the solution $u$ and $\Psi$ could be a point evaluation of $u$ at some point in the domain. The general setting is then that $X\_s : \Omega \to V\_s := \mathbb{R}^s$ and $F\_h : V\_s \to \mathbb{R}$ are approximations of $X$ and $F$ with $\mu\_{X\_s} \ll \mu\_X$, parametrised by some parameters $h > 0$ and $s \in \mathbb{N}$, e.g. the FE mesh width and the truncation dimension for the Karhunen-Loève expansion. For simplicity, let us consider only the case $X\_s = X$ and denote by $Q := F(X)$ and $Q\_h := F\_h(X)$ the quantity of interest and its approximation.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.4.2</span><span class="math-callout__name">(Bias-Variance Decomposition)</span></p>
@@ -4330,6 +4415,20 @@ $$\mathcal{C}_\varepsilon(\widehat{Q}_{h, N_{\mathrm{MC}}}^{\mathrm{MC}}) \le C\
 
 </div>
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Where $\varepsilon^{-2-\gamma/\alpha}$ comes from — the balancing argument)</span></p>
+
+The exponent in Theorem 5.4.4 is not mysterious; it falls out of a two-line budgeting argument that is the template for *every* complexity result in this section. By the bias-variance decomposition (5.4.4), the MSE has two contributions, and we make each smaller than $\varepsilon^2/2$:
+
+* **Bias budget.** $\left(\mathbb{E}[Q\_h - Q]\right)^2 \le C h^{2\alpha} \overset{!}{\le} \varepsilon^2/2$ forces the mesh size $h \sim \varepsilon^{1/\alpha}$. By (5.4.7), one sample at this resolution then costs $\mathcal{C}(Q\_h) \sim h^{-\gamma} \sim \varepsilon^{-\gamma/\alpha}$.
+* **Variance budget.** $\mathbb{V}(Q\_h)/N \overset{!}{\le} \varepsilon^2/2$ forces $N \sim \varepsilon^{-2}$, since $\mathbb{V}(Q\_h)$ stays bounded as $h \to 0$.
+
+Total cost: $N \times (\text{cost per sample}) \sim \varepsilon^{-2} \cdot \varepsilon^{-\gamma/\alpha}$. The two factors expose the two independent inefficiencies of plain MC: the $\varepsilon^{-2}$ from the slow sampling rate, and the $\varepsilon^{-\gamma/\alpha}$ from paying full PDE-solve cost for *every single* sample. MLMC (next subsection) attacks the second factor, QMC the first.
+
+</div>
+
+Using (5.4.5), a similar result follows also for the $\varepsilon$-cost defined with respect to convergence in probability. We can deduce the following corollary.
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.4.5</span><span class="math-callout__name">(MC Complexity for Elliptic PDE)</span></p>
 
@@ -4347,7 +4446,7 @@ $$\mathbb{E}[Q_h] = \mathbb{E}[Q_{h_0}] + \sum_{\ell=1}^{L} \mathbb{E}[Q_{h_\ell
 
 For simplicity, we will choose
 
-$$h_{\ell-1} = m \, h_\ell, \quad \ell = 1, \ldots, L, \quad \text{for some } m \in \mathbb{N} \setminus \lbrace 1 \rbrace \text{ and } h_0 > 0, \tag{5.4.9}$$
+$$h_{\ell-1} = r \, h_\ell, \quad \ell = 1, \ldots, L, \quad \text{for some } r \in \mathbb{N} \setminus \lbrace 1 \rbrace \text{ and } h_0 > 0, \tag{5.4.9}$$
 
 i.e. uniform grid refinement for the elliptic PDE. With iid $X_\ell^{(i)} \sim \mu_X$, $\ell, i \in \mathbb{N}$, we define the **multilevel Monte Carlo (MLMC)** estimator for $\mathbb{E}[Q]$ as
 
@@ -4372,7 +4471,28 @@ $$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{L, \lbrace N_\ell \rbrace}^{ML}\Big) 
 
 </div>
 
-A sufficient condition to achieve this asymptotic $\varepsilon$-cost is that $N_\ell \propto (m^{\frac{\beta+\gamma}{2}})^{-\ell}$ with $L$ and $N_0$ chosen such that both of the two terms on the right hand side of (5.4.11) are equal to $\varepsilon^2/2$.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Reading the MLMC complexity theorem)</span></p>
+
+The telescoping sum (5.4.8) looks like an accounting trick, but it performs a genuine *decoupling of accuracy and cost*. In standard MC, every sample must be computed at the finest resolution $h$, so accuracy (small bias) and cost per sample are welded together. MLMC breaks the weld: the expectation is anchored by many cheap coarse samples ($\mathbb{E}[Q\_{h\_0}]$), and the fine levels only need to estimate the small *corrections* $Y\_\ell = Q\_{h\_\ell} - Q\_{h\_{\ell-1}}$.
+
+The crucial point is that the correction $Y\_\ell$ uses the **same sample** $X\_\ell^{(i)}$ for both resolutions in (5.4.10). Because $Q\_h \to Q$ samplewise, the two evaluations are strongly correlated and their difference has tiny variance: $\mathbb{V}(Y\_\ell) \le C h\_\ell^\beta \to 0$. Few samples suffice exactly where samples are expensive. (Across levels, on the other hand, the estimators $\widehat{Y}\_{\ell,N\_\ell}^{\mathrm{MC}}$ use *independent* samples, which is what makes the variances in (5.4.11) add.)
+
+The three cases in Theorem 5.4.6 answer one question: **which end of the level hierarchy dominates the total cost $\sum\_\ell N\_\ell \, \mathcal{C}(Y\_\ell)$?** With the optimal choice $N\_\ell \propto \sqrt{\mathbb{V}(Y\_\ell)/\mathcal{C}(Y\_\ell)}$ (a Lagrange-multiplier computation: minimise total cost subject to a fixed variance budget), the per-level cost scales like $h\_\ell^{(\gamma - \beta)/2}$:
+
+* $\beta > \gamma$ — variance decays faster than cost grows: the *coarsest* level dominates, and the total cost $\varepsilon^{-2}$ is that of a plain MC estimator whose samples cost $O(1)$. This is the best possible regime for any sampling method with rate $N^{-1/2}$.
+* $\beta = \gamma$ — all levels contribute equally; the $\|\log \varepsilon\|^2$ collects the $\sim \|\log \varepsilon\|$ levels.
+* $\beta < \gamma$ — cost grows faster than variance decays: the *finest* level dominates and the exponent degrades to $2 + (\gamma - \beta)/\alpha$ — still strictly better than MC's $2 + \gamma/\alpha$.
+
+For the elliptic model problem (Corollary 5.4.7) with piecewise linear FE and multigrid: $\alpha = 2$, $\beta = 4$ (variance of functional corrections decays at twice the bias rate) and $\gamma = d$, so for $d \le 3$ we are in the first two regimes — MLMC removes the *entire* PDE-solve penalty from the complexity.
+
+</div>
+
+A sufficient condition to achieve this asymptotic $\varepsilon$-cost is that
+
+$$N_\ell \propto \left( r^{\frac{\beta+\gamma}{2}} \right)^{-\ell} \tag{5.4.12}$$
+
+with $L$ and $N\_0$ chosen such that both of the two terms on the right hand side of (5.4.11) are equal to $\varepsilon^2/2$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.4.7</span><span class="math-callout__name">(MLMC Complexity for Elliptic PDE)</span></p>
@@ -4383,7 +4503,7 @@ $$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{L, \lbrace N_\ell \rbrace}^{ML}\Big) 
 
 </div>
 
-In the case of uniform mesh refinement in two spatial dimensions with $d = 2$ and $m = 2$, since the variance of $Y_\ell$ decreases with a rate $\beta = 4$, it follows from (5.4.12) that the number of samples can be reduced by a factor of $2^{(4+2)/2} = 8$ from level to level.
+In the case of uniform mesh refinement in two spatial dimensions with $d = 2$ and $r = 2$, since the variance of $Y\_\ell$ decreases with a rate $\beta = 4$, it follows from (5.4.12) that the number of samples can be reduced by a factor of $2^{(4+2)/2} = 8$ from level to level.
 
 #### 5.4.3 Quasi-Monte Carlo
 
@@ -4393,13 +4513,55 @@ The Karhunen-Loève expansion is truncated after $s$ terms, and we set $\Xi := (
 
 $$F := B \circ \mathcal{G} \circ T, \quad \text{such that} \quad \Xi \xrightarrow{T} a \xrightarrow{\mathcal{G}} u \xrightarrow{B} Q,$$
 
-where $T : V \to L^\infty(D)$ is the operator defined in Section 4.5.3 and $\mathcal{G} : L^\infty(D) \to H_0^1(D)$ is the solution operator. QMC methods are formulated as quadrature rules over the unit cube $[0, 1]^s$. Using the simple change of variables $x = 2v - \mathbf{1}$ from $[0, 1]$ to $[-1, 1]$, we will use a **randomly shifted rank-1 lattice rule** to approximate the integral. This takes the form
+where $T : V \to L^\infty(D)$ is the operator defined in Section 4.5.3 and $\mathcal{G} : L^\infty(D) \to H\_0^1(D)$ is the solution operator, mapping the coefficient $a$ to the PDE solution $u$. Similarly, we denote by $Q\_h := F\_h(\Xi)$ with $F\_h = B \circ \mathcal{G}\_h \circ T$ the FE approximation of $Q$, where $\mathcal{G}\_h : L^\infty(D) \to U\_h$ is the FE solution operator, mapping the coefficient $a$ to the FE solution $u\_h$.
+
+QMC methods are formulated as quadrature rules over the unit cube $[0, 1]^s$. Treating $\Xi$ as a deterministic parameter vector $\xi$ distributed according to product uniform measure,
+
+$$\mathbb{E}[Q] \approx \int_{[-1,1]^s} F_h(x) \, \mathrm{d}\mu_\Xi(x) = \int_{[0,1]^s} F_h(2v - \mathbf{1}) \, \mathrm{d}v, \tag{5.4.13}$$
+
+where we used the simple change of variables $x = 2v - \mathbf{1}$ from $[0, 1]$ to $[-1, 1]$. We will use a **randomly shifted rank-1 lattice rule** to approximate (5.4.13). This takes the form
 
 $$\widehat{Q}_{h,N}^{\mathrm{QMC}} = \frac{1}{N} \sum_{i=1}^{N} F_h(\tilde{\Xi}^{(i)}), \quad \text{where} \quad \tilde{\Xi}^{(i)} := 2 \operatorname{frac}\left(\frac{iz}{N} + \Delta\right) - \mathbf{1}, \tag{5.4.14}$$
 
-$z \in \lbrace 1, \ldots, N-1 \rbrace^J$ is a so-called **generating vector**, $\Delta$ is a uniformly distributed **random shift** on $[0, 1]^s$, and "frac" denotes the fractional part function, applied componentwise. Due to the random shift, (5.4.14) is an unbiased estimator of $\mathbb{E}\_{\mu_\Xi}[F_h(\Xi)]$ and thus we have — as for MC and MLMC —
+$z \in \lbrace 1, \ldots, N-1 \rbrace^s$ is a so-called **generating vector**, $\Delta$ is a uniformly distributed **random shift** on $[0, 1]^s$, and "frac" denotes the fractional part function, applied componentwise. To ensure that every one-dimensional projection of the lattice rule has $N$ distinct values we furthermore assume that each component $z\_j$ of $z$ satisfies $\gcd(z\_j, N) = 1$.
 
-$$\mathbb{E}\left[\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}} - \mathbb{E}[Q]\Big)^2\right] = \big(\mathbb{E}[Q_h - Q]\big)^2 + \mathbb{V}\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}}\Big). \tag{5.4.15}$$
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/qmc_lattice_rule.png' | relative_url }}" alt="Left: 55 points of a rank-1 lattice rule with generating vector z = (1, 34) in the unit square, arranged in strikingly regular diagonal lines that cover the square evenly. Right: 55 iid uniform pseudo-random points in the same square, showing visible clumps and gaps." loading="lazy">
+</figure>
+
+*Two-dimensional lattice rule with $N = 55$, $z = (1, 34)^\top$, $\Delta = (0, 0)^\top$ (left). The points are deterministic and cover the square far more evenly than $55$ iid uniform samples (right) — no clumps, no holes. The random shift $\Delta$ moves the whole pattern rigidly (modulo 1), which restores unbiasedness without destroying the even coverage.*
+
+Due to the random shift, (5.4.14) is an unbiased estimator of $\mathbb{E}\_{\mu\_\Xi}[F\_h(\Xi)]$ and thus we have — as for MC and MLMC —
+
+$$\mathbb{E}\left[\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}} - \mathbb{E}[Q]\Big)^2\right] = \big(\mathbb{E}[Q_h - Q]\big)^2 + \mathbb{V}\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}}\Big), \tag{5.4.15}$$
+
+where the variance of the QMC estimator is given by
+
+$$\mathbb{V}\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}}\Big) = \mathbb{E}_\Delta\left[\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}} - \mathbb{E}_{\mu_\Xi}[F_h(\Xi)]\Big)^2\right]. \tag{5.4.16}$$
+
+To bound it, we make the following assumption on the integrand $F\_h(\Xi)$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Assumption 5.4.8</span></p>
+
+Let $C > 0$ be a constant independent of $s$ and let $(\ell\_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$ be as defined in Example 4.5.17. We assume that, for any multi-index $\nu \in \lbrace 0, 1 \rbrace^s$ with $\|\nu\| = \sum\_{j \le s} \nu\_j$,
+
+$$\left| \frac{\partial^{|\nu|} F(\xi)}{\partial \xi^\nu} \right| \le C \frac{|\nu|!}{(\ln 2)^{|\nu|}} \prod_{j=1}^{s} \ell_j^{\nu_j}.$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What Assumption 5.4.8 is really saying)</span></p>
+
+Decode the bound coordinate by coordinate. Taking $\nu = e\_j$ (one derivative in direction $j$) gives $\|\partial F / \partial \xi\_j\| \lesssim \ell\_j$: the integrand's sensitivity to the $j$-th KL coordinate is controlled by the $j$-th KL weight. Since $(\ell\_j)\_j$ is summable and decaying, **the coordinates are ordered by importance and only the first few matter much** — the integrand is "effectively low-dimensional" even though $s$ may be huge. This is exactly the structure a lattice rule can exploit, and it is the real reason the variance bound in Lemma 5.4.9 is independent of $s$: the curse of dimensionality is not defeated in general, it is defeated *for integrands whose dependence on high coordinates decays*. Mixed derivatives (general $\nu \in \lbrace 0,1 \rbrace^s$) must satisfy the product version of the same bound, with a controlled combinatorial growth $\|\nu\|!/(\ln 2)^{\|\nu\|}$ in the order.
+
+For the elliptic model problem this is not an assumption we impose on the data — it is a *theorem* about the solution map: differentiating the weak form (5.2.1) with respect to $\xi\_j$ shows $\partial\_{\xi\_j} u$ solves the same PDE with right-hand side driven by $\ell\_j \varphi\_j$, and iterating gives precisely such product bounds.
+
+The payoff, comparing rates: randomly shifted lattice rules achieve RMSE close to $N^{-1}$ (take $\delta \to 1/2$, so variance $N^{-1/\delta} \to N^{-2}$) instead of MC's RMSE $N^{-1/2}$ — one extra digit of accuracy costs a factor $10$ instead of $100$ in samples, at essentially no extra cost per sample.
+
+</div>
+
+For linear functionals $B$ on $H\_0^1(D)$, this assumption has been proved in the uniform case. However, it can also be shown for nonlinear functionals.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.4.9</span><span class="math-callout__name">(QMC Variance Bound)</span></p>
@@ -4418,6 +4580,53 @@ for any $\delta \in (1/2, 1]$, **independently** of $s$.
 Suppose Assumption 5.4.8 holds and $(\ell_j)\_{j \in \mathbb{N}} \in \ell^r(\mathbb{N})$, for some $r \in (0, 2/3]$. Suppose further that the piecewise linear FE solution is computed with an optimal multigrid method, such that $\mathcal{C}(Q_h) \le Ch^{-d}$. Then, for any $\varepsilon > 0$, there exists $h > 0$ and $N \in \mathbb{N}$ such that
 
 $$\mathcal{C}_\varepsilon(\widehat{Q}_{h,N}^{\mathrm{QMC}}) \le C\varepsilon^{-2\delta - d/2}, \quad \text{for any } \delta \in (1/2, 1].$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 5.4.11</span></p>
+
+**(a)** It is even possible to combine quasi-Monte Carlo sampling and multilevel estimation and the gains are complementary [Kuo et al, 2015; Kuo et al, 2017], but we will not include these estimators or their analysis here.
+
+**(b)** For smooth random fields, e.g. fast decay of the $\ell\_j$ in Example 4.5.17, even faster convergence rates are possible with higher-order QMC rules [Dick et al, 2014] or with stochastic collocation and sparse grid quadrature rules.
+
+**(c)** Note that due to Remark 5.2.7 and the comments before Lemma 5.4.9, the statements of Corollaries 5.4.5, 5.4.7 and 5.4.10 also hold for Fréchet-differentiable nonlinear functionals $Q := B(u)$ and for nonuniform measures $\mu\_a$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.4.12</span><span class="math-callout__name">(Comparison of Sampling Methods in the Lognormal Case)</span></p>
+
+To compare the approaches, let us consider the elliptic PDE (5.2.1) for $D = (0, 1)^2$ (i.e., $d = 2$) and $f \equiv 1$, with lognormal diffusion coefficient $a \in L^\infty(D)$, i.e., $\log a \sim \mathcal{N}(m, C\_{\nu, \sigma^2, \lambda})$, with Matérn covariance $C\_{\nu, \sigma^2, \lambda}$. The **Matérn covariance function** is defined, for any $x, y \in D$, as
+
+$$c(x, y) := \sigma^2 \frac{2^{1-\nu}}{\Gamma(\nu)} \left( \frac{2\sqrt{\nu}\, |x - y|}{\lambda} \right)^{\nu} K_\nu\left( \frac{2\sqrt{\nu}\, |x - y|}{\lambda} \right),$$
+
+where $\Gamma$ and $K\_\nu$ are the Gamma-function and the modified Bessel function (of second kind) of order $\nu$, and where $\nu$, $\sigma^2$ and $\lambda$ are the so-called *smoothness parameter*, *total variance* and *correlation length*, respectively. The quantity of interest is
+
+$$Q(\omega) := \frac{1}{|D^\ast|} \int_{D^\ast} u(x, \omega) \, \mathrm{d}x, \quad \text{with} \quad D^\ast := \left( \tfrac{3}{4}, \tfrac{7}{8} \right) \times \left( \tfrac{7}{8}, 1 \right).$$
+
+For a comparison of the sampling approaches discussed above, we use piecewise linear FEs on a uniform simplicial mesh to discretise the PDE and a truncated Karhunen-Loève expansion to sample from $\log a$ for $\nu = 2.5$. In that case, all the relevant assumptions in Corollaries 5.4.5 and 5.4.7 are satisfied and the assumptions of (the lognormal equivalent of) Corollary 5.4.10 hold with $(\ell\_j)\_{j \in \mathbb{N}} \in \ell^r(\mathbb{N})$ and $r < 2/3$. The theoretical complexity bounds, as well as the theoretical bound for multilevel QMC (MLQMC), are collected in Table 5.1. We see that in dimension $d \ge 2$, the cost of MLQMC is asymptotically optimal, in the sense that even computing a single sample to accuracy $\varepsilon$ has the same asymptotic complexity.
+
+| $d$ | MC | MLMC | QMC | MLQMC | One sample |
+|-----|-----|------|-----|-------|------------|
+| 1   | 2.5 | 2    | 1.5 | 1     | 0.5        |
+| 2   | 3   | 2    | 2   | 1     | 1          |
+| 3   | 3.5 | 2    | 2.5 | 1.5   | 1.5        |
+
+*Table 5.1: Theoretical bounds on the order of growth of the $\varepsilon$-cost with respect to $\varepsilon^{-1}$, for the lognormal case for $\nu = 2.5$ (ignoring log-factors and choosing $\delta = 1/2$ in Corollary 5.4.10).*
+
+In numerical experiments (measured $\varepsilon$-costs for $\nu = 2.5$, $\sigma^2 = 0.25$ and $\lambda = 1$, with levels $L = 1, \ldots, 5$ and $h\_0 = \sqrt{2}/8$), these theoretical bounds are attained in practice. For the QMC methods, an embedded lattice rule with weights $\gamma\_j = j^{-2}$ was used, with generating vector taken from the file `lattice-39102-1024-1048576.3600.txt` on Frances Kuo's webpage (UNSW Sydney).
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(How to read Table 5.1)</span></p>
+
+The table rewards a careful look, because it summarises the entire section in one grid:
+
+* **Read along a row** (fixed $d$): each method to the right strictly improves the exponent — MC $\to$ MLMC removes (most of) the PDE-solve penalty $\gamma/\alpha = d/2$; MC $\to$ QMC replaces the sampling exponent $2$ by $2\delta \approx 1$; MLQMC stacks both gains.
+* **Read down a column**: for MC and QMC the exponent grows with $d$ (the per-sample PDE solve gets more expensive), while for MLMC it is flat at $2$ — the multilevel construction has completely decoupled the complexity from the spatial dimension, as predicted by the $\beta > \gamma$ / $\beta = \gamma$ cases of Theorem 5.4.6.
+* **The "One sample" column is the sanity bound**: no estimator can possibly be cheaper than computing a single realisation of $Q\_h$ with bias $\varepsilon$, which costs $h^{-d} \sim \varepsilon^{-d/2}$. MLQMC matching this bound (for $d \ge 2$, up to log-factors) is the strongest statement one can make: *the quadrature is asymptotically free; only the bias constraint remains.*
 
 </div>
 
@@ -4456,6 +4665,8 @@ $$\sigma_q^2 = \int_{\mathcal{S}} \frac{(F(x)p(x))^2}{q(x)} \, \mathrm{d}x - m^2
 
 </div>
 
+Theorem 5.5.1 guides us in selecting a good importance sampling rule. From the first expression in (5.5.3) we see that a better $q$ is one that gives a smaller value of $\int\_{\mathcal{S}} (Fp)^2/q \, \mathrm{d}x$.
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.5.2</span><span class="math-callout__name">(Optimal Importance Density)</span></p>
 
@@ -4463,16 +4674,34 @@ Let $\mathbb{E}\_p[\|F(X)\|] \neq 0$. The probability density $q^\ast$ with $q^\
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 5.5.2</summary>
+
+Let $q^\ast(x) = \|F(x)\|p(x) / \mathbb{E}\_p\big[\|F(X)\|\big]$ and let $q$ be an arbitrary density such that $q(x) > 0$ when $F(x)p(x) \neq 0$. Then
+
+$$\begin{aligned}
+m^2 + \sigma_{q^\ast}^2 &= \int_{\mathcal{S}} \frac{F(x)^2 p(x)^2}{q^\ast(x)} \, \mathrm{d}x = \int_{\mathcal{S}} \frac{F(x)^2 p(x)^2}{|F(x)| p(x) \big/ \mathbb{E}_p\big[|F(X)|\big]} \, \mathrm{d}x \\
+&= \Big( \mathbb{E}_p\big[|F(X)|\big] \Big)^2 = \left( \mathbb{E}_q\left[ \frac{|F(X)| p(X)}{q(X)} \right] \right)^2 \le \mathbb{E}_q\left[ \frac{F(X)^2 p(X)^2}{q(X)^2} \right] = m^2 + \sigma_q^2,
+\end{aligned}$$
+
+where the inequality is Jensen's inequality (or equivalently Cauchy-Schwarz) applied to the RV $\|F(X)\| p(X)/q(X)$ under $q$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.5.3</span></p>
 
-If $F(x) > 0$ is positive where $p(x) > 0$ and $m > 0$, then the optimal density $q^\ast = \frac{1}{m}Fp$ has $\sigma_{q^\ast}^2 = 0$, but it is of no practical interest, because each of the samples in $\widehat{Q}\_{q^\ast,N}^{\mathrm{IS}}$ becomes $F(X^{(i)})p(X^{(i)})/q^\ast (X^{(i)}) = m$, which is available only if we know the final result anyway. Although zero-variance importance sampling densities are not usable, they provide insight into the design of a good importance sampling scheme. It may be good for $q$ to have spikes in the same places that $\|F\|$ does, or where $p$ does, but it is even better to have them where $\|F\|p$ does. The appearance of $q$ in the denominator of $w = p/q$, means that light-tailed importance densities $q$ are dangerous. So as a rule $q$ should have tails at least as heavy as $p$ does.
+If $F(x) > 0$ is positive where $p(x) > 0$ and $m > 0$, then the optimal density $q^\ast = \frac{1}{m}Fp$ has $\sigma\_{q^\ast}^2 = 0$, but it is of no practical interest, because each of the samples in $\widehat{Q}\_{q^\ast,N}^{\mathrm{IS}}$ becomes $F(X^{(i)})p(X^{(i)})/q^\ast (X^{(i)}) = m$, which is available only if we know the final result anyway. Although zero-variance importance sampling densities are not usable, they provide insight into the design of a good importance sampling scheme. It may be good for $q$ to have spikes in the same places that $\|F\|$ does, or where $p$ does, but it is even better to have them where $\|F\|p$ does. The appearance of $q$ in the denominator of $w = p/q$ means that light-tailed importance densities $q$ are dangerous. If we are clever or lucky, then $F$ might be small just where it needs to be to offset the small denominator. But we often need to use the same sample with multiple integrands $F$, and so as a rule $q$ should have tails at least as heavy as $p$ does.
 
 </div>
 
 In the Bayesian setting we can only sample from an unnormalized version of $p$, $p_u(x) = cp(x)$, where $c > 0$ is unknown. The same may be true of $q$, e.g., if we can compute $q_u(x) = bq(x)$ and $b > 0$ might be unknown. In general, $b \neq c$ and thus $p(x)/q(x) \neq p_u(x)/q_u(x)$. However, we may compute the ratio $w_u(x) = p_u(x)/q_u(x) = (c/b)p(x)/q(x)$ and consider the **self-normalized importance sampling estimator** or **ratio estimator**
 
 $$\widehat{Q}_{q,N}^{\mathrm{RE}} := \frac{\sum_{i=1}^{N} F(X^{(i)}) w_u(X^{(i)})}{\sum_{i=1}^{N} w_u(X^{(i)})} = \frac{\frac{1}{N}\sum_{i=1}^{N} F(X^{(i)}) w(X^{(i)})}{\frac{1}{N}\sum_{i=1}^{N} w(X^{(i)})} \quad \text{with iid } X^{(i)} \sim q. \tag{5.5.4}$$
+
+To obtain iid samples of $q$ it suffices to know $q\_u$, and the factor $b/c$ cancels from the numerator and the denominator in (5.5.4), leading to the same estimate as if we had used the desired ratio $w(x) = p(x)/q(x)$ instead of the computable alternative $w\_u(x)$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.5.4</span><span class="math-callout__name">(Ratio Estimator Convergence)</span></p>
@@ -4486,6 +4715,34 @@ but in general $\mathbb{E}\_q[\widehat{Q}\_{q,N}^{\mathrm{RE}}] \neq m$, i.e. th
 $$\sqrt{N}\Big(\widehat{Q}_{q,N}^{\mathrm{RE}} - m\Big) \xrightarrow{d}{N \to \infty} \mathcal{N}(0, \sigma_q^2), \tag{5.5.6}$$
 
 with **asymptotic variance** $\sigma_q^2$, as defined in (5.5.3).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 5.5.4</summary>
+
+Consider the second form of the definition of $\widehat{Q}\_{q,N}^{\mathrm{RE}}$ in (5.5.4). The numerator is equal to $\widehat{Q}\_{q,N}^{\mathrm{IS}}$, which we have already seen is an unbiased estimator of $m$. The strong law of large numbers gives $\mathbb{P}\big( \lim\_{N \to \infty} \widehat{Q}\_{q,N}^{\mathrm{IS}} = m \big) = 1$. Using the same arguments as for the numerator also for the denominator, but with the constant functional $F \equiv 1$, we see that the denominator converges almost surely to $\mathbb{E}\_q[w(X)] = \int p(x) \, \mathrm{d}x = 1$, which implies (5.5.5).
+
+To see that in general $\widehat{Q}\_{q,N}^{\mathrm{RE}}$ is biased, consider $N = 1$, $p \neq q$ and $F(x) = x$. Then the weights cancel completely,
+
+$$\mathbb{E}_q\big[\widehat{Q}_{q,N}^{\mathrm{RE}}\big] = \mathbb{E}_q\left[ \frac{F(X^{(1)}) w(X^{(1)})}{w(X^{(1)})} \right] = \mathbb{E}_q\big[X^{(1)}\big] \neq \mathbb{E}_p\big[X^{(1)}\big] = m.$$
+
+The result in (5.5.6) can be shown using again the Central Limit Theorem.
+
+</details>
+</div>
+
+Note that the conditions on $q$ for the ratio estimator are slightly stronger than for the importance sampling estimator, i.e., we need $q(x) > 0$ whenever $p(x) > 0$, rather than only whenever $F(x)p(x) \neq 0$.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The ratio estimator: what is traded for not knowing $Z$)</span></p>
+
+The self-normalised estimator is the workhorse of Bayesian computation, so it pays to be precise about what exactly is lost and kept compared to plain importance sampling:
+
+* **Kept: consistency and the CLT rate.** By (5.5.5)-(5.5.6), $\widehat{Q}\_{q,N}^{\mathrm{RE}}$ still converges a.s. and still fluctuates at scale $N^{-1/2}$, with the *same* asymptotic variance $\sigma\_q^2$ as the (infeasible) importance sampling estimator. Asymptotically, not knowing the normalising constant is free.
+* **Lost: unbiasedness at finite $N$.** The estimator is a ratio of two correlated random quantities, and $\mathbb{E}[A/B] \neq \mathbb{E}[A]/\mathbb{E}[B]$. The bias is $O(1/N)$ — one order smaller than the $O(N^{-1/2})$ statistical error, hence usually harmless — but it is structural: no finite-sample trick removes it. (Contrast with MC and MLMC, which were exactly unbiased for $\mathbb{E}[Q\_h]$.)
+* **The denominator is the weak point.** The denominator $\frac{1}{N} \sum\_i w(X^{(i)})$ estimates $1$, but if $q$ is a poor match for $p$, the weights $w = p/q$ are wildly variable: most samples get negligible weight and a few dominate — the *weight degeneracy* phenomenon. A useful diagnostic is the **effective sample size** $N\_{\mathrm{eff}} = \big( \sum\_i w\_i \big)^2 / \sum\_i w\_i^2 \in [1, N]$, which measures how many "ideal" samples the weighted ensemble is worth. Exactly this degeneracy, quantified in Lemma 5.5.10 below, is what breaks prior-based importance sampling in the small-noise limit and motivates Section 5.5.3.
 
 </div>
 
@@ -4514,9 +4771,35 @@ If $q(x) > 0$ when $p(x) > 0$ and $\lVert \widehat{Q}\_{q,h,N}^{\mathrm{RE}} \rV
 
 $$\mathbb{E}\left[\Big(\widehat{Q}_{q,h,N}^{\mathrm{RE}} - \mathbb{E}_p[Q]\Big)^2\right] \le CZ^{-2} \left( \mathbb{E}\left[(\widehat{Q}_{w,h} - \mathbb{E}_q[Q_w])^2\right] + \mathbb{E}\left[(\widehat{Z}_h - Z)^2\right] \right), \tag{5.5.8}$$
 
-where $C := 2\max\big(1, \lVert \widehat{Q}\_{q,h,N}^{\mathrm{RE}} \rVert_{L^\infty(\Omega)}^2\big)$.
+where $C := 2\max\big(1, \lVert \widehat{Q}\_{q,h,N}^{\mathrm{RE}} \rVert\_{L^\infty(\Omega)}^2\big)$. The expected value is with respect to $q$ in the case of MC and MLMC and with respect to the random shift $\Delta \sim \mathrm{uniform}(0, 1)^s$ in QMC.
 
 </div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 5.5.5</summary>
+
+Rearranging the error and using the triangle inequality, we have
+
+$$\begin{aligned}
+\mathbb{E}\left[\Big(\widehat{Q}_{q,h,N}^{\mathrm{RE}} - \mathbb{E}_p[Q]\Big)^2\right]
+&= \frac{1}{Z^2} \mathbb{E}\left[\Big(\widehat{Q}_{w,h} - \mathbb{E}_q[Q_w] - \big(\widehat{Q}_{w,h}\big/\widehat{Z}_h\big)\big(\widehat{Z}_h - Z\big)\Big)^2\right] \\
+&\le \frac{2}{Z^2} \, \mathbb{E}\left[\Big(\widehat{Q}_{w,h} - \mathbb{E}_q[Q_w]\Big)^2 + \Big(\widehat{Q}_{q,h,N}^{\mathrm{RE}}\Big)^2 \Big(\widehat{Z}_h - Z\Big)^2\right] \\
+&\le \frac{2}{Z^2} \max\Big(1, \lVert \widehat{Q}_{q,h,N}^{\mathrm{RE}} \rVert_{L^\infty(\Omega)}^2\Big) \left( \mathbb{E}\left[\Big(\widehat{Q}_{w,h} - \mathbb{E}_q[Q_w]\Big)^2\right] + \mathbb{E}\left[\Big(\widehat{Z}_h - Z\Big)^2\right] \right).
+\end{aligned}$$
+
+For the first equality, note that
+
+$$\widehat{Q}_{q,h,N}^{\mathrm{RE}} - \mathbb{E}_p[Q] = \frac{\widehat{Q}_{w,h}}{\widehat{Z}_h} - \frac{\mathbb{E}_q[Q_w]}{Z} = \frac{1}{Z}\left( \widehat{Q}_{w,h} - \mathbb{E}_q[Q_w] - \frac{\widehat{Q}_{w,h}}{\widehat{Z}_h}\big(\widehat{Z}_h - Z\big) \right).$$
+
+</details>
+</div>
+
+In the following, let $p = \pi\_{X\mid Y}$ and denote by
+
+$$\widehat{Q}_{q,h,\mathrm{typ}}^{\mathrm{RE}} = \widehat{Q}_{w,h}^{\mathrm{typ}} \Big/ \widehat{Z}_h^{\mathrm{typ}} \quad \text{with} \quad \mathrm{typ} = \mathrm{MC},\ \mathrm{ML},\ \mathrm{QMC},$$
+
+the ratio estimator defined in (5.5.7) for the posterior expectation $\mathbb{E}\_p[Q]$ with $\widehat{Q}\_{w,h}^{\mathrm{typ}}$ chosen to be the MC estimator, the MLMC estimator or the QMC estimator for $\mathbb{E}\_q[Q\_w]$, respectively, and let $\widehat{Z}\_h^{\mathrm{typ}}$ be the corresponding estimator for the normalization constant. Then, Lemma 5.5.5 implies that the convergence and the computational complexity of the ratio estimator (5.5.7) follow directly from the results on the basic estimators in Section 5.4.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.5.6</span><span class="math-callout__name">(Complexity of the Ratio Estimator)</span></p>
@@ -4527,6 +4810,8 @@ $$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{q,h,\mathrm{typ}}^{\mathrm{RE}}\Big) 
 
 </div>
 
+A similar result can be proved also for the QMC-based ratio estimator.
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.5.7</span></p>
 
@@ -4534,9 +4819,80 @@ The asymptotic order of the $\varepsilon$-cost is independent of the choice of t
 
 </div>
 
+Let us give some more details for all three estimators in the case of the elliptic PDE with uniform diffusion coefficient $a$. As in Section 5.4.3, we assume that $a$ is discretised via a truncated Karhunen-Loève expansion parametrised via $\Xi \sim \mathrm{uniform}(-1, 1)^s$. The first and most obvious choice for the importance distribution is the prior distribution, i.e. $q = \pi\_\Xi$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 5.5.8</span><span class="math-callout__name">(Complexity of the Prior-Based Ratio Estimator for the Elliptic PDE)</span></p>
+
+Consider the elliptic PDE in Section 5.4.3 with $p = \pi\_{\Xi\mid Y}$ and $q = \pi\_\Xi$. Let $\mathrm{typ} = \mathrm{MC}$, QMC or ML, and consider the ratio estimator $\widehat{Q}\_{q,h,\mathrm{typ}}^{\mathrm{RE}}$ for the posterior expectation $\mathbb{E}\_p[Q]$ of $Q = F(\Xi)$ under the assumptions of Corollaries 5.4.5, 5.4.7, or 5.4.10, respectively. In the QMC case, let $(\ell\_j)\_{j \in \mathbb{N}} \in \ell^r(\mathbb{N})$ with $r < 2/3$; in the MLMC case, let $h\_0$ be sufficiently small.
+
+Let $Q = F(\Xi) := B(u)$ and $\Phi(\Xi) := H(u)$ with $B$ and $H$ two bounded (and sufficiently smooth) functionals of the PDE solution from $H\_0^1(D)$ to $\mathbb{R}$ and $\mathbb{R}^m$, respectively. Then, for any $0 < \varepsilon < e^{-1}$ there exists an $h > 0$ and an $N \in \mathbb{N}$, resp. $\lbrace N\_\ell \rbrace \subset \mathbb{N}$, such that
+
+$$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{q,h,\mathrm{typ}}^{\mathrm{RE}}\Big) \le C \begin{cases} (Z\varepsilon)^{-2-d/2}, & \text{if typ} = \mathrm{MC}, \\ (Z\varepsilon)^{-2}, & \text{if typ} = \mathrm{ML}, \\ (Z\varepsilon)^{-1+\delta-d/2}, & \text{if typ} = \mathrm{QMC}, \quad \text{for any } \delta > 0. \end{cases}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 5.5.8</summary>
+
+Since the unnormalised weight function $w\_{u,h}(\xi) = \exp\big( -\frac{1}{2} \lVert y - H(u\_h(\xi)) \rVert\_\Sigma^2 \big)$ and the product $F\_h(\xi) w\_{u,h}(\xi) = B(u\_h(\xi)) \exp\big( -\frac{1}{2} \lVert y - H(u\_h(\xi)) \rVert\_\Sigma^2 \big)$ are both sufficiently smooth, nonlinear functionals of the PDE solution, the extension of Theorem 5.2.5 referred to in Remark 5.2.7(a) applies and it is possible to prove analogues of Corollaries 5.4.5, 5.4.7 and 5.4.10 for nonlinear functionals to bound the right hand side of (5.5.8). For a full proof of this extension see [Scheichl, Stuart, Teckentrup, 2017].
+
+Since by definition $q(\xi) > 0$ when $p(\xi) > 0$, we have $Z > 0$. Thus, provided $\lVert \widehat{Q}\_{q,h,N}^{\mathrm{RE}} \rVert\_{L^\infty(\Omega)} < \infty$, we can apply Lemma 5.5.5 and deduce that
+
+$$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{q,h,\mathrm{typ}}^{\mathrm{RE}}\Big) \le C \left( \mathcal{C}_{Z\varepsilon}\Big(\widehat{Q}_{w,h}^{\mathrm{typ}}\Big) + \mathcal{C}_{Z\varepsilon}\Big(\widehat{Z}_h^{\mathrm{typ}}\Big) \right).$$
+
+Note that to compensate the factor $Z^{-2}$ in (5.5.8) we need to scale the required tolerances $\varepsilon$ for the individual estimators for the numerator and the denominator by $Z$.
+
+It remains to verify $\lVert \widehat{Q}\_{q,h,N}^{\mathrm{RE}} \rVert\_{L^\infty(\Omega)} < \infty$. From the assumptions on $B$ and $H$ we deduce that there exist two constants $M\_F, M\_\Phi < \infty$, such that $\|F\_h(\xi)\| \le M\_F$ and $\lVert \Phi\_h(\xi) \rVert\_\Sigma \le M\_\Phi$, for any $\xi \in [-1, 1]^s$ and for any $h > 0$. Thus, recalling that $w\_{u,h}(\xi) \le 1$, we have
+
+$$\Big|\widehat{Q}_{w,h}^{\mathrm{MC}}\Big| = \left| \frac{1}{N} \sum_{i=1}^N F_h(\xi^{(i)}) w_{u,h}(\xi^{(i)}) \right| \le M_F \quad \text{and}$$
+
+$$\widehat{Z}_h^{\mathrm{MC}} = \frac{1}{N} \sum_{i=1}^N w_{u,h}(\xi^{(i)}) = \frac{1}{N} \sum_{i=1}^N \exp\left( -\frac{1}{2} \big\lVert y - \Phi_h(\xi^{(i)}) \big\rVert_\Sigma^2 \right) \ge \exp\left( -\lVert y \rVert_\Sigma^2 - M_\Phi^2 \right) =: M_Z > 0,$$
+
+and thus $\big\|\widehat{Q}\_{q,h,\mathrm{MC}}^{\mathrm{RE}}\big\| \le M\_F / M\_Z < \infty$. The proof for $\mathrm{typ} = \mathrm{QMC}$ is identical.
+
+For $\mathrm{typ} = \mathrm{ML}$, the upper bound follows in the same way. On the other hand, to bound $\widehat{Z}\_h^{\mathrm{ML}}$ we can use the nonlinear extension of Theorem 5.2.5 again to obtain, with $Y\_\ell = w\_{u,h\_\ell} - w\_{u,h\_{\ell-1}}$, that
+
+$$\widehat{Z}_h^{\mathrm{ML}} \ge \widehat{Z}_{h_0}^{\mathrm{MC}} - \sum_{\ell=1}^L \widehat{Y}_{\ell,N_\ell}^{\mathrm{MC}} \ge M_Z - C \sum_{\ell=1}^L h_\ell^2,$$
+
+with a constant $C$ independent of $\lbrace h\_\ell \rbrace$. Thus, if $h\_0$ is sufficiently small, such that $\sum\_{\ell=1}^L h\_\ell^2 < M\_Z / C$, we also have $\big\|\widehat{Q}\_{q,h,\mathrm{ML}}^{\mathrm{RE}}\big\| < \infty$.
+
+</details>
+</div>
+
+For $\widehat{Q}\_{q,h,\mathrm{ML}}^{\mathrm{RE}}$, a similar result can also be proved for the case of a lognormal PDE coefficient $a$ (see again [Scheichl, Stuart, Teckentrup, 2017]).
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.5.9</span><span class="math-callout__name">(Continuation of Example 5.4.12 — Ratio Estimators in the Lognormal Case)</span></p>
+
+For a numerical comparison we return again to the lognormal case of the elliptic PDE with Matérn covariance on $D = (0, 1)^2$ discretised by piecewise linear FEs. However, in the following experiments we choose $\nu = 1/2$, $\sigma^2 = 1$ and $\lambda = 0.3$, which is a significantly harder case than the one considered in Example 5.4.12. Due to the low regularity, in that case it is only possible to prove
+
+$$\lVert Bu - Bu_h \rVert_{L^p(\Omega; \mathbb{R}^m)} \le Ch$$
+
+for any bounded linear functional $B : H\_0^1(D) \to \mathbb{R}^m$. Thus, the assumptions in Section 5.4 only hold with $\alpha = 1$, $\beta = 2$ and $\gamma = 2$, and the theoretically expected $\varepsilon$-costs are $\mathcal{O}(\varepsilon^{-4})$, $\mathcal{O}(\varepsilon^{-3})$ and $\mathcal{O}(\varepsilon^{-2})$ for $\mathrm{typ} = \mathrm{MC}$, QMC and ML, respectively.
+
+We consider the case of $f \equiv 0$ and mixed boundary conditions, such that
+
+$$u(x) = 1 \text{ for } x_1 = 0, \quad u(x) = 0 \text{ for } x_1 = 1, \quad \text{and} \quad \frac{\partial u}{\partial x_2}(x) = 0 \text{ on the rest of the boundary},$$
+
+leading to a flow of heat (or fluid) from $x\_1 = 0$ to $x\_1 = 1$. The quantity of interest is the outflow over the boundary at $x\_1 = 1$, which can be computed as
+
+$$Q_h = Hu_h = -\int_D a(x, \omega) \nabla u_h(x, \omega)^\top \nabla w_h(x) \, \mathrm{d}x,$$
+
+for a suitably chosen weight function $w\_h$ with $w\_h = 0$ on $x\_1 = 0$ and $w\_h = 1$ on $x\_1 = 1$. The observation functional $B : H\_0^1(D) \to \mathbb{R}^m$ consists of $m$ local averages of the PDE solution $u$ at $m$ uniformly distributed points in $D$. The data $y \in \mathbb{R}^m$ is generated synthetically from a reference solution with $h^\ast = 1/256$, adding noise in the form of a realisation of $E \sim \mathcal{N}(0, \Sigma)$ with $\Sigma = \sigma\_E^2 I$. For more details see [Scheichl, Stuart, Teckentrup, 2017].
+
+The numerical results (for $h = 1/16, \ldots, 1/256$, $m = 9$ and $\sigma\_E^2 = 0.09$) show the following:
+
+* The measured $\varepsilon$-costs of the three ratio estimators attain the predicted rates $\varepsilon^{-4}$, $\varepsilon^{-3}$, $\varepsilon^{-2}$. One can distinguish *dependent* estimators, where the same random samples are used in $\widehat{Q}\_{w,h}^{\mathrm{typ}}$ and $\widehat{Z}\_h^{\mathrm{typ}}$, from *independent* estimators, where different random samples are used; the dependent variants perform better.
+* The discretisation errors and the MC sampling errors of the numerator $\widehat{Q}\_{w,h}$, the denominator $\widehat{Z}\_h$ and the ratio estimate itself all converge with the same (predicted) rates, but **the error of the ratio estimate is several orders of magnitude bigger**. This is due to the factor $Z^{-2}$ on the right hand side of (5.5.8).
+* Note that $Z \to 0$ as $\sigma\_E^2 \to 0$ (small-noise limit) or as $m \to \infty$ (large-data limit). This blow-up is clearly visible in the measured asymptotic variance of the ratio estimators as functions of $\sigma\_E^2$ and $m$; the growth for the independent ratio estimators is significantly faster than for the dependent ones.
+
+</div>
+
 #### 5.5.3 Data-Informed Importance Distributions -- Preconditioning
 
-The lack of robustness of the ratio estimator with respect to the prior density $q = \pi_X$ can be clearly seen when considering again the scaled posterior log-likelihood $n\Psi_n(x)$ with $\Psi_n$ defined in (5.3.5). In the small noise limit, $Z = \mathbb{E}\_q[w_u(X)] = \int_{\mathbb{R}^s} \exp\left(-\frac{n}{2}\lVert y - \Phi(x) \rVert_\Sigma^2\right) \pi_X(x) \, \mathrm{d}x \to 0$ as $n \to \infty$, and so the bound on the MSE of the ratio estimator in Lemma 5.5.5 explodes with $n \to \infty$.
+The lack of robustness of the ratio estimator with respect to the prior density $q = \pi\_X$ observed in Example 5.5.9 can be clearly seen when considering again the scaled posterior log-likelihood $n\Psi\_n(x)$ with $\Psi\_n$ defined in (5.3.5). In the small noise limit, $Z = \mathbb{E}\_q[w\_u(X)] = \int\_{\mathbb{R}^s} \exp\left(-\frac{n}{2}\lVert y - \Phi(x) \rVert\_\Sigma^2\right) \pi\_X(x) \, \mathrm{d}x \to 0$ as $n \to \infty$, and so the bound on the MSE of the ratio estimator in Lemma 5.5.5 explodes with $n \to \infty$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.5.10</span><span class="math-callout__name">(Prior-Based Ratio Estimator Variance Explosion)</span></p>
@@ -4544,6 +4900,19 @@ The lack of robustness of the ratio estimator with respect to the prior density 
 *(Schillings, Sprungk, Wacker, 2020).* For a RV $X : \Omega \to \mathbb{R}^s$ and a sufficiently smooth and measurable $F : \mathbb{R}^s \to \mathbb{R}$, consider the scaled posterior log-likelihood $n\Psi_n(x)$ with $\Psi_n$ defined in (5.3.5). Under the assumptions of Theorem 5.3.3 with $p = \pi_{X\mid Y}$ and $q = \pi_X$, there exist $0 < c < C$ such that the asymptotic variance $\sigma_q^2$ of $\widehat{Q}\_{q,N}^{\mathrm{RE}}$ satisfies
 
 $$cn^{s/2} \mathbb{V}_p(F(X)) \le \sigma_q^2 \le Cn^{s/2} \mathbb{V}_p(F(X)).$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Where the $n^{s/2}$ blow-up comes from — a geometric picture)</span></p>
+
+Lemma 5.5.10 looks like a technical variance estimate, but the mechanism is simple enough to reconstruct on a napkin, and doing so explains both the exponent and its dependence on the dimension $s$:
+
+* As $n \to \infty$, the posterior $p = \pi\_{X \mid Y}$ concentrates in an ellipsoid of radius $\sim n^{-1/2}$ *in each of the $s$ directions* around $x\_{\mathrm{MAP},n}$ (this is the Laplace/Bernstein-von-Mises picture from Section 5.3). Its "volume" therefore scales like $n^{-s/2}$.
+* Samples are drawn from the **prior**, which stays put. The probability that a prior sample lands inside the region where the posterior actually lives is $\sim \pi\_X(x\_{\mathrm{MAP}}) \cdot n^{-s/2}$; all other samples receive (relatively) negligible weight $w\_u = p\_u/q\_u$.
+* So out of $N$ prior samples, only about $N n^{-s/2}$ are "effective" — the effective sample size collapses, and since the MSE of an average scales inversely with the effective number of samples, the variance is inflated by the reciprocal factor $n^{s/2}$. That is exactly the lemma.
+
+Two consequences: the failure is **exponential in the parameter dimension** (for fixed $n$, doubling $s$ squares the penalty), and it is *not* fixed by taking more samples — $N$ would have to grow like $n^{s/2}$, which is precisely the curse of dimensionality that sampling methods were supposed to avoid. The fix has to change $q$, not $N$: move the importance distribution to where the posterior mass is. That is the sense in which the Laplace approximation below acts as a **preconditioner** — same estimator, same rates, but the constant $Z = \mathbb{E}\_q[w\_u]$ is pushed from $\approx 0$ back to $\approx 1$.
 
 </div>
 
@@ -4562,7 +4931,32 @@ i.e. the error of the Laplace-based ratio estimator converges in probability to 
 
 </div>
 
-It is also possible to use other preconditioners. For example, **TT-cross approximations**, i.e. low-rank tensor approximations of the unnormalised posterior density $p_u \propto \pi_{X\mid Y}$ as the unnormalised importance distribution $q_u$. By increasing the ranks in the low-rank approximation, it is possible to make $w_u(x)$ arbitrarily close to 1. This will be discussed in more detail in Section 5.7.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.5.12</span><span class="math-callout__name">(Robustness of the Laplace-Based Ratio Estimator)</span></p>
+
+The following numerical experiment for the elliptic (P)DE on $(0, 1)$ (i.e. for $d = 1$), with $u = 0$ at $x = 0$ and $x = 1$ and $f(x) = 100x$, is taken from [Schillings, Sprungk, Wacker, 2020]. It is a toy example with uniform $a$, with $\Xi \sim \mathrm{uniform}(-1, 1)^s$, for $s = 1, 2, 3$, and
+
+$$\ell_j \varphi_j(x) = (10j)^{-1} \sin(j\pi x).$$
+
+The data are $m = 2$ (resp. 7) measurements $y\_k = u(x\_k^\ast)$ of the solution at equally spaced points $x\_k^\ast \in (0, 1)$ for $s = 1, 2$ (resp. 3), with measurement noise $E\_n \sim \mathcal{N}\big(0, (100n)^{-1} I\big)$ for $n \in \mathbb{N}$. The quantity of interest is $Q = u(0.5)$.
+
+Estimating the root mean square error of $\widehat{Q}\_{q,\mathrm{QMC}}^{\mathrm{RE}}$ (a randomised lattice rule with 8192 points, averaged over 64 random shifts) as a function of the noise level over many orders of magnitude ($n = 10^2, \ldots, 10^{10}$) reveals exactly the dichotomy predicted by Lemma 5.5.10 and Theorem 5.5.11: for the **prior-based** estimator ($q = \pi\_X$) the RMSE deteriorates dramatically as the noise level decreases — and the more so the larger $s$ — while for the **Laplace-based** importance distribution the RMSE remains uniformly small, in fact slightly *improving* as $n \to \infty$.
+
+</div>
+
+It is also possible to use other preconditioners. For example, one can use **TT-cross approximations**, i.e. low-rank tensor approximations of the unnormalised posterior density $p\_u \propto \pi\_{X\mid Y}$, as the unnormalised importance distribution $q\_u$ [Dolgov, Anaya-Izquierdo, Fox & Scheichl, 2020]. By increasing the ranks in the low-rank approximation, it is possible to make $w\_u(x)$ arbitrarily close to 1. This will be discussed in more detail in Section 5.7.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.5.13</span><span class="math-callout__name">(TT-Preconditioned Ratio Estimators vs. MCMC)</span></p>
+
+Here, we just show how the TT-cross approximation improves the efficiency of the ratio estimator for the elliptic PDE over a prior-based ratio estimator and how it compares to MCMC-based estimators (more details on those in Section 5.6). The setup is almost identical to that in Example 5.5.9, except that $\log a$ is modelled as a (Karhunen-Loève like) expansion with independent *uniform* instead of independent Gaussian coefficients. The observation operator $\Phi : H\_0^1(D) \to \mathbb{R}^m$ and the quantity of interest are the same. We use the same randomised lattice rule, $m = 9$ measurements and a noise $E \sim \mathcal{N}\big(0, \frac{1}{100} I\big)$. For details see [Dolgov et al., 2020].
+
+Comparing the relative sampling errors of various estimators, plotted against the number of samples and also against CPU time — in particular, the TT-based and the prior-based ratio estimators with QMC rules, qRE(TT) and qRE(prior) resp., against three Markov chain Monte Carlo estimators: DRAM [Haario et al, 2001], MALA [Roberts, Tweedie, 1996] and a Metropolis-Hastings algorithm with independent proposals drawn from the TT approximation of the posterior distribution, MetH(TT) — one observes:
+
+* the better rate of convergence of almost $\mathcal{O}(N^{-1})$ for the QMC-based ratio estimators, compared to the $\mathcal{O}(N^{-1/2})$ of the MCMC estimators, and
+* how much the TT-based preconditioning helps, both in the case of the ratio estimator and in the MCMC case: qRE(TT) reaches the discretisation-error level orders of magnitude faster than all other methods.
+
+</div>
 
 ### 5.6 The Markov Chain Monte Carlo Method
 
@@ -4615,6 +5009,13 @@ $$K^j(x, A) := \int_H K^{j-1}(x', A) K(x, \mathrm{d}x') \quad \text{for all } x 
 
 In this notation, the distribution of the $j$th state $X_j$ of a Markov chain with transition kernel $K$ and initial distribution $X_1 \sim \nu$ is simply $X_j \sim \nu K^{j-1}$.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark 5.6.4</span><span class="math-callout__name">(Why $\nu K$ and not $K \nu$?)</span></p>
+
+The definition of $\nu K$ is an abuse of notation, since $K$ denotes a Markov kernel but in $\nu K$ it plays the role of a mapping from $\mathcal{P}(H)$ to $\mathcal{P}(H)$. Also, it seems odd to place $\nu$ on the *left* hand side of $K$ instead of writing $K\nu$. The reason for this is that, in the special case of a discrete state space $H$ with $\|H\| = M$ — where Markov chains have been studied first — the transition kernel $K$ is simply a **(row) stochastic matrix** $K \in [0, 1]^{M \times M}$ (row $i$ holds the distribution of the next state given current state $i$), and thus for a row vector $\nu \in [0, 1]^M$ of initial probabilities, the vector given by $\nu K$ describes the distribution of the next state of the Markov chain.
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.6.5</span><span class="math-callout__name">(Invariant Measure, Reversibility)</span></p>
 
@@ -4630,7 +5031,11 @@ where equality holds in the sense of measures on $H \times H$.
 
 </div>
 
-Reversibility means that provided $X_j \sim \mu$ the jump from $X_j = x$ to $X_{j+1} = x'$ has the same probability as the reverse jump from $X_j = x'$ to $X_{j+1} = x$.
+Reversibility means that provided $X\_j \sim \mu$ the jump from $X\_j = x$ to $X\_{j+1} = x'$ has the same probability as the reverse jump from $X\_j = x'$ to $X\_{j+1} = x$, and (5.6.5) is equivalent to
+
+$$\mathbb{P}(X_j \in A, X_{j+1} \in B) = \mathbb{P}(X_j \in B, X_{j+1} \in A), \quad \text{for all } A, B \in \mathcal{B}(H).$$
+
+This property is easier to verify than invariance (5.6.4) itself and we have the following result.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.6.6</span><span class="math-callout__name">(Reversibility Implies Invariance)</span></p>
@@ -4638,6 +5043,22 @@ Reversibility means that provided $X_j \sim \mu$ the jump from $X_j = x$ to $X_{
 Let $\mu \in \mathcal{P}(H)$ and let $K : H \times \mathcal{B}(H) \to [0, 1]$ be a $\mu$-reversible transition kernel. Then $\mu$ is invariant with respect to $K$.
 
 </div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 5.6.6</summary>
+
+Let $A \in \mathcal{B}(H)$. Then, it follows from the detailed balance condition (5.6.5) that
+
+$$\begin{aligned}
+(\mu K)(A) = \int_H K(x, A) \, \mu(\mathrm{d}x) &= \int_H \int_A \underbrace{K(x, \mathrm{d}x') \, \mu(\mathrm{d}x)}_{= K(x', \mathrm{d}x)\,\mu(\mathrm{d}x')} = \int_H \int_A K(x', \mathrm{d}x) \, \mu(\mathrm{d}x') \\
+&= \int_A \int_H K(x', \mathrm{d}x) \, \mu(\mathrm{d}x') = \int_A \underbrace{K(x', H)}_{=1} \, \mu(\mathrm{d}x') = \int_A 1 \, \mu(\mathrm{d}x') = \mu(A).
+\end{aligned}$$
+
+</details>
+</div>
+
+If the transition kernel $K : H \times \mathcal{B}(H) \to [0, 1]$ of a Markov chain is understood as a linear operator from $\mathcal{P}(H)$ to $\mathcal{P}(H)$, then (5.6.4) simply means that $\mu$ is a **fixed point** of $K$ and the Markov chain is a fixed point iteration. Classical convergence results for Markov chains rely on this point of view: they show that $K$ is a contraction and apply the Banach Fixed Point Theorem. However, instead we now introduce a notion of geometric convergence of Markov chains to their invariant distribution.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.6.7</span><span class="math-callout__name">(Geometric Ergodicity)</span></p>
@@ -4653,7 +5074,17 @@ $$D_{\mathrm{TV}}(\nu K^j, \mu) \le C_\nu r^j \quad \text{for all } j \in \mathb
 
 Consider a Markov chain in a discrete state space with $M$ states and a row-stochastic matrix $K \in [0, 1]^{M \times M}$ representing its transition kernel. Then, $\sum_{j=1}^{M} K_{ij} = 1$ for all $i = 1, \ldots, M$, and the vector of all ones $e$ is a right eigenvector of $K$ to the eigenvalue 1. The corresponding left eigenvector $\mu$ is the invariant measure. If all entries of $K$ are strictly between 0 and 1 then $K$ is called **irreducible** and it follows from the **Perron-Frobenius Theorem** that 1 is in fact **dominant**, i.e. a simple eigenvalue strictly larger in modulus than all other eigenvalues of $K$.
 
-The distribution $\nu_j := \nu K^{j-1}$ of the $j$th state represents the $j$th iterate of the **power method** to find the eigenvector corresponding to the dominant eigenvalue of $K$. It is easy to see that the power method converges geometrically to $\mu$ with rate $r = \|\lambda_2\|$, the modulus of the second largest eigenvalue.
+Let the distribution of the initial state of the Markov chain be $\nu \in \mathbb{R}^M$. Then, the distribution $\nu\_j := \nu K^{j-1}$ of the $j$th state represents the $j$th iterate of the **power method** to find the eigenvector corresponding to the dominant eigenvalue of $K$, normalised such that $e^\top \nu\_j = 1$. It is easy to see that the power method converges geometrically to $\mu$:
+
+Let $\lambda\_1, \ldots, \lambda\_M$ be the eigenvalues of $K$ with $1 = \lambda\_1 > \|\lambda\_2\| \ge \|\lambda\_3\| \ge \ldots \ge \|\lambda\_M\|$ and corresponding left eigenvectors $\mu = v\_1, v\_2, \ldots, v\_M$. They form a basis of $\mathbb{R}^M$ and thus $\nu = \sum\_{m=1}^M \alpha\_m v\_m$ for some $\alpha\_1, \ldots, \alpha\_M \in \mathbb{R}$. If we assume that $\alpha\_1 > 0$, then we see easily that
+
+$$\nu_{j+1} = \frac{\nu K^j}{\lVert \nu K^j \rVert_1} = \frac{\sum_{m=1}^M \lambda_m^j \alpha_m v_m}{\sum_{m=1}^M |\lambda_m|^j |\alpha_m|} = \frac{\alpha_1 \mu + \sum_{m=2}^M \lambda_m^j \alpha_m v_m}{|\alpha_1| \left( 1 + \sum_{m=2}^M |\lambda_m|^j |\alpha_m / \alpha_1| \right)} \ \longrightarrow \ \mu \quad \text{as} \quad j \to \infty,$$
+
+since $\|\lambda\_m\| < 1$ for $m \ge 2$. The denominator can be bounded below by $\alpha\_1$. Thus,
+
+$$\lVert \nu_{j+1} - \mu \rVert_1 \le \sum_{m=2}^M |\lambda_m|^j \left| \frac{\alpha_m}{\alpha_1} \right| \le \left( \sum_{m=2}^M \left| \frac{\alpha_m}{\alpha_1} \right| \right) |\lambda_2|^j$$
+
+and the Markov chain converges geometrically with rate $r = \|\lambda\_2\|$, the modulus of the second largest eigenvalue.
 
 </div>
 
@@ -4684,6 +5115,35 @@ $$\sigma_F^2 := \mathbb{V}(F(X_1)) + 2\sum_{j=1}^{\infty} \mathrm{cov}(F(X_1), F
 </div>
 
 The asymptotic variance $\sigma_F^2$ includes not only the variance of $F(X_1)$ but also the autocovariances $\mathrm{cov}(F(X_1), F(X_{1+j}))$, reflecting the fact that consecutive samples in a Markov chain are correlated.
+
+A proof of Theorem 5.6.10 is beyond the scope of this course, but we can motivate the specific form (5.6.7) of the asymptotic variance. To do this, let us assume that $X\_1 \sim \mu$ (w.l.o.g. with $N\_0 = 0$). We have
+
+$$\begin{aligned}
+\mathbb{V}\Big(\widehat{Q}_{N,N_0}^{\mathrm{MCMC}}\Big) = \mathbb{V}\left( \frac{1}{N} \sum_{j=1}^N F(X_{j+N_0}) \right)
+&= \frac{1}{N^2} \sum_{j=1}^N \sum_{k=1}^N \mathrm{cov}\big( F(X_{j+N_0}), F(X_{k+N_0}) \big) \\
+&= \frac{1}{N^2} \sum_{j=1}^N \mathbb{V}\big( F(X_{j+N_0}) \big) + \frac{1}{N^2} \sum_{j \neq k} \mathrm{cov}\big( F(X_{j+N_0}), F(X_{k+N_0}) \big).
+\end{aligned}$$
+
+Since $(X\_j)\_{j \in \mathbb{N}}$ is assumed to be $\mu$-reversible and $X\_1 \sim \mu$, then $X\_j \sim \mu$ for any $j \in \mathbb{N}$, which further implies that $(X\_j, X\_{j+k})$ follows the same distribution as $(X\_1, X\_{1+k})$, for all $j, k \in \mathbb{N}$. Hence,
+
+$$\mathbb{V}(F(X_j)) = \mathbb{V}(F(X_1)), \qquad \mathrm{cov}\big( F(X_{j+N_0}), F(X_{k+N_0}) \big) = \mathrm{cov}\big( F(X_1), F(X_{1+|j-k|}) \big),$$
+
+and thus
+
+$$\mathbb{V}\Big(\widehat{Q}_{N,N_0}^{\mathrm{MCMC}}\Big) \approx \frac{1}{N} \mathbb{V}_\mu\big(F(X_1)\big) + \frac{2}{N} \sum_{j=1}^N \mathrm{cov}_\mu\big( F(X_1), F(X_{1+j}) \big).$$
+
+Of course, the assumption $X\_1 \sim \mu$ is rather academic and, in general, not given in practice. However, since the Markov chain in Theorem 5.6.10 is assumed to be $L^2\_\mu(H)$-geometrically ergodic, the distribution of its $j$th state $X\_j$ converges exponentially fast to $\mu$ as $j \to \infty$ — this is also the justification for the burn-in parameter $N\_0$: discarding the first $N\_0$ states makes the "warm start" assumption approximately true at exponentially small cost in bias.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(How to read $\sigma\_F^2$ — the price of correlation)</span></p>
+
+Comparing Theorem 5.6.10 with the iid CLT in Proposition 5.4.1 isolates exactly what MCMC costs us: the estimator still converges at rate $N^{-1/2}$, but the variance constant is inflated from $\mathbb{V}\_\mu(F(X))$ to $\sigma\_F^2 = \mathbb{V}\_\mu(F(X)) + 2\sum\_{j \ge 1} \mathrm{cov}\_\mu(F(X\_1), F(X\_{1+j}))$. The ratio
+
+$$\mathrm{IACT}_F := \frac{\sigma_F^2}{\mathbb{V}_\mu(F(X))} = 1 + 2\sum_{j=1}^\infty \mathrm{corr}\big(F(X_1), F(X_{1+j})\big)$$
+
+is called the **integrated autocorrelation time**: $N$ correlated MCMC samples are statistically worth only $N / \mathrm{IACT}\_F$ iid samples. This single number is the right figure of merit for comparing MCMC algorithms, and it is controlled by how fast the autocorrelations decay — i.e., by the geometric ergodicity rate $r$ (equivalently, the spectral gap $1 - r$ of the transition kernel, cf. Example 5.6.8 and Remark 5.6.9). Everything in the remainder of this chapter — step-size tuning, pCN, MALA, adaptive and multilevel MCMC — is ultimately an attempt to make $\mathrm{IACT}\_F$ small (and, for infinite-dimensional problems, *bounded in the discretisation dimension*; see Example 5.6.20).
+
+</div>
 
 #### 5.6.2 The Metropolis-Hastings Markov Chain Monte Carlo Method
 
@@ -4736,7 +5196,54 @@ where $\delta_x \in \mathcal{P}(\mathbb{R}^n)$ denotes the *Dirac-measure* at $x
 
 </div>
 
-The big advantage of the Metropolis-Hastings (MH) algorithm is that we only need to be able to evaluate the unnormalised density $p$ of the target measure $\mu$ and the density $q$ of the proposal kernel $Q$. The proposal density is often chosen to be **symmetric**, such that $q(x, x') = q(x', x)$ for all $x, x' \in \mathbb{R}^n$. In that special case, the acceptance probability simplifies to
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 5.6.12</summary>
+
+We first show that the Metropolis kernel $K$ is of the form (5.6.9). By definition $K(x, A) = \mathbb{P}(X\_{j+1} \in A \mid X\_j = x)$. We only consider proposal kernels $Q$ with smooth density $q$ and note that in that case the probability that $x' = x$, i.e. that we propose $x$ given $X\_j = x$, is zero. In that case it suffices to study the cases $\mathbb{P}(X\_{j+1} = x \mid X\_j = x)$, i.e., the probability that the proposal is rejected, and $\mathbb{P}(X\_{j+1} \in A \mid X\_j = x)$ for $x \notin A$, i.e., the proposal $x' \in A$ and $x'$ is accepted.
+
+The rejection probability for a proposal is exactly $1 - \alpha(x, x')$ with $x' \sim Q(x, \mathrm{d}x')$. Thus,
+
+$$\mathbb{P}(X_{j+1} = x \mid X_j = x) = \int_{\mathbb{R}^n} \big( 1 - \alpha(x, x') \big) \, Q(x, \mathrm{d}x') = 1 - \int_{\mathbb{R}^n} \alpha(x, x') \, Q(x, \mathrm{d}x').$$
+
+On the other hand, the probability $\mathbb{P}(X\_{j+1} \in A \mid X\_j = x)$ for $x \notin A$ is
+
+$$\mathbb{P}(X_{j+1} \in A \mid X_j = x) = \int_A \alpha(x, x') \, Q(x, \mathrm{d}x').$$
+
+Combining these two cases we obtain (5.6.9).
+
+To show detailed balance, we consider first $A, B \in \mathcal{B}(\mathbb{R}^n)$ with $A \cap B = \emptyset$. W.l.o.g. we can assume that $p(x)q(x, x') > 0$ for all $x, x' \in \mathbb{R}^n$ (otherwise we simply have to restrict the integrations below accordingly). Writing $\mu(\mathrm{d}x) = \frac{1}{c} p(x) \, \mathrm{d}x$ for the (unknown) normalisation constant $c$, and using that on $A \times B$ no rejection term contributes (since $A \cap B = \emptyset$), we have
+
+$$\begin{aligned}
+\int_{A \times B} K(x, \mathrm{d}x') \, \mu(\mathrm{d}x) &= \int_A \int_B \alpha(x, x') \, Q(x, \mathrm{d}x') \, \mu(\mathrm{d}x) \\
+&= \frac{1}{c} \int_A \int_B \min\left( 1, \frac{p(x') \, q(x', x)}{p(x) \, q(x, x')} \right) p(x) \, q(x, x') \, \mathrm{d}x' \, \mathrm{d}x \\
+&= \frac{1}{c} \int_A \int_B \min\big( p(x) \, q(x, x'), \; p(x') \, q(x', x) \big) \, \mathrm{d}x' \, \mathrm{d}x \\
+&= \frac{1}{c} \int_A \int_B \min\left( \frac{p(x) \, q(x, x')}{p(x') \, q(x', x)}, \, 1 \right) p(x') \, q(x', x) \, \mathrm{d}x' \, \mathrm{d}x \\
+&= \int_A \int_B \alpha(x', x) \, \mu(\mathrm{d}x') \, Q(x', \mathrm{d}x) = \int_{A \times B} K(x', \mathrm{d}x) \, \mu(\mathrm{d}x').
+\end{aligned}$$
+
+If $A \cap B \neq \emptyset$ we also need to consider rejections, but detailed balance can again be shown similarly, since $\mathbb{P}(X\_{j+1} = x \mid X\_j = x)$ is clearly symmetric.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The two design miracles of Metropolis-Hastings)</span></p>
+
+Two features of Algorithm 1 are so fundamental that they deserve to be stated separately:
+
+* **Only ratios of $p$ are ever evaluated.** The acceptance probability (5.6.8) contains $p(x')/p(x\_j)$, so any unknown normalisation constant cancels. This is *the* property that makes MH applicable to Bayesian inverse problems, where the posterior density is only available in unnormalised form — the intractable evidence $Z$ never needs to be computed. (Compare: the ratio estimator of Section 5.5 had to *estimate* $Z$ and paid dearly through the $Z^{-2}$ factor.)
+* **The min in (5.6.8) is exactly what detailed balance forces.** In the proof above, the key identity is the symmetry of $\min\big( p(x)q(x, x'), \, p(x')q(x', x) \big)$ in $(x, x')$. Any acceptance rule of the form $\alpha(x, x') = g\big( p(x')q(x', x) / (p(x)q(x, x')) \big)$ with $g(t) \le \min(1, t)$ and $g(t) = t \, g(1/t)$ would also give a $\mu$-reversible chain, but Peskun's ordering shows the Metropolis choice $g(t) = \min(1, t)$ is optimal among these: it accepts as often as possible, which minimises the asymptotic variance $\sigma\_F^2$.
+
+Note also the structure of the Metropolis kernel (5.6.9): it is a *mixture* of a continuous part (accepted moves, density $\alpha \cdot q$) and an atom at the current state $x$ (rejections). The chain is therefore never absolutely continuous — every path contains repeated states, and these repetitions are not wasted: they are precisely the reweighting that corrects the proposal distribution towards $\mu$.
+
+</div>
+
+The big advantage of the Metropolis-Hastings (MH) algorithm is that we only need to be able to evaluate the unnormalised density $p$ of the target measure $\mu$ and the density $q$ of the proposal kernel $Q$. The proposal density is often chosen to be **symmetric**, such that
+
+$$q(x, x') = q(x', x) \qquad \forall x, x' \in \mathbb{R}^n. \tag{5.6.10}$$
+
+In that special case, the acceptance probability simplifies to
 
 $$\alpha(x, x') := \min\left(1, \frac{p(x')}{p(x)}\right). \tag{5.6.11}$$
 
@@ -4753,9 +5260,27 @@ where $s > 0$ is the **step size** parameter that can be optimised or calibrated
 
 $s$ should be chosen such that 
 
-$$\bar{\alpha} := \int_{\mathbb{R}^n} \alpha(x, x') \, Q(s; x, \mathrm{d}x') \mu(\mathrm{d}x) \approx 0.21$$
+$$\bar{\alpha} := \int_{\mathbb{R}^n} \alpha(x, x') \, Q(s; x, \mathrm{d}x') \mu(\mathrm{d}x) \approx 0.21 \tag{5.6.13}$$
 
 where $\bar{\alpha}$ is called the *mean acceptance rate* which can be estimated on the basis of a short trial run of the Markov chain in practice.
+
+The proposal kernel $Q(s; x, \cdot)$ has a transition density
+
+$$q_s(x, x') \propto \exp\left( -\frac{1}{2s^2} \lVert x' - x \rVert^2 \right)$$
+
+and is thus clearly symmetric, i.e., it satisfies (5.6.10).
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The step-size dilemma behind the magic number 0.21)</span></p>
+
+The tuning rule (5.6.13) resolves a genuine trade-off, and it is worth seeing both failure modes:
+
+* **$s$ too small:** almost every proposal is accepted ($\bar{\alpha} \approx 1$), but the chain moves in tiny increments — consecutive states are almost identical, autocorrelations decay very slowly, and $\mathrm{IACT}\_F$ is huge. High acceptance is *not* a sign of a good sampler.
+* **$s$ too large:** proposals jump far from the current state, typically into regions of negligible posterior density, so almost everything is rejected ($\bar{\alpha} \approx 0$) and the chain stays glued to its current state for long stretches — again huge $\mathrm{IACT}\_F$.
+
+The optimum sits in between, and the theoretical foundation (optimal-scaling analysis of random walk MH in the limit $n \to \infty$, for product-form targets) gives the celebrated value $\bar{\alpha} \approx 0.234 \approx 0.21$-$0.23$, with the optimal step size scaling like $s \sim n^{-1/2}$. That the optimal $s$ *shrinks with the dimension* is exactly the dimension-dependence problem that the pCN proposal of Section 5.6.3 is designed to remove.
 
 </div>
 
@@ -4781,11 +5306,78 @@ Condition (5.6.14) on the proposal distribution is similar to the condition requ
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.6.16</span><span class="math-callout__name">(MH for a Bimodal 1D Posterior)</span></p>
+
+Let us consider the MH algorithm for a simple one dimensional posterior distribution. In particular, we consider a RV $X : \Omega \to \mathbb{R}$ with prior distribution $X \sim \mu\_X = \mathcal{N}(0, 1)$, conditioned on the observation $y = 4$ of $Y = X^2 + E$ with $E \sim \mathcal{N}(0, 1)$. Thus,
+
+$$\pi_{X|Y}(x|y) \propto \exp\left( -\tfrac{1}{2}(4 - x^2)^2 \right) \exp\left( -\tfrac{1}{2}x^2 \right) = \exp\left( -\tfrac{1}{2}\big[ (4 - x^2)^2 + x^2 \big] \right),$$
+
+see the left panel of the figure below. Note why the posterior is **bimodal**: the data $y = 4$ only informs $x^2$, so both $x \approx +\sqrt{4}$ and $x \approx -\sqrt{4}$ explain the observation equally well, and the symmetric prior cannot break the tie — the two modes near $\pm 1.95$ are slightly pulled towards the origin by the prior. Bimodality survives here even though prior, noise, and forward map are all as simple as can be; only the *linearity* of $\Phi$ was missing (cf. Theorem 5.3.1).
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/mcmc_bimodal_density.png' | relative_url }}" alt="Left: the unnormalised posterior density exp(-((4-x^2)^2 + x^2)/2), showing two sharp symmetric peaks near x = -2 and x = 2 with a deep valley of essentially zero density at the origin. Right: histogram of relative frequencies of a Metropolis-Hastings chain with 10000 states, matching the normalised posterior density curve closely." loading="lazy">
+</figure>
+
+*The unnormalised posterior density from Example 5.6.16 (left) and the histogram of relative frequencies along an MH path with $N = 10^4$ states compared to the true, normalised posterior density (right) — the agreement is very good, including the relative mass of the two modes.*
+
+Let us use the MH algorithm with random walk proposal kernel $Q(s; x, \cdot)$ defined in (5.6.12) to sample from $\pi\_{X\mid Y}(x\mid y)$. The acceptance probability is
+
+$$\alpha(x, x') = \min\left( 1, \frac{\pi_{X|Y}(x'|y)}{\pi_{X|Y}(x|y)} \right) = \min\left( 1, \frac{\exp\left( -\frac{1}{2}\big[ (4 - (x')^2)^2 + (x')^2 \big] \right)}{\exp\left( -\frac{1}{2}\big[ (4 - x^2)^2 + x^2 \big] \right)} \right).$$
+
+The criterion (5.6.13) is satisfied for a step size of roughly $s = 1.5$. As the initial state, we choose $x\_1 = 0$, i.e. $\nu = \delta\_0$. The figure below shows a realisation $(x\_j)\_{j \in \mathbb{N}}$ of the Markov chain produced by the resulting MH algorithm.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/mcmc_bimodal_paths.png' | relative_url }}" alt="Three trace plots of the same Metropolis-Hastings Markov chain shown at increasing lengths: 100 steps, 1000 steps and 10000 steps. The chain quickly leaves the initial state 0, settles around the two modes near -2 and 2, and hops between them repeatedly; at 10000 steps the two bands around -2 and +2 are clearly visible with frequent switches." loading="lazy">
+</figure>
+
+*A path of the Markov chain produced in Example 5.6.16, shown after $10^2$, $10^3$ and $10^4$ steps. Two features are worth noting: (i) repeated values (rejections) appear as horizontal segments — these repetitions are part of the correct weighting, not an artefact; (ii) with step size $s = 1.5$ the proposal is wide enough to jump across the essentially-zero-density valley at $x = 0$, so the chain **mixes between the two modes**. A much smaller step size would produce a chain that looks locally healthy but stays trapped in one mode for an extremely long time (metastability) — its histogram would silently converge to the wrong answer. This is the practical reason why acceptance-rate tuning and multiple diagnostics (trace plots, multiple chains from different initial states) matter.*
+
+</div>
+
 #### 5.6.3 Extension to Infinite Dimensions
 
 Let us briefly discuss the extension to a general, possibly infinite-dimensional, separable Hilbert space $H$. Except for the acceptance probability $\alpha$ in (5.6.8), all the elements of the MH algorithm in Algorithm 1 were not specific to $\mathbb{R}^n$.
 
-In infinite dimensional spaces the existence of $\frac{\mathrm{d}\rho^\top}{\mathrm{d}\rho}$ is not guaranteed. A possible way to ensure it in the case of a posterior measure $\mu = \mu_{X\mid y}$ with
+In particular, if $\mu \in \mathcal{P}(H)$, $\nu \in \mathcal{P}(H)$ and $Q : H \times \mathcal{B}(H) \to [0, 1]$ are the target measure, a measure for the initial state and a proposal kernel on $H$, respectively, the only remaining question is how to choose $\alpha$, such that the Markov chain produced by Algorithm 1 is $\mu$-reversible. With the probability measures $\rho, \rho^\top \in \mathcal{P}(H \times H)$ defined as
+
+$$\rho(\mathrm{d}x, \mathrm{d}x') := Q(x, \mathrm{d}x') \mu(\mathrm{d}x) \quad \text{and} \quad \rho^\top(\mathrm{d}x, \mathrm{d}x') := \rho(\mathrm{d}x', \mathrm{d}x), \tag{5.6.16}$$
+
+the following proposition can be proved similarly to Proposition 5.6.12.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 5.6.17</span><span class="math-callout__name">(MH in Infinite Dimensions)</span></p>
+
+If the Radon-Nikodym derivative $\frac{\mathrm{d}\rho^\top}{\mathrm{d}\rho} : H \times H \to [0, \infty)$ exists and we replace the acceptance probability (5.6.8) in Algorithm 1 by
+
+$$\alpha(x_j, x') = \min\left( 1, \frac{\mathrm{d}\rho^\top}{\mathrm{d}\rho}(x_j, x') \right), \tag{5.6.17}$$
+
+then the transition kernel $K : H \times \mathcal{B}(H) \to [0, 1]$ of the Markov chain $(X\_j)\_{j \in \mathbb{N}}$ that is produced by Algorithm 1 with proposal kernel $Q$ is given by
+
+$$K(x, \mathrm{d}x') = \alpha(x, x') Q(x, \mathrm{d}x') + \int_H \big( 1 - \alpha(x, x'') \big) \, Q(x, \mathrm{d}x'') \, \delta_x(\mathrm{d}x')$$
+
+and it is $\mu$-reversible.
+
+</div>
+
+For $H = \mathbb{R}^n$, the two definitions of $\alpha$ in (5.6.17) and (5.6.8) agree. Note that
+
+$$\rho(\mathrm{d}x, \mathrm{d}x') = Q(x, \mathrm{d}x') \mu(\mathrm{d}x) \propto q(x, x') \, p(x) \, \mathrm{d}x' \, \mathrm{d}x,$$
+
+so that, provided $q(x, x') \, p(x) > 0$, we have
+
+$$\frac{\mathrm{d}\rho^\top}{\mathrm{d}\rho}(x, x') = \frac{q(x', x) \, p(x')}{q(x, x') \, p(x)}.$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What $\rho$ and $\rho^\top$ mean — and why densities had to go)</span></p>
+
+The measure $\rho$ is the joint law of one *proposed transition* of the chain in equilibrium: draw the current state $x \sim \mu$, then a proposal $x' \sim Q(x, \cdot)$. Its transpose $\rho^\top$ is the law of the *reversed* pair. Detailed balance of the accepted chain is exactly the statement that acceptance reweights $\rho$ into something symmetric — and the correct reweighting factor is the Radon-Nikodym derivative $\mathrm{d}\rho^\top/\mathrm{d}\rho$. Formula (5.6.17) is therefore not a generalisation *trick* but the coordinate-free way of writing the familiar ratio $\frac{p(x')q(x', x)}{p(x)q(x, x')}$: numerator and denominator, which are each meaningless in infinite dimensions (there is no Lebesgue measure to have densities against), only ever appear through their *ratio*, and the ratio survives as a measure-theoretic object whenever $\rho^\top \ll \rho$.
+
+The catch, and the point of the rest of this subsection: for common proposals, $\rho^\top \ll \rho$ **fails** in infinite dimensions. For a Gaussian random walk on $H$, current state and proposal explore mutually singular Gaussians in the limit, the derivative does not exist, and the "acceptance probability" degenerates — this is the measure-theoretic root of the dimension-dependent collapse of random walk MH observed in Remark 5.6.19 and Example 5.6.20.
+
+</div>
+
+In infinite dimensional spaces the existence of $\frac{\mathrm{d}\rho^\top}{\mathrm{d}\rho}$ is thus not guaranteed for common proposal kernels. A possible way to ensure it in the case of a posterior measure $\mu = \mu\_{X\mid y}$ with
 
 $$\frac{\mathrm{d}\mu_{X|y}}{\mathrm{d}\mu_X}(x) \propto \exp\left(-\frac{1}{2}\lVert y - \Phi(x)\rVert_\Sigma^2\right) =: \exp(-\mathcal{M}(x)),$$
 
@@ -4824,6 +5416,36 @@ produces a $\mu_{X\mid y}$-reversible Markov chain.
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 5.6.18</summary>
+
+To see that the pCN kernel in (5.6.20) is prior-reversible, consider $\eta(\mathrm{d}x, \mathrm{d}x') = Q(s; x, \mathrm{d}x') \mu\_X(\mathrm{d}x)$ and let $X, W$ be two independent samples from $\mu\_X = \mathcal{N}(0, C)$. Then,
+
+$$\begin{pmatrix} X \\ X' \end{pmatrix} := \begin{bmatrix} I & 0 \\ \sqrt{1 - s^2}\, I & sI \end{bmatrix} \begin{pmatrix} X \\ W \end{pmatrix} = \begin{pmatrix} X \\ \sqrt{1 - s^2}\, X + sW \end{pmatrix} \sim \eta.$$
+
+As a linear combination of Gaussians, the RV $(X, X')$ is jointly Gaussian, and as in (5.3.3), it follows that
+
+$$\eta = \mathcal{N}\left( \begin{bmatrix} 0 \\ 0 \end{bmatrix}, \begin{bmatrix} C & \sqrt{1 - s^2}\, C \\ \sqrt{1 - s^2}\, C & C \end{bmatrix} \right),$$
+
+which is symmetric and independent of the order of the two RVs $X$ and $X'$. Thus, $\eta = \eta^\top$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why pCN is dimension-independent — the division of labour)</span></p>
+
+The pCN proposal $x' = \sqrt{1 - s^2}\, x + s\, \xi$ with $\xi \sim \mathcal{N}(0, C)$ is an autoregressive (AR(1)) move, not a random walk $x' = x + s\,\xi$, and the difference is precisely the factor $\sqrt{1 - s^2}$ that contracts the current state towards the prior mean. Three observations unpack the construction:
+
+* **The proposal preserves the prior exactly.** If $x \sim \mathcal{N}(0, C)$ then $\mathrm{cov}(x') = (1 - s^2)C + s^2 C = C$ — the coefficients $\sqrt{1 - s^2}$ and $s$ are the *unique* Pythagorean pair with this property. A random walk instead inflates the covariance to $(1 + s^2)C$, and in infinite dimensions $\mathcal{N}(0, C)$ and $\mathcal{N}(0, (1 + s^2)C)$ are **mutually singular** — this is exactly the failure of $\rho^\top \ll \rho$ noted above, and the reason RW-MH degenerates.
+* **A clean division of labour.** Prior-reversibility means the proposal handles the (infinite-dimensional, Gaussian) prior part of the posterior *exactly*; the accept/reject step (5.6.21) only has to account for the (finite-dimensional, data-driven) likelihood misfit $\mathcal{M}(x) = \frac{1}{2} \lVert y - \Phi(x) \rVert\_\Sigma^2$. Since the data is finite, the acceptance probability stays non-degenerate no matter how fine the discretisation — the algorithm is **well-defined on $H$ itself**, and any discretisation merely approximates it.
+* **The name.** Applying a Crank-Nicolson (trapezoidal) discretisation to the prior-preserving Ornstein-Uhlenbeck-type Langevin equation $\mathrm{d}X = -X \, \mathrm{d}t + \sqrt{2C} \, \mathrm{d}W$ and *preconditioning* by $C$ yields exactly this proposal — hence *preconditioned Crank-Nicolson*.
+
+The practical rule of thumb "design the algorithm in function space first, discretise second" (well-posedness of the *algorithm*, not just the problem) is one of the main takeaways of this whole section.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.6.19</span></p>
 
@@ -4833,9 +5455,87 @@ In contrast, MH algorithms that are well-defined also in the infinite-dimensiona
 
 </div>
 
-#### 5.6.4 Efficient Proposal Kernels and Multilevel MCMC
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 5.6.20</span><span class="math-callout__name">(1D Elliptic Problem: Random Walk vs. pCN)</span></p>
 
-There are a number of more efficient and more cutting-edge proposal distributions, but to describe those would go beyond the scope of this course. Another promising direction is the extension of the multilevel idea to MCMC, but again we will not have the time to cover this.
+Let us infer the unknown log-diffusion coefficient function $u : [0, 1] \to \mathbb{R}$ in the one-dimensional version of our elliptic model problem
+
+$$-\frac{\mathrm{d}}{\mathrm{d}x}\left( \exp(u(x)) \, \frac{\mathrm{d}p}{\mathrm{d}x}(x) \right) = 0, \qquad p(0) = 0, \quad p(1) = 2,$$
+
+based on 4 noisy observations of the solution $p(x)$ at $x = 0.2, 0.4, 0.6$ and $0.8$.
+
+The prior is chosen to be $U \sim \mu\_U = \mathcal{N}\big(0, (-\Delta\_{\mathrm{D}})^{-1}\big)$, where $\Delta\_{\mathrm{D}}$ denotes the Dirichlet-Laplacian on $(0, 1)$. The additive noise satisfies $E \sim \mathcal{N}(0, \sigma^2 I\_4)$. The prior is discretised using a truncated Karhunen-Loève expansion (KLE) with 50, 100, 200, 400 and 800 terms — in this case a Fourier sine series with i.i.d. Gaussian coefficients. Sample trajectories from the prior are rough mean-zero random functions covering a wide band; sample trajectories from the posterior $\mu\_{U\mid y}$ with noise level $\sigma^2 = 0.01$ and $\sigma^2 = 0.001$ form increasingly narrow bundles around the true coefficient — four point observations of the smooth solution $p$ already pin down the coefficient remarkably well, and the smaller the noise, the tighter the posterior concentration.
+
+Finally, we compare the efficiency of the MH algorithm with two different proposal distributions for increasing dimension $d$ (i.e., more KLE terms in the discretisation of the prior distribution on $u$) in terms of the so-called **integrated autocorrelation time** $\mathrm{IACT}\_F$. Without giving any further details, this is defined as
+
+$$\mathrm{IACT}_F := \frac{\sigma_F^2}{\mathbb{V}_{\mu_{U|y}}\big(F(U)\big)}$$
+
+with $\sigma\_F^2$ as defined in (5.6.7) (with $U\_j$ instead of $X\_j$), i.e., $\mathrm{IACT}\_F$ quantifies how much bigger the MCMC sample size needs to be chosen in comparison to an i.i.d. sample drawn directly from $\mu\_{U\mid y}$. In particular, we consider the Gaussian random walk proposal kernel and the pCN-proposal kernel:
+
+$$Q_s^{\mathrm{RW}}(u, \cdot) := \mathcal{N}\big( u, \, s^2 (-\Delta_{\mathrm{D}})^{-1} \big) \quad \text{and} \quad Q_s^{\mathrm{pCN}}(u, \cdot) := \mathcal{N}\big( \sqrt{1 - s^2}\, u, \, s^2 (-\Delta_{\mathrm{D}})^{-1} \big).$$
+
+We can clearly see that $\mathrm{IACT}\_F \to \infty$ as $d \to \infty$ for the random walk proposals (roughly linear growth in $d$ on a log-log scale), while it remains constant at about $\mathrm{IACT}\_F = 50$ for pCN — the dimension-independence promised by the function-space formulation, observed in practice.
+
+</div>
+
+#### 5.6.4 More Efficient Proposal Kernels and Multilevel MCMC
+
+As in the context of importance sampling, more efficient proposal kernels can be constructed by using information of the target distribution $\mu$. All the proposals we have seen so far are agnostic about which parts of state space are more probable. Ideally we would like proposals that take this into account, i.e., make it more probable to move to areas where $\mu$ is large. We restrict again to finite dimensions and to $\mu(\mathrm{d}x) = p(x) \, \mathrm{d}x$.
+
+There are a number of **adaptive algorithms** where an appropriate proposal kernel is 'learned' in the initial phase of sampling. One general purpose method that adjusts the covariance of a random walk proposal and combines this with a delayed rejection mechanism that leads to further efficiency enhancements is the so-called **DRAM (Delayed Rejection Adaptive Metropolis)** algorithm of [Haario, Laine, Mira & Saksman, 2006].
+
+Connecting to optimisation, a possible way to include information about $\mu$ is to use gradient information and propose the next move as
+
+$$x' = x_j + \beta \nabla p(x_j).$$
+
+However, this is a deterministic move. We are losing randomness and the ability to explore the state space, as we would converge to a local maximum. So how can we do this properly?
+
+One such approach is the **Metropolis adjusted Langevin algorithm (MALA)** of [Pillai, Stuart & Thiéry, 2012] with proposal kernel
+
+$$Q_\beta^{\mathrm{MALA}}(x, \cdot) = \mathcal{N}\big( x + \beta \nabla \log p(x), \, 2\beta I \big),$$
+
+again with a suitable step size $\beta > 0$. For optimal efficiency, it should be tuned such that the average acceptance rate $\bar{\alpha} \approx 0.574$ here. The background for this sampler is molecular dynamics, more specifically **Langevin dynamics**, described by the stochastic differential equation (SDE)
+
+$$\mathrm{d}X = \nabla \log p(X) \, \mathrm{d}t + \sqrt{2} \, \mathrm{d}W,$$
+
+which is 'driven' by the Wiener process (or Brownian motion) $W$ and has $p$ as its limiting stationary distribution. The MALA proposal is essentially one step of an Euler-Maruyama discretisation applied to the Langevin SDE, i.e.,
+
+$$X' = X_j + \beta \nabla \log p(X_j) + \sqrt{2\beta} \, W_j \quad \text{with} \quad W_j \sim \mathcal{N}(0, I).$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why MALA still needs the accept/reject step)</span></p>
+
+The Langevin SDE has $p$ as its *exact* invariant density — so why not simply simulate it and skip Metropolis-Hastings altogether? Because we cannot simulate the SDE exactly: the Euler-Maruyama step introduces an $O(\beta)$ discretisation error, and the discretised chain is invariant with respect to a *perturbed* distribution $p\_\beta \neq p$ (in unfavourable cases it can even be transient). The MH correction (with the *full*, non-symmetric Hastings ratio — note $q(x, x') \neq q(x', x)$ here, since the drift shifts the mean!) removes this bias **exactly**: the accepted chain targets $p$ for every step size $\beta$. The step size then no longer trades off bias against speed, but only acceptance rate against move size — which is why it can be tuned by the simple $\bar{\alpha} \approx 0.574$ rule. The gradient drift pushes proposals towards high-probability regions, improving the optimal scaling from $s \sim n^{-1/2}$ (random walk) to $\beta \sim n^{-1/3}$, i.e. asymptotically fewer steps per effective sample in high dimensions.
+
+</div>
+
+Other popular approaches are based on **Hamiltonian dynamics**, including a momentum variable — the *Hybrid / Hamiltonian Monte Carlo (HMC)* method of [Duane, Kennedy, Pendleton & Roweth, 1987] and the adaptive *No-U-Turn Sampler (NUTS)* of [Hoffman & Gelman, 2014], which powers modern probabilistic programming systems such as Stan. It is also possible to include 2<sup>nd</sup>-order (Hessian) information, see e.g. the *Riemann manifold Langevin and Hamiltonian Monte Carlo* methods of [Girolami & Calderhead, 2011], the *dimension-independent likelihood-informed MCMC* of [Cui, Law & Marzouk, 2016], or the generalisation of the preconditioned Crank-Nicolson algorithm in [Rudolf & Sprungk, 2018].
+
+Finally, we mention a further, alternative approach that uses a surrogate density $p^\ast \approx p$ to pre-screen proposals, the so-called **surrogate transition method** proposed in [Liu, 2001; Christen & Fox, 2005]. If the surrogate $p^\ast$ is cheap to evaluate, this approach has the important advantage that the potentially expensive target density only needs to be evaluated for proposals that were accepted for $p^\ast$. It proceeds as follows:
+
+1. At state $x$, sample a proposal $x^\ast$ from some proposal density $q^\ast(x, \cdot)$.
+2. Set $x' = x^\ast$ with probability
+
+   $$\alpha_1(x, x^\ast) = \min\left( 1, \frac{p^\ast(x^\ast) \, q^\ast(x^\ast, x)}{p^\ast(x) \, q^\ast(x, x^\ast)} \right),$$
+
+   otherwise set $x' = x$.
+3. Denote the proposal density associated with this procedure for drawing $x'$ by $q(x, \cdot)$.
+4. Accept $x'$ with probability
+
+   $$\alpha_2(x, x') = \min\left( 1, \frac{p(x') \, q(x', x)}{p(x) \, q(x, x')} \right) = \min\left( 1, \frac{p(x') \, p^\ast(x)}{p(x) \, p^\ast(x')} \right),$$
+
+   i.e. $X\_{j+1} = x'$ with probability $\alpha\_2(x, x')$; otherwise stay at $X\_{j+1} = x$.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why delayed acceptance is exact, and why it is cheap)</span></p>
+
+The two-stage scheme is *not* an approximation: step (iv) is an ordinary MH accept/reject with respect to the **exact** target $p$, applied to the effective proposal $q$ generated by steps (i)-(iii) — so by Proposition 5.6.12 the resulting chain is exactly $\mu$-reversible, whatever the quality of $p^\ast$. The pleasant surprise is the simplification of the Hastings ratio in step (iv): the effective proposal density satisfies $q(x, x') = \alpha\_1(x, x') \, q^\ast(x, x')$ for $x' \neq x$, and inserting this makes all $q^\ast$-factors cancel, leaving $\min\big( 1, \tfrac{p(x') \, p^\ast(x)}{p(x) \, p^\ast(x')} \big)$ — the exact and the surrogate density in a "correction ratio". If $p^\ast \approx p$, this ratio is $\approx 1$: almost everything that survives the cheap first stage is accepted.
+
+The cost accounting is the whole point: the expensive density $p$ (a fine-grid PDE solve, say) is evaluated **only for proposals that already passed the cheap screening** with $p^\ast$ (a coarse-grid solve or reduced-order model). Bad proposals — the majority, for an ambitious step size — are rejected at surrogate cost. The quality of $p^\ast$ affects only the *efficiency*, never the *correctness*.
+
+</div>
+
+The surrogate $p^\ast$ can be, e.g., some reduced order model or the posterior associated with a coarser discretisation ($h^\ast > h$ and/or $s^\ast < s$). This latter choice — combined with the multilevel idea of Section 5.4.2 — leads to the efficient **multilevel Markov chain Monte Carlo** method of [Dodwell, Ketelsen, Scheichl & Teckentrup, *SIAM Review* 2019] and the **multilevel delayed acceptance MCMC** of [Lykkegaard, Dodwell, Fox, Mingas & Scheichl, 2023].
 
 ### 5.7 Variational Methods
 
