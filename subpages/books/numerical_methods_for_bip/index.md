@@ -4133,6 +4133,12 @@ $$\lVert Bu - Bu_h \rVert_{L^p(\Omega; \mathbb{R}^m)} \le Ch^2. \tag{5.2.6}$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/disc_fe_error_rates.png' | relative_url }}" alt="Left: the reference solution of the 1D elliptic problem together with piecewise linear finite element approximations on meshes with 4, 8 and 16 cells, visibly converging to the smooth curve. Right: log-log plot of the H1 error and the error of the point functional u(0.5) against the mesh size h; the H1 error follows a straight line of slope 1 and the functional error a straight line of slope 2." loading="lazy">
+</figure>
+
+*One-dimensional illustration of Theorem 5.2.5: piecewise linear FE approximations of $-(a u')' = 1$ with $a(x) = 2 + 0.9 \sin(2\pi x)$ (left), and the two convergence rates (right) — the $H^1$-error decays like $h$, while the error in the bounded linear functional $u \mapsto u(0.5)$ decays like $h^2$ (measured rates $1.00$ and $2.00$). It is this doubled functional rate that delivers $\alpha = 2$ in the complexity theorems of Section 5.4.*
+
 We are now in a position to extend these results to bound the bias in the posterior measure and in the conditional mean of any derived quantities of interest due to the FE approximation.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -4286,6 +4292,12 @@ We can see that the weight function concentrates more and more around the MAP po
 $$D_{\mathrm{H}}(\nu_n, \mathcal{L}_{\nu_n}) \le Cn^{-1/2}.$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/laplace_concentration.png' | relative_url }}" alt="Four panels. The first three compare the true posterior density (solid) with its Laplace approximation (dashed) for noise scalings n = 1, 10 and 100: at n = 1 the posterior is visibly skewed and the Gaussian misses it, at n = 10 the two curves are close, at n = 100 they coincide. The fourth panel shows the Hellinger distance between posterior and Laplace approximation against n on a log-log scale, following a straight reference line of slope minus one half." loading="lazy">
+</figure>
+
+*Theorem 5.3.3 in action for the nonlinear forward map $\Phi(x) = e^x$ with prior $\mathcal{N}(0, 1)$, data $y = e$ and noise variance $1/n$: for $n = 1$ the posterior is visibly skewed and the Gaussian fit at the MAP is poor; by $n = 100$ the two densities are indistinguishable. The Hellinger distance (right, computed numerically) follows the predicted rate $n^{-1/2}$ essentially exactly (measured slope $\to 0.50$).*
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.3.4</span></p>
@@ -4458,6 +4470,12 @@ $$\mathbb{E}\left[\Big(\widehat{Q}_{L, \lbrace N_\ell \rbrace}^{\mathrm{ML}} - \
 
 If $\lVert Q_h - Q \rVert_{L^2(\Omega)} \to 0$ as $h \to 0$, i.e., if the RV $Q_h$ converges strongly (samplewise) to $Q$, then $\mathbb{V}(Y_\ell) \to 0$ as $\ell \to \infty$, leading to a huge variance reduction in the MLMC estimator compared to standard MC. In particular, a significantly smaller number $N_L \ll N_{\mathrm{MC}}$ of expensive samples on the finest level $L$ with $h = h_L$ are sufficient to achieve a prescribed tolerance $\varepsilon$ and the slightly larger number of samples $N_0 > N_{\mathrm{MC}}$ necessary on the coarsest level 0 are significantly cheaper than samples on level $L$ under assumption (5.4.7).
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/mlmc_variance_decay.png' | relative_url }}" alt="Two panels of log2 quantities against the level index 0 to 4. Left: the variance of the quantity of interest Q at each level is a flat horizontal line, while the variance of the level correction Y drops steeply along a straight line of slope minus 4. Right: the absolute mean of Q per level is flat while the absolute mean of Y drops along a line of slope minus 2." loading="lazy">
+</figure>
+
+*The two measurements that decide everything about MLMC, computed for the 1D elliptic problem with the KL coefficient of Example 4.5.17 ($s = 16$, QoI $u\_h(0.5)$, $4000$ coupled samples per level, $h\_\ell = 2^{-\ell}/8$): the variance of $Q\_{h\_\ell}$ is flat across levels — every level is equally hard for plain MC — while the variance of the correction $Y\_\ell$ drops by a factor $2^4$ per level and its mean by $2^2$, i.e. $\beta = 4$ and $\alpha = 2$ in the assumptions (M1)-(M3) of Theorem 5.4.6. Since $\gamma = d = 1 < \beta$, this is the best-case regime: almost all samples can live on the cheap coarse grids.*
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.4.6</span><span class="math-callout__name">(MLMC Complexity)</span></p>
 
@@ -4573,6 +4591,12 @@ $$\mathbb{V}\Big(\widehat{Q}_{h,N}^{\mathrm{QMC}}\Big) \le C \begin{cases} N^{-1
 for any $\delta \in (1/2, 1]$, **independently** of $s$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/qmc_mc_convergence.png' | relative_url }}" alt="Log-log plot of root mean square quadrature error against the number of samples N for the elliptic quantity of interest in 16 dimensions. The Monte Carlo curve decreases along a reference line of slope minus one half; the quasi-Monte Carlo curve with a randomly shifted lattice rule lies an order of magnitude lower and decreases along a reference line of slope minus one." loading="lazy">
+</figure>
+
+*Lemma 5.4.9 measured: root mean square quadrature errors for $\mathbb{E}[u\_h(0.5)]$ in the uniform elliptic problem with $s = 16$ KL coordinates. Plain MC follows $N^{-1/2}$; a randomly shifted rank-1 lattice rule (generating vector constructed by the component-by-component algorithm with weights $\gamma\_j = j^{-2}$, RMSE over $40$ random shifts) follows the almost-optimal rate $N^{-1}$ — and is already two orders of magnitude more accurate at moderate $N$, despite the $16$-dimensional integration domain.*
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.4.10</span><span class="math-callout__name">(QMC Complexity for Elliptic PDE)</span></p>
@@ -4915,6 +4939,12 @@ Lemma 5.5.10 looks like a technical variance estimate, but the mechanism is simp
 Two consequences: the failure is **exponential in the parameter dimension** (for fixed $n$, doubling $s$ squares the penalty), and it is *not* fixed by taking more samples — $N$ would have to grow like $n^{s/2}$, which is precisely the curse of dimensionality that sampling methods were supposed to avoid. The fix has to change $q$, not $N$: move the importance distribution to where the posterior mass is. That is the sense in which the Laplace approximation below acts as a **preconditioner** — same estimator, same rates, but the constant $Z = \mathbb{E}\_q[w\_u]$ is pushed from $\approx 0$ back to $\approx 1$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/is_weight_degeneracy.png' | relative_url }}" alt="Left: the broad shaded prior density and three posterior densities that become dramatically narrower as n grows from 1 to 100; below the axis, 80 prior samples drawn as dots whose size encodes their importance weight at n = 100 — essentially a single large dot near the posterior mode carries all the weight. Right: log-log plot of effective sample size over N against n; the prior-based curve collapses along a reference line of slope minus one half while the Laplace-based curve rises towards one and stays there." loading="lazy">
+</figure>
+
+*Weight degeneracy in one picture (1D model $\Phi(x) = e^x$, $y = e$, noise variance $1/n$). Left: the posterior concentrates as $n$ grows while the prior stays put; of $80$ prior samples (dots, sized by their importance weight at $n = 100$) essentially one carries all the weight. Right: the effective sample size $\mathrm{ESS}/N$ of prior-based weights collapses at exactly the predicted rate $n^{-s/2}$ (here $s = 1$), while for Laplace-based importance sampling $\mathrm{ESS}/N \to 1$ — concentration* helps *it, in line with Theorem 5.5.11.*
 
 Let us now instead consider as the importance distribution the Laplace approximation of the posterior, i.e. $q_u$ is the unnormalised density of $\mathcal{L}\_{\mu_{X\mid y}}$. It can be shown using Theorem 5.3.3 that
 
@@ -5466,6 +5496,12 @@ based on 4 noisy observations of the solution $p(x)$ at $x = 0.2, 0.4, 0.6$ and 
 
 The prior is chosen to be $U \sim \mu\_U = \mathcal{N}\big(0, (-\Delta\_{\mathrm{D}})^{-1}\big)$, where $\Delta\_{\mathrm{D}}$ denotes the Dirichlet-Laplacian on $(0, 1)$. The additive noise satisfies $E \sim \mathcal{N}(0, \sigma^2 I\_4)$. The prior is discretised using a truncated Karhunen-Loève expansion (KLE) with 50, 100, 200, 400 and 800 terms — in this case a Fourier sine series with i.i.d. Gaussian coefficients. Sample trajectories from the prior are rough mean-zero random functions covering a wide band; sample trajectories from the posterior $\mu\_{U\mid y}$ with noise level $\sigma^2 = 0.01$ and $\sigma^2 = 0.001$ form increasingly narrow bundles around the true coefficient — four point observations of the smooth solution $p$ already pin down the coefficient remarkably well, and the smaller the noise, the tighter the posterior concentration.
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/mcmc_prior_posterior_samples.png' | relative_url }}" alt="Three panels of function samples on the unit interval with the true coefficient, a full sine wave of amplitude 2, drawn in black. Left: 40 prior draws forming a rough, unstructured band around zero that ignores the black curve. Middle: posterior samples for noise level 0.01 forming a bundle that clearly follows the sine shape of the truth. Right: posterior samples for noise level 0.001 forming an even tighter bundle around the truth." loading="lazy">
+</figure>
+
+*Example 5.6.20 computed: $40$ draws from the prior $\mathcal{N}\big(0, (-\Delta\_{\mathrm{D}})^{-1}\big)$ (left) and from the posterior (pCN chains, $d = 200$) for noise levels $\sigma^2 = 0.01$ (middle) and $\sigma^2 = 0.001$ (right); the black line is the true log-coefficient $u^\dagger(x) = 2\sin(2\pi x)$. Four point observations of $p$ already force the posterior bundle to follow the shape of $u^\dagger$, and the bundle tightens as the noise decreases. The remaining bias near the extrema is instructive: the data sees $u$ only through the normalised antiderivative of $e^{-u}$ — adding a constant to $u$ leaves $p$ unchanged — so the amplitude is only partially identified and the prior shrinks it towards $0$. Bayesian inversion is doing exactly what it should: certain about what the data determines, prior-driven where it does not.*
+
 Finally, we compare the efficiency of the MH algorithm with two different proposal distributions for increasing dimension $d$ (i.e., more KLE terms in the discretisation of the prior distribution on $u$) in terms of the so-called **integrated autocorrelation time** $\mathrm{IACT}\_F$. Without giving any further details, this is defined as
 
 $$\mathrm{IACT}_F := \frac{\sigma_F^2}{\mathbb{V}_{\mu_{U|y}}\big(F(U)\big)}$$
@@ -5474,7 +5510,13 @@ with $\sigma\_F^2$ as defined in (5.6.7) (with $U\_j$ instead of $X\_j$), i.e., 
 
 $$Q_s^{\mathrm{RW}}(u, \cdot) := \mathcal{N}\big( u, \, s^2 (-\Delta_{\mathrm{D}})^{-1} \big) \quad \text{and} \quad Q_s^{\mathrm{pCN}}(u, \cdot) := \mathcal{N}\big( \sqrt{1 - s^2}\, u, \, s^2 (-\Delta_{\mathrm{D}})^{-1} \big).$$
 
-We can clearly see that $\mathrm{IACT}\_F \to \infty$ as $d \to \infty$ for the random walk proposals (roughly linear growth in $d$ on a log-log scale), while it remains constant at about $\mathrm{IACT}\_F = 50$ for pCN — the dimension-independence promised by the function-space formulation, observed in practice.
+We can clearly see that $\mathrm{IACT}\_F \to \infty$ as $d \to \infty$ for the random walk proposals (roughly linearly in $d$), while it remains constant at about $\mathrm{IACT}\_F = 50$ for pCN — the dimension-independence promised by the function-space formulation, observed in practice.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/mcmc_rw_vs_pcn_iact.png' | relative_url }}" alt="Log-log plot of integrated autocorrelation time against the KLE dimension d from 50 to 800. The random walk Metropolis-Hastings curve climbs steadily from about 90 to about 1300, while the pCN curve stays flat between 50 and 70 across all dimensions." loading="lazy">
+</figure>
+
+*The comparison computed for this exact problem ($\sigma^2 = 0.01$, $F(u) = u(0.5)$, chains of $6.5 \cdot 10^4$ steps averaged over three seeds, step sizes adaptively tuned to acceptance rate $\approx 0.23$ during burn-in and then frozen): the $\mathrm{IACT}$ of RW-MH grows from $\approx 90$ at $d = 50$ to $\approx 1300$ at $d = 800$, with the tuned step size shrinking like $d^{-1/2}$ (from $s \approx 0.34$ down to $s \approx 0.09$) exactly as the optimal-scaling theory predicts, while pCN stays flat at $\mathrm{IACT} \approx 50$-$70$ with an essentially $d$-independent step size $s \approx 0.42$. Every RW sample at $d = 800$ is statistically worth twenty times less than a pCN sample — at identical cost per step.*
 
 </div>
 
