@@ -3986,11 +3986,42 @@ It can be shown that both constructions lead to the same prior.
 
 After having carefully defined and analysed the well-posedness and stability of Bayesian inverse problems in a very general setting, we can now address the core task of the course, namely to consider some specific problems and solve them numerically.
 
-We will start by looking at some typical examples of inverse problems in applications, which all have an infinite-dimensional state space and often also an infinite-dimensional (or at least high-dimensional) parameter space. We then analyse the effect of numerical approximation on the posterior distribution, before considering the Gaussian case (for prior and additive noise) with a linear forward operator, which can be solved in closed form. In Section 5.4, we recall some classical and more advanced sampling-based quadrature methods for high dimensions and in a first attempt apply them directly to compute the conditional mean with respect to the posterior distribution in Bayesian inverse problems. Finally in Sections 5.6-5.8 we present the main numerical methods applied in general to solve Bayesian inverse problems in practice: MCMC methods, variational methods and sequential Monte Carlo.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Summary of the Chapter</span>(Numerical Methods)</p>
+
+* We will start by looking at **some typical examples of inverse problems** in applications, 
+  * which all have an **infinite-dimensional state space** and 
+  * often also an **infinite-dimensional (or at least high-dimensional) parameter space**. 
+* We then analyse the effect of **numerical approximation on the posterior distribution**, 
+  * before considering the Gaussian case (for prior and additive noise) with a linear forward operator, which can be solved in closed form. 
+* In Section 5.4, we recall some classical and more advanced sampling-based quadrature methods for high dimensions 
+  * and in a first attempt apply them directly to compute the conditional mean with respect to the posterior distribution in Bayesian inverse problems. 
+* Finally in Sections 5.6-5.8 we present the **main numerical methods applied in general to solve Bayesian inverse problems** in practice: 
+  * MCMC methods, 
+  * Variational methods,
+  * Sequential Monte Carlo.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(State Space vs. Parameter Space)</p>
+
+* **State space** represents the set of all possible configurations or values a dynamic system can be in at any given time,
+* **Parameter space** represents the set of all possible constant coefficients, weights, or characteristics that define *how* the system behaves or transitions
+
+</div>
 
 ### 5.1 Examples
 
-Our main focus will be on PDE-constrained Bayesian inverse problems, but more classical examples are typically in the context of integral equations, such as the problem of **X-ray tomography**, or from **spatial statistics**.
+Our main focus will be on *PDE-constrained Bayesian inverse problems*, but more classical examples are typically in the context of integral equations, such as the problem of **X-ray tomography**, or from **spatial statistics**.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(PDE-constrained Bayesian inverse problems)</p>
+
+* **PDE-constrained Bayesian inverse problems** involve estimating unknown parameters or states in a physical system (modeled by partial differential equations) using noisy observational data. 
+* By casting this as a Bayesian inference problem, the goal is to compute the *posterior distribution*, which quantifies the uncertainty of the parameters given both the data and prior physical knowledge.
+
+</div>
 
 #### X-ray Tomography
 
@@ -4052,13 +4083,183 @@ There are many more examples of important inverse problems in applications -- su
 
 ### 5.2 Discretisation
 
-To numerically solve such an infinite-dimensional inverse problem it is of course necessary to discretise the problem. The approximation error then leads to a bias in the posterior distribution and in any derived quantities, such as the conditional mean, that needs to be estimated.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span>(Discretization)</p>
 
-For the X-ray tomography problem, the domain $D$ is commonly subdivided using a uniform Cartesian grid into pixels (or voxels in three dimensions) and the absorption coefficient $\theta$ is then approximated by a piecewise constant approximation $\theta_h$, where $h$ denotes the mesh size.
+To numerically solve such an infinite-dimensional inverse problem it is of course necessary to discretise the problem. The approximation error then leads to a bias in the posterior distribution and in any derived quantities, such as the conditional mean, that needs to be estimated:
+* Reduce the infinite-dimensional inverse problem to finite-dimensional surrogate problem via discretization.
+* Reduction losses some information introducing a bias in the solution.
 
-In the inverse heat equation problem, the forward problem was already represented in an orthonormal system. In that case the discretisation is very naturally (and in some sense optimally) achieved by truncating the infinite series expansions after a suitable number of terms $N$.
+The goal is then to estimate/control this bias and show that it vanishes as
+
+$$N\to\infty \quad \text{or} \quad h\to 0.$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(Discretization)</p>
+
+**The original mathematical problem remains infinite-dimensional.**
+For example, the unknown might be a function
+
+$$a \in L^\infty(D), \qquad u_0 \in L^2(0,1),$$
+
+or an infinite sequence of Fourier coefficients
+
+$$\Theta = (\theta_1,\theta_2,\ldots).$$
+
+A computer cannot store or sample from this object directly, so we choose a finite representation.
+
+**The discretised problem is finite-dimensional.**
+
+For example:
+
+$$u_0(x)=\sum_{n=1}^\infty \theta_n \sin(n\pi x)$$
+
+is replaced by
+
+$$u_{0,N}(x)=\sum_{n=1}^N \theta_n \sin(n\pi x),$$
+
+so the unknown becomes the finite vector
+
+$$(\theta_1,\ldots,\theta_N)\in \mathbb R^N.$$
+
+This is exactly what the chapter says for the inverse heat equation: discretisation is achieved by truncating the infinite series after $N$ terms. For tomography, it says the domain is divided into pixels/voxels, so the unknown function is replaced by finitely many pixel values; for PDE problems, the forward operator may be discretised by finite elements. 
+
+So the situation is:
+
+$$
+\text{infinite-dimensional problem}
+\quad \leadsto \quad
+\text{finite-dimensional approximation depending on } h \text{ or } N.
+$$
+
+Here $h$ is a mesh size, and $N$ is the number of retained basis coefficients.
+
+The goal is then to estimate/control this bias and show that it vanishes as
+
+$$N\to\infty \quad \text{or} \quad h\to 0.$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(X-ray tomography problem discretization)</p>
+
+For the **X-ray tomography problem**, the domain $D$ is commonly subdivided using a uniform Cartesian grid into pixels (or voxels in three dimensions) and the absorption coefficient $\theta$ is then approximated by a piecewise constant approximation $\theta\_h$, where $h$ denotes the mesh size.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(Inverse heat equation problem discretization)</p>
+
+In the **inverse heat equation problem**, the forward problem was already represented in an orthonormal system. In that case the discretisation is very naturally (and in some sense optimally) achieved by truncating the infinite series expansions after a suitable number of terms $N$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Forward operator is typically discretized in real problems)</p>
+
+In simple examples, the forward map is known by a formula; in realistic evolution problems, it is not, so even the map from initial state to later observations must be approximated numerically
 
 In general, however, finding the initial condition of an evolution equation, e.g. in data assimilation for weather forecasting or for tsunami prediction, the forward problem can not be solved explicitly and the forward operator needs to be discretised, e.g. via finite elements.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Forward operator is typically discretized in real problems)</p>
+
+It means: **in simple examples, the forward map is known by a formula; in realistic evolution problems, it is not, so even the map from initial state to later observations must be approximated numerically.**
+
+In the inverse heat equation example, the chapter has an explicit formula:
+
+[
+u(x,t)=\sum_{n=1}^{\infty}\theta_n e^{-(n\pi)^2\alpha t}\sin(n\pi x).
+]
+
+So the forward operator is explicitly diagonal in the sine basis:
+
+[
+\Theta \mapsto \Lambda \Theta,
+\qquad
+\Lambda_{nn}=e^{-(n\pi)^2\alpha T}.
+]
+
+That is very convenient: discretisation just means keeping finitely many Fourier modes. The notes say exactly this: for the inverse heat equation, the forward problem is already represented in an orthonormal system, so discretisation is naturally done by truncating the infinite series after (N) terms. 
+
+The remark says that this is **not the typical situation**.
+
+For weather, tsunami prediction, fluid dynamics, etc., the state (u(t)) solves some complicated evolution equation, schematically
+
+[
+\frac{du}{dt}=F(u),
+\qquad u(0)=u_0.
+]
+
+The inverse problem is:
+
+[
+\text{given observations at later times, infer } u_0.
+]
+
+So the forward operator is
+
+[
+\mathcal G(u_0)
+===============
+
+\text{observed quantities obtained by evolving } u_0 \text{ forward in time}.
+]
+
+But usually there is no closed formula for (\mathcal G(u_0)). You cannot write down something nice like
+
+[
+\mathcal G(u_0)
+===============
+
+\sum_{n=1}^{\infty}\theta_n e^{-(n\pi)^2\alpha T}\sin(n\pi x).
+]
+
+Instead, to evaluate (\mathcal G(u_0)), you must **numerically solve the PDE**.
+
+That is what “the forward operator needs to be discretised” means. You replace the infinite-dimensional PDE by a finite-dimensional numerical scheme, for example finite elements:
+
+[
+u(t,x)
+\quad \leadsto \quad
+u_h(t,x)=\sum_{i=1}^{N_h} U_i(t)\varphi_i(x),
+]
+
+where (\varphi_i) are finite element basis functions. Then the infinite-dimensional evolution equation becomes a finite system of ODEs/algebraic equations for the coefficients
+
+[
+U_1(t),\ldots,U_{N_h}(t).
+]
+
+So instead of the exact forward operator
+
+[
+\mathcal G : u_0 \mapsto y,
+]
+
+we compute an approximate forward operator
+
+[
+\mathcal G_h : u_{0,h} \mapsto y_h.
+]
+
+The notes contrast this with tomography, where the domain is divided into pixels/voxels, and with the inverse heat equation, where one truncates Fourier modes; in the general PDE case, finite elements are one standard way to discretise the forward problem. 
+
+So the remark is saying:
+
+[
+\boxed{
+\text{In realistic inverse evolution problems, discretisation is not only about the unknown.}
+}
+]
+
+It is also about the **forward solver**. You approximate the map “initial condition (\mapsto) later state/observations” because the exact map is not available in closed form.
+
+</div>
 
 #### 5.2.1 Finite Element Analysis of the Elliptic Model Problem
 
@@ -4203,7 +4404,33 @@ The structural point to remember: **the posterior bias inherits the functional r
 
 ### 5.3 Linear Problems and the Laplace Approximation
 
-If the observational noise is additive and Gaussian, the prior $\mu_X$ is Gaussian and the forward operator $\Phi$ is linear, then the posterior measure $\mu_{X\mid y}$ is also Gaussian and can be given explicitly.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Linear Gaussian Problems are analytically tractable)</span></p>
+
+If
+
+1. the observation model is
+   
+   $$Y = \Phi X + E,$$
+
+   where $E$ is additive Gaussian noise,
+
+2. the prior $\mu\_X$ is Gaussian, and
+
+3. the forward operator $\Phi$ is linear,
+
+then the posterior measure $\mu\_{X\mid y}$ is again Gaussian. In particular, its mean and covariance can be written explicitly.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analytically tractable vs. Solvable exactly)</span></p>
+
+In the motivation above we replace **“solvable exactly”** by **“analytically tractable”** or **“posterior is explicit”**, because in infinite dimensions we may still need numerical methods to evaluate the formula in practice. The posterior is exact at the mathematical level, but computing it may still require discretising covariance operators, solving linear systems, or approximating the forward operator.
+
+The danger is that “solvable exactly” might sound like “no numerics are ever needed,” which is not quite true.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.3.1</span><span class="math-callout__name">(Posterior for Linear Gaussian Problems)</span></p>
@@ -4245,22 +4472,484 @@ Due to the diagonal structure of the covariance and the formula for conditional 
 </details>
 </div>
 
-In principle, this solves the problem in the linear Gaussian case and for low- to intermediate-dimensional problems. In that case, it is possible to assemble and factorise $C_{X\mid y}$ and to perform inference from this posterior distribution. In high dimensions, factorisation might be prohibitive and it is necessary to consider alternatives.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Still need in numerical methods for analytically tractlable problems)</span></p>
+
+* In principle, this solves the problem in the linear Gaussian case and for **low- to intermediate-dimensional** problems. 
+  * In that case, it is possible to assemble and factorise $C\_{X\mid y}$ and to perform inference from this posterior distribution. 
+* In **high dimensions**, factorisation might be prohibitive and it is necessary to consider alternatives
+  * this will be the focus of the next three sections. 
+  * However, due to its importance and explicit tractability, there is a large body of literature on efficient numerical methods specifically for the Gaussian case.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Prohibitive factorization of $C\_{X\mid y}$)</span></p>
+
+They are **not mainly referring to the block factorisation of the joint covariance** in
+
+$$\begin{pmatrix} C & CA^* \\ AC & C_Y \end{pmatrix}^{-1} = \begin{pmatrix} I & 0 \\ -C_Y^{-1}AC & I \end{pmatrix} \begin{pmatrix} (C - CA^*C_Y^{-1}AC)^{-1} & 0 \\ 0 & C_Y^{-1} \end{pmatrix} \begin{pmatrix} I & -CA^*C_Y^{-1} \\ 0 & I \end{pmatrix}$$
+
+That factorisation is used in the **proof** to derive the conditional Gaussian formula. The motivation after the proof says that, once we know
+
+$$X\mid Y=y \sim \mathcal N(x_{\mathrm{CM}},C_{X\mid y}),$$
+
+we may still need to **assemble and factorise the posterior covariance**
+
+$$C_{X\mid y} = C-CA^*(\Sigma+ACA^*)^{-1}AC.$$
+
+So the problematic factorisation is usually something like a **Cholesky factorisation** or **square-root factorisation**
+
+$$C_{X\mid y}=LL^T,$$
+
+or equivalently an eigendecomposition
+
+$$C_{X\mid y}=Q\Lambda Q^T.$$
+
+Why do we need that? Because to sample from the posterior
+
+$$X\mid y \sim \mathcal N(x_{\mathrm{CM}},C_{X\mid y}),$$
+
+one standard method is
+
+$$
+X = x_{\mathrm{CM}} + L\xi,
+\qquad
+\xi\sim \mathcal N(0,I).
+$$
+
+So we need a factor $L$ satisfying
+
+$$LL^T=C_{X\mid y}.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Cholesky Decomposition Complexity)</span></p>
+
+* The time complexity of **Cholesky decomposition** is $\mathcal{O}(n^3)$, requiring exactly $\frac{n^{3}}{3}$ floating-point operations (flops) for large matrices. 
+* For an $n\times n$ symmetric positive-definite matrix, the space complexity is $\mathcal{O}(n^2)$ because it requires storing the resulting lower triangular matrix.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Conditional mean $x\_{\text{CM}}$ of linear Gaussian case == MAP point)</span></p>
 
 Note that in the linear Gaussian case, the conditional mean $x_{\mathrm{CM}}$ is in fact **identical** to the MAP point, which for $H = \mathbb{R}^s$ can be computed as
 
-$$x_{\mathrm{MAP}} = \operatorname{argmax}_{x \in \mathbb{R}^s} \pi_{X|Y}(x|y) = \operatorname{argmin}_{x \in H} \frac{1}{2} \lVert y - Ax \rVert_\Sigma^2 + \frac{1}{2} \lVert x - \overline{x} \rVert_C^2$$
+$$x_{\mathrm{MAP}} = \operatorname{argmax}_{x \in \mathbb{R}^s} \pi_{X|Y}(x|y) = \operatorname{argmin}_{x \in H} \frac{1}{2} \lVert y - Ax \rVert_\Sigma^2 + \frac{1}{2} \lVert x - \overline{x} \rVert_C^2 = x_{\mathrm{CM}}$$
 
 and is in fact also **identical** to the solution of a generalised Tikhonov-regularised system as discussed in Section 2.5 (with suitable norms on the parameter space $X$ and on the observation space $Y$, in the notation there).
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+In the finite-dimensional case $H=\mathbb R^s$, the proof is quite direct.
+
+We use the conventions
+
+$$[|v|_\Sigma^2 := v^\top \Sigma^{-1}v, \qquad |x-\overline{x}|_C^2 := (x-\overline{x})^\top C^{-1}(x-\overline{x}),$$
+
+where $C$ and $\Sigma$ are symmetric positive definite. The theorem in your notes gives the posterior as a Gaussian with mean (x_{\mathrm{CM}}) and covariance (C_{X\mid y}). The proposition then observes that, in the linear Gaussian case, this mean is also the posterior mode/MAP point. 
+
+**Key idea.**
+A Gaussian density is maximised at its mean, while Bayes’ formula shows that the negative log-posterior is exactly a quadratic Tikhonov functional.
+
+---
+
+**Step 1: Write the posterior density up to a constant.**
+
+The observation model is
+
+[
+Y=AX+E,
+\qquad
+E\sim \mathcal N(0,\Sigma),
+]
+
+so the likelihood is
+
+[
+\pi_{Y\mid X}(y\mid x)
+\propto
+\exp\left(
+-\frac12 |y-Ax|_\Sigma^2
+\right).
+]
+
+The prior is
+
+[
+X\sim \mathcal N(\overline{x},C),
+]
+
+so
+
+[
+\pi_X(x)
+\propto
+\exp\left(
+-\frac12 |x-\overline{x}|_C^2
+\right).
+]
+
+By Bayes’ formula,
+
+[
+\pi_{X\mid Y}(x\mid y)
+\propto
+\pi_{Y\mid X}(y\mid x)\pi_X(x).
+]
+
+Therefore
+
+[
+\pi_{X\mid Y}(x\mid y)
+\propto
+\exp\left(
+-\frac12|y-Ax|_\Sigma^2
+-\frac12|x-\overline{x}|_C^2
+\right).
+]
+
+Hence maximising the posterior density is equivalent to minimising
+
+[
+J(x)
+:=
+\frac12|y-Ax|_\Sigma^2
++
+\frac12|x-\overline{x}|_C^2.
+]
+
+Thus
+
+[
+x_{\mathrm{MAP}}
+================
+
+\operatorname*{argmin}*{x\in\mathbb R^s}
+\left[
+\frac12|y-Ax|*\Sigma^2
++
+\frac12|x-\overline{x}|_C^2
+\right].
+]
+
+This proves the MAP/Tikhonov form.
+
+---
+
+**Step 2: Compute the minimiser.**
+
+Since (C^{-1}) and (\Sigma^{-1}) are positive definite, (J) is strictly convex. Hence it has a unique minimiser, characterised by
+
+[
+\nabla J(x)=0.
+]
+
+Compute:
+
+[
+\nabla J(x)
+===========
+
+-A^\top\Sigma^{-1}(y-Ax)
++
+C^{-1}(x-\overline{x}).
+]
+
+Equivalently,
+
+[
+A^\top\Sigma^{-1}(Ax-y)
++
+C^{-1}(x-\overline{x})
+======================
+
+0.
+
+]
+
+Rearranging gives the normal equation
+
+[
+\left(A^\top\Sigma^{-1}A+C^{-1}\right)x
+=======================================
+
+A^\top\Sigma^{-1}y+C^{-1}\overline{x}.
+]
+
+So
+
+[
+x_{\mathrm{MAP}}
+================
+
+\left(A^\top\Sigma^{-1}A+C^{-1}\right)^{-1}
+\left(A^\top\Sigma^{-1}y+C^{-1}\overline{x}\right).
+]
+
+This is already the Tikhonov-regularised solution: data misfit plus quadratic prior penalty.
+
+---
+
+**Step 3: Show that this equals the conditional mean.**
+
+The theorem gives
+
+[
+x_{\mathrm{CM}}
+===============
+
+\overline{x}
++
+CA^\top(\Sigma+ACA^\top)^{-1}(y-A\overline{x}).
+]
+
+Let
+
+[
+C_Y:=\Sigma+ACA^\top,
+\qquad
+r:=y-A\overline{x}.
+]
+
+Then
+
+[
+x_{\mathrm{CM}}
+===============
+
+\overline{x}+CA^\top C_Y^{-1}r.
+]
+
+We check that this satisfies the MAP normal equation.
+
+First,
+
+[
+x_{\mathrm{CM}}-\overline{x}
+============================
+
+CA^\top C_Y^{-1}r,
+]
+
+so
+
+[
+C^{-1}(x_{\mathrm{CM}}-\overline{x})
+====================================
+
+A^\top C_Y^{-1}r.
+]
+
+Next,
+
+[
+Ax_{\mathrm{CM}}-y
+==================
+
+A\overline{x}+ACA^\top C_Y^{-1}r-y.
+]
+
+Since (r=y-A\overline{x}), this becomes
+
+[
+Ax_{\mathrm{CM}}-y
+==================
+
+-r+ACA^\top C_Y^{-1}r.
+]
+
+Using
+
+[
+C_Y=\Sigma+ACA^\top,
+]
+
+we get
+
+[
+I-ACA^\top C_Y^{-1}
+===================
+
+\Sigma C_Y^{-1}.
+]
+
+Hence
+
+[
+Ax_{\mathrm{CM}}-y
+==================
+
+-\Sigma C_Y^{-1}r.
+]
+
+Therefore
+
+[
+A^\top\Sigma^{-1}(Ax_{\mathrm{CM}}-y)
+=====================================
+
+-A^\top C_Y^{-1}r.
+]
+
+Combining the two pieces,
+
+[
+A^\top\Sigma^{-1}(Ax_{\mathrm{CM}}-y)
++
+C^{-1}(x_{\mathrm{CM}}-\overline{x})
+====================================
+
+-A^\top C_Y^{-1}r
++
+A^\top C_Y^{-1}r
+================
+
+0.
+
+]
+
+Thus (x_{\mathrm{CM}}) satisfies the unique optimality equation for (J). Therefore
+
+[
+\boxed{
+x_{\mathrm{MAP}}=x_{\mathrm{CM}}.
+}
+]
+
+---
+
+**Step 4: Why this is also the mode of the Gaussian posterior.**
+
+From Theorem 5.3.1,
+
+[
+X\mid Y=y
+\sim
+\mathcal N(x_{\mathrm{CM}},C_{X\mid y}).
+]
+
+The density of this Gaussian is
+
+[
+\pi_{X\mid Y}(x\mid y)
+\propto
+\exp\left(
+-\frac12
+|x-x_{\mathrm{CM}}|*{C*{X\mid y}}^2
+\right).
+]
+
+This is maximised exactly when
+
+[
+x=x_{\mathrm{CM}}.
+]
+
+So independently of the Tikhonov calculation,
+
+[
+x_{\mathrm{MAP}}=x_{\mathrm{CM}}.
+]
+
+The Tikhonov calculation identifies the same point as the minimiser of the data-misfit plus prior-penalty functional.
+
+---
+
+**Conclusion.**
+
+In the finite-dimensional linear Gaussian case,
+
+[
+\boxed{
+x_{\mathrm{MAP}}
+=
+x_{\mathrm{CM}}
+=
+\operatorname*{argmin}*{x\in\mathbb R^s}
+\left[
+\frac12|y-Ax|*\Sigma^2
++
+\frac12|x-\overline{x}|_C^2
+\right].
+}
+]
+
+The equality is special to Gaussian posteriors. For non-Gaussian or nonlinear inverse problems, the posterior may be skewed or multimodal, and then the conditional mean and MAP point usually differ.
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">($x\_{\mathrm{MAP}} = x\_{\mathrm{CM}}$)</span></p>
+
+In the expression above
+
+$$x_{\mathrm{MAP}} = \operatorname{argmax}_{x \in \mathbb{R}^s} \pi_{X|Y}(x|y) = \operatorname{argmin}_{x \in H} \frac{1}{2} \lVert y - Ax \rVert_\Sigma^2 + \frac{1}{2} \lVert x - \overline{x} \rVert_C^2 = x_{\mathrm{CM}}$$
+
+The terms could be interpreted as optimizing two coupled objectives:
+* **Match the observed data:** make $Ax$ close to $y$, measured in the noise-weighted norm $\|\cdot\|\_\Sigma$.
+* **Remain plausible under the prior:** keep $x$ close to the prior mean $\overline{x}$, measured in the prior-weighted norm $\|\cdot\|\_C$.
+
+The functional
+
+$$\frac12 |y-Ax|_\Sigma^2 + \frac12 |x-\overline{x}|_C^2$$
+
+has exactly the structure you describe:
+
+$$\boxed{ \text{posterior objective} = \text{data misfit} +\text{prior penalty}. }$$
+
+The first term
+
+$$|y-Ax|_\Sigma^2 = (y-Ax)^\top \Sigma^{-1}(y-Ax)$$
+
+means:
+
+$$\text{choose } x \text{ so that the predicted observation } Ax \text{ is close to the actual observation } y.$$
+
+So yes: **match the target/data**.
+
+The second term
+
+$$|x-\overline{x}|_C^2 = (x-\overline{x})^\top C^{-1}(x-\overline{x})$$
+
+means:
+
+$$\text{do not move too far from the prior mean } \overline{x}.$$
+
+But more precisely, it means: **do not move too far in directions that the prior regards as unlikely**. The covariance $C$ matters. If $C$ has large variance in some direction, deviations in that direction are penalized weakly. If $C$ has small variance in some direction, deviations are penalized strongly.
+
+So the final interpretation is:
+
+$$\boxed{ x_{\mathrm{MAP}}=x_{\mathrm{CM}} \text{ is the point that best compromises between explaining the data and remaining prior-plausible.}}$$
+
+This equality is special to the linear Gaussian case. In nonlinear or non-Gaussian problems, the MAP still minimises a similar posterior objective, but it usually no longer equals the conditional mean.
+
+</div>
+
 #### The Laplace Approximation
 
-As in numerical optimisation for general, nonlinear deterministic problems, and in particular for the solution of Tikhonov-regularised, nonlinear inverse problems, such as (2.5.3), a powerful way to accelerate numerical methods is a change of metric, also referred to as **preconditioning**. For simplicity, let us restrict ourselves to a finite dimensional parameter space $H = \mathbb{R}^s$ and to additive Gaussian noise $E$ independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ again.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Preconditioning Technique: Laplace Approximation)</span></p>
+
+* As in numerical optimisation for general, nonlinear deterministic problems, and in particular for the solution of Tikhonov-regularised, nonlinear inverse problems, such as (2.5.3), a powerful way to accelerate numerical methods is a change of metric, also referred to as **preconditioning**. 
+* For simplicity, let us restrict ourselves to a finite dimensional parameter space $H = \mathbb{R}^s$ and to additive Gaussian noise $E$ independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ again.
+
+A simple and popular preconditioning technique that is easy to understand and to apply to general Bayesian inverse problems is the so-called **Laplace approximation** of the posterior distribution $\mu\_{X\mid y}$.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.3.2</span><span class="math-callout__name">(Laplace Approximation)</span></p>
 
-*(Laplace, 1774).* Suppose the forward operator $\Phi : \mathbb{R}^s \to \mathbb{R}^m$ and the prior distribution $\mu_X(\mathrm{d}x) = \pi_X(\mathrm{d}x)$, for $S_X := \lbrace x \in \mathbb{R}^s : \pi_X(x) > 0 \rbrace$. Let $\Psi : S_X \to \mathbb{R}$ be given by $\Psi(x) := \frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigma^2 - \log \pi_X(x)$ and assume that $\Psi$ has a unique minimiser $x_{\mathrm{MAP}} \in S_X$ satisfying
+*(Laplace, 1774).* Suppose the forward operator $\Phi : \mathbb{R}^s \to \mathbb{R}^m$ and the prior distribution $\mu\_X(\mathrm{d}x) = \pi\_X(x) \, \mathrm{d}x$ are such that $\Phi, \pi\_X \in C^2(S\_X)$, for $S\_X := \lbrace x \in \mathbb{R}^s : \pi\_X(x) > 0 \rbrace$. Let $\Psi : S\_X \to \mathbb{R}$ be given by $\Psi(x) := \frac{1}{2} \lVert y - \Phi(x) \rVert\_\Sigma^2 - \log \pi\_X(x)$ and assume that $\Psi$ has a unique minimiser $x\_{\mathrm{MAP}} \in S\_X$ satisfying
 
 $$\nabla \Psi(x_{\mathrm{MAP}}) = 0 \quad \text{and} \quad \nabla^2 \Psi(x_{\mathrm{MAP}}) \text{ is SPD.}$$
 
@@ -4269,6 +4958,18 @@ Then, the **Laplace approximation** of $\mu_{X\mid y}$ is given by the Gaussian 
 $$\mathcal{L}_{\mu_{X|y}} := \mathcal{N}(x_{\mathrm{MAP}}, C_{\mathrm{MAP}}) \quad \text{with} \quad C_{\mathrm{MAP}}^{-1} := \nabla^2 \Psi(x_{\mathrm{MAP}}). \tag{5.3.4}$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/laplace_construction.png' | relative_url }}" alt="Left: the negative log-posterior, an asymmetric valley-shaped curve, together with its quadratic Taylor expansion at the minimiser, a dashed parabola that hugs the curve near the marked MAP point but lies above it on the left flank and below it on the right flank. Right: the corresponding normalised posterior density, visibly skewed with a heavy left tail, against the symmetric Laplace Gaussian; dotted vertical lines mark the MAP point at 0.86 and the conditional mean at 0.54, which do not coincide." loading="lazy">
+</figure>
+
+*Definition 5.3.2 visualised (1D model with prior $\mathcal{N}(0, 1)$, forward map $\Phi(x) = e^x$, data $y = e$, noise variance $1$). Left: the negative log-posterior $\Psi$ and its second-order Taylor expansion at the minimiser — value, slope and curvature match at $x\_{\mathrm{MAP}}$, but the parabola lies* above *$\Psi$ on the left flank and* below *it on the right. Right: exponentiating turns the parabola into the Gaussian (5.3.4): a good fit near the mode, but symmetric where the posterior is skewed — where the parabola overshoots $\Psi$, the Gaussian's tail is too light (left), and vice versa (right). Consequently $x\_{\mathrm{CM}} \approx 0.54$ differs markedly from $x\_{\mathrm{MAP}} \approx 0.86$: for nonlinear $\Phi$ the identity $x\_{\mathrm{CM}} = x\_{\mathrm{MAP}}$ of the linear Gaussian case fails. This mismatch is exactly what shrinks in the small-noise limit — see the figure after Theorem 5.3.3.*
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/laplace-approximation.png' | relative_url }}" alt="A single panel showing three densities of a scalar parameter mu between 0 and 12: a broad dashed prior density peaking gently near 6, a thick black posterior density peaking sharply near 3 with a heavy right tail, and a thin red Laplace approximation that coincides with the posterior at the peak but is symmetric, lying above the posterior to the left of the mode and dropping too fast on the right, missing the heavy right tail." loading="lazy">
+</figure>
+
+*The same story in a second example (a positive scalar parameter $\mu$ with a broad prior, dashed): the Laplace approximation (red) reproduces the posterior's (black) mode and curvature perfectly but is symmetric by construction — here it overweights the region left of the mode and cuts off the heavy* right *tail that the true posterior inherits from the skewed likelihood. Which side the error lands on depends entirely on the sign of the skewness; what is generic is that mode and curvature are exact while tails and mean are not.*
 
 Finding the minimiser $x_{\mathrm{MAP}}$ can be achieved with classical unconstrained, nonlinear minimisation methods, e.g. quasi-Newton methods with low rank updates (such as SR1 or BFGS) and a globalisation strategy (such as a line search or trust region method).
 
@@ -4768,6 +5469,219 @@ The self-normalised estimator is the workhorse of Bayesian computation, so it pa
 * **Lost: unbiasedness at finite $N$.** The estimator is a ratio of two correlated random quantities, and $\mathbb{E}[A/B] \neq \mathbb{E}[A]/\mathbb{E}[B]$. The bias is $O(1/N)$ — one order smaller than the $O(N^{-1/2})$ statistical error, hence usually harmless — but it is structural: no finite-sample trick removes it. (Contrast with MC and MLMC, which were exactly unbiased for $\mathbb{E}[Q\_h]$.)
 * **The denominator is the weak point.** The denominator $\frac{1}{N} \sum\_i w(X^{(i)})$ estimates $1$, but if $q$ is a poor match for $p$, the weights $w = p/q$ are wildly variable: most samples get negligible weight and a few dominate — the *weight degeneracy* phenomenon. A useful diagnostic is the **effective sample size** $N\_{\mathrm{eff}} = \big( \sum\_i w\_i \big)^2 / \sum\_i w\_i^2 \in [1, N]$, which measures how many "ideal" samples the weighted ensemble is worth. Exactly this degeneracy, quantified in Lemma 5.5.10 below, is what breaks prior-based importance sampling in the small-noise limit and motivates Section 5.5.3.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise Setting</span><span class="math-callout__name">(Importance sampling)</span></p>
+
+Let $\mu$ be a probability measure on $\mathbb{R}$ with unnormalized density
+
+$$
+\tilde f(x)
+=
+\exp\left(-\frac{x^2}{2}\right)
+\left(
+\sin^2(6x) + 3\cos^2(x)\sin^2(4x) + 1
+\right).
+\tag{6.1.1}
+$$
+
+We wish to approximate
+
+$$
+I = \int_{-\infty}^{\infty} x^2 \, d\mu(x)
+$$
+
+using only $\tilde f$. Let $g$ be the standard normal density, i.e.
+
+$$g(x) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right).$$
+
+We define the unnormalized importance weight
+
+$$w_u(x) := \frac{\tilde f(x)}{g(x)}.\tag{6.1.2}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Importance sampling (a))</span></p>
+
+Explain why this estimator is self-normalized. Derive the estimator
+
+$$\hat I_N^{\mathrm{RE}}=\frac{\sum_{j=1}^N X_j^2 w_u(X_j)}{\sum_{j=1}^N w_u(X_j)},$$
+
+where $X_1,\dots,X_N$ are iid samples from $g$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Write
+
+$$\widetilde f(x) = e^{-x^2/2} \Bigl( \sin^2(6x)+3\cos^2(x)\sin^2(4x)+1 \Bigr),$$
+
+and
+
+$$g(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}.$$
+
+Since $\mu$ is only given through an unnormalised density, we have to normalize it (since $\mu$ is a probability measure given only through an unnormalised density $\widetilde f$, to get the actual density of $\mu$ with respect to Lebesgue measure we need the normalising constant $Z=\int \widetilde f(x)dx$ to obtain the actual Radon–Nikodym derivative $d\mu/dx=\widetilde f/Z$.)
+
+$$\mu(dx)=\frac{\widetilde f(x)}{Z},dx, \qquad Z=\int_{\mathbb R}\widetilde f(x),dx.$$
+
+Therefore
+
+$$I = \int_{\mathbb R}x^2,d\mu(x) = \frac{\int_{\mathbb R}x^2\widetilde f(x),dx}{\int_{\mathbb R}\widetilde f(x),dx}.$$
+
+Now insert $g(x)/g(x)$:
+
+$$I = \frac{\int_{\mathbb R}x^2\frac{\widetilde f(x)}{g(x)}g(x),dx}{\int_{\mathbb R}\frac{\widetilde f(x)}{g(x)}g(x),dx} = \frac{\mathbb E_g[X^2w_u(X)]} {\mathbb E_g[w_u(X)]}.$$
+
+Thus, for iid samples $X_1,\dots,X_N\sim g$,
+
+$$\boxed{\widehat I_N^{\mathrm{RE}} = \frac{\sum_{j=1}^N X_j^2 w_u(X_j)}{\sum_{j=1}^N w_u(X_j)}}.$$
+
+This is **self-normalised** because the normalised empirical weights are
+
+$$\overline w_j = \frac{w_u(X_j)}{\sum_{i=1}^N w_u(X_i)}, \qquad \sum_{j=1}^N \overline w_j=1,$$
+
+so equivalently
+
+$$\widehat I_N^{\mathrm{RE}} = \sum_{j=1}^N \overline w_j X_j^2.$$
+
+Here
+
+$$w_u(x) = \frac{\widetilde f(x)}{g(x)} = \sqrt{2\pi} \Bigl( \sin^2(6x)+3\cos^2(x)\sin^2(4x)+1 \Bigr).$$
+
+The factor $\sqrt{2\pi}$ cancels from numerator and denominator, so in code it is enough to use
+
+$$h(x)=\sin^2(6x)+3\cos^2(x)\sin^2(4x)+1.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Importance sampling (b))</span></p>
+
+Implement the estimator for a range of sample sizes $N$. Repeat the experiment several times and plot the empirical mean and variance of $\hat I_N^{\mathrm{RE}}$ as functions of $N$.
+
+Estimate the reference value of $I$ by an independent reference run with
+
+$$N_{\mathrm{ref}} = 10^6$$
+
+samples and report the value of $N_{\mathrm{ref}}$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Setup and one key simplification.** Before writing any code it pays to look at the weight (6.1.2) analytically. Since $\widetilde{f}$ carries the *same* Gaussian envelope as the proposal $g$, the exponentials cancel exactly:
+
+$$w_u(x) = \frac{\widetilde{f}(x)}{g(x)} = \sqrt{2\pi} \, \underbrace{\big( \sin^2(6x) + 3\cos^2(x)\sin^2(4x) + 1 \big)}_{=: h(x)}, \qquad 1 \le h(x) \le 5.$$
+
+Two consequences:
+
+* the weights are **uniformly bounded above and below**, $\sqrt{2\pi} \le w\_u(x) \le 5\sqrt{2\pi}$ — the worst weight exceeds the best by at most a factor $5$, whatever $x$ is sampled;
+* the constant $\sqrt{2\pi}$ (and any other multiplicative constant) **cancels** in the ratio estimator, exactly as self-normalisation promises — we could equally well work with $h$ alone. This is the whole point of the estimator: it never needs the normalisation constant $Z = \int \widetilde{f}$.
+
+**Implementation.** For each sample size $N \in \lbrace 2^5, \ldots, 2^{17} \rbrace$ we run $R = 200$ independent repetitions of the estimator (vectorised over the repetitions), and one independent reference run with $N\_{\mathrm{ref}} = 10^6$ samples.
+
+```python
+import numpy as np
+
+rng = np.random.default_rng(0)
+
+def h(x):                     # bounded modulation factor, 1 <= h <= 5
+    return np.sin(6*x)**2 + 3*np.cos(x)**2*np.sin(4*x)**2 + 1.0
+
+def w_u(x):                   # (6.1.2); the Gaussians cancel analytically
+    return np.sqrt(2*np.pi) * h(x)
+
+def ratio_estimate(x):        # self-normalised IS estimator of E_mu[X^2]
+    w = w_u(x)
+    return np.sum(x**2 * w) / np.sum(w)
+
+# independent reference run
+N_ref = 10**6
+I_ref = ratio_estimate(rng.standard_normal(N_ref))   # 0.828767
+
+# repeated runs over a range of N
+Ns, R = 2**np.arange(5, 18), 200
+means, variances = [], []
+for N in Ns:
+    x = rng.standard_normal((R, N))
+    w = w_u(x)
+    est = (x**2 * w).sum(axis=1) / w.sum(axis=1)     # R ratio estimates
+    means.append(est.mean())
+    variances.append(est.var(ddof=1))
+```
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/sheet6_is_mean_var.png' | relative_url }}" alt="Left: the empirical mean of the self-normalised estimator over 200 repetitions, plotted with two-standard-error bars against N from 32 to 131072 on a logarithmic axis; the error bars shrink steadily and the means settle on the dashed reference line at 0.8288. Right: the empirical variance against N on a log-log scale, following a dashed reference line of slope minus one over four decades." loading="lazy">
+  <figcaption>Empirical mean with $\pm 2$ s.e. bars (left) and empirical variance (right) of $\widehat{I}_N^{\mathrm{RE}}$ over $R = 200$ repetitions. The dashed line on the left is the reference value $\widehat{I}_{\mathrm{ref}} \approx 0.8288$ from an independent run with $N_{\mathrm{ref}} = 10^6$ samples; the dashed line on the right has slope $N^{-1}$.</figcaption>
+</figure>
+
+**Results and comments.**
+
+* **Reference value.** The independent reference run with $N\_{\mathrm{ref}} = 10^6$ samples gives
+
+  $$\widehat{I}_{\mathrm{ref}} = 0.8288.$$
+
+  As a sanity check (not part of the task), deterministic trapezoidal quadrature of $\int x^2 \widetilde{f} \big/ \int \widetilde{f}$ on a fine grid gives $I \approx 0.8273$; the two agree within one standard error of the reference run ($\mathrm{s.e.} \approx \sqrt{2.4/10^6} \approx 1.6 \cdot 10^{-3}$), as they should.
+* **Mean.** The empirical mean is statistically consistent with the reference value for every $N$ — the deviations at small $N$ lie inside the $\pm 2$ s.e. bars. The ratio estimator *is* biased at finite $N$ (numerator and denominator are correlated random quantities), but the bias is $O(1/N)$, one order below the $O(N^{-1/2})$ statistical error, and is invisible at this number of repetitions — consistent with Lemma 5.5.4 of the lecture.
+* **Variance.** The empirical variance follows the line $\mathrm{Var} \approx \sigma^2/N$ with $\sigma^2 \approx 2.4$ over four decades — each doubling of $N$ halves the variance. This is the CLT for self-normalised importance sampling: $\sqrt{N}\big( \widehat{I}\_N^{\mathrm{RE}} - I \big) \to \mathcal{N}(0, \sigma\_q^2)$ with the asymptotic variance $\sigma\_q^2$ from the lecture (Lemma 5.5.4, eq. (5.5.6)).
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Importance sampling (c))</span></p>
+
+For the same runs compute the normalized weights
+
+$$\overline w_{u,j}=\frac{w_u(X_j)}{\sum_{i=1}^N w_u(X_i)}$$
+
+and the effective sample size
+
+$$N_{\mathrm{eff}}=\frac{1}{\sum_{j=1}^N \overline w_{u,j}^{\,2}}.$$
+
+Plot $N_{\mathrm{eff}}/N$ against $N$ and comment on the quality of the proposal density $g$ for this example.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Implementation.** The normalised weights and the effective sample size are computed from the same runs as in (6.1b) — note that any multiplicative constant in $w\_u$ (in particular the $\sqrt{2\pi}$, and the unknown $Z$) cancels in $\overline{w}\_{u,j}$, so $N\_{\mathrm{eff}}$ is computable *without any normalisation knowledge*, just like the estimator itself:
+
+```python
+# continuing inside the loop over N from part (b):
+    wbar = w / w.sum(axis=1, keepdims=True)   # normalised weights, rows sum to 1
+    N_eff = 1.0 / (wbar**2).sum(axis=1)       # effective sample size per run
+    ess_fraction = N_eff / N                  # in (0, 1]
+```
+
+For a deterministic prediction of where $N\_{\mathrm{eff}}/N$ should settle, expand the definition: by the law of large numbers,
+
+$$\frac{N_{\mathrm{eff}}}{N} = \frac{\big( \frac{1}{N}\sum_j w_u(X_j) \big)^2}{\frac{1}{N}\sum_j w_u(X_j)^2} \; \xrightarrow{N \to \infty} \; \frac{\big( \mathbb{E}_g[w_u] \big)^2}{\mathbb{E}_g[w_u^2]} \approx 0.857,$$
+
+where the limit was evaluated by quadrature.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/sheet6_is_ess.png' | relative_url }}" alt="The effective sample size fraction plotted against N from 32 to 131072 on a logarithmic axis. The curve is essentially a horizontal line at 0.857 for all N, with small error bars at small N that shrink to invisible, lying exactly on the dashed theoretical limit line." loading="lazy">
+  <figcaption>Effective sample size fraction $N_{\mathrm{eff}}/N$ (mean $\pm$ std over the $R = 200$ runs) against $N$. The dashed line is the deterministic limit $(\mathbb{E}_g[w_u])^2 / \mathbb{E}_g[w_u^2] = 0.857$, computed by quadrature. The fraction is flat in $N$ — no weight degeneracy whatsoever.</figcaption>
+</figure>
+
+**Comments on the quality of $g$.** The proposal is close to ideal for this target, and the plot shows it: $N\_{\mathrm{eff}}/N \approx 0.86$ *independently of $N$*, i.e. out of every $N$ weighted samples we retain the statistical power of about $0.86\,N$ ideal samples, and this does not deteriorate as $N$ grows. The structural reason is the one identified in part (b):
+
+* **Exact tail match.** $g$ carries the same Gaussian envelope $e^{-x^2/2}$ as $\widetilde{f}$, so the weight $w\_u = \sqrt{2\pi}\, h$ is bounded above *and below* ($1 \le h \le 5$). No single sample can ever dominate the weight sum — the worst possible weight imbalance is a factor $5$. This is precisely the textbook criterion (cf. Remark 5.5.3 of the lecture): the proposal has tails at least as heavy as the target, so light-tail weight blow-up is impossible.
+* **What is lost, and why.** The missing $14\%$ is the price of the weight *fluctuation*: $h$ oscillates between $1$ and $5$ across the support, so the weights are not constant (only a constant weight, i.e. $g \propto \widetilde{f}$, would give $N\_{\mathrm{eff}} = N$). Since $h$ oscillates fast compared to the Gaussian, the loss is a fixed, benign constant.
+* **The contrast to keep in mind.** This is the opposite of the degeneracy scenario of Section 5.5.3 of the lecture notes, where the target (a concentrating posterior) and the proposal (the prior) drift apart and $N\_{\mathrm{eff}}/N$ collapses like $n^{-s/2}$. Here target and proposal share their global shape and differ only by a bounded, oscillatory factor — importance sampling then works essentially at full efficiency, and increasing $N$ buys variance reduction at the ideal $N^{-1}$ rate seen in part (b).
+
+</details>
 </div>
 
 #### 5.5.2 Estimating Posterior Expectations
