@@ -17,6 +17,12 @@
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       var initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
       root.dataset.theme = initialTheme;
+
+      var storedFont = null;
+      try {
+        storedFont = localStorage.getItem('font-preference');
+      } catch (e) {}
+      root.dataset.font = storedFont === 'menlo' ? 'menlo' : 'default';
     })();
   </script>
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
@@ -53,6 +59,7 @@
           <a href="{{ '/graph/' | relative_url }}">Graph</a>
           <a href="{{ '/search/' | relative_url }}">Search</a>
         </nav>
+        <button class="font-toggle" type="button" id="font-toggle" aria-pressed="false" aria-label="Switch to Menlo font">Aa</button>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark theme">
           <svg class="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <g class="theme-toggle__sun">
@@ -148,6 +155,38 @@
           } catch (e) {}
           if (storedTheme) return;
           applyTheme(event.matches ? 'dark' : 'light', false);
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      var storageKey = 'font-preference';
+      var root = document.documentElement;
+
+      function applyFont(font, persist) {
+        root.dataset.font = font;
+        if (persist !== false) {
+          try {
+            localStorage.setItem(storageKey, font);
+          } catch (e) {}
+        }
+
+        var toggle = document.getElementById('font-toggle');
+        var isMenlo = font === 'menlo';
+        if (toggle) {
+          toggle.setAttribute('aria-pressed', isMenlo);
+          toggle.setAttribute('aria-label', isMenlo ? 'Switch to default font' : 'Switch to Menlo font');
+        }
+      }
+
+      applyFont(root.dataset.font || 'default', false);
+
+      var toggleButton = document.getElementById('font-toggle');
+      if (toggleButton) {
+        toggleButton.addEventListener('click', function () {
+          var nextFont = root.dataset.font === 'menlo' ? 'default' : 'menlo';
+          applyFont(nextFont, true);
         });
       }
     })();

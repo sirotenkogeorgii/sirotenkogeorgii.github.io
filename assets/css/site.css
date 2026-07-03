@@ -1,5 +1,6 @@
 :root {
   color-scheme: light;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
   --page-bg: #eef0f4;
   --surface: #ffffff;
   --surface-muted: rgba(255, 255, 255, 0.92);
@@ -22,6 +23,10 @@
   --header-bg: rgba(238, 240, 244, 0.9);
   --accent-strong: #2c3e94;
   --accent-soft: #f5f6ff;
+}
+
+:root[data-font="menlo"] {
+  --font-body: Menlo, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 :root[data-theme="dark"] {
@@ -60,7 +65,7 @@ body {
   margin: 0;
   background: var(--page-bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.7;
   letter-spacing: 0.01em;
@@ -156,7 +161,8 @@ a:focus {
   color: var(--text);
 }
 
-.theme-toggle {
+.theme-toggle,
+.font-toggle {
   position: absolute;
   right: 2.5rem;
   top: 2.8rem;
@@ -174,15 +180,30 @@ a:focus {
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.font-toggle:hover {
   color: var(--text);
   border-color: var(--muted);
   background-color: var(--surface-muted);
 }
 
-.theme-toggle:focus-visible {
+.theme-toggle:focus-visible,
+.font-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+
+.font-toggle {
+  right: 5.4rem;
+  font-size: 0.85rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+:root[data-font="menlo"] .font-toggle {
+  font-family: Menlo, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .theme-toggle__icon {
@@ -1084,6 +1105,11 @@ thead {
   .theme-toggle {
     top: 1.9rem;
     right: 1.25rem;
+  }
+
+  .font-toggle {
+    top: 1.9rem;
+    right: 4.15rem;
   }
 
   .layout-note .wrapper {
