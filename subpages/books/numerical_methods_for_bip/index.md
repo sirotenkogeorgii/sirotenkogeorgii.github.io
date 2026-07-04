@@ -5975,9 +5975,11 @@ where equality holds in the sense of measures on $H \times H$.
 
 </div>
 
-Reversibility means that provided $X\_j \sim \mu$ the jump from $X\_j = x$ to $X\_{j+1} = x'$ has the same probability as the reverse jump from $X\_j = x'$ to $X\_{j+1} = x$, and (5.6.5) is equivalent to
+Reversibility means that provided $X\_j \sim \mu$ the jump from $X\_j = x$ to $X\_{j+1} = x'$ has the same probability as the reverse jump from $X\_j = x'$ to $X\_{j+1} = x$, and (5.6.5) is equivalent t
 
 $$\mathbb{P}(X_j \in A, X_{j+1} \in B) = \mathbb{P}(X_j \in B, X_{j+1} \in A), \quad \text{for all } A, B \in \mathcal{B}(H).$$
+
+TODO: does it mean that we can go backwards in the chain preserving the probs we when forward?
 
 This property is easier to verify than invariance (5.6.4) itself and we have the following result.
 
@@ -5998,6 +6000,8 @@ $$\begin{aligned}
 (\mu K)(A) = \int_H K(x, A) \, \mu(\mathrm{d}x) &= \int_H \int_A \underbrace{K(x, \mathrm{d}x') \, \mu(\mathrm{d}x)}_{= K(x', \mathrm{d}x)\,\mu(\mathrm{d}x')} = \int_H \int_A K(x', \mathrm{d}x) \, \mu(\mathrm{d}x') \\
 &= \int_A \int_H K(x', \mathrm{d}x) \, \mu(\mathrm{d}x') = \int_A \underbrace{K(x', H)}_{=1} \, \mu(\mathrm{d}x') = \int_A 1 \, \mu(\mathrm{d}x') = \mu(A).
 \end{aligned}$$
+
+TODO: why can we swap the integral?
 
 </details>
 </div>
@@ -6087,6 +6091,404 @@ $$\mathrm{IACT}_F := \frac{\sigma_F^2}{\mathbb{V}_\mu(F(X))} = 1 + 2\sum_{j=1}^\
 
 is called the **integrated autocorrelation time**: $N$ correlated MCMC samples are statistically worth only $N / \mathrm{IACT}\_F$ iid samples. This single number is the right figure of merit for comparing MCMC algorithms, and it is controlled by how fast the autocorrelations decay — i.e., by the geometric ergodicity rate $r$ (equivalently, the spectral gap $1 - r$ of the transition kernel, cf. Example 5.6.8 and Remark 5.6.9). Everything in the remainder of this chapter — step-size tuning, pCN, MALA, adaptive and multilevel MCMC — is ultimately an attempt to make $\mathrm{IACT}\_F$ small (and, for infinite-dimensional problems, *bounded in the discretisation dimension*; see Example 5.6.20).
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise Setting</span><span class="math-callout__name">(Markov chain Monte Carlo)</span></p>
+
+Let $(X_j)\_{j \ge 1}$ be a stationary Markov chain with invariant probability measure \(\mu\), and let \(F \in L^2(\mu)\). We want to estimate
+
+$$I = \mathbb{E}_\mu[F(X)]$$
+
+by the MCMC estimator
+
+$$\widehat I_N = \frac{1}{N} \sum_{j=1}^N F(X_j).$$
+
+For $k \ge 0$, define
+
+$$\gamma_k = \operatorname{Cov}_\mu(F(X_j), F(X_{j+k})), \qquad \rho_k = \gamma_k / \gamma_0,$$
+
+where stationarity makes \(\gamma_k\) independent of \(j\) and
+
+$$\gamma_0 = \operatorname{Var}_\mu(F(X)) > 0.$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Markov chain Monte Carlo (a))</span></p>
+
+Show that if the chain is started in stationarity, i.e. $X_1 \sim \mu$, then
+
+$$\mathbb{E}[\widehat I_N] = I.$$
+
+What can go wrong if $X_1 \not\sim \mu$? Briefly explain the purpose of burn-in.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**FIRST PART**
+
+$$\mathbb{E}[\widehat I_N] = \mathbb{E}[\frac{1}{N} \sum_{j=1}^N F(X_j)] = \frac{1}{N} \sum_{j=1}^N \mathbb{E}[F(X_j)]$$
+
+* **Base case:** 
+  
+  $$X_1 \sim \mu \implies \mathbb{E}[F(X_1)] = \mathbb{E}_\mu[F(X)]$$
+
+* **Induction step:**
+  
+  $$\mathbb{E}[F(X_{j+1})] = \int_H F(x) (\mu K)(dx) = \int_H F(x) \mu(dx) = \mathbb{E}_\mu[F(X)]$$
+
+Hence,
+
+$$\mathbb{E}[\widehat I_N] = \frac{1}{N} \sum_{j=1}^N \mathbb{E}[F(X_j)] = \frac{1}{N} \sum_{j=1}^N \mathbb{E}_\mu[F(X)] = \frac{1}{N} N \mathbb{E}_\mu[F(X)] = \mathbb{E}_\mu[F(X)]$$
+
+**SECOND PART**
+
+If $X_1\not\sim \mu$, then the early states $X_j$ need not have distribution $\mu$. Hence
+
+$$E[F(X_j)] \neq I$$
+
+for small $j$, and the estimator can be biased by the initial condition. Burn-in means discarding the first $B$ samples, hoping that after enough transitions the chain is approximately distributed according to $\mu$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Markov chain Monte Carlo (b))</span></p>
+
+Derive the exact identity
+
+$$\operatorname{Var}(\widehat I_N)=\frac{1}{N^2}\left(N \gamma_0 + 2 \sum_{k=1}^{N-1} (N-k)\gamma_k \right).$$
+
+Equivalently, show that
+
+$$\operatorname{Var}(\widehat I_N) =\frac{\gamma_0}{N}\left( 1 + 2 \sum_{k=1}^{N-1} \left(1 - \frac{k}{N}\right)\rho_k \right).$$
+
+Compare this expression with the iid Monte Carlo variance $\gamma_0 / N$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**FIRST IDENTITY**
+
+We compute
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\operatorname{Var}\left(\frac{1}{N}\sum_{j=1}^N F(X_j)\right)
+=
+\frac{1}{N^2}
+\operatorname{Var}\left(\sum_{j=1}^N F(X_j)\right).
+$$
+
+Using the covariance expansion,
+
+$$
+\operatorname{Var}\left(\sum_{j=1}^N F(X_j)\right)
+=
+\sum_{i=1}^N\sum_{j=1}^N
+\operatorname{Cov}(F(X_i),F(X_j)).
+$$
+
+By stationarity,
+
+$$
+\operatorname{Cov}(F(X_i),F(X_j))
+=
+\gamma_{|i-j|}.
+$$
+
+In particular, the diagonal terms satisfy
+
+$$
+\operatorname{Cov}(F(X_i),F(X_i))
+=
+\operatorname{Var}(F(X_i))
+=
+\gamma_0.
+$$
+
+There are $N$ diagonal terms, so their total contribution is
+
+$$
+N\gamma_0.
+$$
+
+For a fixed lag $k\geq 1$, there are $N-k$ pairs of the form $(i,i+k)$, and another $N-k$ pairs of the form $(i+k,i)$. Each such covariance equals $\gamma_k$. Hence the total contribution from lag $k$ is
+
+$$
+2(N-k)\gamma_k.
+$$
+
+Summing over all possible lags $k=1,\dots,N-1$, we obtain
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\frac{1}{N^2}
+\left(
+N\gamma_0
++
+2\sum_{k=1}^{N-1}(N-k)\gamma_k
+\right).
+$$
+
+This proves the first identity.
+
+**SECOND IDENTITY**
+
+Since
+
+$$
+\rho_k=\frac{\gamma_k}{\gamma_0},
+$$
+
+we have
+
+$$
+\gamma_k=\gamma_0\rho_k.
+$$
+
+Substituting this into the first identity gives
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\frac{1}{N^2}
+\left(
+N\gamma_0
++
+2\sum_{k=1}^{N-1}(N-k)\gamma_0\rho_k
+\right).
+$$
+
+Factoring out $\gamma_0/N$ yields
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\frac{\gamma_0}{N}
+\left(
+1
++
+2\sum_{k=1}^{N-1}
+\left(1-\frac{k}{N}\right)\rho_k
+\right).
+$$
+
+This proves the second identity.
+
+**COMPARISON WITH IID MONTE CARLO**
+
+In the iid case, the samples are uncorrelated, so
+
+$$
+\gamma_k=0
+\qquad\text{for all }k\geq 1.
+$$
+
+Therefore the variance reduces to
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\frac{\gamma_0}{N}.
+$$
+
+For a Markov chain, the additional terms
+
+$$
+2\sum_{k=1}^{N-1}
+\left(1-\frac{k}{N}\right)\rho_k
+$$
+
+measure the effect of autocorrelation. If the autocorrelations are mostly positive, the MCMC estimator has larger variance than the iid Monte Carlo estimator. Thus $N$ correlated samples contain less information than $N$ independent samples. If some autocorrelations are negative, they can reduce the variance.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Markov chain Monte Carlo (c))</span></p>
+
+Assume that
+
+$$\sum_{k=1}^{\infty} |\rho_k| < \infty.$$
+
+Define the integrated autocorrelation time
+
+$$\tau_F = 1 + 2 \sum_{k=1}^{\infty} \rho_k.$$
+
+Show that for large $N$,
+
+$$\operatorname{Var}(\widehat I_N) \approx (\gamma_0 / N)\tau_F.$$
+
+Define and interpret the effective sample size
+
+$$N_{\mathrm{eff}} = N / \tau_F.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+From part (b), we have
+
+$$
+\operatorname{Var}(\widehat I_N)
+=
+\frac{\gamma_0}{N}
+\left(
+1
++
+2\sum_{k=1}^{N-1}
+\left(1-\frac{k}{N}\right)\rho_k
+\right).
+$$
+
+Assume now that
+
+$$
+\sum_{k=1}^\infty |\rho_k| < \infty.
+$$
+
+Then the autocorrelations are summable, so the finite weighted sum
+
+$$
+\sum_{k=1}^{N-1}
+\left(1-\frac{k}{N}\right)\rho_k
+$$
+
+converges to the infinite sum
+
+$$
+\sum_{k=1}^{\infty}\rho_k
+$$
+
+as $N\to\infty$.
+
+Indeed, the factor
+
+$$
+1-\frac{k}{N}
+$$
+
+converges to $1$ for each fixed $k$, and the absolute summability of $(\rho_k)$ allows us to pass to the limit in the sum.
+
+Hence, for large $N$,
+
+$$
+\sum_{k=1}^{N-1}
+\left(1-\frac{k}{N}\right)\rho_k
+\approx
+\sum_{k=1}^{\infty}\rho_k.
+$$
+
+Therefore
+
+$$
+\operatorname{Var}(\widehat I_N)
+\approx
+\frac{\gamma_0}{N}
+\left(
+1
++
+2\sum_{k=1}^{\infty}\rho_k
+\right).
+$$
+
+Define the **integrated autocorrelation time**
+
+$$
+\tau_F
+:=
+1
++
+2\sum_{k=1}^{\infty}\rho_k.
+$$
+
+Then the large-$N$ variance is
+
+$$
+\boxed{
+\operatorname{Var}(\widehat I_N)
+\approx
+\frac{\gamma_0}{N}\tau_F.
+}
+$$
+
+Equivalently,
+
+$$
+\operatorname{Var}(\widehat I_N)
+\approx
+\frac{\gamma_0}{N_{\mathrm{eff}}},
+$$
+
+where
+
+$$
+\boxed{
+N_{\mathrm{eff}}
+=
+\frac{N}{\tau_F}.
+}
+$$
+
+This is called the **effective sample size**.
+
+**Interpretation.**
+
+For iid Monte Carlo, all autocorrelations vanish:
+
+$$
+\rho_k=0
+\qquad \text{for all } k\geq 1,
+$$
+
+so
+
+$$
+\tau_F=1
+$$
+
+and therefore
+
+$$
+N_{\mathrm{eff}}=N.
+$$
+
+For a Markov chain with positive autocorrelation, usually
+
+$$
+\tau_F>1,
+$$
+
+so
+
+$$
+N_{\mathrm{eff}}<N.
+$$
+
+Thus $N$ correlated MCMC samples contain roughly the same amount of information as only $N/\tau_F$ independent samples.
+
+If some autocorrelations are negative, then $\tau_F$ can be smaller than $1$, meaning the chain can be more efficient than iid sampling for this particular observable $F$.
+
+</details>
+</div>
+
+</details>
 </div>
 
 #### 5.6.2 The Metropolis-Hastings Markov Chain Monte Carlo Method
