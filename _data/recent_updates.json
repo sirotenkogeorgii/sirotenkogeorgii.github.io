@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Embedded Machine Learning",
+   "url": "/notes/embedded-machine-learning/",
+   "date": "2026-07-05",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-07-05",
@@ -173,12 +179,6 @@
    "url": "/notes/cookbook_tricks/",
    "date": "2026-06-13",
    "added": false
-  },
-  {
-   "title": "The Fourier Transform: A Prism for Functions",
-   "url": "/subpages/math_topics/fourier_transform/fourier_transform_gentle/",
-   "date": "2026-06-13",
-   "added": true
   }
  ]
 }
