@@ -2200,20 +2200,13 @@ $$\sum_{\tau \in \mathrm{dom}(M)} 2^{-l(\tau)} \le 1.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Proof of Proposition 2.25)</span></p>
-
-Prove the Kraft inequality for prefix-free domains.
-
-</div>
-
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof (skeleton)</summary>
 
-**Induced cylinders are pairwise dosjoint:** Each $\tau \in \mathrm{dom}(M)$ defines a cylinder and the key observation is that those cylinders are pairwise disjoint since the Turing machine $M$ is prefix-free.
+**Induced cylinders are pairwise disjoint:** Each $\tau \in \mathrm{dom}(M)$ defines a cylinder and the key observation is that those cylinders are pairwise disjoint since the Turing machine $M$ is prefix-free.
 
-**Sum of Lebesgue measures of pairwise dosjoint cylinders:** The total Lebesgue measure of the set $S=([[\tau_0]], [[\tau_1]], \dots)$ is
+**Sum of Lebesgue measures of pairwise disjoint cylinders:** The total Lebesgue measure of the set $S=([[\tau_0]], [[\tau_1]], \dots)$ is
 
 $$\lambda(S) = \sum_i \lambda([[\tau_i]]) = \sum_i 2^{-l(\tau_i)} \leq 1$$
 
@@ -2236,21 +2229,26 @@ $$E(\sigma):=\lbrace\sigma\rho:\rho\in\lbrace 0,1\rbrace^{\,L-l(\sigma)}\rbrace,
 
 **The sets $E(\sigma)$ are pairwise disjoint.** A string $u$ of length $L$ has, for each $k\le L$, exactly one prefix of length $k$; so if $u\in E(\sigma)\cap E(\tau)$ then both $\sigma$ and $\tau$ are prefixes of $u$, hence (being prefixes of a common word) prefix-comparable. Prefix-freeness of $D$ then forces $\sigma=\tau$. Since all $E(\sigma)$ live inside the $2^{L}$ strings of length $L$,
 
-$$\sum_{\sigma\in F}2^{\,L-l(\sigma)}=\sum_{\sigma\in F}\sharpE(\sigma)=\sharp\!\!\bigcup_{\sigma\in F}E(\sigma)\;\le\;2^{L}.$$
+$$\sum_{\sigma\in F}2^{\,L-l(\sigma)}=\sum_{\sigma\in F}\sharp E(\sigma)=\sharp\!\!\bigcup_{\sigma\in F}E(\sigma)\;\le\;2^{L}.$$
 
 Dividing by $2^L$ gives $\sum_{\sigma\in F}2^{-l(\sigma)}\le 1$.
  
 **Passing to the full sum.** All terms $2^{-l(\sigma)}$ are non-negative, so the (possibly infinite) series equals the supremum of its finite partial sums:
 
 $$\sum_{\sigma\in D}2^{-l(\sigma)}=\sup_{\substack{F\subseteq D\\ F\text{ finite}}}\ \sum_{\sigma\in F}2^{-l(\sigma)}\;\le\;1. \qquad\blacksquare$$
- 
-**Remark — what is really going on.** Identify each $\sigma$ with the basic open cylinder $[\![\sigma]\!]=\lbrace\sigma X:X\in\lbrace 0,1\rbrace^\omega\rbrace$ in Cantor space, of Lebesgue measure $\lambda([\![\sigma]\!])=2^{-l(\sigma)}$. The disjointness argument above is precisely the statement that the cylinders $\lbrace[\![\sigma]\!]:\sigma\in D\rbrace$ are pairwise disjoint: a common point $X\in[\![\sigma]\!]\cap[\![\tau]\!]$ would make $\sigma,\tau$ comparable prefixes of $X$, forcing $\sigma=\tau$. Countable additivity and monotonicity of $\lambda$ then give the inequality in one line,
 
-$$\sum_{\sigma\in D}2^{-l(\sigma)}=\lambda\!\Big(\bigsqcup_{\sigma\in D}[\![\sigma]\!]\Big)\le\lambda(\lbraec 0,1\rbrace^\omega)=1 ,$$
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kraft inequality for prefix-free domains: what is really going on)</span></p>
+
+Identify each $\sigma$ with the basic open cylinder $[[\sigma]]=\lbrace\sigma X:X\in\lbrace 0,1\rbrace^\omega\rbrace$ in Cantor space, of Lebesgue measure $\lambda([[\sigma]])=2^{-l(\sigma)}$. The disjointness argument above is precisely the statement that the cylinders $\lbrace[[\sigma]]:\sigma\in D\rbrace$ are pairwise disjoint: a common point $X\in[[\sigma]]\cap[[\tau]]$ would make $\sigma,\tau$ comparable prefixes of $X$, forcing $\sigma=\tau$. Countable additivity and monotonicity of $\lambda$ then give the inequality in one line,
+
+$$\sum_{\sigma\in D}2^{-l(\sigma)}=\lambda\!\Big(\bigsqcup_{\sigma\in D}[\![\sigma]\!]\Big)\le\lambda(\lbrace 0,1\rbrace^\omega)=1 ,$$
 
 which is the geometric content of Kraft's inequality. Equality holds iff the prefix-free set is *complete* — its cylinders cover Cantor space up to a null set, equivalently the program tree has no infinite "gaps". For a halting machine this typically fails, and the slack $1-\sum 2^{-l(\sigma)}$ is the probability that a random infinite input never triggers a halt.
 
-</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2282,6 +2280,15 @@ $$
 $$
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(2.25 vs 2.26)</span></p>
+
+* In 2.25 we consider the **inputs** of the prefix-free TM.
+* In 2.26 we consider the **outputs** of the prefix-free TM.
+  * outputs are redicuble to inputs, so we use the result from 2.25 to prove 2.26.
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -2624,7 +2631,14 @@ Deferred to Sheet 2, Exercise 4.1.
 
 ## Information Content Measures
 
-Theorem 3.6 below will show that prefix-free complexity is, up to an additive constant, the *smallest* member of a whole class of functions that behave like a complexity measure. We first isolate the two defining properties of that class.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Prefix-free complexity is the "smallest" function behaving as complexity measure)</span></p>
+
+Theorem 3.6 below will show that prefix-free complexity is, up to an additive constant, the **smallest** member of a whole class of functions that behave like a complexity measure. We first isolate the two defining properties of that class.
+
+TODO: what does the smallest mean in this context? The most loose in definition?
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.1 — Information content measure)</span></p>
@@ -2641,62 +2655,20 @@ We call the set in (20) the **epigraph** of $F$; condition (19) is the Kraft-typ
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Information content measure is not necessarily about prefix-free TMs)</span></p>
+
+The definition of **information content measure** says nothing about the prefix-free TMs.
+
+</div>
+
 <figure class="math-figure">
-  <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="The two conditions defining an information content measure">
-    <g font-family="serif" font-size="12" fill="#1f2430">
-      <text x="340" y="24" text-anchor="middle" font-weight="600">Information content measure = enumerable upper bounds + finite Kraft budget</text>
-
-      <!-- Left panel: c.e. epigraph -->
-      <rect x="35" y="48" width="280" height="250" rx="6" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="1.3" />
-      <text x="175" y="74" text-anchor="middle" font-weight="600">c.e. epigraph</text>
-      <text x="175" y="94" text-anchor="middle" font-size="11" fill="#5b6270">certificates of the form F(sigma) ≤ k</text>
-
-      <g>
-        <rect x="70" y="120" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
-        <text x="175" y="141" text-anchor="middle">(001, 7)</text>
-        <rect x="70" y="162" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
-        <text x="175" y="183" text-anchor="middle">(10, 4)</text>
-        <rect x="70" y="204" width="210" height="32" rx="4" fill="#ffffff" stroke="#cbd2e0" />
-        <text x="175" y="225" text-anchor="middle">(001, 5)</text>
-      </g>
-      <path d="M 175 246 L 175 270" stroke="#1d4ed8" stroke-width="1.3" fill="none" marker-end="url(#arrow-info-content)" />
-      <text x="175" y="287" text-anchor="middle" font-size="11" fill="#5b6270">better upper bounds may appear later</text>
-
-      <!-- Right panel: Kraft budget -->
-      <rect x="365" y="48" width="280" height="250" rx="6" fill="rgba(168,111,0,0.07)" stroke="#a86f00" stroke-width="1.3" />
-      <text x="505" y="74" text-anchor="middle" font-weight="600">Kraft budget</text>
-      <text x="505" y="94" text-anchor="middle" font-size="11" fill="#5b6270">each value F(sigma) spends mass 2^-F(sigma)</text>
-
-      <rect x="400" y="122" width="210" height="34" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1" />
-      <rect x="400" y="122" width="105" height="34" fill="rgba(214,83,54,0.14)" stroke="#d65336" stroke-width="1.3" />
-      <text x="452" y="144" text-anchor="middle">2^-1</text>
-      <rect x="505" y="122" width="52.5" height="34" fill="rgba(29,78,216,0.12)" stroke="#1d4ed8" stroke-width="1.3" />
-      <text x="531" y="144" text-anchor="middle">2^-2</text>
-      <rect x="557.5" y="122" width="26.25" height="34" fill="rgba(18,177,124,0.13)" stroke="#0f9b6c" stroke-width="1.3" />
-      <text x="571" y="144" text-anchor="middle" font-size="10">2^-3</text>
-      <text x="596" y="144" text-anchor="middle" font-size="11" fill="#5b6270">...</text>
-
-      <line x1="400" y1="183" x2="610" y2="183" stroke="#444" stroke-width="1.1" />
-      <line x1="400" y1="177" x2="400" y2="189" stroke="#444" />
-      <line x1="610" y1="177" x2="610" y2="189" stroke="#444" />
-      <text x="400" y="205" text-anchor="middle" font-size="11">0</text>
-      <text x="610" y="205" text-anchor="middle" font-size="11">1</text>
-      <text x="505" y="235" text-anchor="middle" font-size="14">sum 2^-F(sigma) ≤ 1</text>
-      <text x="505" y="262" text-anchor="middle" font-size="11" fill="#5b6270">low information content is expensive;</text>
-      <text x="505" y="280" text-anchor="middle" font-size="11" fill="#5b6270">only so many words can get it</text>
-
-      <defs>
-        <marker id="arrow-info-content" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-          <path d="M 0 0 L 8 4 L 0 8 Z" fill="#1d4ed8" />
-        </marker>
-      </defs>
-    </g>
-  </svg>
-  <figcaption>The definition has a computability side and a measure side. The c.e. epigraph means that the assertions $F(\sigma) \le k$ can be discovered effectively, so $F$ is upper-semicomputable. The Kraft bound says that the masses $2^{-F(\sigma)}$ assigned to words fit inside total measure $1$, just as prefix-free code cylinders do.</figcaption>
+  <img src="{{ '/assets/images/notes/books/algorithmic_randomness_computable_analysis/arca_epigraph_kraft.png' | relative_url }}" alt="Left: lattice plot of the c.e. epigraph of a partial function F defined on the words 0, 10, 001 with values 2, 4, 5; each domain word carries a shaded column of pairs (sigma, k) with k at least F(sigma), the least point of each column ringed as the value F(sigma), and stage annotations show the pair (001,7) being enumerated before the better pair (001,5). Right: a horizontal bar from 0 to 1 in which the masses 2^-2, 2^-4, 2^-5 of the three domain words fill 11/32 of the unit Kraft budget, the rest unused." loading="lazy">
+  <figcaption>The definition has a computability side and a measure side, here for a partial $F$ with $\mathrm{dom}(F) = \lbrace 0, 10, 001\rbrace$ and $F(0)=2$, $F(10)=4$, $F(001)=5$. Left: the epigraph is the set of pairs $(\sigma, k)$ lying on or above the graph of $F$ — a shaded column over each domain word whose least element is the value $F(\sigma)$, and an empty column over every word outside the domain. Being c.e., these pairs are discovered one at a time, so a better certificate like $(001, 5)$ may appear after $(001, 7)$; this is exactly upper-semicomputability of $F$. Right: each domain word spends mass $2^{-F(\sigma)}$, and the Kraft bound asks the total to fit inside measure $1$, just as prefix-free code cylinders do. Note $\mathrm{dom}(F)$ is not even prefix-free ($0 \prec 001$) — the definition never asks for that.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two information content measures)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three information content measures)</span></p>
 
 * The function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ defined by
 
@@ -2709,6 +2681,8 @@ We call the set in (20) the **epigraph** of $F$; condition (19) is the Kraft-typ
   so (19) holds as well.
 
 * The prefix-free Kolmogorov complexity $K$ is an information content measure: it satisfies (19) by Theorem 2.26 and (20) by Proposition 2.23.
+
+* The length functions on the domain of prefix-free TMs are information content measures.
 
 </div>
 
@@ -2939,6 +2913,21 @@ TODO: what is the point of penalty in Minimal information content measure?
 
 Show that $\widetilde F$ is itself an information content measure.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Upper bound**
+
+For any word w it holds that 
+
+$$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+
+* $$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -3258,7 +3247,7 @@ The previous exercise *(Typicality implies incompressibility)* foreshadowed that
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.1 — Incompressibility equals typicality)</span></p>
 
-A sequence is $1$-random if and only if it is Martin-Löf random.
+A sequence is $1$-random $\iff$ it is Martin-Löf random.
 
 </div>
 
@@ -3807,6 +3796,98 @@ Let $\alpha$ and $\beta$ be left-c.e. reals. Show that the following four condit
 <details markdown="1">
 <summary>Proof</summary>
 
+$\boxed{(i) \implies (ii)}$
+
+* For the increasing sequence of q rationals, approximating \beta from the left, we set b_n := q and preserve the same constant c. 
+* The function g(n) is a function that based on the rational q computes the value f(q) and given the sequence a_m waits for the index m such that a_m (is on the left from \alpha) approach sufficiently close to \alpha such that \alpha - a_m < c(\beta - b_n) and g(n) outputs m.
+
+Assessment:
+
+
+You cannot define $g(n)$ by waiting until
+
+$$\alpha-a_m<c(\beta-b_n),$$
+
+because $\alpha,\beta$ are not computable quantities available to the algorithm.
+
+Instead, use the computable condition
+
+$$a_m>f(b_n).$$
+
+Since $f(b_n)<\alpha$ and $a_m\nearrow\alpha$, such an $m$ eventually appears. Then
+
+$$\alpha-a_m<\alpha-f(b_n)<c(\beta-b_n).$$
+
+So define
+
+$$g(n)=\min\lbrace m:a_m>f(b_n)\rbrace.$$
+
+That fixes the proof.
+
+---
+
+$\boxed{(i) \implies (iii)}$
+
+\alpha - f(b_{s-1}) \leq c(\beta - b_{s-1})
+-
+\alpha - f(b_s) \leq c(\beta - b_s)
+= 
+f(b_s) - f(b_{s-1}) \leq c(b_s - b_{s-1})
+
+Setting the approximating sequence b_n from the left as the rationals (from the original approximating we can get approximation by rationals, becase the set \mathbb{Q} is dense) and setting a_n = f(b_n).
+
+The main error of my previous solution is subtracting inequalities. From
+
+\alpha-f(b_{s-1})\le c(\beta-b_{s-1})
+
+and
+
+\alpha-f(b_s)\le c(\beta-b_s)
+
+you cannot conclude
+
+f(b_s)-f(b_{s-1})\le c(b_s-b_{s-1}).
+
+Also, (f) need not be monotone, so (a_s=f(b_s)) need not be increasing.
+
+The right repair is: first set
+
+[
+A_s=\max_{t\le s}f(b_t),
+]
+
+so (A_s\nearrow\alpha), but then smooth the jumps by defining, for some (d>c),
+
+[
+a_s=\min{A_s,\ a_{s-1}+d(b_s-b_{s-1})}.
+]
+
+Then
+
+[
+a_s-a_{s-1}\le d(b_s-b_{s-1}),
+]
+
+and one proves (a_s\to\alpha) using
+
+[
+\alpha-a_s\le d(\beta-b_s).
+]
+
+So: first direction is basically right after replacing the noncomputable stopping condition; second direction needs a different argument.
+
+
+$\boxed{(ii) \implies (iv)}$
+$\boxed{(iv) \implies (i)}$
+$\boxed{(iii) \implies (iv)}$
+
+
+
+
+
+
+
+
 
 
 </details>
@@ -3910,58 +3991,6 @@ A\le_T\emptyset',
 ]
 
 so (A\in\Delta^0_2). By the course theorem that c.a. reals are exactly the reals with (\Delta^0_2) binary expansion, (\alpha) is computably approximable.
-
-**Exercise 4.**
-This is the Solovay domination property of (\Omega).
-
-Let (\alpha) be the halting probability of (\widetilde M), and let (\widetilde U) be universal. By universality, there is a fixed code (i_{\widetilde M}) such that
-
-[
-\widetilde U(i_{\widetilde M},\sigma)=\widetilde M(\sigma).
-]
-
-Let (d=l(i_{\widetilde M})). The part of (\Omega) coming from this simulation is
-
-[
-\sum_{\sigma\in\operatorname{dom}(\widetilde M)}
-2^{-d-l(\sigma)}
-================
-
-2^{-d}\alpha.
-]
-
-Write the remaining contribution to (\Omega) as (\beta). Since it is also left-c.e., choose a left-c.e. approximation (b_n\nearrow\beta). Define
-
-[
-w_n:=2^{-d}a_n+b_n.
-]
-
-Then ((w_n)) is a nondecreasing computable approximation of
-
-[
-2^{-d}\alpha+\beta=\Omega.
-]
-
-Moreover,
-
-[
-w_{n+1}-w_n
-===========
-
-2^{-d}(a_{n+1}-a_n)+(b_{n+1}-b_n)
-\ge
-2^{-d}(a_{n+1}-a_n).
-]
-
-Therefore
-
-[
-a_{n+1}-a_n
-\le
-2^d(w_{n+1}-w_n).
-]
-
-So the required constant is (c=2^d).
 
 ### Basics of Computability Theory and Prefix-Free Machines
 
@@ -4347,11 +4376,85 @@ The fact that $\Omega$ is random is not an isolated accident: any left-c.e. real
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(7.1 — Solovay reducibility)</span></p>
 
-A real $\alpha$ is **Solovay reducible** to a real $\beta$, written $\alpha \le\_S \beta$, if there exists a partial computable function $g : \subseteq \mathbb{Q} \to \mathbb{Q}$ such that
+A real $\alpha$ is **Solovay reducible** to a real $\beta$, written $\alpha \le\_S \beta$, if there exist a constant $c > 0$ and a partial computable function $g : \subseteq \mathbb{Q} \to \mathbb{Q}$ such that
 
-$$0 < \alpha - g(q)\downarrow < \beta - q \qquad \text{for every } q < \beta.$$
+$$0 < \alpha - g(q)\downarrow < c(\beta - q) \qquad \text{for every } q < \beta.$$
 
 </div>
+
+The function $g$ turns every rational lower bound $q < \beta$ into a rational lower bound $g(q) < \alpha$. The inequality says more than preservation of lower bounds: the remaining gap below $\alpha$ is controlled by the remaining gap below $\beta$, up to the fixed multiplier $c$.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="Solovay reducibility as a computable map between lower cuts with controlled gaps">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="28" text-anchor="middle" font-weight="600">Solovay reducibility: map lower bounds for beta to lower bounds for alpha</text>
+
+      <!-- beta axis -->
+      <line x1="75" y1="112" x2="630" y2="112" stroke="#444" stroke-width="1.2" />
+      <text x="75" y="95" text-anchor="middle" font-weight="600" fill="#3d7a26">0</text>
+      <text x="630" y="95" text-anchor="middle" font-weight="600" fill="#3d7a26">1</text>
+      <text x="42" y="116" text-anchor="end" font-weight="600" fill="#3d7a26">beta-line</text>
+
+      <!-- beta q and beta -->
+      <line x1="392" y1="88" x2="392" y2="136" stroke="#3d7a26" stroke-width="1.6" />
+      <circle cx="392" cy="112" r="4" fill="#3d7a26" />
+      <text x="392" y="75" text-anchor="middle" fill="#3d7a26" font-weight="600">q</text>
+      <line x1="540" y1="76" x2="540" y2="148" stroke="#d65336" stroke-width="1.8" />
+      <circle cx="540" cy="112" r="4" fill="#d65336" />
+      <text x="540" y="75" text-anchor="middle" fill="#d65336" font-weight="600">beta</text>
+
+      <!-- beta gap -->
+      <line x1="392" y1="142" x2="540" y2="142" stroke="#a86f00" stroke-width="1.5" />
+      <line x1="392" y1="136" x2="392" y2="148" stroke="#a86f00" stroke-width="1.5" />
+      <line x1="540" y1="136" x2="540" y2="148" stroke="#a86f00" stroke-width="1.5" />
+      <text x="466" y="163" text-anchor="middle" fill="#a86f00">beta - q</text>
+
+      <!-- alpha axis -->
+      <line x1="75" y1="258" x2="630" y2="258" stroke="#444" stroke-width="1.2" />
+      <text x="75" y="241" text-anchor="middle" font-weight="600" fill="#1d4ed8">0</text>
+      <text x="630" y="241" text-anchor="middle" font-weight="600" fill="#1d4ed8">1</text>
+      <text x="42" y="262" text-anchor="end" font-weight="600" fill="#1d4ed8">alpha-line</text>
+
+      <!-- alpha g(q) and alpha -->
+      <line x1="292" y1="234" x2="292" y2="282" stroke="#1d4ed8" stroke-width="1.6" />
+      <circle cx="292" cy="258" r="4" fill="#1d4ed8" />
+      <text x="292" y="314" text-anchor="middle" fill="#1d4ed8" font-weight="600">g(q)</text>
+      <line x1="408" y1="222" x2="408" y2="294" stroke="#d65336" stroke-width="1.8" />
+      <circle cx="408" cy="258" r="4" fill="#d65336" />
+      <text x="408" y="314" text-anchor="middle" fill="#d65336" font-weight="600">alpha</text>
+
+      <!-- alpha gap -->
+      <line x1="292" y1="216" x2="408" y2="216" stroke="#a86f00" stroke-width="1.5" />
+      <line x1="292" y1="210" x2="292" y2="222" stroke="#a86f00" stroke-width="1.5" />
+      <line x1="408" y1="210" x2="408" y2="222" stroke="#a86f00" stroke-width="1.5" />
+      <text x="350" y="204" text-anchor="middle" fill="#a86f00">alpha - g(q)</text>
+
+      <!-- computable map arrow -->
+      <path d="M392 130 C390 175 335 200 298 236" fill="none" stroke="#5b6270" stroke-width="1.6" marker-end="url(#arrow-solovay-map)" />
+      <text x="325" y="178" text-anchor="middle" fill="#5b6270" font-weight="600">partial computable g</text>
+
+      <!-- inequality callout -->
+      <g>
+        <rect x="440" y="190" width="210" height="72" rx="6" fill="rgba(168,111,0,0.08)" stroke="#a86f00" />
+        <text x="545" y="216" text-anchor="middle" font-weight="600" fill="#a86f00">controlled error</text>
+        <text x="545" y="238" text-anchor="middle" font-size="12">alpha - g(q) &lt; c(beta - q)</text>
+      </g>
+
+      <!-- lower cut regions -->
+      <rect x="75" y="104" width="317" height="16" fill="rgba(60,120,40,0.10)" />
+      <rect x="75" y="250" width="217" height="16" fill="rgba(29,78,216,0.10)" />
+      <text x="205" y="92" text-anchor="middle" fill="#3d7a26" font-size="11">known lower cut below beta</text>
+      <text x="175" y="242" text-anchor="middle" fill="#1d4ed8" font-size="11">produced lower cut below alpha</text>
+
+      <defs>
+        <marker id="arrow-solovay-map" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#5b6270" />
+        </marker>
+      </defs>
+    </g>
+  </svg>
+  <figcaption>Solovay reducibility compares how much uncertainty remains after taking a rational lower approximation. Given any $q < \beta$, the computable map $g$ produces $g(q) < \alpha$, and the remaining $\alpha$-gap is at most a fixed multiple of the remaining $\beta$-gap. Thus better lower bounds for $\beta$ can be translated effectively into comparably good lower bounds for $\alpha$.</figcaption>
+</figure>
 
 Since $g$ maps the left cut of $\beta$ into the left cut of $\alpha$, it is natural to restrict this reducibility to the class of left-c.e. reals. There it turns into a statement about *speed of convergence*: informally, $\alpha \le\_S \beta$ holds iff some left-c.e. approximation of $\alpha$ converges no slower than a given left-c.e. approximation of $\beta$.
 
@@ -4366,6 +4469,91 @@ Let $\alpha$ and $\beta$ be left-c.e. reals. The following are equivalent.
 - **(iv)** There exist left-c.e. approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(b\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\beta$ and a constant $c$ such that $\alpha - a\_n < c(\beta - b\_n)$ for all $n$.
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:720px" aria-label="Four speed of convergence views equivalent to Solovay reducibility">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="360" y="28" text-anchor="middle" font-weight="600">Four equivalent ways to see the same speed comparison</text>
+
+      <!-- Panel frames -->
+      <g fill="none" stroke="#cbd2e0" stroke-width="1.1">
+        <rect x="32" y="52" width="316" height="195" rx="6" />
+        <rect x="372" y="52" width="316" height="195" rx="6" />
+        <rect x="32" y="277" width="316" height="195" rx="6" />
+        <rect x="372" y="277" width="316" height="195" rx="6" />
+      </g>
+
+      <!-- Panel i -->
+      <text x="48" y="78" font-weight="600" fill="#5b6270">(i) cut map</text>
+      <line x1="72" y1="115" x2="312" y2="115" stroke="#444" />
+      <line x1="72" y1="188" x2="312" y2="188" stroke="#444" />
+      <line x1="220" y1="98" x2="220" y2="132" stroke="#3d7a26" stroke-width="1.5" />
+      <text x="220" y="92" text-anchor="middle" fill="#3d7a26">q</text>
+      <line x1="286" y1="91" x2="286" y2="139" stroke="#d65336" stroke-width="1.7" />
+      <text x="286" y="86" text-anchor="middle" fill="#d65336">beta</text>
+      <line x1="138" y1="171" x2="138" y2="205" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="138" y="222" text-anchor="middle" fill="#1d4ed8">g(q)</text>
+      <line x1="190" y1="164" x2="190" y2="212" stroke="#d65336" stroke-width="1.7" />
+      <text x="190" y="222" text-anchor="middle" fill="#d65336">alpha</text>
+      <path d="M220 128 C205 150 170 160 142 174" fill="none" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-speed)" />
+      <text x="206" y="158" text-anchor="middle" fill="#5b6270" font-size="11">g</text>
+      <text x="194" y="236" text-anchor="middle" font-size="11" fill="#a86f00">tail(alpha) &lt; c tail(beta)</text>
+
+      <!-- Panel ii -->
+      <text x="388" y="78" font-weight="600" fill="#5b6270">(ii) arbitrary approximations</text>
+      <line x1="412" y1="116" x2="652" y2="116" stroke="#444" />
+      <line x1="412" y1="188" x2="652" y2="188" stroke="#444" />
+      <polyline points="412,130 460,130 460,122 510,122 510,117 560,117 560,114 652,114" fill="none" stroke="#3d7a26" stroke-width="2" />
+      <polyline points="412,205 445,205 445,198 505,198 505,192 580,192 580,189 652,189" fill="none" stroke="#1d4ed8" stroke-width="2" />
+      <line x1="560" y1="96" x2="560" y2="130" stroke="#3d7a26" stroke-dasharray="3 3" />
+      <line x1="580" y1="170" x2="580" y2="206" stroke="#1d4ed8" stroke-dasharray="3 3" />
+      <line x1="650" y1="94" x2="650" y2="134" stroke="#d65336" />
+      <line x1="650" y1="168" x2="650" y2="208" stroke="#d65336" />
+      <text x="650" y="91" text-anchor="middle" fill="#d65336">beta</text>
+      <text x="650" y="223" text-anchor="middle" fill="#d65336">alpha</text>
+      <text x="540" y="152" text-anchor="middle" font-size="11" fill="#5b6270">choose later a_{g(n)}</text>
+      <path d="M560 132 C562 150 574 158 580 170" fill="none" stroke="#5b6270" stroke-width="1.2" marker-end="url(#arrow-speed)" />
+      <text x="532" y="236" text-anchor="middle" font-size="11" fill="#a86f00">alpha - a_{g(n)} &lt; c(beta - b_n)</text>
+
+      <!-- Panel iii -->
+      <text x="48" y="303" font-weight="600" fill="#5b6270">(iii) increment domination</text>
+      <line x1="72" y1="430" x2="312" y2="430" stroke="#444" />
+      <polyline points="72,428 110,428 110,410 148,410 148,383 190,383 190,369 234,369 234,350 312,350" fill="none" stroke="#3d7a26" stroke-width="2.1" />
+      <polyline points="72,455 110,455 110,447 148,447 148,435 190,435 190,429 234,429 234,421 312,421" fill="none" stroke="#1d4ed8" stroke-width="2.1" />
+      <g stroke="#3d7a26" stroke-width="1.3">
+        <line x1="148" y1="410" x2="148" y2="383" />
+        <line x1="190" y1="383" x2="190" y2="369" />
+      </g>
+      <g stroke="#1d4ed8" stroke-width="1.3">
+        <line x1="148" y1="447" x2="148" y2="435" />
+        <line x1="190" y1="435" x2="190" y2="429" />
+      </g>
+      <text x="196" y="334" text-anchor="middle" fill="#3d7a26">beta increments</text>
+      <text x="195" y="486" text-anchor="middle" fill="#1d4ed8">alpha increments</text>
+      <text x="196" y="318" text-anchor="middle" font-size="11" fill="#a86f00">Delta a_s &le; d Delta b_s</text>
+
+      <!-- Panel iv -->
+      <text x="388" y="303" font-weight="600" fill="#5b6270">(iv) one synchronized witness</text>
+      <line x1="412" y1="380" x2="652" y2="380" stroke="#444" />
+      <line x1="412" y1="435" x2="652" y2="435" stroke="#444" />
+      <polyline points="412,395 452,395 452,389 498,389 498,384 545,384 545,381 652,381" fill="none" stroke="#3d7a26" stroke-width="2" />
+      <polyline points="412,452 452,452 452,446 498,446 498,440 545,440 545,436 652,436" fill="none" stroke="#1d4ed8" stroke-width="2" />
+      <line x1="545" y1="382" x2="652" y2="382" stroke="#a86f00" stroke-width="4" opacity="0.35" />
+      <line x1="545" y1="437" x2="652" y2="437" stroke="#a86f00" stroke-width="4" opacity="0.35" />
+      <line x1="652" y1="360" x2="652" y2="455" stroke="#d65336" stroke-width="1.5" />
+      <text x="652" y="474" text-anchor="middle" fill="#d65336">limits</text>
+      <text x="532" y="337" text-anchor="middle" fill="#5b6270" font-size="11">same index n, selected approximations</text>
+      <text x="532" y="492" text-anchor="middle" fill="#a86f00" font-size="11">alpha - a_n &lt; c(beta - b_n)</text>
+
+      <defs>
+        <marker id="arrow-speed" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#5b6270" />
+        </marker>
+      </defs>
+    </g>
+  </svg>
+  <figcaption>The four clauses in Proposition 7.2 are different coordinate systems for the same comparison. Clause (i) talks about a computable map on lower cuts. Clause (ii) says that, no matter which left-c.e. approximations are chosen, a computable schedule can wait long enough on the $\alpha$ side to make its remaining tail comparable to the $\beta$ tail. Clause (iii) compares the sizes of the increments themselves. Clause (iv) packages the comparison into one pair of synchronized approximations.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -4393,11 +4581,11 @@ $$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta. \tag{$\
 
 Assume toward a contradiction that $\beta$ is **not** Martin-Löf random, and fix a Martin-Löf test $L = (L\_1, L\_2, \dots)$ that covers $\beta$, so $\beta \in L\_i$ for every $i$. We construct a Martin-Löf test $M = (M\_{N+1}, M\_{N+2}, \dots)$ that covers $\alpha$, contradicting its randomness.
 
-**Construction.** For every basic interval $[l, r] := [\![\sigma]\!]$ enumerated into $L\_i$ with $i \ge N+1$, try to compute $g(l)$. If $g(l)\downarrow$, enumerate the interval
+**Construction.** For every basic interval $[l, r] := [[\sigma]]$ enumerated into $L\_i$ with $i \ge N+1$, try to compute $g(l)$. If $g(l)\downarrow$, enumerate the interval
 
 $$[\,g(l),\; g(l) + 2^N(r - l)\,]$$
 
-into $M\_i$ (computably realized as a single dyadic node $[\![\tau]\!]$ or a finite disjoint union $[\![\tau\_1]\!] \cup [\![\tau\_2]\!] \cup \cdots$).
+into $M\_i$ (computably realized as a single dyadic node $[[\tau]]$ or a finite disjoint union $[[\tau\_1]] \cup [[\tau\_2]] \cup \cdots$).
 
 **$M$ is a Martin-Löf test.** Each $M\_i$ is uniformly c.e. open, and for every $i$
 

@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-07-05",
+   "added": false
+  },
+  {
    "title": "Embedded Machine Learning",
    "url": "/notes/embedded-machine-learning/",
    "date": "2026-07-05",
@@ -41,12 +47,6 @@
    "url": "/subpages/stuff_i_found_interesting/gramian_in_infinite_dim/",
    "date": "2026-06-27",
    "added": true
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-06-25",
-   "added": false
   },
   {
    "title": "The Variational Principles of Mechanics — Cornelius Lanczos",
