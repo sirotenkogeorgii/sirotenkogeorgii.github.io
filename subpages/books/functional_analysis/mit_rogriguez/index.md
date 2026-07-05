@@ -1807,20 +1807,15 @@ $$\boxed{\text{Every measurable set is nearly a finite union of open intervals.}
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Translation and scale invariance of measurable sets)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Translation invariance of measurable sets)</span></p>
 
-Let $E$ be a measurable set.
-
-* **(a)** Prove that for all $x \in \mathbb{R}$, $E + x$ is measurable.
-* **(b)** Prove that for all $r > 0$, $rE := \lbrace ry \mid  y \in E\rbrace$ is measurable.
+Let $E$ be a measurable set. Prove that for all $x \in \mathbb{R}$, $E + x$ is measurable.
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Solution</summary>
-
-**Exercise 3(a)**
 
 By Carathéodory's criterion, a set $M$ is Lebesgue measurable if and only if for any arbitrary test set $A \subset \mathbb{R}$, the following holds:
 
@@ -1854,7 +1849,19 @@ $$m^*(A) = m^*(A \cap (E+x)) + m^*(A \cap (E+x)^c)$$
 
 Because $A$ was entirely arbitrary, this satisfies the criterion. Thus, $E+x$ is measurable.
 
-**Exercise 3(b)**
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Scale invariance of measurable sets)</span></p>
+
+Let $E$ be a measurable set. Prove that for all $r > 0$, $rE := \lbrace ry \mid  y \in E\rbrace$ is measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
 
 Let $A \subset \mathbb{R}$ be an arbitrary test set. Since $E$ is measurable, we can apply Carathéodory's criterion using the scaled test set $\frac{1}{r}A$:
 
@@ -2205,7 +2212,15 @@ Restricting the symbol $m$ to measurable sets is precisely what buys us the exac
 
 </div>
 
-Monotonicity is inherited directly from the Lemma (Monotonicity of Outer Measure). The interval formula combines the Proposition (Outer Measure of Intervals), which gives $m^\ast(I) = \ell(I)$, with the fact that intervals are Borel and hence measurable.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof sketch</summary>
+
+* Monotonicity is inherited directly from the Lemma (Monotonicity of Outer Measure). 
+* The interval formula combines the Proposition (Outer Measure of Intervals), which gives $m^\ast(I) = \ell(I)$, with the fact that intervals are Borel and hence measurable.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Countable Additivity of Lebesgue Measure)</span></p>
@@ -2227,7 +2242,12 @@ $$m\!\left(\bigcup_{n=1}^{\infty} E_n\right) = \sum_{n=1}^{\infty} m(E_n).$$
   </details>
 </div>
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Lebesgue integral is countably additive)</span></p>
+
 This is exactly the *exact additivity* that we listed among the desired properties of a measure but could not obtain for $m^\ast$ on general sets — disjointness alone was not enough; the sets also had to be measurable.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Inclusion-exclusion principle of Lebesgue measure)</span></p>
@@ -2310,14 +2330,19 @@ $$m\!\left(\bigcup_{k=1}^{\infty} E_k\right) = \lim_{n \to \infty} m(E_n).$$
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuity of measure is essential in measure-theoretic integration)</span></p>
+
 This is the statement invoked (by the name "continuity of measure") in the proofs of the Monotone Convergence Theorem and the Zero-Integral Characterization further below.
 
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuity from Above Needs Finite Measure)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuity of measure from Above Needs Finite Measure)</span></p>
 
 The dual statement for a **decreasing** tower $E_1 \supset E_2 \supset \cdots$, namely
 
-$m\left(\bigcap_k E_k\right) = \lim_n m(E_n),$
+$$m\left(\bigcap_k E_k\right) = \lim_n m(E_n),$$
 
 is **not** true without the extra hypothesis $m(E_1) < \infty$. The standard counterexample is $E_n = [n, \infty)$: here $\bigcap_n E_n = \varnothing$, so the left side is $0$, yet $m(E_n) = \infty$ for every $n$, so the right side is $\infty$.
 
@@ -2369,7 +2394,7 @@ m\left(\bigcap_{k=1}^\infty E_k\right) = m\left(E_1 \setminus \bigcup_{i=2}^\inf
 
 In the initial draft of the solution, writing the equality 
 
-$$m\left(E_1 \setminus \bigcup_{i=1}^\infty F_i\right) = \lim_{n \to \infty} m\left(E_1 \setminus \bigcup_{i=1}^n F_i\right)$$
+$$m\left(E_1 \setminus \bigcup_{i=1}^\infty F_i\right) = \lim_{n \to \inffty} m\left(E_1 \setminus \bigcup_{i=1}^n F_i\right)$$
 
 in one step was a logical leap because it inherently assumed the very property you were trying to prove: **continuity from above**. You cannot pass a limit through the measure of a decreasing sequence of sets without first proving that the measure operation permits it.
 
@@ -2377,11 +2402,9 @@ In the revised proof, the limit jump is completely justified because the burden 
 
 By isolating the term $m\left(\bigcup_{i=2}^\infty F_i\right)$, you can invoke the fundamental axiom of **countable additivity** for Lebesgue measure. Countable additivity states that the measure of a countable union of disjoint sets is exactly the infinite series of their individual measures:
 
-
 $$m\left(\bigcup_{i=2}^\infty F_i\right) = \sum_{i=2}^\infty m(F_i)$$
 
 In real analysis, an infinite series is rigorously defined as the limit of its partial sums. Therefore, you can safely write:
-
 
 $$\sum_{i=2}^\infty m(F_i) = \lim_{n \to \infty} \sum_{i=2}^n m(F_i) = \lim_{n \to \infty} m\left(\bigcup_{i=2}^n F_i\right)$$
 
@@ -2587,7 +2610,7 @@ i.e., the preimage is a measurable set.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(This definition is equivalent to the open-set preimage definition.)</span></p>
 
-For an ordinary real-valued function (f:E\to\mathbb R), saying
+For an ordinary real-valued function $f:E\to\mathbb R$, saying
 
 $$f^{-1}(O)\in\mathcal M \quad\text{for every open }O\subset\mathbb R$$
 
@@ -2619,15 +2642,15 @@ $$f^{-1}((a,b)) = \lbrace a<f<b \rbrace = \lbrace f>a\rbrace\cap \lbrace f<b\rbr
 
 is measurable. Since every open set $O\subset\mathbb R$ is a countable union of open intervals, $f^{-1}(O)$ is measurable.
 
-Your notes also prove that every open set is Lebesgue measurable and that the Borel (\sigma)-algebra is contained in the Lebesgue (\sigma)-algebra, precisely using the fact that half-lines generate the relevant measurable structure. 
+Your notes also prove that every open set is Lebesgue measurable and that the Borel $\sigma$-algebra is contained in the Lebesgue $\sigma$-algebra, precisely using the fact that half-lines generate the relevant measurable structure. 
 
 **Why define it this way, then?**
 
-Because the half-line condition is a **minimal test**. Instead of checking all open sets (O\subset\mathbb R), which is a large class, it is enough to check only the threshold sets
+Because the half-line condition is a **minimal test**. Instead of checking all open sets $O\subset\mathbb R$, which is a large class, it is enough to check only the threshold sets
 
 $$\lbrace f>\alpha\rbrace.$$
 
-This is also the natural condition for Lebesgue integration: the Lebesgue integral thinks of a function by slicing its **range** into levels and asking whether the corresponding preimage sets are measurable. Your notes even emphasize this viewpoint: Lebesgue sums use sets like (f^{-1}([y_{i-1},y_i])), so measurability of preimages is the central object. 
+This is also the natural condition for Lebesgue integration: the Lebesgue integral thinks of a function by slicing its **range** into levels and asking whether the corresponding preimage sets are measurable. Your notes even emphasize this viewpoint: Lebesgue sums use sets like $f^{-1}([y_{i-1},y_i])$, so measurability of preimages is the central object. 
 
 The proposed definition is not wrong. It is the general Borel-measurability definition. The course’s definition is a more economical, order-based version specialized to real or extended-real-valued functions. For $f:E\to\mathbb R$, they are equivalent; for $f:E\to[-\infty,\infty]$, the half-line version is especially convenient because it handles $+\infty$ directly.
 
@@ -2660,7 +2683,9 @@ Let $E \subset \mathbb{R}$ be measurable and $f : E \to [-\infty, \infty]$. The 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Preimages of Borel Sets are Measurable)</span></p>
 
-If $E$ is measurable and $f : E \to \mathbb{R}$ is a measurable function, then for all $F \in \mathcal{B}$ (the Borel $\sigma$-algebra), $f^{-1}(F)$ is measurable.
+If $E$ is measurable and $f : E \to \mathbb{R}$ is a measurable function, then 
+
+$$f^{-1}(F) \text{ is measurable } \forall F \in \mathcal{B}f^{-1}(F).$$
 
 </div>
 
@@ -2671,16 +2696,15 @@ If $E$ is measurable and $f : E \to \mathbb{R}$ is a measurable function, then f
   </details>
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Preimages of Borel Sets are Measurable)</span></p>
+TODO: what if the function defined on non-measurable set?
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Preimages of Infinities Singletons are Measurable)</span></p>
+
+If $f : E \to \mathbb{R}$ is measurable, then $f^{-1}(\lbrace \infty \rbrace)$ and $f^{-1}(\lbrace -\infty \rbrace)$ are also measurable
+* since $f^{-1}(\lbrace \infty \rbrace) = \bigcap_n f^{-1}((n, \infty])$.
 
 </div>
-
-
-If $f : E \to \mathbb{R}$ is measurable, then $f^{-1}(\lbrace \infty \rbrace)$ and $f^{-1}(\lbrace -\infty \rbrace)$ are also measurable (since $f^{-1}(\lbrace \infty \rbrace) = \bigcap_n f^{-1}((n, \infty])$).
-
-### Examples of Measurable Functions
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Continuous Functions are Measurable)</span></p>
@@ -2710,13 +2734,132 @@ are all measurable functions.
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof sketch</summary>
-    <p><strong>Scalar multiple:</strong> $(cf)^{-1}((\alpha, \infty]) = f^{-1}((\alpha/c, \infty])$ (for $c > 0$; similar for $c < 0$; trivial for $c = 0$).</p>
-    <p><strong>Sum:</strong> $f(x) + g(x) > \alpha \iff f(x) > r > \alpha - g(x)$ for some rational $r$. So $(f + g)^{-1}((\alpha, \infty]) = \bigcup_{r \in \mathbb{Q}} (f^{-1}((r, \infty]) \cap g^{-1}((\alpha - r, \infty]))$, a countable union of measurable sets.</p>
-    <p><strong>Product:</strong> First show $f^2$ is measurable: for $\alpha < 0$, $(f^2)^{-1}((\alpha, \infty]) = E$; for $\alpha \ge 0$, $(f^2)^{-1}((\alpha, \infty]) = f^{-1}((\sqrt{\alpha}, \infty]) \cup f^{-1}([-\infty, -\sqrt{\alpha}))$. Then use $fg = \frac{1}{4}((f + g)^2 - (f - g)^2)$. $\square$</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Scalar multiple:**
+
+$$(cf)^{-1}((\alpha, \infty]) = f^{-1}((\alpha/c, \infty])$$
+
+(for $c > 0$; similar for $c < 0$; trivial for $c = 0$).
+
+**Sum:**
+
+$$f(x) + g(x) > \alpha \iff f(x) > r > \alpha - g(x)$$ 
+
+for some rational $r$. So 
+
+$$(f + g)^{-1}((\alpha, \infty]) = \bigcup_{r \in \mathbb{Q}} (f^{-1}((r, \infty]) \cap g^{-1}((\alpha - r, \infty])),$$
+
+a countable union of measurable sets.
+
+**Product:**
+
+1. First show $f^2$ is measurable: 
+
+   1. for $\alpha < 0$, 
+
+      $$(f^2)^{-1}((\alpha, \infty]) = E.$$
+
+   2. for $\alpha \ge 0$, 
+      
+      $$(f^2)^{-1}((\alpha, \infty]) = f^{-1}((\sqrt{\alpha}, \infty]) \cup f^{-1}([-\infty, -\sqrt{\alpha})).$$
+
+2. Then use 
+
+   $$fg = \frac{1}{4}((f + g)^2 - (f - g)^2).$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Locality of measurability)</span></p>
+
+Suppose that $E$ and $F$ are measurable sets and $f : E \cup F \to [-\infty,\infty]$. Prove that $f$ is measurable iff its restrictions $f\mid\_E$ and $f\mid\_F$ are measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Direction $\Rightarrow$:**
+
+Fix $n \in \mathbb{R}$
+
+$$f^{-1}((n, \infty)) = f^{-1}\mid\_E((n, \infty)) \cup f^{-1}\mid\_F((n, \infty)).$$
+
+By assumption, $f^{-1}((n, \infty))$ is a measurable set. $E$ and $F$ are given as measurable sets. Then
+
+$$f^{-1}\mid\_E((n, \infty)) = f^{-1}((n, \infty)) \cap E,$$
+
+$$f^{-1}\mid\_F((n, \infty)) = f^{-1}((n, \infty)) \cap F.$$
+
+Hence, $f^{-1}\mid\_E((n, \infty))$ and $f^{-1}\mid\_F((n, \infty))$ are measurable sets since they are intersection of measurable sets.
+
+**Direction $\Leftarrow$:**
+
+By assumption, for all $n \in \mathbb{R}$ the preimages $f^{-1}\mid\_E((n, \infty))$, $f^{-1}\mid\_F((n, \infty))$ are measurable sets.
+
+Also
+
+$$f^{-1}((n, \infty)) = f^{-1}\mid\_E((n, \infty)) \cup f^{-1}\mid\_F((n, \infty)).$$
+
+Hence $f^{-1}((n, \infty))$ is measurable as a unition of measurable sets.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Measurability of zero extensions)</span></p>
+
+Suppose that $E$ is a measurable set and $f : E \to [-\infty,\infty]$. Let $g : \mathbb{R} \to [-\infty,\infty]$ be the extension of $f$ by zero:
+
+$$
+g(x)=
+\begin{cases}
+f(x), & \text{if } x \in E,\\
+0, & \text{if } x \in E^c.
+\end{cases}
+$$
+
+Prove that $f$ is measurable iff $g$ is measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+* Both directions follow from the previous exercise on Locality of measurability.
+* In this case $g(x): E \cup E^c \to [-\infty, \infty]$ and $f$ is a measurable restriction on $E$, constant zero function is a measurable restriction on $E^c$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Measurability of the Euclidean norm)</span></p>
+
+Suppose that $E$ is a measurable set, and $u : E \to \mathbb{R}$ and $v : E \to \mathbb{R}$ are measurable. Prove that $(u^2+v^2)^{1/2}$ is measurable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+By Algebra of Measurable Functions,
+* $u,v$ are measurable $\implies$ $u^2,v^2$ are measurable.
+* $u^2,v^2$ are measurable $\implies$ $u^2 + v^2$ is measurable
+* $u^2 + v^2$ is measurable \implies $(u^2 + v^2)^{1/2}$
+  * u^2 + v^2 is non-negative
+
+  $$(g^{1/2})^{-1}((n, \infty)) = \begin{cases} g^{-1}((n^2, \infty)) & \text{if } n \ge 0 \\ E & \text{if } n < 0 \end{cases}$$
+
+  Because $g$ is a measurable function, $g^{-1}((n^2, \infty))$ is a measurable set. Because $E$ is a measurable set, both piecewise conditions yield a measurable set.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2746,12 +2889,34 @@ If $f_n : E \to [-\infty, \infty]$ are measurable for all $n$ and $\lim_{n \to \
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Pointwise limit of Riemann integrable functions need not be Riemann integrable)</span></p>
+
 This corollary is **false** for Riemann integration — the pointwise limit of Riemann integrable functions need not be Riemann integrable.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise Limit Leaving Riemann Integration)</span></p>
 
-Enumerate $\mathbb{Q} \cap [0, 1] = \lbrace r_1, r_2, r_3, \dots \rbrace$. Define $f_n(x) = 1$ if $x \in \lbrace r_1, \dots, r_n \rbrace$ and $f_n(x) = 0$ otherwise. Each $f_n$ is Riemann integrable (piecewise continuous), but $\lim f_n = \chi_{\mathbb{Q} \cap [0,1]}$, which is not Riemann integrable.
+Enumerate 
+
+$$\mathbb{Q} \cap [0, 1] = \lbrace r_1, r_2, r_3, \dots \rbrace.$$
+
+Define 
+
+$$
+f_n(x) = \begin{cases} 
+      1, & x \in \lbrace r_1, \dots, r_n \rbrace \\
+      0, & \text{otherwise}
+   \end{cases}
+$$
+
+Each $f_n$ is Riemann integrable (piecewise continuous), but 
+
+$$\lim f_n = \chi_{\mathbb{Q} \cap [0,1]},$$
+
+which is not Riemann integrable.
 
 </div>
 
@@ -2778,6 +2943,97 @@ If $f, g : E \to [-\infty, \infty]$ satisfy $f = g$ a.e. on $E$, and $f$ is meas
     <summary>proof</summary>
     <p>Let $N = \lbrace x \in E : f(x) \ne g(x) \rbrace$ with $m(N) = 0$. For $\alpha \in \mathbb{R}$, $N_\alpha = \lbrace x \in N : g(x) > \alpha \rbrace \subset N$ has $m^*(N_\alpha) \le m^*(N) = 0$, so $N_\alpha$ is measurable. Then $g^{-1}((\alpha, \infty]) = (f^{-1}((\alpha, \infty]) \cap N^c) \cup N_\alpha$. Since $N$ is measurable, $N^c$ is measurable, the intersection with $f^{-1}((\alpha, \infty])$ is measurable, and $N_\alpha$ is measurable, so the union is measurable. $\square$</p>
   </details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Egorov’s theorem / Littlewood’s second principle: Vanishing measure of tail bad sets)</span></p>
+
+Suppose that $E \subset \mathbb{R}$ is a measurable set such that $m(E) < \infty$, and suppose that $f_n : E \to \mathbb{R}$ is measurable for all $n$, $f : E \to \mathbb{R}$ is measurable and $\lim_{n \to \infty} f_n(x) = f(x)$ a.e. on $E$.
+
+(a) For $k,n \in \mathbb{N}$, let
+
+$$F_n(k) = \bigcup_{m=n}^{\infty} \left\lbrace x \in E \mid |f_m(x)-f(x)| \ge k^{-1} \right\rbrace.$$
+
+Prove that
+
+$$\lim_{n \to \infty} m(F_n(k)) = 0.$$
+
+*Hint:* Show that $\bigcap_{n=1}^{\infty} F_n(k)$ is a set of measure zero, and appeal to Problem 1(b).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+By continuity from above for Lebesgue measure, for the sets if $\lbrace F_n \rbrace_{n=1}^\infty$ is a countable collection of measurable sets, $m(F_1) < \infty$ and 
+
+$$F_1 \supset F_2 \supset \cdots,$$
+
+then 
+
+$$m\left(\bigcap_n F_n\right) = \lim_n m(F_n).$$
+
+We verify the pre-requests of the theorem to apply it:
+
+1. $m(F_1(k)) < \infty$:
+   $* F_1(k) = \bigcup_{m=1}^\infty \lbrace x\in E\mid \lvert f_m(x) - f(x) \rvert \geq k^{-1} \rbrace$
+   * $m(F_1(k)) \leq m(E) < \infty$
+2. Nested structure of $F_n(k)$ sets is obvious from the union.
+
+Now show that $\bigcap_{n=1}^\infty F_n(k)$ set has measure zero.
+
+$$\bigcap_{n=1}^\infty \bigcup_{m=n}^\infty \lbrace x\in E \mid \lvert f_m(x) - f(x) \rvert \geq k^{-1} \rbrace = \lbrace x\in E \mid \lvert \limsup_{n\to\infty} \lvert f_n(x) - f(x) \rvert \geq k^{-1} \rbrace.$$
+
+By assumption the latter set has measure zero: $f_n$ converges to $f$ a.e., so the amount of $x\in E$, where the given inequality holds is zero by the definition of a.e. convergence. So
+
+$$0 = m(\bigcap_{n=1}^\infty F_n(k)) = \lim_n m(F_n(k)).$$
+ 
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Egorov’s theorem / Littlewood’s second principle: Almost uniform convergence outside a small set)</span></p>
+
+Let $\varepsilon > 0$. By part (a), for $k \in \mathbb{N}$, there exists $n_k \in \mathbb{N}$ such that
+
+$$m(F_{n_k}(k)) < 2^{-k}\varepsilon.$$
+
+Let
+
+$$F = \bigcup_{k=1}^{\infty} F_{n_k}(k).$$
+
+Prove that $m(F) < \varepsilon$ and $f_n \to f$ uniformly on $F^c$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+1. $m(F) < \varepsilon$
+   
+   $$m(F) \leq \sum_{k=1}^\infty m(F_{n_k}(k)) < \sum_{k=1}^\infty \varepsilon 2^{-k} = \varepsilon.$$
+  
+2. $f_n \to f$ uniformly on $F^c$
+
+    $$F^c = \bigcap_{k=1}^\infty \bigcap_{m=n_k}^\infty \lbrace x\in E \mid \lvert f_m(x) - f(x) \rvert < k^{-1} \rbrace$$
+
+    * We should be able for every $\varepsilon > 0$ find $n_k\in\mathbb{N}$ s.t. for all $m\geq n_k$ and $x\in F^c \lvert f_m(x) - f(x) \rvert < \varepsilon$.
+    * For the given $\varepsilon$ we consider the first $k$ s.t. $k^{-1} < \varepsilon$.
+    * The inner intersection gives all $x\in E$ s.t. $m\geq n_k \lvert f_m(x) - f(x) \rvert < k^{-1} < \varepsilon$. The outer intersection guarantees that such $k\in\mathbb{N}$ exists.
+    * Because the threshold index $n_k$ depends only on $k$ (which depends only on $\varepsilon$) and is entirely independent of $x$, the convergence $f_n\to f$ is uniform on $F^c$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Littlewood’s second principle)</span></p>
+
+This result is known as **Littlewood’s second principle**: 
+
+$$\boxed{\text{Every convergent sequence of measurable functions is nearly uniformly convergent.}}$$
+
 </div>
 
 ### Complex-Valued Measurable Functions
@@ -2987,8 +3243,8 @@ For simple functions $\phi, \psi \in L^+(E)$ and $c \ge 0$:
 
 1. $\int_E c\phi = c \int_E \phi$.
 2. $\int_E (\phi + \psi) = \int_E \phi + \int_E \psi$.
-3. If $\phi \le \psi$, then $\int_E \phi \le \int_E \psi$.
-4. If $F \subset E$ is measurable, then $\int_F \phi = \int_E \chi_F \phi \le \int_E \phi$.
+3. $\phi \le \psi \implies \int_E \phi \le \int_E \psi$.
+4. $F \subset E \text{ is measurable } \implies \int_F \phi = \int_E \chi_F \phi \le \int_E \phi$.
 
 </div>
 
@@ -3011,7 +3267,9 @@ $$E \subset \mathbb{R}:\ m(E) = 0 \implies \int_E f = 0\quad \forall f \in L^+(E
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Basic Properties of the Nonnegative Integral)</span></p>
 
-If $f, g \in L^+(E)$, $c \in [0, \infty)$, and $F \subset E$ is measurable, then: $\int_E cf = c \int_E f$, if $f \le g$ then $\int_E f \le \int_E g$, if $f \le g$ a.e. then $\int_E f \le \int_E g$, and $\int_F f \le \int_E f$.
+* If $f, g \in L^+(E)$, $c \in [0, \infty)$, and $F \subset E$ is measurable, then $\int_E cf = c \int_E f$, 
+* If $f \le g$ then $\int_E f \le \int_E g$,
+* If $f \le g$ a.e. then $\int_E f \le \int_E g$, and $\int_F f \le \int_E f$.
 
 </div>
 
