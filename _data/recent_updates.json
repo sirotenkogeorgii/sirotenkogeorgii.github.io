@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "Algorithms for Combinatorial Optimization",
+   "url": "/subpages/books/aco/",
+   "date": "2026-07-05",
+   "added": false
+  },
+  {
    "title": "Embedded Machine Learning",
    "url": "/notes/embedded-machine-learning/",
    "date": "2026-07-05",
@@ -15,6 +21,12 @@
   {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-07-05",
+   "added": false
+  },
+  {
+   "title": "Reinforcement Learning: An Overview",
+   "url": "/subpages/books/reinforcement_learning_overview/",
    "date": "2026-07-05",
    "added": false
   },
@@ -167,18 +179,6 @@
    "url": "/subpages/math_topics/weak_formulation/weak_formulation_rigorous/",
    "date": "2026-06-15",
    "added": true
-  },
-  {
-   "title": "Weak Formulations, or: How to Solve a Differential Equation Without Differentiating",
-   "url": "/subpages/math_topics/weak_formulation/weak_formulation_gentle/",
-   "date": "2026-06-15",
-   "added": true
-  },
-  {
-   "title": "Cookbook Tricks",
-   "url": "/notes/cookbook_tricks/",
-   "date": "2026-06-13",
-   "added": false
   }
  ]
 }

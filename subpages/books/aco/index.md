@@ -1694,7 +1694,7 @@ A function $f \colon \mathbb{R}^n \to \mathbb{R} \cup \lbrace \infty \rbrace$ is
   <title id="epi-title">Epigraph: convex vs non-convex function</title>
   <!-- Convex panel -->
   <g transform="translate(20,20)">
-    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle">convex f</text>
+    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle" fill="#1f2430">convex f</text>
     <!-- axes -->
     <line x1="20" y1="180" x2="260" y2="180" stroke="#bbb"/>
     <line x1="20" y1="20"  x2="20"  y2="180" stroke="#bbb"/>
@@ -1716,7 +1716,7 @@ A function $f \colon \mathbb{R}^n \to \mathbb{R} \cup \lbrace \infty \rbrace$ is
   </g>
   <!-- Non-convex panel -->
   <g transform="translate(320,20)">
-    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle">non-convex f</text>
+    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle" fill="#1f2430">non-convex f</text>
     <line x1="20" y1="180" x2="260" y2="180" stroke="#bbb"/>
     <line x1="20" y1="20"  x2="20"  y2="180" stroke="#bbb"/>
     <text x="265" y="183" font-family="serif" font-size="11" fill="#666">x</text>

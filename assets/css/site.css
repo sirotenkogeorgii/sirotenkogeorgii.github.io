@@ -1785,3 +1785,157 @@ body.tag-graph-noscroll {
     margin-left: 0;
   }
 }
+
+/* Dim the white-background figure images (matplotlib PNGs, scanned sketches)
+   in dark mode so they don't glare against the dark surface. */
+:root[data-theme="dark"] .page-content img {
+  filter: brightness(0.9);
+}
+
+/* SVG files loaded via <img> are separate documents, out of reach of the
+   attribute remap below and usually transparent — back them with a light
+   surface so their dark strokes stay visible in dark mode. */
+:root[data-theme="dark"] .page-content img[src$=".svg"] {
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+/* Dark-theme adaptation for the hand-drawn inline SVG figures in the notes.
+   Those SVGs hardcode light-theme colors as fill=/stroke= presentation
+   attributes, which lose to any stylesheet rule, so each block below remaps
+   one family of light-theme values to a dark-theme equivalent. Elements using
+   currentColor, class-based styles (rl-diagram, iwt-diagram, ...) or
+   translucent rgba() tints already adapt on their own and are left alone.
+   Shape fills in the saturated accent colors are also left alone: they stay
+   legible on a dark surface and some carry white labels. */
+
+/* near-black ink (labels, axes, arrowheads) -> light ink */
+:root[data-theme="dark"] svg :is([fill="#1f2430"], [fill="#1f2933"], [fill="#222"], [fill="#333"], [fill="#000"]) {
+  fill: #e7ecf5;
+}
+
+:root[data-theme="dark"] svg :is([fill="#444"], [fill="#555"]) {
+  fill: #c4cddd;
+}
+
+:root[data-theme="dark"] svg [fill="#666"] {
+  fill: #b0b9ca;
+}
+
+:root[data-theme="dark"] svg :is([fill="#888"], [fill="#999"]) {
+  fill: #a5aebf;
+}
+
+:root[data-theme="dark"] svg :is([fill="#5b6270"], [fill="#64748b"], [fill="#7a8394"]) {
+  fill: #9aa3b8;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#1f2430"], [stroke="#222"], [stroke="#333"]) {
+  stroke: #d3dae8;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#444"], [stroke="#555"]) {
+  stroke: #b9c3d6;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#666"], [stroke="#888780"]) {
+  stroke: #a3adc0;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#5b6270"], [stroke="#64748b"]) {
+  stroke: #9aa3b8;
+}
+
+/* light gridlines and box borders -> subdued slate lines */
+:root[data-theme="dark"] svg :is([stroke="#bbb"], [stroke="#ccc"], [stroke="#ddd"], [stroke="#e8e8e8"], [stroke="#e2e8f0"], [stroke="#e3e7f0"], [stroke="#e1e5ee"], [stroke="#dbe1ee"], [stroke="#cbd2e0"], [stroke="#cbd5e1"], [stroke="#ccd4e2"], [stroke="#b7c0d0"]) {
+  stroke: rgba(154, 163, 184, 0.5);
+}
+
+/* white boxes and nodes -> raised dark surface (their text is remapped above) */
+:root[data-theme="dark"] svg :is(rect, circle, ellipse, polygon):is([fill="#fff"], [fill="#ffffff"], [fill="#fafafa"], [fill="#f8f9fb"], [fill="#fbfcff"], [fill="#f8fafc"], [fill="#eef0f4"]) {
+  fill: #1a2440;
+}
+
+:root[data-theme="dark"] svg [stroke="#fff"] {
+  stroke: #101830;
+}
+
+/* tinted light panel/node fills -> translucent dark tints of the same hue */
+:root[data-theme="dark"] svg :is([fill="#fff7e0"], [fill="#fff7ec"], [fill="#fff3e0"]) {
+  fill: rgba(217, 168, 60, 0.16);
+}
+
+:root[data-theme="dark"] svg [fill="#ffd180"] {
+  fill: rgba(255, 177, 106, 0.28);
+}
+
+:root[data-theme="dark"] svg :is([fill="#e3f2fd"], [fill="#edf4ff"]) {
+  fill: rgba(96, 165, 250, 0.15);
+}
+
+:root[data-theme="dark"] svg [fill="#f3e5f5"] {
+  fill: rgba(192, 132, 252, 0.16);
+}
+
+:root[data-theme="dark"] svg [fill="#fce4ec"] {
+  fill: rgba(244, 114, 182, 0.16);
+}
+
+:root[data-theme="dark"] svg :is([fill="#ecfdf5"], [fill="#f2f7ed"]) {
+  fill: rgba(62, 207, 142, 0.14);
+}
+
+:root[data-theme="dark"] svg :is([fill="#fef2f2"], [fill="#fde2e2"]) {
+  fill: rgba(248, 113, 113, 0.16);
+}
+
+/* dark accent text, text groups and arrowhead markers -> bright variants */
+:root[data-theme="dark"] svg :is(text, g, path, polygon):is([fill="#1565c0"], [fill="#2c4994"], [fill="#2c3e94"], [fill="#1d4ed8"], [fill="#2563eb"]),
+:root[data-theme="dark"] svg circle[fill="#2c3e94"] {
+  fill: #8ab4f8;
+}
+
+:root[data-theme="dark"] svg :is(text, g, path, polygon):is([fill="#065f46"], [fill="#047857"], [fill="#0f6b4a"], [fill="#3d7a26"], [fill="#388e3c"], [fill="#1b8f5a"], [fill="#16a34a"], [fill="#0f9b6c"]) {
+  fill: #4cd695;
+}
+
+:root[data-theme="dark"] svg :is(text, g, path, polygon):is([fill="#7f1d1d"], [fill="#b91c1c"], [fill="#c62828"], [fill="#c0392b"], [fill="#dc2626"]) {
+  fill: #f28b82;
+}
+
+:root[data-theme="dark"] svg :is(text, g, path, polygon):is([fill="#a86f00"], [fill="#b45309"]) {
+  fill: #e3b23c;
+}
+
+:root[data-theme="dark"] svg :is(text, g, path, polygon):is([fill="#7b1fa2"], [fill="#a23ec3"]) {
+  fill: #cf8ef5;
+}
+
+:root[data-theme="dark"] svg :is(text, g, path, polygon)[fill="#c2185b"] {
+  fill: #f472b6;
+}
+
+/* dark accent strokes (curves, arrows, node rings) -> bright variants */
+:root[data-theme="dark"] svg :is([stroke="#1565c0"], [stroke="#2c4994"], [stroke="#2c3e94"], [stroke="#1d4ed8"], [stroke="#1e3a8a"], [stroke="#2563eb"]) {
+  stroke: #7fb0f5;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#047857"], [stroke="#0f6f43"], [stroke="#0f9b6c"], [stroke="#1b8f5a"], [stroke="#388e3c"], [stroke="#3d7a26"]) {
+  stroke: #45c98e;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#b91c1c"], [stroke="#c62828"]) {
+  stroke: #f28b82;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#a86f00"], [stroke="#b45309"]) {
+  stroke: #d9a83c;
+}
+
+:root[data-theme="dark"] svg :is([stroke="#7b1fa2"], [stroke="#a23ec3"]) {
+  stroke: #cf8ef5;
+}
+
+:root[data-theme="dark"] svg [stroke="#c2185b"] {
+  stroke: #f472b6;
+}

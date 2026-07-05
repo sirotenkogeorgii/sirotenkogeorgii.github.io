@@ -172,11 +172,11 @@ In general, there are three interacting stochastic processes to deal with: the e
 
   <!-- Action arrow (top: agent -> env) -->
   <path d="M 260 130 Q 330 70 400 130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#ae-arr)"/>
-  <text x="330" y="65" font-family="serif" font-size="13" text-anchor="middle" font-style="italic">action a_t</text>
+  <text x="330" y="65" font-family="serif" font-size="13" text-anchor="middle" font-style="italic" fill="#1f2430">action a_t</text>
 
   <!-- Observation + reward arrow (bottom: env -> agent) -->
   <path d="M 400 200 Q 330 270 260 200" stroke="#333" stroke-width="2" fill="none" marker-end="url(#ae-arr)"/>
-  <text x="330" y="285" font-family="serif" font-size="13" text-anchor="middle" font-style="italic">observation o_t+1, reward r_t</text>
+  <text x="330" y="285" font-family="serif" font-size="13" text-anchor="middle" font-style="italic" fill="#1f2430">observation o_t+1, reward r_t</text>
 
   <!-- Title labels above -->
   <text x="160" y="30" font-family="serif" font-size="14" text-anchor="middle" fill="#1565c0">"the learner"</text>
