@@ -2838,7 +2838,7 @@ In what follows we fix such a computable enumeration $F\_0, F\_1, \dots$ of all 
 
 The function $\widetilde F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ defined by
 
-$$\widetilde F(w) := \min_{i\,:\,w \in \operatorname{dom}(F_i)} \big(F_i(w) + i + 1\big)$$
+$$\widetilde{F}(w) := \min_{i\,:\,w \in \operatorname{dom}(F_i)} \big(F_i(w) + i + 1\big)$$
 
 is called the **minimal information content measure**. The penalty $i+1$ charges for the index needed to name the $i$-th measure.
 
@@ -2909,7 +2909,7 @@ TODO: what is the point of penalty in Minimal information content measure?
 </figure>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(3.4)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 3.4</span><span class="math-callout__name">(Minimal i.c.m. is a valid i.c.m.)</span></p>
 
 Show that $\widetilde F$ is itself an information content measure.
 
@@ -2921,13 +2921,48 @@ Show that $\widetilde F$ is itself an information content measure.
 
 **Upper bound**
 
-For any word w it holds that 
+For any word $w\in\text{dom}(F)$ holds
 
-$$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+$$2^{-\widetilde{F}(w)} = \max_{i\in\mathbb{N}} (2^{-(F_i(w) + i + 1)}) \leq \sum_{i=0}^\infty 2^{-(F_i(w) + i + 1)}$$
 
-* $$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+Summing over all words $w\in\operatorname{dom}(\widetilde{F})$, we get 
+
+$$
+\begin{aligned}
+\sum_{w\in\operatorname{dom}(\widetilde{F})} 2^{-\widetilde{F}(w)} 
+&= \sum_{w\in\operatorname{dom}(\widetilde{F})} \max_{i\in\mathbb{N}} (2^{-(F_i(w) + i + 1)}) \\
+&\leq 
+\sum_{w\in\operatorname{dom}(\widetilde{F})} \sum_{i=0}^\infty 2^{-(F_i(w) + i + 1)} \\
+&= 
+\sum_{i=0}^\infty \sum_{w\in\operatorname{dom}(\widetilde{F})} 2^{-(F_i(w) + i + 1)} \\
+&=
+\sum_{i=0}^\infty 2^{-(i+1)} \sum_{w\in\operatorname{dom}(\widetilde{F})} 2^{-F_i(w)} \\
+&=
+\sum_{i=0}^\infty 2^{-(i+1)} \sum_{w\in\operatorname{dom}(F_i)} 2^{-F_i(w)} \\
+&\leq 
+\sum_{i=0}^\infty 2^{-(i+1)} \cdot 1 \\
+&=
+1,
+\end{aligned}
+$$
+
+**C.E of epigraph**
+
+* To rigorously prove the epigraph $\lbrace (w, k) : \widetilde{F}(w) \le k \rbrace$is c.e., we dovetail the computation of $F_i(w)$ for all $i \in \mathbb{N}$. 
+* Because $\widetilde{F}(w)$ is defined as a minimum, we only need one machine to halt and satisfy $F_i(w) + i + 1 \le k$. 
+* The exact moment any dovetailed computation outputs a value that satisfies this bound, we enumerate the pair $(w, k)$ into the set. 
+* Since a **positive confirmation will always be found in finite time if it exists**, the epigraph is computably enumerable.
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Maximal i.c.m. is not valid i.c.m.: Divergence to infinity)</span></p>
+
+You are given a computable enumeration of all information content measures, $F_0,F_1,\dots$. There are infinitely many valid ICMs in this enumeration that will halt and be defined for a given word $w$. Because of the $i+1$ penalty term, the value of $F_i(w)+i+1$ will grow without bound as $i\to\infty$.  
+
+Therefore, taking the maximum over all $i$ results in infinity. By definition, an information content measure must be a function mapping strictly to $\mathbb{N}$. It cannot evaluate to infinity.
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
