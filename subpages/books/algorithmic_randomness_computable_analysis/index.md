@@ -3089,37 +3089,309 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 <details markdown="1">
 <summary>Proof</summary>
 
-Deferred to Sheet 3, Exercise 2.
+1. Show that the function F: \subseteq \lbrace 0,1 \rbrace^\ast \to \mathbb{N} defined by
+   
+   $$F(bin(n)) := -\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
 
-</details>
-</div>
+   is an information content measure.
 
-TODO: finish it
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-$$F(bin(n)) := -\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
-
-By the definition of the content measure:
-
-> An **information content measure** is a partial function $F :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ that satisfies
->
-> $$\sum_{\sigma \in \operatorname{dom}(F)} 2^{-F(\sigma)} \le 1 \tag{19}$$
+**UPPER BOUND**
 
 Then for a single $bin(n) \in \operatorname{dom}(F)$ we get:
 
 $$2^{-F(bin(n))} = 2^{\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}} = \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
 
-$$\sum_{bin(n)\in\operatorname{dom}(F)}\ \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)} \leq \sum_{\sigma\in\lbrace 0,1\rbrace^\ast} 2^{-K(\sigma)} \leq 1$$
+Over all $bin(n) \in \operatorname{dom}(F)$:
 
+$$\sum_{bin(n)\in\operatorname{dom}(F)} 2^{-F(bin(n))} = \sum_{bin(n)\in\operatorname{dom}(F)}\ \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)} \leq \sum_{\sigma\in\lbrace 0,1\rbrace^\ast} 2^{-K(\sigma)} \leq 1$$
 
----
+**C.E. EPIGRAPH**
+
+Prefix-free Kolmogorov complexity $K$ is upper semi-computable. For the given pair $(bin(n), k)$ we do dovetailing over all binary words $\sigma\in\lbrace 0,1\rbrace^n$ and for each word $\sigma$ we again in dovetailing manner enumerably upper compute $K(\sigma)$. Since $\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$ only decreases, the moment when $F(bin(n)) > k$ would be confirmed in finite number of steps if it's true.
+
+</details>
+</div>
+   
+1. Show that there exists a constant $\varepsilon > 0$ such that
+   
+   $$2^{K(bin(n))} \geq 2^{-F(bin(n))-c}$$
+
+   *(hint: $K$ is a minimal information content measure)*
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Since $K$ is the minimal among infomration content measures, and $F$ is an in information content measure, there is a constant $c$ such that
 
 $$K(bin(n)) \leq F(bin(n)) + c$$
 
+</details>
+</div>
+
+1. For all natural numbers $n, r$, we define the set of all words of length $n$ with prefix-free complexity below $n + K(\operatorname{bin}(n)) - r$:
+
+   $$S_{n,r} = \lbrace\sigma \in 2^n : K(\sigma) \le n + K(\operatorname{bin}(n)) - r\rbrace.$$
+
+   Show that there exists a constant $c$ such that
+
+   $$\sharp S_{n,r} \le 2^{n-r+c}$$
+
+   for all $n, r$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Recall
+
+$$S_{n,r} = \lbrace \sigma\in{0,1}^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace.$$
+
+If $\sigma\in S_{n,r}$, then
+
+$$2^{-K(\sigma)} \ge 2^{-n-K(\operatorname{bin}(n))+r}.$$
+
+Therefore
+
+$$
+\begin{aligned}
+\sharp S_{n,r}\cdot 2^{-n-K(\operatorname{bin}(n))+r}
+&\le
+\sum_{\sigma\in S_{n,r}}2^{-K(\sigma)}
+\\
+&\le
+\sum_{\sigma\in{0,1}^n}2^{-K(\sigma)}
+\
+&=
+W_n
+\\
+&\le
+2^c2^{-K(\operatorname{bin}(n))}.
+\end{aligned}
+$$
+
+Canceling $2^{-K(\operatorname{bin}(n))}$, we obtain
+
+$$#S_{n,r}\le 2^{n-r+c}.$$
+
+Thus there is a constant $c$ such that
+
+$$\boxed{\sharp S_{n,r}\le 2^{n-r+c}}$$
+
+for all $n,r$.
+
+</details>
+</div>
+
+1. Show that there exist two constants $c_1$ and $c_2$ such that
+
+   $$n - K(\operatorname{bin}(n)) - c_1 \le \max \lbrace K(\sigma) : l(\sigma) = n \rbrace \le n + K(\operatorname{bin}(n)) + c_2.$$
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The sheet’s displayed lower bound says
+
+$$n-K(\operatorname{bin}(n))-c_1 \le \max_{l(\sigma)=n}K(\sigma),$$
+
+but the theorem stated immediately before says the intended bound is
+
+$$\boxed{n+K(\operatorname{bin}(n))-O(1)\le\max_{l(\sigma)=n}K(\sigma).}$$
+
+We prove the stronger, intended form.
+
+**Upper bound.**
+
+By the known upper bound,
+
+$$K(\sigma) \le l(\sigma)+K(\operatorname{bin}(l(\sigma)))+O(1).$$
+
+For (l(\sigma)=n),
+
+$$K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
+
+Hence
+
+$$\max_{l(\sigma)=n}K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
+
+**Lower bound.**
+
+Use the counting estimate with $r=c+1$. Then
+
+$$\sharp S_{n,c+1} \le 2^{n-(c+1)+c} = 2^{n-1}.$$
+
+So fewer than all $2^n$ strings of length $n$ lie in $S_{n,c+1}$. Hence there exists some $\sigma\in{0,1}^n$ with
+
+$$\sigma\notin S_{n,c+1}.$$
+
+Therefore
+
+$$K(\sigma) > n+K(\operatorname{bin}(n))-(c+1).$$
+
+Thus
+
+$$\max_{l(\sigma)=n}K(\sigma) \ge n+K(\operatorname{bin}(n))-c_1$$
+
+for a suitable constant $c_1$.
+
+Combining both inequalities,
+
+$$\boxed{\max_{l(\sigma)=n}K(\sigma) = n+K(\operatorname{bin}(n))\pm O(1).}$$
+
+</details>
+</div>
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Characterization of computable upper bounds for $K$)</span></p>
+
+Let $f : \mathbb{N} \to \mathbb{N}$ be a totally computable function.
+
+Show that $f$ satisfies the inequality
+
+$$\sum_{n \in \mathbb{N}} 2^{-f(n)} < \infty$$
+
+if and only if there exists a constant $c$ such that
+
+$$K(\operatorname{bin}(n)) \leq f(n) + c$$
+
+holds for all $n$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+$$(\Rightarrow)$$
+
+Assume
+
+$$\sum_n2^{-f(n)}<\infty.$$
+
+Choose $d\in\mathbb N$ such that
+
+$$2^{-d}\sum_n2^{-f(n)}\le 1.$$
+
+Define a partial function $F$ on binary words by
+
+$$F(\operatorname{bin}(n)):=f(n)+d.$$
+
+Since $f$ is computable, $F$ has c.e. epigraph. Also,
+
+$$\sum_{n}2^{-F(\operatorname{bin}(n))} = \sum_n2^{-f(n)-d} = 2^{-d}\sum_n2^{-f(n)} \le 1.$$
+
+So $F$ is an information content measure.
+
+By minimality of $K$, there is a constant $c'$ such that
+
+$$K(\operatorname{bin}(n)) \le F(\operatorname{bin}(n))+c' = f(n)+d+c'.$$
+
+Thus
+
+$$K(\operatorname{bin}(n))\le f(n)+c$$
+
+for $c=d+c'$.
+
 ---
 
+$$(\Leftarrow)$$
 
+Assume
+
+$$K(\operatorname{bin}(n))\le f(n)+c$$
+
+for all $n$. Then
+
+$$2^{-f(n)} \le 2^c,2^{-K(\operatorname{bin}(n))}.$$
+
+Therefore
+
+$$\sum_n2^{-f(n)} \le 2^c\sum_n2^{-K(\operatorname{bin}(n))} \le 2^c\sum_{\sigma\in{0,1}^\ast}2^{-K(\sigma)} \le 2^c.$$
+
+Hence
+
+$$\sum_n2^{-f(n)}<\infty.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Test-to-icm-translation is not straightforward)</span></p>
+
+Recall that a Martin-Löf test $S_0, S_1, \dots$ is called a **Schnorr test** if it satisfies
+
+$$\mu(S_i) = 2^{-i}$$
+
+for all $i$, that is, with “$=$” instead of “$\leq$”.
+
+Let $(S_0, S_1, \dots)$, where
+
+$$S_i = \lbrace \sigma^i_0, \sigma^i_1, \dots\rbrace$$
+
+for all $i$, be a uniformly c.e. sequence of prefix-free sets of words such that the corresponding uniformly c.e. sequence of open sets $\widetilde{S}\_0, \widetilde{S}\_1, \dots$, where
+
+$$\widetilde{S}_i = \lbrace [\sigma^i_0], [\sigma^i_1], \dots\rbrace$$
+
+for all $i$, is a Schnorr test.
+
+Show that the partial function
+
+$$F : \subseteq \lbrace 0,1\rbrace^* \to \mathbb{N}$$
+
+defined by
+
+$$\sum_{\sigma \in S_n} 2^{-l(\sigma)+n}$$
+
+is not an information content measure.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+The definition of $F$ in the exercise is malformed: after “defined by” it only shows the expression
+
+$$\sum_{\sigma\in S_n}2^{-l(\sigma)+n}.$$
+
+This expression is not itself a definition of a function. The intended “naive translation” is almost certainly
+
+$$F(\sigma)=l(\sigma)-n \qquad\text{for }\sigma\in S_n.$$
+
+We show why this naive construction is not an information content measure.
+
+Since $S_n$ is prefix-free and the associated open set has measure
+
+$$\mu(\widetilde S_n)=2^{-n},$$
+
+we have
+
+$$\sum_{\sigma\in S_n}2^{-l(\sigma)} = 2^{-n}.$$
+
+Now the Kraft contribution of the $n$-th layer under the naive definition $F(\sigma)=l(\sigma)-n$ is
+
+$$\sum_{\sigma\in S_n}2^{-F(\sigma)} = \sum_{\sigma\in S_n}2^{-(l(\sigma)-n)} = 2^n\sum_{\sigma\in S_n}2^{-l(\sigma)} = 2^n\cdot 2^{-n} = 1.$$
+
+So each layer alone spends a full Kraft budget $1$. Summing over infinitely many layers gives
+
+$$\sum_n\sum_{\sigma\in S_n}2^{-(l(\sigma)-n)} = \sum_n1 = \infty.$$
+
+Thus the direct test-to-icm translation fails the Kraft inequality. This is exactly why the construction in the lecture notes uses extra slack, for example by passing to layers $i^2$ and defining $F(\sigma)=l(\sigma)-i$, because then the total Kraft cost becomes
+
+$$\sum_i 2^{i-i^2}<\infty.$$
+
+So the naive $F(\sigma)=l(\sigma)-n$ is not an information content measure.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(3.7.1 — Almost every word is incompressible)</span></p>
@@ -3138,7 +3410,7 @@ $$\#\lbrace w \in \lbrace 0,1\rbrace^n : K(w) \le n\rbrace \le 2^{\,n - K(\mathr
 
 Therefore
 
-$$\frac{\#\lbrace w : K(w) > n\rbrace}{2^n} = 1 - \frac{\#\lbrace w : K(w) \le n\rbrace}{2^n} \ge 1 - \frac{2^{\,n - K(\mathrm{bin}(n)) + c}}{2^n} = 1 - 2^{-K(\mathrm{bin}(n)) + c} \xrightarrow[\;n \to \infty\;]{} 1,$$
+$$\frac{\#\lbrace w : K(w) > n\rbrace}{2^n} = 1 - \frac{\sharp \lbrace w : K(w) \le n\rbrace}{2^n} \ge 1 - \frac{2^{\,n - K(\mathrm{bin}(n)) + c}}{2^n} = 1 - 2^{-K(\mathrm{bin}(n)) + c} \xrightarrow[\;n \to \infty\;]{} 1,$$
 
 because only finitely many words have complexity below any fixed bound, so the distinct encodings $\mathrm{bin}(n)$ force $K(\mathrm{bin}(n)) \to \infty$ and hence $2^{-K(\mathrm{bin}(n)) + c} \to 0$.
 
