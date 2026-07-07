@@ -18,6 +18,7 @@ tags:
   - minimum-description-length
   - halting-problem
   - chaitin-constant
+  - solovay-reducibility
 ---
 
 # Algorithmic Randomness and Computable Analysis
@@ -4058,6 +4059,19 @@ $$\widetilde M(0^e1)\downarrow \quad \Longleftrightarrow \quad \Phi_e(e)\downarr
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is $\Phi$?)</span></p>
+
+Here $\Phi$ is standard computability-theory notation for an **effective enumeration of partial computable functions**.
+
+More precisely,
+
+$$\Phi_0,\Phi_1,\Phi_2,\dots$$
+
+is a fixed listing of all partial computable functions $\mathbb N \rightharpoonup \mathbb N$, or equivalently all Turing machines/programs under some Gödel numbering.
+
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(A watered-down Chaitin’s Omega)</span></p>
 
@@ -4201,14 +4215,44 @@ $\boxed{(iii) \implies (iv)}$
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(1))</span></p>
 
+A set of words $T \subseteq \lbrace 0,1\rbrace^\ast$ is called a **binary tree** if, for every $w \in T$, all $v \sqsubseteq w$ fulfill $v \in T$.
+
+An infinite sequence $A$ is a **path** in a binary tree $T$ if $A \upharpoonright n \in T$ for every $n$.
+
+A path $A$ in a binary tree $T$ is called **isolated** if, for some $n$, there exists no other path $B \neq A$ in $T$ such that
+
+$$A \upharpoonright n = B \upharpoonright n.$$
+
+A real $\alpha$ is called **K-trivial** if there exists a constant $c$ such that
+
+$$K(\alpha \upharpoonright n) \leq K(\operatorname{bin}(n)) + c$$
+
+for all $n$.
+
+---
+
+Show that, for every computable real $\alpha$, we have
+
+$$K(\alpha \upharpoonright n) = K(\operatorname{bin}(n)) \pm O(1).$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof (i)</summary>
+<summary>Solution</summary>
+
+<!-- Solution:
+
+We know that a real \alpha is computable iff there is a computable sequence (a_i)\_{i\in\mathbb{N}} such that \lvert \alpha-a_i\rvert < 2^{-n} for all n\in\mathbb{N}.
+
+Give the number n\in\mathbb{N} and *given* (or computable in constant time by the *given* Turing machine) the approximating computable sequence (a_i)\_{i\in\mathbb{N}}, satisfying the property above, we obtain a_n, which has the same prefix as the real \alpha. So, K-complexity of the prefix alpha is reduced to the K-complexity of the number or index n\in\mathbb{N}. 
+
+**Note aside:** I guess that we assume that the approximation is given explicitly or implicitly via given Turing machine. Turing machine is given, because I suspect we would have to add the complexity of the Turing machine that computes the approximating sequence. -->
+
+
+TODO: decide, why it is false.
 
 Let $\alpha$ be computable. From $n$ one can compute $\alpha\upharpoonright n$, so
 
@@ -4225,9 +4269,69 @@ $$K(\alpha\upharpoonright n)=K(\operatorname{bin}(n))\pm O(1).$$
 </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Another interpretation of isolated paths)</span></p>
+
+An **isolated path** is an infinite path that has **some finite prefix not shared by any other infinite path**.
+
+$$[A\upharpoonright n] \cap [T]= \lbrace A\rbrace,$$
+
+where $[T]$ means the set of infinite paths through $T$.
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/algorithmic_randomness_computable_analysis/arca_isolated_paths.png' | relative_url }}" alt="Two binary trees drawn upwards with the level on the vertical axis. Left: an isolated path A separates from the other paths B1, B2 at the isolating level n = 3; the ringed node is the isolating prefix rho, the shaded cone above it contains only A, and a dashed finite dead end above level 3 is marked as allowed. Right: a non-isolated path A = 000... with branches B_k = 0^k 1 000... peeling off at every level; the ringed branch points accumulate along A, and an arrow marks that B_5 still agrees with A up to level 5." loading="lazy">
+  <figcaption>Left: an isolated path. After the isolating level $n = 3$ no other path shares the prefix $\rho = A \upharpoonright 3$, so $A$ has the cylinder of $\rho$ entirely to itself; the finite dead end above $n$ is allowed, because isolation only counts infinite paths. Right: a non-isolated path. In the tree with paths $A = 000\cdots$ and $B_k = 0^k 1\, 000\cdots$, every level $n$ is still shared: $B_n \neq A$ but $B_n \upharpoonright n = A \upharpoonright n$, so branch points accumulate along $A$ and no level ever isolates it. Nodes are drawn at the dyadic position of the word they code, which is why each path visibly converges to the real $0.A$ it represents. This dichotomy drives Exercises (4) and (5) below: a K-trivial sequence is an isolated path of $T_c$, and an isolated path of a computable tree is computable.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Approximation does not automatically give the exact binary prefix.)</span></p>
+
+Let \alpha be a computable real. For the approximating sequence $(a_n)\_{n\in\mathbb{N}}$ from the condition
+
+$$\lvert\alpha−a_n\rvert<2^{−n}$$
+ 
+it is not always safe to say that $a_n$ has the same first $n$ bits as $\alpha$. If $\alpha$ is very close to a dyadic boundary, a tiny error can change the $n$-th binary digit.
+
+In this course, the primary definition of real computability is **by binary prefixes**, not by arbitrary rational approximations:
+
+$$\alpha \text{ is computable iff } \alpha=0.A$$
+
+for some **computable binary sequence** $A$. So from input $n$, a fixed machine can compute the bits $A(0),\dots,A(n-1)$, hence compute
+
+$$\alpha\upharpoonright n.$$
+
+This is exactly the clean version you want for the exercise. 
+
+The notes also give an equivalent Cauchy-style characterization: $\alpha$ has a computable rational sequence $(a_n)$ with
+
+$$|\alpha-a_n|<2^{-n}.$$
+
+But for your current proof, the prefix definition is safer, because it avoids the dyadic-boundary issue. 
+
+So your first line should be adjusted to:
+
+$$\text{Since }\alpha\text{ is computable, there is a computable binary sequence }A \text{ such that }\alpha=0.A.$$
+
+Then from $\operatorname{bin}(n)$, a fixed machine computes $A\upharpoonright n=\alpha\upharpoonright n$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(2))</span></p>
+
+Show that, for every $c$, the set
+
+$$T_c := \lbrace \sigma : \forall \tau \sqsubseteq \sigma \, (K(\tau) \leq K(\operatorname{bin}(\ell(\tau))) + c)\rbrace$$
+
+is a binary tree, which is computable in $\emptyset'$.
+
+</div>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof (ii)</summary>
+<summary>Solution</summary>
 
 If $\sigma\in T_c$ and $\rho\sqsubseteq\sigma$, then every $\tau\sqsubseteq\rho$ is also a prefix of $\sigma$, so $\rho\in T_c$. Hence $T_c$ is a binary tree.
 
@@ -4240,64 +4344,218 @@ is decidable in $\emptyset'$. Thus $T_c$ is $\emptyset'$-computable.
 </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Prefix-free Kolmogorov complexity is computable in $\emptyset'$)</span></p>
+
+$K$ is computable in $\emptyset'$: with the halting oracle, one can decide which programs halt and search for the shortest one producing a given word. Therefore the finite condition
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(3))</span></p>
+
+Show that there exists an upper bound $N$ such that
+
+$$\sharp \lbrace\sigma : \ell(\sigma) = n \text{ and } \sigma \in T_c\rbrace \leq N$$
+
+for all $n$.
+
+*(hint: use Chaitin’s Counting theorem)*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let $l(\sigma)=n$ and $\sigma\in T_c$. Then
+
+$$K(\sigma)\le K(\operatorname{bin}(n))+c.$$
+
+Chaitin’s counting theorem says that for some constant $d$,
+
+$$\sharp \lbrace \sigma\in \lbrace 0,1\rbrace^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
+
+Put $r=n-c$. Then
+
+$$\sharp\lbrace\sigma:l(\sigma)=n,\ \sigma\in T_c\rbrace \le 2^{c+d}$$
+
+for all sufficiently large $n$. Enlarging the constant to cover the finitely many small $n$, we get a uniform bound $N$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Using a variable parameter to obtain a uniform bound)</span></p>
+
+In the proof of the level-size bound for $T_c$, we use Chaitin's counting theorem in a uniform form:
+
+$$\exists d\ \forall n\ \forall r:\quad \sharp \lbrace \sigma\in 2^n : K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
+
+Since the estimate holds for every pair $(n,r)$, we are allowed to choose $r$ depending on $n$. For strings $\sigma\in T_c$ of length $n$, we have
+
+$$K(\sigma)\le K(\operatorname{bin}(n))+c = n+K(\operatorname{bin}(n))-(n-c).$$
+
+Thus we set
+
+$$r(n):=n-c.$$
+
+Although $r$ varies with $n$, the former constant $r$ becomes a variable, the resulting upper bound becomes
+
+$$2^{n-r(n)+d} = 2^{n-(n-c)+d} = 2^{c+d},$$
+
+which is independent of $n$. This is the key point: the variable choice of $r$ is used precisely to cancel the $n$-dependence in the counting theorem. Hence one obtains a single uniform bound on the number of nodes of $T_c$ at each level.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(4))</span></p>
+
+Show that an infinite binary sequence $A$ that satisfies
+
+$$K(A \upharpoonright n) \leq K(\operatorname{bin}(n)) + c$$
+
+for all $n$ is an isolated path in $T_c$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Assume $A$ is **not** isolated. Then for every prefix length $n$, there is another infinite path $B\neq A$ with
+
+$$B\upharpoonright n=A\upharpoonright n.$$
+
+Since $B\neq A$, it must eventually split away from $A$. So beyond every $n$, there is some splitting node on the path $A$.
+
+**If $A$ has more than $N$ splitting points along it, can you choose one side-branch from each split and follow it to one common high level?**
+
+Each chosen side-branch gives a distinct node at that common high level. Together with the prefix of $A$ itself, this would produce more than $N$ nodes on one level of $T_c$, contradicting Exercise 3.3.
+
+The key phrase to make rigorous is: side-branches created at different split points remain distinct at every sufficiently high common level. It is guaranteed by the construction of the binary tree on words based on prefixes: two different branches never merge. 
+
+More regorous way:
+
+Assume $A$ is not isolated. Then along $A$ there are infinitely many splitting points. Choose $N$ distinct splitting points
+
+$$s_1<s_2<\dots<s_N.$$
+
+At each split $s_j$, choose an infinite path $B_j$ that follows the side-branch different from $A$. Then choose a level
+
+$$L>\max_j s_j.$$
+
+Since each $B_j$ is infinite, each prefix $B_j\upharpoonright L$ lies in $T_c$. Also $A\upharpoonright L\in T_c$. These $N+1$ nodes are distinct, because branches in a prefix tree never merge.
+
+Thus level $L$ has at least $N+1$ nodes, contradicting the level bound from Exercise 3.3. So $A$ must be isolated.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(5))</span></p>
+
+Show that every isolated path in a computable tree is computable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let $A$ be an isolated path in a computable tree $T$. Let $\rho\sqsubset A$ be an isolating prefix. We may hard-code $\rho$.
+
+To compute $A\upharpoonright n$, search for a level $m\ge n$ such that all nodes $\tau\in T$ of length $m$ extending $\rho$ have the same prefix of length $n$. Such an $m$ must exist; otherwise, by König’s lemma, there would be another infinite path extending $\rho$, contradicting isolation. Since $T$ is computable, the finite search at each level is effective. Output the common length-$n$ prefix. Thus $A$ is computable. $\squared$
+
+> In the solution for the exercise 3.5, there is the following phrase "we hardcode the prefix the makes the path isolated". Is it possible? It works for a single isolated pass, but I do not see why is succulent to systematically compute all isolated paths?
+
+My objection is exactly the right distinction.
+
+The phrase “hardcode the isolating prefix” is legitimate because Exercise 3.5 is **non-uniform**:
+
+$$\text{For every isolated path }A\text{ in a computable tree }T,\ A\text{ is computable.}$$
+
+This means: for each particular isolated path $A$, there exists a Turing machine computing $A$. The machine is allowed to depend on $A$, so it may contain the isolating prefix $\rho$ as finite built-in information.
+
+It does **not** mean:
+
+> Given $T$, systematically find all isolated paths.
+
+That stronger uniform task is not what is being proved.
+
+How the hardcoded prefix is used:
+
+Let $\rho\sqsubset A$ isolate $A$. To compute $A\upharpoonright m$, search levels $L=m,m+1,m+2,\dots$ of the computable tree $T$. Look at all nodes $\sigma\in T$ of length $L$ extending $\rho$.
+
+Because $\rho$ isolates $A$, all wrong side-branches above $\rho$ are finite. So eventually, for large enough $L$, every surviving node extending $\rho$ has the same prefix of length $m$, namely $A\upharpoonright m$.
+
+Then output that common prefix.
+
+So the algorithm is:
+
+$$m \mapsto \text{search until all length-}L\text{ extensions of }\rho \text{ agree on their first }m\text{ bits.}$$
+
+This search halts because $\rho$ isolates $A$.
+
+So, corrected understanding should be:
+
+> We do not compute the isolating prefix from the tree. We fix one isolated path $A$, use its isolating prefix as finite advice, and then compute the rest effectively from the computable tree.
+
+That is enough for Exercise 3.5. The sheet only asks to show that every isolated path in a computable tree is computable. 
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Hardcoded finite advice for infinite properties)</span></p>
+
+Some infinite properties can be reduced, non-uniformly, to finite information. For example, an isolated path $A$ through a computable tree has a finite prefix $\rho\sqsubset A$ such that no other infinite path extends $\rho$. Once this prefix is known, it can be hardcoded into a machine.
+
+The machine does not need to know the whole path $A$. Given a requested length $m$, it searches sufficiently long levels of the computable tree above $\rho$ until all surviving extensions agree on their first $m$ bits. Since $\rho$ isolates $A$, this search eventually stabilizes and outputs $A\upharpoonright m$.
+
+This is a **non-uniform** use of finite advice. It proves that each isolated path is computable, but it does not necessarily give a uniform procedure which, from the tree alone, finds the isolating prefix or lists all isolated paths. The finite prefix can be used effectively once supplied; finding or verifying that it is isolating may still involve an infinite property.
+
+</div>
 
 
-**Exercise 3.3.**
-Using the corrected level version, let (l(\sigma)=n) and (\sigma\in T_c). Then
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(6))</span></p>
 
-[
-K(\sigma)\le K(\operatorname{bin}(n))+c.
-]
+Show that every K-trivial real is computably approximable.
 
-Chaitin’s counting theorem says that for some constant (d),
+*(hint: Relativize the latter step. Recall that the binary representation of every c.a. real lies in $\Delta^0_2$)*
 
-[
-#{\sigma\in{0,1}^n:
-K(\sigma)\le n+K(\operatorname{bin}(n))-r}
-\le 2^{n-r+d}.
-]
+</div>
 
-Put (r=n-c). Then
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
 
-[
-#{\sigma:l(\sigma)=n,\ \sigma\in T_c}
-\le 2^{c+d}
-]
+Let $\alpha=0.A$ be K-trivial. Then for some $c$,
 
-for all sufficiently large (n). Enlarging the constant to cover the finitely many small (n), we get a uniform bound (N).
+$$K(A\upharpoonright n)\le K(\operatorname{bin}(n))+c$$
 
-**Exercise 3.4.**
-If (A) satisfies
+for all $n$. By Exercise 3.4, $A$ is an isolated path in $T_c$. By Exercise 3.2, $T_c$ is $\emptyset'$-computable. Relativizing Exercise 3.5, every isolated path in an $\emptyset'$-computable tree is $\emptyset'$-computable. Hence
 
-[
-K(A\upharpoonright n)\le K(\operatorname{bin}(n))+c
-]
+$$A\le_T\emptyset',$$
 
-for all (n), then every prefix (A\upharpoonright n) lies in (T_c), so (A) is a path in (T_c).
+so $A\in\Delta^0_2$. By the course theorem that c.a. reals are exactly the reals with $\Delta^0_2$ binary expansion, $\alpha$ is computably approximable.
 
-By Exercise 3.3, each level of (T_c) has at most (N) nodes. Hence (T_c) has at most (N) infinite paths: if there were (N+1) distinct paths, then at some sufficiently large level their prefixes would be (N+1) distinct nodes. Therefore there are only finitely many paths. A path among finitely many paths is isolated: take a level after which it has separated from all the other paths.
+</details>
+</div>
 
-So (A) is an isolated path in (T_c).
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Finite evidence versus infinite properties)</span></p>
 
-**Exercise 3.5.**
-Let (A) be an isolated path in a computable tree (T). Let (\rho\sqsubset A) be an isolating prefix. We may hard-code (\rho).
+A recurring pattern in computability theory and algorithmic randomness is the distinction between **finite verifiable evidence** and genuinely **infinite properties**.
 
-To compute (A\upharpoonright n), search for a level (m\ge n) such that all nodes (\tau\in T) of length (m) extending (\rho) have the same prefix of length (n). Such an (m) must exist; otherwise, by König’s lemma, there would be another infinite path extending (\rho), contradicting isolation. Since (T) is computable, the finite search at each level is effective. Output the common length-(n) prefix. Thus (A) is computable.
+If a property has a finite positive witness, then it is often computably enumerable: one can search for the witness and eventually find it if it exists. For example, $K(\sigma)\le k$ is c.e., because it is witnessed by a program of length at most $k$ that halts and outputs $\sigma$. By contrast, $K(\sigma)>k$ requires knowing that no such program ever appears, which is not directly verifiable in finite time.
 
-**Exercise 3.6.**
-Let (\alpha=0.A) be K-trivial. Then for some (c),
+Similarly, for a computable tree $T$, membership $\sigma\in T$ is a finite property, but the assertion that $\sigma$ has an infinite continuation is not generally decidable. Thus, when proving that an isolated path is computable, we may hardcode an isolating prefix for a particular path. This is a non-uniform argument: it proves that each isolated path is computable, but it does not give a procedure that finds all isolated paths from the tree alone.
 
-[
-K(A\upharpoonright n)\le K(\operatorname{bin}(n))+c
-]
+In short, finite witnesses often give c.e. information, while absence, uniqueness, or infinite continuation usually requires extra structure, an oracle, compactness, or non-uniform finite advice.
 
-for all (n). By Exercise 3.4, (A) is an isolated path in (T_c). By Exercise 3.2, (T_c) is (\emptyset')-computable. Relativizing Exercise 3.5, every isolated path in an (\emptyset')-computable tree is (\emptyset')-computable. Hence
-
-[
-A\le_T\emptyset',
-]
-
-so (A\in\Delta^0_2). By the course theorem that c.a. reals are exactly the reals with (\Delta^0_2) binary expansion, (\alpha) is computably approximable.
+</div>
 
 ### Basics of Computability Theory and Prefix-Free Machines
 
@@ -4910,3 +5168,630 @@ Then $\alpha$ is not Martin-Löf random — a contradiction. Therefore $\beta$ i
 
 </details>
 </div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Properties of the Solovay reducibility on $\mathbb{R}$ (1))</span></p>
+
+Recall the definition of Solovay reducibility on $\mathbb{R}$: a real $\alpha$ is Solovay reducible to a real $\beta$, written $\alpha \leq_S \beta$, if there exists a constant $c$ and a partially computable function
+
+$$g : \subseteq \mathbb{Q} \to \mathbb{Q}$$
+
+such that
+
+$$0 < \alpha - g(q) \downarrow < c(\beta - q)$$
+
+for every rational $q < \beta$.
+
+Show that $\leq_S$ is a reflexive and transitive relation of $\mathbb{R}$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Properties of the Solovay reducibility on $\mathbb{R}$ (2))</span></p>
+
+Show that the left-c.e. reals are closed downward relative to $\leq_S$, i.e., if $\beta$ is a left-c.e. real and $\alpha \leq_S \beta$, then $\alpha$ is left-c.e. as well.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Properties of the Solovay reducibility on $\mathbb{R}$ (3))</span></p>
+
+Show that $\alpha \leq_S \beta$ implies that
+
+$$K(\alpha \upharpoonright n) \leq K(\beta \upharpoonright n) - O(1).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Solovay reducibility and computable reals (1))</span></p>
+
+Show that the computable reals are closed downwards in $\mathbb{R}$ relative to $\leq_S$, i.e., if $\alpha \leq_S \beta$ and $\beta$ is computable, then $\alpha$ is computable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Solovay reducibility and computable reals (2))</span></p>
+
+Show that computable reals form the least Solovay degree on the set of left-c.e. reals, i.e., if $\alpha$ is computable and $\beta$ is left-c.e., then $\alpha \leq_S \beta$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Solovay reducibility and computable reals (3))</span></p>
+
+Show that there exists a right-c.e. real $\beta$ such that
+
+$$\alpha \not\leq_S \beta$$
+
+for any left-c.e. real $\alpha$, including the computable ones.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals)</span></p>
+
+Let $\alpha$ and $\beta$ be two left-c.e. reals such that
+
+$$K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to_{n \to \infty} \infty.$$
+
+Show that
+
+$$\alpha \leq_S \beta.$$
+
+*Hint: fix two left-c.e. approximations $(a_i)\_{i \in \mathbb{N}}$ and $(b_i)\_{i \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Then, given an optimal prefix-free code $\tau$ of $\alpha \upharpoonright n$, we can compute the first index $s$ such that*
+
+$$a_s \upharpoonright n = \alpha \upharpoonright n.$$
+
+*What do we know about $b_s$?*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (1))</span></p>
+
+Recall that the left derivation on a function $f$ in a point $x$ is defined by
+
+$$f^{(l)}(x) := \lim_{y \nearrow x} \frac{g(x)-g(y)}{x-y}.$$
+
+Let $g$ be a monotone nondecreasing piecewise linear function from $[0,\beta]$ to $[0,\alpha]$, where $\alpha,\beta \in (0,1)$.
+
+Show that
+
+$$\lambda\lbrace x \in [0,\beta) : g^{(l)}(x) > 2^k\rbrace < 2^{-k}$$
+
+for every natural number $k$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (2))</span></p>
+
+Let $(a_n)\_{n \in \mathbb{N}}$ and $(b_n)\_{n \in \mathbb{N}}$, where $a_0 = b_0 = 0$, be two left-c.e. approximations of $\alpha \in (0,1)$ and $\beta \in (0,1)$, respectively.
+
+Show that the family of c.e. open sets
+
+$$L = (L_1, L_2, \dots)$$
+
+defined by
+
+$$x \in L_i \iff \exists m,n \left( b_n < x \text{ and } \frac{a_m - a_n}{x - b_n} > 2^k \right)$$
+
+is a Martin-Löf test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (3))</span></p>
+
+Let $\alpha$ be a left-c.e. real and $\beta$ be Martin-Löf random left-c.e. real. Show that
+
+$$\alpha \leq_S \beta.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(rK-reducibility (1))</span></p>
+
+A real $\alpha$ is called **rK-reducible** to a real $\beta$, written
+
+$$\alpha \leq_{rK} \beta,$$
+
+if there are a constant $k$ and a computable function
+
+$$f : \subseteq \lbrace 0,1\rbrace^\ast \times \mathbb{N} \to \lbrace 0,1\rbrace^\ast$$
+
+such that
+
+$$(\forall n \in \mathbb{N})(\exists j \leq k) \big(f(\beta \upharpoonright n, j) \downarrow = \alpha \upharpoonright n\big).$$
+
+Show that 
+
+$$\alpha \leq_S \beta \implies \alpha \leq_{rK} \beta.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(rK-reducibility (2))</span></p>
+
+Show that $\alpha \leq_{rK} \beta$ implies both $\alpha \leq_K \beta$ and $\alpha \leq_T \beta$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Totality and translation of Schnorr tests)</span></p>
+
+Recall that a Schnorr test
+
+$$L = (L_1, L_2, \dots)$$
+
+is a Martin-Löf test that satisfies
+
+$$\lambda(L_i) = 2^{-i}$$
+
+for every $i$
+
+A real $\alpha$ is called **Schnorr nonrandom** if there exists a Schnorr test
+
+$$L = (L_1, L_2, \dots)$$
+
+such that
+
+$$\alpha \in L_i$$
+
+for all $i$, and **Schnorr random** otherwise.
+
+Show that, if $\alpha$ is a Schnorr random real that satisfies
+
+$$\alpha \leq_S \beta$$
+
+via a total function $f$, then $\beta$ is Schnorr random as well.
+
+*Hint: by contradiction. Use the totality of $f$ to transform a Schnorr test that fails on $\beta$ into a Schnorr test that fails on $\alpha$.*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (1))</span></p>
+
+Recall that, for a real $r \in (0,1)$, the watered-down halting probability $\Omega^r$ is defined by
+
+$$\Omega^r := \sum_{\sigma \in \operatorname{dom}\widetilde U} 2^{-\ell(\sigma)/r}.$$
+
+For two reals
+
+$$\alpha = 0.a_0a_1\dots$$
+
+and
+
+$$\beta = 0.b_0b_1\dots,$$
+
+we define their join $\alpha \oplus \beta$ by
+
+$$\alpha \oplus \beta := 0.a_0b_0a_1b_1\dots$$
+
+Show that $\Omega \oplus 0$ is a left-c.e. real.  
+Here, the real $0$ is supposed to be binary represented as
+
+$$0.000\dots$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (2))</span></p>
+
+Show that
+
+$$\frac{K((\Omega \oplus 0) \upharpoonright n)}{n} \xrightarrow[n \to \infty]{} \frac{1}{2}$$
+
+and
+
+$$\frac{K(\Omega^{0.5} \upharpoonright n)}{n} \xrightarrow[n \to \infty]{} \frac{1}{2}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (3))</span></p>
+
+Show that
+
+$$\Omega^{0.5} \leq_S \Omega \oplus 0.$$
+
+*Hint: use the characterization (iii) of $\leq_S$ on left-c.e. reals from Sheet 5, Exercise 3.*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(A universal Solovay test)</span></p>
+
+Recall that a **Solovay test**
+
+$$S = (I_0, I_1, \dots)$$
+
+is a computable sequence of intervals with rational endpoints such that
+
+$$\sum_{i \in \mathbb{N}} \lambda(I_i) < \infty.$$
+
+A sequence $A$ fails the Solovay test $S$ if the real $0.A$ is contained in infinitely many $I_i$.
+
+Show that there exists a Solovay test $S$ such that all Martin-Löf nonrandom sequences fail $S$.
+
+*Hint: transform a universal Martin-Löf test into a Solovay test.*
+
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(No universal Schnorr test: a formal proof (1))</span></p>
+
+Recall that a **Schnorr test**
+
+$$L = (L_1, L_2, \dots)$$
+
+is a Martin-Löf test that satisfies
+
+$$\lambda(L_i) = 2^{-i}$$
+
+for every $i$.
+
+An infinite binary sequence $\alpha$ is called **Schnorr nonrandom** if there exists a Schnorr test
+
+$$L = (L_1, L_2, \dots)$$
+
+such that $\alpha$ fails $L$, i.e.
+
+$$\alpha \in L_i$$
+
+for all $i$, and **Schnorr random** otherwise.
+
+A Schnorr test $L$ is called **universal** if every Schnorr nonrandom sequence $A$ fails $L$.
+
+Show that, if $U$ is a c.e. open set on $\lbrace 0,1\rbrace^{\mathbb{N}}$ such that $A \in U$, then there exists $n$ such that
+
+$$A \upharpoonright n \subseteq U.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(No universal Schnorr test: a formal proof (2))</span></p>
+
+Let $U$ be a c.e. open set such that
+
+$$\lambda(U) = c,$$
+
+where $c$ is a computable real.
+
+Show that there exists a Turing machine $M$ such that, for every $\varepsilon > 0$, computes a bit $b \in \lbrace 0,1\rbrace$ such that
+
+$$\lambda(U \cap \llbracket b \rrbracket) \leq (1+\varepsilon)\frac{c}{2}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(No universal Schnorr test: a formal proof (3))</span></p>
+
+Let $U$ be a c.e. open set such that
+
+$$\lambda(U) = \frac{1}{2}.$$
+
+Compute an infinite sequence $A$ such that
+
+$$\lambda(A \upharpoonright n) \leq (1+3^{-2^0})(1+3^{-2^1}) \dots (1+3^{-2^n}) \cdot \frac{1}{2}$$
+
+for all $n$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(No universal Schnorr test: a formal proof (4))</span></p>
+
+Let
+
+$$L = (L_1, L_2, \dots)$$
+
+be a Schnorr test. Show that there exists a computable infinite sequence that fails $L$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(No universal Schnorr test: a formal proof (5))</span></p>
+
+Show that there exists no universal Schnorr test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (1))</span></p>
+
+For two c.a. reals $\alpha$ and $\beta$, we say that $\alpha$ is **$S2a$-reducible** to a real $\beta$, written
+
+$$\alpha \leq^{2a}_S \beta,$$
+
+if there exist a constant $c$ and two computable approximations
+
+$$(a_n)_{n \in \mathbb{N}} \qquad\text{and}\qquad (b_n)_{n \in \mathbb{N}}$$
+
+such that
+
+$$|\alpha - a_n| < c\left(|\beta - b_n| + 2^{-n}\right)$$
+
+for all $n$.
+
+Show that $\leq^{2a}\_S$ is transitive.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (2))</span></p>
+
+Show that, on the set of left-c.e. reals, $\leq^{2a}\_S$ is equivalent to $\leq_S$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (3))</span></p>
+
+Show that $\leq^{2a}\_S$ implies $\leq_K$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(D.c.e. reals (1))</span></p>
+
+A real $\gamma$ is called **d.c.e.** — the letter “d” is for “difference”, the rest is a secret... — if there exist two left-c.e. reals $\alpha$ and $\beta$ such that
+
+$$\gamma = \alpha - \beta.$$
+
+Recall that a real $\alpha$ is **right-c.e.** if $-\alpha$ is left-c.e.
+
+Show that a real $\gamma$ is d.c.e. iff there exists a computable approximation
+
+$$(q_n)_{n \in \mathbb{N}}$$
+
+of $\gamma$ such that
+
+$$\sum_{i \in \mathbb{N}} |q_{i+1} - q_i| < \infty.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(D.c.e. reals (2))</span></p>
+
+
+Show that, if a d.c.e. real $\gamma$ is neither left-c.e. not right-c.e., then it is Martin-Löf nonrandom.
+
+*Hint: construct a Solovay test that $\gamma$ fails.*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(D.c.e. reals (3))</span></p>
+
+Show that the set of d.c.e. reals is closed downwards relative to $\leq^{2a}\_S$ in the set of computably approximable reals.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
