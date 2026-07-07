@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-07
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, randomized minimum cuts, and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths, and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -1523,5 +1523,428 @@ Represent the multigraph by its **adjacency matrix** $A\_{ij} = $ number of para
 2. contracting $e = uv$ takes $O(n)$: add row and column $v$ to row and column $u$, zero out $v$, set $A\_{uu} := 0$ (loop removal), and update the degrees.
 
 One step costs $O(n)$, so $\mathrm{Contract}(G\_0, \ell)$ runs in $O((n - \ell) \cdot n) \subseteq O(n^2)$.
+
+</div>
+
+# Lecture 4: Karger–Stein and Shortest Paths
+
+Last time we saw that $\mathrm{Contract}(G, 2)$ returns a fixed minimum cut with probability at least $2/(n(n-1))$, in time $O(n^2)$. Now we turn this into an algorithm that is actually *good* — the Karger–Stein algorithm — and then open a new chapter: shortest paths.
+
+## The Karger–Stein Algorithm
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Silly Attempt)</span></p>
+
+Run $\mathrm{Contract}(G, 2)$ independently $k$ times and return the smallest cut found. Each run succeeds with probability at least $2/(n(n-1)) \ge c/n^2$, so using $1 - x \le e^{-x}$:
+
+$$
+\Pr[\,\text{minimum is missed}\,] \;\le\; \Bigl(1 - \frac{c}{n^2}\Bigr)^k \;\le\; e^{-ck/n^2}.
+$$
+
+With $k \approx n^2$ the failure probability drops to a constant; with $k \approx n^2 \log n$ it is $e^{-c' \log n} = 1/\mathrm{poly}(n)$ — success *with high probability* — but the running time is $O(n^2 \cdot n^2 \log n) = O(n^4 \log n)$. Too slow.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Early Contractions Are Safe, Late Ones Are Risky)</span></p>
+
+Look at the per-step survival probabilities of a minimum cut $C$: the **first** contraction preserves $C$ with probability at least $\frac{n-2}{n} = 1 - \frac{2}{n}$, while the **final** step (from $3$ vertices down to $2$) only guarantees $\frac{\ell - 1}{\ell + 1} = \frac{1}{3}$. Almost all the risk sits at the end — so contract only *partially* and put the repetition there. Stopping at
+
+$$
+\ell \;=\; \Bigl\lceil \frac{n}{\sqrt{2}} + 1 \Bigr\rceil
+\qquad\text{gives}\qquad
+\Pr[\,C \text{ survives}\,] \;\ge\; \frac{\ell(\ell-1)}{n(n-1)}
+\;\ge\; \frac{\bigl(\tfrac{n}{\sqrt 2}+1\bigr)\tfrac{n}{\sqrt 2}}{n(n-1)}
+\;=\; \frac{n + \sqrt{2}}{2(n-1)} \;\ge\; \frac{n}{2n} \;=\; \frac12 .
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Karger–Stein)</span></p>
+
+$\mathrm{MinCut}(G)$:
+
+1. If $n \le 7$: use brute force.
+2. $\ell \leftarrow \lceil n/\sqrt{2} + 1 \rceil$.
+3. $C\_1 \leftarrow \mathrm{MinCut}(\mathrm{Contract}(G, \ell))$.
+4. $C\_2 \leftarrow \mathrm{MinCut}(\mathrm{Contract}(G, \ell))$.
+5. Return the smaller of $C\_1, C\_2$.
+
+Each level halves the *risk* by trying twice, while the subproblem size shrinks by a factor $\sqrt{2}$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Karger–Stein — Running Time)</span></p>
+
+$\mathrm{MinCut}(G)$ runs in time $O(n^2 \log n)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The recursion satisfies $T(n) = 2\,T\bigl(n/\sqrt{2} + O(1)\bigr) + O(n^2)$, the $O(n^2)$ being the two Contract calls. At depth $i$ of the recursion tree there are $2^i$ subproblems of size $n/(\sqrt{2})^i$, each costing $O\bigl(n^2/2^i\bigr)$ — so every level of the tree costs $O(n^2)$ in total. The size drops below the brute-force threshold after $\log\_{\sqrt 2} n = 2\log\_2 n = O(\log n)$ levels, hence $T(n) = O(n^2 \log n)$.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 270" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf18-title">
+  <title id="gaf18-title">The Karger–Stein recursion tree</title>
+  <defs>
+    <marker id="gaf18-arrp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7b1fa2"/>
+    </marker>
+  </defs>
+  <line x1="310" y1="45" x2="90" y2="210" stroke="#0f9b6c" stroke-width="2"/>
+  <line x1="310" y1="45" x2="530" y2="210" stroke="#0f9b6c" stroke-width="2"/>
+  <line x1="90" y1="210" x2="530" y2="210" stroke="#0f9b6c" stroke-width="2"/>
+  <line x1="240" y1="98" x2="380" y2="98" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="175" y1="146" x2="445" y2="146" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="310" cy="45" r="4" fill="#0f9b6c"/>
+  <text x="310" y="30" text-anchor="middle" font-family="serif" font-size="12" fill="#333">G — n vertices</text>
+  <text x="392" y="102" text-anchor="start" font-family="serif" font-size="11" fill="#333">depth i: 2<tspan dy="-4" font-size="8">i</tspan><tspan dy="4"> problems of size n/(√2)</tspan><tspan dy="-4" font-size="8">i</tspan></text>
+  <text x="457" y="150" text-anchor="start" font-family="serif" font-size="11" fill="#a86f00">O(n²) per level</text>
+  <line x1="60" y1="50" x2="60" y2="205" stroke="#7b1fa2" stroke-width="1.6" marker-start="url(#gaf18-arrp)" marker-end="url(#gaf18-arrp)"/>
+  <text x="50" y="122" text-anchor="end" font-family="serif" font-size="11" fill="#7b1fa2">O(log n)</text>
+  <text x="50" y="136" text-anchor="end" font-family="serif" font-size="11" fill="#7b1fa2">levels</text>
+  <text x="310" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">n ≤ 7 → brute force</text>
+  <text x="310" y="258" text-anchor="middle" font-family="serif" font-size="12" fill="#0f9b6c">total time: O(n² log n)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The recursion tree of Karger–Stein: branching doubles the number of subproblems while the size shrinks by $\sqrt{2}$, so every level costs $O(n^2)$ and there are $O(\log n)$ of them.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Success Probability)</span></p>
+
+$\mathrm{MinCut}(G)$ finds a minimum cut with probability $\Omega(1 / \log n)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $P\_i := \Pr[\text{the minimum cut is found at recursion height } i\,]$; at the brute-force leaves $P\_0 = 1$. One branch succeeds if the fixed minimum cut survives its Contract call (probability $\ge \frac12$) *and* the recursive call finds it; the two branches are independent, so
+
+$$
+P_i \;\ge\; 1 - \Bigl(1 - \tfrac12 P_{i-1}\Bigr)^{2}.
+$$
+
+Study the recurrence $g\_0 = 1$, $g\_i = 1 - \bigl(1 - \tfrac12 g\_{i-1}\bigr)^2 = g\_{i-1} - g\_{i-1}^2/4$; by induction $P\_i \ge g\_i$. Substitute $z\_i := 4/g\_i - 1$, i.e. $g\_i = 4/(z\_i + 1)$, with $z\_0 = 3$:
+
+$$
+\frac{1}{z_i + 1} = \frac{1}{z_{i-1}+1} - \frac{1}{(z_{i-1}+1)^2}
+= \frac{z_{i-1}}{(z_{i-1}+1)^2}
+\quad\Longrightarrow\quad
+z_i = z_{i-1} + 1 + \frac{1}{z_{i-1}} .
+$$
+
+Since always $z\_i \ge 1$, each step adds between $1$ and $2$, so $z\_i \le 3 + 2i$ and
+
+$$
+g_i \;=\; \frac{4}{z_i + 1} \;\ge\; \frac{4}{4 + 2i}.
+$$
+
+The recursion has depth $D = O(\log n)$, hence the overall success probability is at least $g\_D = \Omega(1/\log n)$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Iterating Karger–Stein)</span></p>
+
+Run $\mathrm{MinCut}$ independently $k$ times and keep the best cut: this takes time $O(n^2 \log n \cdot k)$ and fails with probability
+
+$$
+\Pr[\,\text{fail}\,] \;\le\; \Bigl(1 - \frac{c}{\log n}\Bigr)^{k} \;\approx\; e^{-ck/\log n}:
+$$
+
+* $k \sim \log n$: constant failure probability;
+* $k \sim \log^2 n$: failure $1/\mathrm{poly}(n)$ — a minimum cut **with high probability** in time $O(n^2 \log^3 n)$;
+* $k \sim n \log n$: failure $e^{-\Omega(n)}$.
+
+</div>
+
+## Shortest Paths
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lengths and Distances)</span></p>
+
+Let $G$ be a directed graph with **edge lengths** $\ell \colon E \to \mathbb{R}$. The **distance** $d \colon V^2 \to \mathbb{R} \cup \lbrace \pm\infty \rbrace$ is
+
+$$
+d(u, v) := \min \lbrace\, \ell(P) \mid P \text{ is a } uv\text{-path} \,\rbrace,
+$$
+
+and $d(u,v) := +\infty$ if no $uv$-path exists.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Walks vs. Paths)</span></p>
+
+If $G$ has **no negative cycles**, then at least one shortest $uv$-*walk* is a *path*: cutting a repeated vertex's cycle out of a walk removes a subwalk of nonnegative length, so it never makes the walk longer. Hence minimizing over walks or over paths gives the same distances, and we may switch freely.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Negative Cycles Break Everything)</span></p>
+
+In the graph below, walks may traverse the negative cycle arbitrarily often, so the walk-distance from $u$ to $v$ is $-\infty$. Restricting to simple paths does not save the day either: there $d(u,v) = 2$, $d(u,t) = -1$ and $d(t,v) = 1$, so
+
+$$
+d(u,t) + d(t,v) \;=\; 0 \;<\; 2 \;=\; d(u,v)
+$$
+
+— the **triangle inequality fails**. Worse, computing shortest *simple* paths in graphs with negative cycles is **NP-hard** (it contains the Hamiltonian path problem).
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 200" width="100%" style="max-width: 500px; height: auto;" role="img" aria-labelledby="gaf19-title">
+  <title id="gaf19-title">A negative cycle breaks distances</title>
+  <defs>
+    <marker id="gaf19-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf19-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <text x="330" y="20" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">negative cycle: −2 + 0 &lt; 0</text>
+  <line x1="86" y1="130" x2="212" y2="130" stroke="#333" stroke-width="1.8" marker-end="url(#gaf19-arr)"/>
+  <text x="150" y="118" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <line x1="246" y1="130" x2="484" y2="130" stroke="#333" stroke-width="1.8" marker-end="url(#gaf19-arr)"/>
+  <text x="365" y="118" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <line x1="240" y1="115" x2="316" y2="62" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf19-arrr)"/>
+  <text x="262" y="76" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">−2</text>
+  <path d="M 340,60 C 380,88 330,118 248,124" fill="none" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf19-arrr)"/>
+  <text x="356" y="100" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">0</text>
+  <circle cx="70" cy="130" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="70" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="230" cy="130" r="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="230" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">a</text>
+  <circle cx="330" cy="52" r="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="330" y="57" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">t</text>
+  <circle cx="500" cy="130" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">v</text>
+  <text x="280" y="185" text-anchor="middle" font-family="serif" font-size="11" fill="#666">simple paths: d(u,v) = 2,  d(u,t) = −1,  d(t,v) = 1;  walks: d(u,v) = −∞</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The only simple $uv$-path is $u, a, v$ of length $2$, yet $d(u,t) + d(t,v) = -1 + 1 = 0$ — any $uv$-path through $t$ would have to visit $a$ twice. Walks may loop through the negative cycle $a \to t \to a$, driving the walk-distance to $-\infty$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Triangle Inequality)</span></p>
+
+If $G$ has no negative cycles, then for all $u, t, v$:
+
+$$
+d(u, v) \;\le\; d(u, t) + d(t, v),
+$$
+
+since concatenating a shortest $ut$-walk with a shortest $tv$-walk gives *some* $uv$-walk.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Prefix Property)</span></p>
+
+A prefix of a shortest path is again a shortest path: if a $uv$-path $P$ passes through $t$ and its $ut$-prefix could be shortened, the whole of $P$ could be shortened too (no negative cycles needed here beyond replacing the prefix by a shorter *walk* and simplifying under the no-negative-cycles assumption).
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Kinds of Shortest-Path Problems)</span></p>
+
+* **P2PSP** (point-to-point): given $u, v$, find $d(u,v)$ and a shortest path.
+* **SSSP** (single source): given $u$, find $d(u, v)$ for all $v$ — the answer fits into a **shortest-path tree**, $O(n)$ space.
+* **APSP** (all pairs): all $u, v$ — the distance matrix and a collection of shortest-path trees for all sources, $O(n^2)$ space.
+
+No general algorithm solves P2PSP faster than SSSP, so the single-source problem is the central one.
+
+</div>
+
+## Shortest-Path Trees
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shortest-Path Tree)</span></p>
+
+A **shortest-path tree** from $u \in V$ is an oriented tree $T\_u$ rooted at $u$ with edges pointing outwards such that for every vertex $v$ of $T\_u$, the unique path $u \to v$ in $T\_u$ is a shortest $uv$-path in $G$.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Existence)</span></p>
+
+If $G$ has no negative cycles, a shortest-path tree from $u$ exists, spanning all vertices reachable from $u$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Build $T\_u$ iteratively. Start with the single vertex $u$. While some reachable $v$ is not covered, take a shortest $uv$-path $P$ and follow it backwards to the last vertex $x$ already in the tree; graft the $x \to v$ suffix of $P$ onto the tree, *but replace its prefix by the tree path $u \to x$*. By the prefix property the $ux$-prefix of $P$ is a shortest $ux$-path, and the tree path to $x$ has the same length — so every new vertex receives a shortest path. Repeat until all reachable vertices are covered.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 230" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf20-title">
+  <title id="gaf20-title">A shortest-path tree with one root-to-vertex path highlighted</title>
+  <defs>
+    <marker id="gaf20-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+    <marker id="gaf20-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <text x="86" y="34" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">T<tspan dy="4" font-size="9">u</tspan></text>
+  <line x1="74" y1="108" x2="163" y2="66" stroke="#b91c1c" stroke-width="2.4" marker-end="url(#gaf20-arrr)"/>
+  <line x1="74" y1="122" x2="163" y2="166" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf20-arrb)"/>
+  <line x1="188" y1="53" x2="307" y2="40" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf20-arrb)"/>
+  <line x1="189" y1="66" x2="307" y2="92" stroke="#b91c1c" stroke-width="2.4" marker-end="url(#gaf20-arrr)"/>
+  <line x1="190" y1="172" x2="307" y2="172" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf20-arrb)"/>
+  <line x1="333" y1="38" x2="452" y2="30" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf20-arrb)"/>
+  <line x1="334" y1="98" x2="529" y2="112" stroke="#b91c1c" stroke-width="2.4" marker-end="url(#gaf20-arrr)"/>
+  <line x1="333" y1="178" x2="452" y2="188" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf20-arrb)"/>
+  <circle cx="60" cy="115" r="16" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="60" y="120" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="176" cy="60" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="176" cy="172" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="320" cy="38" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="320" cy="96" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="320" cy="172" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="465" cy="29" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="465" cy="189" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="545" cy="113" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="545" y="118" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">v</text>
+  <text x="310" y="222" text-anchor="middle" font-family="serif" font-size="11" fill="#666">the tree path u → v (red) is a shortest uv-path in G</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A shortest-path tree $T_u$: one oriented tree, $O(n)$ space, whose root-to-vertex paths are simultaneously shortest paths for *all* reachable vertices — here the path to $v$ is highlighted.
+</figcaption>
+</figure>
+
+## The Relaxation Scheme
+
+A common skeleton for SSSP algorithms; fix the source $u$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Relaxation)</span></p>
+
+We maintain a **value** $h(v)$ for every vertex — always $+\infty$ or the length of some $uv$-walk — together with a **state**:
+
+* **unseen** — not reached yet, $h(v) = +\infty$;
+* **open** — reached, still needs relaxing;
+* **closed** — reached, no relaxing needed for now.
+
+The operation $\mathrm{relax}(v)$ pushes $v$'s value along all outgoing edges: for each $vw \in E$,
+
+$$
+h(w) \;\leftarrow\; \min\bigl(h(w),\; h(v) + \ell(vw)\bigr).
+$$
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 190" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf21-title">
+  <title id="gaf21-title">Relaxing a vertex pushes its value along outgoing edges</title>
+  <defs>
+    <marker id="gaf21-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf21-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <path d="M 66,100 C 120,55 190,145 268,102" fill="none" stroke="#333" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#gaf21-arr)"/>
+  <text x="165" y="48" text-anchor="middle" font-family="serif" font-size="11" fill="#666">a u–v walk of length h(v)</text>
+  <line x1="298" y1="92" x2="452" y2="42" stroke="#b91c1c" stroke-width="2" marker-end="url(#gaf21-arrr)"/>
+  <line x1="300" y1="100" x2="450" y2="100" stroke="#b91c1c" stroke-width="2" marker-end="url(#gaf21-arrr)"/>
+  <line x1="298" y1="108" x2="452" y2="158" stroke="#b91c1c" stroke-width="2" marker-end="url(#gaf21-arrr)"/>
+  <text x="380" y="76" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">relax(v)</text>
+  <circle cx="50" cy="100" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="50" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="284" cy="100" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="284" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">v</text>
+  <circle cx="466" cy="38" r="12" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="466" cy="100" r="12" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="466" cy="162" r="12" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="520" y="16" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">w — reopened if h(w) drops</text>
+  <text x="290" y="182" text-anchor="middle" font-family="serif" font-size="11" fill="#666">states: unseen → open ⇄ closed</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Relaxing $v$: its value $h(v)$ — the length of some known $uv$-walk — is offered to every successor $w$ as $h(v) + \ell(vw)$. Any $w$ whose value drops is (re)opened and will be relaxed again.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Relaxation Scheme for SSSP)</span></p>
+
+1. $h(\ast) \leftarrow +\infty$, $h(u) \leftarrow 0$.
+2. $\mathrm{state}(\ast) \leftarrow$ unseen, $\mathrm{state}(u) \leftarrow$ open.
+3. **While** there is a vertex $v$ with $\mathrm{state}(v) =$ open:
+4. &nbsp;&nbsp;&nbsp;$\mathrm{state}(v) \leftarrow$ closed.
+5. &nbsp;&nbsp;&nbsp;$\mathrm{relax}(v)$.
+6. &nbsp;&nbsp;&nbsp;If $h(w)$ got changed: $\mathrm{state}(w) \leftarrow$ open, $\mathrm{pred}(w) \leftarrow v$.
+
+The scheme leaves open *which* open vertex to pick in step 3 — different choices will give the concrete algorithms.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Properties of the Relaxation Scheme)</span></p>
+
+Write NNC for "$G$ has no negative cycles". Then:
+
+1. $h(v)$ never increases.
+2. A finite $h(v)$ is always the length of some $uv$-walk; under NNC, $h(v) \ge d(u, v)$.
+3. NNC $\Rightarrow$ a finite $h(v)$ is even the length of some $uv$-*path*.
+4. NNC $\Rightarrow$ the algorithm always stops.
+5. After stopping: $\mathrm{state}(v) =$ closed $\iff$ $v$ is reachable from $u$.
+6. After stopping: $v$ is reachable $\iff$ $h(v)$ is finite.
+7. After stopping: $h(v) = d(u, v)$ for all $v$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**1.** $h(w)$ is only ever replaced by a minimum involving its old value.
+
+**2.** Induction over updates: when $h(w)$ is set to $h(v) + \ell(vw)$, a witnessing $uv$-walk for $h(v)$ extends by the edge $vw$. Under NNC every $uv$-walk has length at least $d(u,v)$, so $h(v) \ge d(u,v)$.
+
+**3.** Unwind the $\mathrm{pred}$ pointers through the moments of their updates: $h(w) = h(v) + \ell(vw)$ held at update time, and recursing on $v$'s value *at that moment* spells out a $uw$-walk whose length telescopes to exactly the current $h(w)$. If this walk repeated a vertex $x$, the enclosed cycle would have length equal to the *drop* of $h(x)$ between the two visits — negative, contradicting NNC. So the walk is a path.
+
+**4.** By 3, every $h$-value that ever occurs is the length of one of the finitely many paths from $u$; every update strictly decreases some $h(w)$ within this finite set, so there are finitely many updates, and every loop iteration either closes a vertex forever or follows an update.
+
+**5 & 6.** Values propagate exactly along edges from $u$, so reached $\iff$ reachable $\iff$ finite $h$ at stop; every reached vertex is opened and later closed.
+
+**7.** Suppose after stopping some vertex is **bad**, i.e. $h(v) > d(u, v)$, and among bad vertices choose $v$ whose shortest $uv$-path $P$ has the fewest edges. Let $tv$ be the last edge of $P$. Then $t$ is not bad, so $h(t) = d(u, t)$. When $h(t)$ last dropped to this value, $t$ became open, hence was later closed again — and relaxing it enforced
+
+$$
+h(v) \;\le\; h(t) + \ell(tv) \;=\; d(u,t) + \ell(tv) \;=\; d(u,v)
+$$
+
+(the last equality by the prefix property). So $v$ is not bad — a contradiction.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Predecessors Form a Shortest-Path Tree)</span></p>
+
+After the scheme stops, the recorded pointers $\mathrm{pred}(v)$ span exactly the reachable vertices, and by property 7 together with the prefix property the pred-edges form a shortest-path tree from $u$ — the SSSP answer in $O(n)$ space.
 
 </div>
