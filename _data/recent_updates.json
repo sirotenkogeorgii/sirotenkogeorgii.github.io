@@ -7,6 +7,18 @@
    "added": false
   },
   {
+   "title": "Books",
+   "url": "/notes/books/",
+   "date": "2026-07-07",
+   "added": false
+  },
+  {
+   "title": "Graph Algorithms",
+   "url": "/subpages/books/graph_algorithms/",
+   "date": "2026-07-07",
+   "added": true
+  },
+  {
    "title": "Algorithms for Combinatorial Optimization",
    "url": "/subpages/books/aco/",
    "date": "2026-07-05",
@@ -167,18 +179,6 @@
    "url": "/subpages/computability-and-complexity/universal-turing-machine/",
    "date": "2026-06-16",
    "added": false
-  },
-  {
-   "title": "One idea, many faces: a tour of decompositions in functional analysis",
-   "url": "/subpages/math_topics/operator_decompositions/",
-   "date": "2026-06-15",
-   "added": true
-  },
-  {
-   "title": "The Weak Formulation: How to Solve a PDE by Lowering Your Standards",
-   "url": "/subpages/math_topics/weak_formulation/weak_formulation_rigorous/",
-   "date": "2026-06-15",
-   "added": true
   }
  ]
 }
