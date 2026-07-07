@@ -7,6 +7,9 @@ tags:
   - computability
   - complexity
   - theory
+  - turing-machine
+  - oracle-turing-machine
+  - automata
 ---
 
 <style>
@@ -21,6 +24,10 @@ tags:
 </style>
 
 # Computability and Complexity
+
+**Table of Contents**
+- TOC
+{:toc}
 
 ## Complexity
 
