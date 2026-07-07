@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-07
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, minimum cuts, and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, randomized minimum cuts, and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -161,6 +161,39 @@ $$
 By Kirchhoff's law all terms with $v \neq s, t$ vanish, leaving $f^{\Delta}(s) + f^{\Delta}(t) = 0$.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 230" width="100%" style="max-width: 520px; height: auto;" role="img" aria-labelledby="gaf7-title">
+  <title id="gaf7-title">Each edge cancels in the sum of all excesses</title>
+  <defs>
+    <marker id="gaf7-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf7-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <ellipse cx="280" cy="120" rx="245" ry="95" fill="none" stroke="#888" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <text x="82" y="58" font-family="serif" font-size="14" font-style="italic" fill="#888">V</text>
+  <line x1="141" y1="86" x2="176" y2="126" stroke="#888" stroke-width="1.2" marker-end="url(#gaf7-arrf)"/>
+  <line x1="203" y1="150" x2="288" y2="172" stroke="#888" stroke-width="1.2" marker-end="url(#gaf7-arrf)"/>
+  <line x1="404" y1="106" x2="435" y2="130" stroke="#888" stroke-width="1.2" marker-end="url(#gaf7-arrf)"/>
+  <line x1="205" y1="132" x2="373" y2="99" stroke="#333" stroke-width="2.2" marker-end="url(#gaf7-arr)"/>
+  <text x="289" y="102" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">f(e)</text>
+  <circle cx="132" cy="76" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="300" cy="175" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="445" cy="138" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="190" cy="135" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="190" y="140" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">u</text>
+  <circle cx="390" cy="96" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="390" y="101" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">v</text>
+  <text x="172" y="170" text-anchor="middle" font-family="serif" font-size="13" fill="#b91c1c">−f(e) at u</text>
+  <text x="424" y="70" text-anchor="middle" font-family="serif" font-size="13" fill="#0f9b6c">+f(e) at v</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Why $\sum_{v \in V} f^{\Delta}(v) = 0$: each edge $e = uv$ appears exactly twice in the sum — as $+f(e)$ in the excess of its head $v$ and as $-f(e)$ in the excess of its tail $u$ — so everything cancels.
+</figcaption>
+</figure>
 
 ## Cuts
 
@@ -470,6 +503,47 @@ Every pair $uv$ with $u \in A$, $v \in \overline{A}$ must have $r(uv) = 0$ — o
 * $f(uv) = c(uv)$ for every edge $uv \in E(A, \overline{A})$ — all cut edges are saturated, and
 * $f(vu) = 0$ for every edge $vu \in E(\overline{A}, A)$ — nothing flows back.
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 270" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf8-title">
+  <title id="gaf8-title">The certifying cut when Ford–Fulkerson stops</title>
+  <defs>
+    <marker id="gaf8-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+    <marker id="gaf8-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+    <marker id="gaf8-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <text x="280" y="22" text-anchor="middle" font-family="serif" font-size="11" fill="#333">when the algorithm stops: r(uv) = 0 for every u ∈ A, v ∉ A</text>
+  <ellipse cx="150" cy="145" rx="110" ry="90" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <ellipse cx="410" cy="145" rx="110" ry="90" fill="#fce4ec" stroke="#c2185b" stroke-width="1.8"/>
+  <text x="115" y="75" text-anchor="middle" font-family="serif" font-size="15" font-style="italic" fill="#1565c0">A</text>
+  <text x="447" y="75" text-anchor="middle" font-family="serif" font-size="15" font-style="italic" fill="#c2185b">A</text>
+  <line x1="441" y1="61" x2="454" y2="61" stroke="#c2185b" stroke-width="1.4"/>
+  <line x1="88" y1="138" x2="146" y2="102" stroke="#0f9b6c" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#gaf8-arrg)"/>
+  <line x1="88" y1="152" x2="161" y2="181" stroke="#0f9b6c" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#gaf8-arrg)"/>
+  <circle cx="75" cy="145" r="13" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="75" y="150" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="158" cy="95" r="9" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="173" cy="186" r="9" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="460" cy="145" r="13" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="460" y="150" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+  <line x1="248" y1="110" x2="315" y2="110" stroke="#b91c1c" stroke-width="2" marker-end="url(#gaf8-arrr)"/>
+  <line x1="253" y1="150" x2="309" y2="150" stroke="#b91c1c" stroke-width="2" marker-end="url(#gaf8-arrr)"/>
+  <text x="283" y="98" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">f = c</text>
+  <text x="283" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">f = c</text>
+  <line x1="352" y1="222" x2="212" y2="222" stroke="#888" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#gaf8-arrf)"/>
+  <text x="283" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#888">f = 0</text>
+  <text x="150" y="258" text-anchor="middle" font-family="serif" font-size="10" fill="#666">reachable by augmenting paths</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The certifying cut at termination: $A$ collects $s$ and everything reachable by augmenting paths (dashed green). Every edge leaving $A$ is saturated ($f = c$), every edge entering $A$ is empty ($f = 0$) — otherwise $A$ would grow — so $f^{\Delta}(A, \overline{A}) = c(A, \overline{A})$.
+</figcaption>
+</figure>
+
 Therefore, using the lemma on flow across a cut,
 
 $$
@@ -575,4 +649,879 @@ Integer flows in this network correspond exactly to matchings: with unit capacit
 
 </div>
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 210" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf9-title">
+  <title id="gaf9-title">Unit capacities force at most one unit through each vertex</title>
+  <defs>
+    <marker id="gaf9-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf9-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <g>
+    <line x1="61" y1="100" x2="145" y2="100" stroke="#333" stroke-width="2" marker-end="url(#gaf9-arr)"/>
+    <text x="103" y="88" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#a86f00">c = 1</text>
+    <line x1="178" y1="93" x2="272" y2="52" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <line x1="181" y1="100" x2="269" y2="100" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <line x1="178" y1="107" x2="272" y2="148" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <circle cx="45" cy="100" r="14" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+    <text x="45" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+    <circle cx="165" cy="100" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+    <text x="165" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">ℓ</text>
+    <circle cx="283" cy="48" r="8" fill="#fce4ec" stroke="#c2185b" stroke-width="1.4"/>
+    <circle cx="283" cy="100" r="8" fill="#fce4ec" stroke="#c2185b" stroke-width="1.4"/>
+    <circle cx="283" cy="152" r="8" fill="#fce4ec" stroke="#c2185b" stroke-width="1.4"/>
+    <text x="165" y="190" text-anchor="middle" font-family="serif" font-size="11" fill="#666">at most 1 unit can enter ℓ</text>
+  </g>
+  <g>
+    <line x1="366" y1="52" x2="460" y2="93" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <line x1="369" y1="100" x2="457" y2="100" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <line x1="366" y1="148" x2="460" y2="107" stroke="#888" stroke-width="1.4" marker-end="url(#gaf9-arrf)"/>
+    <line x1="491" y1="100" x2="575" y2="100" stroke="#333" stroke-width="2" marker-end="url(#gaf9-arr)"/>
+    <text x="533" y="88" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#a86f00">c = 1</text>
+    <circle cx="355" cy="48" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+    <circle cx="355" cy="100" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+    <circle cx="355" cy="152" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.4"/>
+    <circle cx="475" cy="100" r="14" fill="#fce4ec" stroke="#c2185b" stroke-width="1.6"/>
+    <text x="475" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#c2185b">r</text>
+    <circle cx="591" cy="100" r="14" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+    <text x="591" y="105" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+    <text x="475" y="190" text-anchor="middle" font-family="serif" font-size="11" fill="#666">at most 1 unit can leave r</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Why unit capacities encode matchings: the single edge $s\ell$ of capacity $1$ lets at most one unit pass through each $\ell \in L$, and the single edge $rt$ lets at most one unit pass through each $r \in R$ — so no vertex can be matched twice.
+</figcaption>
+</figure>
+
 Since all capacities are $0/1$, Ford–Fulkerson finds this flow in time $O(nm)$. Next week we will see how to do it in time $O(\sqrt{n} \cdot m)$.
+
+# Lecture 2: Dinitz's Algorithm
+
+Edmonds–Karp improves Ford–Fulkerson by always augmenting along a *shortest* augmenting path. Dinitz's algorithm pushes the idea further: instead of finding shortest paths one at a time, each round computes **all** shortest augmenting paths at once — a *blocking flow* in a *layered* version of the residual network — and the shortest-path distance from $s$ to $t$ then provably grows from round to round. This yields the $O(n^2 m)$ bound promised last time.
+
+## Net Flows and the Residual Network
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">(Symmetric Networks)</span></p>
+
+From now on we assume WLOG that the edges of the network come in opposite pairs: whenever $uv \in E$, also $vu \in E$ (add the missing opposite edges with capacity $0$). This costs nothing and lets us treat quantities like the residual capacity as functions on ordered pairs of adjacent vertices.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Net Flow)</span></p>
+
+For a flow $f$ the **net flow** of the pair $uv$ is
+
+$$
+f^{*}(uv) := f(uv) - f(vu).
+$$
+
+It satisfies:
+
+1. **antisymmetry**: $f^\ast(uv) = -f^\ast(vu)$,
+2. **capacity bounds**: $-c(vu) \le f^\ast(uv) \le c(uv)$,
+3. **Kirchhoff's law in net form**: the excess can be computed as
+   $$
+   f^{\Delta}(v) = \sum_{uv \in E} f^{*}(uv),
+   $$
+   so $f^{\Delta}(v) = 0$ for all $v \neq s, t$, and $\lvert f\rvert = f^{\Delta}(t)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 180" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf10-title">
+  <title id="gaf10-title">Net flow of an opposite pair of edges</title>
+  <defs>
+    <marker id="gaf10-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <path d="M 186,79 C 240,52 320,52 374,79" fill="none" stroke="#333" stroke-width="1.8" marker-end="url(#gaf10-arr)"/>
+  <path d="M 374,101 C 320,128 240,128 186,101" fill="none" stroke="#333" stroke-width="1.8" marker-end="url(#gaf10-arr)"/>
+  <text x="280" y="42" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">f(uv) = 3,  c(uv) = 4</text>
+  <text x="280" y="152" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">f(vu) = 1,  c(vu) = 2</text>
+  <text x="280" y="95" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">f*(uv) = 3 − 1 = 2</text>
+  <circle cx="170" cy="90" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="170" y="95" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#1565c0">u</text>
+  <circle cx="390" cy="90" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="390" y="95" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#1565c0">v</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+An opposite pair with its net flow: $f^\ast(uv) = f(uv) - f(vu) = 2 = -f^\ast(vu)$. The residual capacities become $r(uv) = c(uv) - f^\ast(uv) = 2$ and $r(vu) = c(vu) + f^\ast(uv) = 4$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Flows $\leftrightarrow$ Net Flows)</span></p>
+
+Conversely, every function satisfying 1–3 is the net flow of some flow: given such an $f^\ast$, consider each opposite pair and WLOG $f^\ast(uv) > 0$; setting $f(uv) := f^\ast(uv)$ and $f(vu) := 0$ yields a flow with the prescribed net flow. So flows and net flows are two views of the same object, and we may switch freely between them.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Residual Network)</span></p>
+
+The **residual network** of the network $G$ with a flow $f$ is
+
+$$
+R := (V, E, s, t, r),
+$$
+
+i.e. the same graph with the capacities replaced by the residual capacities of Lecture 1, which in terms of the net flow read
+
+$$
+r(uv) = c(uv) - f(uv) + f(vu) = c(uv) - f^{*}(uv).
+$$
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Improving a Flow Using a Flow)</span></p>
+
+Let $f$ be a flow in $G$ and let $g$ be a flow in the residual network $R$. Then there is a flow $f'$ in $G$ with
+
+$$
+|f'| = |f| + |g|.
+$$
+
+Conversely, for any two flows $f, h$ in $G$ there is a flow $g$ in $R$ with $\lvert g\rvert = \lvert h\rvert - \lvert f\rvert$ — in particular, taking $h$ maximum: the residual network always carries a flow of size $\lvert f\_{\max}\rvert - \lvert f\rvert$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Work with net flows and set $F := f^\ast + g^\ast$; we check that $F$ satisfies properties 1–3.
+
+Antisymmetry is preserved under addition. For the capacity bound, $g$ respects the residual capacities, so
+
+$$
+F(uv) = f^{*}(uv) + g^{*}(uv) \le f^{*}(uv) + g(uv) \le f^{*}(uv) + r(uv) = c(uv),
+$$
+
+and the lower bound $F(uv) \ge -c(vu)$ follows by applying the same estimate to $vu$ and using antisymmetry. Finally, excesses simply add,
+
+$$
+F^{\Delta}(v) = f^{\Delta}(v) + g^{\Delta}(v),
+$$
+
+which vanishes for $v \neq s, t$ and gives $F^{\Delta}(t) = \lvert f\rvert + \lvert g\rvert$. By the observation above, $F$ is the net flow of a flow $f'$ in $G$ with $\lvert f'\rvert = \lvert f\rvert + \lvert g\rvert$.
+
+For the converse, set $F := h^\ast - f^\ast$. It is antisymmetric, its excess vanishes off $s, t$ with $F^{\Delta}(t) = \lvert h\rvert - \lvert f\rvert$, and
+
+$$
+F(uv) = h^{*}(uv) - f^{*}(uv) \le c(uv) - f^{*}(uv) = r(uv),
+$$
+
+so $F$ is (the net flow of) a flow in $R$ of size $\lvert h\rvert - \lvert f\rvert$.
+
+</details>
+</div>
+
+## Blocking Flows and the Layered Network
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Blocking Flow)</span></p>
+
+A flow $g$ in a network is **blocking** if every $st$-path contains at least one **saturated** edge, i.e. an edge with $g(e) = c(e)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Blocking $\neq$ Maximum)</span></p>
+
+Every maximum flow is blocking, but not conversely: the flow at which the naive algorithm of Lecture 1 got stuck is exactly a blocking flow that is not maximum. A blocking flow only rules out augmenting along *forward* edges — this is precisely what the naive greedy rule produces, and it is all Dinitz's algorithm will need from one round.
+
+</div>
+
+**Layering.** Let $R$ be the residual network, with the zero-residual edges already discarded. Run BFS from $s$: this partitions the reachable vertices into **layers** $L\_0 = \lbrace s \rbrace, L\_1, L\_2, \dots$ by their distance from $s$, and computes $\ell := $ the distance from $s$ to $t$. Now delete everything that cannot lie on a shortest $st$-path: layers behind $t$, edges that do not advance exactly one layer, and then repeatedly **dead ends** — vertices other than $t$ with no outgoing edge (and vertices other than $s$ with no incoming edge), together with their remaining edges. What survives is the **layered network**: every remaining vertex and edge lies on a shortest $st$-path. The BFS and the cleanup both cost $O(m)$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 265" width="100%" style="max-width: 620px; height: auto;" role="img" aria-labelledby="gaf11-title">
+  <title id="gaf11-title">The layered network with a dead end removed by the cleanup</title>
+  <defs>
+    <marker id="gaf11-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf11-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <ellipse cx="180" cy="130" rx="32" ry="78" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="300" cy="130" rx="32" ry="78" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="420" cy="130" rx="32" ry="78" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="69" y1="124" x2="171" y2="84" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="71" y1="130" x2="171" y2="130" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="69" y1="136" x2="171" y2="176" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="188" y1="77" x2="291" y2="58" stroke="#888" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#gaf11-arrf)"/>
+  <line x1="187" y1="84" x2="292" y2="112" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="187" y1="133" x2="292" y2="172" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="187" y1="180" x2="292" y2="177" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="307" y1="113" x2="412" y2="92" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="307" y1="117" x2="412" y2="148" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="307" y1="173" x2="412" y2="152" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="427" y1="92" x2="542" y2="124" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <line x1="427" y1="148" x2="542" y2="136" stroke="#333" stroke-width="1.5" marker-end="url(#gaf11-arr)"/>
+  <circle cx="180" cy="80" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="180" cy="130" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="180" cy="180" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="300" cy="55" r="7" fill="#fff" stroke="#b91c1c" stroke-width="1.4"/>
+  <line x1="291" y1="46" x2="309" y2="64" stroke="#b91c1c" stroke-width="2"/>
+  <line x1="291" y1="64" x2="309" y2="46" stroke="#b91c1c" stroke-width="2"/>
+  <circle cx="300" cy="115" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="300" cy="175" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="420" cy="90" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="420" cy="150" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="55" cy="130" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="55" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="557" cy="130" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="557" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+  <text x="300" y="26" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">dead end — removed by the cleanup</text>
+  <text x="55" y="168" text-anchor="middle" font-family="serif" font-size="12" fill="#666">L₀</text>
+  <text x="180" y="232" text-anchor="middle" font-family="serif" font-size="12" fill="#666">L₁</text>
+  <text x="300" y="232" text-anchor="middle" font-family="serif" font-size="12" fill="#666">L₂</text>
+  <text x="420" y="232" text-anchor="middle" font-family="serif" font-size="12" fill="#666">L₃</text>
+  <text x="557" y="168" text-anchor="middle" font-family="serif" font-size="12" fill="#666">L₄</text>
+  <text x="320" y="258" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every edge advances exactly one layer; ℓ = 4</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The layered network: BFS layers $L_0, \dots, L_\ell$ of the residual network, keeping only edges that advance one layer. The crossed-out vertex has no outgoing edge — a dead end; the cleanup deletes it together with its incoming (dashed) edge, and repeats until every vertex and edge lies on a shortest $st$-path.
+</figcaption>
+</figure>
+
+
+## Dinitz's Algorithm
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Dinitz)</span></p>
+
+0. $f \leftarrow$ everywhere-zero flow.
+1. **Repeat:**
+2. &nbsp;&nbsp;&nbsp;Construct the residual network $R$. — $O(m)$
+3. &nbsp;&nbsp;&nbsp;Delete all edges $e \in R$ with $r(e) = 0$. — $O(m)$
+4. &nbsp;&nbsp;&nbsp;$\ell \leftarrow$ distance from $s$ to $t$ in $R$. — $O(m)$
+5. &nbsp;&nbsp;&nbsp;If $\ell = +\infty$, stop. — $O(1)$
+6. &nbsp;&nbsp;&nbsp;Clean $R$ up into the layered network. — $O(m)$
+7. &nbsp;&nbsp;&nbsp;$g \leftarrow$ a blocking flow in the layered network. — $O(nm)$
+8. &nbsp;&nbsp;&nbsp;Improve $f$ using $g$ (via the improving lemma). — $O(m)$
+
+One iteration of the loop is called a **phase**; a phase costs $O(nm)$, dominated by the blocking-flow computation.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Greedy Blocking Flow)</span></p>
+
+In the layered network (capacities $r$):
+
+1. $g \leftarrow$ everywhere-zero.
+2. **While** there is an $st$-path $P$ (walk forward from $s$, in $O(n)$):
+3. &nbsp;&nbsp;&nbsp;$\varepsilon \leftarrow \min\_{e \in P} \bigl(r(e) - g(e)\bigr)$.
+4. &nbsp;&nbsp;&nbsp;For all $e \in P$: $g(e) \mathrel{+}= \varepsilon$.
+5. &nbsp;&nbsp;&nbsp;For all $e \in P$: if $g(e) = r(e)$, delete $e$; clean up any dead ends this creates.
+6. All the cleanup together costs $O(m)$.
+
+Each pass of the while loop saturates (and deletes) at least one edge — the minimizer — and edges never return, so there are at most $m$ passes of $O(n)$ each: the blocking flow is computed in time $O(nm)$. The forward walk can hit a dead end only when a deletion just created one; removing such edges is charged to the global $O(m)$ cleanup budget.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Progress)</span></p>
+
+Between two consecutive phases, $\ell$ increases by at least $1$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Fix the BFS levels from the start of the phase: $\mathrm{level}(v) :=$ distance from $s$ to $v$ in $R$. Every edge $uv$ of $R$ satisfies $\mathrm{level}(v) \le \mathrm{level}(u) + 1$ — BFS cannot skip a layer. The phase changes the residual network in two ways: it removes the edges saturated by the blocking flow, and it creates reversals of edges that carried flow — and every created edge goes exactly one layer *back*.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 225" width="100%" style="max-width: 620px; height: auto;" role="img" aria-labelledby="gaf12-title">
+  <title id="gaf12-title">Phase i+1 seen in the layers of phase i</title>
+  <defs>
+    <marker id="gaf12-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+    <marker id="gaf12-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <text x="320" y="30" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">new residual edges point one layer back</text>
+  <ellipse cx="120" cy="130" rx="26" ry="60" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="240" cy="130" rx="26" ry="60" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="360" cy="130" rx="26" ry="60" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="480" cy="130" rx="26" ry="60" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="59" y1="130" x2="91" y2="130" stroke="#1565c0" stroke-width="2.4" marker-end="url(#gaf12-arrb)"/>
+  <line x1="149" y1="130" x2="211" y2="130" stroke="#1565c0" stroke-width="2.4" marker-end="url(#gaf12-arrb)"/>
+  <line x1="269" y1="130" x2="331" y2="130" stroke="#1565c0" stroke-width="2.4" marker-end="url(#gaf12-arrb)"/>
+  <line x1="389" y1="130" x2="451" y2="130" stroke="#1565c0" stroke-width="2.4" marker-end="url(#gaf12-arrb)"/>
+  <line x1="509" y1="130" x2="571" y2="130" stroke="#1565c0" stroke-width="2.4" marker-end="url(#gaf12-arrb)"/>
+  <path d="M 335,102 C 315,60 285,60 265,98" fill="none" stroke="#b91c1c" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#gaf12-arrr)"/>
+  <path d="M 455,102 C 435,60 405,60 385,98" fill="none" stroke="#b91c1c" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#gaf12-arrr)"/>
+  <circle cx="45" cy="130" r="14" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="45" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="586" cy="130" r="14" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="586" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+  <text x="320" y="215" text-anchor="middle" font-family="serif" font-size="11" fill="#666">forward edges advance one layer; every new s–t path has length ≥ ℓ + 2</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Phase $i+1$ seen in the layers of phase $i$: the blocking flow saturates every all-forward path (blue), and the only edges it creates point one layer back (dashed red) — so any path that uses them must waste at least two steps.
+</figcaption>
+</figure>
+
+Now take any $st$-path in the new residual network and read the levels along it: every step raises the level by at most $1$, steps along created edges lower it by $1$, and the path must climb from level $0$ to $\mathrm{level}(t) = \ell$. If the path had length $\ell$, every step would have to raise the level by exactly $1$; in particular it uses no created edge, so all its edges already existed in the old $R$ — making it a shortest $st$-path of the old $R$, contained in the cleaned layered network. But the blocking flow saturated at least one edge on every such path, and that edge is gone from the new residual network — a contradiction.
+
+Hence every $st$-path of the new residual network is longer than $\ell$ (paths through a created edge even have length $\ge \ell + 2$), so $\ell$ increases by at least $1$ per phase.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Dinitz)</span></p>
+
+Dinitz's algorithm finds a maximum flow in time $O(n^2 m)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The distance $\ell$ is the length of a path, so $1 \le \ell \le n - 1$; since it strictly increases between phases, there are at most $n$ phases, each costing $O(nm)$. When the algorithm stops, $t$ is unreachable in the residual network, i.e. there is no augmenting path — so $f$ is maximum by the max-flow min-cut argument of Lecture 1.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sparse vs. Dense)</span></p>
+
+For a sparse graph ($m \sim n$) the bound reads $O(n^3)$; for a dense one ($m \sim n^2$) it becomes $O(n^4)$. The improvements below attack both regimes.
+
+</div>
+
+## Special Networks
+
+On networks with small integer capacities, Dinitz's algorithm is much faster than $O(n^2 m)$ — both the blocking flows and the number of phases become cheap.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Special Networks)</span></p>
+
+1. If $c \equiv 1$: a blocking flow costs only $O(m)$ — each augmentation saturates and deletes *every* edge of its path, so the total length of all paths is at most $m$. With at most $n$ phases: $O(nm)$.
+2. If $c \equiv 1$: there are only $O(\sqrt{m})$ phases, so Dinitz runs in time $O(m^{3/2})$.
+3. If $c \equiv 1$ and $\min(\deg^{\mathrm{in}}(v), \deg^{\mathrm{out}}(v)) \le 1$ for every $v \neq s, t$ (*unit networks*): only $O(\sqrt{n})$ phases, so $O(\sqrt{n} \cdot m)$.
+4. If $c \equiv 1$ and the graph is simple: only $O(n^{2/3})$ phases, so $O(n^{2/3} \cdot m)$. These bounds are tight.
+5. If $c$ is integer: all the blocking flows together cost $O(n \cdot \lvert f\_{\max}\rvert)$ apart from cleanup — every pass of the greedy algorithm pushes at least one unit — plus $O(m)$ per phase, giving $O(n \lvert f\_{\max}\rvert + nm)$ in total.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the phase bounds (2)–(4)</summary>
+
+All three bounds follow from one stopping argument. Run Dinitz for $k$ phases and look at the current flow $f$ and residual network $R$; by the progress lemma the layering of $R$ now has $\ell \ge k + 1$, so the layers $L\_0 = \lbrace s\rbrace, L\_1, \dots$ up to the layer of $t$ number more than $k$. By the improving lemma (converse direction), $R$ carries a flow $g$ with $\lvert g\rvert = \lvert f\_{\max}\rvert - \lvert f\rvert$; and since with integer capacities every remaining phase increases $\lvert f\rvert$ by at least $1$,
+
+$$
+\#\text{remaining phases} \;\le\; |f_{\max}| - |f| \;=\; |g| \;\le\; r(C)
+$$
+
+for *every* cut $C$ in $R$, by the flows-vs.-cuts corollary of Lecture 1. It remains to find a small cut among the between-layer cuts $E(L\_i, L\_{i+1})$ — no residual edge can jump a layer forward, so each of these separates $s$ from $t$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 620px; height: auto;" role="img" aria-labelledby="gaf13-title">
+  <title id="gaf13-title">After k phases: many layers, so some between-layer cut is small</title>
+  <defs>
+    <marker id="gaf13-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <text x="320" y="24" text-anchor="middle" font-family="serif" font-size="11" fill="#333">after k phases: ℓ ≥ k + 1 layers</text>
+  <ellipse cx="110" cy="130" rx="22" ry="68" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="200" cy="130" rx="22" ry="68" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="300" cy="130" rx="22" ry="68" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="400" cy="130" rx="22" ry="68" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <ellipse cx="490" cy="130" rx="22" ry="68" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="296" cy="100" r="3.5" fill="#666"/>
+  <circle cx="302" cy="130" r="3.5" fill="#666"/>
+  <circle cx="297" cy="160" r="3.5" fill="#666"/>
+  <circle cx="398" cy="95" r="3.5" fill="#666"/>
+  <circle cx="403" cy="132" r="3.5" fill="#666"/>
+  <circle cx="398" cy="165" r="3.5" fill="#666"/>
+  <line x1="306" y1="101" x2="390" y2="96" stroke="#333" stroke-width="1.4" marker-end="url(#gaf13-arr)"/>
+  <line x1="308" y1="131" x2="395" y2="132" stroke="#333" stroke-width="1.4" marker-end="url(#gaf13-arr)"/>
+  <line x1="303" y1="161" x2="390" y2="164" stroke="#333" stroke-width="1.4" marker-end="url(#gaf13-arr)"/>
+  <path d="M 350,52 L 358,78 L 344,104 L 358,130 L 344,156 L 358,182 L 350,208" fill="none" stroke="#a86f00" stroke-width="2.5"/>
+  <text x="366" y="52" font-family="serif" font-size="14" font-style="italic" fill="#a86f00">C</text>
+  <circle cx="40" cy="130" r="14" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="40" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="580" cy="130" r="14" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="580" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+  <text x="300" y="226" text-anchor="middle" font-family="serif" font-size="12" fill="#666">Lᵢ</text>
+  <text x="400" y="226" text-anchor="middle" font-family="serif" font-size="12" fill="#666">Lᵢ₊₁</text>
+  <line x1="88" y1="243" x2="512" y2="243" stroke="#888" stroke-width="1"/>
+  <line x1="88" y1="238" x2="88" y2="248" stroke="#888" stroke-width="1"/>
+  <line x1="512" y1="238" x2="512" y2="248" stroke="#888" stroke-width="1"/>
+  <text x="300" y="258" text-anchor="middle" font-family="serif" font-size="11" fill="#666">≥ k layers between s and t</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Stopping after $k$ phases: the residual network has at least $k+1$ layers, every residual edge advances at most one layer, and by pigeonhole two consecutive layers $L_i, L_{i+1}$ are small — so the between-layer cut $C$ (orange) has small residual capacity, bounding the number of remaining phases.
+</figcaption>
+</figure>
+
+
+**(4) Simple graphs.** Set $p\_i := \lvert L\_i\rvert + \lvert L\_{i+1}\rvert$. Each vertex is counted at most twice, so $\sum\_i p\_i \le 2n$, and by pigeonhole some $i \le k$ has $p\_i \le 2n/k$. In a simple graph there is at most one edge per ordered pair, hence with unit capacities
+
+$$
+r\bigl(E(L_i, L_{i+1})\bigr) \;\le\; |L_i| \cdot |L_{i+1}| \;\le\; \Bigl(\frac{p_i}{2}\Bigr)^2 \le \Bigl(\frac{n}{k}\Bigr)^2 = \frac{n^2}{k^2}.
+$$
+
+So the total number of phases is at most $k + n^2/k^2$; choosing $k$ with $k = n^2/k^2$, i.e. $k = n^{2/3}$, gives $O(n^{2/3})$ phases.
+
+**(2) Arbitrary multigraphs.** The edge sets $E(L\_i, L\_{i+1})$ are pairwise disjoint, so some $i \le k$ has at most $m/k$ edges between $L\_i$ and $L\_{i+1}$; with unit capacities $r(C) \le m/k$, and the phase count is at most $k + m/k = O(\sqrt{m})$ for $k = \sqrt{m}$.
+
+**(3) Unit networks.** Some layer $L\_i$ with $0 < i \le k$ has $\lvert L\_i\rvert \le n/k$. Since every inner vertex has in-degree or out-degree at most $1$ and $c \equiv 1$, at most one unit of any flow in $R$ can pass through each vertex of $L\_i$, and every unit must pass through $L\_i$; hence $\lvert g\rvert \le n/k$, and the phase count is at most $k + n/k = O(\sqrt{n})$ for $k = \sqrt{n}$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Bipartite Matching, Fast)</span></p>
+
+The matching network of Lecture 1 has unit capacities and every inner vertex has in-degree or out-degree exactly $1$, so it is a unit network: Dinitz's algorithm finds a maximum bipartite matching in time $O(\sqrt{n} \cdot m)$ — the bound promised last week.
+
+</div>
+
+## Improvements
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Faster Blocking Flows and Beyond)</span></p>
+
+* **Three Indians method** (Malhotra, Kumar, Maheshwari): a better blocking-flow algorithm running in $O(n^2)$, which gives Dinitz in $O(n^3)$ — an improvement for dense graphs.
+* **Sleator–Tarjan link-cut trees** (covered in Data Structures 2): a blocking flow in $O(m \log n)$, giving Dinitz in $O(nm \log n)$.
+* The state of the art for max flow along these lines: **Orlin's algorithm**, running in $O(nm)$.
+
+</div>
+
+# Lecture 3: Capacity Scaling, Cuts and Connectivity
+
+Dinitz's bound $O(n \lvert f\_{\max}\rvert + nm)$ from the special-networks theorem is excellent when the maximum flow is small — but with large integer capacities $\lvert f\_{\max}\rvert$ can be huge. *Capacity scaling* fixes this by feeding the capacities to Dinitz one binary digit at a time. The rest of the lecture harvests what max-flow theory says about *cuts*: Menger's theorems on edge- and vertex-connectivity, and a completely different, randomized approach to minimum cuts by edge contraction.
+
+## Capacity Scaling
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Capacity Scaling)</span></p>
+
+Let $G$ be a network with integer capacities $c \in \lbrace 0, \dots, C \rbrace$ and let $\ell := \lfloor \log C \rfloor + 1$ be the number of bits. Define networks $G\_0, G\_1, \dots, G\_\ell$, all on the same graph, where $G\_i$ carries the **topmost $i$ bits** of every capacity:
+
+$$
+c_i(e) := \bigl\lfloor c(e) / 2^{\ell - i} \bigr\rfloor,
+\qquad\text{so}\qquad
+c_{i+1}(e) =
+\begin{cases}
+2 c_i(e), \\
+2 c_i(e) + 1,
+\end{cases}
+$$
+
+depending on the next bit; $G\_0$ has all capacities zero and $G\_\ell = G$. Compute maximum flows $f\_i$ of the $G\_i$ in order:
+
+1. $f\_0 \leftarrow 0$.
+2. For $i = 0, \dots, \ell - 1$: note that $2 f\_i$ is a flow in $G\_{i+1}$ — capacities at least doubled — and improve it to a maximum flow $f\_{i+1}$ of $G\_{i+1}$ by running Dinitz's algorithm on the residual network. — $O(nm)$ per level, by the lemma below.
+3. Return $f\_\ell$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 165" width="100%" style="max-width: 500px; height: auto;" role="img" aria-labelledby="gaf14-title">
+  <title id="gaf14-title">Capacity scaling reveals the capacities bit by bit</title>
+  <defs>
+    <marker id="gaf14-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <text x="244" y="28" text-anchor="middle" font-family="serif" font-size="11" fill="#666">binary expansion of c(e) — ℓ bits</text>
+  <rect x="100" y="42" width="36" height="30" fill="#fff7e0" stroke="#a86f00" stroke-width="1.6"/>
+  <rect x="136" y="42" width="36" height="30" fill="#fff7e0" stroke="#a86f00" stroke-width="1.6"/>
+  <rect x="172" y="42" width="36" height="30" fill="#fff7e0" stroke="#a86f00" stroke-width="1.6"/>
+  <rect x="208" y="42" width="36" height="30" fill="#fff" stroke="#888" stroke-width="1.2"/>
+  <rect x="244" y="42" width="36" height="30" fill="#fff" stroke="#888" stroke-width="1.2"/>
+  <rect x="280" y="42" width="36" height="30" fill="#fff" stroke="#888" stroke-width="1.2"/>
+  <rect x="316" y="42" width="36" height="30" fill="#fff" stroke="#888" stroke-width="1.2"/>
+  <rect x="352" y="42" width="36" height="30" fill="#fff" stroke="#888" stroke-width="1.2"/>
+  <text x="118" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">1</text>
+  <text x="154" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">0</text>
+  <text x="190" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">1</text>
+  <text x="226" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">1</text>
+  <text x="262" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">0</text>
+  <text x="298" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">1</text>
+  <text x="334" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">0</text>
+  <text x="370" y="62" text-anchor="middle" font-family="serif" font-size="13" fill="#333">1</text>
+  <line x1="100" y1="84" x2="208" y2="84" stroke="#a86f00" stroke-width="1.4"/>
+  <line x1="100" y1="79" x2="100" y2="89" stroke="#a86f00" stroke-width="1.4"/>
+  <line x1="208" y1="79" x2="208" y2="89" stroke="#a86f00" stroke-width="1.4"/>
+  <text x="154" y="105" text-anchor="middle" font-family="serif" font-size="11.5" fill="#a86f00">cᵢ(e) — topmost i bits</text>
+  <line x1="226" y1="135" x2="226" y2="80" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf14-arrg)"/>
+  <text x="320" y="150" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">cᵢ₊₁ appends the next bit: 2cᵢ(e) or 2cᵢ(e) + 1</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Scaling reveals every capacity bit by bit: $c_i(e) = \lfloor c(e)/2^{\ell-i} \rfloor$ keeps the topmost $i$ bits, and moving to $G_{i+1}$ doubles it and appends the next bit.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(One Scaling Step Is Cheap)</span></p>
+
+$$
+|f_{i+1}| - 2\,|f_i| \;\le\; m .
+$$
+
+Consequently the improvement in step 2 pushes at most $m$ additional units of flow, and Dinitz's algorithm started from $2f\_i$ finishes in time $O(nm)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Since $f\_i$ is maximum in $G\_i$, the max-flow min-cut theorem provides a cut $R$ with $\lvert f\_i\rvert = c\_i(R)$. Use the *same* cut in $G\_{i+1}$: every edge capacity at most doubles and gains $1$, and the cut has at most $m$ edges, so
+
+$$
+|f_{i+1}| \;\le\; c_{i+1}(R) \;\le\; 2\,c_i(R) + m \;=\; 2\,|f_i| + m .
+$$
+
+The improvement therefore closes a gap of $\Delta f \le m$ units. As in the special-networks theorem (case 5), every pass of the greedy blocking-flow algorithm pushes at least one unit, so all the passes together cost $O(n \cdot \Delta f) = O(nm)$, plus $O(m)$ bookkeeping per phase over at most $n$ phases — in total $O(nm)$ per level. (In general: Dinitz started from a flow whose value is $\Delta f$ below the maximum runs in $O(nm + n\,\Delta f)$.)
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Capacity Scaling)</span></p>
+
+A maximum flow in a network with integer capacities $c \le C$ can be computed in time
+
+$$
+O(nm \cdot \log C)
+$$
+
+— $\ell = O(\log C)$ levels at $O(nm)$ each.
+
+</div>
+
+## Cuts and Edge Connectivity
+
+So far a "cut" always meant an edge set of the form $E(A, \overline{A})$. For connectivity questions a more liberal notion is convenient:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cuts, Edge Connectivity)</span></p>
+
+In a directed or undirected graph $G$ with $s, t \in V$, $s \neq t$:
+
+* $C \subseteq E$ is an **$st$-cut** $\equiv$ $G - C$ contains no $st$-path;
+* $C \subseteq E$ is a **cut** $\equiv$ there exist $s \neq t$ such that $C$ is an $st$-cut;
+* an undirected $G$ is **$k$-edge-connected** $\equiv$ every cut has size at least $k$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Elementary Cuts, Small Cuts)</span></p>
+
+An **elementary** cut is one of the form $C = E(A, B)$ for a partition $V = A \mathbin{\dot\cup} B$ with $s \in A$, $t \in B$ — the "flow cuts" of Lecture 1. Every *minimum* cut is elementary (removing a minimal cut splits the graph into two sides), but a general $st$-cut need not be. Small cases: cuts of size $1$ are exactly the **bridges**; $1$-edge-connected $\Leftrightarrow$ connected; $2$-edge-connected $\Leftrightarrow$ connected and bridgeless.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Menger — Edge Version)</span></p>
+
+The maximum number of pairwise edge-disjoint $st$-paths equals the size of a minimum $st$-cut.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (algorithmic, via flows)</summary>
+
+"$\le$": every $st$-path must use at least one edge of every $st$-cut, and edge-disjoint paths use distinct ones — so there cannot be more paths than cut edges.
+
+"$\ge$": turn $G$ into a network with $c \equiv 1$ (an undirected edge becomes the pair of opposite directed edges) and compute an *integer* maximum flow $f$ with Dinitz — a unit-capacity simple network, so this costs only $O(n^{2/3} \cdot m)$. By max-flow min-cut, $\lvert f\rvert$ equals the capacity of a minimum elementary cut, which is a minimum $st$-cut here since every edge has capacity $1$. It remains to turn $f$ into $\lvert f\rvert$ edge-disjoint paths — see the decomposition below.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf15-title">
+  <title id="gaf15-title">Menger: edge-disjoint paths versus a minimum st-cut</title>
+  <defs>
+    <marker id="gaf15-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+    <marker id="gaf15-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+    <marker id="gaf15-arrp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7b1fa2"/>
+    </marker>
+  </defs>
+  <ellipse cx="310" cy="130" rx="285" ry="102" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line x1="84" y1="123" x2="172" y2="79" stroke="#0f9b6c" stroke-width="2" marker-end="url(#gaf15-arrg)"/>
+  <line x1="188" y1="75" x2="422" y2="75" stroke="#0f9b6c" stroke-width="2" marker-end="url(#gaf15-arrg)"/>
+  <line x1="438" y1="79" x2="528" y2="123" stroke="#0f9b6c" stroke-width="2" marker-end="url(#gaf15-arrg)"/>
+  <line x1="86" y1="130" x2="172" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#gaf15-arrb)"/>
+  <line x1="186" y1="130" x2="422" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#gaf15-arrb)"/>
+  <line x1="436" y1="130" x2="526" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#gaf15-arrb)"/>
+  <line x1="84" y1="137" x2="172" y2="181" stroke="#7b1fa2" stroke-width="2" marker-end="url(#gaf15-arrp)"/>
+  <line x1="188" y1="185" x2="422" y2="185" stroke="#7b1fa2" stroke-width="2" marker-end="url(#gaf15-arrp)"/>
+  <line x1="438" y1="181" x2="528" y2="137" stroke="#7b1fa2" stroke-width="2" marker-end="url(#gaf15-arrp)"/>
+  <path d="M 310,32 L 319,58 L 301,84 L 319,110 L 301,136 L 319,162 L 301,188 L 319,214 L 310,232" fill="none" stroke="#b91c1c" stroke-width="2.2"/>
+  <text x="334" y="30" font-family="serif" font-size="12" fill="#b91c1c">min st-cut, |C| = 3</text>
+  <circle cx="180" cy="75" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.6"/>
+  <circle cx="430" cy="75" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.6"/>
+  <circle cx="180" cy="130" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="430" cy="130" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="180" cy="185" r="6" fill="#fff" stroke="#7b1fa2" stroke-width="1.6"/>
+  <circle cx="430" cy="185" r="6" fill="#fff" stroke="#7b1fa2" stroke-width="1.6"/>
+  <circle cx="70" cy="130" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="70" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="542" cy="130" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="542" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Menger's theorem: a system of three edge-disjoint $st$-paths certifies that every $st$-cut has size $\ge 3$, and the wavy minimum cut with $|C| = 3$ certifies that no fourth disjoint path exists.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Path Decomposition of an Integer Unit Flow)</span></p>
+
+Given an integer flow $f$ in a unit-capacity network, walk greedily from $s$ along edges carrying flow:
+
+* if the walk reaches $t$, we found an $st$-path — remove it from $f$, obtaining a flow $f'$ with $\lvert f'\rvert = \lvert f\rvert - 1$;
+* if the walk revisits a vertex, we found a cycle — remove it, obtaining a flow $f'$ with $\lvert f'\rvert = \lvert f\rvert$;
+
+and repeat. Every edge of the support is visited and removed once, so the whole decomposition runs in $O(m)$ and produces a system of $\lvert f\rvert$ edge-disjoint $st$-paths (plus some discarded cycles — a *circulation*).
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Global Edge Connectivity)</span></p>
+
+For an undirected graph $G$, the largest $k$ such that $G$ is $k$-edge-connected equals the size of the smallest cut in $G$, and by Menger's theorem also the largest $k$ such that every pair $s, t$ is joined by $k$ edge-disjoint paths.
+
+Algorithmically, the smallest cut can be found by min-$st$-cut computations:
+
+1. Try all pairs $s, t$: $O(n^2)$ flow computations, $O(n^{2 + 2/3} \cdot m)$ in total.
+2. Better — **fix $s$, try all $t$**: a minimum cut disconnects $s$ from *some* vertex $t$, so $n - 1$ computations suffice: $O(n^{1 + 2/3} \cdot m)$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Faster Global Min-Cut)</span></p>
+
+Without flows one can do better: **Nagamochi–Ibaraki** find the smallest cut deterministically in $O(nm)$, and **Karger–Stein** do it with randomization even faster — the contraction idea behind their algorithm closes this lecture.
+
+</div>
+
+## Vertex Connectivity
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Separators, Vertex Connectivity)</span></p>
+
+For a graph $G$ and vertices $s, t$:
+
+* $U \subseteq V$ is an **$st$-separator** $\equiv$ $G - U$ contains no $st$-path and $s, t \notin U$;
+* $U \subseteq V$ is a **separator** $\equiv$ there exist $s, t$ such that $U$ is an $st$-separator;
+* an undirected $G$ is **$k$-(vertex-)connected** $\equiv$ every separator has size at least $k$, and $n > k$.
+
+Note that an $st$-separator can exist only when $st \notin E$. Small cases: $1$-connected $\Leftrightarrow$ connected; $2$-connected $\Leftrightarrow$ connected with no articulation points.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Menger — Vertex Version)</span></p>
+
+For $st \notin E$, the minimum size of an $st$-separator equals the maximum number of *internally vertex-disjoint* $st$-paths. (Analogous Mengerian theorems hold in all four combinations directed/undirected $\times$ edge/vertex.)
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vertex Splitting)</span></p>
+
+To find a minimum $st$-separator with flows, split every vertex $v$ into $v^{\mathrm{in}} \to v^{\mathrm{out}}$ joined by an edge of capacity $1$, and replace each edge $uv$ by $u^{\mathrm{out}} \to v^{\mathrm{in}}$ (and $v^{\mathrm{out}} \to u^{\mathrm{in}}$ if undirected). Flow units now correspond to internally vertex-disjoint paths, saturated split-edges to separator vertices. The result is a unit network, so Dinitz runs in $O(\sqrt{n} \cdot m)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 190" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf16-title">
+  <title id="gaf16-title">Vertex splitting for vertex connectivity</title>
+  <defs>
+    <marker id="gaf16-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf16-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <line x1="45" y1="55" x2="126" y2="88" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="45" y1="140" x2="126" y2="104" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="155" y1="88" x2="236" y2="55" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="155" y1="104" x2="236" y2="140" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <circle cx="140" cy="96" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="140" y="101" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#1565c0">v</text>
+  <line x1="278" y1="96" x2="330" y2="96" stroke="#888" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#gaf16-arrf)"/>
+  <text x="304" y="82" text-anchor="middle" font-family="serif" font-size="11" fill="#666">split</text>
+  <line x1="360" y1="55" x2="406" y2="88" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="360" y1="140" x2="406" y2="104" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="434" y1="96" x2="506" y2="96" stroke="#333" stroke-width="2.2" marker-end="url(#gaf16-arr)"/>
+  <text x="470" y="80" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#a86f00">c = 1</text>
+  <line x1="534" y1="88" x2="586" y2="55" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <line x1="534" y1="104" x2="586" y2="140" stroke="#333" stroke-width="1.5" marker-end="url(#gaf16-arr)"/>
+  <circle cx="420" cy="96" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="420" y="101" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v<tspan dy="-4" font-size="8">in</tspan></text>
+  <circle cx="520" cy="96" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="520" y="101" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v<tspan dy="-4" font-size="8">out</tspan></text>
+  <text x="320" y="178" text-anchor="middle" font-family="serif" font-size="11" fill="#666">a separator vertex becomes a saturated unit edge</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Vertex splitting: $v$ becomes $v^{\mathrm{in}} \to v^{\mathrm{out}}$ with capacity $1$; incoming edges attach to $v^{\mathrm{in}}$, outgoing ones leave $v^{\mathrm{out}}$. Flow units then correspond to internally vertex-disjoint paths and cut split-edges to separator vertices.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Global Vertex Connectivity)</span></p>
+
+To find a minimum separator of $G$:
+
+1. Try all pairs $s, t$: $O(n^2 \cdot \sqrt{n}\, m) = O(n^{2.5} \cdot m)$.
+2. Fix $s$, try all $t$: **broken!** Unlike the edge case, $s$ may belong to *every* minimum separator, and then no $t$ works with this $s$.
+3. The fix: try $s\_1, s\_2, \dots$, each against all $t$, keeping the best separator found; **stop as soon as the best separator is smaller than the number of sources tried**. If the true minimum separator $U$ has $\lvert U\rvert = k$, then among any $k + 1$ tried sources one avoids $U$ and finds it — so the loop stops after at most $k + 1$ sources, in time $O(k \cdot n \cdot \sqrt{n}\, m) = O(k \cdot n^{1.5} \cdot m)$.
+
+</div>
+
+## Randomized Minimum Cut: Contraction
+
+A completely different attack on the global minimum cut of an undirected **multigraph** — no flows at all, just random edge contractions.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multigraph Contraction)</span></p>
+
+$G/e$ arises from $G$ by merging the endpoints of $e$ into a single vertex, **keeping** parallel edges and **discarding** the loops this creates. Every edge of $G/e$ corresponds to an edge of $G$, and under this correspondence every cut of $G/e$ is a cut of $G$ of the same size — so
+
+$$
+\mathrm{mincut}(G) \;\le\; \mathrm{mincut}(G/e),
+$$
+
+with equality as long as $e$ does not lie in some fixed minimum cut: contracting can only *lose* those minimum cuts through $e$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 210" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf17-title">
+  <title id="gaf17-title">Multigraph contraction keeps parallel edges and discards loops</title>
+  <defs>
+    <marker id="gaf17-arrf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <path d="M 154,64 C 180,48 210,48 236,64" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <path d="M 154,78 C 180,94 210,94 236,78" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <line x1="148" y1="84" x2="184" y2="142" stroke="#333" stroke-width="1.6"/>
+  <line x1="242" y1="84" x2="206" y2="142" stroke="#333" stroke-width="1.6"/>
+  <circle cx="140" cy="70" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="140" y="75" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">u</text>
+  <circle cx="250" cy="70" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="250" y="75" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">v</text>
+  <circle cx="195" cy="155" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="195" y="160" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">w</text>
+  <text x="195" y="35" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">e (parallel pair)</text>
+  <line x1="300" y1="105" x2="352" y2="105" stroke="#888" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#gaf17-arrf)"/>
+  <text x="326" y="90" text-anchor="middle" font-family="serif" font-size="11" fill="#666">G/e</text>
+  <path d="M 452,88 C 436,110 436,130 452,148" fill="none" stroke="#333" stroke-width="1.6"/>
+  <path d="M 488,88 C 504,110 504,130 488,148" fill="none" stroke="#333" stroke-width="1.6"/>
+  <path d="M 484,52 C 500,30 530,38 526,62 C 523,78 500,80 486,70" fill="none" stroke="#888" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <line x1="516" y1="38" x2="534" y2="58" stroke="#b91c1c" stroke-width="2"/>
+  <line x1="516" y1="58" x2="534" y2="38" stroke="#b91c1c" stroke-width="2"/>
+  <circle cx="470" cy="72" r="17" fill="#fff" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="470" y="77" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">uv</text>
+  <circle cx="470" cy="163" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="470" y="168" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">w</text>
+  <text x="573" y="40" text-anchor="start" font-family="serif" font-size="11" fill="#888">loops</text>
+  <text x="573" y="54" text-anchor="start" font-family="serif" font-size="11" fill="#888">removed</text>
+  <text x="470" y="200" text-anchor="middle" font-family="serif" font-size="11" fill="#666">parallel edges kept</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Contracting $e = uv$: the endpoints merge into one vertex, the former $uw$- and $vw$-edges survive as parallel edges, and the parallel copies of $e$ itself would become loops — they are discarded. Cuts of $G/e$ correspond to cuts of $G$ of the same size, so a minimum cut $C$ is lost only if the picked edge lies in $C$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Contract)</span></p>
+
+$\mathrm{Contract}(G\_0, \ell)$:
+
+1. $G \leftarrow G\_0$.
+2. **While** $n > \ell$:
+3. &nbsp;&nbsp;&nbsp;Pick $e \in E$ uniformly at random.
+4. &nbsp;&nbsp;&nbsp;$G \leftarrow G/e$, remove loops.
+5. Return $G$.
+
+For $\ell = 2$ the two remaining vertices define a single cut of $G\_0$ — the algorithm's candidate minimum cut.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Survival Probability)</span></p>
+
+Fix a specific minimum cut $C$ of $G\_0$ and let $k := \lvert C\rvert$. Then
+
+$$
+\Pr\bigl[\,C \text{ survives } \mathrm{Contract}(G_0, \ell)\,\bigr] \;\ge\; \frac{\ell\,(\ell-1)}{n\,(n-1)} .
+$$
+
+In particular, for $\ell = 2$ a single run returns the cut $C$ itself with probability at least $2/(n(n-1))$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $G\_i$ be the graph before the $i$-th contraction; it has $n\_i = n - i + 1$ vertices. Assume $C$ survived to $G\_i$. Then every vertex $v$ of $G\_i$ has degree at least $k$: its incident edges correspond to a cut of $G\_0$, which has size at least $k$. Hence
+
+$$
+m_i \;\ge\; \frac{k\, n_i}{2},
+\qquad
+\Pr[\,\text{we select } e \in C\,] \;=\; \frac{k}{m_i} \;\le\; \frac{k}{k\, n_i / 2} \;=\; \frac{2}{n_i} ,
+$$
+
+and $C$ survives the $i$-th step with probability at least $1 - \frac{2}{n - i + 1} = \frac{n - i - 1}{n - i + 1}$. Multiplying over all $n - \ell$ steps, the product telescopes:
+
+$$
+\Pr[\,C \text{ survives all steps}\,]
+\;\ge\;
+\prod_{i=1}^{n-\ell} \frac{n-i-1}{n-i+1}
+\;=\;
+\frac{n-2}{n} \cdot \frac{n-3}{n-1} \cdot \frac{n-4}{n-2} \cdots \frac{\ell}{\ell+2} \cdot \frac{\ell-1}{\ell+1}
+\;=\;
+\frac{\ell\,(\ell-1)}{n\,(n-1)} \;\sim\; \frac{\ell^2}{n^2}.
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implementation in $O(n^2)$)</span></p>
+
+Represent the multigraph by its **adjacency matrix** $A\_{ij} = $ number of parallel edges between $i$ and $j$, together with the vector of degrees. Then:
+
+1. picking $e$ uniformly at random takes $O(n)$: choose the first endpoint $u$ with probability proportional to $\deg(u)$ using the degree vector, then the second endpoint $v$ with probability proportional to the row entries $A\_{uv}$;
+2. contracting $e = uv$ takes $O(n)$: add row and column $v$ to row and column $u$, zero out $v$, set $A\_{uu} := 0$ (loop removal), and update the degrees.
+
+One step costs $O(n)$, so $\mathrm{Contract}(G\_0, \ell)$ runs in $O((n - \ell) \cdot n) \subseteq O(n^2)$.
+
+</div>
