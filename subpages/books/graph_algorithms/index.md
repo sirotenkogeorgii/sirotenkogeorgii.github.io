@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, minimum spanning trees (cut lemma, red–blue meta-algorithm, Jarník, Borůvka, Kruskal), and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -3934,3 +3934,567 @@ to be compared entrywise with $D'\_{uv} \cdot \deg(v)$. So the parity fix costs 
 APSP in undirected unit-length graphs is solvable in $O(n^\omega \log n)$ time: the recursion has $O(\log n)$ levels — the diameter halves each time — and every level costs two matrix multiplications (one Boolean squaring, one integer product for the parities).
 
 </div>
+
+# Lecture 9: Minimum Spanning Trees
+
+After two chapters of shortest paths, a new classic begins: connect everything as cheaply as possible. The chapter opens with the structural theory — light edges, the cut lemma, uniqueness — then a meta-algorithm that colors edges **blue** (in) and **red** (out), of which all three classical algorithms (Jarník, Borůvka, Kruskal) are special cases.
+
+## The Problem
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Minimum Spanning Tree)</span></p>
+
+Let $G$ be a connected undirected graph with **weights** $w \colon E \to \mathbb{R}$, WLOG **injective** (how to justify the WLOG — see the tie-breaking remark below). A **minimum spanning tree** (MST) is a spanning tree $T$ minimizing $w(T) := \sum\_{e \in T} w(e)$.
+
+Notation: $T[x,y]$ is the unique path in $T$ between $x$ and $y$, and $T[e] := T[x,y]$ for an edge $e = xy$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf50-title">
+  <title id="gaf50-title">A weighted graph with a spanning tree highlighted</title>
+  <line x1="100" y1="80" x2="200" y2="50" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="200" y1="50" x2="320" y2="60" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="320" y1="60" x2="450" y2="70" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="450" y1="70" x2="540" y2="120" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="320" y1="60" x2="300" y2="190" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="300" y1="190" x2="150" y2="170" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="300" y1="190" x2="430" y2="170" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="100" y1="80" x2="150" y2="170" stroke="#666" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="200" y1="50" x2="300" y2="190" stroke="#666" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="450" y1="70" x2="430" y2="170" stroke="#666" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="540" y1="120" x2="430" y2="170" stroke="#666" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <circle cx="100" cy="80" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="200" cy="50" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="320" cy="60" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="450" cy="70" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="540" cy="120" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="430" cy="170" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="300" cy="190" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="150" cy="170" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="310" y="228" text-anchor="middle" font-family="serif" font-size="11" fill="#666">a spanning tree (blue) — the MST minimizes the total weight of the picked edges</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A weighted graph and one of its spanning trees (blue); dashed edges are unused. Among all spanning trees, the MST has minimum total weight.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(T-Light Edge)</span></p>
+
+An edge $e \in E$ is **$T$-light** if some edge of the tree path connecting its endpoints is heavier:
+
+$$
+\exists f \in T[e] \colon\quad w(f) \;>\; w(e).
+$$
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf51-title">
+  <title id="gaf51-title">A T-light edge: a chord lighter than some edge on its tree path</title>
+  <line x1="90" y1="160" x2="180" y2="90" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="180" y1="90" x2="300" y2="70" stroke="#b91c1c" stroke-width="3"/>
+  <line x1="300" y1="70" x2="420" y2="90" stroke="#1565c0" stroke-width="2.6"/>
+  <line x1="420" y1="90" x2="530" y2="160" stroke="#1565c0" stroke-width="2.6"/>
+  <path d="M 100,172 C 220,232 400,232 520,172" fill="none" stroke="#0f9b6c" stroke-width="2.4"/>
+  <text x="240" y="64" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">f — heavier</text>
+  <text x="310" y="240" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">e — w(e) &lt; w(f)</text>
+  <text x="300" y="34" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">tree path T[e] = T[x,y]</text>
+  <circle cx="90" cy="160" r="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="90" y="165" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">x</text>
+  <circle cx="180" cy="90" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="300" cy="70" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="420" cy="90" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="530" cy="160" r="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="530" y="165" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">y</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The edge $e = xy$ is $T$-light: on the tree path $T[e]$ sits a strictly heavier edge $f$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Exchange Step)</span></p>
+
+If some edge $e$ is $T$-light, then $T$ is **not** minimum: for the heavier $f \in T[e]$, the swap $T' := T - f + e$ is again a spanning tree ($T[e]$ closes a cycle with $e$, and removing any cycle edge reconnects it), and $w(T') < w(T)$.
+
+</div>
+
+## The Cut Lemma
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Cut Lemma, a.k.a. Blue Lemma)</span></p>
+
+Let $C = E(X, Y)$ be an **elementary cut** — the set of edges with one endpoint in $X$ and the other in $Y$, for a bipartition $V = X \mathbin{\dot\cup} Y$ — let $e \in C$ be the **lightest** edge of the cut, and let $T$ be an arbitrary MST. Then $e \in T$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Assume the contrary, $e \notin T$. The tree path $T[e]$ connects the two endpoints of $e$, which lie on opposite sides of the cut — so the path crosses the cut at some edge $f \in T[e] \cap C$. Then $T' := T - f + e$ is another spanning tree, and $w(f) > w(e)$ because $e$ is the lightest edge of the cut and weights are injective — hence $w(T') < w(T)$, contradicting minimality. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf52-title">
+  <title id="gaf52-title">The tree path of e must cross the cut at some other edge f</title>
+  <ellipse cx="160" cy="135" rx="110" ry="88" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="80" y="70" font-family="serif" font-size="14" font-style="italic" fill="#1565c0">X</text>
+  <ellipse cx="480" cy="135" rx="110" ry="88" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="548" y="70" font-family="serif" font-size="14" font-style="italic" fill="#0f9b6c">Y</text>
+  <line x1="252" y1="90" x2="390" y2="90" stroke="#b91c1c" stroke-width="2.6"/>
+  <text x="321" y="78" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">f ∈ T[e] ∩ C</text>
+  <line x1="256" y1="150" x2="386" y2="150" stroke="#0f9b6c" stroke-width="2.6"/>
+  <text x="321" y="140" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">e — lightest in C</text>
+  <line x1="250" y1="200" x2="392" y2="200" stroke="#666" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <path d="M 244,150 C 200,140 210,104 240,92" fill="none" stroke="#1565c0" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <path d="M 398,92 C 430,104 438,138 398,148" fill="none" stroke="#1565c0" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <circle cx="244" cy="150" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="398" cy="150" r="9" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="1.8"/>
+  <circle cx="246" cy="90" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="396" cy="90" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="1.6"/>
+  <text x="320" y="246" text-anchor="middle" font-family="serif" font-size="11" fill="#666">the dashed tree path T[e] leaves X — it must use some cut edge f; swap f for e</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The cut lemma: the endpoints of $e$ lie on opposite shores, so $T[e]$ (dashed) crosses the cut at some $f$ — and $T - f + e$ is a strictly lighter spanning tree.
+</figcaption>
+</figure>
+
+## Jarník's Algorithm
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Jarník 1930, often called Prim's or "Dijkstra-style")</span></p>
+
+1. $T \leftarrow \lbrace v\_0 \rbrace$ for an arbitrary vertex $v\_0$.
+2. **While** $\lvert T \rvert < n$:
+3. &nbsp;&nbsp;&nbsp;select the lightest edge $uv \in E$ with $u \in T$, $v \notin T$;
+4. &nbsp;&nbsp;&nbsp;$T \leftarrow T \cup \lbrace uv \rbrace$.
+
+If $G$ is connected, some edge always leaves the current tree, so the algorithm finds a spanning tree.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="gaf53-title">
+  <title id="gaf53-title">Jarnik grows one tree and always adds the lightest leaving edge</title>
+  <path d="M 70,130 C 60,50 200,16 340,24 C 480,32 570,80 566,140 C 562,204 460,236 310,232 C 160,228 80,200 70,130 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="170" y1="130" x2="120" y2="92" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="170" y1="130" x2="222" y2="82" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="170" y1="130" x2="142" y2="182" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="170" y1="130" x2="232" y2="164" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="230" y1="78" x2="330" y2="66" stroke="#b91c1c" stroke-width="2.4"/>
+  <text x="286" y="52" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">lightest edge leaving T</text>
+  <circle cx="170" cy="130" r="12" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="170" y="135" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">v₀</text>
+  <circle cx="120" cy="92" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="222" cy="82" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="142" cy="182" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="232" cy="164" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="338" cy="65" r="6" fill="#fff" stroke="#333" stroke-width="1.4"/>
+  <circle cx="420" cy="110" r="5" fill="#666"/>
+  <circle cx="470" cy="170" r="5" fill="#666"/>
+  <circle cx="360" cy="190" r="5" fill="#666"/>
+  <circle cx="490" cy="80" r="5" fill="#666"/>
+  <text x="310" y="246" text-anchor="middle" font-family="serif" font-size="11" fill="#666">one growing blue tree; each step takes the lightest edge across its boundary</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Jarník's algorithm grows a single tree from $v_0$, always along the lightest edge crossing the cut between the tree and the rest.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jarník Finds the MST)</span></p>
+
+Jarník's algorithm outputs a minimum spanning tree.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Every selected edge is the lightest edge of the elementary cut between the current tree and the remaining vertices — by the cut lemma it belongs to **every** MST. So the output $T$ satisfies $T \subseteq$ every MST; and since all spanning trees have exactly $n - 1$ edges, $T$ *equals* every MST. ∎
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Uniqueness)</span></p>
+
+With injective weights the minimum spanning tree is **unique** — the proof above shows every MST equals Jarník's output.
+
+</div>
+
+## Characterizing the MST
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Light-Edge Characterization)</span></p>
+
+$T$ is the minimum spanning tree $\iff$ there are no $T$-light edges.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+"$\Rightarrow$": a $T$-light edge would allow the exchange step — $T$ would not be minimum.
+
+"$\Leftarrow$": suppose $T$ has no $T$-light edges; we claim Jarník's algorithm (which outputs the MST) outputs exactly $T$. If not, stop it at the **first** moment it selects an edge $e = uv \notin T$; up to that moment the current tree is contained in $T$. The path $T[e]$ starts at $u$ inside the current tree and ends at $v$ outside, so some edge $f \in T[e]$ also leaves the current tree. But then $f$ was a candidate in the same step, and the algorithm chose $e$ as the lightest: $w(f) > w(e)$. That makes $e$ a $T$-light edge — contradiction. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf54-title">
+  <title id="gaf54-title">If Jarnik ever left T, the selected edge would be T-light</title>
+  <path d="M 80,130 C 74,66 150,36 230,40 C 306,44 344,86 340,132 C 336,180 270,212 190,208 C 116,204 86,180 80,130 Z" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="150" y="70" font-family="serif" font-size="11" fill="#0f9b6c">current tree ⊆ T</text>
+  <line x1="230" y1="120" x2="470" y2="96" stroke="#b91c1c" stroke-width="2.6"/>
+  <text x="352" y="86" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">e — selected, e ∉ T</text>
+  <line x1="240" y1="170" x2="462" y2="182" stroke="#1565c0" stroke-width="2.6"/>
+  <text x="352" y="206" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">f ∈ T[e], also leaves the tree</text>
+  <path d="M 232,128 C 220,150 226,162 236,168" fill="none" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <path d="M 468,178 C 486,160 490,120 478,102" fill="none" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <circle cx="230" cy="120" r="9" fill="#fff" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="216" y="110" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="478" cy="96" r="9" fill="#fff" stroke="#b91c1c" stroke-width="1.8"/>
+  <text x="496" y="90" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#b91c1c">v</text>
+  <circle cx="240" cy="170" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="466" cy="182" r="7" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="320" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#666">f competed with e and lost: w(f) &gt; w(e) ⇒ e is T-light ↯</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The moment Jarník would first deviate from $T$: the tree path $T[e]$ (dashed) also crosses the boundary, at some $f$ that lost the "lightest" contest to $e$ — so $e$ would be $T$-light.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Only the Order of Weights Matters)</span></p>
+
+Everything above — the cut lemma, Jarník's algorithm, the characterization — uses weights **only through comparisons**. The actual values are irrelevant; all we need is an *edge-comparison oracle* answering "$w(e) < w(f)$?" in constant time.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Non-Injective Weights)</span></p>
+
+With ties, several MSTs may exist, and "$\le$" on edges is not a linear order. The cure: break ties arbitrarily but consistently — e.g. compare pairs $(w(e), \mathrm{id}(e))$ lexicographically. This restores injectivity, justifying the WLOG at the start.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 250" width="100%" style="max-width: 380px; height: auto;" role="img" aria-labelledby="gaf55-title">
+  <title id="gaf55-title">A five-cycle with all weights one has five different minimum spanning trees</title>
+  <line x1="280" y1="40" x2="366" y2="103" stroke="#333" stroke-width="2"/>
+  <line x1="366" y1="103" x2="333" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="333" y1="205" x2="227" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="227" y1="205" x2="194" y2="103" stroke="#333" stroke-width="2"/>
+  <line x1="194" y1="103" x2="280" y2="40" stroke="#333" stroke-width="2"/>
+  <text x="334" y="62" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <text x="366" y="162" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <text x="280" y="224" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <text x="196" y="162" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <text x="226" y="62" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <circle cx="280" cy="40" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="366" cy="103" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="333" cy="205" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="227" cy="205" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="194" cy="103" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The cycle $C_5$ with unit weights: dropping any one edge gives an MST — five of them. Lexicographic tie-breaking by $(w(e), \mathrm{id}(e))$ singles one out.
+</figcaption>
+</figure>
+
+## The Red–Blue Meta-Algorithm
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Red–Blue Meta-Algorithm)</span></p>
+
+1. All edges start uncolored.
+2. Repeat, in any order, as long as some rule applies:
+   * **Blue rule:** find an edge that is lightest in some elementary cut and not yet blue — color it **blue**.
+   * **Red rule:** find an edge that is heaviest on some cycle and not yet red — color it **red**.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Blue Lemma)</span></p>
+
+Every blue edge belongs to the MST — this is exactly the cut lemma.
+
+</div>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Red Lemma)</span></p>
+
+If $e$ is the heaviest edge of some cycle $C$, then $e$ does **not** belong to the MST.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By contradiction: let $e \in T$ where $T$ is the MST. Removing $e$ splits $T$ into two components $T\_1, T\_2$. The rest of the cycle, $C - e$, connects the endpoints of $e$, so it contains some edge $f$ with one endpoint in $T\_1$ and the other in $T\_2$. Then $T' := T - e + f$ is again a spanning tree, and $w(f) < w(e)$ since $e$ is the heaviest edge of $C$ — so $w(T') < w(T)$, a contradiction. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf56-title">
+  <title id="gaf56-title">The heaviest edge of a cycle can be swapped for a lighter cycle edge re-crossing the split</title>
+  <line x1="200" y1="60" x2="330" y2="40" stroke="#333" stroke-width="2"/>
+  <line x1="330" y1="40" x2="440" y2="80" stroke="#b91c1c" stroke-width="3"/>
+  <line x1="440" y1="80" x2="430" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="430" y1="170" x2="300" y2="210" stroke="#0f9b6c" stroke-width="3"/>
+  <line x1="300" y1="210" x2="180" y2="160" stroke="#333" stroke-width="2"/>
+  <line x1="180" y1="160" x2="200" y2="60" stroke="#333" stroke-width="2"/>
+  <text x="404" y="46" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">e — heaviest on C</text>
+  <text x="330" y="232" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">f — re-crosses, w(f) &lt; w(e)</text>
+  <ellipse cx="222" cy="128" rx="105" ry="105" fill="none" stroke="#0f9b6c" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="130" y="52" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">T₁</text>
+  <ellipse cx="452" cy="128" rx="70" ry="80" fill="none" stroke="#0f9b6c" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="520" y="62" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">T₂</text>
+  <circle cx="200" cy="60" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="330" cy="40" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="440" cy="80" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="430" cy="170" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="300" cy="210" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="180" cy="160" r="7" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="320" y="250" text-anchor="middle" font-family="serif" font-size="11" fill="#666">T − e falls apart into T₁, T₂; the cycle C − e re-connects them through some cheaper f</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The red lemma's exchange: deleting the heaviest cycle edge $e$ splits the MST into $T_1, T_2$ (dashed), and the remainder of the cycle re-crosses the split at a strictly lighter $f$.
+</figcaption>
+</figure>
+
+Blue edges lie in the MST, red edges outside it — so **no edge is ever re-colored**, and the algorithm stops after at most $m$ coloring steps.
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Rainbow Lemma)</span></p>
+
+If some edge is still uncolored, one of the two rules applies. Consequently, when the algorithm stops, **all** edges are colored — and the blue ones are exactly the MST.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $e = uv$ be uncolored and let $B$ be the set of vertices reachable from $u$ via blue edges.
+
+* **If $v \in B$:** the blue $uv$-path together with $e$ forms a cycle. Its heaviest edge cannot be blue — blue edges lie in the MST (blue lemma), while the heaviest edge of a cycle does not (red lemma). Since all other edges of the cycle are blue, the heaviest is $e$: the **red rule** colors $e$.
+* **If $v \notin B$:** consider the cut $E(B, V \setminus B)$. It is non-empty ($e$ crosses it) and contains no blue edge — a blue edge across it would extend $B$. Its lightest edge lies in the MST (cut lemma), so it is not red either: the **blue rule** colors an uncolored edge.
+
+Either way the algorithm continues. At termination every edge is colored; blue $\subseteq$ MST and red $\cap$ MST $= \emptyset$ then force blue $=$ MST. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf57-title">
+  <title id="gaf57-title">The blue-reachable set B around u and the uncolored edge e to v</title>
+  <path d="M 90,130 C 84,60 170,28 260,32 C 350,36 400,80 396,134 C 392,192 320,224 230,220 C 140,216 96,190 90,130 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="120" y="56" font-family="serif" font-size="14" font-style="italic" fill="#1565c0">B</text>
+  <line x1="240" y1="126" x2="180" y2="86" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="240" y1="126" x2="310" y2="80" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="240" y1="126" x2="176" y2="170" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="310" y1="80" x2="344" y2="140" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="176" y1="170" x2="252" y2="188" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="128" y1="70" x2="96" y2="42" stroke="#0f9b6c" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="240" y1="34" x2="238" y2="8" stroke="#0f9b6c" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="356" y1="62" x2="384" y2="38" stroke="#0f9b6c" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="150" y1="210" x2="122" y2="238" stroke="#0f9b6c" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="300" y1="216" x2="316" y2="244" stroke="#0f9b6c" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="252" y1="126" x2="540" y2="126" stroke="#333" stroke-width="2.4"/>
+  <text x="420" y="114" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">e — uncolored</text>
+  <circle cx="240" cy="126" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="240" y="131" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="180" cy="86" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="310" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="176" cy="170" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="344" cy="140" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="252" cy="188" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="552" cy="126" r="10" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <text x="552" y="131" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">v</text>
+  <text x="320" y="256" text-anchor="middle" font-family="serif" font-size="11" fill="#666">v ∈ B ⇒ red rule on e; v ∉ B ⇒ blue rule on the cut E(B, V∖B) — dashes are uncolored edges</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The rainbow lemma: $B$ is everything blue-reachable from $u$ (blue tree inside, dashed uncolored edges sticking out). Depending on whether $v$ lands inside or outside $B$, the red or the blue rule fires.
+</figcaption>
+</figure>
+
+## The Classical Algorithms as Instances
+
+**① Jarník** grows one blue tree: every selection is the blue rule on the cut around the current tree. Basic implementation $O(nm)$; with a heap over the outside vertices (as in Dijkstra) $O(m \log n)$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(② Borůvka 1926)</span></p>
+
+Maintain a blue forest, initially $n$ isolated vertices. In every step, **every tree** of the forest selects the lightest edge incident to it, and all selected edges are colored blue at once — each selection is the blue rule on the cut around that tree (injective weights guarantee the simultaneous additions close no cycle).
+
+The number of trees at least **halves** in every step, so there are at most $\log n$ steps; a step costs $O(m)$ — total $O(m \log n)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf58-title">
+  <title id="gaf58-title">Boruvka: every tree of the blue forest selects its lightest incident edge</title>
+  <defs>
+    <marker id="gaf58-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <path d="M 60,125 C 54,52 170,18 320,22 C 470,26 586,64 582,130 C 578,196 460,230 310,226 C 160,222 66,194 60,125 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="130" y1="80" x2="180" y2="60" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="130" y1="80" x2="150" y2="120" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="380" y1="70" x2="440" y2="60" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="180" y1="170" x2="230" y2="190" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="440" y1="160" x2="490" y2="180" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="440" y1="160" x2="480" y2="120" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="190" y1="63" x2="368" y2="69" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf58-arrr)"/>
+  <line x1="160" y1="124" x2="176" y2="160" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf58-arrr)"/>
+  <line x1="240" y1="188" x2="428" y2="164" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf58-arrr)"/>
+  <line x1="448" y1="64" x2="476" y2="110" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf58-arrr)"/>
+  <circle cx="130" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="180" cy="60" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="150" cy="120" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="380" cy="70" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="440" cy="60" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="180" cy="170" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="230" cy="190" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="440" cy="160" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="490" cy="180" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="480" cy="120" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="320" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every blue tree shoots its lightest incident edge (red arrows) — the forest at least halves</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One Borůvka round: each tree of the blue forest picks the lightest edge leaving it; all picks are added simultaneously, merging trees in groups of two or more.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(③ Kruskal)</span></p>
+
+Sort the edges by weight, $w(e\_1) < w(e\_2) < \dots < w(e\_m)$, and start with $T \leftarrow \emptyset$. For $i = 1, \dots, m$: **if** $T + e\_i$ is acyclic — i.e. the endpoints of $e\_i$ lie in different components of $T$ — then $T \leftarrow T + e\_i$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 240" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf59-title">
+  <title id="gaf59-title">Kruskal tests the next-lightest edge against the current blue forest</title>
+  <path d="M 60,120 C 56,54 170,22 320,26 C 470,30 584,66 580,126 C 576,190 460,222 310,218 C 160,214 64,184 60,120 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="140" y1="90" x2="200" y2="70" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="140" y1="90" x2="170" y2="130" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="400" y1="80" x2="460" y2="100" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="270" y1="170" x2="330" y2="185" stroke="#1565c0" stroke-width="2.2"/>
+  <polyline points="176,126 220,140 210,155 254,168" fill="none" stroke="#b91c1c" stroke-width="2.4"/>
+  <text x="196" y="168" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">eᵢ</text>
+  <circle cx="140" cy="90" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="200" cy="70" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="170" cy="130" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="400" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="460" cy="100" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="270" cy="170" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="330" cy="185" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="320" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">edges arrive in increasing weight; eᵢ is accepted iff its endpoints lie in different blue components</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Kruskal's scan: the current $T$ is a blue forest; the next-lightest edge $e_i$ is kept exactly when it joins two different components.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Kruskal Is Red–Blue)</span></p>
+
+* **Adding an edge:** when $e$ joins two components, it is the *first* — hence lightest — edge of the cut between the component $T\_1$ of one endpoint and the rest ever considered: all other cut edges come later in the sorted order, i.e. are heavier. That is the blue rule.
+* **Dropping an edge:** when $e$ closes a cycle inside a component, $e$ arrives *after* every edge of the tree path between its endpoints — so $e$ is the heaviest edge of that cycle. That is the red rule.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 240" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf60-title">
+  <title id="gaf60-title">An accepted Kruskal edge is the lightest edge of the cut around its component</title>
+  <ellipse cx="170" cy="120" rx="105" ry="75" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="100" y="62" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">T₁</text>
+  <ellipse cx="490" cy="120" rx="90" ry="70" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="548" y="62" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">T₂ — comp. of T</text>
+  <line x1="262" y1="120" x2="412" y2="120" stroke="#1565c0" stroke-width="2.8"/>
+  <text x="337" y="108" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">e</text>
+  <line x1="252" y1="76" x2="416" y2="70" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="254" y1="166" x2="414" y2="172" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <circle cx="262" cy="120" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="1.8"/>
+  <circle cx="412" cy="120" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="248" cy="76" r="5" fill="#fff" stroke="#666" stroke-width="1.3"/>
+  <circle cx="420" cy="70" r="5" fill="#fff" stroke="#666" stroke-width="1.3"/>
+  <circle cx="250" cy="166" r="5" fill="#fff" stroke="#666" stroke-width="1.3"/>
+  <circle cx="418" cy="172" r="5" fill="#fff" stroke="#666" stroke-width="1.3"/>
+  <text x="320" y="222" text-anchor="middle" font-family="serif" font-size="11" fill="#666">e is the first cut edge the sorted scan meets ⇒ the lightest of the cut (dashed rivals are heavier)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Accepting $e$: among all edges of the cut $E(T_1, V \setminus T_1)$, the sorted order delivered $e$ first — the lightest — so accepting it is an application of the blue rule.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 500px; height: auto;" role="img" aria-labelledby="gaf61-title">
+  <title id="gaf61-title">A rejected Kruskal edge is the heaviest edge of the cycle it closes</title>
+  <path d="M 130,140 C 124,66 230,34 330,38 C 430,42 500,86 496,146 C 492,200 410,226 310,222 C 210,218 136,196 130,140 Z" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="160" y="60" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">T₁</text>
+  <line x1="220" y1="110" x2="300" y2="80" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="300" y1="80" x2="390" y2="100" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="390" y1="100" x2="420" y2="160" stroke="#1565c0" stroke-width="2.4"/>
+  <path d="M 228,122 C 280,190 360,196 412,170" fill="none" stroke="#b91c1c" stroke-width="2.6"/>
+  <text x="316" y="206" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">e</text>
+  <circle cx="220" cy="110" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="300" cy="80" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="390" cy="100" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="420" cy="160" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="310" y="244" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every blue edge of the closed cycle was considered — and accepted — before e ⇒ e is heaviest</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Rejecting $e$: the tree path inside $T_1$ consists of earlier (lighter) edges, so $e$ is the heaviest edge of the cycle it would close — the red rule.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Complexity of Kruskal — Enter Union–Find)</span></p>
+
+Sorting costs $O(m \log n)$. The main loop asks $m$ times "are the endpoints in the same component?" and merges components at most $n - 1$ times. Recomputing components naively gives $O(mn)$ overall. Better: a **Union–Find** data structure maintaining connected components under edge insertions, with operations
+
+* $\mathrm{Find}(x, y)$ — are $x$ and $y$ in the same component?
+* $\mathrm{Union}(x, y)$ — add the edge $xy$, merging two components.
+
+How fast Union–Find can be made is the next story.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 240" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf62-title">
+  <title id="gaf62-title">Union-Find maintains the connected components under edge insertions</title>
+  <ellipse cx="130" cy="110" rx="85" ry="62" fill="none" stroke="#333" stroke-width="1.5"/>
+  <ellipse cx="350" cy="110" rx="80" ry="60" fill="none" stroke="#333" stroke-width="1.5"/>
+  <ellipse cx="545" cy="110" rx="70" ry="58" fill="none" stroke="#333" stroke-width="1.5"/>
+  <circle cx="100" cy="90" r="5" fill="#666"/>
+  <circle cx="150" cy="130" r="5" fill="#666"/>
+  <circle cx="160" cy="85" r="5" fill="#666"/>
+  <circle cx="330" cy="95" r="5" fill="#666"/>
+  <circle cx="390" cy="130" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="390" y="152" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">x</text>
+  <circle cx="520" cy="130" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="520" y="152" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">y</text>
+  <circle cx="560" cy="85" r="5" fill="#666"/>
+  <line x1="396" y1="130" x2="514" y2="130" stroke="#1565c0" stroke-width="2.4"/>
+  <text x="455" y="180" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">Union(x, y)</text>
+  <text x="320" y="206" text-anchor="middle" font-family="serif" font-size="11" fill="#666">Find(x, y): are x and y in the same component?&nbsp;&nbsp;&nbsp;Union(x, y): insert the edge, merging two blobs</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The Union–Find interface: components of the growing forest as disjoint sets, queried by $\mathrm{Find}$ and merged by $\mathrm{Union}$.
+</figcaption>
+</figure>
