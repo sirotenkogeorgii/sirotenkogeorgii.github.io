@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall and the walk algebra, and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -3502,5 +3502,435 @@ f(x \cup y) = \max(f(x), f(y)), \qquad f(x \cdot y) = \min(f(x), f(y)), \qquad f
 $$
 
 and generalized Floyd–Warshall computes all-pairs widest paths in $O(n^3)$ time.
+
+</div>
+
+# Lecture 8: All-Pairs Shortest Paths via Matrix Multiplication
+
+Floyd–Warshall solves both matrix problems from last lecture in $O(n^3)$. To go below the cube, we bring in the heavy machinery: **fast matrix multiplication**. The plan — count walks with matrix powers, generalize the product to other algebras, kill the log factor for reachability by divide and conquer, and finish with **Seidel's algorithm** for undirected unit-length APSP.
+
+## Fast Matrix Multiplication
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(The Exponent $\omega$)</span></p>
+
+Multiplying two $n \times n$ matrices over a ring costs:
+
+* $O(n^3)$ — by definition;
+* $O(n^{2.808})$ — Strassen 1969;
+* $O(n^{2.376})$ — Coppersmith &amp; Winograd 1990;
+* $O(n^{2.373})$ — Williams 2012;
+* conjecturally $O(n^{2+\varepsilon})$ for every $\varepsilon > 0$; only restricted lower bounds around $\Omega(n^2 \log n)$ are known.
+
+We write $O(n^\omega)$ for the cost of one multiplication and use it as a black box.
+
+</div>
+
+## Walks and Matrix Powers
+
+Let $A$ be the adjacency matrix and — in this lecture — let $E$ denote the *identity* matrix (the edge set never appears as a matrix, so no confusion threatens).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Powers Count Walks)</span></p>
+
+$A^k\_{ij}$ = the number of $ij$-walks with **exactly $k$ edges**.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Induction on $k$, with $A^1 = A$ counting one-edge walks. For the step, let $M = A^{k-1}$ count walks with $k-1$ edges; then
+
+$$
+(M \cdot A)_{ij} \;=\; \sum_t M_{it} \, A_{tj} \;=\; \sum_{t:\ tj \in E(G)} M_{it}
+$$
+
+— every walk with $k$ edges is a walk with $k-1$ edges ending at some $t$, extended by a last edge $tj$. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 220" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf45-title">
+  <title id="gaf45-title">A walk with k edges is a walk with k minus one edges plus a last edge</title>
+  <defs>
+    <marker id="gaf45-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+    <marker id="gaf45-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <path d="M 86,102 C 150,60 280,42 336,56" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf45-arrg)"/>
+  <path d="M 88,110 C 170,100 270,104 334,108" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf45-arrg)"/>
+  <path d="M 86,118 C 150,160 280,178 336,164" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf45-arrg)"/>
+  <text x="205" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">walks with k−1 edges — counted by Aᵏ⁻¹ᵢₜ</text>
+  <line x1="366" y1="58" x2="524" y2="102" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf45-arrr)"/>
+  <line x1="366" y1="110" x2="522" y2="110" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf45-arrr)"/>
+  <line x1="366" y1="162" x2="524" y2="118" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf45-arrr)"/>
+  <text x="452" y="86" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">last edge tj ∈ E(G)</text>
+  <circle cx="70" cy="110" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="70" y="115" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">i</text>
+  <circle cx="352" cy="56" r="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="352" cy="110" r="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="352" y="115" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">t</text>
+  <circle cx="352" cy="164" r="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="540" cy="110" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="540" y="115" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">j</text>
+  <text x="310" y="208" text-anchor="middle" font-family="serif" font-size="11" fill="#666">(Aᵏ)ᵢⱼ = Σₜ (Aᵏ⁻¹)ᵢₜ · Aₜⱼ — sum over the possible last edges</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The matrix product sums over the second-to-last vertex $t$: walks of $k-1$ edges into $t$, times the last edge $tj$ — exactly the induction step.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Reachability from Powers)</span></p>
+
+$(A + E)^k\_{ij} > 0$ iff there is an $ij$-walk with **at most** $k$ edges — the identity summand lets a walk "stay put". In particular
+
+$$
+(A + E)^n_{ij} \;>\; 0 \quad\iff\quad A^\ast_{ij} = 1.
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Transitive Closure by Repeated Squaring)</span></p>
+
+Square $A + E$ repeatedly, $k := \lceil \log n \rceil$ times, so that $2^k \ge n$ — and **replace all non-zero entries by ones after every multiplication**: the factors stay $0/1$, every product has entries at most $n$, and no giant numbers arise. That is $O(\log n)$ multiplications at $O(n^\omega)$ each:
+
+$$
+\text{transitive closure in } O(n^\omega \log n).
+$$
+
+(The same trick computes any power: $A^{2k} = (A^k)^2$ and $A^{2k+1} = (A^k)^2 \cdot A$, i.e. $O(\log k)$ multiplications by binary exponentiation.)
+
+</div>
+
+## Products over Other Algebras
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The $(\oplus, \otimes)$-Product)</span></p>
+
+For matrices over a set $X$ with operations $\oplus, \otimes$, define
+
+$$
+(A \cdot B)_{ij} \;:=\; \bigoplus_k \; A_{ik} \otimes B_{kj}.
+$$
+
+Standard matrix multiplication is the $(+, \cdot)$-product.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Bundle Matrices)</span></p>
+
+Take matrices of **bundles** with the $(\cup, \cdot)$-product — union as addition, concatenation as multiplication. With $A\_{ij} = e\_{ij}$ for edges (and $\emptyset$ otherwise), the power $A^t\_{ij}$ is the bundle of all $ij$-walks with exactly $t$ edges; adding $\varepsilon\_i$ on the diagonal turns "exactly" into "at most". Applying a walk-algebra homomorphism $f$ entrywise turns $(\cup, \cdot)$-products into $(\oplus, \otimes)$-products of values — every numeric product below is a shadow of the bundle one.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Boolean Products)</span></p>
+
+The $(\vee, \wedge)$-product on $0/1$ matrices gives $(A \vee E)^n = A^\ast$ — reachability in $O(\log n)$ Boolean products. A Boolean product reduces to one standard integer product (multiply the $0/1$ matrices over $\mathbb{Z}$, clamp non-zeros to $1$), so each costs $O(n^\omega)$ — recovering the $O(n^\omega \log n)$ bound.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Distance Products)</span></p>
+
+The $(\min, +)$-product on the length matrix $L$ (with zero diagonal — the matrix $D^0$ of last lecture) gives $L^n = D$: APSP in $O(\log n)$ **distance products**. But $(\min, +)$ has no subtraction — it is not a ring — so Strassen-style tricks do not apply: one distance product costs $O(n^3)$ by definition, $O(n^3 / \log n)$ by Chan (2008), with faster algorithms only for small integer lengths.
+
+</div>
+
+## Divide and Conquer: Reachability in $O(n^\omega)$
+
+The log factor in $O(n^\omega \log n)$ can be removed.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Reachability by Block Divide and Conquer)</span></p>
+
+Split $V$ into halves $X$ and $Y$ and write the (reflexive) adjacency matrix in blocks:
+
+$$
+A \;=\; \begin{pmatrix} P & Q \\ R & S \end{pmatrix}
+\qquad\leadsto\qquad
+A^\ast \;=\; \begin{pmatrix} I & J \\ K & L \end{pmatrix},
+$$
+
+where, computing with $(\vee, \wedge)$-products,
+
+$$
+I = (P \vee Q\,S^\ast R)^\ast, \qquad
+J = I\,Q\,S^\ast, \qquad
+K = S^\ast R\,I, \qquad
+L = S^\ast \vee\; S^\ast R\,I\,Q\,S^\ast.
+$$
+
+This uses **two recursive $\ast$-computations of size $n/2$** ($S^\ast$ and the outer star for $I$), plus $O(1)$ Boolean products and $O(1)$ cheap $O(n^2)$ matrix operations.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (why the formulas hold)</summary>
+
+Read each block as a set of walks:
+
+* $I$ (walks $X \to X$): such a walk alternates steps inside $X$ ($P$) with *excursions* into $Y$ — jump over ($Q$), wander inside $Y$ ($S^\ast$), come back ($R$). One building block is $P \vee Q S^\ast R$; arbitrary walks iterate it: $(P \vee Q S^\ast R)^\ast$.
+* $J$ (walks $X \to Y$): first return to $X$ for the last time on the $X$-side ($I$), hop over ($Q$), finish inside $Y$ ($S^\ast$).
+* $K$ (walks $Y \to X$): mirror image: $S^\ast R\, I$.
+* $L$ (walks $Y \to Y$): either never leave $Y$ ($S^\ast$), or leave, travel via $X$, and come back: $S^\ast R\, I\, Q\, S^\ast$. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf46-title">
+  <title id="gaf46-title">The vertex set split into halves X and Y with the four blocks of the adjacency matrix</title>
+  <defs>
+    <marker id="gaf46-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a86f00"/>
+    </marker>
+  </defs>
+  <ellipse cx="130" cy="140" rx="72" ry="58" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="130" y="146" text-anchor="middle" font-family="serif" font-size="15" font-style="italic" fill="#1565c0">X</text>
+  <ellipse cx="330" cy="140" rx="72" ry="58" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="330" y="146" text-anchor="middle" font-family="serif" font-size="15" font-style="italic" fill="#0f9b6c">Y</text>
+  <path d="M 100,86 C 70,40 160,36 148,80" fill="none" stroke="#a86f00" stroke-width="1.6" marker-end="url(#gaf46-arr)"/>
+  <text x="112" y="34" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">P</text>
+  <path d="M 310,86 C 282,40 372,36 358,80" fill="none" stroke="#a86f00" stroke-width="1.6" marker-end="url(#gaf46-arr)"/>
+  <text x="324" y="34" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">S</text>
+  <path d="M 198,116 C 230,102 240,102 260,114" fill="none" stroke="#a86f00" stroke-width="1.6" marker-end="url(#gaf46-arr)"/>
+  <text x="230" y="94" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">Q</text>
+  <path d="M 262,170 C 240,184 222,184 200,172" fill="none" stroke="#a86f00" stroke-width="1.6" marker-end="url(#gaf46-arr)"/>
+  <text x="230" y="204" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">R</text>
+  <rect x="452" y="36" width="120" height="80" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="512" y1="36" x2="512" y2="116" stroke="#333" stroke-width="1"/>
+  <line x1="452" y1="76" x2="572" y2="76" stroke="#333" stroke-width="1"/>
+  <text x="482" y="62" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">P</text>
+  <text x="542" y="62" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">Q</text>
+  <text x="482" y="102" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">R</text>
+  <text x="542" y="102" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">S</text>
+  <text x="440" y="62" text-anchor="end" font-family="serif" font-size="12" font-style="italic" fill="#333">A =</text>
+  <line x1="512" y1="130" x2="512" y2="152" stroke="#666" stroke-width="1.4" marker-end="url(#gaf46-arr)"/>
+  <text x="530" y="146" font-family="serif" font-size="12" fill="#666">✱</text>
+  <rect x="452" y="160" width="120" height="80" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="512" y1="160" x2="512" y2="240" stroke="#333" stroke-width="1"/>
+  <line x1="452" y1="200" x2="572" y2="200" stroke="#333" stroke-width="1"/>
+  <text x="482" y="186" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">I</text>
+  <text x="542" y="186" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">J</text>
+  <text x="482" y="226" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">K</text>
+  <text x="542" y="226" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">L</text>
+  <text x="440" y="206" text-anchor="end" font-family="serif" font-size="12" font-style="italic" fill="#333">A✱ =</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Splitting $V$ into halves turns $A$ into four blocks: $P, S$ inside the halves, $Q, R$ across. The closure $A^\ast$ has blocks expressible with just two half-size stars and a handful of products.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Cost of the Recursion)</span></p>
+
+Let $\mu(n)$ be the cost of one $n \times n$ Boolean product. The running time obeys
+
+$$
+T(n) \;=\; 2\,T(n/2) + \Theta(\mu(n)),
+$$
+
+and whenever $\mu(n) = \Omega(n^2)$ this solves to $T(n) = \Theta(\mu(n))$. With $\mu(n) = O(n^\omega)$: **transitive closure in $O(n^\omega)$** — no log factor.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Down one level of the recursion tree the number of subproblems doubles, but the size halves — and since $\mu$ grows at least quadratically, $\mu(n/2) \le \mu(n)/4$. So the total work per level drops by a factor of at least $2$, and the geometric sum is dominated by the root: $T(n) \le \mu(n) \cdot (1 + \tfrac12 + \tfrac14 + \dots) = O(\mu(n))$. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="gaf47-title">
+  <title id="gaf47-title">Recursion tree whose per-level work shrinks geometrically</title>
+  <line x1="250" y1="52" x2="162" y2="112" stroke="#333" stroke-width="1.4"/>
+  <line x1="270" y1="52" x2="358" y2="112" stroke="#333" stroke-width="1.4"/>
+  <line x1="152" y1="132" x2="112" y2="182" stroke="#333" stroke-width="1.4"/>
+  <line x1="168" y1="132" x2="208" y2="182" stroke="#333" stroke-width="1.4"/>
+  <line x1="352" y1="132" x2="312" y2="182" stroke="#333" stroke-width="1.4"/>
+  <line x1="368" y1="132" x2="408" y2="182" stroke="#333" stroke-width="1.4"/>
+  <circle cx="260" cy="42" r="17" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="260" y="47" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">n</text>
+  <circle cx="160" cy="122" r="15" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="160" y="127" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">n/2</text>
+  <circle cx="360" cy="122" r="15" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="360" y="127" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">n/2</text>
+  <circle cx="110" cy="192" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="110" y="196" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#1565c0">n/4</text>
+  <circle cx="210" cy="192" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="210" y="196" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#1565c0">n/4</text>
+  <circle cx="310" cy="192" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="310" y="196" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#1565c0">n/4</text>
+  <circle cx="410" cy="192" r="13" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="410" y="196" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#1565c0">n/4</text>
+  <text x="455" y="47" font-family="serif" font-size="11" fill="#0f9b6c">work μ(n)</text>
+  <text x="455" y="127" font-family="serif" font-size="11" fill="#0f9b6c">2·μ(n/2) ≤ μ(n)/2</text>
+  <text x="455" y="196" font-family="serif" font-size="11" fill="#0f9b6c">4·μ(n/4) ≤ μ(n)/4</text>
+  <text x="310" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">problems ×2, size /2, product cost /4 ⇒ level work halves ⇒ T(n) = Θ(μ(n))</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Each level doubles the subproblem count but quarters the product cost ($\mu \in \Omega(n^2)$), so the root's $\mu(n)$ dominates the whole tree.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Same Scheme for Distances)</span></p>
+
+The block identities hold just as well for distances with $(\min, +)$-products (stars now meaning distance closures), so the divide and conquer also gives APSP in $\Theta$(one distance product)$\; = O(n^3 / \log n)$ time via Chan's product — the best general bound known, still stuck around the cube.
+
+</div>
+
+## Seidel's Algorithm
+
+For **undirected graphs with unit lengths** (WLOG connected), APSP can ride on fast matrix multiplication.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Graph Squaring)</span></p>
+
+$G^2 := (V, E^2)$ where $ij \in E^2$ iff $i \ne j$ and $G$ has an $ij$-walk with at most $2$ edges — neighbors and vertices with a common neighbor. Its adjacency matrix is one Boolean squaring away: $A(G^2)$ is $(A \vee E)^2$ with the diagonal cleared, computable in $O(n^\omega)$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Distances Halve)</span></p>
+
+Writing $d$ for distances in $G$ and $d'$ for distances in $G^2$ (from a fixed source $u$):
+
+$$
+d'(v) \;=\; \lceil d(v) / 2 \rceil
+$$
+
+— pairing up the edges of a shortest $G$-walk gives a $G^2$-walk half as long (rounded up), and conversely every $G^2$-edge expands to at most two $G$-edges. Consequently $d(v) \in \lbrace 2d'(v) - 1,\; 2d'(v) \rbrace$: after solving $G^2$, only the **parity** of $d(v)$ is missing. Also, the diameter halves — after $\lceil \log n \rceil$ squarings the graph is complete and $D$ is trivial.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="gaf49-title">
+  <title id="gaf49-title">Seidel's recursion: square the graph, solve, fix parities</title>
+  <defs>
+    <marker id="gaf49b-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+    <marker id="gaf49b-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+    <marker id="gaf49b-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <rect x="70" y="40" width="130" height="52" rx="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="135" y="71" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#333">G, A</text>
+  <rect x="420" y="40" width="130" height="52" rx="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="485" y="71" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#333">G², A′</text>
+  <rect x="70" y="160" width="130" height="52" rx="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="135" y="191" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#333">D</text>
+  <rect x="420" y="160" width="130" height="52" rx="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="485" y="191" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#333">D′</text>
+  <line x1="204" y1="66" x2="414" y2="66" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf49b-arrg)"/>
+  <text x="310" y="54" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">squaring — one Boolean product</text>
+  <line x1="485" y1="96" x2="485" y2="154" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf49b-arrb)"/>
+  <text x="497" y="129" font-family="serif" font-size="11" fill="#1565c0">recurse</text>
+  <line x1="414" y1="186" x2="204" y2="186" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf49b-arrr)"/>
+  <text x="310" y="174" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">parity fix — one integer product</text>
+  <text x="310" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">O(log n) levels: after ⌈log n⌉ squarings the graph is complete and D is trivial</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One level of Seidel's algorithm: square the graph (Boolean product), solve APSP there recursively, then recover the true distances with a single integer product.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Parity from the Neighbors)</span></p>
+
+Fix the source $u$ and a vertex $v \neq u$. Then:
+
+* if $d(v)$ is **even**, every neighbor $w$ of $v$ has $d'(w) \ge d'(v)$;
+* if $d(v)$ is **odd**, every neighbor has $d'(w) \le d'(v)$, and at least one has $d'(w) = d'(v) - 1$.
+
+Hence:
+
+$$
+d(v) \text{ is even} \quad\iff\quad \sum_{w \,\sim\, v} d'(w) \;\ge\; d'(v) \cdot \deg(v).
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+In an undirected unit-length graph, distances of adjacent vertices differ by at most one: $d(w) \in \lbrace d(v)-1,\, d(v),\, d(v)+1 \rbrace$ for $w \sim v$. Now take ceilings:
+
+* $d(v) = 2a$ even: neighbors have $d \in \lbrace 2a-1, 2a, 2a+1 \rbrace$, so $d' = \lceil d/2 \rceil \in \lbrace a, a, a+1 \rbrace$ — all $\ge a = d'(v)$.
+* $d(v) = 2a - 1$ odd: neighbors have $d \in \lbrace 2a-2, 2a-1, 2a \rbrace$, so $d' \in \lbrace a-1, a, a \rbrace$ — all $\le a = d'(v)$; and the predecessor of $v$ on a shortest $uv$-path has $d = 2a-2$, i.e. $d' = a - 1$.
+
+In the even case the neighbor sum is $\ge d'(v)\deg(v)$; in the odd case it is $\le d'(v)\deg(v) - 1$. The two cases are separated exactly by the stated inequality. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 270" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf48-title">
+  <title id="gaf48-title">Neighbors of v sit at distance d minus one, d, or d plus one from u</title>
+  <defs>
+    <marker id="gaf48-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <path d="M 88,122 C 180,74 330,74 428,118" fill="none" stroke="#333" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#gaf48-arr)"/>
+  <text x="258" y="70" text-anchor="middle" font-family="serif" font-size="11" fill="#333">shortest walk, d(v) edges</text>
+  <line x1="463" y1="122" x2="536" y2="74" stroke="#333" stroke-width="1.5"/>
+  <line x1="466" y1="130" x2="534" y2="130" stroke="#333" stroke-width="1.5"/>
+  <line x1="463" y1="138" x2="536" y2="186" stroke="#333" stroke-width="1.5"/>
+  <circle cx="70" cy="130" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="70" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="450" cy="130" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="450" y="135" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">v</text>
+  <circle cx="548" cy="68" r="11" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="548" cy="130" r="11" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="548" cy="192" r="11" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="572" y="60" font-family="serif" font-size="11" fill="#666">d(v) − 1</text>
+  <text x="572" y="134" font-family="serif" font-size="11" fill="#666">d(v)</text>
+  <text x="572" y="204" font-family="serif" font-size="11" fill="#666">d(v) + 1</text>
+  <text x="500" y="34" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">neighbors of v</text>
+  <text x="320" y="234" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">d(v) even ⇒ every neighbor has d′ ≥ d′(v)</text>
+  <text x="320" y="258" text-anchor="middle" font-family="serif" font-size="11" fill="#c2185b">d(v) odd ⇒ all neighbors have d′ ≤ d′(v), the predecessor even d′(v) − 1</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Unit lengths force neighbors of $v$ into distances $d(v)-1$, $d(v)$, $d(v)+1$; taking ceilings $\lceil d/2 \rceil$ pushes their $d'$-values strictly to opposite sides depending on the parity of $d(v)$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(All Neighbor Sums in One Product)</span></p>
+
+The sums the lemma needs — for *all* pairs $(u, v)$ at once — sit in one standard integer product:
+
+$$
+(D' \cdot A)_{uv} \;=\; \sum_k D'_{uk} \, A_{kv} \;=\; \sum_{k \,\sim\, v} d'(k),
+$$
+
+to be compared entrywise with $D'\_{uv} \cdot \deg(v)$. So the parity fix costs one matrix multiplication plus $O(n^2)$ postprocessing.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Seidel's Algorithm)</span></p>
+
+APSP in undirected unit-length graphs is solvable in $O(n^\omega \log n)$ time: the recursion has $O(\log n)$ levels — the diameter halves each time — and every level costs two matrix multiplications (one Boolean squaring, one integer product for the parities).
 
 </div>
