@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Graph Algorithms
-date: 2026-07-07
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths, and applications such as bipartite matching.
+date: 2026-07-10
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps and buckets), and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -1946,5 +1946,583 @@ $$
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Predecessors Form a Shortest-Path Tree)</span></p>
 
 After the scheme stops, the recorded pointers $\mathrm{pred}(v)$ span exactly the reachable vertices, and by property 7 together with the prefix property the pred-edges form a shortest-path tree from $u$ — the SSSP answer in $O(n)$ space.
+
+</div>
+
+# Lecture 5: Bellman–Ford–Moore and Dijkstra's Algorithm
+
+The relaxation scheme from last lecture deliberately left one thing open: *which* open vertex to pick in step 3. This lecture fills that slot twice. Keeping the open vertices in a **queue** gives the Bellman–Ford–Moore algorithm, which runs in $O(nm)$ and tolerates negative edge lengths; always picking the open vertex of **minimum value** gives Dijkstra's algorithm, whose running time then becomes a question about data structures — heaps for general lengths, buckets for small integers.
+
+## The Bellman–Ford–Moore Algorithm
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Bellman–Ford–Moore, BFM)</span></p>
+
+Run the relaxation scheme, keeping the open vertices in a **queue**:
+
+* in step 3, always select the vertex at the *head* of the queue;
+* when a vertex becomes open, append it to the *tail* — unless it is open already, in which case it keeps its position and only its value drops.
+
+</div>
+
+For the whole analysis we assume — as last lecture — that $G$ has **no negative cycles** (NNC), so all seven properties of the relaxation scheme are available.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phases)</span></p>
+
+Split the run of BFM into **phases** by imaginary separators in the queue: **phase $0$** closes just the source $u$; **phase $i+1$** closes exactly the vertices that were opened during phase $i$. Since a vertex occupies at most one queue slot at a time, every phase closes at most $n$ vertices.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 180" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf22-title">
+  <title id="gaf22-title">The queue of open vertices split into phases by imaginary separators</title>
+  <rect x="30" y="70" width="560" height="44" rx="10" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <circle cx="54" cy="92" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="54" y="96" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">u</text>
+  <line x1="78" y1="62" x2="78" y2="122" stroke="#b91c1c" stroke-width="1.6"/>
+  <circle cx="100" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="124" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="148" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="172" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="196" cy="92" r="5" fill="#1565c0"/>
+  <line x1="220" y1="62" x2="220" y2="122" stroke="#b91c1c" stroke-width="1.6"/>
+  <circle cx="244" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="268" cy="92" r="5" fill="#1565c0"/>
+  <circle cx="292" cy="92" r="5" fill="#1565c0"/>
+  <line x1="316" y1="62" x2="316" y2="122" stroke="#b91c1c" stroke-width="1.6"/>
+  <text x="370" y="97" text-anchor="middle" font-family="serif" font-size="15" fill="#333">⋯</text>
+  <text x="54" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">phase 0</text>
+  <text x="148" y="52" text-anchor="middle" font-family="serif" font-size="11" fill="#333">phase 1 — ≤ n vertices</text>
+  <text x="268" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#333">phase 2</text>
+  <text x="310" y="168" text-anchor="middle" font-family="serif" font-size="11" fill="#666">phase i+1 closes exactly the vertices that phase i opened</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The FIFO queue of open vertices with imaginary separators (red): phase $0$ closes just the source $u$, phase $1$ the vertices opened while relaxing $u$, and so on. Each phase closes at most $n$ vertices.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Phase Invariant)</span></p>
+
+At the end of phase $i$, every vertex $v$ satisfies
+
+$$
+h(v) \;\le\; \ell(w) \qquad \text{for every } uv\text{-walk } w \text{ with at most } i \text{ edges}.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By induction on $i$.
+
+**$i = 0$:** the only walk with $0$ edges is the empty walk at $u$, and $h(u) = 0$ is exactly its length.
+
+**$i - 1 \to i$:** consider a vertex $v$ at the end of phase $i$ and a $uv$-walk $w$ with at most $i$ edges. If $w$ has at most $i - 1$ edges, the induction hypothesis already gave $h(v) \le \ell(w)$ at the end of phase $i-1$, and values never increase. Otherwise $w$ has exactly $i$ edges: let $pv$ be its last edge and $w'$ its $up$-prefix, so that $w'$ has $i - 1$ edges and $\ell(w) = \ell(w') + \ell(pv)$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 210" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf23-title">
+  <title id="gaf23-title">A uv-walk with i edges decomposed into a prefix and its last edge</title>
+  <defs>
+    <marker id="gaf23-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+    <marker id="gaf23-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <path d="M 60,44 L 60,36 L 560,36 L 560,44" fill="none" stroke="#333" stroke-width="1.2"/>
+  <text x="310" y="28" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">w — i edges</text>
+  <path d="M 60,78 L 60,70 L 420,70 L 420,78" fill="none" stroke="#1565c0" stroke-width="1.2"/>
+  <text x="240" y="62" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">w′ — i−1 edges</text>
+  <line x1="76" y1="146" x2="136" y2="128" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf23-arrg)"/>
+  <line x1="164" y1="126" x2="226" y2="150" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf23-arrg)"/>
+  <line x1="254" y1="150" x2="316" y2="128" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf23-arrg)"/>
+  <line x1="344" y1="128" x2="402" y2="146" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf23-arrg)"/>
+  <line x1="438" y1="150" x2="542" y2="150" stroke="#b91c1c" stroke-width="2.2" marker-end="url(#gaf23-arrr)"/>
+  <text x="490" y="136" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">ℓ(pv)</text>
+  <circle cx="60" cy="150" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="60" y="155" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="150" cy="124" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="240" cy="152" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="330" cy="126" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="420" cy="150" r="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="420" y="155" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">p</text>
+  <circle cx="560" cy="150" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560" y="155" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">v</text>
+  <text x="310" y="198" text-anchor="middle" font-family="serif" font-size="11" fill="#666">ℓ(w) = ℓ(w′) + ℓ(pv)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A $uv$-walk $w$ with exactly $i$ edges splits into its $up$-prefix $w'$ with $i-1$ edges and the last edge $pv$.
+</figcaption>
+</figure>
+
+By the induction hypothesis, $h(p) \le \ell(w')$ at the end of phase $i-1$. Look at the moment when $h(p)$ last dropped to (or below) this value: it happened in phase at most $i - 1$, and at that moment $p$ was opened (or was open already). An open vertex from phase at most $i-1$ is closed — and relaxed — in phase at most $i$, and that relaxation enforces
+
+$$
+h(v) \;\le\; h(p) + \ell(pv) \;\le\; \ell(w') + \ell(pv) \;=\; \ell(w).
+$$
+
+Values only drop afterwards, so the bound still holds at the end of phase $i$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 170" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf24-title">
+  <title id="gaf24-title">Timing: p is opened in phase at most i minus one and relaxed in phase at most i</title>
+  <defs>
+    <marker id="gaf24-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+    <marker id="gaf24-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <text x="325" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">h(p) reached its final value in phase ≤ i−1 ⇒ p was opened</text>
+  <line x1="325" y1="22" x2="325" y2="48" stroke="#1565c0" stroke-width="1.4" marker-end="url(#gaf24-arrb)"/>
+  <rect x="30" y="52" width="560" height="40" rx="10" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <line x1="120" y1="46" x2="120" y2="98" stroke="#b91c1c" stroke-width="1.6"/>
+  <line x1="240" y1="46" x2="240" y2="98" stroke="#b91c1c" stroke-width="1.6"/>
+  <line x1="410" y1="46" x2="410" y2="98" stroke="#b91c1c" stroke-width="1.6"/>
+  <text x="75" y="112" text-anchor="middle" font-family="serif" font-size="11" fill="#333">phase 0</text>
+  <text x="180" y="77" text-anchor="middle" font-family="serif" font-size="14" fill="#333">⋯</text>
+  <text x="325" y="112" text-anchor="middle" font-family="serif" font-size="11" fill="#333">phase i−1</text>
+  <text x="500" y="112" text-anchor="middle" font-family="serif" font-size="11" fill="#333">phase i</text>
+  <circle cx="325" cy="72" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="341" y="76" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">p</text>
+  <line x1="548" y1="136" x2="534" y2="100" stroke="#b91c1c" stroke-width="1.4" marker-end="url(#gaf24-arrr)"/>
+  <text x="420" y="156" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">in phase ≤ i, p is closed and relaxed: h(v) ≤ h(p) + ℓ(pv)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The timing argument: $p$ enters the queue no later than during phase $i-1$, so it is closed and relaxed no later than during phase $i$ — and relaxing $p$ pushes the correct bound onto $v$.
+</figcaption>
+</figure>
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Complexity of BFM)</span></p>
+
+On a graph with no negative cycles, BFM runs in time $O(nm)$, stopping after at most $n + 1$ phases (phases $0, \dots, n$).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Under NNC, deleting a cycle from a walk removes a subwalk of non-negative length, so every shortest walk can be replaced by an equally short *path* — one with at most $n - 1$ edges. The phase-invariant lemma with $i = n - 1$ therefore gives $h(v) \le d(u, v)$ for every $v$ at the end of phase $n-1$; combined with property 2 of the relaxation scheme ($h(v) \ge d(u,v)$ under NNC), in fact $h(v) = d(u, v)$ everywhere.
+
+No value can ever decrease again, so the relaxations of phase $n$ change nothing and open no new vertices: the queue runs empty by the end of phase $n$ and the algorithm stops.
+
+As for the running time: one phase closes at most $n$ vertices, each at most once, and closing $v$ costs $O(\deg v)$ for its relaxation — so a phase costs $O\bigl(\sum\_v \deg v\bigr) = O(m)$, and $O(n)$ phases cost $O(nm)$ in total.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Other Ways to Order the Open Vertices)</span></p>
+
+* **Stack** (Pape's algorithm): LIFO instead of FIFO. Fast on some practical instances, but **exponential** in the worst case.
+* **Round robin:** sweep over $v\_1, \dots, v\_n$ in a fixed order, relaxing whichever are open, and repeat. One sweep performs at least the work of one BFM phase, so at most $n + 1$ sweeps suffice — again $O(nm)$. This is the classical textbook formulation of Bellman–Ford.
+
+</div>
+
+## Dijkstra's Algorithm
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Dijkstra)</span></p>
+
+Run the relaxation scheme, in step 3 always selecting an open vertex $v$ with $h(v)$ **minimal**.
+
+*Assumption:* all edge lengths are **non-negative** — a stronger requirement than NNC, which then holds automatically.
+
+</div>
+
+Intuitively, Dijkstra's algorithm behaves like a weighted BFS: the closed vertices form a region that grows outwards from $u$ in layers of increasing distance.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 250" width="100%" style="max-width: 460px; height: auto;" role="img" aria-labelledby="gaf25-title">
+  <title id="gaf25-title">Dijkstra grows the closed region in layers around the source, like BFS</title>
+  <path d="M 168,118 C 160,60 212,10 282,12 C 356,14 398,62 394,122 C 390,180 340,226 270,224 C 202,222 176,172 168,118 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <path d="M 202,118 C 198,74 234,42 282,44 C 334,46 364,80 360,122 C 356,166 318,196 272,194 C 226,192 206,158 202,118 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <path d="M 238,118 C 236,90 258,74 282,76 C 310,78 326,94 324,120 C 322,146 302,162 276,160 C 252,158 240,142 238,118 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="281" cy="118" r="13" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="281" y="123" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <text x="470" y="40" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">BFS layers</text>
+  <text x="281" y="244" text-anchor="middle" font-family="serif" font-size="11" fill="#666">closed vertices grow outwards in layers of increasing d(u,·)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Like BFS: Dijkstra's algorithm closes vertices in "layers" around the source $u$ — first the nearby ones, then ever more distant ones.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Dijkstra Closes in Distance Order)</span></p>
+
+On graphs with no negative edges, Dijkstra's algorithm closes each vertex **at most once**, and vertices are closed in the order of **increasing** $d(u, \cdot)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We maintain the invariant that at the moment a vertex $v$ is selected as current,
+
+$$
+h(x) \;\le\; h(v) \;\le\; h(w)
+\qquad \text{for every closed } x \text{ and every open } w,
+$$
+
+and that values of closed vertices never change (unseen vertices sit at $+\infty$ and are trivial). The right-hand inequality is just the minimality of the choice of $v$; the rest goes by induction over the selections.
+
+When the current $v$ is relaxed, every value it offers is $h(v) + \ell(vw) \ge h(v)$, because $\ell(vw) \ge 0$. Consequently:
+
+* **no closed vertex is reopened** — a closed $x$ has $h(x) \le h(v)$ by the invariant, so the offer cannot decrease its value;
+* **all open values stay $\ge h(v)$** — old open values were $\ge h(v)$ already, and new ones are offers $\ge h(v)$.
+
+The next current vertex is therefore selected with value $\ge h(v) \ge$ every closed value, so the invariant persists — and the values at the moments of closing form a non-decreasing sequence.
+
+Each vertex is thus closed at most once, with a value that never changes afterwards. After stopping, $h = d(u, \cdot)$ by last lecture's theorem, so each vertex was closed with value exactly $d(u, v)$ — in the order of increasing distance.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf26-title">
+  <title id="gaf26-title">The Dijkstra invariant: closed values below the current value below open values</title>
+  <defs>
+    <marker id="gaf26-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <path d="M 40,120 C 38,80 72,52 118,54 C 168,56 198,84 196,122 C 194,160 162,188 116,186 C 70,184 42,158 40,120 Z" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="95" cy="112" r="12" fill="#fff" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="95" y="117" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <text x="118" y="162" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">closed</text>
+  <circle cx="285" cy="120" r="16" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="285" y="125" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">v</text>
+  <text x="285" y="90" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#b91c1c">current — relaxing</text>
+  <path d="M 360,120 C 358,80 394,52 440,54 C 488,56 520,86 518,124 C 516,162 482,190 438,188 C 394,186 362,158 360,120 Z" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="440" y="74" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">open</text>
+  <circle cx="430" cy="100" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="460" cy="135" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="420" cy="165" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <line x1="300" y1="112" x2="418" y2="101" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf26-arrr)"/>
+  <line x1="301" y1="123" x2="448" y2="134" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf26-arrr)"/>
+  <line x1="298" y1="131" x2="409" y2="160" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#gaf26-arrr)"/>
+  <ellipse cx="585" cy="120" rx="42" ry="58" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <circle cx="575" cy="102" r="5" fill="#666"/>
+  <circle cx="595" cy="140" r="5" fill="#666"/>
+  <text x="585" y="46" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#666">unseen</text>
+  <text x="320" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#666">invariant: h(closed) ≤ h(v) ≤ h(open) — offers h(v) + ℓ(vw) ≥ h(v) preserve it</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The invariant behind Dijkstra's algorithm: values of closed vertices $\le$ value of the current vertex $v$ $\le$ values of open vertices. With $\ell \ge 0$, relaxing $v$ only makes offers of at least $h(v)$, so no closed vertex is ever reopened.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Number of Relaxations)</span></p>
+
+Dijkstra's algorithm performs at most $n$ relax operations — each vertex is relaxed only at the moment it is closed, which happens at most once. All relaxations together traverse each edge at most once, i.e. $O(m)$ edge work in total; the rest of the running time is spent *finding the minima*.
+
+</div>
+
+## The Time Complexity of Dijkstra's Algorithm
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Trivial Implementation)</span></p>
+
+Store the values $h(v)$ in a plain array. One step finds the open minimum by a linear scan in $O(n)$, and there are at most $n$ steps — $O(n^2)$ for all scans; all relaxations together process $O(m) = O(n^2)$ edges. Total: $O(n^2)$.
+
+</div>
+
+The scans are the bottleneck, which suggests the **idea**: keep the open vertices in a data structure — generically a *"heap"* — supporting three operations:
+
+* **Insert** in time $T\_I$ — a vertex becomes open,
+* **ExtractMin** in time $T\_X$ — find and remove the open vertex of minimum value,
+* **Decrease** in time $T\_D$ — an open vertex's value drops.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Heap-Based Dijkstra)</span></p>
+
+With such a structure, Dijkstra's algorithm runs in time
+
+$$
+O(n \cdot T_I \;+\; n \cdot T_X \;+\; m \cdot T_D):
+$$
+
+every vertex is inserted and extracted at most once (a closed vertex is never reopened), and every edge causes at most one Decrease — when its tail is relaxed.
+
+</div>
+
+Plugging in concrete data structures:
+
+| data structure | $T\_I$ | $T\_X$ | $T\_D$ | Dijkstra total |
+|---|---|---|---|---|
+| array | $O(1)$ | $O(n)$ | $O(1)$ | $O(n^2)$ |
+| binary heap | $O(\log n)$ | $O(\log n)$ | $O(\log n)$ | $O(m \log n)$ |
+| $k$-ary heap | $O(\log\_k n)$ | $O(k \log\_k n)$ | $O(\log\_k n)$ | $O(m \log\_{m/n} n)$ for $k = \max(m/n, 2)$ |
+| Fibonacci heap | $O(1)$ | $O(\log n)$ | $O(1)$ | $O(m + n \log n)$ |
+
+(The Fibonacci-heap bounds are amortized, which is all we need — the operations are summed over the whole run anyway.)
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 260" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf27-title">
+  <title id="gaf27-title">A k-ary heap: few levels, but ExtractMin compares k children per level</title>
+  <path d="M 330,32 L 130,215 L 530,215 Z" fill="none" stroke="#333" stroke-width="1.6"/>
+  <path d="M 96,36 L 88,36 L 88,215 L 96,215" fill="none" stroke="#333" stroke-width="1.2"/>
+  <text x="44" y="120" text-anchor="middle" font-family="serif" font-size="12" fill="#333">log<tspan dy="4" font-size="9">k</tspan><tspan dy="-4"> n levels</tspan></text>
+  <line x1="330" y1="43" x2="244" y2="96" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="330" y1="43" x2="302" y2="96" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="330" y1="43" x2="360" y2="96" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="330" y1="43" x2="418" y2="96" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="330" cy="36" r="7" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="240" cy="102" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="300" cy="102" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="360" cy="102" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="420" cy="102" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="298" y1="108" x2="234" y2="164" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="299" y1="108" x2="277" y2="164" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="302" y1="108" x2="320" y2="164" stroke="#0f9b6c" stroke-width="1.5"/>
+  <line x1="304" y1="108" x2="363" y2="164" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="232" cy="170" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="277" cy="170" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="322" cy="170" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <circle cx="365" cy="170" r="6" fill="#fff" stroke="#0f9b6c" stroke-width="1.5"/>
+  <text x="440" y="175" text-anchor="middle" font-family="serif" font-size="13" fill="#333">⋯</text>
+  <circle cx="330" cy="36" r="12" fill="none" stroke="#c2185b" stroke-width="1.6"/>
+  <circle cx="300" cy="102" r="11" fill="none" stroke="#c2185b" stroke-width="1.6"/>
+  <circle cx="322" cy="170" r="11" fill="none" stroke="#c2185b" stroke-width="1.6"/>
+  <text x="330" y="243" text-anchor="middle" font-family="serif" font-size="11" fill="#c2185b">ExtractMin sifts down: at each level, swap with the smallest of the k children</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A $k$-ary heap has only $\log\_k n$ levels, so Insert and Decrease (which bubble *up*, one comparison per level) speed up — but ExtractMin sifts *down* and must find the smallest of $k$ children at every level. Each vertex keeps a pointer to its heap position so Decrease can find it.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Tuning the Arity $k$)</span></p>
+
+The $k$-ary heap's total is
+
+$$
+\underbrace{m \cdot \frac{\log n}{\log k}}_{\text{decreases with } k}
+\;+\;
+\underbrace{n \cdot k \cdot \frac{\log n}{\log k}}_{\text{increases with } k},
+$$
+
+so the best $k$ balances the two terms: $m = n k$, i.e. $k = \max(m/n,\, 2)$, giving $O(m \log\_{m/n} n)$. Two regimes:
+
+* **dense** graphs, $m \sim n^2$: then $\log(m/n) = \Theta(\log n)$ and the bound is $O(m) = O(n^2)$ — matching the trivial implementation;
+* **sparse** graphs, $m \sim n$: then $k$ is constant and the bound is $O(m \log n)$ — matching the binary heap.
+
+In between, the $k$-ary heap strictly beats both.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Fibonacci Heaps)</span></p>
+
+Fibonacci heaps achieve amortized $O(1)$ Insert and Decrease with $O(\log n)$ ExtractMin, so Dijkstra runs in $O(m + n \log n)$. For **real** edge lengths this is optimal among comparison-based implementations, as the sorting reduction below shows.
+
+</div>
+
+## Integer Lengths: Buckets
+
+Suppose now that all edge lengths are small integers: $\ell(e) \in \lbrace 0, \dots, L \rbrace$ for every edge $e$. Then the heap can be replaced by direct indexing.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Dijkstra with Buckets)</span></p>
+
+Every finite value is the length of some path — at most $n - 1$ edges, each of length at most $L$ — so $h(v) \in \lbrace 0, \dots, nL \rbrace$. Keep an array of $nL + 1$ **buckets**, where bucket $i$ is a doubly linked list of the open vertices with $h(v) = i$, plus a pointer to the leftmost non-empty bucket:
+
+* **Insert** and **Decrease** in $O(1)$ — link the vertex into its bucket, resp. move it between buckets;
+* **ExtractMin**: advance the pointer to the next non-empty bucket and pop a vertex from it. Values at closing never decrease, so the pointer only ever moves **right** — all scans together cost $O(nL)$.
+
+Total running time: $O(m + nL)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 230" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf28-title">
+  <title id="gaf28-title">Bucket array indexed by value, with a pointer to the leftmost non-empty bucket</title>
+  <defs>
+    <marker id="gaf28-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <rect x="30" y="60" width="560" height="36" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <line x1="70" y1="60" x2="70" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="110" y1="60" x2="110" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="150" y1="60" x2="150" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="190" y1="60" x2="190" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="230" y1="60" x2="230" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="270" y1="60" x2="270" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="310" y1="60" x2="310" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="350" y1="60" x2="350" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="390" y1="60" x2="390" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="430" y1="60" x2="430" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="470" y1="60" x2="470" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="510" y1="60" x2="510" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="550" y1="60" x2="550" y2="96" stroke="#333" stroke-width="1"/>
+  <line x1="34" y1="94" x2="60" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="47" y1="94" x2="73" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="60" y1="94" x2="86" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="73" y1="94" x2="99" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="86" y1="94" x2="112" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="99" y1="94" x2="125" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="112" y1="94" x2="138" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="125" y1="94" x2="151" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="138" y1="94" x2="164" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="151" y1="94" x2="177" y2="62" stroke="#0f9b6c" stroke-width="1.2"/>
+  <line x1="164" y1="94" x2="188" y2="64" stroke="#0f9b6c" stroke-width="1.2"/>
+  <text x="110" y="46" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">already scanned — stays empty</text>
+  <circle cx="210" cy="78" r="7" fill="#b91c1c"/>
+  <line x1="260" y1="140" x2="220" y2="102" stroke="#b91c1c" stroke-width="1.6" marker-end="url(#gaf28-arrr)"/>
+  <text x="350" y="152" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">leftmost non-empty bucket i</text>
+  <line x1="210" y1="96" x2="210" y2="114" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="210" cy="120" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <line x1="210" y1="126" x2="210" y2="138" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="210" cy="144" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <line x1="210" y1="150" x2="210" y2="162" stroke="#1565c0" stroke-width="1.4"/>
+  <circle cx="210" cy="168" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="118" y="148" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">all v with h(v) = i</text>
+  <text x="50" y="112" text-anchor="middle" font-family="serif" font-size="11" fill="#333">0</text>
+  <text x="570" y="112" text-anchor="middle" font-family="serif" font-size="11" fill="#333">nL</text>
+  <text x="310" y="215" text-anchor="middle" font-family="serif" font-size="11" fill="#666">Insert and Decrease move vertices between buckets in O(1); the scan pointer only moves right</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The bucket array indexed by $h$-values $0, \dots, nL$: bucket $i$ holds the list of open vertices with $h(v) = i$. Since closing values never decrease, everything left of the pointer stays empty forever — the total scanning cost is $O(nL)$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Value Window)</span></p>
+
+Let $c$ be the value of the most recently closed vertex. Then at every moment, all finite values of open vertices lie in the window $[c,\, c + L]$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Every open vertex $w$ received its current value by the relaxation of some already closed vertex $x$: $h(w) = h(x) + \ell(xw)$. Closing values are non-decreasing, so $h(x) \le c$, and hence $h(w) \le c + L$. The lower bound $h(w) \ge c$ is the Dijkstra invariant.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Saving Memory)</span></p>
+
+At most $L + 1$ *consecutive* buckets can be non-empty at any moment, so it suffices to index the array **modulo $L + 1$**: the space drops from $O(nL + n)$ to $O(L + n)$, while the running time stays $O(m + nL)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 210" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf29-title">
+  <title id="gaf29-title">Only L plus one consecutive buckets can be non-empty: index the array modulo L plus one</title>
+  <defs>
+    <marker id="gaf29-arro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a86f00"/>
+    </marker>
+    <marker id="gaf29-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+  <rect x="190" y="58" width="200" height="36" fill="#e3f2fd" stroke="none"/>
+  <rect x="30" y="58" width="560" height="36" fill="none" stroke="#333" stroke-width="1.8"/>
+  <line x1="70" y1="58" x2="70" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="110" y1="58" x2="110" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="150" y1="58" x2="150" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="190" y1="58" x2="190" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="230" y1="58" x2="230" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="270" y1="58" x2="270" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="310" y1="58" x2="310" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="350" y1="58" x2="350" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="390" y1="58" x2="390" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="430" y1="58" x2="430" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="470" y1="58" x2="470" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="510" y1="58" x2="510" y2="94" stroke="#333" stroke-width="1"/>
+  <line x1="550" y1="58" x2="550" y2="94" stroke="#333" stroke-width="1"/>
+  <path d="M 190,50 L 190,42 L 390,42 L 390,50" fill="none" stroke="#1565c0" stroke-width="1.2"/>
+  <text x="290" y="34" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">possibly non-empty — L+1 buckets</text>
+  <circle cx="210" cy="76" r="6" fill="#1565c0"/>
+  <line x1="210" y1="118" x2="210" y2="100" stroke="#1565c0" stroke-width="1.4" marker-end="url(#gaf29-arrb)"/>
+  <text x="210" y="132" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">current c</text>
+  <text x="130" y="80" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#666">empty</text>
+  <text x="490" y="80" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#666">empty</text>
+  <path d="M 570,104 C 570,158 50,158 50,104" fill="none" stroke="#a86f00" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#gaf29-arro)"/>
+  <text x="310" y="180" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">indices taken mod (L+1) — the window wraps around</text>
+  <text x="310" y="202" text-anchor="middle" font-family="serif" font-size="11" fill="#666">h(open) ≤ c + L  ⇒  space O(L + n)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+By the value-window lemma, all open vertices live in the $L+1$ buckets $c, c+1, \dots, c+L$ — everything else is empty. Indexing modulo $L+1$ lets the window wrap around a small circular array.
+</figcaption>
+</figure>
+
+## Dijkstra as a Sorting Algorithm
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Sorting Reduces to Dijkstra)</span></p>
+
+To sort non-negative reals $x\_1, \dots, x\_n$, build a **star**: a center $u$ and leaves $v\_1, \dots, v\_n$ with edges $uv\_i$ of length $\ell(uv\_i) = x\_i$. Then $d(u, v\_i) = x\_i$, so Dijkstra's algorithm closes the leaves in the order of increasing $x\_i$ — it sorts the numbers.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 250" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf30-title">
+  <title id="gaf30-title">Sorting as Dijkstra on a star graph</title>
+  <defs>
+    <marker id="gaf30-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="280" y1="108" x2="280" y2="52" stroke="#333" stroke-width="1.6" marker-end="url(#gaf30-arr)"/>
+  <text x="294" y="82" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">x₁</text>
+  <line x1="294" y1="117" x2="412" y2="70" stroke="#333" stroke-width="1.6" marker-end="url(#gaf30-arr)"/>
+  <text x="358" y="80" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">x₂</text>
+  <line x1="295" y1="128" x2="445" y2="149" stroke="#333" stroke-width="1.6" marker-end="url(#gaf30-arr)"/>
+  <text x="372" y="126" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">x₃</text>
+  <line x1="290" y1="138" x2="362" y2="200" stroke="#333" stroke-width="1.6" marker-end="url(#gaf30-arr)"/>
+  <text x="340" y="180" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">x₄</text>
+  <line x1="266" y1="118" x2="128" y2="96" stroke="#333" stroke-width="1.6" marker-end="url(#gaf30-arr)"/>
+  <text x="195" y="94" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">xₙ</text>
+  <text x="200" y="192" text-anchor="middle" font-family="serif" font-size="15" fill="#333">⋯</text>
+  <circle cx="280" cy="125" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="280" y="130" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="280" cy="34" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="280" y="39" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₁</text>
+  <circle cx="426" cy="64" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="426" y="69" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₂</text>
+  <circle cx="462" cy="152" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="462" y="157" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₃</text>
+  <circle cx="372" cy="212" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="372" y="217" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₄</text>
+  <circle cx="112" cy="93" r="14" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="112" y="98" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">vₙ</text>
+  <text x="280" y="244" text-anchor="middle" font-family="serif" font-size="11" fill="#666">Dijkstra closes the leaves in order of increasing xᵢ — i.e. it sorts x₁, …, xₙ</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The star graph with $\ell(uv_i) = x_i$: running Dijkstra from $u$ closes the leaves by increasing distance $d(u, v_i) = x_i$, i.e. outputs the numbers in sorted order.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Lower Bound for Real Lengths)</span></p>
+
+Sorting $n$ reals requires $\Omega(n \log n)$ comparisons, so any comparison-based implementation of Dijkstra's algorithm must spend $\Omega(n \log n)$ time — already on stars with $m = n$ edges. The Fibonacci-heap bound $O(m + n \log n)$ is therefore **optimal for real edge lengths**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Bound Is Comparison-Model Only)</span></p>
+
+The lower bound only binds algorithms that access the lengths through comparisons. For instance, $n$ independent random numbers uniform in $[0,1)$ can be sorted in expected $O(n)$ time by bucketing — the very same trick that let the bucket implementation beat the bound for integer lengths.
 
 </div>

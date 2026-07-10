@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Graph Algorithms",
+   "url": "/subpages/books/graph_algorithms/",
+   "date": "2026-07-10",
+   "added": false
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-07-07",
@@ -17,12 +23,6 @@
    "url": "/notes/computability-and-complexity/",
    "date": "2026-07-07",
    "added": false
-  },
-  {
-   "title": "Graph Algorithms",
-   "url": "/subpages/books/graph_algorithms/",
-   "date": "2026-07-07",
-   "added": true
   },
   {
    "title": "Algorithms for Combinatorial Optimization",
