@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps and buckets), and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials), and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -2524,5 +2524,565 @@ Sorting $n$ reals requires $\Omega(n \log n)$ comparisons, so any comparison-bas
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Bound Is Comparison-Model Only)</span></p>
 
 The lower bound only binds algorithms that access the lengths through comparisons. For instance, $n$ independent random numbers uniform in $[0,1)$ can be sorted in expected $O(n)$ time by bucketing — the very same trick that let the bucket implementation beat the bound for integer lengths.
+
+</div>
+
+# Lecture 6: Faster Buckets and Potentials
+
+The bucket implementation from last lecture runs Dijkstra's algorithm in $O(m + nL)$ — fine for small $L$, but *linear* in the range of lengths. This lecture pushes the dependence on $L$ down to $\log L$, then to $\log L / \log\log L$ with **multi-level buckets**; extends buckets to non-integer lengths via **Dinitz's trick**; and finally removes the non-negativity assumption altogether using **potentials**.
+
+## Trees over Buckets
+
+Recall the setup: integer lengths $\ell(e) \in \lbrace 0, \dots, L \rbrace$, values $h(v) \in \lbrace 0, \dots, nL \rbrace$, an array of buckets, and the value window of width $L + 1$ that made the modulo trick work. The expensive part was ExtractMin's linear scanning; the first idea is to search for the leftmost non-empty bucket with a tree.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(A Tree over the Buckets)</span></p>
+
+Build a complete binary tree whose leaves are the buckets $0, \dots, nL$; every inner node stores a single bit — *"is there a non-empty bucket in my subtree?"* Insert and Decrease update the bits along one leaf-to-root path; ExtractMin descends from the root, always into the leftmost child whose bit is set. Every operation costs
+
+$$
+O(\log (nL)) \;=\; O(\log n + \log L).
+$$
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf31-title">
+  <title id="gaf31-title">A binary tree over the bucket array finds the leftmost non-empty bucket</title>
+  <text x="310" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#333">each node remembers: is there a non-empty bucket below me?</text>
+  <line x1="310" y1="42" x2="196" y2="82" stroke="#0f9b6c" stroke-width="2.2"/>
+  <line x1="310" y1="42" x2="424" y2="82" stroke="#333" stroke-width="1.4"/>
+  <line x1="190" y1="92" x2="134" y2="130" stroke="#333" stroke-width="1.4"/>
+  <line x1="190" y1="92" x2="246" y2="130" stroke="#0f9b6c" stroke-width="2.2"/>
+  <line x1="430" y1="92" x2="374" y2="130" stroke="#333" stroke-width="1.4"/>
+  <line x1="430" y1="92" x2="486" y2="130" stroke="#333" stroke-width="1.4"/>
+  <line x1="124" y1="144" x2="105" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="136" y1="144" x2="155" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="250" y1="142" x2="235" y2="182" stroke="#0f9b6c" stroke-width="2.2"/>
+  <line x1="256" y1="144" x2="275" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="364" y1="144" x2="345" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="376" y1="144" x2="395" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="484" y1="144" x2="465" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="496" y1="144" x2="515" y2="182" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+  <circle cx="310" cy="36" r="8" fill="#fff" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="190" cy="86" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="430" cy="86" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="130" cy="137" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="250" cy="137" r="7" fill="#fff" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="370" cy="137" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="490" cy="137" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="220" y="186" width="30" height="30" fill="#ecfdf5" stroke="none"/>
+  <rect x="70" y="186" width="480" height="30" fill="none" stroke="#333" stroke-width="1.8"/>
+  <line x1="100" y1="186" x2="100" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="130" y1="186" x2="130" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="160" y1="186" x2="160" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="190" y1="186" x2="190" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="220" y1="186" x2="220" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="250" y1="186" x2="250" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="280" y1="186" x2="280" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="310" y1="186" x2="310" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="340" y1="186" x2="340" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="370" y1="186" x2="370" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="400" y1="186" x2="400" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="430" y1="186" x2="430" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="460" y1="186" x2="460" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="490" y1="186" x2="490" y2="216" stroke="#333" stroke-width="1"/>
+  <line x1="520" y1="186" x2="520" y2="216" stroke="#333" stroke-width="1"/>
+  <circle cx="235" cy="201" r="5" fill="#0f9b6c"/>
+  <text x="85" y="238" text-anchor="middle" font-family="serif" font-size="11" fill="#333">0</text>
+  <text x="535" y="238" text-anchor="middle" font-family="serif" font-size="11" fill="#333">nL</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A complete binary tree over the buckets $0, \dots, nL$. ExtractMin walks from the root towards the leftmost set bit (green path); Insert and Decrease refresh one leaf-to-root path — all in $O(\log n + \log L)$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reduction to Keys $\lbrace 0, \dots, L \rbrace$)</span></p>
+
+The $\log n$ part is wasteful: by the value-window lemma, all live values fit into a window of width $L + 1$. Chop the array $0, \dots, nL$ into **blocks** of $L + 1$ consecutive buckets; the window meets at most **two** blocks, so at any moment at most two blocks are non-empty. Maintaining which two blocks are live costs $O(1)$ per operation, so *any* data structure handling keys $\lbrace 0, \dots, L \rbrace$ — one instance per live block — yields a structure for keys $\lbrace 0, \dots, nL \rbrace$ with constant overhead.
+
+With a binary tree per block, every operation costs $O(\log L)$ and Dijkstra runs in $O(m \log L)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 220" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf32-title">
+  <title id="gaf32-title">The bucket array chopped into blocks; at most two blocks are non-empty</title>
+  <text x="310" y="26" text-anchor="middle" font-family="serif" font-size="11" fill="#333">the value window spans at most 2 blocks — everything else is empty</text>
+  <path d="M 240,70 L 175,136 L 305,136 Z" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <path d="M 380,70 L 315,136 L 445,136 Z" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <rect x="30" y="140" width="560" height="30" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <line x1="65" y1="140" x2="65" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="100" y1="140" x2="100" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="135" y1="140" x2="135" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="205" y1="140" x2="205" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="240" y1="140" x2="240" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="275" y1="140" x2="275" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="345" y1="140" x2="345" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="380" y1="140" x2="380" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="415" y1="140" x2="415" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="485" y1="140" x2="485" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="520" y1="140" x2="520" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="555" y1="140" x2="555" y2="170" stroke="#333" stroke-width="1"/>
+  <line x1="170" y1="134" x2="170" y2="176" stroke="#333" stroke-width="2.6"/>
+  <line x1="310" y1="134" x2="310" y2="176" stroke="#333" stroke-width="2.6"/>
+  <line x1="450" y1="134" x2="450" y2="176" stroke="#333" stroke-width="2.6"/>
+  <circle cx="222" cy="155" r="5" fill="#0f9b6c"/>
+  <circle cx="292" cy="155" r="5" fill="#0f9b6c"/>
+  <circle cx="330" cy="155" r="5" fill="#0f9b6c"/>
+  <circle cx="398" cy="155" r="5" fill="#0f9b6c"/>
+  <text x="100" y="130" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#666">empty</text>
+  <text x="520" y="130" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#666">empty</text>
+  <path d="M 172,180 L 172,188 L 308,188 L 308,180" fill="none" stroke="#666" stroke-width="1.2"/>
+  <text x="240" y="206" text-anchor="middle" font-family="serif" font-size="11" fill="#666">block = L+1 buckets, with its own little tree</text>
+  <text x="45" y="190" text-anchor="middle" font-family="serif" font-size="11" fill="#333">0</text>
+  <text x="573" y="190" text-anchor="middle" font-family="serif" font-size="11" fill="#333">nL</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Blocks of $L+1$ buckets: the value window touches at most two of them, so it suffices to run a data structure for keys $\lbrace 0, \dots, L \rbrace$ on the two live blocks — a general reduction from range $nL$ to range $L$ with $O(1)$ overhead.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(van Emde Boas Trees)</span></p>
+
+The reduction accepts any structure for keys $\lbrace 0, \dots, L \rbrace$. A **van Emde Boas tree** (covered in the Data Structures course) performs all three operations in $O(\log\log L)$ per operation, so Dijkstra runs in $O(m \log\log L)$.
+
+</div>
+
+## Multi-Level Buckets
+
+A different route beats the tree with plain arrays. Write the keys in base $B$ and bucket them digit by digit.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multi-Level Buckets)</span></p>
+
+Fix a **base** $B$ (a power of two) and let
+
+$$
+d \;:=\; \lfloor \log_B L \rfloor + 1 \;\in\; \Theta\!\left(\frac{\log L}{\log B}\right)
+$$
+
+be the number of base-$B$ **digits** needed for the keys. The structure consists of:
+
+* a **stack of at most $d$ levels**, stored in an array — the top level corresponds to the most significant digit, each level below it to the next digit down;
+* each level is an **array of $B$ buckets**, indexed by the possible values of its digit; each bucket is a doubly linked list of items;
+* $\mu$ — the value last returned by ExtractMin;
+* at every level, the **active bucket** is the one indexed by $\mu$'s digit at that level.
+
+An item $x$ lives at the level of the most significant digit in which $x$ differs from $\mu$ (or at the bottommost existing level, if they agree there and above). Since every live key is $\ge \mu$, at that digit $x$ exceeds $\mu$ — so $x$ sits strictly to the *right* of the active bucket.
+
+Two invariants: **(1)** at every level, all buckets preceding the active one are empty; **(2)** items never move *upwards*.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 130" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf33-title">
+  <title id="gaf33-title">A key written as d digits in base B</title>
+  <text x="95" y="68" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">x in base B:</text>
+  <rect x="180" y="44" width="45" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="225" y="44" width="45" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="270" y="44" width="45" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="315" y="44" width="45" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="360" y="44" width="45" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="202" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#666">4</text>
+  <text x="247" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#666">3</text>
+  <text x="292" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#666">2</text>
+  <text x="337" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#666">1</text>
+  <text x="382" y="36" text-anchor="middle" font-family="serif" font-size="11" fill="#666">0</text>
+  <text x="202" y="68" text-anchor="middle" font-family="serif" font-size="15" fill="#1565c0">3</text>
+  <text x="247" y="68" text-anchor="middle" font-family="serif" font-size="15" fill="#1565c0">0</text>
+  <text x="292" y="68" text-anchor="middle" font-family="serif" font-size="15" fill="#1565c0">2</text>
+  <text x="337" y="68" text-anchor="middle" font-family="serif" font-size="15" fill="#1565c0">1</text>
+  <text x="382" y="68" text-anchor="middle" font-family="serif" font-size="15" fill="#1565c0">2</text>
+  <path d="M 180,92 L 180,100 L 405,100 L 405,92" fill="none" stroke="#333" stroke-width="1.2"/>
+  <text x="292" y="120" text-anchor="middle" font-family="serif" font-size="12" fill="#333">d = ⌊log<tspan dy="4" font-size="9">B</tspan><tspan dy="-4"> L⌋ + 1 digits</tspan></text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Keys as $d$-digit numbers in base $B$ — digit position $d-1$ (leftmost) is the most significant.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 300" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf34-title">
+  <title id="gaf34-title">The multi-level bucket structure: a stack of levels of B buckets each</title>
+  <defs>
+    <marker id="gaf34-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <rect x="150" y="40" width="400" height="30" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="200" y1="40" x2="200" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="250" y1="40" x2="250" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="300" y1="40" x2="300" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="350" y1="40" x2="350" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="400" y1="40" x2="400" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="450" y1="40" x2="450" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="500" y1="40" x2="500" y2="70" stroke="#333" stroke-width="1"/>
+  <line x1="158" y1="66" x2="182" y2="44" stroke="#666" stroke-width="1"/>
+  <line x1="170" y1="66" x2="194" y2="44" stroke="#666" stroke-width="1"/>
+  <ellipse cx="225" cy="55" rx="26" ry="18" fill="none" stroke="#b91c1c" stroke-width="1.8"/>
+  <circle cx="280" cy="55" r="5" fill="#0f9b6c"/>
+  <circle cx="330" cy="55" r="5" fill="#0f9b6c"/>
+  <circle cx="430" cy="55" r="5" fill="#0f9b6c"/>
+  <text x="140" y="59" text-anchor="end" font-family="serif" font-size="11" fill="#333">level d−1 — leftmost digit</text>
+  <rect x="150" y="110" width="400" height="30" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="200" y1="110" x2="200" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="250" y1="110" x2="250" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="300" y1="110" x2="300" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="350" y1="110" x2="350" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="400" y1="110" x2="400" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="450" y1="110" x2="450" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="500" y1="110" x2="500" y2="140" stroke="#333" stroke-width="1"/>
+  <line x1="158" y1="136" x2="182" y2="114" stroke="#666" stroke-width="1"/>
+  <line x1="170" y1="136" x2="194" y2="114" stroke="#666" stroke-width="1"/>
+  <line x1="208" y1="136" x2="232" y2="114" stroke="#666" stroke-width="1"/>
+  <line x1="220" y1="136" x2="244" y2="114" stroke="#666" stroke-width="1"/>
+  <line x1="258" y1="136" x2="282" y2="114" stroke="#666" stroke-width="1"/>
+  <line x1="270" y1="136" x2="294" y2="114" stroke="#666" stroke-width="1"/>
+  <ellipse cx="325" cy="125" rx="26" ry="18" fill="none" stroke="#b91c1c" stroke-width="1.8"/>
+  <circle cx="380" cy="125" r="5" fill="#0f9b6c"/>
+  <circle cx="480" cy="125" r="5" fill="#0f9b6c"/>
+  <text x="140" y="129" text-anchor="end" font-family="serif" font-size="11" fill="#333">level d−2 — next digit</text>
+  <text x="350" y="172" text-anchor="middle" font-family="serif" font-size="15" fill="#333">⋮</text>
+  <rect x="150" y="200" width="400" height="30" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="200" y1="200" x2="200" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="250" y1="200" x2="250" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="300" y1="200" x2="300" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="350" y1="200" x2="350" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="400" y1="200" x2="400" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="450" y1="200" x2="450" y2="230" stroke="#333" stroke-width="1"/>
+  <line x1="500" y1="200" x2="500" y2="230" stroke="#333" stroke-width="1"/>
+  <ellipse cx="175" cy="215" rx="26" ry="18" fill="none" stroke="#b91c1c" stroke-width="1.8"/>
+  <circle cx="225" cy="215" r="5" fill="#0f9b6c"/>
+  <circle cx="275" cy="215" r="5" fill="#0f9b6c"/>
+  <circle cx="325" cy="215" r="5" fill="#0f9b6c"/>
+  <line x1="233" y1="215" x2="266" y2="215" stroke="#0f9b6c" stroke-width="1.4" marker-end="url(#gaf34-arrg)"/>
+  <line x1="283" y1="215" x2="316" y2="215" stroke="#0f9b6c" stroke-width="1.4" marker-end="url(#gaf34-arrg)"/>
+  <text x="140" y="219" text-anchor="end" font-family="serif" font-size="11" fill="#333">bottommost level</text>
+  <path d="M 560,40 L 568,40 L 568,230 L 560,230" fill="none" stroke="#a86f00" stroke-width="1.4"/>
+  <text x="600" y="139" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">≤ d levels</text>
+  <text x="350" y="262" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">red ring = active bucket, selected by μ's digit — buckets to its left are empty</text>
+  <text x="350" y="284" text-anchor="middle" font-family="serif" font-size="11" fill="#666">an item sits at the topmost level where its digit differs from μ's</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The stack of levels, each an array of $B$ buckets — one array per digit position. The digits of $\mu$ mark the active buckets; every item lives at the level of its most significant disagreement with $\mu$, always to the right of the active bucket.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Operations on Multi-Level Buckets)</span></p>
+
+* **Insert($x$):** compute
+
+  $$
+  i \;:=\; \left\lfloor \frac{\mathrm{MSB}(x \oplus \mu)}{\log B} \right\rfloor
+  $$
+
+  — the position of the most significant digit where $x$ and $\mu$ differ ($\mathrm{MSB}$ of the XOR is a single machine-word operation, and dividing by $\log B$ turns a bit position into a digit position). Put $x$ into the bucket given by its digit at level $\max(i,\ \text{bottommost existing level})$. Time $O(1)$.
+
+* **Decrease:** unlink the item from its bucket and re-Insert it with the new value. Time $O(1)$. (A smaller key agrees with $\mu$ at least as far down as before, so the item moves down or stays — never up.)
+
+* **ExtractMin:**
+  1. Look for a non-empty bucket at the bottommost level, scanning from the active bucket to the right; whenever a level is exhausted, discard it and continue in the level above.
+  2. If the bucket found lives at level $0$, all its items agree with $\mu$ in every digit above and share the digit at level $0$ — they have *equal* keys. Remove any of them.
+  3. Otherwise scan the bucket's items, find and remove the minimum — it becomes the new $\mu$ — and, if the bucket is still non-empty, create a new level below the current one and distribute the remaining items into it by their next digit.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Amortized Complexity of Multi-Level Buckets)</span></p>
+
+Multi-level buckets support Insert in amortized $O(B + d)$, Decrease in $O(1)$, and ExtractMin in amortized $O(1)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We account for everything ExtractMin does:
+
+* **Scanning buckets and removing levels — $O(B)$ per level.** Each ExtractMin creates at most one level, and every level is scanned left-to-right exactly once over its lifetime before being discarded (the active bucket only moves right). Charge the $O(B)$ creation plus the $O(B)$ scan to the Insert of the item whose extraction created the level — every item triggers at most one ExtractMin, so each Insert is charged $O(B)$.
+
+* **Distributing items — $O(1)$ per item moved.** By invariant 2, an item only ever moves downwards, so it is distributed at most $d$ times during its lifetime. Charge $O(d)$ to its Insert.
+
+* **Finding the minimum — $O(1)$ per item scanned.** Every item touched by the min-scan is either extracted or distributed downwards right after, so these touches are covered by the previous two budgets.
+
+What remains of ExtractMin — and all of Decrease — is $O(1)$ actual work.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Dijkstra with Multi-Level Buckets)</span></p>
+
+Plugging $T\_I = O(B + d)$, $T\_X = O(1)$, $T\_D = O(1)$ into the heap formula gives
+
+$$
+O\!\left(m + n \left(B + \frac{\log L}{\log B}\right)\right).
+$$
+
+Choosing $B := \log L / \log\log L$ balances the two terms: $\log B = \log\log L - \log\log\log L = \Theta(\log\log L)$, so both $B$ and $d$ are $\Theta(\log L / \log\log L)$, and Dijkstra runs in
+
+$$
+O\!\left(m + n \cdot \frac{\log L}{\log\log L}\right).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(HOT Queues)</span></p>
+
+Even better: the **HOT queue** of Goldberg et al. — a *Heap On Top* of buckets — brings the amortized cost per Insert down to $O(\sqrt{\log L})$, giving Dijkstra in $O(m + n\sqrt{\log L})$.
+
+</div>
+
+## Non-Integer Lengths: Dinitz's Trick
+
+Buckets seem to need integers — but a lower bound on the edge lengths is enough.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Dinitz's Trick)</span></p>
+
+Suppose $\ell(e) \ge \delta$ for every edge $e$ and some $\delta > 0$. Then **every open vertex $v$ with**
+
+$$
+h(v) \;<\; \min_{u \text{ open}} h(u) + \delta
+$$
+
+**can be closed immediately.** Consequently we may bucket the vertices by $\lfloor h(v) / \delta \rfloor$: the map is monotone, and the leftmost non-empty bucket may be emptied wholesale. This is exactly Dijkstra with an integer bucket structure for
+
+$$
+L \;=\; \frac{\max_e \ell(e)}{\min_e \ell(e)}
+$$
+
+— only the *ratio* of the lengths matters.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Any future improvement of $h(v)$ would arrive by relaxing some vertex $t$ closed later; at that moment $h(t) \ge \min\_{u \text{ open}} h(u)$ (values at closing never decrease below the current open minimum), so the offer is
+
+$$
+h(t) + \ell(tv) \;\ge\; \min_{u \text{ open}} h(u) + \delta \;>\; h(v)
+$$
+
+— no improvement. So $h(v)$ is already final and $v$ may be closed. For the buckets: all vertices in the leftmost non-empty bucket of width $\delta$ lie within $\delta$ of the open minimum (which sits in the same bucket), so all of them are closable — in any order.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 190" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf35-title">
+  <title id="gaf35-title">All open vertices within delta of the open minimum can be closed at once</title>
+  <defs>
+    <marker id="gaf35-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf35-arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+  <rect x="300" y="94" width="130" height="32" fill="#fff3e0" stroke="none"/>
+  <line x1="50" y1="110" x2="580" y2="110" stroke="#333" stroke-width="1.6" marker-end="url(#gaf35-arr)"/>
+  <circle cx="90" cy="110" r="6" fill="#0f9b6c"/>
+  <circle cx="130" cy="110" r="6" fill="#0f9b6c"/>
+  <circle cx="165" cy="110" r="6" fill="#0f9b6c"/>
+  <text x="125" y="148" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">already closed</text>
+  <circle cx="300" cy="110" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="300" cy="110" r="13" fill="none" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="300" y1="66" x2="300" y2="92" stroke="#b91c1c" stroke-width="1.4" marker-end="url(#gaf35-arrr)"/>
+  <text x="300" y="58" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">min over open</text>
+  <line x1="430" y1="100" x2="430" y2="120" stroke="#a86f00" stroke-width="1.6"/>
+  <text x="435" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">min + δ</text>
+  <circle cx="350" cy="110" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="395" cy="110" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="490" cy="110" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="540" cy="110" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="516" y="82" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">still open</text>
+  <text x="360" y="163" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">all closable at once</text>
+  <text x="310" y="185" text-anchor="middle" font-family="serif" font-size="11" fill="#666">buckets of width δ: the leftmost non-empty bucket can be emptied wholesale</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Values on the number line: with every edge of length at least $\delta$, no future offer can undercut $\min + \delta$ — so every open vertex in the shaded band is already final and can be closed in any order.
+</figcaption>
+</figure>
+
+## Negative Lengths: Potentials
+
+Everything so far assumed $\ell \ge 0$. What if some lengths are negative — while the graph still has no negative cycles?
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Attempt: Shift All Lengths — FAIL)</span></p>
+
+Add a constant $\Delta$ to every edge length until nothing is negative, then run Dijkstra? **This fails:** a path with $k$ edges grows by $k\Delta$, so paths with different numbers of edges shift by *different* amounts — the shortest path can change.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf36-title">
+  <title id="gaf36-title">Adding a constant to every edge length changes which path is shortest</title>
+  <defs>
+    <marker id="gaf36-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <path d="M 84,110 C 200,40 420,40 536,110" fill="none" stroke="#333" stroke-width="1.8" marker-end="url(#gaf36-arr)"/>
+  <text x="310" y="56" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">2</text>
+  <line x1="82" y1="131" x2="216" y2="172" stroke="#333" stroke-width="1.8" marker-end="url(#gaf36-arr)"/>
+  <text x="140" y="164" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">−1</text>
+  <line x1="243" y1="180" x2="376" y2="180" stroke="#333" stroke-width="1.8" marker-end="url(#gaf36-arr)"/>
+  <text x="310" y="168" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <line x1="403" y1="172" x2="537" y2="131" stroke="#333" stroke-width="1.8" marker-end="url(#gaf36-arr)"/>
+  <text x="480" y="164" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#a86f00">1</text>
+  <circle cx="70" cy="120" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="70" y="125" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="230" cy="180" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="230" y="185" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">a</text>
+  <circle cx="390" cy="180" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="390" y="185" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">b</text>
+  <circle cx="550" cy="120" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="550" y="125" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">t</text>
+  <text x="310" y="219" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">original: lower path −1+1+1 = 1 beats the direct edge 2</text>
+  <text x="310" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">after +Δ = 1 on every edge: lower path 4, direct edge 3 — the order flips</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Shifting all lengths by $\Delta$ penalizes the three-edge path three times but the direct edge only once — the shortest $st$-path changes. A per-edge shift cannot work; the fix has to be per-*vertex*.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Potentials and Reduced Lengths)</span></p>
+
+A **potential** is any function $\varphi \colon V \to \mathbb{R}$. The **reduced edge lengths** with respect to $\varphi$ are
+
+$$
+\ell_\varphi(uv) \;:=\; \ell(uv) + \varphi(u) - \varphi(v),
+$$
+
+and $\varphi$ is **feasible** if $\ell\_\varphi(e) \ge 0$ for every edge $e$. With a feasible potential the reduced graph has no negative edges — Dijkstra applies.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Reduced Lengths Preserve Shortest Paths)</span></p>
+
+For any $uv$-path $P = v\_1 v\_2 \dots v\_k$ (with $v\_1 = u$, $v\_k = v$):
+
+$$
+\ell_\varphi(P) \;=\; \sum_{i} \bigl( \ell(v_i v_{i+1}) + \varphi(v_i) - \varphi(v_{i+1}) \bigr)
+\;=\; \ell(P) + \varphi(u) - \varphi(v)
+$$
+
+— the potentials of all inner vertices telescope away. Every $uv$-path shifts by the *same* amount $\varphi(u) - \varphi(v)$, so shortest paths are preserved (and $d\_\varphi(u,v) = d(u,v) + \varphi(u) - \varphi(v)$ recovers the true distances). We can therefore find shortest paths in the reduced graph instead.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 190" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf37-title">
+  <title id="gaf37-title">Potentials of inner vertices telescope along a path</title>
+  <defs>
+    <marker id="gaf37-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="97" y1="90" x2="226" y2="90" stroke="#333" stroke-width="1.8" marker-end="url(#gaf37-arr)"/>
+  <line x1="254" y1="90" x2="386" y2="90" stroke="#333" stroke-width="1.8" marker-end="url(#gaf37-arr)"/>
+  <line x1="414" y1="90" x2="543" y2="90" stroke="#333" stroke-width="1.8" marker-end="url(#gaf37-arr)"/>
+  <text x="160" y="72" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">+φ(u) −φ(v₂)</text>
+  <text x="320" y="72" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">+φ(v₂) −φ(v₃)</text>
+  <text x="480" y="72" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">+φ(v₃) −φ(v)</text>
+  <circle cx="80" cy="90" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="80" y="95" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="240" cy="90" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="240" y="95" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₂</text>
+  <circle cx="400" cy="90" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="400" y="95" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v₃</text>
+  <circle cx="560" cy="90" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560" y="95" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">v</text>
+  <text x="80" y="130" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">+φ(u) survives</text>
+  <text x="240" y="130" text-anchor="middle" font-family="serif" font-size="11" fill="#666">−φ(v₂) + φ(v₂) = 0</text>
+  <text x="400" y="130" text-anchor="middle" font-family="serif" font-size="11" fill="#666">−φ(v₃) + φ(v₃) = 0</text>
+  <text x="560" y="130" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">−φ(v) survives</text>
+  <text x="320" y="170" text-anchor="middle" font-family="serif" font-size="12" fill="#333">ℓ<tspan dy="4" font-size="9">φ</tspan><tspan dy="-4">(P) = ℓ(P) + φ(u) − φ(v)</tspan></text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Along any $uv$-path the inner potentials cancel in pairs — only $\varphi(u)$ and $-\varphi(v)$ survive. All $uv$-paths shift by the same constant, so their relative order is untouched.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Feasible Potentials Exist)</span></p>
+
+In every graph with no negative cycles, a feasible potential can be found in time $O(nm)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Extend $G$ to $G'$ by adding a **new vertex $s$** and edges $sv$ of length $0$ for every $v \in V$. The new vertex has no incoming edges, so no new cycles arise — $G'$ still has no negative cycles — and every vertex is reachable from $s$. Run BFM from $s$ in time $O(nm)$ and set
+
+$$
+\varphi(v) \;:=\; d(s, v) \qquad \text{(finite for every } v\text{)}.
+$$
+
+Why is $\varphi$ feasible? For every edge $uv$:
+
+$$
+\ell_\varphi(uv) \;=\; \ell(uv) + d(s,u) - d(s,v) \;\ge\; 0
+\quad\iff\quad
+d(s,v) \;\le\; d(s,u) + \ell(uv),
+$$
+
+which is exactly the triangle inequality for distances — valid since $G'$ has no negative cycles.
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf38-title">
+  <title id="gaf38-title">The construction: a new source s joined to every vertex by a zero-length edge</title>
+  <defs>
+    <marker id="gaf38-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <text x="70" y="40" font-family="serif" font-size="13" font-style="italic" fill="#333">G′ = G + s</text>
+  <path d="M 230,120 C 228,60 300,24 400,26 C 505,28 572,68 570,122 C 568,176 500,216 396,214 C 296,212 232,178 230,120 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="537" y="52" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">G</text>
+  <line x1="95" y1="114" x2="288" y2="84" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf38-arrg)"/>
+  <line x1="95" y1="122" x2="348" y2="142" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf38-arrg)"/>
+  <line x1="94" y1="112" x2="428" y2="82" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf38-arrg)"/>
+  <line x1="94" y1="127" x2="468" y2="148" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf38-arrg)"/>
+  <line x1="94" y1="117" x2="508" y2="110" stroke="#0f9b6c" stroke-width="1.6" marker-end="url(#gaf38-arrg)"/>
+  <circle cx="300" cy="80" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="360" cy="145" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="440" cy="80" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="480" cy="150" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="520" cy="110" r="6" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+  <circle cx="80" cy="120" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="80" y="125" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">s</text>
+  <text x="175" y="70" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">all new edges have length 0</text>
+  <text x="320" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">φ(v) := d(s,v), computed by one run of BFM</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Adding $s$ with zero-length edges to all of $V$ makes every vertex reachable without creating cycles; the BFM distances $d(s, \cdot)$ are then a feasible potential by the triangle inequality.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where Potentials Lead)</span></p>
+
+Two directions open up from here:
+
+* **APSP:** one BFM run yields a feasible $\varphi$, after which *all-pairs* shortest paths cost $n$ runs of Dijkstra on the reduced graph — translating back via $d(u,v) = d\_\varphi(u,v) - \varphi(u) + \varphi(v)$. This beats $n$ runs of BFM whenever Dijkstra's implementation beats $O(nm)$.
+* **A$^\ast$:** for point-to-point queries (P2PSP), one can plug in a *heuristic* potential — a lower bound on the remaining distance to the target — without any precomputation; Dijkstra on those reduced lengths is exactly the A$^\ast$ search algorithm.
 
 </div>
