@@ -13,6 +13,18 @@
    "added": false
   },
   {
+   "title": "Problems from the SDEs & Diffusion Models course",
+   "url": "/subpages/books/sde_hd/problems/sheet04/",
+   "date": "2026-07-10",
+   "added": true
+  },
+  {
+   "title": "SDEs & Diffusion Models",
+   "url": "/subpages/books/sde_hd/",
+   "date": "2026-07-10",
+   "added": false
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-07-07",
@@ -165,18 +177,6 @@
   {
    "title": "Reinforcement Learning",
    "url": "/subpages/books/reinforcement_learning_sutton/",
-   "date": "2026-06-16",
-   "added": true
-  },
-  {
-   "title": "The Galerkin Method: How a One-Line Orthogonality Tames Infinite Dimensions",
-   "url": "/subpages/math_topics/galerkin_method/galerkin_method_rigorous/",
-   "date": "2026-06-16",
-   "added": true
-  },
-  {
-   "title": "The Galerkin method, or: how to solve an infinite-dimensional equation with finitely many numbers",
-   "url": "/subpages/math_topics/galerkin_method/galerkin_method_gentle/",
    "date": "2026-06-16",
    "added": true
   }

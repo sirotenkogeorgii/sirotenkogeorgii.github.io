@@ -9,6 +9,8 @@ tags:
   - diffusion-models
   - markov-processes
   - score-matching
+  - fokker-planck
+  - time-reversal
 # math: true
 ---
 
@@ -3116,6 +3118,20 @@ Unless otherwise stated, we abbreviate $\mathcal{B}\_b = \mathcal{B}\_b(\mathbb{
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Misconception about $C_\infty(\mathbb{R}^d)$)</span></p>
+
+In the context of Feller processes, $C_\infty(\mathbb{R}^d)$ does *not* denote the space of infinitely differentiable (smooth) functions—which is usually written with the infinity symbol as a superscript, $C^\infty(\mathbb{R}^d)$. Instead, the subscript infinity in $C_\infty(\mathbb{R}^d)$ denotes the space of **continuous functions that vanish at infinity**.
+
+For a function $f$ to belong to $C_\infty(\mathbb{R}^d)$, it must satisfy two distinct properties:
+
+* **Continuity:** The function is continuous at every point $x \in \mathbb{R}^d$.
+* **Vanishing at infinity:** As you move infinitely far away from the origin in any direction, the function's value goes to zero. Mathematically:
+
+$$\lim_{|x| \to \infty} f(x) = 0$$
+
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.5 (Brownian Transition Operators Form a Semigroup)</span></p>
 
@@ -3322,6 +3338,10 @@ p_{s+t}(x, A) = \int_{\mathbb{R}^d} p_s(y, A)\, p_t(x, \mathrm{d}y) \quad \text{
 $$
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/KolmogorovChapmanConsistency.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Consistency and the Diffusion-Model Reading)</span></p>
@@ -3949,6 +3969,362 @@ $$
 $$
 
 By the fundamental lemma of the calculus of variations, since this integral vanishes for any smooth test function with compact support, the continuous integrand must vanish identically, proving the claim. $\square$
+
+</details>
+</div>
+
+While the backward equation analyses how the transition density changes with respect to the *initial starting position*, the **forward equation** describes its evolution concerning the *target destination*. In physics and generative modelling, this is often referred to as the **Fokker–Planck equation**: it tracks how probability mass drifts and diffuses forward through space over time.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">3.6 (Forward Kolmogorov Equation, 1931)</span></p>
+
+Let $(X_t)\_{t \ge 0}$ be a diffusion process with generator $(A, \mathcal{D}(A))$ such that its restriction to $C_c^\infty(\mathbb{R}^d)$ is the second-order differential operator of Definition 3.1. Assume that the drift and diffusion coefficients exhibit higher regularity,
+
+$$
+b \in C^1(\mathbb{R}^d, \mathbb{R}^d), \qquad a \in C^2(\mathbb{R}^d, \mathbb{R}^{d \times d}).
+$$
+
+Suppose $X_t$ admits a transition density $p(t, x, y) \in C\bigl((0, \infty) \times \mathbb{R}^d \times \mathbb{R}^d\bigr)$ whose spatial derivatives with respect to the *target* variable $y$ satisfy
+
+$$
+\frac{\partial p}{\partial y_j},\ \frac{\partial^2 p}{\partial y_j \partial y_k} \in C\bigl((0, \infty) \times \mathbb{R}^d \times \mathbb{R}^d\bigr) \quad \text{for all } j, k.
+$$
+
+Then the transition density satisfies the **forward Kolmogorov equation**,
+
+$$
+\frac{\partial p(t, x, y)}{\partial t} = L^{\ast}(y, D_y)\, p(t, x, y), \quad \text{for all } t > 0,\ x, y \in \mathbb{R}^d,
+$$
+
+where $L^{\ast}(y, D_y)$ is the *formal adjoint* of the differential operator $L$, defined as
+
+$$
+L^{\ast}(y, D_y)\, u(y) = -\sum_{j=1}^d \partial_{y_j}\!\bigl(b_j(y)\, u(y)\bigr) + \frac{1}{2} \sum_{i,j=1}^d \partial_{y_i} \partial_{y_j}\!\bigl(a_{ij}(y)\, u(y)\bigr). \tag{3.5}
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Reading the Adjoint Operator)</span></p>
+
+* The adjoint operator $L^{\ast}$ describes the **divergence of the probability flow**: the first term (advection/drift) rigidly *shifts* the probability mass, whilst the second term (diffusion) *scatters* it.
+* The derivatives in $L^{\ast}$ are evaluated with respect to the *target* variable $y$, thus answering the question: *"how does the probability of arriving exactly at $y$ change as time progresses?"*
+* In one line: the backward equation differentiates where you *start*; the forward equation differentiates where you *land*.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 3.6</summary>
+
+The proof structure closely mirrors that of the backward equation, but we exploit the *alternate* commutation identity from Lemma 2.16 (a),
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}t} T_t u = T_t A u = T_t L(\cdot, D) u \quad \text{for } u \in C_c^\infty(\mathbb{R}^d).
+$$
+
+Expressing both sides as integrals with respect to the transition density $p(t, x, y)$, we obtain the integral identity
+
+$$
+\frac{\partial}{\partial t} \int_{\mathbb{R}^d} p(t, x, y)\, u(y)\, \mathrm{d}y = \int_{\mathbb{R}^d} p(t, x, y)\, L(y, D_y)\, u(y)\, \mathrm{d}y.
+$$
+
+To isolate $\partial_t p(t, x, y)$, we must shift the differential operator $L$ away from the test function $u(y)$ and onto the density $p(t, x, y)$. This is achieved via multidimensional **integration by parts** (no boundary terms arise, since $u$ has compact support). Each spatial derivative shifted from $u(y)$ to $p(t, x, y)$ incurs a change of sign and necessitates differentiating the coefficient functions ($b$ and $a$) alongside the density; this mechanical shifting is exactly what yields the formal adjoint $L^{\ast}$ of (3.5):
+
+$$
+\int_{\mathbb{R}^d} p(t, x, y)\, L(y, D_y) u(y)\, \mathrm{d}y = \int_{\mathbb{R}^d} L^{\ast}(y, D_y)\, p(t, x, y)\, u(y)\, \mathrm{d}y.
+$$
+
+Rearranging,
+
+$$
+\int_{\mathbb{R}^d}\!\!\left(\frac{\partial p(t, x, y)}{\partial t} - L^{\ast}(y, D_y)\, p(t, x, y)\right)\! u(y)\, \mathrm{d}y = 0 \quad \text{for all } u \in C_c^\infty(\mathbb{R}^d),
+$$
+
+and the fundamental lemma of the calculus of variations forces the continuous integrand to vanish identically.
+
+Unlike the backward case, this approach avoids the need to interchange the differential operator and the integral, allowing us to relax the boundedness assumptions on $p$, $b$, and $a$. However, we pay a direct theoretical price: the integration by parts requires the drift $b$ and the diffusion matrix $a$ to be continuously differentiable ($C^1$ and $C^2$, respectively). $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Random Initial Conditions)</span></p>
+
+We have thus far formulated both equations assuming a fixed, deterministic initial state $x$ (i.e., $X_0 = x$ with certainty). In practice, processes often start from a random initial state distributed according to a probability measure $\mu$. The **marginal density** of the process at time $t$ is defined via the convolution
+
+$$
+p^\mu(t, y) := \int_{\mathbb{R}^d} p(t, x, y)\, \mu(\mathrm{d}x).
+$$
+
+Because the forward operator $L^{\ast}(y, D_y)$ is linear and acts solely on $y$, we can integrate both sides of the forward equation against $\mu(\mathrm{d}x)$ and safely interchange the integration with the derivatives. Consequently, the marginal density strictly obeys the exact same forward equation,
+
+$$
+\partial_t\, p^\mu = L^{\ast} p^\mu.
+$$
+
+* **Generative-modelling reading.** This $p^\mu(t, \cdot)$ — with $\mu$ the data distribution — is precisely the marginal $p(t, \cdot)$ of §1.2 whose score $\nabla_x \log p(t, x)$ drives the reverse SDE (1.4). The Fokker–Planck equation is the deterministic law that this sole unknown obeys.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Stochastic Reading: Perturbing the Start or the End)</span></p>
+
+Using probability theory and the Markov property, we can derive a geometric intuition for the difference between the two equations. Run the process over $[0, t]$ and analyse the probability of landing in a set $C$; this trajectory can be perturbed in two distinct ways.
+
+1. **Backward (initial perturbation).** Perturb the movement at the very beginning: let the process run on $[0, h]$, then evaluate the remaining journey of length $t - h$. By the Markov property, the change in probability is
+
+   $$
+   \mathbb{P}_x(X_t \in C) - \mathbb{P}_x(X_{t-h} \in C) = \mathbb{E}_x\!\left[\mathbb{P}_{X_h}(X_{t-h} \in C)\right] - \mathbb{P}_x(X_{t-h} \in C) = (T_h - \mathrm{id})\, \mathbb{P}_{(\cdot)}(X_{t-h} \in C)(x).
+   $$
+
+   Substituting the transition densities and dividing by $h$, one obtains
+
+   $$
+   \frac{p(t, x, y) - p(t-h, x, y)}{h} = \frac{(T_h - \mathrm{id})\, p(t-h, \cdot, y)(x)}{h}.
+   $$
+
+   Taking $h \to 0$ naturally applies the generator to the *starting* coordinate $x$, yielding the **backward equation**, $\partial_t p = A_x\, p$.
+
+2. **Forward (terminal perturbation).** Alternatively, let the process run completely unperturbed up to time $t - h$, and apply the perturbation at the end, during $[t-h, t]$. Conditioning on the state at $t - h$ yields
+
+   $$
+   \mathbb{P}_x(X_t \in C) - \mathbb{P}_x(X_{t-h} \in C) = \mathbb{E}_x\!\left[\mathbb{P}_{X_{t-h}}(X_h \in C)\right] - \mathbb{P}_x(X_{t-h} \in C) = \mathbb{E}_x\!\left[(T_h - \mathrm{id})\, \mathbf{1}_C(X_{t-h})\right].
+   $$
+
+   Passing to transition densities and dividing by $h$, one shifts the focus to the *target* variable,
+
+   $$
+   \frac{p(t, x, y) - p(t-h, x, y)}{h} = \frac{(T_h^{\ast} - \mathrm{id})\, p(t-h, x, \cdot)(y)}{h}.
+   $$
+
+   As $h \to 0$, this yields the **forward equation**, $\partial_t p = A_y^{\ast}\, p$, where $T_t^{\ast}$ and $A^{\ast}$ denote the formal adjoints of the semigroup and the generator.
+
+</div>
+
+### 3.2 Outlook: Itô's Theory of Diffusion Processes
+
+While Kolmogorov's framework is fundamentally *analytical* — characterising diffusions via transition semigroups, generators, and PDEs — Kiyosi Itô developed a parallel, *path-wise* approach. Instead of tracking the evolution of probability distributions globally, Itô's theory models the trajectories of individual particles explicitly in continuous time.
+
+> *The formal construction of the stochastic machinery used in this section — including the rigorous definition of the stochastic integral and Itô's calculus — will be developed from first principles in the coming weeks. For the present discussion, we introduce these concepts conceptually, to establish the continuous-time link between path trajectories and the infinitesimal generator.*
+
+In Itô's framework, a $d$-dimensional diffusion process $(X_t)\_{t \ge 0}$ is conceptualised as the unique solution to a *stochastic differential equation* (SDE) of the form
+
+$$
+\mathrm{d}X_t = b(X_t)\, \mathrm{d}t + \sigma(X_t)\, \mathrm{d}B_t, \qquad X_0 = x_0, \tag{3.6}
+$$
+
+where $(B_t)\_{t \ge 0}$ is a standard $m$-dimensional Brownian motion, serving as the continuous source of independent, erratic random fluctuations; $b : \mathbb{R}^d \to \mathbb{R}^d$ is the measurable *drift vector*, representing the local deterministic velocity of the process; and $\sigma : \mathbb{R}^d \to \mathbb{R}^{d \times m}$ is the *dispersion matrix* (or coefficient matrix), which scales and modulates the random ambient noise. The profound link between Itô's path-wise SDE (3.6) and Kolmogorov's analytical operator $L(x, D)$ is established via the *diffusion matrix* $a(x) \in \mathbb{R}^{d \times d}$, defined algebraically as
+
+$$
+a(x) := \sigma(x)\, \sigma(x)^{\!\top}. \tag{3.7}
+$$
+
+By constructing $a(x)$ in this manner, the components of (3.6) directly prescribe the coefficients of the second-order differential operator
+
+$$
+L(x, D)\, u(x) = \frac{1}{2} \sum_{i,j=1}^d a_{ij}(x)\, \frac{\partial^2 u(x)}{\partial x_i \partial x_j} + \sum_{j=1}^d b_j(x)\, \frac{\partial u(x)}{\partial x_j}. \tag{3.8}
+$$
+
+Intuitively, (3.6) implies that over an infinitesimal time interval $\mathrm{d}t$, the process behaves locally like a Brownian motion with a mean displacement of $b(x)\, \mathrm{d}t$ and a local covariance structure given by $a(x)\, \mathrm{d}t$. To guarantee that the path-wise formulation (3.6) is well-defined and indeed yields a valid Feller process matching our analytical definition, certain regularity conditions must be imposed on the coefficients.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">3.7 (Existence and Uniqueness of Strong Solutions)</span></p>
+
+Suppose the drift vector $b(\cdot)$ and the dispersion matrix $\sigma(\cdot)$ satisfy the following two conditions for all $x, y \in \mathbb{R}^d$ and a constant $K > 0$:
+
+1. **Global Lipschitz condition:**
+
+   $$
+   \lvert b(x) - b(y) \rvert + \lVert \sigma(x) - \sigma(y) \rVert \le K\, \lvert x - y \rvert.
+   $$
+
+2. **Linear growth condition:**
+
+   $$
+   \lvert b(x) \rvert + \lVert \sigma(x) \rVert \le K\, (1 + \lvert x \rvert).
+   $$
+
+Then, for any initial condition $X_0 = x_0$ independent of the Brownian motion, the SDE (3.6) admits a unique, path-wise continuous **strong solution** $(X_t)\_{t \ge 0}$. Furthermore, this solution possesses the strong Markov property and is a Feller process whose infinitesimal generator coincides with the differential operator $L(x, D)$ on $C_c^\infty(\mathbb{R}^d)$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(What the Two Conditions Rule Out)</span></p>
+
+* The **Lipschitz condition** plays the same role as in the Picard–Lindelöf theorem for ODEs: it prevents two solutions started at the same point from *branching apart*, and it is what makes the fixed-point (Picard) iteration underlying the existence proof contract.
+* The **linear growth condition** prevents *explosion in finite time* — compare the deterministic equation $\dot{x} = x^2$, whose solutions blow up; coefficients growing at most linearly keep the process alive on all of $[0, \infty)$.
+* The conclusion is the bridge promised at the start of the chapter: the path-wise object (3.6) *is* an analytical diffusion in the sense of Definition 3.1, with dictionary $a = \sigma \sigma^{\!\top}$.
+
+</div>
+
+Before moving on to the mechanics of reversing these processes in time, we can summarise the complete symmetry between the two mathematical approaches established so far.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(The Kolmogorov–Itô Dictionary)</span></p>
+
+* **Analytical viewpoint (Kolmogorov):** focuses on the transition probability densities $p(t, x, y)$ evolving *deterministically* via PDEs ($\partial_t p = L p$, respectively $\partial_t p = L^{\ast} p$).
+* **Probabilistic viewpoint (Itô):** focuses on individual sample paths $X_t(\omega)$ evolving *stochastically* via differential trajectories driven by noise ($\mathrm{d}X_t = b\, \mathrm{d}t + \sigma\, \mathrm{d}B_t$).
+
+The algebraic link $a(x) = \sigma(x)\, \sigma(x)^{\!\top}$ ensures that these two perspectives are completely equivalent characterisations of the same physical phenomenon.
+
+</div>
+
+### 3.3 The Time-Reversed Process
+
+The Markov property can be formulated as follows:
+
+> Given the present state, the future and the past are independent.
+
+It was observed early on that this property is *time-symmetric*: if a process $(X_t)\_{t \in [0, T]}$ satisfies the Markov property, then so does the time-reversed process $Y_t := X_{T-t}$. However, this does *not* imply that the reversed process is a homogeneous Markov process — at time $T$, the reversed process must necessarily follow the distribution of $X_0$, so time genuinely plays a role. For diffusion processes, it turns out that the time-reversed process is again a diffusion, but typically with a *time-dependent* drift that depends on the marginal distributions, as the following result shows.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">3.8 (Time Reversal of Diffusions; Haussmann–Pardoux)</span></p>
+
+Let $(X_t)\_{t \ge 0}$ be a diffusion process in $\mathbb{R}^d$ with smooth coefficients $b \in C^1(\mathbb{R}^d; \mathbb{R}^d)$, $a \in C^2(\mathbb{R}^d; \mathbb{R}^{d \times d})$ and transition density $p(t, x, y)$ fulfilling the assumptions of Proposition 3.6. Assume $X_0 \sim \mu$, and let $p^\mu(t, y) := \int_{\mathbb{R}^d} p(t, x, y)\, \mu(\mathrm{d}x) > 0$ denote the marginal density of $X_t$, which we also assume to be smooth for $t > 0$. Let $T > 0$. Then the time-reversed process
+
+$$
+Y_t := X_{T-t}, \qquad t \in [0, T],
+$$
+
+is again a diffusion process — in general *time-inhomogeneous* — with the **same diffusion matrix** $a$ and the time-dependent drift
+
+$$
+\widetilde{b}(t, y) = -\, b(y) + \frac{1}{p^\mu(T-t, y)}\, \nabla_y \cdot \bigl(a(y)\, p^\mu(T-t, y)\bigr),
+$$
+
+or, in coordinate form,
+
+$$
+\widetilde{b}_j(t, y) = -\, b_j(y) + \sum_{i=1}^d a_{ji}(y)\, \partial_{y_i} \log p^\mu(T-t, y) + \sum_{i=1}^d \partial_{y_i} a_{ji}(y).
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(The Reverse SDE of Generative Modelling, Proved)</span></p>
+
+* This is exactly **Anderson's theorem** previewed as Theorem 1.1 in §1.1 — now derived from Kolmogorov's analytical machinery (stated here for time-homogeneous forward coefficients; the inhomogeneous case is analogous).
+* The only ingredient of $\widetilde{b}$ that is not chosen by the modeller is the **score** $\nabla_y \log p^\mu$: the forward coefficients $b$ and $a$ are design choices, and the diffusion matrix survives reversal *unchanged*. Reversing time therefore costs no new noise structure — only a drift correction by the score. This is the precise mathematical reason why learning $\nabla \log p^\mu(t, \cdot)$ (score matching, §1.2) is *sufficient* to generate.
+* **Mind the clock.** If one rewrites the dynamics of $Y$ in the *original* time $t \mapsto T - t$ (integrating backwards from $T$ to $0$), every drift picks up a factor $-1$, giving $b - a \nabla \log p^\mu - \nabla \cdot a$; for $\sigma(t, x) = g(t) I$ the divergence term vanishes and this is precisely the score-SDE form (1.4) of §1.2. The overall sign is pure bookkeeping of which clock one integrates against; the invariant statement is the theorem above.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Sanity Check</span><span class="math-callout__name">(Stationary Ornstein–Uhlenbeck)</span></p>
+
+Let $d = 1$, $b(y) = -y$, $\sigma = \sqrt{2}$ (so $a = 2$), and start in the stationary law $X_0 \sim \mu = \mathcal{N}(0, 1)$. Then $p^\mu(t, y)$ is the standard normal density for *all* $t$, so $\partial_y \log p^\mu = -y$ and
+
+$$
+\widetilde{b}(t, y) = -\,(-y) + 2 \cdot (-y) = -y = b(y).
+$$
+
+The reversed process is *the same* OU process — as it must be: a stationary, reversible diffusion is statistically indistinguishable run forwards or backwards. Note how the two contributions conspire: the flipped drift $+y$ alone would be explosive, and the score term $-2y$ overcompensates to restore mean reversion. Getting either sign wrong destroys this balance — a useful memory hook for the formula.
+
+</div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/time_reversal_ou.png' | relative_url }}" alt="Two panels of stochastic paths. Left: forward Ornstein-Uhlenbeck paths starting from two sharp clusters at plus and minus two that merge into a single Gaussian cloud; the bimodal initial density and the Gaussian terminal density are drawn sideways at the edges. Right: paths of the time-reversed diffusion starting from the Gaussian cloud and re-condensing onto the two original clusters, with the same densities mirrored." loading="lazy">
+  <figcaption>Theorem 3.8 in action for the OU process $\mathrm{d}X_t = -X_t\,\mathrm{d}t + \sqrt{2}\,\mathrm{d}B_t$ started from the bimodal mixture $\mu = \frac12\mathcal{N}(-2, 0.15^2) + \frac12\mathcal{N}(2, 0.15^2)$, for which the marginal $p^\mu(t,\cdot)$ — and hence the exact score — is available in closed form. <strong>Left.</strong> The forward process transports "data" into (near-)Gaussian noise. <strong>Right.</strong> The reversed diffusion with drift $\widetilde b(\tau, y) = y + 2\,\partial_y \log p^\mu(T-\tau, y)$ transports the noise back onto the two data modes, reproducing the forward marginals in reverse — no learning involved, since the score is exact here.</figcaption>
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3.8</summary>
+
+The computation is carried out at the formal level; all $o(h)$-expansions and interchanges below are justified by the standing smoothness assumptions.
+
+**Step 1: Structure of the reversed process.** As noted above, the reversed process $Y_t := X_{T-t}$ is again a (time-inhomogeneous) Markov process with continuous paths. We will compute its generator and show that it is a second-order differential operator with the coefficients stated in the theorem.
+
+**Step 2: Transition density of the reversed process.** We aim to compute the transition density $q((s, y), (t, x))$ of
+
+$$
+\mathbb{P}(Y_t \in \mathrm{d}x \mid Y_s = y) \quad \text{for } 0 < s < t < T.
+$$
+
+By definition of the time reversal, $Y_s = X_{T-s}$ and $Y_t = X_{T-t}$, so the joint law of $(Y_s, Y_t)$ coincides with the joint law of $(X_{T-s}, X_{T-t})$. Since $X$ is a Markov process with transition densities $p(t, x, y)$ and $X_0 \sim \mu$, the joint density of $(X_u, X_v)$ for $u < v$ is
+
+$$
+\mathbb{P}(X_u \in \mathrm{d}x,\ X_v \in \mathrm{d}y) = p^\mu(u, x)\, p(v - u, x, y)\, \mathrm{d}x\, \mathrm{d}y.
+$$
+
+In our situation, setting $u = T - t$ and $v = T - s$, we obtain
+
+$$
+\mathbb{P}(Y_s \in \mathrm{d}y,\ Y_t \in \mathrm{d}x) = p^\mu(T-t, x)\, p(t-s, x, y)\, \mathrm{d}x\, \mathrm{d}y. \tag{3.9}
+$$
+
+Applying Bayes' rule for densities, $q((s, y), (t, x)) = f_{Y_s, Y_t}(y, x) / f_{Y_s}(y)$, with the marginal $f_{Y_s}(y) = p^\mu(T-s, y)$, we find
+
+$$
+q((s, y), (t, x)) = \frac{p^\mu(T-t, x)\, p(t-s, x, y)}{p^\mu(T-s, y)}. \tag{3.10}
+$$
+
+**Step 3: Generator of the reversed process.** Let $f \in C_c^\infty(\mathbb{R}^d)$ be a test function. The time-dependent generator $\widetilde{\mathcal{L}}\_t$ of $Y$ is defined as
+
+$$
+\widetilde{\mathcal{L}}_t f(y) := \lim_{h \to 0} \frac{1}{h}\bigl(\mathbb{E}[f(Y_{t+h}) \mid Y_t = y] - f(y)\bigr).
+$$
+
+Using the expression for $q$ from (3.10),
+
+$$
+\mathbb{E}[f(Y_{t+h}) \mid Y_t = y] = \frac{1}{p^\mu(T-t, y)} \int_{\mathbb{R}^d} f(x)\, p^\mu(T-t-h, x)\, p(h, x, y)\, \mathrm{d}x.
+$$
+
+Two expansions are needed as $h \downarrow 0$. In the *time* slot,
+
+$$
+p^\mu(T-t-h, x) = p^\mu(T-t, x) - h\, \partial_t p^\mu(T-t, x) + o(h).
+$$
+
+In the *space* slot, the kernel $p(h, \cdot, y)$ — the transition density integrated over its *starting* point — concentrates at $y$ and satisfies, for any smooth $g$, the **dual small-time expansion**
+
+$$
+\int_{\mathbb{R}^d} g(x)\, p(h, x, y)\, \mathrm{d}x = g(y) + h\, L^{\ast}(y, D_y)\, g(y) + o(h),
+$$
+
+the adjoint counterpart of the semigroup expansion $T_h g = g + h L g + o(h)$: differentiating in $h$ with the backward equation $\partial_h p = L(x, D_x)\, p$ (Proposition 3.5) and shifting $L$ onto $g$ by integration by parts gives $\frac{\mathrm{d}}{\mathrm{d}h} \int g\, p\, \mathrm{d}x = \int (L^{\ast} g)\, p\, \mathrm{d}x \to L^{\ast} g(y)$.
+
+Applying both expansions with $g := f \cdot p^\mu(T-t, \cdot)$, and noting $g(y) / p^\mu(T-t, y) = f(y)$,
+
+$$
+\mathbb{E}[f(Y_{t+h}) \mid Y_t = y] = f(y) + \frac{h}{p^\mu(T-t, y)} \Bigl[ L^{\ast}\bigl(f\, p^\mu(T-t, \cdot)\bigr)(y) - f(y)\, \partial_t p^\mu(T-t, y) \Bigr] + o(h).
+$$
+
+Since the marginal density satisfies the forward Kolmogorov (Fokker–Planck) equation $\partial_t p^\mu = L^{\ast} p^\mu$ (Proposition 3.6 and the remark on random initial conditions), we arrive at the compact *conjugation formula*
+
+$$
+\widetilde{\mathcal{L}}_t f = \frac{L^{\ast}(f\, p^\mu) - f\, L^{\ast} p^\mu}{p^\mu}\bigg|_{(T-t,\, \cdot)}.
+$$
+
+As a first sanity check: constants are killed, $\widetilde{\mathcal{L}}\_t 1 = 0$, as any generator must satisfy.
+
+It remains to expand. Write $p := p^\mu(T-t, \cdot)$. For the drift part of $L^{\ast}$,
+
+$$
+-\sum_{j=1}^d \partial_j(b_j\, f\, p) + f \sum_{j=1}^d \partial_j(b_j\, p) = -\sum_{j=1}^d b_j\, p\, \partial_j f.
+$$
+
+For the diffusion part, set $g_{ij} := a_{ij}\, p$; the product rule gives
+
+$$
+\partial_i \partial_j (g_{ij}\, f) - f\, \partial_i \partial_j g_{ij} = \partial_i f\, \partial_j g_{ij} + \partial_j f\, \partial_i g_{ij} + g_{ij}\, \partial_i \partial_j f,
+$$
+
+and summing over $i, j$ — using the symmetry $a_{ij} = a_{ji}$ to merge the two cross terms — yields
+
+$$
+\frac{L^{\ast}(f p) - f\, L^{\ast} p}{p} = \frac{1}{2} \sum_{i,j=1}^d a_{ij}\, \partial_i \partial_j f + \sum_{j=1}^d \Bigl[ -b_j + \frac{1}{p} \sum_{i=1}^d \partial_i (a_{ji}\, p) \Bigr] \partial_j f.
+$$
+
+Thus $\widetilde{\mathcal{L}}\_t$ is again a second-order differential operator with the *same* diffusion matrix $a$ and drift
+
+$$
+\widetilde{b}_j(t, y) = -\, b_j(y) + \frac{1}{p^\mu(T-t, y)} \sum_{i=1}^d \partial_{y_i}\bigl(a_{ji}(y)\, p^\mu(T-t, y)\bigr);
+$$
+
+expanding the derivative of the product, $\frac{1}{p} \partial_i(a_{ji} p) = \partial_i a_{ji} + a_{ji}\, \partial_i \log p$, gives the coordinate form in the statement. $\square$
 
 </details>
 </div>
