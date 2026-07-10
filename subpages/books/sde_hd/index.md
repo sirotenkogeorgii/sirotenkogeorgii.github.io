@@ -14,6 +14,8 @@ tags:
   - ito-calculus
   - stochastic-integration
   - martingales
+  - girsanov
+  - ornstein-uhlenbeck
 # math: true
 ---
 
@@ -5363,5 +5365,781 @@ Both halves of a score-based diffusion model reduce to this scheme:
 * The *generative* direction integrates the reverse SDE (1.4)/Theorem 3.8, whose drift contains the learned score $s_\theta \approx \nabla \log p^\mu$: DDPM-style "ancestral sampling" is, up to reparametrisation, an Euler–Maruyama discretisation of the reverse SDE. The step-size considerations above become the sampling-speed-versus-fidelity trade-off of few-step samplers.
 
 With stochastic integration, the Itô rule, solvable linear SDEs, and a numerical scheme in hand, the microscopic toolkit promised at the start of this chapter is complete.
+
+</div>
+
+## 5 Diffusion Models
+
+We are now in a position to explain the core idea behind diffusion models for generative modelling, using the Ornstein–Uhlenbeck (OU) process as a pedagogical example. This will serve as a bridge between the stochastic processes discussed before and recent machine learning approaches — and, in §5.4, we will see that the theory delivers more than intuition: a quantitative, polynomial-time error bound for the whole sampling pipeline.
+
+### 5.1 The Ornstein–Uhlenbeck Process
+
+The Ornstein–Uhlenbeck (OU) process is a fundamental example of a diffusion process. It is widely used to model mean-reverting behaviour in various applications, such as in finance, physics, and machine learning, and it is one of the rare examples of a diffusion with an explicitly known semigroup. In this section, we derive its transition densities and analyse its asymptotic behaviour.
+
+For parameters $\sigma > 0$, $\theta \in \mathbb{R}$, the Ornstein–Uhlenbeck process is defined by its generator,
+
+$$
+L(x, D) f(x) = \frac{1}{2} \sigma^2 \Delta f(x) - \theta x \cdot \nabla f(x),
+$$
+
+where $\Delta$ denotes the Laplacian and $\nabla$ the gradient with respect to $x$. In terms of drift and diffusion coefficients,
+
+$$
+b(x) = -\theta x = (-\theta x_1, \dots, -\theta x_d)^{\!\top}, \qquad a(x) = \sigma^2 \mathrm{Id}_d,
+$$
+
+or, in coordinate notation, $a_{ij}(x) = \sigma^2 \delta_{ij}$ and $b_j(x) = -\theta x_j$. Thus, it is also described as the solution of the SDE
+
+$$
+\mathrm{d}X_t = -\theta X_t\, \mathrm{d}t + \sigma\, \mathrm{d}W_t,
+$$
+
+where $W = (W_t)\_{t \ge 0}$ is a standard $d$-dimensional Brownian motion.
+
+**Transition densities.** We now apply Proposition 3.6 to compute the transition density. For the Ornstein–Uhlenbeck process, the adjoint operator from the proposition takes the form
+
+$$
+L^{\ast}(y, D_y)\, u(y) = \theta\, \nabla_y \cdot \bigl(y\, u(y)\bigr) + \frac{\sigma^2}{2} \Delta_y u(y).
+$$
+
+Hence, the transition density $p(t, x, y)$ must satisfy the PDE (forward Kolmogorov equation),
+
+$$
+\frac{\partial}{\partial t} p(t, x, y) = \theta\, \nabla_y \cdot \bigl(y\, p(t, x, y)\bigr) + \frac{\sigma^2}{2} \Delta_y p(t, x, y).
+$$
+
+We now make the ansatz that the process is a Gaussian process, i.e.,
+
+$$
+p(t, x, y) = \frac{1}{\sqrt{(2\pi)^d \det \Sigma_t}} \exp\biggl(-\frac{1}{2} \bigl(y - m_t(x)\bigr)^{\!\top} \Sigma_t^{-1} \bigl(y - m_t(x)\bigr)\biggr),
+$$
+
+and determine $m_t(x)$ and $\Sigma_t$ such that this expression solves the forward equation. By direct computation, we find
+
+$$
+m_t(x) = e^{-\theta t} x, \qquad \Sigma_t = \frac{\sigma^2}{2\theta} \bigl(\mathrm{Id}_d - e^{-2\theta t}\bigr).
+$$
+
+Substituting this expression into the forward equation confirms that the PDE is satisfied. The initial condition is also satisfied in the limit $t \to 0$, as the Gaussian converges to a Dirac delta at $y = x$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two Routes to the Same Gaussian)</span></p>
+
+The transition density can also be obtained *path-wise*, without any PDE: the OU equation is an inhomogeneous linear SDE, so Theorem 4.23 (with $K \equiv -\theta$, $H \equiv 0$, $k \equiv 0$, $h \equiv \sigma$) yields the explicit solution
+
+$$
+X_t = e^{-\theta t} x + \sigma \int_0^t e^{-\theta (t - s)}\, \mathrm{d}W_s.
+$$
+
+The Wiener integral of a deterministic integrand is Gaussian; its mean is $e^{-\theta t} x$ and, by the Itô isometry (Theorem 4.6), its variance is $\sigma^2 \int_0^t e^{-2\theta(t-s)}\, \mathrm{d}s = \frac{\sigma^2}{2\theta}\bigl(1 - e^{-2\theta t}\bigr)$ per coordinate — exactly the $m_t$ and $\Sigma_t$ found by the PDE ansatz. The analytical machinery of Chapter 3 and the path-wise machinery of Chapter 4 land on the same answer, as they must.
+
+</div>
+
+**Asymptotic behaviour as $t \to \infty$.** We now assume $\theta > 0$. From the transition distribution
+
+$$
+\mathcal{N}\biggl(y;\, e^{-\theta t} x,\ \frac{\sigma^2}{2\theta}\bigl(\mathrm{Id}_d - e^{-2\theta t}\bigr)\biggr),
+$$
+
+we observe that, as $t \to \infty$, the mean $m_t(x) = e^{-\theta t} x$ decays to zero exponentially fast, implying that the process tends to the origin, while the covariance matrix $\Sigma_t$ converges to the constant matrix $\frac{\sigma^2}{2\theta} \mathrm{Id}\_d$, indicating that the variance of the process stabilises. This means that for large $t$, the distribution of $X_t$ becomes *independent of the initial condition* $x$, and the process approaches a stationary Gaussian distribution with mean $0$ and covariance $\frac{\sigma^2}{2\theta} \mathrm{Id}\_d$. Hence, the Ornstein–Uhlenbeck process is stationary in the long run, with the stationary distribution being $\mathcal{N}\bigl(0, \frac{\sigma^2}{2\theta} \mathrm{Id}\_d\bigr)$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">5.1 (Invariant Measure)</span></p>
+
+A probability measure $\mu$ on $\mathbb{R}^d$ is called an **invariant measure** for the Markov semigroup $(P_t)\_{t \ge 0}$ if it satisfies
+
+$$
+\int_{\mathbb{R}^d} P_t g(x)\, \mu(\mathrm{d}x) = \int_{\mathbb{R}^d} g(x)\, \mu(\mathrm{d}x)
+$$
+
+for all bounded measurable functions $g : \mathbb{R}^d \to \mathbb{R}$ and all $t \ge 0$. It can be checked that this is equivalent to $L^{\ast} \mu = 0$ (understood in the weak sense).
+
+</div>
+
+**Reverse drift.** According to Theorem 3.8, the time-reversed process $Y_t := X_{T-t}$ is again a diffusion process with diffusion coefficient $a(y) = \sigma^2 \mathrm{Id}\_d$, and time-dependent drift
+
+$$
+\widetilde{b}(t, y) = \theta y + \sigma^2\, \nabla_y \log p^\mu(T - t, y).
+$$
+
+Thus, the reverse drift depends explicitly on the marginal density of the forward process at time $T - t$. In general, $p^\mu(t, y)$ has no closed-form expression if $\mu$ is arbitrary, as it requires evaluating the convolution
+
+$$
+p^\mu(t, y) = \int_{\mathbb{R}^d} \phi_{e^{-\theta t} x,\ \frac{\sigma^2}{2\theta}(\mathrm{Id}_d - e^{-2\theta t})}(y)\, \mu(\mathrm{d}x).
+$$
+
+This is a Gaussian smoothing of the initial density $\mu$, which is typically not analytically tractable. One of the rare exceptions is when $\mu$ equals the stationary distribution
+
+$$
+\mu(\mathrm{d}y) = \mathcal{N}\biggl(0, \frac{\sigma^2}{2\theta} \mathrm{Id}_d\biggr)(\mathrm{d}y);
+$$
+
+the convolution structure implies that $p^\mu(t, y) \equiv \mu(y)$ for all $t \ge 0$, since the Ornstein–Uhlenbeck process is stationary under this law. In this special case,
+
+$$
+\nabla_y \log p^\mu(T - t, y) = \nabla_y \log \mu(y) = -\frac{2\theta}{\sigma^2}\, y,
+$$
+
+and thus
+
+$$
+\widetilde{b}(t, y) = \theta y - 2\theta y = -\theta y.
+$$
+
+The time-reversed process is again *the same* Ornstein–Uhlenbeck process — as it must be: a stationary reversible diffusion is statistically indistinguishable run forwards or backwards. This is precisely the Sanity Check of §3.3 (which treated the case $\theta = 1$, $\sigma^2 = 2$), now for general parameters. In the *reversed-clock* convention of the score-SDE literature (integrating backwards in the original time), the drift instead reads $-\theta y - \sigma^2 \nabla_y \log p^\mu$, which at stationarity becomes $+\theta y$, "pointing away from the origin" — the same dynamics, read against the opposite clock.
+
+### 5.2 Core Idea Based on Diffusion Processes
+
+In generative diffusion models, one begins with an initial data distribution $\mu$ on $\mathbb{R}^d$, which is typically highly complex. A canonical example is the distribution of natural images (e.g., images of dogs) represented in pixel space.
+
+The forward process $X$ is initialised with $X_0 \sim \mu$ and is designed to gradually inject noise into the data so that, as time progresses, the distribution of $X_T$ converges to a simple, known reference distribution, usually a standard Gaussian. The Ornstein–Uhlenbeck process exhibits precisely this behaviour: it transforms *any* initial distribution into a Gaussian distribution as $T \to \infty$. More precisely, $X_T$ converges in distribution to the stationary Gaussian
+
+$$
+\pi(\mathrm{d}y) = \mathcal{N}\biggl(0, \frac{\sigma^2}{2\theta} \mathrm{Id}_d\biggr)(\mathrm{d}y),
+$$
+
+independently of the form of $\mu$. Thus, the OU process can be viewed as a "noising" mechanism that progressively converts structured data into pure noise via stochastic perturbations.
+
+In practice, the distribution $\mu$ is not available in closed form, but we have access to i.i.d. samples from it — namely, the training dataset. To simulate the forward process, one draws $X_0 \sim \mu$ from the dataset and simulates the stochastic process $(X_t)\_{t \in [0, T]}$ forward in time. This yields progressively noisier versions of the data at different time steps, which serve as training inputs for learning the reverse process.
+
+**The inverse problem: sampling from complex distributions.** The objective of generative modelling is to *reverse* this process: starting from samples drawn from the simple Gaussian reference distribution, one aims to generate new samples from the original complex data distribution $\mu$. By the time-reversal result in Theorem 3.8, the time-reversed process $Y_t := X_{T-t}$ is again a diffusion with generator
+
+$$
+\widetilde{L}(t, y, D) f(y) = \frac{\sigma^2}{2} \Delta f(y) + \widetilde{b}(t, y) \cdot \nabla f(y),
+\qquad
+\widetilde{b}(t, y) = \theta y + \sigma^2\, \nabla_y \log p^\mu(T - t, y).
+$$
+
+In general, this drift depends on the so-called **score function** $\nabla_y \log p^\mu(t, y)$ of the forward process, which is not explicitly known for complex distributions $\mu$. Assuming that the reverse drift $\widetilde{b}(t, y)$ is known, approximate samples from $\mu$ can be generated by simulating the reverse-time diffusion $Y_t$ forward in time, starting from $Y_0 \sim \pi$, the known reference distribution (typically Gaussian, for large $T$). The stochastic process $Y$ is then simulated as described in §4.3, yielding a terminal sample $Y_T$ that approximates a draw from $\mu$.
+
+**The key challenge: score estimation.** The main practical challenge in implementing the reverse-time dynamics lies in estimating the score function $\nabla_y \log p^\mu(t, y)$ for various time steps $t$. Since the exact marginals $p^\mu(t, y)$ are unknown in general, direct computation of the score is infeasible. In recent diffusion models, this problem is addressed through **score matching**: a time-dependent neural network is trained to approximate the score function using data generated from the forward process. Once the score model has been trained, the reverse-time process can be simulated as described above, yielding approximate samples from the target distribution $\mu$.
+
+### 5.3 The Statistical Problem: Score Matching
+
+In the previous section, we saw that reversing the diffusion process requires knowledge of the score function $\nabla_y \log p^\mu(t, y)$ at various times $t$. Since this function is typically intractable, it must be estimated from data. The standard approach used in diffusion models is *score matching*, a technique originally introduced by Hyvärinen (2005). We now present its mathematical formulation.
+
+**The general problem.** Let $p(y)$ be a probability density on $\mathbb{R}^d$, from which we have access to samples but not to the density itself. The goal is to estimate the score function
+
+$$
+s(y) := \nabla_y \log p(y).
+$$
+
+Instead of attempting to estimate $p(y)$ directly, score matching proposes to estimate $s(y)$ by solving the optimisation problem
+
+$$
+\min_{s_\theta}\ \mathbb{E}\biggl[\frac{1}{2} \bigl\lVert s_\theta(Y) - s(Y) \bigr\rVert^2\biggr],
+$$
+
+where $s_\theta : \mathbb{R}^d \to \mathbb{R}^d$ is a parametrised function (e.g., a neural network) approximating the score, $\lVert \cdot \rVert$ denotes the Euclidean norm, and $Y$ has distribution $p$. Since $s(y)$ is unknown, this objective cannot be computed directly. Instead, Hyvärinen's key observation is that the above objective can be rewritten, up to an additive constant independent of $s_\theta$, as
+
+$$
+J(s_\theta) := \mathbb{E}\biggl[\frac{1}{2} \bigl\lVert s_\theta(Y) \bigr\rVert^2 + \nabla \cdot s_\theta(Y)\biggr],
+$$
+
+where $\nabla \cdot s_\theta = \sum_i \partial_{y_i} s_\theta^i(\cdot)$ denotes the divergence of the vector field $s_\theta$. We sketch the derivation of this identity. Expanding the square,
+
+$$
+\mathbb{E}\biggl[\frac{1}{2} \bigl\lVert s_\theta(Y) - s(Y) \bigr\rVert^2\biggr] = \frac{1}{2} \mathbb{E}\bigl[\lVert s_\theta(Y) \rVert^2\bigr] - \mathbb{E}\bigl[s_\theta(Y) \cdot s(Y)\bigr] + \frac{1}{2} \mathbb{E}\bigl[\lVert s(Y) \rVert^2\bigr],
+$$
+
+and observe that the last term is independent of $\theta$ and can be neglected for optimisation. The middle term can be rewritten using integration by parts (assuming $p\, s_\theta$ decays at infinity),
+
+$$
+\mathbb{E}\bigl[s_\theta(Y) \cdot s(Y)\bigr] = \int_{\mathbb{R}^d} s_\theta(y) \cdot \nabla \log p(y)\ p(y)\, \mathrm{d}y = \int_{\mathbb{R}^d} s_\theta(y) \cdot \nabla p(y)\, \mathrm{d}y = -\int_{\mathbb{R}^d} \nabla \cdot s_\theta(y)\ p(y)\, \mathrm{d}y = -\mathbb{E}\bigl[\nabla \cdot s_\theta(Y)\bigr].
+$$
+
+Thus, the objective function becomes $J(\theta) = \mathbb{E}\bigl[\frac{1}{2} \lVert s_\theta(Y) \rVert^2 + \nabla \cdot s_\theta(Y)\bigr]$, which depends only on $s_\theta$, but *not* on the true score $s$. This expectation can be approximated by a Monte Carlo average over samples $y_1, \dots, y_N \sim p$, yielding the empirical loss
+
+$$
+\widehat{J}(\theta) = \frac{1}{N} \sum_{k=1}^N \biggl[\frac{1}{2} \bigl\lVert s_\theta(y_k) \bigr\rVert^2 + \nabla \cdot s_\theta(y_k)\biggr],
+$$
+
+which can be minimised using standard techniques such as stochastic gradient descent.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Three Faces of Score Matching)</span></p>
+
+We have now met all three classical formulations, which coincide up to $\theta$-independent constants:
+
+* **Explicit score matching (ESM)**, §1.2: the ideal $L^2$-regression onto $\nabla \log p$ — intractable, since the true score is unknown.
+* **Implicit score matching (ISM)**, this section (Hyvärinen 2005): trades the unknown score for the divergence $\nabla \cdot s_\theta$. Exact, but computing the divergence of a deep network in high dimension is expensive (in practice it is estimated stochastically, e.g. by Hutchinson-type estimators).
+* **Denoising score matching (DSM)**, §1.2 (Vincent 2011): replaces the marginal score by the *conditional* score of the forward transition kernel — which is an explicit Gaussian precisely because the forward corruption is a linear SDE (Theorem 4.23). This is the variant used by modern diffusion models.
+
+</div>
+
+**Time-dependent score matching in diffusion models.** In generative diffusion models, the data distribution evolves under the forward diffusion process into a family of progressively noised distributions $\lbrace p^\mu(t, y) \rbrace\_{t \in [0, T]}$. To learn how to reverse this process, one must approximate the time-dependent score function
+
+$$
+s_t(y) := \nabla_y \log p^\mu(t, y)
+$$
+
+for each time $t$. This is achieved by training a neural network $s_\theta(t, y)$ to match $s_t(y)$, using a generalised score matching objective averaged over time:
+
+$$
+\int_0^T \lambda(t)\, \mathbb{E}\biggl[\frac{1}{2} \bigl\lVert s_\theta(t, X_t) \bigr\rVert^2 + \nabla_y \cdot s_\theta(t, X_t)\biggr]\, \mathrm{d}t,
+$$
+
+where $X_t \sim p^\mu(t, \cdot)$ and $\lambda(t) \ge 0$ is a weighting function that emphasises certain noise levels over others. In practice, samples $X_t$ are obtained by simulating the forward diffusion process starting from empirical data points $X_0 \sim \mu$; this constructs the training data for score matching at each time $t \in [0, T]$. Once the score model $s_\theta(t, y)$ is trained, it is used to approximate the reverse-time dynamics by replacing the unknown score in the time-reversed SDE with the learned function.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(The Score-Based Generative Pipeline)</span></p>
+
+The theory developed above provides a rigorous foundation for modern score-based generative models. In practice, the modelling pipeline proceeds as follows:
+
+1. **Data and forward process:**
+   * One is given i.i.d. data samples $x^{(1)}, \dots, x^{(N)} \sim \mu \subset \mathbb{R}^d$.
+   * A forward diffusion process $(X_t)\_{t \in [0, T]}$ is chosen, e.g., an Ornstein–Uhlenbeck process, such that $X_0 \sim \mu$ and $X_T \approx \pi$ is a known reference distribution (e.g., Gaussian).
+2. **Score estimation:**
+   * The time-dependent score function $\nabla_y \log p^\mu(t, y)$ of the evolving distribution is estimated using score matching.
+   * A neural network $s_\theta(t, y)$ is trained using the Hyvärinen objective applied to noised samples $X_t$.
+3. **Reverse-time generation:**
+   * Given the estimated score function, one simulates (as in §4.3) the diffusion with generator
+
+     $$
+     \widetilde{L}(t, y, D) f(y) = \frac{\sigma^2}{2} \Delta f(y) + \bigl[\theta y + \sigma^2 s_\theta(T - t, y)\bigr] \cdot \nabla f(y),
+     $$
+
+     starting from $Y_0 \sim \pi$, to generate approximate samples $Y_T \sim \mu$.
+
+In this way, stochastic processes provide the theoretical and algorithmic backbone for generative modelling via diffusion.
+
+</div>
+
+### 5.4 Error Analysis for Diffusion Models
+
+We have seen that the Ornstein–Uhlenbeck process interpolates between the data distribution and a Gaussian, and that its time reversal is governed by the score function of the intermediate marginals. The next question is *algorithmic*: if we discretise the reverse SDE and replace the exact score by an estimated score, how far is the output law from the target distribution? Do we still get a polynomial-time algorithm? As will be shown now, the sampling stage of a diffusion model (under mild assumptions) can be analysed by comparing two *path measures*: the exact reverse diffusion and the discretised reverse process. Since these two processes have the same diffusion coefficient, Girsanov's theorem converts the discrepancy into an integral of squared *drift mismatch*. This path-space KL argument is what yields a polynomial-time discretisation bound.
+
+**Setup.** Let $p$ be the target density on $\mathbb{R}^d$, and let $\mu(\mathrm{d}x) = p(x)\, \mathrm{d}x$. We run the forward OU process with $\theta = 1$, $\sigma = \sqrt{2}$ (so that the invariant measure is the standard Gaussian $\gamma_d := \mathcal{N}(0, \mathrm{Id}\_d)$),
+
+$$
+\mathrm{d}X_t = -X_t\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}W_t, \qquad X_0 \sim p.
+$$
+
+Let $p_t := p^\mu(t, \cdot)$ denote the density of $X_t$. By the explicit solution of the OU process (Theorem 4.23),
+
+$$
+X_t = e^{-t} X_0 + \sqrt{1 - e^{-2t}}\, Z, \qquad Z \sim \mathcal{N}(0, \mathrm{Id}_d) \ \text{independent}.
+$$
+
+For a fixed time horizon $T > 0$, the reverse process $Y_t = X_{T-t}$ satisfies (Theorem 3.8, with $\theta = 1$, $\sigma^2 = 2$)
+
+$$
+\mathrm{d}Y_t = \bigl[Y_t + 2 \nabla \log p_{T-t}(Y_t)\bigr]\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}\widetilde{W}_t, \qquad Y_0 \sim p_T. \tag{5.1}
+$$
+
+If we could simulate (5.1) exactly starting from $p_T$, then $Y_T \sim p$.
+
+**The practical reverse sampler.** In practice, the score $\nabla \log p_t$ is unknown and must be replaced by an estimator $s_t(\cdot)$. We also discretise time: let
+
+$$
+0 = t_0 < t_1 < \cdots < t_K = T, \qquad t_k = k h, \quad h = \frac{T}{K}.
+$$
+
+On each interval $[t_k, t_{k+1}]$ we "freeze" the estimated score at the left endpoint and consider
+
+$$
+\mathrm{d}\widehat{X}_t = \bigl[\widehat{X}_t + 2\, s_{T - t_k}(\widehat{X}_{t_k})\bigr]\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}\widetilde{W}_t, \qquad t \in [t_k, t_{k+1}]. \tag{5.2}
+$$
+
+Because the drift is affine in $\widehat{X}\_t$, its one-step update is explicit — variation of constants (Theorem 4.23) on each interval gives the *exponential integrator*
+
+$$
+\widehat{X}_{t_{k+1}} = e^h\, \widehat{X}_{t_k} + 2 \bigl(e^h - 1\bigr)\, s_{T - t_k}(\widehat{X}_{t_k}) + \sqrt{e^{2h} - 1}\; \xi_k,
+$$
+
+where $\xi_k \sim \mathcal{N}(0, \mathrm{Id}\_d)$ are i.i.d. and independent of the past.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Three Sources of Error)</span></p>
+
+There are three conceptually different errors in the practical sampler:
+
+* **Initialisation error:** the algorithm initialises from the stationary Gaussian $\gamma_d = \mathcal{N}(0, \mathrm{Id}\_d)$ instead of the true (unknown) terminal law $p_T$.
+* **Score estimation error:** we use the estimator $s_t$ instead of the true score $\nabla \log p_t$.
+* **Discretisation error:** even with the exact score, we freeze it on each interval.
+
+The remainder of this section quantifies all three terms.
+
+</div>
+
+**Statistical distances and information theory.** To quantify the approximation errors, we require appropriate distance measures between probability distributions.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Variation Distance and KL Divergence)</span></p>
+
+* **Total variation (TV) distance:** measures the maximum discrepancy over all Borel sets and takes values in $[0, 1]$; for two probability measures $P$ and $Q$ on $\mathbb{R}^d$,
+
+  $$
+  \mathrm{TV}(P, Q) := \sup_{A \in \mathcal{B}(\mathbb{R}^d)} \bigl\lvert P(A) - Q(A) \bigr\rvert,
+  $$
+
+  and if $P$ and $Q$ admit densities $p$ and $q$ with respect to the Lebesgue measure, this simplifies to
+
+  $$
+  \mathrm{TV}(P, Q) = \frac{1}{2} \int_{\mathbb{R}^d} \bigl\lvert p(x) - q(x) \bigr\rvert\, \mathrm{d}x.
+  $$
+
+* **Kullback–Leibler (KL) divergence:** strictly non-negative and asymmetric. For general probability measures, if $P$ is absolutely continuous with respect to $Q$ ($P \ll Q$), it is defined via the Radon–Nikodym derivative as
+
+  $$
+  \mathrm{KL}(P \,\Vert\, Q) := \int_{\mathbb{R}^d} \log\biggl(\frac{\mathrm{d}P}{\mathrm{d}Q}\biggr)\, \mathrm{d}P.
+  $$
+
+  If $P \not\ll Q$, we set $\mathrm{KL}(P \,\Vert\, Q) := \infty$. In the special case where both measures admit densities $p$ and $q$,
+
+  $$
+  \mathrm{KL}(P \,\Vert\, Q) = \int_{\mathbb{R}^d} p(x) \log\biggl(\frac{p(x)}{q(x)}\biggr)\, \mathrm{d}x.
+  $$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">5.2 (Pinsker's Inequality)</span></p>
+
+For any two probability measures $P$ and $Q$,
+
+$$
+\mathrm{TV}(P, Q) \le \sqrt{\frac{1}{2} \mathrm{KL}(P \,\Vert\, Q)}.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 5.2</summary>
+
+If $\mathrm{KL}(P \,\Vert\, Q) = \infty$, the inequality is trivially satisfied, so we may assume $\mathrm{KL}(P \,\Vert\, Q) < \infty$; this finiteness implies $P \ll Q$. By the Radon–Nikodym theorem, the density $f := \frac{\mathrm{d}P}{\mathrm{d}Q}$ exists and is $Q$-almost everywhere non-negative. Using this density,
+
+$$
+\mathrm{TV}(P, Q) = \frac{1}{2} \int \lvert f - 1 \rvert\, \mathrm{d}Q \qquad \text{and} \qquad \mathrm{KL}(P \,\Vert\, Q) = \int f \log f\, \mathrm{d}Q.
+$$
+
+Consider the strictly convex function $\psi(x) = x \log x - x + 1$ for $x \ge 0$. Since $\int (f - 1)\, \mathrm{d}Q = P(\Omega) - Q(\Omega) = 1 - 1 = 0$,
+
+$$
+\mathrm{KL}(P \,\Vert\, Q) = \int (f \log f - f + 1)\, \mathrm{d}Q = \int \psi(f)\, \mathrm{d}Q.
+$$
+
+Define the measurable set $A = \lbrace f \ge 1 \rbrace$. Then
+
+$$
+\mathrm{TV}(P, Q) = \int_A (f - 1)\, \mathrm{d}Q = \int_{A^c} (1 - f)\, \mathrm{d}Q =: \delta.
+$$
+
+Let $\alpha = Q(A)$ and $\beta = Q(A^c) = 1 - \alpha$. We split the KL integral over the partition $\lbrace A, A^c \rbrace$ and apply Jensen's inequality to the convex function $\psi$ on each part, with respect to the normalised probability measures $Q(\cdot \mid A)$ and $Q(\cdot \mid A^c)$:
+
+$$
+\mathrm{KL}(P \,\Vert\, Q) = \alpha \int_A \psi(f)\, \frac{\mathrm{d}Q}{\alpha} + \beta \int_{A^c} \psi(f)\, \frac{\mathrm{d}Q}{\beta} \ge \alpha\, \psi\biggl(\int_A f\, \frac{\mathrm{d}Q}{\alpha}\biggr) + \beta\, \psi\biggl(\int_{A^c} f\, \frac{\mathrm{d}Q}{\beta}\biggr).
+$$
+
+Observe that $\int_A f\, \mathrm{d}Q = P(A) = Q(A) + \delta = \alpha + \delta$, and similarly $\int_{A^c} f\, \mathrm{d}Q = P(A^c) = \beta - \delta$. Thus,
+
+$$
+\mathrm{KL}(P \,\Vert\, Q) \ge \alpha\, \psi\Bigl(1 + \frac{\delta}{\alpha}\Bigr) + \beta\, \psi\Bigl(1 - \frac{\delta}{\beta}\Bigr) = (\alpha + \delta) \log \frac{\alpha + \delta}{\alpha} + (\beta - \delta) \log \frac{\beta - \delta}{\beta},
+$$
+
+where the equality expands $\psi(x) = x \log x - x + 1$ (the linear parts telescope to zero). It remains to show that, for $p := \alpha + \delta$ and $q := \alpha$, the function $g(\delta) := p \log \frac{p}{q} + (1 - p) \log \frac{1 - p}{1 - q}$ is bounded below by $2\delta^2$. Computing derivatives with respect to $\delta$,
+
+$$
+g(0) = 0, \qquad g'(0) = \log 1 - \log 1 = 0, \qquad g''(\delta) = \frac{1}{\alpha + \delta} + \frac{1}{\beta - \delta} = \frac{1}{(\alpha + \delta)\bigl(1 - (\alpha + \delta)\bigr)}.
+$$
+
+Since the maximum of $x(1 - x)$ for $x \in [0, 1]$ is $\frac{1}{4}$, we have $g''(\delta) \ge 4$ uniformly. By Taylor's theorem, there exists $\xi \in (0, \delta)$ such that
+
+$$
+g(\delta) = g(0) + g'(0)\, \delta + \frac{1}{2} g''(\xi)\, \delta^2 \ge 0 + 0 + \frac{1}{2} \cdot 4 \cdot \delta^2 = 2 \delta^2.
+$$
+
+Thus $\mathrm{KL}(P \,\Vert\, Q) \ge 2\delta^2 = 2\, \mathrm{TV}(P, Q)^2$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">5.3 (Data Processing Inequalities)</span></p>
+
+1. Let $P$ and $Q$ be probability measures, and let $\Phi$ be *any* measurable mapping (such as a deterministic function, the evolution of an SDE up to time $T$, or a projection onto marginals). Then the general data processing inequality (DPI) states that
+
+   $$
+   \mathrm{TV}(\Phi_{\#} P, \Phi_{\#} Q) \le \mathrm{TV}(P, Q) \qquad \text{and} \qquad \mathrm{KL}(\Phi_{\#} P \,\Vert\, \Phi_{\#} Q) \le \mathrm{KL}(P \,\Vert\, Q),
+   $$
+
+   where $\Phi_{\#} P$ denotes the pushforward measure under $\Phi$ (defined by $(\Phi_{\#} P)(A) := P(\Phi^{-1}(A))$ — the distribution of $\Phi(X)$ when $X \sim P$).
+2. Let $p_t$ be the distribution of the forward OU process at time $t$, and let $\gamma_d = \mathcal{N}(0, \mathrm{Id}\_d)$ be its invariant measure. Then
+
+   $$
+   \mathrm{KL}(p_t \,\Vert\, \gamma_d) \le e^{-2t}\, \mathrm{KL}(p_0 \,\Vert\, \gamma_d).
+   $$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof sketch of Lemma 5.3</summary>
+
+**Part 1.** Both TV and KL are $f$-divergences of the form $D_f(P \,\Vert\, Q) = \mathbb{E}\_Q[f(Z)]$ with $Z := \frac{\mathrm{d}P}{\mathrm{d}Q}$, where $f$ is strictly convex ($f(x) = \frac{1}{2}\lvert x - 1 \rvert$ and $f(x) = x \log x$, respectively). By the properties of conditional expectation, the Radon–Nikodym derivative of the pushforward measures satisfies
+
+$$
+\frac{\mathrm{d}\Phi_{\#} P}{\mathrm{d}\Phi_{\#} Q}(Y) = \mathbb{E}_Q\bigl[Z \mid \Phi(X) = Y\bigr].
+$$
+
+Applying Jensen's inequality for conditional expectations yields
+
+$$
+D_f(\Phi_{\#} P \,\Vert\, \Phi_{\#} Q) = \mathbb{E}_{\Phi_{\#} Q}\Bigl[f\bigl(\mathbb{E}_Q[Z \mid \Phi(X)]\bigr)\Bigr] \le \mathbb{E}_{\Phi_{\#} Q}\Bigl[\mathbb{E}_Q\bigl[f(Z) \mid \Phi(X)\bigr]\Bigr] = \mathbb{E}_Q\bigl[f(Z)\bigr] = D_f(P \,\Vert\, Q).
+$$
+
+**Part 2.** The time derivative of the KL divergence along the OU flow follows the *de Bruijn identity*,
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}t} \mathrm{KL}(p_t \,\Vert\, \gamma_d) = -I(p_t \,\Vert\, \gamma_d) := -\int_{\mathbb{R}^d} \Bigl\lVert \nabla \log \frac{p_t(x)}{\gamma_d(x)} \Bigr\rVert_2^2\ p_t(x)\, \mathrm{d}x,
+$$
+
+where $I$ is the *relative Fisher information*. The standard Gaussian measure $\gamma_d$ satisfies the logarithmic Sobolev inequality with constant $1$, providing the entropy bound
+
+$$
+\mathrm{KL}(p_t \,\Vert\, \gamma_d) \le \frac{1}{2}\, I(p_t \,\Vert\, \gamma_d).
+$$
+
+Substituting this into the derivative yields the differential inequality $\frac{\mathrm{d}}{\mathrm{d}t} \mathrm{KL}(p_t \,\Vert\, \gamma_d) \le -2\, \mathrm{KL}(p_t \,\Vert\, \gamma_d)$; integrating over $[0, t]$ (Gronwall) directly implies the exponential contraction $\mathrm{KL}(p_t \,\Vert\, \gamma_d) \le e^{-2t}\, \mathrm{KL}(p_0 \,\Vert\, \gamma_d)$. $\square$
+
+</details>
+</div>
+
+**Main theorem: error bounds for diffusion models.** The analysis relies on three structural assumptions, due to Chen, Chewi, Li, Li, Salim, and Zhang ("Sampling is as easy as learning the score: theory for diffusion models with minimal data assumptions", ICLR 2023) — henceforth [CCL22].
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Assumption</span><span class="math-callout__name">(Structural Assumptions of [CCL22])</span></p>
+
+1. **Lipschitz score:** for every $t \ge 0$, the exact score $\nabla \log p_t$ is $L$-Lipschitz.
+2. **Second moment bound:** the target distribution $p$ satisfies
+
+   $$
+   m_2^2 := \mathbb{E}_{X \sim p}\bigl[\lVert X \rVert^2\bigr] < \infty.
+   $$
+
+3. **Discrete score accuracy:** for every grid point $t_k = kh$, the estimator $s_{t_k}$ achieves an expected $L^2$-error bounded by $\varepsilon_{\mathrm{score}}$,
+
+   $$
+   \mathbb{E}_{X \sim p_{t_k}}\Bigl[\bigl\lVert s_{t_k}(X) - \nabla \log p_{t_k}(X) \bigr\rVert_2^2\Bigr] \le \varepsilon_{\mathrm{score}}^2.
+   $$
+
+To ensure convergence in total variation, we additionally assume $\mathrm{KL}(p \,\Vert\, \gamma_d) < \infty$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">5.4 ([CCL22], Theorem 1)</span></p>
+
+Suppose the three assumptions hold, with $L \ge 1$ and $h \le 1/L$. Let $\widehat{p}\_T$ be the law of the discretised reverse process (5.2) initialised at the standard Gaussian $\gamma_d$. Then
+
+$$
+\mathrm{TV}(\widehat{p}_T, p) \le \underbrace{\sqrt{\mathrm{KL}(p \,\Vert\, \gamma_d)}\; e^{-T}}_{\text{initialisation error}} + \underbrace{\bigl(L\sqrt{d h} + L m_2 h\bigr) \sqrt{T}}_{\text{discretisation error}} + \underbrace{\varepsilon_{\mathrm{score}} \sqrt{T}}_{\text{score estimation error}}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Polynomial-Time Sampling)</span></p>
+
+* Assume $\mathrm{KL}(p \,\Vert\, \gamma_d)$ is polynomial in $d$ and $m_2^2 \le d$ — mild conditions on the data distribution: no log-concavity, no isoperimetry, no smoothness of $p$ itself beyond the Lipschitz score.
+* Choose the terminal time $T \approx \log(\mathrm{KL}/\varepsilon)$ and the step size $h \approx \varepsilon^2 / (L^2 d)$.
+* Then the total error is bounded by $\widetilde{\mathcal{O}}(\varepsilon + \varepsilon_{\mathrm{score}})$, requiring $K = T/h = \widetilde{\mathcal{O}}(L^2 d / \varepsilon^2)$ steps.
+* Conclusion: the reverse-time generative *sampling* stage has polynomial complexity — the entire difficulty of generative modelling is compressed into learning the score. Hence the title of [CCL22]: *sampling is as easy as learning the score*.
+
+</div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/diffusion_error_analysis.png' | relative_url }}" alt="Two panels of log-scale error curves. Left: measured total variation distance against the horizon T, dropping quickly from about 0.09 and flattening into a floor slightly above 0.01, with a dashed theoretical guide line decaying exponentially above it. Right: measured total variation against the step size h on a log-log scale, decreasing from about 0.5 at coarse steps down to about 0.008, roughly following a dashed guide line of slope one half before flattening at small h." loading="lazy">
+  <figcaption>Theorem 5.4, measured. The exponential-integrator sampler (5.2) is run in $d=1$ with the <em>exact</em> score ($\varepsilon_{\mathrm{score}}=0$) for the bimodal target $p = \frac12\mathcal{N}(-2, 0.5^2) + \frac12\mathcal{N}(2, 0.5^2)$ under the forward OU process $\mathrm{d}X = -X\,\mathrm{d}t + \sqrt{2}\,\mathrm{d}W$; TV is estimated from $3\cdot 10^5$ samples. <strong>Left.</strong> At fixed $h = 0.01$, the error drops with the horizon $T$ at least as fast as the initialisation bound $\sqrt{\mathrm{KL}(p\,\|\,\gamma)}\,e^{-T}$ (dashed) predicts, then hits the discretisation/estimation floor — running the chain longer buys nothing once the other error terms dominate. <strong>Right.</strong> At fixed $T = 4$, the error decays with the step size $h$ consistently with the $\sqrt{h}$ discretisation term of Theorem 5.4 (dashed guide), until the Monte-Carlo estimation floor takes over.</figcaption>
+</figure>
+
+**A roadmap of the proof.** Let $\mathbb{Q}\_T$ be the path measure of the exact reverse SDE (5.1), let $\mathbb{P}\_T^{\circ}$ be the path measure of the approximate reverse process (5.2) initialised at $p_T$, and let $\mathbb{P}\_T$ be the same approximate process initialised at $\gamma_d$. The final law $\widehat{p}\_T$ is the time-$T$ marginal of $\mathbb{P}\_T$, while $p$ is the time-$T$ marginal of $\mathbb{Q}\_T$. Therefore,
+
+$$
+\mathrm{TV}(\widehat{p}_T, p) \le \mathrm{TV}(\mathbb{P}_T, \mathbb{P}_T^{\circ}) + \mathrm{TV}(\mathbb{P}_T^{\circ}, \mathbb{Q}_T). \tag{5.3}
+$$
+
+Indeed, we first apply the triangle inequality on path space, and then use the data processing inequality (Lemma 5.3, part 1) for the map $\omega \mapsto \omega_T$ which sends a path to its terminal point. The first term is purely an initialisation mismatch; the second term is the core of the argument and is controlled by path-space KL divergence.
+
+**Analysis of the initialisation error.** The measures $\mathbb{P}\_T$ and $\mathbb{P}\_T^{\circ}$ share the identical transition rule and differ only in their initial distributions ($\gamma_d$ versus $p_T$). Applying Lemma 5.3, part 1 (the transition rule is a pushforward acting identically on both initial laws) together with Pinsker's inequality (Lemma 5.2),
+
+$$
+\mathrm{TV}(\mathbb{P}_T, \mathbb{P}_T^{\circ}) \le \mathrm{TV}(\gamma_d, p_T) \le \sqrt{\frac{1}{2} \mathrm{KL}(p_T \,\Vert\, \gamma_d)},
+$$
+
+and finally, applying Lemma 5.3, part 2,
+
+$$
+\mathrm{KL}(p_T \,\Vert\, \gamma_d) \le e^{-2T}\, \mathrm{KL}(p_0 \,\Vert\, \gamma_d) = e^{-2T}\, \mathrm{KL}(p \,\Vert\, \gamma_d).
+$$
+
+Combining these three steps establishes the initialisation bound from Theorem 5.4:
+
+$$
+\mathrm{TV}(\mathbb{P}_T, \mathbb{P}_T^{\circ}) \le \sqrt{\frac{1}{2} e^{-2T}\, \mathrm{KL}(p \,\Vert\, \gamma_d)} \le e^{-T} \sqrt{\mathrm{KL}(p \,\Vert\, \gamma_d)}.
+$$
+
+**Path-space KL divergence via Girsanov's theorem.** We now compare $\mathbb{Q}\_T$ and $\mathbb{P}\_T^{\circ}$; this is the heart of the proof. Under $\mathbb{Q}\_T$, the process $X_t$ solves
+
+$$
+\mathrm{d}X_t = \bigl[X_t + 2 \nabla \log p_{T-t}(X_t)\bigr]\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}W_t,
+$$
+
+while under $\mathbb{P}\_T^{\circ}$, on the interval $[t_k, t_{k+1}]$, it solves
+
+$$
+\mathrm{d}X_t = \bigl[X_t + 2\, s_{T - t_k}(X_{t_k})\bigr]\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}W_t.
+$$
+
+Thus, the drift mismatch on this interval is (up to the factor $2$ in front of both scores)
+
+$$
+\Delta_t := s_{T - t_k}(X_{t_k}) - \nabla \log p_{T-t}(X_t), \qquad t \in [t_k, t_{k+1}]. \tag{5.4}
+$$
+
+For analysing the drift mismatch, we require the following classical result from stochastic analysis.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">5.5 (Girsanov's Theorem)</span></p>
+
+Let $B = (B_t)\_{t \in [0, T]}$ be a standard $d$-dimensional Brownian motion on a filtered probability space $(\Omega, \mathcal{F}, (\mathcal{F}\_t)\_{t \in [0, T]}, \mathbb{P})$. Let $\Delta = (\Delta_t)\_{t \in [0, T]}$ be an $\mathbb{R}^d$-valued, adapted process. Define the exponential process $Z = (Z_t)\_{t \in [0, T]}$ via
+
+$$
+Z_T := \exp\biggl(\int_0^T \langle \Delta_t, \mathrm{d}B_t \rangle - \frac{1}{2} \int_0^T \lVert \Delta_t \rVert_2^2\, \mathrm{d}t\biggr).
+$$
+
+If $\mathbb{E}\_{\mathbb{P}}[Z_T] = 1$, then $Z_T$ defines a valid Radon–Nikodym derivative for a new probability measure, $\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} = Z_T$. Under the equivalent measure $\mathbb{Q}$, the process
+
+$$
+\widetilde{B}_t := B_t - \int_0^t \Delta_s\, \mathrm{d}s, \qquad t \in [0, T],
+$$
+
+is a standard $d$-dimensional Brownian motion.
+
+</div>
+
+Two remarks on the statement: by construction, the process $Z$ is a non-negative *local* martingale (it is a stochastic exponential in the sense of Theorem 4.22, with $K \equiv 0$); Girsanov's theorem requires it to be a *true* martingale (i.e., $\mathbb{E}\_{\mathbb{P}}[Z_T] = 1$) to ensure that $\mathbb{Q}$ is a well-defined probability measure. A standard sufficient analytical criterion guaranteeing this integrability is the following condition.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">5.6 (Novikov Condition)</span></p>
+
+An adapted process $\Delta = (\Delta_t)\_{t \in [0, T]}$ satisfies the **Novikov condition** if
+
+$$
+\mathbb{E}_{\mathbb{P}}\biggl[\exp\biggl(\frac{1}{2} \int_0^T \lVert \Delta_t \rVert_2^2\, \mathrm{d}t\biggr)\biggr] < \infty.
+$$
+
+</div>
+
+Now, by Girsanov's theorem, under mild assumptions, the Radon–Nikodym derivative of $\mathbb{Q}\_T$ with respect to $\mathbb{P}\_T^{\circ}$ is given by the exponential martingale built from the (rescaled) drift mismatch $\sqrt{2}\, \Delta_t$ — the two SDEs share the diffusion coefficient $\sqrt{2}$, so the Girsanov shift is $(\text{drift difference})/\sqrt{2} = \sqrt{2}\, \Delta_t$:
+
+$$
+\frac{\mathrm{d}\mathbb{Q}_T}{\mathrm{d}\mathbb{P}_T^{\circ}} = \exp\biggl(\int_0^T \bigl\langle \sqrt{2}\, \Delta_t, \mathrm{d}B_t \bigr\rangle - \frac{1}{2} \int_0^T \bigl\lVert \sqrt{2}\, \Delta_t \bigr\rVert_2^2\, \mathrm{d}t\biggr).
+$$
+
+Then,
+
+$$
+\mathrm{KL}(\mathbb{Q}_T \,\Vert\, \mathbb{P}_T^{\circ}) = \mathbb{E}_{\mathbb{Q}_T}\biggl[\int_0^T \lVert \Delta_t \rVert_2^2\, \mathrm{d}t\biggr] = \sum_{k=0}^{K-1} \int_{t_k}^{t_{k+1}} \mathbb{E}_{\mathbb{Q}_T}\bigl[\lVert \Delta_t \rVert_2^2\bigr]\, \mathrm{d}t. \tag{5.5}
+$$
+
+(The diffusion coefficient $\sqrt{2}$ turns the usual $\frac{1}{2}\int \lVert \cdot \rVert^2$ into $\int \lVert \cdot \rVert^2$; from here on, absolute constants are not tracked precisely, following [CCL22].) So the entire discretisation analysis reduces to controlling the integral of the squared drift mismatch.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">5.7 (Why a Stopping Argument Is Needed)</span></p>
+
+Under the minimal assumptions of [CCL22], one cannot directly justify the exponential martingale in Girsanov's theorem by a simple Novikov condition. The workaround is to *stop* the process: define
+
+$$
+\tau_R := \inf\biggl\lbrace t \le T \,:\, \int_0^t \lVert \Delta_s \rVert_2^2\, \mathrm{d}s \ge R \biggr\rbrace \wedge T.
+$$
+
+For the stopped process, the quadratic variation of the stochastic exponential's martingale part is bounded by ($2$ times) $R$, so the corresponding exponential martingale is integrable and Girsanov applies. One obtains the KL identity up to time $\tau_R$ and then passes to the limit $R \to \infty$ using the lower semicontinuity of the KL divergence.
+
+</div>
+
+Pinsker's inequality on path space now gives
+
+$$
+\mathrm{TV}(\mathbb{P}_T^{\circ}, \mathbb{Q}_T)^2 \le \frac{1}{2}\, \mathrm{KL}(\mathbb{Q}_T \,\Vert\, \mathbb{P}_T^{\circ}).
+$$
+
+Since total variation decreases under marginalisation (Lemma 5.3, part 1), the same bound controls the TV distance of the time-$T$ marginals.
+
+**Bounding the drift mismatch.** Under the exact reverse path law $\mathbb{Q}\_T$,
+
+$$
+X_{t_k} \sim p_{T - t_k}, \qquad X_t \sim p_{T - t}, \qquad t \in [t_k, t_{k+1}].
+$$
+
+For $t \in [t_k, t_{k+1}]$, we decompose
+
+$$
+\Delta_t = \underbrace{s_{T-t_k}(X_{t_k}) - \nabla \log p_{T-t_k}(X_{t_k})}_{\text{score estimation}} + \underbrace{\nabla \log p_{T-t_k}(X_{t_k}) - \nabla \log p_{T-t}(X_{t_k})}_{\text{time variation}} + \underbrace{\nabla \log p_{T-t}(X_{t_k}) - \nabla \log p_{T-t}(X_t)}_{\text{spatial variation}}.
+$$
+
+Using $\lVert a + b + c \rVert_2^2 \le 3 \bigl(\lVert a \rVert_2^2 + \lVert b \rVert_2^2 + \lVert c \rVert_2^2\bigr)$, we bound these three components independently. Proof strategy: the first term uses Assumption 3, the third exploits Lipschitz continuity (Assumption 1), and the second relies on the fact that $p_{T-t_k}$ and $p_{T-t}$ differ solely by a *short OU step*.
+
+**I) Score estimation term.** Since $T - t_k \in \lbrace h, 2h, \dots, T \rbrace$, Assumption 3 directly applies to the reverse-time index $T - t_k$, giving
+
+$$
+\mathbb{E}_{\mathbb{Q}_T}\Bigl[\bigl\lVert s_{T-t_k}(X_{t_k}) - \nabla \log p_{T-t_k}(X_{t_k}) \bigr\rVert_2^2\Bigr] \le \varepsilon_{\mathrm{score}}^2;
+$$
+
+integrating over an interval of length $h$ and summing over all $K = T/h$ intervals yields
+
+$$
+\sum_{k=0}^{K-1} \int_{t_k}^{t_{k+1}} \mathbb{E}_{\mathbb{Q}_T}\Bigl[\bigl\lVert s_{T-t_k}(X_{t_k}) - \nabla \log p_{T-t_k}(X_{t_k}) \bigr\rVert_2^2\Bigr]\, \mathrm{d}t \le T\, \varepsilon_{\mathrm{score}}^2.
+$$
+
+**III) Spatial variation term.** By Assumption 1, $\nabla \log p_{T-t}$ is globally $L$-Lipschitz, giving
+
+$$
+\bigl\lVert \nabla \log p_{T-t}(X_{t_k}) - \nabla \log p_{T-t}(X_t) \bigr\rVert_2^2 \le L^2\, \lVert X_t - X_{t_k} \rVert_2^2,
+$$
+
+so we need a bound on how far the reverse process moves over one interval. Under $\mathbb{Q}\_T$ the process is the time reversal of the forward OU process, so it is enough to estimate the movement of the *forward* process $\overline{X}$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">5.8 (Movement Bound)</span></p>
+
+Let $0 \le s \le t \le T$ with $\delta := t - s \le 1$. Then, up to absolute constants,
+
+$$
+\mathbb{E}\bigl\lVert \overline{X}_t - \overline{X}_s \bigr\rVert^2 \lesssim d\, \delta + m_2^2\, \delta^2. \tag{5.6}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 5.8</summary>
+
+From the explicit OU formula (Theorem 4.23),
+
+$$
+\overline{X}_t = e^{-\delta}\, \overline{X}_s + \sqrt{1 - e^{-2\delta}}\, Z, \qquad Z \sim \mathcal{N}(0, \mathrm{Id}_d),
+$$
+
+where $Z$ is independent of $\overline{X}\_s$. Therefore,
+
+$$
+\overline{X}_t - \overline{X}_s = \bigl(e^{-\delta} - 1\bigr)\, \overline{X}_s + \sqrt{1 - e^{-2\delta}}\, Z.
+$$
+
+Taking expectations and using $1 - e^{-\delta} \le \delta$ and $1 - e^{-2\delta} \le 2\delta$, we obtain
+
+$$
+\mathbb{E}\bigl\lVert \overline{X}_t - \overline{X}_s \bigr\rVert^2 = \bigl(1 - e^{-\delta}\bigr)^2\, \mathbb{E}\bigl\lVert \overline{X}_s \bigr\rVert^2 + \bigl(1 - e^{-2\delta}\bigr) d \le \delta^2\, \mathbb{E}\bigl\lVert \overline{X}_s \bigr\rVert^2 + 2 \delta d.
+$$
+
+Finally, from the forward process bounds (interpolation between $p$ and $\gamma_d$),
+
+$$
+\mathbb{E}\bigl\lVert \overline{X}_s \bigr\rVert^2 = e^{-2s}\, \mathbb{E}\bigl\lVert \overline{X}_0 \bigr\rVert^2 + \bigl(1 - e^{-2s}\bigr) d \le m_2^2 + d,
+$$
+
+so $\mathbb{E}\lVert \overline{X}\_t - \overline{X}\_s \rVert^2 \le 2\delta d + (m_2^2 + d)\, \delta^2$; absorbing the term $d\, \delta^2 \le d\, \delta$ (valid for $\delta \le 1$) proves (5.6) up to constants. $\square$
+
+</details>
+</div>
+
+Using the lemma with $s = T - t$ and $t = T - t_k$ under the forward process (so $\delta \le h$), we get under $\mathbb{Q}\_T$
+
+$$
+\mathbb{E}_{\mathbb{Q}_T}\Bigl[\bigl\lVert \nabla \log p_{T-t}(X_{t_k}) - \nabla \log p_{T-t}(X_t) \bigr\rVert_2^2\Bigr] \le L^2 \bigl(d h + m_2^2 h^2\bigr).
+$$
+
+After integrating over $t \in [t_k, t_{k+1}]$ and summing over $k$,
+
+$$
+\sum_{k=0}^{K-1} \int_{t_k}^{t_{k+1}} \mathbb{E}_{\mathbb{Q}_T}\Bigl[\bigl\lVert \nabla \log p_{T-t}(X_{t_k}) - \nabla \log p_{T-t}(X_t) \bigr\rVert_2^2\Bigr]\, \mathrm{d}t \le L^2 T \bigl(d h + m_2^2 h^2\bigr).
+$$
+
+**II) Time variation term.** The distributions $p_{T-t_k}$ and $p_{T-t}$ differ by a short OU step: if $\delta = t - t_k$, then
+
+$$
+p_{T-t_k} = S_{\delta\#}\, p_{T-t} \ast \mathcal{N}\bigl(0, (1 - e^{-2\delta})\, \mathrm{Id}_d\bigr), \qquad \text{where } S_\delta(x) = e^{-\delta} x.
+$$
+
+Here $S_{\delta\#}\, p_{T-t}$ denotes the pushforward of $p_{T-t}$ under the map $x \mapsto e^{-\delta} x$. So the difference between the two scores comes from a *small contraction* $x \mapsto e^{-\delta} x$ and a *small Gaussian smoothing*. We first record the score perturbation lemma proved by Chen et al. [CCL22, Lemma 16], stated in the $d$-dimensional form relevant here.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">5.9 (Score Perturbation; [CCL22], Lemma 16)</span></p>
+
+Let $0 < \zeta < 1$. Suppose $M_0, M_1 \in \mathbb{R}^{d \times d}$, where $M_1$ is symmetric positive definite and $\lVert M_0 - \mathrm{Id}\_d \rVert\_{\mathrm{op}} \le \zeta$. Let $q = e^{-H}$ be a probability density on $\mathbb{R}^d$ such that $\nabla H$ is $L$-Lipschitz, and assume
+
+$$
+L \le \frac{1}{4 \lVert M_1 \rVert_{\mathrm{op}}}.
+$$
+
+Then, for every $\theta \in \mathbb{R}^d$,
+
+$$
+\bigl\lVert \nabla \log\bigl((M_0)_{\#} q \ast \mathcal{N}(0, M_1)\bigr)(\theta) - \nabla \log q(\theta) \bigr\rVert_2 \le L \sqrt{\lVert M_1 \rVert_{\mathrm{op}}\, d} + L \zeta \lvert \theta \rvert + \bigl(\zeta + L \lVert M_1 \rVert_{\mathrm{op}}\bigr) \bigl\lVert \nabla H(\theta) \bigr\rVert_2.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof sketch of Lemma 5.9</summary>
+
+First, consider the pure smoothing case $M_0 = \mathrm{Id}\_d$. For fixed $\theta$, define the tilted probability measure
+
+$$
+p_\theta(\mathrm{d}\theta') \propto \exp\biggl(-\frac{1}{2} \bigl\langle \theta - \theta', M_1^{-1} (\theta - \theta') \bigr\rangle\biggr)\, q(\mathrm{d}\theta'),
+$$
+
+where $M_1^{-1}$ is understood on $\operatorname{range}(M_1)$. Differentiating under the integral,
+
+$$
+\nabla \log\bigl(q \ast \mathcal{N}(0, M_1)\bigr)(\theta) - \nabla \log q(\theta) = \mathbb{E}_{p_\theta}\bigl[\nabla H(\theta')\bigr] - \nabla H(\theta).
+$$
+
+Taking norms and using the Lipschitzness of $\nabla H$,
+
+$$
+\bigl\lVert \nabla \log\bigl(q \ast \mathcal{N}(0, M_1)\bigr)(\theta) - \nabla \log q(\theta) \bigr\rVert_2 \le L\, \mathbb{E}_{p_\theta} \lvert \theta' - \theta \rvert.
+$$
+
+Now, the negative log-density of $p_\theta$ is
+
+$$
+H_\theta(\theta') := H(\theta') + \frac{1}{2} \bigl\langle \theta - \theta', M_1^{-1} (\theta - \theta') \bigr\rangle.
+$$
+
+Since $\nabla H$ is $L$-Lipschitz, the assumption $L \le \frac{1}{4\lVert M_1 \rVert_{\mathrm{op}}}$ makes $H_\theta$ strongly convex,
+
+$$
+\nabla^2 H_\theta \succeq \bigl(\lVert M_1 \rVert_{\mathrm{op}}^{-1} - L\bigr) \mathrm{Id}_d \succeq \frac{1}{2 \lVert M_1 \rVert_{\mathrm{op}}}\, \mathrm{Id}_d.
+$$
+
+So $p_\theta$ is strongly log-concave. Let $\theta_{\ast}$ be its mode; standard concentration results for strongly log-concave measures yield
+
+$$
+\mathbb{E}_{p_\theta} \lvert \theta' - \theta_{\ast} \rvert \le \sqrt{\lVert M_1 \rVert_{\mathrm{op}}\, d}.
+$$
+
+On the other hand, the optimality condition at the mode gives $\nabla H(\theta_{\ast}) + M_1^{-1}(\theta_{\ast} - \theta) = 0$, and hence
+
+$$
+\lvert \theta_{\ast} - \theta \rvert \le \lVert M_1 \rVert_{\mathrm{op}}\, \bigl\lVert \nabla H(\theta_{\ast}) \bigr\rVert_2 \le \dots
+$$
+
+which, combined with the triangle inequality $\mathbb{E}\lvert \theta' - \theta \rvert \le \mathbb{E}\lvert \theta' - \theta_{\ast} \rvert + \lvert \theta_{\ast} - \theta \rvert$ and one more Lipschitz step, leads to the stated bound. For general $M_0$, one decomposes the difference using the triangle inequality and a Taylor expansion for the pushforward operation, which produces the remaining terms involving $\zeta$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where the Proof Stands)</span></p>
+
+Let us take stock of the three components of the drift mismatch (5.4):
+
+* **I (score estimation)** contributes $T \varepsilon_{\mathrm{score}}^2$ to the path-space KL (5.5) — after Pinsker, the $\varepsilon_{\mathrm{score}} \sqrt{T}$ term of Theorem 5.4.
+* **III (spatial variation)** contributes $L^2 T (d h + m_2^2 h^2)$ — after Pinsker, the $(L\sqrt{dh} + L m_2 h)\sqrt{T}$ discretisation term.
+* **II (time variation)** reduces to Lemma 5.9 applied with $M_0 = e^{-\delta} \mathrm{Id}\_d$ and $M_1 = (1 - e^{-2\delta})\, \mathrm{Id}\_d$, so that $\zeta \approx \delta \le h$ and $\lVert M_1 \rVert\_{\mathrm{op}} \le 2h$ — note that the lemma's hypothesis $L \le \frac{1}{4\lVert M_1 \rVert\_{\mathrm{op}}}$ is exactly where the step-size restriction $h \lesssim 1/L$ of Theorem 5.4 enters. Carrying out this application (bounding the resulting $\lvert \theta \rvert$- and $\lVert \nabla H \rVert$-moments under $p_{T-t}$) shows that the time-variation term is of the same order as term III; assembling I–III through (5.5), Pinsker on path space, and the decomposition (5.3) completes the proof of Theorem 5.4.
 
 </div>
