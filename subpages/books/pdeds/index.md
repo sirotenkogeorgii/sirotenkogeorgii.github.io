@@ -19,6 +19,9 @@ tags:
   - jko-scheme
   - fokker-planck
   - log-sobolev
+  - graph-laplacian
+  - manifold-hypothesis
+  - big-data-limits
 ---
 
 # Partial Differential Equations in Data Science
@@ -6137,6 +6140,470 @@ which is precisely the **Łojasiewicz inequality with exponent $\theta=\frac12$*
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where this leaves us)</span></p>
 
 The three chapters now close into a single arc. Chapter 1 established the gradient-flow trinity — existence by minimizing movements, uniqueness and stability from convexity, exponential asymptotics from uniform convexity plus Gronwall. Chapter 2 built a geometry on $\mathcal P(\mathbb R^d)$ in which entropies are the convex energies and $W\_2$ measures the cost of motion. This chapter verified that the finite-dimensional playbook survives the transplant essentially unchanged: the JKO scheme is minimizing movements (Theorem 42 ↔ Theorem 8), $\lambda$-displacement convexity is uniform convexity (Lemma 44 ↔ (1.16)), and the log-Sobolev inequality is the Łojasiewicz/uniform-convexity estimate that drives exponential relaxation (Theorem 45 ↔ Theorem 3). What is genuinely new is the *interpretation*: solutions of diffusion equations are steepest descents of entropy, convergence to the Gibbs measure is decay of relative entropy, and functional inequalities of information theory become statements of metric geometry.
+
+</div>
+
+## Chapter 4: Big Data Limits
+
+The first three chapters completed an arc entirely within continuum mathematics: gradient flows (Chapter 1), optimal transport (Chapter 2), and their synthesis in Wasserstein space (Chapter 3). This chapter pivots to the data. We phrase some basic methods of machine learning and data science as *discrete* versions of partial differential equations or variational problems — which allows us to study these methods in the limit where the sample size becomes infinitely large. The plan: we first recall calculus on submanifolds of $\mathbb R^D$ (you can often just think of open subsets of $\mathbb R^D$), and then extend this calculus to finite graphs by analogy. The vertices of the graph are data points, and the edges (or weights) measure similarity between pairs of data points. Once calculus on finite graphs is in place, we can pose problems on finite data sets that describe methods for tasks like clustering or classification, and our goal is to understand their effective behavior in the **big data limit**: the number $N$ of data points tends to infinity. A common assumption is that while the data points $x\_1,\dots,x\_N$ lie in some high-dimensional "feature space" $\mathbb R^D$, they are (almost) distributed according to a probability measure $\mu$ that concentrates on a $d$-dimensional submanifold with $d\ll D$ — the *manifold hypothesis*, formalized in §4.2.
+
+### 4.1 Calculus and PDEs on graphs
+
+**The continuum template.** We start with some basic notation from multivariable calculus. Let $M\subset\mathbb R^D$ be a closed $d$-dimensional submanifold and consider a probability measure $d\mu(x)=\rho\,dx$ with a density $\rho$ with respect to the volume measure of $M$. Then
+
+$$
+\langle u,v\rangle := \int_M uv\,d\mu
+$$
+
+defines a scalar product on the space of square-integrable measurable functions, i.e., functions $u$ such that
+
+$$
+\|u\|_{L^2} := \sqrt{\langle u,u\rangle} < \infty.
+$$
+
+The gradient $\nabla u\colon M\to TM\subset\mathbb R^D$ of a differentiable function $u$ is a *tangential* vector field, i.e., $\nabla u(x)\in T\_xM$ for all $x\in M$. If $\tilde u\colon\mathcal U\to\mathbb R$ is an arbitrary extension of $u$ to a neighborhood $\mathcal U$ of $M$, then $\nabla u = P\_{T\_xM}\nabla\tilde u$, where $P\_{T\_xM}\colon\mathbb R^D\to T\_xM$ denotes the orthogonal projection onto the tangent space $T\_xM$. Also for vector fields $F,G\colon M\to TM$ we can define a scalar product
+
+$$
+\langle F,G\rangle := \int_M F\cdot G\,d\mu.
+$$
+
+Finally, as the gradient maps functions to vector fields, we can define its adjoint operator $\nabla^\ast$ by duality:
+
+$$
+\langle\nabla u, F\rangle = \langle u, \nabla^\ast F\rangle \quad\text{for any function } u \text{ and vector field } F.
+\tag{4.1}
+$$
+
+By Stokes' theorem (integration by parts on the closed manifold $M$), we compute
+
+$$
+\langle\nabla u, F\rangle = \int_M \nabla u\cdot F\,d\mu = -\int_M u\,\frac1\rho\nabla\cdot(\rho F)\,d\mu = \Bigl\langle u, -\frac1\rho\nabla\cdot(\rho F)\Bigr\rangle.
+$$
+
+Since $u$ was arbitrary, this means $\nabla^\ast F = -\frac1\rho\nabla\cdot(\rho F)$, where $\nabla\cdot$ denotes the divergence operator. Finally, we define the **(weighted) Laplacian**
+
+$$
+\Delta_\rho u := -\nabla^\ast\nabla u = \frac1\rho\nabla\cdot(\rho\nabla u).
+\tag{4.2}
+$$
+
+This is a negative semi-definite self-adjoint operator on suitable spaces of functions: both properties are built in by the construction $-\nabla^\ast\nabla$, since $\langle\Delta\_\rho u,u\rangle = -\langle\nabla u,\nabla u\rangle\leq0$ and $\langle\Delta\_\rho u,v\rangle=-\langle\nabla u,\nabla v\rangle=\langle u,\Delta\_\rho v\rangle$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The weighted Laplacian is an old friend)</span></p>
+
+For the Gibbs density $\rho\propto e^{-\beta V}$ (§1.3, §3.2), expanding the divergence in (4.2) gives
+
+$$
+\Delta_\rho u = \Delta u + \frac{\nabla\rho}{\rho}\cdot\nabla u = \Delta u - \beta\,\nabla V\cdot\nabla u,
+$$
+
+which is ($\beta$ times) the generator of the overdamped Langevin dynamics $dX\_t=-\nabla V(X\_t)\,dt+\sqrt{2/\beta}\,dB\_t$ from §1.3 — the diffusion whose law solves the Fokker–Planck equation of §3.2. That $\Delta\_\rho$ is *self-adjoint with respect to* $\langle\cdot,\cdot\rangle=\int\cdot\,d\mu$ is exactly the reversibility (detailed balance) of this dynamics with respect to its Gibbs measure. So the weighted calculus above is not idle bookkeeping: choosing the measure $\mu$ in the scalar product selects which dynamics the Laplacian generates.
+
+</div>
+
+**From manifolds to point clouds.** Now we aim to develop a similar calculus for functions on discrete data sets. We denote our data set as $X = X\_N := \{x\_1,\dots,x\_N\}\subset\mathbb R^D$. The starting point is to equip the data set with a graph structure.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 47</span><span class="math-callout__name">(Geometric graph)</span></p>
+
+Let a point cloud $X=\{x\_1,\dots,x\_N\}$ be given. For a non-increasing function $\eta\colon[0,\infty)\to[0,\infty)$ we define the weights $w\_{x,y}:=\eta(\lvert x-y\rvert)$ for $x,y\in X$. We collect them in a symmetric $N\times N$ matrix $W=(w\_{x,y})\_{x,y\in X}$. Then $G=(X,W)$ is an undirected weighted graph, called a **geometric graph**.
+
+</div>
+
+Note that in the case $\eta=\mathbf 1\_{[0,1]}$ this is an (undirected) *unweighted* graph: points are either connected or not, depending on whether their distance exceeds $1$.
+
+On $G$ — or on a general undirected weighted graph — we want to define functions, vector fields, etc., in analogy to the continuum. First note that the **degree** of a point $x\in X$ is given by
+
+$$
+d(x) = d_x := \sum_{y\in X} w_{x,y}.
+$$
+
+As in the continuum, a function assigns a value to each point: a **function** on $G$ is a map $u\colon X\to\mathbb R$.
+
+To motivate the definition of a vector field, consider first the special case of the gradient of a function. This object should record the local change of the function — but we cannot take limits in a discrete framework, so instead we compare the value at a point $x$ to the values at neighboring points $y$: for a function $u\colon X\to\mathbb R$, we define its **gradient** $\nabla u\colon X\times X\to\mathbb R$ by
+
+$$
+\nabla u(x,y) := w_{x,y}^a\,\bigl(u(y)-u(x)\bigr),
+$$
+
+where we allow a weight-dependent prefactor $w\_{x,y}^a$ for some exponent $a\geq0$. The gradient is thus a map defined on the *edges* (connections between points) of the graph, not on the vertices.
+
+More generally, we define **vector fields** as maps $F\colon X\times X\to\mathbb R$ that are skew-symmetric, i.e., $F(x,y)=-F(y,x)$ for all $x,y\in X$. Equivalently, a vector field assigns a value to each edge $(x,y)$; intuitively, this value is the *flux* of some quantity through the edge connecting the two points. Note that the gradient is indeed a vector field in this sense, since $w$ is symmetric.
+
+The scalar products on functions and vector fields are now given as
+
+$$
+\langle u,v\rangle := \sum_{x\in X} d_x^r\,u(x)v(x)
+$$
+
+and
+
+$$
+\langle F,G\rangle := \frac12\sum_{x,y\in X} w_{x,y}^b\,F(x,y)G(x,y)
+$$
+
+for some exponents $r,b\geq0$. The prefactor $\frac12$ accounts for the double-counting of the edges $(x,y)$ and $(y,x)$.
+
+Now we can define the adjoint $\nabla^\ast$ of the gradient via duality as in (4.1): for a vector field $F$, $\nabla^\ast F$ is the function such that (4.1) holds. We compute, relabeling $x\leftrightarrow y$ in one half of the sum (using the symmetry of $w$) and then using the skew-symmetry of $F$:
+
+$$
+\begin{aligned}
+\langle\nabla u, F\rangle
+&= \frac12\sum_{x,y\in X} w_{x,y}^{a+b}\bigl(u(y)-u(x)\bigr)F(x,y)\\
+&= \sum_{x\in X} u(x)\sum_{y\in X} w_{x,y}^{a+b}\,\frac12\bigl(F(y,x)-F(x,y)\bigr)\\
+&= -\sum_{x\in X} d_x^r\,u(x)\,\frac{1}{d_x^r}\sum_{y\in X} w_{x,y}^{a+b}\,F(x,y).
+\end{aligned}
+$$
+
+This has to be equal to $\langle u,\nabla^\ast F\rangle = \sum\_{x\in X}d\_x^r\,u(x)\,\nabla^\ast F(x)$ for any function $u$. Therefore we conclude
+
+$$
+\nabla^\ast F(x) = -\frac{1}{d_x^r}\sum_{y\in X} w_{x,y}^{a+b}\,F(x,y).
+\tag{4.3}
+$$
+
+Finally, we define the **Laplace operator**, in analogy to the continuum (4.2), via
+
+$$
+\Delta u := -\nabla^\ast\nabla u,
+\tag{4.4}
+$$
+
+which can be expressed explicitly: applying (4.3) to $F=\nabla u$ gives $\nabla^\ast\nabla u(x) = -\frac{1}{d\_x^r}\sum\_y w\_{x,y}^{2a+b}(u(y)-u(x))$, so with the convenient abbreviation $q:=2a+b$,
+
+$$
+\Delta u(x) = \frac{1}{d_x^r}\sum_{y\in X} w_{x,y}^{q}\,\bigl(u(y)-u(x)\bigr).
+\tag{4.5}
+$$
+
+Mind the sign discipline here: with this convention $\Delta$ is negative semi-definite and self-adjoint with respect to $\langle\cdot,\cdot\rangle$ — again for free, because it is of the form $-\nabla^\ast\nabla$ — exactly matching the continuum operator $\Delta\_\rho$ from (4.2).
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The $(r,q)$-family contains the classics)</span></p>
+
+The exponents are not exotic decoration; familiar operators from spectral graph theory are members of the family (4.5) for $q=1$:
+
+1. **Unnormalized graph Laplacian.** For $r=0$: $\Delta u(x)=\sum\_y w\_{x,y}(u(y)-u(x)) = -(Lu)(x)$ where $L:=D-W$ (with $D:=\operatorname{diag}(d\_x)$) is the classical graph Laplacian matrix. The combinatorics literature prefers the *positive* semi-definite sign $L=-\Delta$; our sign is chosen to match $\Delta\_\rho$.
+2. **Random-walk Laplacian.** For $r=1$: $\Delta u(x)=\frac{1}{d\_x}\sum\_y w\_{x,y}(u(y)-u(x))$, i.e., $\Delta = D^{-1}W-I$ — the generator of the random walk on $G$ that jumps from $x$ to $y$ with probability $w\_{x,y}/d\_x$. This is the discrete avatar of the "old friend" remark above: the weight $d\_x^r$ in the scalar product selects the dynamics.
+
+</div>
+
+Finally, we define the **Dirichlet energy**, a functional which penalizes variations of a function $u\colon X\to\mathbb R$:
+
+$$
+E(u) := \frac12\langle\nabla u,\nabla u\rangle.
+\tag{4.6}
+$$
+
+Explicitly, by the computation above,
+
+$$
+E(u) = \frac14\sum_{x,y\in X} w_{x,y}^{q}\,\bigl(u(y)-u(x)\bigr)^2.
+$$
+
+Many graph-based learning algorithms are concerned with minimizing this functional, subject to various constraints. Note the mechanism that makes this plausible for *clustering*: $E(u)=0$ if and only if $u$ is constant on each connected component of $G$, so the minimizers (and near-minimizers) of $E$ are functions that vary little within well-connected clusters and are free to jump across bottlenecks.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 11</span><span class="math-callout__name">(Calculus on the lattice)</span></p>
+
+Compute all of the above quantities — degrees, gradient, adjoint, Laplacian, Dirichlet energy — for the graph $G=(X,W)$ with $X=\varepsilon\mathbb Z^d$ (the regular lattice) and $\eta=\mathbf 1\_{[0,1]}$.
+
+*Hint: for $\frac{1}{\sqrt2}<\varepsilon\leq1$, each point is connected exactly to its $2d$ nearest neighbors $x\pm\varepsilon e\_i$, and (4.5) with $r=0$ becomes $\Delta u(x)=\sum\_{i=1}^d\bigl(u(x+\varepsilon e\_i)-2u(x)+u(x-\varepsilon e\_i)\bigr)$ — that is, $\varepsilon^2$ times the classical finite-difference Laplacian. Keep this stray factor $\varepsilon^2$ in mind: the rescalings of the next section are designed to remove exactly it.*
+
+</div>
+
+### 4.2 Big data limits: Consistency
+
+A lot of data sets are so large that we can almost think of them as a continuum. In this section, we formalize this in an elementary way and deduce so-called big data limits, or mean-field limits, of the objects of §4.1.
+
+A common idea to understand data resorts to probability theory: we assume that our data is sampled from some (unknown) probability distribution $\mu$ in $\mathbb R^D$, on which we impose the following structural assumption.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 48</span><span class="math-callout__name">(Manifold hypothesis)</span></p>
+
+We say that a data set $X\_N=\{x\_1,\dots,x\_N\}$ satisfies the **manifold hypothesis** if $x\_n\sim\mu$ are iid samples of a distribution $\mu$ that has the structure $d\mu=\rho\,d\omega$ for some closed $d$-dimensional submanifold $M$ of $\mathbb R^D$ with volume form $\omega$ and a smooth positive density $\rho$ such that $\int\_M\rho\,d\omega=1$.
+
+</div>
+
+Typically, the dimension $d$ of $M$ is much smaller than the dimension of the whole feature space, i.e., $d\ll D$.
+
+By the law of large numbers, under the manifold hypothesis the empirical measures of the data cloud converge to the data distribution. More precisely, the **empirical measure** of $X\_N$ is
+
+$$
+\mu_N := \frac1N\sum_{x\in X_N}\delta_x,
+\tag{4.7}
+$$
+
+where $\delta\_x$ denotes the Dirac measure at $x$ (i.e., $\delta\_x(B)=1$ if $x\in B$ and $\delta\_x(B)=0$ otherwise, for any Borel set $B\subset\mathbb R^D$). Then, almost surely,
+
+$$
+\mu_N \to \mu \quad\text{in the sense of measures},
+\tag{4.8}
+$$
+
+meaning that for any test function $f\in C\_b(\mathbb R^D)$ we have
+
+$$
+\int_{\mathbb R^D} f\,d\mu_N \to \int_{\mathbb R^D} f\,d\mu \quad\text{almost surely}.
+$$
+
+Indeed, spelling out the left-hand side, this is equivalent to the more classical statement
+
+$$
+\lim_{N\to\infty}\frac1N\sum_{x\in X_N} f(x) = \int_M f\,d\mu \quad\text{with probability }1,
+$$
+
+which is the law of large numbers. Note that (4.8) is exactly the narrow convergence of §2.6 — and since $M$ is compact, Theorem 37 upgrades it for free: the data cloud converges to the data distribution *in Wasserstein distance*, $W\_p(\mu\_N,\mu)\to0$ almost surely.
+
+This already illustrates that we need to rescale our discrete quantities in terms of the number $N$ of data points in order to get non-trivial limits. Let us first refine our definition of geometric graphs.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 49</span><span class="math-callout__name">(Geometric graph at scale $\varepsilon$ and of dimension $d$; random geometric graph)</span></p>
+
+We say $G=(X,W)$ is a **geometric graph at scale $\varepsilon>0$, of dimension $d$ (and profile $\eta$)** if
+
+$$
+w_{x,y} = w_{N,\varepsilon}(x,y) = \frac{1}{\varepsilon^d}\,\eta\Bigl(\frac{\lvert x-y\rvert}{\varepsilon}\Bigr) \quad\text{for } x,y\in X,\ x\neq y.
+$$
+
+If in addition the data points $X$ satisfy the manifold hypothesis from Definition 48 for some manifold $M$ of the same dimension $d$, we call $G$ a **random geometric graph** at scale $\varepsilon>0$ of dimension $d$ (and profile $\eta$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The normalization already knows $d$)</span></p>
+
+The rescaling in Definition 49 is non-trivial: even to *define* the graph in a meaningful way, we need to know the dimension $d$ of the data manifold $M$, as it appears in the normalization factor $\varepsilon^{-d}$. A good algorithm will be independent of this normalization, so that we do not need to guess this number before running the algorithm — but we will need it (albeit not explicitly) to state rigorous theoretical results.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two conventions, fixed once and for all)</span></p>
+
+Throughout this chapter we write $\eta\_\varepsilon := \frac{1}{\varepsilon^d}\eta(\frac{\cdot}{\varepsilon})$, so that $w\_{N,\varepsilon}(x,y)=\eta\_\varepsilon(\lvert x-y\rvert)$, and we adopt:
+
+1. **Unit mass.** We normalize the profile so that $\int\_{\mathbb R^d}\eta(\lvert z\rvert)\,dz=1$. Then $\eta\_\varepsilon\to\delta\_0$ as measures — a Dirac sequence. (Without this, harmless constants $\bigl(\int\eta\bigr)^r$ would decorate all the limits below.)
+2. **Powers act on the profile.** For an exponent $s\geq0$, the symbol $w^s\_{N,\varepsilon}(x,y)$ means $(\eta^s)\_\varepsilon(\lvert x-y\rvert)=\frac{1}{\varepsilon^d}\eta^s(\frac{\lvert x-y\rvert}{\varepsilon})$: combine the exponents first, then apply a *single* normalization $\varepsilon^{-d}$. The reason: each power of the weight below is used as one averaging kernel inside one empirical average, and every averaging kernel needs exactly one factor $\varepsilon^{-d}$ to become a Dirac sequence. The literal reading $(\eta\_\varepsilon)^s=\varepsilon^{-sd}\eta^s(\frac{\cdot}{\varepsilon})$ would inject divergent factors $\varepsilon^{-(s-1)d}$ into (4.13)–(4.14). For the most common choice $a=0$, $b=1$ (so $q=1$) all occurring exponents equal $1$ and the two readings agree.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/bdl_geometric_graph.png' | relative_url }}" alt="Three panels, each showing the same 260 points sampled on a circle with more points on the right side than on the left, connected into a random geometric graph at increasing scales. In the left panel with the smallest scale the graph is fragmented into small pieces; in the middle panel it is connected but sparse; in the right panel a thick band of edges hugs the whole circle. Nodes are colored from dark blue to yellow by their rescaled degree, which is visibly larger on the dense right side." loading="lazy">
+  <figcaption>A random geometric graph (Definition 49): $N=260$ iid samples of a measure with density $\rho(\theta)\propto 1+0.6\cos\theta$ on the unit circle ($d=1$ inside $D=2$), connected at three scales $\varepsilon$ with profile $\eta=\frac12\mathbf 1_{[0,1]}$. Nodes are colored by the rescaled degree $d_{N,\varepsilon}$, which estimates the density: by Propositions 50 and 51, $d_{N,\varepsilon}(x)\to\rho(x)$ as $N\to\infty$, $\varepsilon\to0$. The scale matters: too small and the graph fragments (left), too large and all geometry within distance $\varepsilon$ is blurred (right).</figcaption>
+</figure>
+
+Now we can finally define our discrete quantities so that their big-data limits are meaningful. Suppose we have a sequence of random geometric graphs. With $w\_{N,\varepsilon}$ as in Definition 49, we set
+
+$$
+d_{N,\varepsilon}(x) := \frac1N\sum_{y\in X_N} w_{N,\varepsilon}(x,y),
+\tag{4.9}
+$$
+
+$$
+\nabla_{N,\varepsilon}u(x,y) := w_{N,\varepsilon}^a(x,y)\,\frac{u(y)-u(x)}{\varepsilon},
+\tag{4.10}
+$$
+
+$$
+\langle u,v\rangle_{N,\varepsilon} := \frac1N\sum_{x\in X_N} d_{N,\varepsilon}^r(x)\,u(x)v(x),
+\tag{4.11}
+$$
+
+$$
+\langle F,G\rangle_{N,\varepsilon} := \frac{1}{2N^2}\sum_{x,y\in X} w_{N,\varepsilon}^b(x,y)\,F(x,y)G(x,y).
+\tag{4.12}
+$$
+
+Compared with §4.1, three rescalings appear, one for each way a discrete sum can degenerate: every sum over data points carries a factor $\frac1N$ (turning it into an integral against the empirical measure $\mu\_N$), every weight carries the factor $\varepsilon^{-d}$ (turning the kernel into a Dirac sequence), and every difference $u(y)-u(x)$ is divided by $\varepsilon$ (turning it into a difference quotient — this removes precisely the stray factor $\varepsilon^2$ found in Exercise 11, one $\varepsilon$ for each of the two gradients hidden in the Laplacian). Then it is easy to see that
+
+$$
+\nabla^\ast_{N,\varepsilon}F(x) = -\frac{1}{d^r_{N,\varepsilon}(x)}\,\frac{1}{\varepsilon N}\sum_{y\in X} w^{a+b}_{N,\varepsilon}(x,y)\,F(x,y)
+\tag{4.13}
+$$
+
+and, with the usual notation $q=2a+b$,
+
+$$
+\Delta_{N,\varepsilon}u(x) = -\nabla^\ast_{N,\varepsilon}\nabla_{N,\varepsilon}u(x) = \frac{1}{d^r_{N,\varepsilon}(x)}\,\frac{1}{\varepsilon N}\sum_{y\in X} w^{q}_{N,\varepsilon}(x,y)\,\frac{u(y)-u(x)}{\varepsilon}.
+\tag{4.14}
+$$
+
+When taking the big data limit, the scaling of $N$ and $\varepsilon$ is subtle. It is clear that if $\varepsilon$ is chosen too small, no relevant information survives (think of the extreme case of keeping $N$ fixed and letting $\varepsilon\to0$: the graph loses all its edges). Before going to the precise joint scaling, let us first consider the simpler case where the two limits are taken *separately*: first $N\to\infty$ at fixed $\varepsilon$ — this turns our discrete objects into **nonlocal** objects in the continuum — and then the nonlocal-to-local limit $\varepsilon\to0$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 50</span><span class="math-callout__name">(Big data limit at fixed scale $\varepsilon$)</span></p>
+
+Let $G\_{N,\varepsilon}=(X\_N,W\_{N,\varepsilon})$ be a sequence of random geometric graphs of dimension $d$ at scale $\varepsilon$ according to Definition 49. Then for any test functions $u,v\in C\_c(\mathbb R^D)$ we have, almost surely,
+
+$$
+\lim_{N\to\infty}\langle u,v\rangle_{N,\varepsilon} = \int_M\Bigl(\int_M \eta_\varepsilon(\lvert x-y\rvert)\,\rho(y)\,d\omega(y)\Bigr)^r u(x)v(x)\,\rho(x)\,d\omega(x).
+\tag{4.15}
+$$
+
+Analogous statements hold for $\langle F,G\rangle\_{N,\varepsilon}$ with vector fields $F,G\in C\_c(\mathbb R^D;\mathbb R^D)$, and for the quantities (4.9), (4.13), (4.14).
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 50 (empirical sums are integrals against $\mu\_N$)</summary>
+
+We simply write the discrete quantity as an integral against the empirical measure:
+
+$$
+\begin{aligned}
+\langle u,v\rangle_{N,\varepsilon}
+&= \frac1N\sum_{x\in X_N}\Bigl(\frac1N\sum_{y\in X_N}\eta_\varepsilon(\lvert x-y\rvert)\Bigr)^r u(x)v(x)\\
+&= \int_{\mathbb R^D}\Bigl(\int_{\mathbb R^D}\eta_\varepsilon(\lvert x-y\rvert)\,d\mu_N(y)\Bigr)^r u(x)v(x)\,d\mu_N(x)\\
+&\to \int_{\mathbb R^D}\Bigl(\int_{\mathbb R^D}\eta_\varepsilon(\lvert x-y\rvert)\,d\mu(y)\Bigr)^r u(x)v(x)\,d\mu(x) \quad\text{a.s. as } N\to\infty,
+\end{aligned}
+$$
+
+since $\mu\_N\to\mu$ as measures (4.8). (Two glossed details: including the diagonal term $y=x$ in the inner sum changes $d\_{N,\varepsilon}(x)$ only by $\eta(0)/(N\varepsilon^d)\to0$ at fixed $\varepsilon$; and the passage to the limit in the *composite* integrand works because the inner integral converges uniformly in $x$ on compact sets, $\eta\_\varepsilon$ being fixed and bounded here.) Now the claim (4.15) follows from the manifold hypothesis $d\mu=\rho\,d\omega$. $\square$
+
+</details>
+
+Now we take the nonlocal-to-local limit $\varepsilon\to0$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 51</span><span class="math-callout__name">(Nonlocal-to-local limit)</span></p>
+
+For any $u,v\in C\_c(\mathbb R^D)$ we have
+
+$$
+\lim_{\varepsilon\to0}\int_M\Bigl(\int_M \eta_\varepsilon(\lvert x-y\rvert)\,\rho(y)\,d\omega(y)\Bigr)^r u(x)v(x)\,\rho(x)\,d\omega(x) = \int_M u(x)v(x)\,\rho^{r+1}(x)\,d\omega(x).
+\tag{4.16}
+$$
+
+</div>
+
+<details class="proof" markdown="1">
+<summary>Proof of Proposition 51 ($\eta\_\varepsilon$ is a Dirac sequence)</summary>
+
+The point is that $\eta\_\varepsilon\to\delta\_0$ as measures, thanks to the normalization $\int\_{\mathbb R^d}\eta(\lvert z\rvert)\,dz=1$. Concretely, fix $x\in M$ and substitute $y=\exp\_x(\varepsilon z)$, $z\in T\_xM$, in the inner integral (for $\varepsilon$ below the injectivity radius of $M$); the Jacobian is $1+O(\varepsilon^2\lvert z\rvert^2)$ and the ambient distance satisfies $\lvert x-\exp\_x(\varepsilon z)\rvert=\varepsilon\lvert z\rvert\,(1+O(\varepsilon^2\lvert z\rvert^2))$, so
+
+$$
+\int_M \eta_\varepsilon(\lvert x-y\rvert)\,\rho(y)\,d\omega(y) = \int_{T_xM}\eta(\lvert z\rvert)\,\rho(\exp_x(\varepsilon z))\,dz + o(1) \to \rho(x)\int_{\mathbb R^d}\eta(\lvert z\rvert)\,dz = \rho(x)
+$$
+
+as $\varepsilon\to0$, by continuity of $\rho$. The inner integrals are bounded uniformly in $x$ and $\varepsilon$, so (4.16) follows by dominated convergence. $\square$
+
+</details>
+
+Now we turn to the Laplace operator. The following result shows that the discrete Laplacians are consistent with the continuum operator $\Delta$ defined for functions $u\colon M\to\mathbb R$ via
+
+$$
+\Delta u(x) := C(\eta,q)\,\frac{1}{\rho^{r+1}}\,\nabla\cdot\bigl(\rho^2\nabla u\bigr).
+\tag{4.17}
+$$
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 52</span><span class="math-callout__name">(Consistency of graph Laplacians)</span></p>
+
+If $u\in C^2\_c(\mathbb R^D)$, then $\Delta\_{N,\varepsilon}u\rightharpoonup\Delta u$ weakly in the following sense: for any $v\in C^2\_c(\mathbb R^D)$ we have, almost surely,
+
+$$
+\lim_{\varepsilon\to0}\lim_{N\to\infty}\langle\Delta_{N,\varepsilon}u, v\rangle_{N,\varepsilon} = C(\eta,q)\int_M \nabla\cdot\bigl(\rho^2\nabla u\bigr)\,v\,d\omega,
+\tag{4.18}
+$$
+
+where $C(\eta,q) = \int\_{\mathbb R^d}\eta^q(\lvert z\rvert)\,\frac12 z\_1^2\,dz$.
+
+</div>
+
+Note that the right-hand side of (4.18) is exactly $\int\_M \Delta u\,v\,\rho^{r+1}\,d\omega$ with $\Delta u$ from (4.17) — i.e., the pairing of $\Delta u$ and $v$ in the limiting scalar product (4.16). The weight $\rho^{-(r+1)}$ in (4.17) is designed precisely so that the weak statement (4.18) is free of $r$.
+
+<details class="proof" markdown="1">
+<summary>Proof of Theorem 52 (duality, exponential coordinates, Taylor)</summary>
+
+**Step 1: duality.** Since $\Delta\_{N,\varepsilon}=-\nabla^\ast\_{N,\varepsilon}\nabla\_{N,\varepsilon}$ and $\nabla^\ast\_{N,\varepsilon}$ is the adjoint of $\nabla\_{N,\varepsilon}$, the degree weights cancel and
+
+$$
+-\langle\Delta_{N,\varepsilon}u, v\rangle_{N,\varepsilon} = \langle\nabla_{N,\varepsilon}u, \nabla_{N,\varepsilon}v\rangle_{N,\varepsilon} = \frac{1}{2N^2}\sum_{x,y\in X}(\eta^q)_\varepsilon(\lvert x-y\rvert)\,\frac{u(y)-u(x)}{\varepsilon}\,\frac{v(y)-v(x)}{\varepsilon},
+$$
+
+where the two prefactors $w^a$ from the gradients and the $w^b$ from the scalar product combined into $w^q=(\eta^q)\_\varepsilon$ (powers-act-on-the-profile convention).
+
+**Step 2: big data limit.** By the same argument as in Proposition 50 — now with the pair empirical measure $\mu\_N\otimes\mu\_N\to\mu\otimes\mu$ — we get, almost surely as $N\to\infty$,
+
+$$
+\langle\nabla_{N,\varepsilon}u, \nabla_{N,\varepsilon}v\rangle_{N,\varepsilon} \to \frac12\int_M\int_M(\eta^q)_\varepsilon(\lvert x-y\rvert)\,\frac{u(y)-u(x)}{\varepsilon}\,\frac{v(y)-v(x)}{\varepsilon}\,\rho(y)\,d\omega(y)\,\rho(x)\,d\omega(x).
+$$
+
+**Step 3: exponential coordinates.** If $\varepsilon>0$ is sufficiently small (precisely, smaller than the injectivity radius of $M$), the exponential map $\exp\_x\colon T\_xM\cap B\_\varepsilon(0)\to B\_\varepsilon(x)\subset M$ is a diffeomorphism, and we can change variables $y=\exp\_x(\varepsilon z)$ in the $y$-integral. The factor $\varepsilon^{-d}$ in $(\eta^q)\_\varepsilon$ is absorbed by the Jacobian $\varepsilon^d$ of $z\mapsto\exp\_x(\varepsilon z)$, and both the Jacobian correction and the replacement of the chordal distance $\lvert x-y\rvert$ by $\varepsilon\lvert z\rvert$ cost only factors $1+O(\varepsilon^2\lvert z\rvert^2)$. The right-hand side becomes
+
+$$
+\frac12\int_M\int_{T_xM}\eta^q(\lvert z\rvert)\,\frac{u(\exp_x(\varepsilon z))-u(x)}{\varepsilon}\,\frac{v(\exp_x(\varepsilon z))-v(x)}{\varepsilon}\,\rho(\exp_x(\varepsilon z))\,dz\,\rho(x)\,d\omega(x) + o(1).
+$$
+
+**Step 4: Taylor expansion.** By Taylor's theorem,
+
+$$
+\frac{u(\exp_x(\varepsilon z))-u(x)}{\varepsilon} = z\cdot\nabla u(x) + O(\varepsilon\lvert z\rvert^2),
+$$
+
+and similarly for $v$, as well as
+
+$$
+\rho(\exp_x(\varepsilon z)) = \rho(x) + O(\varepsilon\lvert z\rvert).
+$$
+
+(Here $O$ is the Landau symbol: $A=O(B)$ if there is a constant $C<\infty$ with $\lvert A\rvert\leq CB$.) Every cross term carries at least one factor $\varepsilon$, and since $\eta$ has enough decay for all $z$-moments appearing here to be finite, all these terms vanish in the limit $\varepsilon\downarrow0$. Only the leading-order term survives:
+
+$$
+\frac12\int_M\int_{T_xM}\eta^q(\lvert z\rvert)\,\bigl(z\cdot\nabla u(x)\bigr)\bigl(z\cdot\nabla v(x)\bigr)\,dz\,\rho^2(x)\,d\omega(x)
+= \frac12\int_M \nabla u(x)\cdot\Bigl(\int_{T_xM}\eta^q(\lvert z\rvert)\,z\otimes z\,dz\Bigr)\nabla v(x)\,\rho^2(x)\,d\omega(x).
+$$
+
+**Step 5: the moment matrix.** By Exercise 12 below, the inner integral is isotropic:
+
+$$
+\int_{T_xM}\eta^q(\lvert z\rvert)\,z\otimes z\,dz = \Bigl(\int_{T_xM}\eta^q(\lvert z\rvert)\,z_1^2\,dz\Bigr) I_{T_xM} =: 2\,C(\eta,q)\,I_{T_xM}.
+$$
+
+Combining, $\langle\nabla\_{N,\varepsilon}u,\nabla\_{N,\varepsilon}v\rangle\_{N,\varepsilon}\to C(\eta,q)\int\_M\nabla u\cdot\nabla v\,\rho^2\,d\omega$, and hence, by Step 1 and Stokes' theorem on the closed manifold $M$,
+
+$$
+\langle\Delta_{N,\varepsilon}u, v\rangle_{N,\varepsilon} \to -C(\eta,q)\int_M\nabla u\cdot\nabla v\,\rho^2\,d\omega = C(\eta,q)\int_M\nabla\cdot\bigl(\rho^2\nabla u\bigr)\,v\,d\omega.
+$$
+
+This is (4.18) and concludes the proof. $\square$
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise 12</span><span class="math-callout__name">(Second moments of a radial profile)</span></p>
+
+Show that for any radial, integrable profile — say $\zeta(z)=\eta^q(\lvert z\rvert)$ with finite second moments — the second-moment matrix is a multiple of the identity:
+
+$$
+\int_{\mathbb R^d}\zeta(z)\,z\otimes z\,dz = \Bigl(\int_{\mathbb R^d}\zeta(z)\,z_1^2\,dz\Bigr) I.
+$$
+
+*Hint: for $i\neq j$ the integrand $\zeta(z)z\_iz\_j$ is odd under $z\_i\mapsto-z\_i$, and the diagonal entries agree because permuting two coordinates leaves $\zeta$ invariant.*
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/bdl_laplacian_consistency.png' | relative_url }}" alt="Two panels. Left: a scatter of blue dots tracing a wavy curve over the interval from 0 to two pi, with an orange smooth curve running through the middle of the scatter; the dots fluctuate around the curve in correlated clumps. Right: a log-log plot of mean absolute error against the scale epsilon, showing three decreasing lines for N equal to 200, 1000 and 5000 that drop with slope roughly minus three halves, reach a minimum near epsilon equal to one, and then rise again." loading="lazy">
+  <figcaption>Theorem 52 on the circle of the previous figure ($u(x)=x_2=\sin\theta$, profile $\eta=\frac12\mathbf 1_{[0,1]}$, $a=0$, $b=1$, $r=0$, so $q=1$ and $C(\eta,q)=\frac16$). <strong>Left.</strong> The discrete Laplacian $\Delta_{N,\varepsilon}u(x_i)$ at $N=3000$, $\varepsilon=0.3$ scatters around the continuum operator $C(\eta,q)\rho^{-1}(\rho^2u')'$ of (4.17); the fluctuations are correlated between nearby points, because neighbors share the same local sampling noise. <strong>Right.</strong> Mean error versus $\varepsilon$: for fixed $N$, shrinking $\varepsilon$ first helps (the discretization bias decreases) and then hurts (each ball $B_\varepsilon(x)$ contains too few samples, and the noise, of order $(N\varepsilon^{d+2})^{-1/2}$, explodes). The iterated limit of Theorem 52 dodges this trade-off by sending $N\to\infty$ first; a single data set faces it head-on.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the limit operator)</span></p>
+
+Compare (4.17) with the weighted Laplacian $\Delta\_\rho=\frac1\rho\nabla\cdot(\rho\nabla u)$ from (4.2); two differences are instructive.
+
+**Why $\rho^2$ inside the divergence.** Each edge of the graph has *two* endpoints, and each endpoint samples the density once — visible in the proof as the two factors $\rho(x)$, $\rho(y)$ coming from the two empirical averages. A graph built from data therefore diffuses like $\nabla\cdot(\rho^2\nabla u)$: transport through a region is fast where data is dense and slow where it is sparse, *quadratically* so.
+
+**What $r$ does — and does not do.** The proof shows that the Dirichlet energies themselves converge, $E\_{N,\varepsilon}(u)=\frac12\langle\nabla\_{N,\varepsilon}u,\nabla\_{N,\varepsilon}u\rangle\_{N,\varepsilon}\to\frac{C(\eta,q)}{2}\int\_M\lvert\nabla u\rvert^2\rho^2\,d\omega$ — with no $r$ in sight. The exponent $r$ only enters through the scalar product (4.11), i.e., through the reference measure $\rho^{r+1}d\omega$ of the limiting Hilbert space; it reweights the *operator* (4.17) but not the underlying energy. In other words: $(a,b)$ (through $q$) and the profile $\eta$ decide which energy the graph sees, while $r$ decides with respect to which measure the gradient of that energy is taken — the same energy/metric split we have exploited since Chapter 1. Tuning these knobs (and further degree normalizations, as in diffusion-map constructions) is a genuine modeling choice: it decides how strongly an algorithm privileges high-density regions. For uniform density $\rho\equiv\mathrm{const}$, all choices collapse and $\Delta$ is a multiple of the Laplace–Beltrami operator of $M$: the graph Laplacian then "learns" the intrinsic geometry of the data manifold.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(From iterated to joint limits — where this is headed)</span></p>
+
+Theorem 52 takes the limits in the comfortable order $\lim\_{\varepsilon\to0}\lim\_{N\to\infty}$: first infinitely much data, then locality. A practitioner holds *one* data set with *one* $N$ and must pick $\varepsilon=\varepsilon\_N$; the meaningful question is the **joint limit** $\varepsilon\_N\to0$ as $N\to\infty$, and the right panel of the figure above shows what is at stake — shrink $\varepsilon\_N$ too fast and sampling noise swamps everything (in the extreme, below the connectivity threshold $\varepsilon\_N\sim(\log N/N)^{1/d}$ the graph fragments and no consistency can hold at all). Moreover, weak consistency of the *operator* is not yet consistency of the *algorithms*, which compute constrained minimizers of the Dirichlet energy $E\_{N,\varepsilon}$; for those, one needs convergence notions for the energies themselves, robust enough to carry minimizers along to the limit — the same lesson as in Chapter 1, where the robust objects were always the energy and the distance, never the equation. With the calculus and its consistency in hand, we can now pose the actual learning problems — clustering, classification — on $G\_{N,\varepsilon}$ and study *their* big data limits.
 
 </div>
 
