@@ -11,6 +11,9 @@ tags:
   - score-matching
   - fokker-planck
   - time-reversal
+  - ito-calculus
+  - stochastic-integration
+  - martingales
 # math: true
 ---
 
@@ -4327,4 +4330,1038 @@ $$
 expanding the derivative of the product, $\frac{1}{p} \partial_i(a_{ji} p) = \partial_i a_{ji} + a_{ji}\, \partial_i \log p$, gives the coordinate form in the statement. $\square$
 
 </details>
+</div>
+
+## 4 Stochastic Integration and Stochastic Differential Equations
+
+In Chapter 3, we analysed diffusion processes from a *macroscopic* perspective: we established that the temporal evolution of their transition densities $p(t, x)$ is governed deterministically by the Fokker–Planck (forward Kolmogorov) equation,
+
+$$
+\partial_t p = -\nabla \cdot (b\, p) + \frac{1}{2} \sum_{i,j} \partial_i \partial_j (a_{ij}\, p).
+$$
+
+However, in applications such as *score-based generative diffusion models*, manipulating the global probability density is insufficient. To actively generate new data (e.g., sampling an image from noise), we must be able to simulate the *individual sample paths* $X_t(\omega)$ backwards in time. This requires the path-wise, microscopic formulation given by a stochastic differential equation,
+
+$$
+\mathrm{d}X_t = b(X_t)\, \mathrm{d}t + \sigma(X_t)\, \mathrm{d}B_t. \tag{4.1}
+$$
+
+While physically intuitive, this differential notation presents a severe mathematical anomaly: by definition, the paths of Brownian motion $t \mapsto B_t(\omega)$ are *nowhere differentiable* (§0.3), so the derivative $\mathrm{d}B_t / \mathrm{d}t$ does not exist in any classical sense, rendering the SDE formally meaningless. To resolve this, we reinterpret (4.1) strictly as an *integral equation*,
+
+$$
+X_t = X_0 + \int_0^t b(X_s)\, \mathrm{d}s + \int_0^t \sigma(X_s)\, \mathrm{d}B_s. \tag{4.2}
+$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Why Classical Integration Fails Here)</span></p>
+
+* The first integral in (4.2) is a standard, path-wise Riemann–Lebesgue integral — no difficulty there.
+* The second integral integrates against Brownian motion, a process of **infinite total variation** on every interval. The Riemann–Stieltjes theory requires an integrator of *bounded variation*, so classical integration theory inherently fails.
+* Infinite total variation is not an accident but a *theorem*: any continuous process with non-vanishing quadratic variation (as we will see, $\langle B \rangle\_t = t$) must have infinite total variation — otherwise its squared increments would be dominated by $\max_i \lvert \Delta B \rvert \cdot \sum_i \lvert \Delta B \rvert \to 0$.
+* The way out is to abandon path-wise definitions and exploit the **martingale structure** of $B$ instead: an $L^2$-theory of integration, built in this section, whose engine is Itô's isometry.
+
+</div>
+
+Therefore, to rigorously define diffusion trajectories — and to establish the foundational mechanics of reverse-time sampling in generative AI — we must first develop a completely new mathematical framework.
+
+### 4.1 Stochastic Integration
+
+In this section, we consider martingales $M = (M_t)\_{t \ge 0}$ with respect to a filtration $(\mathcal{F}\_t)\_{t \ge 0}$ that satisfy
+
+$$
+\sup_{t \ge 0} \mathbb{E}\bigl[M_t^2\bigr] < +\infty, \tag{4.3}
+$$
+
+$$
+t \mapsto M_t \ \text{is continuous a.s.} \tag{4.4}
+$$
+
+We define the space of such martingales as
+
+$$
+\mathcal{M}_2^C := \bigl\lbrace M \,:\, M \text{ is a martingale with properties (4.3) and (4.4)} \bigr\rbrace.
+$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">(Standing Assumptions for §4.1)</span></p>
+
+Throughout this section, we assume that $(X_t, \mathcal{F}\_t)\_{t \ge 0}$ is progressively measurable, that the filtration $(\mathcal{F}\_t)\_{t \ge 0}$ is right-continuous, and that $\mathcal{F}\_t$ contains all $\mathbb{P}$-null sets for all $t \ge 0$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.1 (Simple Process)</span></p>
+
+A stochastic process $(X_t)\_{t \ge 0}$ is called a **simple process** if there exist real numbers $0 = t_0 < t_1 < t_2 < \cdots$ and $\mathcal{F}\_{t_i}$-measurable random variables $\xi_i$ for $i \ge 0$ such that
+
+$$
+X_t = \xi_0 \cdot \mathbb{1}_{\lbrace 0 \rbrace}(t) + \sum_{i=0}^{\infty} \xi_i \cdot \mathbb{1}_{(t_i,\, t_{i+1}]}(t), \qquad 0 \le t < \infty, \tag{4.5}
+$$
+
+with $t_n \to \infty$ as $n \to \infty$, and
+
+$$
+\sup_{n \ge 0}\, \lvert \xi_n \rvert \le C \quad \text{a.s. for some constant } C > 0. \tag{4.6}
+$$
+
+If a process $(X_t)\_{t \ge 0}$ is simple, we also write $X \in \mathcal{L}\_0$.
+
+</div>
+
+We now define stochastic integrals of the form $\int_0^t X_s\, \mathrm{d}M_s$ for integrands $X \in \mathcal{L}\_0$ and integrators $M \in \mathcal{M}\_2^C$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.2 (Stochastic Integral for Simple Processes)</span></p>
+
+For $X \in \mathcal{L}\_0$ and $M \in \mathcal{M}\_2^C$, we define the stochastic integral path-wise as
+
+$$
+\int_0^t X_s\, \mathrm{d}M_s := \sum_{i=0}^{n-1} \xi_i \bigl(M_{t_{i+1}} - M_{t_i}\bigr) + \xi_n \bigl(M_t - M_{t_n}\bigr),
+$$
+
+where $n$ is the unique index chosen so that $t_n \le t < t_{n+1}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(The Gambling Reading)</span></p>
+
+Think of $M$ as the fluctuating value of a fair game and of $\xi_i$ as the *stake* you hold during the round $(t_i, t_{i+1}]$. The integral is your cumulative winnings. Two features of Definition 4.1 are then no longer technicalities:
+
+* $\xi_i$ is $\mathcal{F}\_{t_i}$-measurable — the stake must be chosen *before* the increment $M_{t_{i+1}} - M_{t_i}$ is revealed. No clairvoyance: this is exactly why the integral of a bounded strategy against a martingale remains a martingale (fair games stay fair under non-anticipating betting).
+* The uniform bound (4.6) keeps expectations finite; it will be relaxed in several stages below.
+
+</div>
+
+We will subsequently extend the definition to vastly larger classes of processes $X$ and $M$. For the next generalisation, we must formalise the concept of *variance accumulation over time*.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.3 (Quadratic Variation)</span></p>
+
+A process $X$ is said to have **bounded quadratic variation** if there exists a process $\langle X \rangle\_t$ such that
+
+$$
+\sum_{i=0}^{n-1} \bigl(X_{t_{i+1}} - X_{t_i}\bigr)^2 \xrightarrow{\ \mathbb{P}\ } \langle X \rangle_t \quad \text{in probability},
+$$
+
+for all $t \ge 0$, where the sum is taken over any partition $0 = t_0 < \cdots < t_n = t$ with mesh size satisfying
+
+$$
+\sup_{0 \le i \le n-1} \bigl(t_{i+1} - t_i\bigr) \to 0.
+$$
+
+The process $\langle X \rangle\_t$ is called the **quadratic variation** of $X$. One frequently writes $\langle X, X \rangle\_t$ instead of $\langle X \rangle\_t$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.4 (Existence and Characterisation of Quadratic Variation)</span></p>
+
+The following statements hold:
+
+1. Every process $M \in \mathcal{M}\_2^C$ is of bounded quadratic variation.
+2. The process $M^2 - \langle M, M \rangle$ is a martingale.
+3. The process $V = \langle M, M \rangle$ is the *unique* process satisfying the following properties:
+   1. $V$ is adapted to $(\mathcal{F}\_t)\_{t \ge 0}$,
+   2. $V_t$ is continuous and non-decreasing,
+   3. $V_0 = 0$,
+   4. $M^2 - V$ is a martingale.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Roughness, Measured)</span></p>
+
+* This theorem precisely characterises the "roughness" of continuous martingales via their quadratic variation: unlike processes of bounded variation, martingales accumulate variance *in a systematic way that can be measured and tracked* — this is what makes them viable integrators for Itô calculus.
+* Note that if $M$ were of bounded variation, the integral $\int X_t\, \mathrm{d}M_t$ could be trivially defined path-wise via Riemann–Stieltjes. Our goal is precisely the broader, rougher class.
+* Part 2 is the quantitative version of "variance accumulates": $\langle M \rangle$ is exactly the compensator that must be subtracted from $M^2$ (a submartingale) to restore the martingale property.
+* $\langle M \rangle\_t$ will play the role of the *clock* of the integration theory: integrands are measured in the norm $\mathbb{E}\int_0^t X_s^2\, \mathrm{d}\langle M \rangle\_s$ (Itô isometry, Theorem 4.6).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.4</summary>
+
+**Part 1.** First assume that $M$ is bounded, i.e., $\lvert M_t \rvert \le C$ a.s. for a constant $C > 0$. Fix $T > 0$ and consider a sequence of *nested* partitions $0 = t_0^n < t_1^n < \cdots < t_n^n = T$ such that
+
+$$
+\lbrace t_0^m, \dots, t_m^m \rbrace \subset \lbrace t_0^n, \dots, t_n^n \rbrace \quad \text{for all } m \le n, \qquad \max_{0 \le i \le n-1} \bigl(t_{i+1}^n - t_i^n\bigr) \to 0.
+$$
+
+Define the sum of squared increments
+
+$$
+V_n(T) := \sum_{i=0}^{n-1} \bigl(M_{t_{i+1}^n} - M_{t_i^n}\bigr)^2.
+$$
+
+We will show that
+
+$$
+V_n(T) \ \text{is a Cauchy sequence in } L^2(\mathbb{P}). \tag{*}
+$$
+
+This implies the existence of a limit $V(T) \in L^2(\mathbb{P})$ with $\mathbb{E}[(V_n(T) - V(T))^2] \to 0$; moreover, one can show that $V(T)$ does not depend on the choice of the partition sequence almost surely (merge two sequences into a common refinement). Hence (\*) implies part 1 for bounded $M$.
+
+*Proof of (\*).* Take $m > n$ and refine: for each interval $[t_i^n, t_{i+1}^n]$, let
+
+$$
+t_i^n = t_{i,1}^m < t_{i,2}^m < \cdots < t_{i,J_i}^m = t_{i+1}^n
+$$
+
+be the subdivision induced by the finer partition $\lbrace t_j^m \rbrace$. Using the identity
+
+$$
+\Bigl(\sum_{k=1}^K c_k\Bigr)^2 - \sum_{k=1}^K c_k^2 = 2 \sum_{k=1}^K c_k \Bigl(\sum_{l=1}^{k-1} c_l\Bigr)
+$$
+
+on each block — with $c_j$ the fine increments inside block $i$, so that $\sum_{l < j} c_l = M_{t_{i,j}^m} - M_{t_i^n}$ telescopes — one computes
+
+$$
+V_n(T) - V_m(T) = \sum_{i=0}^{n-1} \Biggl[\bigl(M_{t_{i+1}^n} - M_{t_i^n}\bigr)^2 - \sum_{j=1}^{J_i - 1} \bigl(M_{t_{i,j+1}^m} - M_{t_{i,j}^m}\bigr)^2\Biggr] = 2 \sum_{i,j} \bigl(M_{t_{i,j+1}^m} - M_{t_{i,j}^m}\bigr)\bigl(M_{t_{i,j}^m} - M_{t_i^n}\bigr).
+$$
+
+Squaring and taking expectations, the *orthogonality of martingale increments* (together with boundedness of $M$) kills every term in which the four increments do not overlap suitably, leaving
+
+$$
+\mathbb{E}\bigl[(V_m(T) - V_n(T))^2\bigr] \le 4\, \mathbb{E}\Bigl[\Delta_n^2 \sum_{i=0}^{m-1} \bigl(M_{t_{i+1}^m} - M_{t_i^m}\bigr)^2\Bigr], \qquad \Delta_n := \max_{i,j} \bigl\lvert M_{t_{i,j}^m} - M_{t_i^n} \bigr\rvert.
+$$
+
+By continuity of $M$ we have $\Delta_n \to 0$ a.s. as $n \to \infty$ (uniform continuity on $[0,T]$), and $\lvert \Delta_n \rvert \le 2C$, so dominated convergence gives $\mathbb{E}[\Delta_n^4] \to 0$. For the second factor, write $Z_i := M_{t_{i+1}^m} - M_{t_i^m}$; then
+
+$$
+\mathbb{E}\Bigl[\Bigl(\sum_i Z_i^2\Bigr)^2\Bigr] = \mathbb{E}\Bigl[\sum_i Z_i^4\Bigr] + 2 \sum_{i < j} \mathbb{E}\bigl[Z_i^2 Z_j^2\bigr] \le 8 C^4,
+$$
+
+using $\mathbb{E}[Z_i^4] \le 4C^2\, \mathbb{E}[Z_i^2]$, the tower property with orthogonality of increments for the cross terms ($\mathbb{E}[\sum_{j>i} Z_j^2 \mid \mathcal{F}\_{t_{i+1}^m}] \le 4C^2$), and $\sum_i \mathbb{E}[Z_i^2] = \mathbb{E}[(M_T - M_0)^2] \le 4C^2$. Cauchy–Schwarz now combines the two factors:
+
+$$
+\mathbb{E}\bigl[(V_m(T) - V_n(T))^2\bigr] \le 4 \sqrt{\mathbb{E}[\Delta_n^4]}\, \sqrt{8 C^4} \longrightarrow 0,
+$$
+
+showing (\*) and proving part 1 for bounded $M$.
+
+For processes $M$ that are not bounded, consider the stopped processes
+
+$$
+M_t^N = M_{t \wedge \tau_N}, \qquad \tau_N = \inf \lbrace t : \lvert M_t \rvert \ge N \rbrace,
+$$
+
+which are bounded continuous martingales. The first part yields, for partitions $0 = t_0^n < \cdots < t_n^n = T$,
+
+$$
+\Delta_T^{N,n} := \sum_{i=0}^{n-1} \bigl(M_{t_{i+1}^n}^N - M_{t_i^n}^N\bigr)^2 \to \langle M^N \rangle_T \quad \text{in } L^2(\mathbb{P}).
+$$
+
+On the event $\lbrace T \le \tau_N \rbrace$ we have $\Delta_T^{N,n} = \Delta_T^{N+k,n}$ for all $k \ge 0$, hence $\langle M^{N+k} \rangle\_T$ does not depend on $k \ge 0$ on $\lbrace T \le \tau_N \rbrace$, a.s. Since $\tau_N \uparrow \infty$, there exists a process $\Delta_T$ such that
+
+$$
+\sum_{i=0}^{n-1} \bigl(M_{t_{i+1}^n} - M_{t_i^n}\bigr)^2 \to \Delta_T \quad \text{in probability},
+$$
+
+which shows part 1 for arbitrary $M \in \mathcal{M}\_2^C$.
+
+**Part 2.** Let $0 = t_0^n < t_1^n < \cdots$ be nested partitions with mesh $\to 0$, and define
+
+$$
+R_t^n := \sum_{i=0}^{k_n - 1} \bigl(M_{t_{i+1}^n} - M_{t_i^n}\bigr)^2 + \bigl(M_t - M_{t_{k_n}^n}\bigr)^2,
+$$
+
+where $k_n$ is chosen so that $t_{k_n}^n \le t < t_{k_n + 1}^n$. By arguments as in part 1 (orthogonality of increments), one finds for $s < t$ that
+
+$$
+\mathbb{E}\bigl[R_t^n - R_s^n \mid \mathcal{F}_s\bigr] = \mathbb{E}\bigl[M_t^2 - M_s^2 \mid \mathcal{F}_s\bigr],
+\qquad\text{i.e.}\qquad
+\mathbb{E}\bigl[M_t^2 - R_t^n \mid \mathcal{F}_s\bigr] = M_s^2 - R_s^n.
+$$
+
+By part 1, $R_t^n \to \langle M \rangle\_t$; for bounded $M$ the convergence holds in $L^2$, which suffices to pass to the limit inside the conditional expectation, and the general case follows by localisation. Hence $\mathbb{E}[M_t^2 - \langle M \rangle\_t \mid \mathcal{F}\_s] = M_s^2 - \langle M \rangle\_s$, i.e., $M^2 - \langle M \rangle$ is a martingale.
+
+**Part 3.** Suppose that both $M^2 - V$ and $M^2 - Z$ are martingales, where $V$ and $Z$ are continuous, non-decreasing, and adapted. Then the difference $V - Z$ is an adapted martingale with continuous paths of *bounded variation* (a difference of monotone processes), started at $0$. Statement 3 then follows immediately from the following classical lemma. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">4.5 (Continuous Martingales of Bounded Variation Are Constant)</span></p>
+
+Every martingale $N$ with continuous paths of bounded variation is a.s. constant.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 4.5</summary>
+
+Without loss of generality, suppose $N_0 = 0$. Let $V_t$ denote the total variation process of $N$ on $[0, t]$, and for each $n \in \mathbb{N}$ define the stopping time
+
+$$
+S_n := \inf \bigl\lbrace t \ge 0 \,\big|\, V_t \ge n \bigr\rbrace.
+$$
+
+Set $X_t := N_{t \wedge S_n}$. Since $N$ is continuous, $X$ is a stopped martingale — hence itself a martingale — with continuous paths whose total variation is bounded by $n$ (so in particular $\lvert X_t \rvert \le n$).
+
+Now take any partition $0 = s_0 < s_1 < \cdots < s_k = t$ with mesh $\to 0$. By orthogonality of martingale increments,
+
+$$
+\mathbb{E}\bigl[X_t^2\bigr] = \sum_{i=0}^{k-1} \mathbb{E}\Bigl[\bigl(X_{s_{i+1}} - X_{s_i}\bigr)^2\Bigr] \le \mathbb{E}\Bigl[\max_i \bigl\lvert X_{s_{i+1}} - X_{s_i} \bigr\rvert \cdot \underbrace{\sum_i \bigl\lvert X_{s_{i+1}} - X_{s_i} \bigr\rvert}_{\le\, V_{t \wedge S_n}\, \le\, n}\Bigr] \le n\, \mathbb{E}\Bigl[\max_i \bigl\lvert X_{s_{i+1}} - X_{s_i} \bigr\rvert\Bigr].
+$$
+
+By continuity, $\max_i \lvert X_{s_{i+1}} - X_{s_i} \rvert \to 0$ a.s. as the mesh vanishes, and it is bounded by $2n$; dominated convergence makes the right-hand side vanish. Hence $X_t = 0$ a.s. for every $t$ — the *bounded variation* budget is too small to sustain any *quadratic* variation, and a continuous martingale without quadratic variation cannot move. As $n$ was arbitrary, letting $n \to \infty$ yields that $N$ is a.s. constant. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quadratic Variation of Brownian Motion)</span></p>
+
+A paramount example is the standard Brownian motion $W$. Since it is a well-known fact that $W_t^2 - t$ is a martingale, the uniqueness statement of Theorem 4.4 (part 3, with $V_t = t$: adapted, continuous, non-decreasing, $V_0 = 0$) immediately dictates that
+
+$$
+\langle W \rangle_t = t.
+$$
+
+Brownian motion accumulates variance at unit rate — its quadratic variation is *deterministic*, even though the path is random.
+
+</div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/qv_ito_correction.png' | relative_url }}" alt="Two panels. Left: staircase curves of cumulative squared increments of one Brownian path for three partition resolutions; the coarse staircase is jagged, the fine one hugs the diagonal line t. Right: three curves for the same path — the squared Brownian motion, the stochastic integral two times integral of W dW, and their difference, which follows the straight line t almost exactly." loading="lazy">
+  <figcaption>One Brownian path, two readings of $\langle W\rangle_t = t$. <strong>Left.</strong> The sums of squared increments $V_n(t)$ (Definition 4.3) over dyadic partitions with $n = 2^3, 2^6, 2^{12}$ points converge to the deterministic line $t$. <strong>Right.</strong> The Itô correction previewed: $W_t^2$ and the stochastic integral $2\int_0^t W_s\,\mathrm{d}W_s$ differ by exactly the quadratic variation — the difference curve is glued to $t$. This is Itô's rule (Theorem 4.15) for $f(x)=x^2$, and equivalently the statement of Theorem 4.4 part 2 that $W_t^2 - t$ is a martingale.</figcaption>
+</figure>
+
+With this variance tracker $\langle M \rangle$ established, we can greatly enlarge our class of permissible integrands. We define the space $\mathcal{L}^{\ast}$ as
+
+$$
+\mathcal{L}^{\ast} := \biggl\lbrace (X_t, \mathcal{F}_t) \ \text{progressively measurable with}\ \mathbb{E}\Bigl[\int_0^t X_s^2\, \mathrm{d}\langle M \rangle_s\Bigr] < \infty \ \text{for all } t \ge 0 \biggr\rbrace.
+$$
+
+Here, the integral $\int_0^t X_s^2\, \mathrm{d}\langle M \rangle\_s$ is defined path-wise as a standard Lebesgue–Stieltjes integral, since $\langle M \rangle$ is non-decreasing. To establish the existence of stochastic integrals $\int X_s\, \mathrm{d}M_s$ for this larger class $\mathcal{L}^{\ast}$, we rely on the fundamental *Itô isometry* and a *density argument*, outlined in the following two theorems.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.6 (Itô Isometry for Simple Processes)</span></p>
+
+For $X \in \mathcal{L}\_0$ and $M \in \mathcal{M}\_2^C$, it holds that
+
+$$
+\mathbb{E}\Biggl[\biggl(\int_0^t X_s\, \mathrm{d}M_s\biggr)^{\!2}\Biggr] = \mathbb{E}\Biggl[\int_0^t X_s^2\, \mathrm{d}\langle M \rangle_s\Biggr].
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.6</summary>
+
+Let the simple process be given by $X_s = \xi_0 \mathbf{1}\_{\lbrace 0 \rbrace}(s) + \sum_{i=0}^\infty \xi_i \mathbf{1}\_{(t_i, t_{i+1}]}(s)$, and assume without loss of generality that $t = t_n$ for some $n \in \mathbb{N}$. Then, by definition,
+
+$$
+\int_0^t X_s\, \mathrm{d}M_s = \sum_{i=0}^{n-1} \xi_i \bigl(M_{t_{i+1}} - M_{t_i}\bigr).
+$$
+
+Squaring this sum and taking the expectation, the cross-terms vanish under expectation due to the martingale property of $M$ (condition on $\mathcal{F}\_{t_j}$ for the later increment). We are left with the diagonal terms:
+
+$$
+\mathbb{E}\Biggl[\biggl(\int_0^t X_s\, \mathrm{d}M_s\biggr)^{\!2}\Biggr]
+= \mathbb{E}\Biggl[\sum_{i=0}^{n-1} \xi_i^2 \bigl(M_{t_{i+1}} - M_{t_i}\bigr)^2\Biggr]
+= \mathbb{E}\Biggl[\sum_{i=0}^{n-1} \xi_i^2 \bigl(\langle M \rangle_{t_{i+1}} - \langle M \rangle_{t_i}\bigr)\Biggr]
+= \mathbb{E}\Biggl[\int_0^t X_s^2\, \mathrm{d}\langle M \rangle_s\Biggr],
+$$
+
+where the middle equality uses that $M^2 - \langle M \rangle$ is a martingale (Theorem 4.4, part 2), so conditionally on $\mathcal{F}\_{t_i}$ the squared increment of $M$ and the increment of $\langle M \rangle$ have the same expectation. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(What the Isometry Buys)</span></p>
+
+The map $X \mapsto \int_0^{\cdot} X\, \mathrm{d}M$ is an **isometry** from (a dense subspace of) the Hilbert-type space with norm $\mathbb{E}\int X^2\, \mathrm{d}\langle M \rangle$ into the space of martingales $\mathcal{M}\_2^C$. This is the exact analogue of extending the Riemann integral from step functions to $L^2$: once an isometry is established on a *dense* class (Theorem 4.7) and the target space is *complete* (Theorem 4.8), the integral extends uniquely by continuity. The next results supply precisely these two missing ingredients.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.7 (Density of Simple Processes)</span></p>
+
+For any process $X \in \mathcal{L}^{\ast}$, there exists a sequence of simple processes $X^n \in \mathcal{L}\_0$ such that
+
+$$
+\mathbb{E}\Biggl[\int_0^t \bigl(X_s - X_s^n\bigr)^2\, \mathrm{d}\langle M \rangle_s\Biggr] \to 0 \quad \text{for all } t \ge 0. \tag{4.7}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.7</summary>
+
+We prove this strictly for the case $\langle M \rangle\_t = t$, which corresponds to standard Brownian motion; for the general semimartingale case, we refer to standard texts such as Karatzas and Shreve (1998). We want to show (4.7) for a fixed $t$, implying the existence of $X_s^n$ such that $\mathbb{E} \int_0^t (X_s - X_s^n)^2\, \mathrm{d}s \le 1/n$.
+
+**Case 1: $X$ is continuous and bounded.** Define the piecewise constant approximation
+
+$$
+X_s^n = X_0 \mathbf{1}_{\lbrace 0 \rbrace}(s) + \sum_{k=0}^{2^n - 1} X_{k t / 2^n}\, \mathbf{1}_{(k t / 2^n,\, (k+1) t / 2^n]}(s).
+$$
+
+Clearly, $X^n \in \mathcal{L}\_0$. Because $X$ is continuous, $X_s^n \to X_s$ pointwise; since $X$ is bounded, (4.7) follows directly by dominated convergence.
+
+**Case 2: $X$ is only bounded.** We employ a smoothing argument. Define the local average
+
+$$
+\widetilde{X}_s^m = m \bigl[F_s - F_{(s - 1/m)^+}\bigr], \qquad \text{where } F_s := \int_0^{s \wedge t} X_u(\omega)\, \mathrm{d}u.
+$$
+
+By construction, $\widetilde{X}\_s^m$ is $\mathcal{F}\_s$-adapted and continuous (hence progressively measurable). As established in Case 1, there exist simple processes $\widetilde{X}\_s^{m,n} \in \mathcal{L}\_0$ with
+
+$$
+\mathbb{E}\Biggl[\int_0^t \bigl(\widetilde{X}_s^{m,n} - \widetilde{X}_s^m\bigr)^2 \mathrm{d}s\Biggr] \to 0 \quad \text{as } n \to \infty.
+$$
+
+We must now demonstrate that the smoothed process converges to the original process,
+
+$$
+\mathbb{E}\Biggl[\int_0^t \bigl(\widetilde{X}_s^m - X_s\bigr)^2 \mathrm{d}s\Biggr] \to 0 \quad \text{as } m \to \infty. \tag{4.8}
+$$
+
+If true, we can choose a suitable diagonal sequence $m_n \to \infty$ such that setting $X^n = \widetilde{X}^{m_n, n}$ satisfies (4.7) for bounded $X$. To prove (4.8), define the exceptional set of times for a given path $\omega$:
+
+$$
+A_\omega := \Bigl\lbrace s \in [0, t] \,:\, \lim_{m \to \infty} \widetilde{X}_s^m(\omega) \ne X_s(\omega) \Bigr\rbrace.
+$$
+
+By Lebesgue's differentiation theorem (the fundamental theorem of calculus for merely integrable integrands), the Lebesgue measure of this set is zero, $\lambda(A_\omega) = 0$. Lifting this to the product space, define $A := \lbrace (s, \omega) : s \in A_\omega \rbrace$; by Fubini's theorem,
+
+$$
+(\lambda \times \mathbb{P})(A) = \int_\Omega \lambda(A_\omega)\, \mathbb{P}(\mathrm{d}\omega) = 0.
+$$
+
+Consequently, $\widetilde{X}\_s^m \to X_s$ almost everywhere on $[0,t] \times \Omega$; dominated convergence then immediately yields (4.8).
+
+**Case 3: $X \in \mathcal{L}^{\ast}$ is arbitrary.** For an arbitrary integrand, we truncate: let $X_s^k := X_s \mathbf{1}\_{\lbrace \lvert X_s \rvert \le k \rbrace}$. Then
+
+$$
+\mathbb{E}\Biggl[\int_0^t \bigl(X_s^k - X_s\bigr)^2 \mathrm{d}s\Biggr] \to 0 \quad \text{as } k \to \infty
+$$
+
+by dominated convergence (the integrand is dominated by $X_s^2$, which is integrable by definition of $\mathcal{L}^{\ast}$). Combining this with the results from Case 2 via a final diagonal sequence argument completes the proof. $\square$
+
+</details>
+</div>
+
+Consider now $X \in \mathcal{L}^{\ast}$. According to Theorem 4.7, we can choose $X^n \in \mathcal{L}\_0$ satisfying (4.7), and define
+
+$$
+I_t(X) := \lim_{n \to \infty} \int_0^t X_s^n\, \mathrm{d}M_s \quad \text{a.s.}
+$$
+
+This limit is a.s. well-defined by the following completeness argument: for a sequence $Z_n$ of random variables,
+
+$$
+\mathbb{E}\bigl[(Z_n - Z_m)^2\bigr] \to 0 \ \text{ for all } m > n \to \infty \quad \Longrightarrow \quad \exists\, Z \ \text{with}\ \mathbb{E}\bigl[(Z_n - Z)^2\bigr] \to 0 \ \text{as } n \to \infty,
+$$
+
+and the sequence $\int X^n \mathrm{d}M$ is Cauchy in $L^2$ precisely by the Itô isometry applied to the differences $X^n - X^m$. Up to $\mathbb{P}$-null sets, $I_t(X)$ does not depend on the choice of the approximating sequence $X^n$ (exercise). Below, we will use one particular choice of $I_t(X)$ as *the* definition of the stochastic integral $\int_0^t X_s\, \mathrm{d}M_s$ for $X \in \mathcal{L}^{\ast}$; for this choice, we make use of the following two theorems.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.8 (Completeness of $\mathcal{M}\_2^C$)</span></p>
+
+For $M \in \mathcal{M}\_2^C$, define
+
+$$
+\vert\kern-0.25ex\vert\kern-0.25ex\vert M \vert\kern-0.25ex\vert\kern-0.25ex\vert_t := \sqrt{\mathbb{E}\bigl[M_t^2\bigr]}, \qquad \vert\kern-0.25ex\vert\kern-0.25ex\vert M \vert\kern-0.25ex\vert\kern-0.25ex\vert := \sum_{n=1}^\infty \frac{\vert\kern-0.25ex\vert\kern-0.25ex\vert M \vert\kern-0.25ex\vert\kern-0.25ex\vert_n \wedge 1}{2^n}.
+$$
+
+Then $\bigl(\mathcal{M}\_2^C, \vert\kern-0.25ex\vert\kern-0.25ex\vert \cdot \vert\kern-0.25ex\vert\kern-0.25ex\vert\bigr)$ is a complete metric space.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.8</summary>
+
+Let $(M^n)$ be a Cauchy sequence in $\mathcal{M}\_2^C$. Then, for each $t$, $M_t^n$ is Cauchy in $L^2(\Omega, \mathcal{F}\_t, \mathbb{P})$, so there exists $\widetilde{M}\_t \in L^2(\Omega, \mathcal{F}\_t, \mathbb{P})$ with $\mathbb{E}\bigl[(M_t^n - \widetilde{M}\_t)^2\bigr] \to 0$. For $A \in \mathcal{F}\_s$, by Cauchy–Schwarz,
+
+$$
+\mathbb{E}\bigl[\mathbf{1}_A \bigl(M_t^n - \widetilde{M}_t\bigr)\bigr] \le \sqrt{\mathbb{P}(A)} \cdot \Bigl(\mathbb{E}\bigl[(M_t^n - \widetilde{M}_t)^2\bigr]\Bigr)^{1/2} \to 0,
+$$
+
+so $\mathbb{E}[\mathbf{1}\_A M_t^n] \to \mathbb{E}[\mathbf{1}\_A \widetilde{M}\_t]$ and likewise $\mathbb{E}[\mathbf{1}\_A M_s^n] \to \mathbb{E}[\mathbf{1}\_A \widetilde{M}\_s]$; passing to the limit in the martingale property shows $\widetilde{M}$ is a martingale. Using that if $X_t$ is a martingale w.r.t. $\mathcal{F}\_t$, then $X_t = \mathbb{E}[X_{t+} \mid \mathcal{F}\_t]$ a.s., hence $X_{t+}$ is a martingale w.r.t. $\mathcal{F}\_{t+}$, and since $\mathcal{F}\_t = \mathcal{F}\_{t+}$ (right-continuity of the filtration), we may set $M_t := \widetilde{M}\_{t+}$; then $M_t = \widetilde M_t$ a.s. and $M$ is right-continuous.
+
+It remains to prove that $M$ is also continuous from the left. From Doob's maximal inequality,
+
+$$
+\mathbb{P}\Bigl(\sup_{0 \le s \le t} \bigl\lvert M_s^n - M_s \bigr\rvert \ge \varepsilon\Bigr) \le \frac{1}{\varepsilon^2}\, \mathbb{E}\bigl\lvert M_t^n - M_t \bigr\rvert^2 \to 0
+$$
+
+as $n \to \infty$. Passing to suitable subsequences $n_k$, we obtain
+
+$$
+\mathbb{P}\Bigl(\sup_{0 \le s \le t} \bigl\lvert M_s^{n_k} - M_s \bigr\rvert \ge \tfrac{1}{k}\Bigr) \le 2^{-k},
+$$
+
+and by the Borel–Cantelli lemma, $\sup_{0 \le s \le t} \lvert M_s^{n_k} - M_s \rvert \to 0$ a.s. — the convergence is *uniform* on compacts along the subsequence. A uniform limit of continuous paths is continuous, so $M_s$ is continuous in $s$ almost surely. Hence $M \in \mathcal{M}\_2^C$ and the space is complete. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.9 (Simple Integrals Live in $\mathcal{M}\_2^C$)</span></p>
+
+For $X \in \mathcal{L}\_0$ and $M \in \mathcal{M}\_2^C$, it holds that
+
+$$
+\int_0^t X_s\, \mathrm{d}M_s \in \mathcal{M}_2^C.
+$$
+
+</div>
+
+Indeed: for simple $X$ the integral is an explicit martingale transform of $M$ with bounded, non-anticipating stakes, so it inherits the martingale property and path continuity from $M$; the uniform $L^2$-bound follows from the Itô isometry together with (4.6). We conclude from Theorems 4.8 and 4.9 that the following definition is well-posed.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.10 (Stochastic Integral on $\mathcal{L}^{\ast}$)</span></p>
+
+For $X \in \mathcal{L}^{\ast}$ and $M \in \mathcal{M}\_2^C$, we define the stochastic integral
+
+$$
+I_t(X) := \int_0^t X_s\, \mathrm{d}M_s
+$$
+
+as the unique element of $\mathcal{M}\_2^C$ such that $\vert\kern-0.25ex\vert\kern-0.25ex\vert I(X) - I(X^n) \vert\kern-0.25ex\vert\kern-0.25ex\vert \to 0$ for every sequence $(X^n) \subset \mathcal{L}\_0$ with $\mathbb{E} \int_0^t (X_s - X_s^n)^2\, \mathrm{d}\langle M \rangle\_s \to 0$.
+
+</div>
+
+**Extension to local martingales.** We now generalise stochastic integration to broader classes of integrators and integrands. Let $\mathcal{M}^{c,\mathrm{loc}}$ denote the class of continuous **local martingales** — processes $M$ for which there exists a localising sequence of stopping times $T_n \uparrow \infty$ such that each stopped process $M_{\cdot \wedge T_n}$ is a martingale — and define
+
+$$
+\mathcal{P}^{\ast} := \biggl\lbrace (X_t, \mathcal{F}_t) \ \text{progressively measurable} \,:\, \int_0^t X_s^2\, \mathrm{d}\langle M \rangle_s < +\infty \ \text{a.s. for all } t \biggr\rbrace.
+$$
+
+Note the relaxation relative to $\mathcal{L}^{\ast}$: only *almost-sure* finiteness of the accumulated variance is required, no expectations. Choose $M \in \mathcal{M}^{c,\mathrm{loc}}$ and $X \in \mathcal{P}^{\ast}$. Let $R_n$ and $S_n$ be non-decreasing stopping times defined by
+
+$$
+R_n(\omega) := n \wedge \inf \biggl\lbrace 0 \le t < \infty \,:\, \int_0^t X_s^2(\omega)\, \mathrm{d}\langle M \rangle_s(\omega) \ge n \biggr\rbrace, \qquad M_{t \wedge S_n} \in \mathcal{M}_2^C.
+$$
+
+Set $T_n := R_n \wedge S_n$, and define the processes
+
+$$
+M_t^n(\omega) := M_{t \wedge T_n(\omega)}(\omega), \qquad X_t^n(\omega) := X_t(\omega) \cdot \mathbf{1}_{\lbrace T_n(\omega) \ge t \rbrace}.
+$$
+
+By construction $X^n \in \mathcal{L}^{\ast}$ and $M^n \in \mathcal{M}\_2^C$, so $\int X^n \mathrm{d}M^n$ is defined by Definition 4.10. The point is that these localised integrals are *consistent*:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">4.11 (Consistency of Localised Integrals; Karatzas–Shreve, Cor. 3.2.21)</span></p>
+
+For $0 \le t \le T_n$ and $n \le m$, it holds almost surely that
+
+$$
+\int_0^t X_s^n\, \mathrm{d}M_s^n = \int_0^t X_s^m\, \mathrm{d}M_s^m.
+$$
+
+</div>
+
+The lemma allows the following definition.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.12 (Stochastic Integral for Local Martingales)</span></p>
+
+Let $M \in \mathcal{M}^{c,\mathrm{loc}}$, $X \in \mathcal{P}^{\ast}$. Then the stochastic integral $\int_0^t X_s\, \mathrm{d}M_s$ is defined as the unique process in $\mathcal{M}^{c,\mathrm{loc}}$ satisfying
+
+$$
+\int_0^t X_s\, \mathrm{d}M_s = \int_0^t X_s^n\, \mathrm{d}M_s^n \quad \text{for } 0 \le t \le T_n.
+$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.13 (Multivariate Integrals)</span></p>
+
+Let $M^1, \dots, M^k \in \mathcal{M}^{c,\mathrm{loc}}$ and $X^{ij} \in \mathcal{P}^{\ast}$ for $1 \le i \le m$, $1 \le j \le k$. Define the vector-valued stochastic integral
+
+$$
+\int X_s\, \mathrm{d}M_s := \begin{pmatrix} \int X_s^{11}\, \mathrm{d}M_s^1 + \cdots + \int X_s^{1k}\, \mathrm{d}M_s^k \\ \vdots \\ \int X_s^{m1}\, \mathrm{d}M_s^1 + \cdots + \int X_s^{mk}\, \mathrm{d}M_s^k \end{pmatrix}.
+$$
+
+</div>
+
+For the following processes, it is now easy to define integrals.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.14 (Continuous Semimartingale)</span></p>
+
+Suppose a process $(X_t, \mathcal{F}\_t)$ admits the decomposition
+
+$$
+X_t = X_0 + M_t + B_t, \qquad 0 \le t < \infty,
+$$
+
+with $M \in \mathcal{M}^{c,\mathrm{loc}}$ and $B_t = B_t^{+} - B_t^{-}$, where $B_t^{\pm}$ are continuous, non-decreasing, and $\mathcal{F}\_t$-adapted with $B_0^{\pm} = 0$ a.s. Then $X$ is called a **continuous semimartingale**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Integrals Against Semimartingales — and a Notation Warning)</span></p>
+
+For a continuous semimartingale $X$ and $Y \in \mathcal{P}^{\ast}$, the integral $\int Y_s\, \mathrm{d}X_s$ is defined by
+
+$$
+\int Y_s\, \mathrm{d}X_s := \int Y_s\, \mathrm{d}M_s + \int Y_s\, \mathrm{d}B_s,
+$$
+
+where the second integral is a path-wise Lebesgue–Stieltjes integral against the bounded-variation part. *Mind the notation clash:* from Definition 4.14 onwards, $B$ denotes the **bounded-variation part** of a semimartingale — not a Brownian motion, which we will denote by $W$ in the remainder of this chapter.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(The Construction Ladder)</span></p>
+
+The stochastic integral was built in four rungs, each trading explicitness for generality:
+
+1. **Simple processes $\mathcal{L}\_0$** (Definition 4.2): explicit martingale-transform sums — the "gambling winnings".
+2. **$\mathcal{L}^{\ast}$** (Definition 4.10): extension by continuity — the Itô *isometry* (Theorem 4.6) maps a *dense* class (Theorem 4.7) into a *complete* space (Theorem 4.8). Structurally identical to extending $\int$ from step functions to $L^2$.
+3. **$\mathcal{P}^{\ast}$ against local martingales** (Definition 4.12): *localisation* by stopping times removes all expectation requirements — only a.s.-finite accumulated variance $\int X^2\, \mathrm{d}\langle M \rangle$ remains.
+4. **Semimartingales** (Definition 4.14 + Remark): integrate against the martingale part by rung 3 and against the bounded-variation part path-wise.
+
+Quadratic variation is the fuel gauge of the whole construction: it decides which integrands are admissible and what the integral's variance is.
+
+</div>
+
+### 4.2 The Itô Rule
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.15 (Itô's Rule)</span></p>
+
+Let $f : \mathbb{R} \to \mathbb{R}$ be twice continuously differentiable, and let $X_t = X_0 + M_t + B_t$ be a continuous semimartingale. Then, for all $t \ge 0$, it holds almost surely that
+
+$$
+f(X_t) = f(X_0) + \int_0^t f'(X_s)\, \mathrm{d}X_s + \frac{1}{2} \int_0^t f''(X_s)\, \mathrm{d}\langle M \rangle_s.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Second-Order Correction Term)</span></p>
+
+Note the additional term involving the second derivative,
+
+$$
+\frac{1}{2} \int_0^t f''(X_s)\, \mathrm{d}\langle M \rangle_s,
+$$
+
+which has no counterpart in the classical chain rule. The heuristic: over a short interval, $(\mathrm{d}X)^2 \approx (\mathrm{d}M)^2 \approx \mathrm{d}\langle M \rangle$ is of order $\mathrm{d}t$ — *not* negligible — so the second-order Taylor term survives the limit. The classical chain rule is recovered exactly when $\langle M \rangle \equiv 0$, i.e., for bounded-variation paths (Lemma 4.5 territory). Two consequences worth internalising:
+
+* **This is where the generator's $\frac{1}{2}$ comes from.** For an SDE solution ($\mathrm{d}\langle M \rangle\_s = a(X_s)\, \mathrm{d}s$), taking expectations in Itô's rule yields $\frac{\mathrm{d}}{\mathrm{d}t} \mathbb{E}[f(X_t)] = \mathbb{E}\bigl[\frac{1}{2} a f'' + b f'\bigr](X_t)$ — precisely the differential operator $L(x, D)$ of Definition 3.1 and the Brownian generator $\frac{1}{2}\Delta$ of Example 2.14. Itô's rule is the path-wise engine behind the entire semigroup calculus of Chapters 2–3.
+* The right panel of the figure above shows the correction path-wise for $f(x) = x^2$: $W_t^2 - 2\int_0^t W\, \mathrm{d}W = \langle W \rangle\_t = t$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.15</summary>
+
+**Step 1 (Localisation).** Define
+
+$$
+T_n := \begin{cases} 0, & \text{if } \lvert X_0 \rvert \ge n, \\ \inf \bigl\lbrace t \ge 0 : \lvert M_t \rvert \ge n \ \text{or}\ B_t^{+} + B_t^{-} \ge n \ \text{or}\ \langle M \rangle_t \ge n \bigr\rbrace, & \text{if } \lvert X_0 \rvert < n, \end{cases}
+$$
+
+with $\inf \varnothing := \infty$, and put $X_t^{(n)} := X_{t \wedge T_n}$. We show the Itô rule for $X_t^{(n)}$; letting $n \to \infty$ then implies the theorem. Note that $X_t^{(n)}$, $M_t^{(n)}$, $\langle M^{(n)} \rangle\_t$, $B_t^{+(n)}$, and $B_t^{-(n)}$ are all bounded, so without loss of generality we may also assume that $f$, $f'$, and $f''$ are absolutely bounded. From now on, we drop the index $(n)$.
+
+**Step 2 (Taylor expansion).** For a partition $0 = t_0 < \cdots < t_m = t$ with mesh $\to 0$, Taylor's theorem gives
+
+$$
+f(X_t) - f(X_0) = \sum_{k=1}^m \bigl(f(X_{t_k}) - f(X_{t_{k-1}})\bigr) = \sum_{k=1}^m f'(X_{t_{k-1}}) \bigl(X_{t_k} - X_{t_{k-1}}\bigr) + \frac{1}{2} \sum_{k=1}^m f''(\eta_k) \bigl(X_{t_k} - X_{t_{k-1}}\bigr)^2,
+$$
+
+where $\eta_k$ lies between $X_{t_{k-1}}$ and $X_{t_k}$. Splitting $X = X_0 + B + M$ and expanding the square,
+
+$$
+\begin{aligned}
+f(X_t) - f(X_0)
+&= \sum_{k} f'(X_{t_{k-1}}) \bigl(B_{t_k} - B_{t_{k-1}}\bigr) + \sum_{k} f'(X_{t_{k-1}}) \bigl(M_{t_k} - M_{t_{k-1}}\bigr) \\
+&\quad + \frac{1}{2} \sum_{k} f''(\eta_k) \bigl(B_{t_k} - B_{t_{k-1}}\bigr)^2 + \sum_{k} f''(\eta_k) \bigl(B_{t_k} - B_{t_{k-1}}\bigr)\bigl(M_{t_k} - M_{t_{k-1}}\bigr) \\
+&\quad + \frac{1}{2} \sum_{k} f''(\eta_k) \bigl(M_{t_k} - M_{t_{k-1}}\bigr)^2 =: J_1 + J_2 + J_3 + J_4 + J_5.
+\end{aligned}
+$$
+
+For $\max_k \lvert t_k - t_{k-1} \rvert \to 0$:
+
+* $J_1 \to \int_0^t f'(X_s)\, \mathrm{d}B_s$ a.s. (Riemann–Stieltjes sums against the BV part) and $J_2 \to \int_0^t f'(X_s)\, \mathrm{d}M_s$ a.s., since $f'(X_t)$ is $\mathcal{F}\_t$-adapted, continuous, and bounded.
+* The mixed and pure-BV second-order terms vanish:
+
+  $$
+  \lvert J_3 \rvert \le \frac{1}{2} \max \lvert f'' \rvert \cdot \underbrace{\max_k \bigl\lvert B_{t_k} - B_{t_{k-1}} \bigr\rvert}_{\to\, 0 \ \text{a.s.}} \cdot \underbrace{\sum_k \bigl\lvert B_{t_k} - B_{t_{k-1}} \bigr\rvert}_{\le\, B_t^{+} + B_t^{-}\, \le\, 2n} \longrightarrow 0 \quad \text{a.s.},
+  $$
+
+  and by the same argument (Cauchy–Schwarz across the two factors), $J_4 \to 0$ a.s.
+* For the crucial term $J_5$, we show
+
+  $$
+  \lvert J_5 - J_6 \rvert \to 0, \tag{4.9}
+  $$
+
+  where $J_6 := \frac{1}{2} \sum_k f''(X_{t_{k-1}}) \bigl(M_{t_k} - M_{t_{k-1}}\bigr)^2$ replaces $\eta_k$ by the left endpoint. Indeed,
+
+  $$
+  \lvert J_5 - J_6 \rvert \le \frac{1}{2} \sum_k \bigl(M_{t_k} - M_{t_{k-1}}\bigr)^2 \cdot \max_k \bigl\lvert f''(\eta_k) - f''(X_{t_{k-1}}) \bigr\rvert,
+  $$
+
+  which converges to zero because the first factor is bounded (in probability) by $\langle M \rangle\_t \le n$ while the second converges to zero by continuity of $X$ and (uniform) continuity of $f''$.
+* Next, put $J_7 := \frac{1}{2} \sum_k f''(X_{t_{k-1}}) \bigl(\langle M \rangle\_{t_k} - \langle M \rangle\_{t_{k-1}}\bigr)$ — the same sum with the squared increments replaced by quadratic-variation increments. We claim
+
+  $$
+  \lvert J_6 - J_7 \rvert \to 0 \quad \text{a.s. (along a subsequence)}. \tag{4.10}
+  $$
+
+  Since $M^2 - \langle M \rangle$ is a martingale (Theorem 4.4), the increments $(M_{t_k} - M_{t_{k-1}})^2 - (\langle M \rangle\_{t_k} - \langle M \rangle\_{t_{k-1}})$ are pairwise orthogonal given the left endpoints, so the non-diagonal terms cancel in expectation:
+
+  $$
+  4\, \mathbb{E}\bigl[\lvert J_6 - J_7 \rvert^2\bigr] = \mathbb{E}\Biggl[\sum_k f''(X_{t_{k-1}})^2 \Bigl(\bigl(M_{t_k} - M_{t_{k-1}}\bigr)^2 - \bigl(\langle M \rangle_{t_k} - \langle M \rangle_{t_{k-1}}\bigr)\Bigr)^2\Biggr],
+  $$
+
+  and hence
+
+  $$
+  4\, \mathbb{E}\bigl[\lvert J_6 - J_7 \rvert^2\bigr] \le 2 \max \lvert f'' \rvert^2 \Biggl(\mathbb{E} \sum_k \bigl(M_{t_k} - M_{t_{k-1}}\bigr)^4 + \mathbb{E} \sum_k \bigl(\langle M \rangle_{t_k} - \langle M \rangle_{t_{k-1}}\bigr)^2\Biggr) \to 0,
+  $$
+
+  where the last convergence follows by dominated convergence (both sums are bounded and their maximal summands vanish by continuity).
+* Finally, $J_7 \to \frac{1}{2} \int_0^t f''(X_s)\, \mathrm{d}\langle M \rangle\_s$: this is an ordinary Lebesgue–Stieltjes limit, since $\langle M \rangle\_t$ is of bounded variation.
+
+Combining the limits of $J_1, J_2, J_7$ and the vanishing of the error terms, we obtain, for each fixed $t \ge 0$ a.s.,
+
+$$
+f(X_t) = f(X_0) + \int_0^t f'(X_s)\, \mathrm{d}X_s + \frac{1}{2} \int_0^t f''(X_s)\, \mathrm{d}\langle M \rangle_s.
+$$
+
+Because both sides are continuous in $t$, the identity holds a.s. *simultaneously* for all $t \ge 0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.16 (Multivariate Itô Rule)</span></p>
+
+Suppose that $M_t^1, \dots, M_t^d \in \mathcal{M}^{c,\mathrm{loc}}$ are $\mathcal{F}\_t$-adapted processes and that $B_t^1, \dots, B_t^d$ are $\mathcal{F}\_t$-adapted processes of bounded variation with $B_0^j = 0$. Define $M_t = (M_t^1, \dots, M_t^d)^{\!\top}$, $B_t = (B_t^1, \dots, B_t^d)^{\!\top}$, and put
+
+$$
+X_t = X_0 + M_t + B_t,
+$$
+
+with $X_0 \in \mathbb{R}^d$, $\mathcal{F}\_0$-measurable. Suppose that $f(t, x) : [0, \infty) \times \mathbb{R}^d \to \mathbb{R}$ has one continuous derivative with respect to $t$ and two continuous derivatives with respect to $x$. Then a.s.,
+
+$$
+\begin{aligned}
+f(t, X_t) = f(0, X_0) &+ \int_0^t \frac{\partial}{\partial s} f(s, X_s)\, \mathrm{d}s + \sum_{i=1}^d \int_0^t \frac{\partial}{\partial x_i} f(s, X_s)\, \mathrm{d}B_s^i \\
+&+ \sum_{i=1}^d \int_0^t \frac{\partial}{\partial x_i} f(s, X_s)\, \mathrm{d}M_s^i + \frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \int_0^t \frac{\partial^2}{\partial x_i \partial x_j} f(s, X_s)\, \mathrm{d}\langle M^i, M^j \rangle_s,
+\end{aligned}
+$$
+
+for $0 \le t < \infty$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.17 (Quadratic Covariation)</span></p>
+
+For two processes $M^1, M^2 \in \mathcal{M}^{c,\mathrm{loc}}$, the term
+
+$$
+\langle M^1, M^2 \rangle = \frac{1}{4} \Bigl(\bigl\langle M^1 + M^2 \bigr\rangle - \bigl\langle M^1 - M^2 \bigr\rangle\Bigr)
+$$
+
+is called the **quadratic covariation**. We also write $\langle M, M \rangle$ for $\langle M \rangle$, and $\langle X^1, X^2 \rangle$ for $\langle M^1, M^2 \rangle$ if $X = B + M$ is a semimartingale as above (the bounded-variation parts contribute nothing).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Covariation by Polarisation)</span></p>
+
+The definition mimics how any quadratic quantity is turned into a bilinear one:
+
+$$
+ab = \frac{1}{4}\bigl((a+b)^2 - (a-b)^2\bigr), \qquad \langle a, b \rangle = \frac{1}{4}\bigl(\lVert a + b \rVert^2 - \lVert a - b \rVert^2\bigr).
+$$
+
+Quadratic covariation is to quadratic variation what an inner product is to a norm: symmetric, bilinear, and it inherits existence directly from Theorem 4.4. It measures the *co-accumulation* of variance of two martingales — for independent Brownian motions it vanishes, $\langle W^i, W^j \rangle\_t = \delta_{ij} t$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">4.18 (Partial Integration)</span></p>
+
+Suppose that $X, Y$ are $\mathcal{F}\_t$-adapted semimartingales. Then
+
+$$
+X_t Y_t = X_0 Y_0 + \int_0^t Y_s\, \mathrm{d}X_s + \int_0^t X_s\, \mathrm{d}Y_s + \int_0^t \mathrm{d}\langle X, Y \rangle_s.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 4.18</summary>
+
+Apply the multivariate Itô rule (Theorem 4.16) with $X^{(1)} = X$, $X^{(2)} = Y$, and $f(t, x_1, x_2) = x_1 x_2$: the mixed second derivative equals $1$, all others vanish. $\square$
+
+*(For $X = Y = W$ this is exactly the right panel of the earlier figure: $W_t^2 = 2\int_0^t W\, \mathrm{d}W + t$.)*
+
+</details>
+</div>
+
+We now consider an exemplary class of semimartingales.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.19 (Itô Process)</span></p>
+
+Let $K(t)$ and $(H_1(t), \dots, H_d(t))$ be progressively measurable processes satisfying
+
+$$
+\int_0^t \lvert K(s) \rvert\, \mathrm{d}s < +\infty, \qquad \int_0^t H_i^2(s)\, \mathrm{d}s < +\infty \quad \text{a.s.}
+$$
+
+for $t \ge 0$ and $i = 1, \dots, d$. Furthermore, let $W_1, \dots, W_d$ be independent Brownian motions. Then the process
+
+$$
+X(t) = X(0) + \int_0^t K(s)\, \mathrm{d}s + \int_0^t H(s)\, \mathrm{d}W(s) = X(0) + \int_0^t K(s)\, \mathrm{d}s + \sum_{j=1}^d \int_0^t H_j(s)\, \mathrm{d}W_j(s)
+$$
+
+is called an **Itô process**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">4.20 (Itô Processes Are Semimartingales)</span></p>
+
+Itô processes are semimartingales.
+
+</div>
+
+*Proof: exercise.* (The drift integral is the bounded-variation part; the stochastic integrals are continuous local martingales by construction.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">4.21 (Covariation and Associativity for Itô Processes)</span></p>
+
+Let $X, \widetilde{X}$ be $\mathcal{F}\_t$-adapted Itô processes with $X(t)$ as in Definition 4.19 and
+
+$$
+\widetilde{X}(t) = \widetilde{X}(0) + \int_0^t \widetilde{K}(s)\, \mathrm{d}s + \int_0^t \widetilde{H}(s)\, \mathrm{d}W(s),
+$$
+
+where $\widetilde{K}$ and $\widetilde{H}$ fulfil the same conditions as $K$ and $H$ in Definition 4.19. Then
+
+$$
+\bigl\langle X, \widetilde{X} \bigr\rangle_t = \sum_{i=1}^d \int_0^t H_i(s)\, \widetilde{H}_i(s)\, \mathrm{d}s,
+$$
+
+and
+
+$$
+\int_0^t \widetilde{X}(s)\, \mathrm{d}X(s) = \int_0^t \widetilde{X}(s)\, K(s)\, \mathrm{d}s + \int_0^t \widetilde{X}(s)\, H(s)\, \mathrm{d}W(s).
+$$
+
+</div>
+
+*Proof: exercise.*
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">(Differential Notation)</span></p>
+
+Instead of $Z(t) = Z_0 + \int_0^t \widetilde{X}(s)\, \mathrm{d}X(s)$, we also write
+
+$$
+\mathrm{d}Z(t) = \widetilde{X}(t)\, \mathrm{d}X(t), \qquad Z(0) = Z_0.
+$$
+
+The differential notation is pure shorthand — every "$\mathrm{d}$-equation" in what follows *means* the corresponding integral equation.
+
+</div>
+
+We now discuss some stochastic differential equations.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.22 (Homogeneous Linear SDE — the Stochastic Exponential)</span></p>
+
+Let $K$ and $H = (H_1, \dots, H_d)$ be progressively measurable processes satisfying
+
+$$
+\int_0^t \lvert K(s) \rvert\, \mathrm{d}s < +\infty, \qquad \int_0^t H_i^2(s)\, \mathrm{d}s < +\infty \quad \text{a.s.},
+$$
+
+and let $W_1, \dots, W_d$ be independent Brownian motions. Then
+
+$$
+Y(t) = \exp\biggl(\int_0^t \Bigl[K(s) - \frac{1}{2} \lVert H(s) \rVert^2\Bigr]\, \mathrm{d}s + \int_0^t H(s)\, \mathrm{d}W(s)\biggr)
+$$
+
+is a solution of the homogeneous SDE
+
+$$
+\begin{cases} \mathrm{d}Y(t) = Y(t) \bigl[K(t)\, \mathrm{d}t + H(t)\, \mathrm{d}W(t)\bigr], \\ Y(0) = 1. \end{cases} \tag{4.11}
+$$
+
+Moreover, if $\widetilde{Y}$ is another solution of (4.11), then $\widetilde{Y}(t) = Y(t)$ a.s., i.e., the solution is unique.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.22</summary>
+
+By applying the Itô rule (Theorem 4.16, with $f = \exp$ applied to the Itô process in the exponent), one easily checks that $Y$ solves (4.11): the $\frac{1}{2} f''$-term contributes $\frac{1}{2} \lVert H \rVert^2 Y\, \mathrm{d}t$, which cancels exactly against the $-\frac{1}{2} \lVert H \rVert^2$ built into the exponent.
+
+We show uniqueness. Suppose $\widetilde{Y}$ is another solution of (4.11). Define $\bar{Y}(t) := 1 / Y(t)$ (well-defined, as the exponential never vanishes). By Itô's formula,
+
+$$
+\mathrm{d}\bar{Y}(t) = \bar{Y}(t) \Bigl[-K(t)\, \mathrm{d}t + \frac{1}{2} \lVert H(t) \rVert^2\, \mathrm{d}t - H(t)\, \mathrm{d}W(t)\Bigr] + \frac{1}{2} \lVert H(t) \rVert^2\, \bar{Y}(t)\, \mathrm{d}t.
+$$
+
+Furthermore, by partial integration (Corollary 4.18) and the covariation formula (Lemma 4.21),
+
+$$
+\begin{aligned}
+\mathrm{d}\bigl(\widetilde{Y}(t)\, \bar{Y}(t)\bigr) &= \widetilde{Y}(t)\, \mathrm{d}\bar{Y}(t) + \bar{Y}(t)\, \mathrm{d}\widetilde{Y}(t) + \mathrm{d}\bigl\langle \widetilde{Y}, \bar{Y} \bigr\rangle_t \\
+&= \widetilde{Y}(t)\, \bar{Y}(t) \Bigl[-K\, \mathrm{d}t + \lVert H \rVert^2\, \mathrm{d}t - H\, \mathrm{d}W + K\, \mathrm{d}t + H\, \mathrm{d}W\Bigr] + \widetilde{Y}(t)\, \bar{Y}(t) \bigl(-H^{\!\top} H\bigr)\, \mathrm{d}t \\
+&= 0 \cdot \mathrm{d}t.
+\end{aligned}
+$$
+
+Thus $\widetilde{Y}(t)\, \bar{Y}(t)$ is constant a.s., and since $\widetilde{Y}(0)\, \bar{Y}(0) = 1$, we have $\widetilde{Y}(t)\, \bar{Y}(t) = 1$ a.s., hence $\widetilde{Y}(t) = Y(t)$ a.s. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Geometric Brownian Motion and the $-\frac{1}{2}\lVert H\rVert^2$ Correction)</span></p>
+
+* For constant scalar coefficients $K \equiv \mu$, $H \equiv \sigma$, the theorem gives **geometric Brownian motion** $Y(t) = \exp\bigl((\mu - \tfrac{\sigma^2}{2}) t + \sigma W_t\bigr)$ — the Black–Scholes asset model, and the left panel of the figure below.
+* The $-\frac{1}{2} \sigma^2$ is the Itô correction in action: the *mean* grows like $\mathbb{E}[Y(t)] = e^{\mu t}$, but the *typical path* grows only at rate $\mu - \frac{\sigma^2}{2}$ — multiplicative noise drags the median below the mean (the gap is the variance of the log).
+* In the general form, $Y$ is known as the **stochastic (Doléans-Dade) exponential** of the Itô process $\int K\, \mathrm{d}s + \int H\, \mathrm{d}W$; for $K \equiv 0$ it is the prototypical *positive local martingale*, the object underlying changes of measure (Girsanov's theorem) later in the theory.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.23 (Inhomogeneous Linear SDE — Variation of Constants)</span></p>
+
+Let $K$, $H$, and $W$ be as in Theorem 4.22. Furthermore, let $k$ and $h = (h_1, \dots, h_m)$ be progressively measurable processes such that
+
+$$
+\int_0^t \lvert k(s) \rvert\, \mathrm{d}s < +\infty, \qquad \int_0^t h_i^2(s)\, \mathrm{d}s < +\infty \quad \text{a.s.}
+$$
+
+Define $Y(t)$ as in Theorem 4.22 and, for $x \in \mathbb{R}$, define
+
+$$
+Z(t) = x + \int_0^t \frac{1}{Y(s)} \Bigl[k(s) - \sum_{j=1}^m H_j(s)\, h_j(s)\Bigr]\, \mathrm{d}s + \sum_{j=1}^m \int_0^t \frac{h_j(s)}{Y(s)}\, \mathrm{d}W_j(s).
+$$
+
+Then
+
+$$
+X(t) = Y(t)\, Z(t)
+$$
+
+is the unique solution to the inhomogeneous SDE
+
+$$
+\mathrm{d}X(t) = \bigl[K(t)\, X(t) + k(t)\bigr]\, \mathrm{d}t + \sum_{j=1}^m \bigl[H_j(t)\, X(t) + h_j(t)\bigr]\, \mathrm{d}W_j(t), \qquad X(0) = x. \tag{4.12}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 4.23</summary>
+
+Apply partial integration (Corollary 4.18) to show that $X = YZ$ solves (4.12). Indeed, using $\mathrm{d}Y = Y[K\, \mathrm{d}t + H\, \mathrm{d}W]$ and the covariation formula (Lemma 4.21),
+
+$$
+\begin{aligned}
+\mathrm{d}X(t) &= \mathrm{d}\bigl(Y(t)\, Z(t)\bigr) = Y(t)\, \mathrm{d}Z(t) + Z(t)\, \mathrm{d}Y(t) + \mathrm{d}\langle Y, Z \rangle_t \\
+&= Y(t) \Biggl[\frac{1}{Y(t)} \Bigl(k(t) - \sum_j H_j(t)\, h_j(t)\Bigr)\, \mathrm{d}t + \sum_j \frac{h_j(t)}{Y(t)}\, \mathrm{d}W_j(t)\Biggr] \\
+&\quad + Z(t)\, Y(t) \bigl[K(t)\, \mathrm{d}t + H(t)\, \mathrm{d}W(t)\bigr] + Y(t) \sum_j \frac{H_j(t)\, h_j(t)}{Y(t)}\, \mathrm{d}t \\
+&= k(t)\, \mathrm{d}t + \sum_j h_j(t)\, \mathrm{d}W_j(t) + X(t) \bigl[K(t)\, \mathrm{d}t + H(t)\, \mathrm{d}W(t)\bigr],
+\end{aligned}
+$$
+
+which is (4.12). For uniqueness, suppose $\widetilde{X}$ is another solution. Then $(\widetilde{X} - X)$ solves the homogeneous SDE (4.11) with initial condition $(\widetilde{X} - X)(0) = 0$; hence $Y + \widetilde{X} - X$ solves (4.11) with $(Y + \widetilde{X} - X)(0) = 1$, and uniqueness in Theorem 4.22 implies
+
+$$
+\bigl(Y + \widetilde{X} - X\bigr)(t) = Y(t) \quad \text{a.s.}
+$$
+
+Therefore $\widetilde{X}(t) = X(t)$ a.s. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Linear SDEs Run Diffusion Models)</span></p>
+
+Theorem 4.23 is the reason the forward half of a diffusion model is *analytically free*:
+
+* **Ornstein–Uhlenbeck.** With $K \equiv -1$, $H \equiv 0$, $k \equiv 0$, $h \equiv \sigma$: $\mathrm{d}X = -X\, \mathrm{d}t + \sigma\, \mathrm{d}W$, and the theorem yields the explicit solution $X(t) = e^{-t} x + \sigma \int_0^t e^{-(t-s)}\, \mathrm{d}W_s$ — a Gaussian process (Wiener integrals of deterministic integrands are Gaussian). This is the process of the time-reversal figure in §3.3 and of Chapter 1's Langevin examples.
+* **Forward corruption SDEs.** The VP-type forward process of §1.2, $\mathrm{d}X = -\frac{1}{2}\beta(t) X\, \mathrm{d}t + \sqrt{\beta(t)}\, \mathrm{d}W$, is an inhomogeneous linear SDE with time-dependent (deterministic) coefficients — the identical variation-of-constants computation applies. Consequently the transition kernels $p_{t \mid 0}(x \mid x_0)$ are *explicit Gaussians*, which is precisely what makes denoising score matching (§1.2) tractable: the conditional score $\nabla \log p_{t \mid 0}$ is available in closed form.
+* Only the *reverse* dynamics (Theorem 3.8) is nonlinear — through the score $\nabla \log p^\mu$ — and that single nonlinear ingredient is what the neural network learns.
+
+</div>
+
+### 4.3 Simulation of Diffusion Processes
+
+Given a diffusion process $(X_t)\_{t \ge 0}$ characterised by its infinitesimal generator $(A, \mathcal{D}(A))$ as in Definition 3.1, a natural question arises: how can one simulate sample paths of $(X_t)\_{t \ge 0}$ when only the generator is known? Recall that, for any $u \in C_c^\infty(\mathbb{R}^d)$, the generator acts as
+
+$$
+A u(x) = \frac{1}{2} \sum_{i,j=1}^d a_{ij}(x)\, \frac{\partial^2 u(x)}{\partial x_i \partial x_j} + \sum_{j=1}^d b_j(x)\, \frac{\partial u(x)}{\partial x_j},
+$$
+
+where $a(x) = (a_{ij}(x))\_{i,j=1}^d$ is the diffusion matrix and $b(x) = (b_1(x), \dots, b_d(x))^{\!\top}$ is the drift vector.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Euler–Maruyama Scheme)</span></p>
+
+**Local approximation.** Over a small time step $\Delta t$, the increment $X_{t + \Delta t} - X_t$ can be approximated by a random variable whose conditional mean and covariance match the drift and diffusion coefficients,
+
+$$
+\mathbb{E}\bigl[X_{t+\Delta t} - X_t \mid X_t = x\bigr] \approx b(x)\, \Delta t, \qquad \operatorname{Cov}\bigl(X_{t+\Delta t} - X_t \mid X_t = x\bigr) \approx a(x)\, \Delta t.
+$$
+
+(These are exactly Kolmogorov's infinitesimal conditions (3.3)–(3.4), read forwards as a recipe rather than backwards as a characterisation.)
+
+**Constructing increments.** Simulate the next position by a normally distributed random variable with the same mean and covariance,
+
+$$
+X_{t+\Delta t} \approx x + b(x)\, \Delta t + \sqrt{\Delta t}\; \Sigma(x)\, Z,
+$$
+
+where $\Sigma(x)$ is a matrix square root of $a(x)$, i.e., $\Sigma(x)\, \Sigma(x)^{\!\top} = a(x)$, and $Z \sim \mathcal{N}(0, I_d)$ is a standard normal vector in $\mathbb{R}^d$.
+
+**Iterative simulation.** Starting from an initial state $X_0 = x_0$, iterate this scheme over discrete time steps to produce an approximate sample path $\lbrace X_{k \Delta t} \rbrace\_{k = 0, 1, \dots}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical Considerations)</span></p>
+
+* **Matrix square root.** Computing $\Sigma(x)$ requires $a(x)$ to be positive semidefinite. Common methods for obtaining such a square root include the Cholesky decomposition or the spectral decomposition.
+* **Step size.** The time step $\Delta t$ must be chosen sufficiently small to maintain accuracy, particularly when the coefficients $a(x)$ or $b(x)$ vary rapidly. For SDE coefficients as in Theorem 3.7, the scheme converges *strongly* with order $\frac{1}{2}$ in general ($\mathbb{E}\lvert X_T - X_T^{\Delta t} \rvert = O(\sqrt{\Delta t})$; see the figure below), and with order $1$ for additive noise.
+* **Domains and boundaries.** If the diffusion is constrained to a domain with boundary conditions, appropriate modifications (such as reflection or absorption) are required in order to respect these constraints.
+
+</div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/euler_maruyama_gbm.png' | relative_url }}" alt="Two panels. Left: one exact path of geometric Brownian motion in grey with two Euler-Maruyama approximations overlaid, a coarse one with eight steps in orange visibly deviating and a finer one with sixty-four steps in green tracking the exact path closely. Right: a log-log plot of the strong error against the step size, following a straight dashed guide line of slope one half." loading="lazy">
+  <figcaption>Euler–Maruyama for geometric Brownian motion $\mathrm{d}X = X\,\mathrm{d}t + 0.8\,X\,\mathrm{d}W$, whose exact solution is the stochastic exponential of Theorem 4.22. <strong>Left.</strong> Exact path vs. the scheme at $\Delta t = 2^{-3}$ and $2^{-6}$, driven by the same Brownian increments. <strong>Right.</strong> The strong error $\mathbb{E}\lvert X_T - X_T^{\Delta t}\rvert$ (4000 Monte-Carlo paths) decays at the theoretical order $\frac12$ — halving the error costs four times the steps.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Sampling in Generative Models Is Euler–Maruyama)</span></p>
+
+Both halves of a score-based diffusion model reduce to this scheme:
+
+* The *forward* corruption rarely needs simulating at all — its transition kernels are explicit Gaussians by Theorem 4.23, so training pairs $(X_0, X_t)$ are sampled in one shot.
+* The *generative* direction integrates the reverse SDE (1.4)/Theorem 3.8, whose drift contains the learned score $s_\theta \approx \nabla \log p^\mu$: DDPM-style "ancestral sampling" is, up to reparametrisation, an Euler–Maruyama discretisation of the reverse SDE. The step-size considerations above become the sampling-speed-versus-fidelity trade-off of few-step samplers.
+
+With stochastic integration, the Itô rule, solvable linear SDEs, and a numerical scheme in hand, the microscopic toolkit promised at the start of this chapter is complete.
+
 </div>
