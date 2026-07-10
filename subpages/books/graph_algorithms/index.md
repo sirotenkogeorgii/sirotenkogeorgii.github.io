@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, minimum spanning trees (cut lemma, red–blue meta-algorithm, Jarník, Borůvka, Kruskal, contractive Borůvka on minor-closed classes, Fredman–Tarjan), and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, minimum spanning trees (cut lemma, red–blue meta-algorithm, Jarník, Borůvka, Kruskal, contractive Borůvka on minor-closed classes, Fredman–Tarjan), dynamic connectivity with Euler-tour trees and the Holm–de Lichtenberg–Thorup structure, and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -5030,5 +5030,481 @@ The tower does not start at $2$ but at $t\_1 = 2^{\lceil 2m/n \rceil}$: the exac
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Toward Linear Time)</span></p>
 
 **Open problem:** is there a deterministic comparison-based MST algorithm in $O(m)$ for all graphs? What *is* known: $O(m)$ **expected** time by a randomized algorithm (Karger–Klein–Tarjan), and $O(m)$ worst-case for **integer** weights on the word RAM (Fredman–Willard) — optimal in both settings.
+
+</div>
+
+# Lecture 11: Dynamic Connectivity
+
+Kruskal's algorithm met Union–Find: components under edge *insertions*. This lecture tackles the full problem — **Union–Find with deletions**.
+
+## The Problem
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Dynamic Connectivity)</span></p>
+
+Maintain a graph under **insertions and deletions** of vertices and edges, answering **connectivity queries** "are $u$ and $v$ in the same component?". Insertions alone are Union–Find; deletions are the hard part — a deleted edge may or may not disconnect anything, depending on the rest of the graph. **Goal:** polylogarithmic ($\approx O(\log n)$) amortized time per operation.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 220" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="gaf72-title">
+  <title id="gaf72-title">Edges come and go; queries ask whether two vertices are connected</title>
+  <line x1="120" y1="80" x2="180" y2="130" stroke="#1565c0" stroke-width="2"/>
+  <line x1="180" y1="130" x2="130" y2="180" stroke="#1565c0" stroke-width="2"/>
+  <line x1="180" y1="130" x2="250" y2="90" stroke="#1565c0" stroke-width="2"/>
+  <line x1="420" y1="70" x2="470" y2="130" stroke="#1565c0" stroke-width="2"/>
+  <line x1="470" y1="130" x2="420" y2="180" stroke="#1565c0" stroke-width="2"/>
+  <line x1="470" y1="130" x2="540" y2="100" stroke="#1565c0" stroke-width="2"/>
+  <line x1="250" y1="90" x2="420" y2="70" stroke="#b91c1c" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="335" y="62" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">inserted, later deleted</text>
+  <circle cx="120" cy="80" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="180" cy="130" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="130" cy="180" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="112" y="196" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="250" cy="90" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="420" cy="70" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="470" cy="130" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="420" cy="180" r="10" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="440" y="196" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">v</text>
+  <circle cx="540" cy="100" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="310" y="212" text-anchor="middle" font-family="serif" font-size="11" fill="#666">query: connected(u, v)? — the answer flips as edges appear and disappear</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Dynamic connectivity: edges are inserted and deleted online, and queries ask whether two vertices currently lie in the same component.
+</figcaption>
+</figure>
+
+## Euler-Tour Trees: Connectivity for Forests
+
+First the case where the graph is always a **forest**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ET Sequence)</span></p>
+
+Root the tree and run DFS, **recording every vertex each time it is visited**. The resulting *Euler-tour sequence* has length $2m + 1 = 2n - 1 \in \Theta(n)$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 310" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf73-title">
+  <title id="gaf73-title">A rooted tree and its Euler-tour sequence recorded by DFS</title>
+  <line x1="310" y1="48" x2="200" y2="110" stroke="#1565c0" stroke-width="2"/>
+  <line x1="310" y1="48" x2="310" y2="110" stroke="#1565c0" stroke-width="2"/>
+  <line x1="310" y1="48" x2="420" y2="110" stroke="#1565c0" stroke-width="2"/>
+  <line x1="310" y1="118" x2="262" y2="180" stroke="#1565c0" stroke-width="2"/>
+  <line x1="310" y1="118" x2="360" y2="180" stroke="#1565c0" stroke-width="2"/>
+  <line x1="262" y1="188" x2="262" y2="240" stroke="#1565c0" stroke-width="2"/>
+  <circle cx="310" cy="40" r="12" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="310" y="45" text-anchor="middle" font-family="serif" font-size="12" fill="#0f9b6c">1</text>
+  <circle cx="200" cy="118" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="200" y="123" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">2</text>
+  <circle cx="310" cy="118" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="310" y="123" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">3</text>
+  <circle cx="420" cy="118" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="420" y="123" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">4</text>
+  <circle cx="262" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="262" y="193" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">5</text>
+  <circle cx="360" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="360" y="193" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">6</text>
+  <circle cx="262" cy="250" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="262" y="255" text-anchor="middle" font-family="serif" font-size="12" fill="#1565c0">7</text>
+  <text x="310" y="292" text-anchor="middle" font-family="serif" font-size="14" fill="#333">1 2 1 3 5 7 5 3 6 3 1 4 1</text>
+  <text x="310" y="308" text-anchor="middle" font-family="serif" font-size="11" fill="#666">length 2n − 1</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+DFS from the root writes down every visit: the ET sequence of this tree is $1\,2\,1\,3\,5\,7\,5\,3\,6\,3\,1\,4\,1$.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 190" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf74-title">
+  <title id="gaf74-title">Doubling the edges of a tree makes it Eulerian; the ET sequence is that tour</title>
+  <defs>
+    <marker id="gaf74-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <path d="M 138,102 C 180,72 240,60 268,74" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf74-arr)"/>
+  <path d="M 266,92 C 236,104 186,116 144,116" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf74-arr)"/>
+  <path d="M 300,74 C 330,58 392,66 424,92" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf74-arr)"/>
+  <path d="M 420,108 C 388,120 328,110 298,94" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf74-arr)"/>
+  <circle cx="128" cy="110" r="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="283" cy="84" r="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="435" cy="100" r="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="280" y="170" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every edge doubled — the tree becomes Eulerian, and the ET sequence is its Euler tour</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Equivalently: double every edge and walk the Euler tour — hence the name.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Tree Operations as Sequence Surgery)</span></p>
+
+Write the ET sequence schematically with capital letters for subsequences.
+
+1. **Cut** the edge $xy$ ($x$ the parent of $y$): the sequence has the shape $uAx\,yBy\,xCu$ — delete the segment $yBy$ and one copy of $x$:
+
+   $$
+   uAxyByxCu \;\longrightarrow\; uAxCu \;+\; yBy.
+   $$
+
+2. **Re-root** at $v$: rotate the sequence, $uAvBu \longrightarrow vBuAv$ (drop the leading $u$, close the tour at $v$).
+3. **Link** two trees by a new edge joining their roots $u$ and $v$: $uAu,\ vBv \longrightarrow uAu\,vBv\,u$.
+
+Each operation is $O(1)$ **cuttings and pastings of sequences**, plus adding or removing a few elements.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 280" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf75-title">
+  <title id="gaf75-title">Cutting the edge from x to its child y removes the segment between the two occurrences of y</title>
+  <path d="M 210,58 C 200,80 222,96 210,118" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <line x1="210" y1="126" x2="210" y2="168" stroke="#1565c0" stroke-width="2"/>
+  <line x1="210" y1="182" x2="210" y2="218" stroke="#b91c1c" stroke-width="2.6"/>
+  <text x="248" y="204" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">cut xy</text>
+  <path d="M 210,232 L 168,268 L 252,268 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="210" y="262" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">B</text>
+  <circle cx="210" cy="50" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="232" y="54" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="210" cy="175" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="232" y="172" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">x</text>
+  <circle cx="210" cy="225" r="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="234" y="230" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">y</text>
+  <text x="440" y="120" text-anchor="middle" font-family="serif" font-size="13" fill="#333">u A x <tspan fill="#b91c1c">y B y</tspan> x C u</text>
+  <text x="440" y="152" text-anchor="middle" font-family="serif" font-size="13" fill="#333">↓</text>
+  <text x="440" y="184" text-anchor="middle" font-family="serif" font-size="13" fill="#333">u A x C u&nbsp;&nbsp;+&nbsp;&nbsp;<tspan fill="#b91c1c">y B y</tspan></text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The cut: $y$'s subtree occupies the contiguous segment $yBy$ between the two occurrences of $y$ — snip it out (and one spare $x$), and both trees have valid ET sequences.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 210" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf76-title">
+  <title id="gaf76-title">Re-rooting rotates the ET sequence</title>
+  <defs>
+    <marker id="gaf76-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <path d="M 160,62 C 150,88 172,104 160,132" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <circle cx="160" cy="54" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="184" y="58" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="160" cy="140" r="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="184" y="145" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v</text>
+  <line x1="250" y1="100" x2="308" y2="100" stroke="#333" stroke-width="1.6" marker-end="url(#gaf76-arr)"/>
+  <path d="M 420,62 C 410,88 432,104 420,132" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <circle cx="420" cy="54" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="444" y="58" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">v</text>
+  <circle cx="420" cy="140" r="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="444" y="145" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">u</text>
+  <text x="310" y="192" text-anchor="middle" font-family="serif" font-size="13" fill="#333">uAvBu → vBuAv</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Re-rooting: the tour is cyclic up to the doubled endpoint, so moving the root to $v$ is one rotation of the sequence.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 220" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf77-title">
+  <title id="gaf77-title">Linking two trees at their roots concatenates the ET sequences</title>
+  <path d="M 180,70 L 120,160 L 240,160 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="180" y="140" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">A</text>
+  <path d="M 440,70 L 380,160 L 500,160 Z" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="440" y="140" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">B</text>
+  <line x1="192" y1="58" x2="428" y2="58" stroke="#0f9b6c" stroke-width="2.2" stroke-dasharray="7 5"/>
+  <text x="310" y="44" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">new edge uv</text>
+  <circle cx="180" cy="62" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="158" y="56" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="440" cy="62" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="464" y="56" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">v</text>
+  <text x="310" y="204" text-anchor="middle" font-family="serif" font-size="13" fill="#333">uAu, vBv → uAu vBv u</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Linking at the roots: concatenate the two tours and return to $u$ — combined with re-rooting, trees can be linked at arbitrary vertices.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ET-Tree)</span></p>
+
+Store the ET sequence in an **$(a,b)$-tree** with constant $a, b$: the **external nodes** are the elements of the sequence (the vertex occurrences), and the keys in **internal nodes** correspond to the gaps between neighboring occurrences — essentially to edges. All sequence operations — Insert, Delete, Cut (split), Join — run in $O(\log n)$.
+
+Bookkeeping on the side: every vertex designates one **active occurrence** and keeps a pointer to its external node; every edge keeps pointers to its two occurrences (internal keys), paired with each other.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf78-title">
+  <title id="gaf78-title">The ET sequence stored in the external nodes of an (a,b)-tree</title>
+  <line x1="320" y1="58" x2="180" y2="112" stroke="#333" stroke-width="1.4"/>
+  <line x1="320" y1="58" x2="320" y2="112" stroke="#333" stroke-width="1.4"/>
+  <line x1="320" y1="58" x2="460" y2="112" stroke="#333" stroke-width="1.4"/>
+  <line x1="180" y1="128" x2="120" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="180" y1="128" x2="180" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="180" y1="128" x2="240" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="320" y1="128" x2="290" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="320" y1="128" x2="350" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="460" y1="128" x2="410" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="460" y1="128" x2="470" y2="176" stroke="#333" stroke-width="1.2"/>
+  <line x1="460" y1="128" x2="530" y2="176" stroke="#333" stroke-width="1.2"/>
+  <rect x="296" y="42" width="48" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="156" y="112" width="48" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="296" y="112" width="48" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <rect x="436" y="112" width="48" height="20" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <circle cx="120" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="120" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">1</text>
+  <circle cx="180" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="180" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">2</text>
+  <circle cx="240" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="240" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">1</text>
+  <circle cx="290" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="290" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">3</text>
+  <circle cx="350" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="350" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">5</text>
+  <circle cx="410" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="410" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">7</text>
+  <circle cx="470" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="470" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">5</text>
+  <circle cx="530" cy="188" r="11" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="530" y="193" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">3</text>
+  <line x1="265" y1="164" x2="265" y2="212" stroke="#b91c1c" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="265" y="230" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">Cut = split here, in O(log n)</text>
+  <text x="320" y="248" text-anchor="middle" font-family="serif" font-size="11" fill="#666">external nodes = the sequence; internal keys sit in the gaps ≈ edges</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The ET-tree: an $(a,b)$-tree whose leaves spell the ET sequence. Sequence cut-and-paste becomes $(a,b)$-tree split and join — $O(\log n)$ each.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ET-Trees Handle Forests)</span></p>
+
+ET-trees support **Cut, Link, Re-root, and FindRoot** in $O(\log n)$ time each — and FindRoot (walk to the leftmost external node) answers connectivity for forests:
+
+$$
+\text{connected}(u, v) \quad\iff\quad \mathrm{FindRoot}(u) = \mathrm{FindRoot}(v).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Beware)</span></p>
+
+Two different trees coexist here: the **original tree** of the forest and the **ET-tree** (the $(a,b)$-tree over its tour). Their shapes are unrelated — the ET-tree is balanced no matter how path-like the original tree is.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Augmenting ET-Trees)</span></p>
+
+ET-trees happily carry extra information attached to vertices. Example — **coloring vertices black/white**: store the color in the active occurrence (an external node) and let every internal node count the black external nodes in its subtree. Then in $O(\log n)$ we can change a vertex's color or count the black vertices of a tree, and enumerate them at $O(\log n)$ per vertex reported.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 200" width="100%" style="max-width: 400px; height: auto;" role="img" aria-labelledby="gaf79-title">
+  <title id="gaf79-title">A tree with black and white vertices, counted in the ET-tree</title>
+  <path d="M 130,110 C 126,52 220,24 330,30 C 430,36 470,80 466,118 C 462,164 380,184 290,180 C 200,176 134,158 130,110 Z" fill="none" stroke="#1565c0" stroke-width="1.6"/>
+  <line x1="220" y1="90" x2="290" y2="120" stroke="#0f9b6c" stroke-width="1.8"/>
+  <line x1="290" y1="120" x2="360" y2="80" stroke="#0f9b6c" stroke-width="1.8"/>
+  <line x1="290" y1="120" x2="330" y2="155" stroke="#0f9b6c" stroke-width="1.8"/>
+  <circle cx="220" cy="90" r="8" fill="#333"/>
+  <circle cx="290" cy="120" r="8" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <circle cx="360" cy="80" r="8" fill="#333"/>
+  <circle cx="330" cy="155" r="8" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="298" y="196" text-anchor="middle" font-family="serif" font-size="11" fill="#666">colors live in active occurrences; internal nodes count black descendants</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The black/white augmentation — recolor, count, and enumerate marked vertices per tree in logarithmic time. Exactly this machinery powers the general structure below.
+</figcaption>
+</figure>
+
+## General Graphs: Holm–de Lichtenberg–Thorup
+
+For general graphs (Holm, de Lichtenberg, Thorup 2001) we maintain a **spanning forest** $F$ in ET-trees. Inserting an edge is easy: it either links two trees of $F$ or is stored as a **non-tree edge** — non-tree edges hang off the external nodes of their endpoints, so inserting, deleting, and enumerating them costs $O(\log n)$ each. Deleting a *tree* edge is the hard case: the structure must find a **replacement edge** reconnecting the two halves, or certify that none exists.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf80-title">
+  <title id="gaf80-title">Deleting a spanning-forest edge triggers a search for a replacement among non-tree edges</title>
+  <line x1="130" y1="90" x2="200" y2="140" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="200" y1="140" x2="150" y2="190" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="200" y1="140" x2="290" y2="100" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="290" y1="100" x2="390" y2="120" stroke="#b91c1c" stroke-width="2.6"/>
+  <line x1="358" y1="94" x2="322" y2="126" stroke="#b91c1c" stroke-width="2"/>
+  <line x1="358" y1="126" x2="322" y2="94" stroke="#b91c1c" stroke-width="2"/>
+  <line x1="390" y1="120" x2="470" y2="80" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="390" y1="120" x2="460" y2="180" stroke="#1565c0" stroke-width="2.2"/>
+  <path d="M 150,190 C 260,240 380,230 460,185 " fill="none" stroke="#0f9b6c" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="310" y="248" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">non-tree edge — a replacement?</text>
+  <path d="M 130,80 C 170,50 260,54 290,88" fill="none" stroke="#666" stroke-width="1.3" stroke-dasharray="4 4"/>
+  <circle cx="130" cy="90" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="200" cy="140" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="150" cy="190" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="290" cy="100" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="390" cy="120" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="470" cy="80" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="460" cy="180" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="340" y="66" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">tree edge deleted</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The spanning forest (blue) answers queries; when one of its edges dies, some non-tree edge (dashed) crossing the split — if any — must be promoted.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Edge Levels)</span></p>
+
+Every edge carries a **level** $\ell(e) \in \lbrace 0, \dots, L \rbrace$ with $L := \lfloor \log n \rfloor$, and
+
+$$
+F_i \;:=\; \text{the subforest of } F \text{ with edges of level} \ge i,
+\qquad
+F = F_0 \supseteq F_1 \supseteq \dots \supseteq F_L,
+$$
+
+each $F\_i$ kept in its own ET-trees (level-$i$ non-tree edges stored in the ET-trees of $F\_i$). Two **invariants**:
+
+* **I1:** $F$ is a *maximum* spanning forest with respect to levels — equivalently, the endpoints of every non-tree edge of level $\ell$ are connected in $F\_\ell$;
+* **I2:** every component of $F\_i$ has at most $\lfloor n / 2^i \rfloor$ vertices (this is why $L = \lfloor \log n \rfloor$ levels suffice).
+
+Initially there are no edges, so both hold; **new edges get level $0$**, which preserves both.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 210" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf81-title">
+  <title id="gaf81-title">Invariant one: endpoints of a level-l non-tree edge are connected at level l</title>
+  <line x1="120" y1="150" x2="180" y2="80" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="180" y1="80" x2="290" y2="60" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="290" y1="60" x2="390" y2="90" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="390" y1="90" x2="440" y2="150" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="120" y1="158" x2="434" y2="158" stroke="#0f9b6c" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="278" y="146" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">non-tree edge uv, level ℓ</text>
+  <text x="278" y="40" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">a path in Fℓ — tree edges of level ≥ ℓ</text>
+  <circle cx="120" cy="152" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="100" y="146" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="180" cy="80" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="290" cy="60" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="390" cy="90" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="440" cy="152" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="462" y="146" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">v</text>
+  <text x="280" y="198" text-anchor="middle" font-family="serif" font-size="11" fill="#666">I1: the higher an edge's level, the deeper the forest that already connects its endpoints</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Invariant I1 pictured: a level-$\ell$ non-tree edge is always "shadowed" by a tree path of level $\ge \ell$.
+</figcaption>
+</figure>
+
+## Deleting a Tree Edge
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Where Replacements Hide)</span></p>
+
+Let the deleted tree edge $e = uv$ have level $\ell$; it disappears from $F\_0, \dots, F\_\ell$ (higher $F\_i$ never contained it). Any replacement edge must cross between the two halves — but by I1, a non-tree edge of level $\ell' > \ell$ has both endpoints connected in $F\_{\ell'} \subseteq F\_{\ell+1}$, which survived the deletion intact: both its endpoints are on the *same* side. So **replacement candidates have level $\le \ell$** — the search proceeds at level $\ell$, then $\ell - 1$, down to $0$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 190" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf82-title">
+  <title id="gaf82-title">Deleting e splits its level-l component into the trees T1 and T2</title>
+  <ellipse cx="160" cy="100" rx="90" ry="62" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="110" y="56" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">T₁</text>
+  <ellipse cx="420" cy="100" rx="90" ry="62" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="474" y="56" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">T₂</text>
+  <line x1="252" y1="100" x2="328" y2="100" stroke="#b91c1c" stroke-width="2.6"/>
+  <line x1="278" y1="86" x2="302" y2="114" stroke="#b91c1c" stroke-width="2"/>
+  <line x1="278" y1="114" x2="302" y2="86" stroke="#b91c1c" stroke-width="2"/>
+  <text x="290" y="72" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">e — level ℓ</text>
+  <circle cx="252" cy="100" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="240" y="122" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="328" cy="100" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="342" y="122" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">v</text>
+  <text x="280" y="182" text-anchor="middle" font-family="serif" font-size="11" fill="#666">T₁, T₂ — the trees of Fℓ around u and v after the deletion; WLOG |T₁| ≤ |T₂|</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The stage at level $\ell$: the deleted edge leaves two trees of $F_\ell$, and the search works on the smaller one.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Delete a Tree Edge $e = uv$ of Level $\ell$)</span></p>
+
+For $j = \ell$ down to $0$ — the **search at level $j$**:
+
+1. Let $T\_1, T\_2$ be the trees of $F\_j$ containing $u$ and $v$; WLOG $\lvert T\_1 \rvert \le \lvert T\_2 \rvert$ (sizes from the ET-trees, $O(\log n)$).
+2. **Raise all level-$j$ tree edges inside $T\_1$ to level $j+1$** ($O(\log n)$ per raised edge).
+3. Enumerate the level-$j$ non-tree edges incident to $T\_1$, one at a time:
+   * both endpoints in $T\_1$ — raise the edge's level to $j + 1$ and keep looking;
+   * the other endpoint in $T\_2$ — **success**: insert it as a tree edge of $F\_j, \dots, F\_0$ (and remove it from the non-tree structures), $O(\log n)$ per level; stop everything.
+
+If even level $0$ produces nothing, $e$ was a **bridge** — the component genuinely splits.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 270" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf83-title">
+  <title id="gaf83-title">The search at level l: raise T1's edges, then test its non-tree edges one by one</title>
+  <ellipse cx="180" cy="130" rx="105" ry="75" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="112" y="72" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">T₁</text>
+  <ellipse cx="480" cy="130" rx="105" ry="75" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="548" y="72" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">T₂</text>
+  <line x1="140" y1="110" x2="200" y2="90" stroke="#0f9b6c" stroke-width="2.4"/>
+  <line x1="140" y1="110" x2="170" y2="160" stroke="#0f9b6c" stroke-width="2.4"/>
+  <text x="118" y="222" text-anchor="middle" font-family="serif" font-size="10" fill="#0f9b6c">tree edges → level ℓ+1</text>
+  <path d="M 205,95 C 250,60 240,130 214,142" fill="none" stroke="#a86f00" stroke-width="1.8" stroke-dasharray="6 4"/>
+  <text x="302" y="48" text-anchor="middle" font-family="serif" font-size="10" fill="#a86f00">stays in T₁ → level ℓ+1</text>
+  <path d="M 175,165 C 290,220 400,200 452,165" fill="none" stroke="#c2185b" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="320" y="236" text-anchor="middle" font-family="serif" font-size="11" fill="#c2185b">reaches T₂ — success: the replacement, promoted to a tree edge</text>
+  <line x1="440" y1="110" x2="500" y2="95" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="500" y1="95" x2="520" y2="150" stroke="#1565c0" stroke-width="2.2"/>
+  <circle cx="140" cy="110" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="200" cy="90" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="170" cy="160" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="214" cy="142" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="440" cy="110" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="500" cy="95" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="520" cy="150" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="320" y="262" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every failed candidate pays with a level increase — that is the whole amortization</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One level of the search: $T_1$'s level-$\ell$ tree edges are pushed up, then its level-$\ell$ non-tree edges are tested — failures get pushed up too, the first success reconnects the forest.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(The Invariants Survive)</span></p>
+
+The level increases in the search are legal. **I2:** before the deletion, $T\_1 \cup \lbrace e \rbrace \cup T\_2$ was one component of $F\_j$, of size $\le n/2^j$; since $\lvert T\_1 \rvert \le \lvert T\_2 \rvert$, we get $\lvert T\_1 \rvert \le n/2^{j+1}$ — so all of $T\_1$ may live at level $j+1$. **I1:** raising the level of tree edges never hurts (they are in $F$), and a non-tree edge with both endpoints in $T\_1$ has them connected by $T\_1$'s tree path — which was just raised to level $j+1$ as well.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Holm–de Lichtenberg–Thorup 2001)</span></p>
+
+Fully dynamic graph connectivity with **amortized $O(\log^2 n)$ per edge insertion or deletion** and $O(\log n)$ per connectivity query.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (amortization)</summary>
+
+Levels only ever increase, and by I2 they cannot exceed $L = \lfloor \log n \rfloor$; one increase costs $O(\log n)$ in ET-tree updates. So charge every inserted edge a deposit of $O(\log^2 n)$ for its lifetime of level increases.
+
+Deleting a tree edge then costs, beyond the deposits: $O(\log n)$ per level for the $T\_1/T\_2$ bookkeeping — $O(\log^2 n)$ over all levels; every enumerated non-tree candidate either *fails* (and pays with its own level increase, already deposited) or *succeeds* (once, ending the search, $O(\log^2 n)$ for the promotion). Total: amortized $O(\log^2 n)$ per update. Queries are two FindRoots in the ET-trees of $F\_0$: $O(\log n)$. ∎
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What the ET-Trees Must Support)</span></p>
+
+The search leans on three augmentations, all $O(\log n)$ per operation or per edge enumerated:
+
+1. **counting external nodes** — the component sizes for the $\lvert T\_1 \rvert \le \lvert T\_2 \rvert$ test;
+2. **finding level-$j$ tree edges** — black/white-style marks on the internal keys of $F\_j$'s ET-trees;
+3. **finding level-$j$ non-tree edges** — each ET-tree of $F\_j$ remembers exactly the level-$j$ non-tree edges hanging off its vertices.
 
 </div>
