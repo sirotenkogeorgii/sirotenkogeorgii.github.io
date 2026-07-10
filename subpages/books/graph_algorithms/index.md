@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials), and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall and the walk algebra, and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -3084,5 +3084,423 @@ Two directions open up from here:
 
 * **APSP:** one BFM run yields a feasible $\varphi$, after which *all-pairs* shortest paths cost $n$ runs of Dijkstra on the reduced graph — translating back via $d(u,v) = d\_\varphi(u,v) - \varphi(u) + \varphi(v)$. This beats $n$ runs of BFM whenever Dijkstra's implementation beats $O(nm)$.
 * **A$^\ast$:** for point-to-point queries (P2PSP), one can plug in a *heuristic* potential — a lower bound on the remaining distance to the target — without any precomputation; Dijkstra on those reduced lengths is exactly the A$^\ast$ search algorithm.
+
+</div>
+
+# Lecture 7: Goal-Directed Search and All-Pairs Shortest Paths
+
+Both directions promised at the end of last lecture get delivered now: first the **point-to-point** tricks — stopping early, searching from both ends, and the A$^\ast$ algorithm together with a precise theorem saying that A$^\ast$ *is* Dijkstra with a potential — and then a new chapter on **all-pairs** shortest paths, starring the Floyd–Warshall algorithm and its far-reaching algebraic generalization.
+
+## Point-to-Point Shortest Paths
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Stopping Early)</span></p>
+
+For a P2PSP query $s \to t$, run Dijkstra from $s$ and **stop as soon as $t$ is closed** — correct because vertices are closed in the order of increasing distance. Still, in a road-network-like graph the search explores the whole ball of radius $d = d(s,t)$ around $s$: roughly $d^2$ vertices.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bidirectional Dijkstra)</span></p>
+
+Run two searches at once — from $s$ along the edges and from $t$ *against* them — and stop when the two frontiers meet (the exact stopping rule needs a little care). Each ball only has to reach radius $\approx d/2$, so in the grid picture the work drops to about $2 \cdot (d/2)^2 = d^2/2$ — half of the unidirectional search.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf39-title">
+  <title id="gaf39-title">One ball of radius d versus two balls of radius d halves</title>
+  <text x="150" y="24" text-anchor="middle" font-family="serif" font-size="12" fill="#333">Dijkstra, stop at t</text>
+  <circle cx="150" cy="130" r="100" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="150" cy="130" r="68" fill="none" stroke="#1565c0" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="150" cy="130" r="36" fill="none" stroke="#1565c0" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="150" cy="130" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="150" y="134" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="247" cy="130" r="9" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="247" y="134" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#b91c1c">t</text>
+  <text x="150" y="252" text-anchor="middle" font-family="serif" font-size="11" fill="#666">≈ d² vertices</text>
+  <text x="495" y="24" text-anchor="middle" font-family="serif" font-size="12" fill="#333">bidirectional</text>
+  <circle cx="425" cy="130" r="60" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+  <circle cx="425" cy="130" r="32" fill="none" stroke="#1565c0" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="565" cy="130" r="60" fill="none" stroke="#7b1fa2" stroke-width="1.8"/>
+  <circle cx="565" cy="130" r="32" fill="none" stroke="#7b1fa2" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <circle cx="425" cy="130" r="10" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="425" y="134" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="565" cy="130" r="9" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="565" y="134" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#b91c1c">t</text>
+  <circle cx="495" cy="130" r="5" fill="#a86f00"/>
+  <text x="495" y="112" text-anchor="middle" font-family="serif" font-size="10" fill="#a86f00">meet</text>
+  <text x="495" y="252" text-anchor="middle" font-family="serif" font-size="11" fill="#666">≈ 2·(d/2)² = d²/2 vertices</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+In grid-like graphs a Dijkstra ball of radius $d$ holds $\approx d^2$ vertices; two balls of radius $d/2$ growing towards each other hold only half as many.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(A$^\ast$)</span></p>
+
+Pick a **heuristic function** $\psi \colon V \to \mathbb{R}$ — necessarily *problem-specific* — that lower-bounds the remaining distance to the target:
+
+$$
+\psi(v) \;\le\; d(v, t) \qquad \text{for all } v.
+$$
+
+Run Dijkstra from $s$, but close the open vertex minimizing $h(v) + \psi(v)$ — the estimated length of an $st$-path *through* $v$ — and stop when $t$ closes. A typical choice in road networks: $\psi(v) :=$ the Euclidean distance from $v$ to $t$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf40-title">
+  <title id="gaf40-title">A star explores an elongated region towards the target instead of a full ball</title>
+  <text x="310" y="28" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">A* with a distance-to-t heuristic: a region stretched towards t</text>
+  <circle cx="100" cy="130" r="88" fill="none" stroke="#666" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <ellipse cx="310" cy="130" rx="230" ry="52" fill="none" stroke="#0f9b6c" stroke-width="1.8"/>
+  <line x1="150" y1="100" x2="120" y2="130" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="205" y1="95" x2="170" y2="130" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="260" y1="92" x2="225" y2="127" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="315" y1="92" x2="280" y2="127" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="370" y1="92" x2="335" y2="127" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="425" y1="95" x2="390" y2="130" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="478" y1="100" x2="448" y2="130" stroke="#0f9b6c" stroke-width="1"/>
+  <line x1="112" y1="118" x2="497" y2="118" stroke="#a86f00" stroke-width="1.2" stroke-dasharray="2 4"/>
+  <circle cx="100" cy="130" r="11" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="100" y="134" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#0f9b6c">s</text>
+  <circle cx="520" cy="130" r="11" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="520" y="134" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#b91c1c">t</text>
+  <text x="100" y="236" text-anchor="middle" font-family="serif" font-size="11" fill="#666">plain Dijkstra ball</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The bias $h(v) + \psi(v)$ makes vertices "in the direction of $t$" look cheaper, so A$^\ast$ closes an elongated corridor (green) instead of the full Dijkstra ball (dashed).
+</figcaption>
+</figure>
+
+## A$^\ast$ Is Dijkstra with a Potential
+
+Written with reduced lengths, closing by $h(v) + \psi(v)$ smells of potentials — and indeed A$^\ast$ with heuristic $\psi$ is nothing but Dijkstra on the graph reduced by the potential $-\psi$. For that graph to have non-negative lengths we *want*
+
+$$
+\ell_{-\psi}(uv) \;=\; \ell(uv) - \psi(u) + \psi(v) \;\ge\; 0
+\qquad \text{for every edge } uv.
+$$
+
+The ideal heuristic $\psi(v) = d(v,t)$ satisfies this — it is exactly the triangle inequality $d(u,t) \le \ell(uv) + d(v,t)$ — and so does the Euclidean heuristic whenever edge lengths dominate straight-line distances.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(A$^\ast$ $=$ Dijkstra on $G\_{-\psi}$)</span></p>
+
+Run A$^\ast$ on $G$ from $s$ with values $h^\ast$, and Dijkstra on $G\_{-\psi}$ from $s$ with values $h$, breaking ties in the same way. Then in every step of the two runs,
+
+$$
+h(v) \;=\; h^\ast(v) - \psi(s) + \psi(v) \qquad \text{for all } v,
+$$
+
+and both algorithms select the same vertices in the same order.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Induction over the steps; A$^\ast$ minimizes $h^\ast(v) + \psi(v)$, Dijkstra minimizes $h(v)$.
+
+**At the beginning:** $h^\ast(s) = 0$ and $h(s) = 0 - \psi(s) + \psi(s) = 0$; all other values are $+\infty$ in both runs. ✓
+
+**Selection:** if the value identity holds, then
+
+$$
+h(v) \;=\; \bigl(h^\ast(v) + \psi(v)\bigr) - \psi(s)
+$$
+
+differs from A$^\ast$'s selection key only by the constant $\psi(s)$ — so the two algorithms pick the same open vertex (ties broken identically).
+
+**Update:** relaxing the edge $uv$, A$^\ast$ offers $h^\ast(u) + \ell(uv)$, while Dijkstra offers
+
+$$
+h(u) + \ell_{-\psi}(uv)
+= \bigl(h^\ast(u) - \psi(s) + \psi(u)\bigr) + \bigl(\ell(uv) - \psi(u) + \psi(v)\bigr)
+= \bigl(h^\ast(u) + \ell(uv)\bigr) - \psi(s) + \psi(v),
+$$
+
+so the identity survives every update. ∎
+
+</details>
+</div>
+
+In particular A$^\ast$ with a feasible $\psi$ inherits all of Dijkstra's guarantees — correctness, each vertex closed once — while exploring the goal-directed region.
+
+## All-Pairs Shortest Paths
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Two Matrix Problems)</span></p>
+
+* **APSP:** given the $n \times n$ matrix $L$ of edge lengths ($\ell(ij)$, or $+\infty$ for non-edges), compute the matrix $D$ of distances $d(i,j)$.
+* **Transitive closure** (directed reachability): given the adjacency matrix $A$, compute $R = A^\ast$ with $R\_{ij} = 1$ iff there is a path $i \to j$, else $0$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Repeated SSSP)</span></p>
+
+* Transitive closure: $n$ runs of BFS — $O(nm)$.
+* APSP with non-negative lengths: $n$ runs of Dijkstra — $O(n(m + n \log n)) = O(nm + n^2 \log n)$ with Fibonacci heaps. (Negative lengths: first one BFM run for a feasible potential — Johnson's scheme from last lecture.)
+
+This is the method of choice for **sparse** graphs; for dense ones ($m \sim n^2$) it degrades to $O(n^3)$ — which the next algorithm achieves directly, with negative edges allowed and a tiny constant.
+
+</div>
+
+## The Floyd–Warshall Algorithm
+
+Number the vertices $V = \lbrace 1, \dots, n \rbrace$ and assume, as always, no negative cycles.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Restricted Distances)</span></p>
+
+For $k \in \lbrace 0, \dots, n \rbrace$ let
+
+$$
+D^k_{ij} \;:=\; \min \bigl\lbrace \ell(w) : w \text{ is an } ij\text{-walk with all internal vertices in } \lbrace 1, \dots, k \rbrace \bigr\rbrace.
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Endpoints of the Scale)</span></p>
+
+$D^0$ is the input: $D^0\_{ij} = \ell(ij)$ (or $+\infty$ for non-edges) and $D^0\_{ii} = 0$ — the matrix $L$ with zeros on the diagonal. And $D^n = D$, the full distance matrix.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(One Step of Floyd–Warshall)</span></p>
+
+For every $k \ge 1$:
+
+$$
+D^k_{ij} \;=\; \min\bigl( D^{k-1}_{ij},\;\; D^{k-1}_{ik} + D^{k-1}_{kj} \bigr),
+$$
+
+so $D^{k-1} \to D^k$ costs $O(1)$ per entry, $O(n^2)$ per step — and $D^0 \to D^1 \to \dots \to D^n$ solves APSP in $O(n^3)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+"$\le$": both candidates describe $ij$-walks with internal vertices in $\lbrace 1, \dots, k \rbrace$ — the first avoids $k$, the second passes through it.
+
+"$\ge$": take an optimal $ij$-walk $w$ with internals in $\lbrace 1, \dots, k \rbrace$. If it avoids $k$, its length is at least $D^{k-1}\_{ij}$. If it visits $k$ several times, cut out the cycles between consecutive visits — they have non-negative length (no negative cycles) — so WLOG $w$ visits $k$ once and splits there into an $ik$-walk and a $kj$-walk, both with internals in $\lbrace 1, \dots, k-1 \rbrace$: length at least $D^{k-1}\_{ik} + D^{k-1}\_{kj}$. ∎
+
+</details>
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf41-title">
+  <title id="gaf41-title">An ij-walk either avoids vertex k or splits at k into two walks</title>
+  <defs>
+    <marker id="gaf41-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="gaf41-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+  </defs>
+  <ellipse cx="310" cy="135" rx="195" ry="78" fill="none" stroke="#1565c0" stroke-width="1.6" stroke-dasharray="7 5"/>
+  <text x="310" y="196" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">internal vertices ∈ {1, …, k−1}</text>
+  <path d="M 105,140 C 180,185 440,185 515,140" fill="none" stroke="#333" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#gaf41-arr)"/>
+  <text x="310" y="152" text-anchor="middle" font-family="serif" font-size="12" fill="#333">Dᵏ⁻¹ᵢⱼ — avoids k</text>
+  <path d="M 103,128 C 160,92 235,72 294,70" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf41-arrg)"/>
+  <path d="M 326,70 C 385,72 460,92 517,128" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf41-arrg)"/>
+  <text x="185" y="66" text-anchor="middle" font-family="serif" font-size="12" fill="#0f9b6c">Dᵏ⁻¹ᵢₖ</text>
+  <text x="435" y="66" text-anchor="middle" font-family="serif" font-size="12" fill="#0f9b6c">Dᵏ⁻¹ₖⱼ</text>
+  <circle cx="310" cy="70" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="310" y="75" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#1565c0">k</text>
+  <circle cx="90" cy="135" r="15" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="90" y="140" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">i</text>
+  <circle cx="530" cy="135" r="15" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="530" y="140" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#b91c1c">j</text>
+  <text x="310" y="240" text-anchor="middle" font-family="serif" font-size="11" fill="#666">an optimal walk through k splits at k (visits beyond the first are cut — no negative cycles)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The Floyd–Warshall step: the best $ij$-walk with internals in $\lbrace 1,\dots,k \rbrace$ either avoids $k$ entirely or splits at $k$ into two walks with internals in $\lbrace 1,\dots,k-1 \rbrace$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(In Place: $\Theta(n^2)$ Memory)</span></p>
+
+There is no need to keep two matrices. During pass $k$, row $k$ and column $k$ do not change: the update would set $D\_{ik} \leftarrow \min(D\_{ik},\, D\_{ik} + D\_{kk})$, and $D\_{kk} = 0$ (no negative cycles). So $D^k\_{ik} = D^{k-1}\_{ik}$ and $D^k\_{kj} = D^{k-1}\_{kj}$ — the values the update reads are the same in the old and new matrix, and everything can be done in place:
+
+1. **For** $k = 1$ **to** $n$:
+2. &nbsp;&nbsp;&nbsp;**for** $i = 1$ **to** $n$, **for** $j = 1$ **to** $n$:
+3. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$D\_{ij} \leftarrow \min(D\_{ij},\; D\_{ik} + D\_{kj})$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 250" width="100%" style="max-width: 500px; height: auto;" role="img" aria-labelledby="gaf42-title">
+  <title id="gaf42-title">Row k and column k of the matrix stay fixed during pass k</title>
+  <rect x="220" y="40" width="180" height="180" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <rect x="220" y="118" width="180" height="24" fill="#fff3e0" stroke="none"/>
+  <rect x="298" y="40" width="24" height="180" fill="#fff3e0" stroke="none"/>
+  <rect x="220" y="40" width="180" height="180" fill="none" stroke="#333" stroke-width="1.8"/>
+  <text x="435" y="134" font-family="serif" font-size="11" fill="#a86f00">row k — unchanged</text>
+  <text x="310" y="28" text-anchor="middle" font-family="serif" font-size="11" fill="#a86f00">column k — unchanged</text>
+  <circle cx="250" cy="80" r="5" fill="#b91c1c"/>
+  <text x="250" y="68" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#b91c1c">Dᵢⱼ</text>
+  <circle cx="310" cy="80" r="4" fill="#a86f00"/>
+  <circle cx="250" cy="130" r="4" fill="#a86f00"/>
+  <line x1="256" y1="80" x2="302" y2="80" stroke="#666" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="250" y1="86" x2="250" y2="124" stroke="#666" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="205" y="244" font-family="serif" font-size="11" fill="#666">the update reads Dᵢₖ and Dₖⱼ — both live in the fixed row and column</text>
+  <text x="410" y="230" font-family="serif" font-size="13" font-style="italic" fill="#333">D</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+In pass $k$ every update reads only entries of row $k$ and column $k$ (amber), which pass $k$ itself never modifies — old and new values coincide, so one matrix suffices.
+</figcaption>
+</figure>
+
+## Walk Algebra
+
+Floyd–Warshall secretly computes much more than distances. To see it, replace numbers by *sets of walks*.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bundles and Their Algebra)</span></p>
+
+A **$uv$-bundle** is a set of $uv$-walks. The **elementary bundles**:
+
+* $\emptyset$ — the empty bundle;
+* $e\_{uv} := \lbrace uv \rbrace$ for an edge $uv \in E$ — a $uv$-bundle containing the single one-edge walk;
+* $\varepsilon\_u$ — the single-vertex walk at $u$, a $uu$-bundle.
+
+The **operations**:
+
+* $x \cup y$ — union of two $uv$-bundles (a $uv$-bundle);
+* $x \cdot y$ — for a $uv$-bundle $x$ and a $vw$-bundle $y$: the set of all concatenations of a walk from $x$ with a walk from $y$ (a $uw$-bundle);
+* $x^\ast := \varepsilon\_u \cup x \cup x{\cdot}x \cup x{\cdot}x{\cdot}x \cup \dots$ — **iteration** of a $uu$-bundle.
+
+The whole setup mirrors *regular expressions* — with vertices for states and walks for words.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 180" width="100%" style="max-width: 480px; height: auto;" role="img" aria-labelledby="gaf43-title">
+  <title id="gaf43-title">Concatenating a uv-bundle with a vw-bundle gives a uw-bundle</title>
+  <defs>
+    <marker id="gaf43-arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f9b6c"/>
+    </marker>
+    <marker id="gaf43-arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+  <path d="M 115,80 C 160,50 235,50 268,80" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf43-arrg)"/>
+  <path d="M 115,100 C 160,130 235,130 268,100" fill="none" stroke="#0f9b6c" stroke-width="1.8" marker-end="url(#gaf43-arrg)"/>
+  <path d="M 295,80 C 340,50 415,50 448,80" fill="none" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf43-arrb)"/>
+  <path d="M 295,100 C 340,130 415,130 448,100" fill="none" stroke="#1565c0" stroke-width="1.8" marker-end="url(#gaf43-arrb)"/>
+  <text x="190" y="38" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">x — uv-bundle</text>
+  <text x="370" y="38" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">y — vw-bundle</text>
+  <circle cx="100" cy="90" r="14" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <text x="100" y="95" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#0f9b6c">u</text>
+  <circle cx="281" cy="90" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="281" y="95" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">v</text>
+  <circle cx="462" cy="90" r="14" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="462" y="95" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#b91c1c">w</text>
+  <text x="280" y="166" text-anchor="middle" font-family="serif" font-size="11" fill="#666">x·y = all concatenations, one walk from x followed by one from y — a uw-bundle</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The concatenation $x \cdot y$ pairs every walk of $x$ with every walk of $y$ — bundles compose like regular expressions.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Generalized Floyd–Warshall)</span></p>
+
+Let $W^k\_{ij}$ be the bundle of *all* $ij$-walks with internal vertices in $\lbrace 1, \dots, k \rbrace$. Initialize
+
+$$
+W^0_{ij} = \begin{cases} e_{ij} & i \ne j,\ ij \in E \\ \varepsilon_i \cup e_{ii} & i = j \text{ (with } e_{ii} \text{ only if the loop exists)} \\ \emptyset & \text{otherwise,} \end{cases}
+$$
+
+and perform the step $W^{k-1} \to W^k$ via
+
+$$
+W^k_{ij} \;=\; W^{k-1}_{ij} \;\cup\; W^{k-1}_{ik} \cdot \bigl(W^{k-1}_{kk}\bigr)^{\!*} \cdot\, W^{k-1}_{kj}.
+$$
+
+The output is $W^n$ — all walks, sorted by endpoints. Note the $(W^{k-1}\_{kk})^\ast$ factor: unlike the numeric version, the bundle version keeps walks that revisit $k$, looping any number of times.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Representation: Walk Expressions)</span></p>
+
+The bundles themselves are exponentially large (often infinite) — so we never store them as sets. Instead, each $W^k\_{ij}$ is a **walk expression** over $(\emptyset,\, e\_{uv},\, \varepsilon\_u,\, \cup,\, \cdot,\, {}^\ast)$, and all the expressions together form a **DAG with $O(n^3)$ nodes**: each of the $n$ steps adds $O(n^2)$ new operation nodes whose children are (shared) older subexpressions.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 230" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf44-title">
+  <title id="gaf44-title">Walk expressions form a DAG with shared subexpressions</title>
+  <text x="280" y="20" text-anchor="middle" font-family="serif" font-size="11" fill="#666">(x ∪ y)·z and z* share the subexpression z</text>
+  <line x1="296" y1="62" x2="243" y2="103" stroke="#333" stroke-width="1.4"/>
+  <line x1="322" y1="60" x2="416" y2="103" stroke="#333" stroke-width="1.4"/>
+  <line x1="222" y1="130" x2="188" y2="167" stroke="#333" stroke-width="1.4"/>
+  <line x1="242" y1="131" x2="272" y2="167" stroke="#333" stroke-width="1.4"/>
+  <line x1="420" y1="132" x2="368" y2="169" stroke="#333" stroke-width="1.4"/>
+  <line x1="313" y1="63" x2="352" y2="166" stroke="#333" stroke-width="1.4"/>
+  <circle cx="310" cy="50" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="310" y="58" text-anchor="middle" font-family="serif" font-size="22" fill="#1565c0">·</text>
+  <circle cx="232" cy="116" r="16" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="232" y="121" text-anchor="middle" font-family="serif" font-size="13" fill="#1565c0">∪</text>
+  <circle cx="428" cy="116" r="16" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.8"/>
+  <text x="428" y="122" text-anchor="middle" font-family="serif" font-size="14" fill="#7b1fa2">✱</text>
+  <circle cx="180" cy="182" r="15" fill="#fff" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="180" y="187" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">x</text>
+  <circle cx="280" cy="182" r="15" fill="#fff" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="280" y="187" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">y</text>
+  <circle cx="360" cy="182" r="15" fill="#fff" stroke="#0f9b6c" stroke-width="1.8"/>
+  <text x="360" y="187" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#0f9b6c">z</text>
+  <text x="280" y="222" text-anchor="middle" font-family="serif" font-size="11" fill="#666">operation nodes point at shared older subexpressions — O(n³) nodes in total</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Expressions are kept as a DAG, not as trees: subexpressions built in earlier Floyd–Warshall steps are referenced, never copied, keeping the total size at $O(n^3)$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Evaluating by a Homomorphism)</span></p>
+
+To extract an actual quantity, map the walk algebra homomorphically to values: choose an interpretation of $\bigl(\emptyset,\ e\_{uv},\ \varepsilon\_u,\ \cup,\ \cdot,\ {}^\ast\bigr)$ and evaluate the expression DAG bottom-up — $O(1)$ per node, $O(n^3)$ total. **Distances** arise from $f(x) := \min\_{p \in x} \ell(p)$:
+
+$$
+f(\emptyset) = +\infty, \qquad f(e_{uv}) = \ell(uv), \qquad f(\varepsilon_u) = 0,
+$$
+
+$$
+f(x \cup y) = \min(f(x), f(y)), \qquad f(x \cdot y) = f(x) + f(y), \qquad
+f(x^*) = \begin{cases} 0 & f(x) \ge 0 \\ -\infty & f(x) < 0. \end{cases}
+$$
+
+This reproduces Floyd–Warshall — and the $\ast$-rule even handles negative cycles gracefully, reporting $-\infty$ distances instead of requiring the NNC assumption.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Widest Paths)</span></p>
+
+Give each edge a **width** and look for the $uv$-walk maximizing its narrowest edge: $f(\text{walk}) := \min\_{e \in \text{walk}} \mathrm{width}(e)$ and $f(\text{bundle}) := \max\_{\text{walk} \in \text{bundle}} f(\text{walk})$. The same skeleton applies with
+
+$$
+f(\emptyset) = -\infty, \qquad f(e_{uv}) = \mathrm{width}(uv), \qquad f(\varepsilon_u) = +\infty,
+$$
+
+$$
+f(x \cup y) = \max(f(x), f(y)), \qquad f(x \cdot y) = \min(f(x), f(y)), \qquad f(x^*) = +\infty,
+$$
+
+and generalized Floyd–Warshall computes all-pairs widest paths in $O(n^3)$ time.
 
 </div>
