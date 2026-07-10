@@ -2,7 +2,7 @@
 layout: default
 title: Graph Algorithms
 date: 2026-07-10
-excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, minimum spanning trees (cut lemma, red–blue meta-algorithm, Jarník, Borůvka, Kruskal), and applications such as bipartite matching.
+excerpt: Lecture notes on graph algorithms covering network flows, the Ford–Fulkerson method, Dinitz's algorithm, capacity scaling, Menger's theorems, the Karger–Stein randomized min-cut, shortest paths with the Bellman–Ford–Moore and Dijkstra algorithms (heaps, multi-level buckets, potentials, A-star), all-pairs shortest paths with Floyd–Warshall, the walk algebra, fast matrix multiplication and Seidel's algorithm, minimum spanning trees (cut lemma, red–blue meta-algorithm, Jarník, Borůvka, Kruskal, contractive Borůvka on minor-closed classes, Fredman–Tarjan), and applications such as bipartite matching.
 tags:
   - graphs
   - algorithms
@@ -4471,7 +4471,7 @@ Sorting costs $O(m \log n)$. The main loop asks $m$ times "are the endpoints in 
 * $\mathrm{Find}(x, y)$ — are $x$ and $y$ in the same component?
 * $\mathrm{Union}(x, y)$ — add the edge $xy$, merging two components.
 
-How fast Union–Find can be made is the next story.
+How fast Union–Find can be made is a story of its own.
 
 </div>
 
@@ -4498,3 +4498,537 @@ How fast Union–Find can be made is the next story.
 The Union–Find interface: components of the growing forest as disjoint sets, queried by $\mathrm{Find}$ and merged by $\mathrm{Union}$.
 </figcaption>
 </figure>
+
+# Lecture 10: Faster Minimum Spanning Trees
+
+All three classical algorithms hover around $O(m \log n)$. This lecture breaks that barrier three times: **contractive Borůvka** gets linear time on planar graphs — and, after a detour into **graph minors**, on every non-trivial minor-closed class; Jarník with a **Fibonacci heap** reaches $O(m + n \log n)$; and the **Fredman–Tarjan** algorithm combines both ideas into $O(m \log^\ast n)$ for all graphs.
+
+## Contractive Borůvka
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Contractive Borůvka)</span></p>
+
+Borůvka from last lecture, with each round's blue forest immediately **contracted**:
+
+1. $T \leftarrow \emptyset$.
+2. **While** $n > 1$:
+3. &nbsp;&nbsp;&nbsp;every vertex selects the lightest incident edge; call the selection $L$ — $O(m)$;
+4. &nbsp;&nbsp;&nbsp;$T \leftarrow T \cup L$ — $O(n)$;
+5. &nbsp;&nbsp;&nbsp;contract all edges of $L$ — $O(m)$;
+6. &nbsp;&nbsp;&nbsp;filter out loops and parallel edges, keeping the lightest edge of every parallel bundle — $O(m)$ by bucket sorting;
+7. Return $T$.
+
+Every edge carries its original **id**, so $T$ is collected in terms of the input graph's edges even as the working graph shrinks.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 258" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf63-title">
+  <title id="gaf63-title">Each blue tree of the round is contracted to a single vertex</title>
+  <defs>
+    <marker id="gaf63-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <ellipse cx="140" cy="90" rx="72" ry="52" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <ellipse cx="190" cy="185" rx="70" ry="40" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <line x1="110" y1="80" x2="160" y2="60" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="110" y1="80" x2="140" y2="120" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="150" y1="180" x2="210" y2="165" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="210" y1="165" x2="240" y2="200" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="140" y1="120" x2="150" y2="180" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="160" y1="60" x2="270" y2="120" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="240" y1="200" x2="270" y2="120" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <circle cx="110" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="160" cy="60" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="140" cy="120" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="150" cy="180" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="210" cy="165" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="240" cy="200" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="270" cy="120" r="6" fill="#fff" stroke="#333" stroke-width="1.4"/>
+  <line x1="320" y1="125" x2="368" y2="125" stroke="#333" stroke-width="1.8" marker-end="url(#gaf63-arr)"/>
+  <circle cx="440" cy="85" r="17" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.2"/>
+  <circle cx="480" cy="185" r="17" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.2"/>
+  <circle cx="580" cy="125" r="8" fill="#fff" stroke="#333" stroke-width="1.4"/>
+  <line x1="448" y1="101" x2="472" y2="169" stroke="#666" stroke-width="1.4"/>
+  <line x1="456" y1="92" x2="572" y2="121" stroke="#666" stroke-width="1.4"/>
+  <line x1="496" y1="177" x2="573" y2="131" stroke="#666" stroke-width="1.4"/>
+  <text x="320" y="248" text-anchor="middle" font-family="serif" font-size="11" fill="#666">every tree of the round (dashed) becomes one vertex; surviving edges connect the new vertices</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One contraction round: each blue tree collapses into a single vertex of the next graph; edges between different trees survive.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 220" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf64-title">
+  <title id="gaf64-title">Edges keep their original identifiers through contractions</title>
+  <defs>
+    <marker id="gaf64-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <ellipse cx="150" cy="110" rx="80" ry="60" fill="none" stroke="#c2185b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <line x1="120" y1="100" x2="170" y2="70" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="120" y1="100" x2="160" y2="145" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="170" y1="70" x2="295" y2="62" stroke="#a86f00" stroke-width="2"/>
+  <text x="235" y="50" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#a86f00">id 17</text>
+  <circle cx="120" cy="100" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="170" cy="70" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="176" y="92" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">u</text>
+  <circle cx="160" cy="145" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="305" cy="62" r="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="305" y="42" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">v</text>
+  <line x1="360" y1="110" x2="404" y2="110" stroke="#333" stroke-width="1.8" marker-end="url(#gaf64-arr)"/>
+  <circle cx="470" cy="120" r="18" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="486" y1="112" x2="585" y2="75" stroke="#a86f00" stroke-width="2"/>
+  <text x="545" y="76" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#a86f00">id 17</text>
+  <circle cx="592" cy="72" r="9" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <text x="592" y="52" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">v</text>
+  <text x="320" y="204" text-anchor="middle" font-family="serif" font-size="11" fill="#666">after contracting the cluster, edge 17 now leaves the merged vertex — but still means the original uv</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Every edge keeps its original id through all contractions, so the tree $T$ is always reported as a set of edges of the input graph.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 230" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf65-title">
+  <title id="gaf65-title">Contraction creates loops and parallel edges, which are filtered away</title>
+  <defs>
+    <marker id="gaf65-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="110" y1="70" x2="110" y2="170" stroke="#1565c0" stroke-width="3"/>
+  <text x="92" y="124" text-anchor="middle" font-family="serif" font-size="11" fill="#1565c0">contract</text>
+  <line x1="110" y1="70" x2="250" y2="120" stroke="#333" stroke-width="1.8"/>
+  <line x1="110" y1="170" x2="250" y2="120" stroke="#333" stroke-width="1.8"/>
+  <circle cx="110" cy="70" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="94" y="62" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">a</text>
+  <circle cx="110" cy="170" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="94" y="182" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#1565c0">b</text>
+  <circle cx="250" cy="120" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="268" y="112" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">c</text>
+  <line x1="310" y1="120" x2="354" y2="120" stroke="#333" stroke-width="1.8" marker-end="url(#gaf65-arr)"/>
+  <path d="M 405,105 C 392,72 436,66 434,96" fill="none" stroke="#b91c1c" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="420" y="52" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">loop — drop</text>
+  <path d="M 434,113 C 470,86 540,86 574,113" fill="none" stroke="#0f9b6c" stroke-width="2.2"/>
+  <text x="504" y="84" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">keep the lightest</text>
+  <path d="M 434,127 C 470,154 540,154 574,127" fill="none" stroke="#b91c1c" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="504" y="170" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">parallel — drop</text>
+  <circle cx="420" cy="120" r="13" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="420" y="125" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#1565c0">ab</text>
+  <circle cx="586" cy="120" r="9" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="604" y="112" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">c</text>
+  <text x="320" y="218" text-anchor="middle" font-family="serif" font-size="11" fill="#666">contracting ab: the former edges ac, bc become a parallel pair; a contracted parallel of ab becomes a loop</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Filtering after a contraction: loops disappear, and of every parallel bundle only the lightest edge can ever enter the MST — the rest is deleted (red rule, in fact).
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Filtering in Linear Time)</span></p>
+
+Keep vertices numbered $1, \dots, n\_i$ in each phase and normalize every edge $\lbrace u, v \rbrace$ to the triple $(\min(u,v),\ \max(u,v),\ \mathrm{id})$. Two passes of **bucket sort** with $n\_i$ buckets — by the second coordinate, then by the first — arrange the edges lexicographically in $O(\text{passes} \cdot (\text{items} + \text{buckets})) = O(m\_i + n\_i)$. Parallel edges are now adjacent: keep the lightest of each run, drop loops.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 220" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gaf66-title">
+  <title id="gaf66-title">Radix sorting the normalized edge triples into n buckets</title>
+  <defs>
+    <marker id="gaf66-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <text x="170" y="38" text-anchor="middle" font-family="serif" font-size="12" fill="#333">(2, 5, id₇)</text>
+  <text x="320" y="38" text-anchor="middle" font-family="serif" font-size="12" fill="#333">(1, 4, id₃)</text>
+  <text x="470" y="38" text-anchor="middle" font-family="serif" font-size="12" fill="#333">(2, 5, id₉)</text>
+  <line x1="180" y1="48" x2="212" y2="86" stroke="#666" stroke-width="1.2" marker-end="url(#gaf66-arr)"/>
+  <line x1="310" y1="48" x2="168" y2="86" stroke="#666" stroke-width="1.2" marker-end="url(#gaf66-arr)"/>
+  <line x1="462" y1="48" x2="224" y2="88" stroke="#666" stroke-width="1.2" marker-end="url(#gaf66-arr)"/>
+  <rect x="100" y="92" width="440" height="36" fill="#fff" stroke="#333" stroke-width="1.6"/>
+  <line x1="155" y1="92" x2="155" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="210" y1="92" x2="210" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="265" y1="92" x2="265" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="320" y1="92" x2="320" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="375" y1="92" x2="375" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="430" y1="92" x2="430" y2="128" stroke="#333" stroke-width="1"/>
+  <line x1="485" y1="92" x2="485" y2="128" stroke="#333" stroke-width="1"/>
+  <text x="320" y="152" text-anchor="middle" font-family="serif" font-size="11" fill="#666">n buckets</text>
+  <text x="320" y="182" text-anchor="middle" font-family="serif" font-size="11" fill="#666">two passes — second coordinate, then first: lexicographic order, duplicates adjacent</text>
+  <text x="320" y="204" text-anchor="middle" font-family="serif" font-size="11" fill="#666">O(passes · (items + buckets)) = O(m + n)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Two bucket-sort passes over the normalized triples group parallel edges next to each other — no comparison sorting needed.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Phase Shrinkage)</span></p>
+
+Let $G\_i$ be the graph at the *end* of phase $i$ (so $G\_0$ is the input), with $n\_i$ vertices and $m\_i$ edges. Then $m\_i \le m$, and every contracted tree swallows at least two vertices, so
+
+$$
+n_{i+1} \;\le\; n_i / 2 \;\le\; n / 2^{\,i+1}
+$$
+
+— at most $\log n$ phases, each costing $O(m\_i + n\_i)$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Bounds)</span></p>
+
+Contractive Borůvka runs in time
+
+$$
+O(m \log n) \qquad\text{and also}\qquad O\Bigl(\textstyle\sum_i m_i\Bigr) \;\le\; O\Bigl(\textstyle\sum_i \frac{n^2}{4^i}\Bigr) \;=\; O(n^2),
+$$
+
+the second bound because filtering keeps every $G\_i$ simple, so $m\_i \le n\_i^2 \le (n/2^i)^2$. On dense graphs the $O(n^2)$ bound wins.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Planar Graphs: MST in Linear Time)</span></p>
+
+On a planar graph, contractive Borůvka runs in $O(n)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Contractions and deletions preserve planarity, so every $G\_i$ is planar — and simple, thanks to the filtering. A simple planar graph satisfies $m\_i \le 3 n\_i$ (Euler), hence
+
+$$
+\sum_i m_i \;\le\; 3 \sum_i n_i \;\le\; 3n \sum_i 2^{-i} \;\in\; O(n). \qquad ∎
+$$
+
+</details>
+</div>
+
+## A Detour: Graph Minors
+
+The planar argument used only two facts: planarity survives contractions, and planar graphs have few edges. Both generalize.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Minor)</span></p>
+
+$H \preceq G$ ($H$ is a **minor** of $G$) $\equiv$ $H$ can be obtained from $G$ by a sequence of vertex deletions, edge deletions, and edge contractions. For example, the triangle is a minor of $C\_5$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 230" width="100%" style="max-width: 440px; height: auto;" role="img" aria-labelledby="gaf67-title">
+  <title id="gaf67-title">The triangle is a minor of the five-cycle: contract two edges</title>
+  <line x1="140" y1="60" x2="90" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="90" y1="170" x2="190" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="190" y1="170" x2="140" y2="60" stroke="#333" stroke-width="2"/>
+  <circle cx="140" cy="60" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="90" cy="170" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="190" cy="170" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="280" y="130" text-anchor="middle" font-family="serif" font-size="24" fill="#333">≼</text>
+  <line x1="430" y1="45" x2="354" y2="100" stroke="#b91c1c" stroke-width="2.2" stroke-dasharray="6 4"/>
+  <line x1="354" y1="100" x2="383" y2="190" stroke="#b91c1c" stroke-width="2.2" stroke-dasharray="6 4"/>
+  <line x1="383" y1="190" x2="477" y2="190" stroke="#333" stroke-width="2"/>
+  <line x1="477" y1="190" x2="506" y2="100" stroke="#333" stroke-width="2"/>
+  <line x1="506" y1="100" x2="430" y2="45" stroke="#333" stroke-width="2"/>
+  <text x="352" y="66" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">contract these</text>
+  <circle cx="430" cy="45" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="354" cy="100" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="383" cy="190" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="477" cy="190" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="506" cy="100" r="7" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Contracting the two dashed edges of $C_5$ leaves a triangle: $K_3 \preceq C_5$.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Minor-Closed Class, Edge Density)</span></p>
+
+A class $\mathcal{C}$ of graphs is **minor-closed** $\equiv$ $\forall G \in \mathcal{C},\ \forall H \preceq G:\ H \in \mathcal{C}$; it is **non-trivial** if it is neither empty nor all graphs. Examples: the two trivial classes; planar graphs; graphs drawable on a fixed surface; graphs of bounded tree-width; forests.
+
+The **edge density** of a graph and of a class:
+
+$$
+\rho(G) \;:=\; \frac{m(G)}{n(G)}, \qquad \rho(\mathcal{C}) \;:=\; \sup_{G \in \mathcal{C}} \rho(G)
+\qquad\text{(for planar graphs: } \rho = 3\text{)}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Density of Minor-Closed Classes)</span></p>
+
+For every non-trivial minor-closed class $\mathcal{C}$ of graphs, $\rho(\mathcal{C})$ is **finite**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Contractive Borůvka on Minor-Closed Classes)</span></p>
+
+Let $G$ belong to a non-trivial minor-closed class $\mathcal{C}$. Every $G\_i$ is a minor of $G$, hence $G\_i \in \mathcal{C}$ and $m\_i \le \rho(\mathcal{C}) \cdot n\_i$ — so
+
+$$
+\sum_i m_i \;\le\; \rho(\mathcal{C}) \cdot n \sum_i 2^{-i} \;\in\; O(\rho(\mathcal{C}) \cdot n),
+$$
+
+linear time for every fixed class $\mathcal{C}$.
+
+</div>
+
+Proving the density theorem needs a language for minor-closed classes.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Forbidden Minors)</span></p>
+
+For a class $\mathcal{H}$ of graphs, $\mathrm{Forb}(\mathcal{H})$ := the class of all graphs having **no member of $\mathcal{H}$ as a minor**. Examples: $\mathrm{Forb}(K\_2)$ = edgeless graphs, $\mathrm{Forb}(K\_3)$ = forests, $\mathrm{Forb}(K\_5, K\_{3,3})$ = planar graphs (the minor version of Kuratowski's theorem).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Forb Is Minor-Closed)</span></p>
+
+$\mathrm{Forb}(\mathcal{H})$ is always minor-closed: if $G' \preceq G$ and some $H \in \mathcal{H}$ satisfied $H \preceq G'$, then $H \preceq G$ too — minors of minors are minors.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Minor-Closed $=$ Forb)</span></p>
+
+Every minor-closed class $\mathcal{C}$ equals $\mathrm{Forb}(\mathcal{H})$ for some $\mathcal{H}$ — e.g. $\mathcal{H} := \overline{\mathcal{C}}$, the complement class: a graph lies outside $\mathcal{C}$ iff one of its minors (itself!) lies outside $\mathcal{C}$. Far deeper is the **Robertson–Seymour graph minor theorem**: a *finite* $\mathcal{H}$ always suffices.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Mader; see Diestel, Graph Theory)</span></p>
+
+For every $k$ there is an $h(k)$ such that every graph with average degree at least $h(k)$ contains a **subdivision of $K\_k$** — Mader's proof gives $h(k) \approx 2^{k^2}$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the density theorem</summary>
+
+Density is monotone: $\mathcal{C}' \subseteq \mathcal{C}$ implies $\rho(\mathcal{C}') \le \rho(\mathcal{C})$. Write the non-trivial $\mathcal{C}$ as $\mathrm{Forb}(\mathcal{H})$ with $\mathcal{H} \neq \emptyset$, pick any $H \in \mathcal{H}$ and set $k := n(H)$. Since $H \preceq K\_k$, avoiding $H$ is implied by avoiding... rather: containing $K\_k$ implies containing $H$, so
+
+$$
+\mathcal{C} \;=\; \mathrm{Forb}(\mathcal{H}) \;\subseteq\; \mathrm{Forb}(H) \;\subseteq\; \mathrm{Forb}(K_k),
+\qquad
+\rho(\mathcal{C}) \;\le\; \rho(\mathrm{Forb}(K_k)).
+$$
+
+Now Mader: a graph $G$ with $\rho(G) \ge h(k)/2$ has average degree $\ge h(k)$, so it contains a subdivision of $K\_k$ — and a subdivision is a minor, so $K\_k \preceq G$ and $G \notin \mathrm{Forb}(K\_k)$. Hence $\rho(\mathrm{Forb}(K\_k)) \le h(k)/2 < \infty$. ∎
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kostochka–Thomason)</span></p>
+
+The optimal threshold is much smaller than Mader's: already $\rho(G) \in \Omega(k \sqrt{\log k})$ forces $K\_k \preceq G$.
+
+</div>
+
+## Jarník with a Fibonacci Heap
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Jarník, Improved "Dijkstra-Style" Implementation)</span></p>
+
+Maintain, for every **neighbor** $v$ of the current tree, its **value** — the weight of the lightest edge joining $v$ to the tree — and keep the neighbors in a heap keyed by value. In every step:
+
+1. ExtractMin the neighbor $v$ with the smallest value, giving the edge $uv$ ($u \in T$, $v \notin T$) — $n\times$;
+2. add $uv$ to $T$;
+3. update values: Insert the new neighbors of $v$ — $n\times$ in total — and Decrease the values of existing neighbors whose lightest edge changed — $m\times$ in total.
+
+With a Fibonacci heap: $O(m + n \log n)$ — already **linear** whenever $\rho = m/n \ge \log n$.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 260" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="gaf68-title">
+  <title id="gaf68-title">Each neighbor of the current tree carries the weight of its lightest edge into the tree</title>
+  <line x1="150" y1="120" x2="110" y2="80" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="150" y1="120" x2="200" y2="80" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="150" y1="120" x2="170" y2="180" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="170" y1="180" x2="230" y2="145" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="200" y1="80" x2="352" y2="72" stroke="#c2185b" stroke-width="2.4"/>
+  <line x1="230" y1="145" x2="352" y2="78" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="230" y1="145" x2="382" y2="150" stroke="#c2185b" stroke-width="2.4"/>
+  <line x1="200" y1="80" x2="380" y2="144" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <line x1="170" y1="180" x2="322" y2="216" stroke="#c2185b" stroke-width="2.4"/>
+  <line x1="230" y1="145" x2="320" y2="212" stroke="#666" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <circle cx="150" cy="120" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="110" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="200" cy="80" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="170" cy="180" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="230" cy="145" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="366" cy="72" r="8" fill="#fff" stroke="#c2185b" stroke-width="1.8"/>
+  <circle cx="396" cy="150" r="8" fill="#fff" stroke="#c2185b" stroke-width="1.8"/>
+  <circle cx="336" cy="220" r="8" fill="#fff" stroke="#c2185b" stroke-width="1.8"/>
+  <text x="505" y="70" text-anchor="middle" font-family="serif" font-size="11" fill="#c2185b">value of a neighbor =</text>
+  <text x="505" y="88" text-anchor="middle" font-family="serif" font-size="11" fill="#c2185b">weight of its lightest edge into T</text>
+  <text x="505" y="150" text-anchor="middle" font-family="serif" font-size="11" fill="#666">gray rivals are heavier —</text>
+  <text x="505" y="168" text-anchor="middle" font-family="serif" font-size="11" fill="#666">they surface later via Decrease</text>
+  <text x="320" y="250" text-anchor="middle" font-family="serif" font-size="11" fill="#666">neighbors (magenta rings) live in a Fibonacci heap keyed by their values</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The improved Jarník bookkeeping: heap entries are the *neighbors* of the tree, each carrying its lightest connecting edge (magenta) — $n$ ExtractMins and Inserts, $m$ Decreases.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Toy Combination: $O(m \log\log n)$)</span></p>
+
+The guiding idea for what follows: **identify some $F \subseteq$ MST, add $F$ to $T$, contract $F$, repeat on the smaller graph.** Toy instance: run $\log\log n$ contractive-Borůvka phases — time $O(m \log\log n)$ — leaving $n' \le n / 2^{\log\log n} = n / \log n$ vertices and $m' \le m$ edges; then finish with Fibonacci-heap Jarník in
+
+$$
+O(m' + n' \log n') \;\le\; O\Bigl(m + \frac{n}{\log n} \cdot \log n\Bigr) \;=\; O(m).
+$$
+
+Total: $O(m \log\log n)$ — already beating $O(m \log n)$.
+
+</div>
+
+## The Fredman–Tarjan Algorithm
+
+Fredman and Tarjan (1987) push the combination much further: run Jarník *many times in parallel* with a **bounded heap**, and contract the resulting forest.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Fredman–Tarjan)</span></p>
+
+Let $m\_0$ be the number of edges of the *input* graph and $G\_i$ the graph at the **start** of phase $i$ (with $n\_i$ vertices). Phase $i$ uses the heap-size limit
+
+$$
+t_i \;:=\; 2^{\lceil 2 m_0 / n_i \rceil}.
+$$
+
+Within the phase, repeatedly pick a vertex not yet in any tree and grow a Jarník tree from it (Fibonacci heap over the neighbors), **stopping the growth** as soon as:
+
+* the heap becomes empty (the tree swallowed its whole component), or
+* the heap size exceeds $t\_i$, or
+* the tree touches a previously grown tree — merge with it.
+
+When every vertex is in a tree, add the forest $F$ to $T$, contract every tree of $F$, filter loops and parallel edges as in contractive Borůvka, and start the next phase.
+
+</div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 240" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf69-title">
+  <title id="gaf69-title">A Fredman-Tarjan phase grows a forest of bounded trees one after another</title>
+  <path d="M 60,120 C 56,52 170,20 320,24 C 470,28 584,64 580,124 C 576,190 460,222 310,218 C 160,214 64,186 60,120 Z" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="150" y1="90" x2="205" y2="70" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="150" y1="90" x2="185" y2="130" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="150" y1="90" x2="105" y2="120" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="330" y1="150" x2="385" y2="165" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="385" y1="165" x2="430" y2="130" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="460" y1="70" x2="515" y2="85" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="460" y1="70" x2="500" y2="40" stroke="#1565c0" stroke-width="2.2"/>
+  <circle cx="150" cy="90" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="205" cy="70" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="185" cy="130" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="105" cy="120" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="330" cy="150" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="385" cy="165" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="430" cy="130" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="460" cy="70" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="515" cy="85" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="500" cy="40" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="255" cy="185" r="4" fill="#666"/>
+  <circle cx="545" cy="160" r="4" fill="#666"/>
+  <text x="320" y="232" text-anchor="middle" font-family="serif" font-size="11" fill="#666">the phase's forest F — trees started at fresh vertices (green), each stopped by one of the three rules</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One phase grows a forest of blue trees, one after another; at the end the whole forest joins $T$ and is contracted away.
+</figcaption>
+</figure>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 580px; height: auto;" role="img" aria-labelledby="gaf70-title">
+  <title id="gaf70-title">A stopped tree is incident to at least t edges, or ran into an existing tree</title>
+  <line x1="280" y1="130" x2="240" y2="90" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="280" y1="130" x2="320" y2="90" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="280" y1="130" x2="250" y2="170" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="280" y1="130" x2="310" y2="170" stroke="#1565c0" stroke-width="2.4"/>
+  <line x1="240" y1="90" x2="150" y2="62" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="240" y1="90" x2="222" y2="34" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="320" y1="90" x2="362" y2="40" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="320" y1="90" x2="420" y2="98" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="250" y1="170" x2="176" y2="212" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="310" y1="170" x2="360" y2="216" stroke="#b91c1c" stroke-width="1.8"/>
+  <line x1="310" y1="170" x2="446" y2="152" stroke="#b91c1c" stroke-width="1.8"/>
+  <circle cx="280" cy="130" r="8" fill="#ecfdf5" stroke="#0f9b6c" stroke-width="2"/>
+  <circle cx="240" cy="90" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="320" cy="90" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="250" cy="170" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <circle cx="310" cy="170" r="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.6"/>
+  <text x="290" y="20" text-anchor="middle" font-family="serif" font-size="11" fill="#b91c1c">heap overflow: ≥ tᵢ incident edges when growth stops</text>
+  <ellipse cx="530" cy="150" rx="62" ry="46" fill="none" stroke="#0f9b6c" stroke-width="1.6"/>
+  <line x1="492" y1="122" x2="548" y2="170" stroke="#0f9b6c" stroke-width="1.4"/>
+  <line x1="510" y1="115" x2="566" y2="163" stroke="#0f9b6c" stroke-width="1.4"/>
+  <line x1="530" y1="110" x2="578" y2="152" stroke="#0f9b6c" stroke-width="1.4"/>
+  <text x="530" y="222" text-anchor="middle" font-family="serif" font-size="11" fill="#0f9b6c">or: ran into an existing tree</text>
+  <text x="280" y="244" text-anchor="middle" font-family="serif" font-size="11" fill="#666">in a non-final phase, every final tree of F ends up incident to at least tᵢ edges</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Why trees are "big": growth stops with an overflowing heap — at least $t_i$ edges touching the tree — or by fusing into an earlier tree, which itself stopped for the same reason.
+</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fredman–Tarjan Complexity)</span></p>
+
+The Fredman–Tarjan algorithm computes the MST in time $O(m \log^\ast n)$, where $\log^\ast n$ is the iterated logarithm — the number of times $\log$ must be applied to $n$ to fall below a constant.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**① One phase costs $O(m\_0)$.** Every edge of $G\_i$ is inserted or decreased $O(1)$ times (amortized $O(1)$ in a Fibonacci heap), and there are at most $n\_i$ ExtractMins, each $O(\log t\_i)$ since heaps never exceed $t\_i$:
+
+$$
+O(m_i + n_i \log t_i) \;=\; O\!\left(m_i + n_i \cdot \frac{2m_0}{n_i}\right) \;=\; O(m_0).
+$$
+
+**② In a non-final phase, every tree of $F$ is incident to at least $t\_i$ edges.** Consider the *earliest-started* growth inside a final tree $K$: it cannot have stopped by joining an existing tree (there was none in $K$ before it), and if its heap emptied, its tree swallowed a whole component of the (connected) graph — making the phase final. So it stopped with heap size over $t\_i$, and each heap entry witnesses a distinct edge incident to $K$.
+
+**③ Trees are few.** Every edge is incident to at most two trees, so
+
+$$
+n_{i+1} \;=\; \#\text{trees of } F \;\le\; \frac{2 m_0}{t_i}.
+$$
+
+**④ The limit explodes.** By ③,
+
+$$
+t_{i+1} \;=\; 2^{\lceil 2m_0 / n_{i+1} \rceil} \;\ge\; 2^{\,2m_0 \,/\, (2m_0/t_i)} \;=\; 2^{\,t_i},
+$$
+
+so $t\_1, t\_2, t\_3, \dots$ grows as a tower of twos of height $i$. As soon as $t\_i \ge n$, the heap limit can never bind, the first tree swallows all of $G\_i$, and the phase is final — that happens after at most $\log^\ast n$ phases, and with ① the theorem follows. ∎
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Denser Graphs Finish Faster)</span></p>
+
+The tower does not start at $2$ but at $t\_1 = 2^{\lceil 2m/n \rceil}$: the exact number of phases is $\beta(m, n) := \min \lbrace i : \log^{(i)} n \le m/n \rbrace$, giving time $O(m \, \beta(m,n))$. In particular, if $\rho = m/n \ge \log^{(k)} n$ (the $k$-times iterated logarithm), only $O(k)$ phases run: time $O(km)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Toward Linear Time)</span></p>
+
+**Open problem:** is there a deterministic comparison-based MST algorithm in $O(m)$ for all graphs? What *is* known: $O(m)$ **expected** time by a randomized algorithm (Karger–Klein–Tarjan), and $O(m)$ worst-case for **integer** weights on the word RAM (Fredman–Willard) — optimal in both settings.
+
+</div>
