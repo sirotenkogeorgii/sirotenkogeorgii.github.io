@@ -2934,6 +2934,11 @@ where the coordinate processes $B^{(1)}, \dots, B^{(d)}$ are independent one-dim
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/bm2d_renewal.png' | relative_url }}" alt="Two panels. Left: a two-dimensional Brownian path colour-graded from light to dark blue by time, starting at a green dot at the origin and ending at a red dot, with a colour bar for time. Right: a one-dimensional Brownian path split at time s equals one by a dashed vertical line; the history is blue, the continuation grey, and the shifted process, drawn in green, restarts from the origin and looks like an entirely fresh Brownian motion." loading="lazy">
+  <figcaption>Definition 2.1 in pictures. <strong>Left.</strong> A two-dimensional Brownian path $B_t = (B_t^{(1)}, B_t^{(2)})^{\top}$, colour-graded by time: two independent one-dimensional Brownian motions drive the coordinates. <strong>Right.</strong> The renewal property. Past the deterministic time $s$ (dashed line), the shifted process $\widetilde{B}_t = B_{s+t} - B_s$ (green) is exactly the grey continuation translated back to the origin — again a standard Brownian motion, independent of the history $\mathcal{F}_s$ (blue).</figcaption>
+</figure>
+
 To formalise this powerful renewal behaviour into the Markov property, we must introduce notation that "restarts" the process at potentially non-zero spatial locations. For any fixed $x \in \mathbb{R}^d$, we define the **shifted probability measure** $\mathbb{P}^x_B$ associated with the Brownian motion $B$ by
 
 $$
@@ -3073,6 +3078,11 @@ $$
 * Convolving two Gaussian densities yields another Gaussian whose variance is the sum of the variances — the familiar accumulation of variance under independent Brownian increments, reflecting the continuous spatial diffusion over time.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/gaussian_transition_density.png' | relative_url }}" alt="Two panels. Left: four centred Gaussian curves in shades of blue, from a tall narrow peak at t equals 0.1 to a flat wide bell at t equals 3, each directly labelled with its time. Right: the densities for s equals 0.5 in blue and t equals 1 in green, the analytic density for s plus t as a thick dark curve, and orange circles from a numerical convolution landing exactly on that curve." loading="lazy">
+  <figcaption>The Gaussian transition density of Definition 2.4. <strong>Left.</strong> $p_t(0, y)$ flattens and spreads as $t$ grows — the variance accumulates linearly in time. <strong>Right.</strong> Chapman–Kolmogorov in density form: numerically convolving $p_s$ with $p_t$ (here $s = 0.5$, $t = 1$; orange circles) lands exactly on the analytic $p_{s+t}$ — convolving Gaussians adds their variances.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Bridge</span><span class="math-callout__name">(From Pathwise to Operator-Theoretic Viewpoint)</span></p>
@@ -3255,6 +3265,11 @@ Each of these classifications carries a probabilistic and analytical meaning tha
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/strong_feller_smoothing.png' | relative_url }}" alt="Two panels. Left: a discontinuous black step function with two blocks of heights one and 0.6, overlaid with three blue curves of increasing smoothness for t equal to 0.02, 0.2 and 1; even the smallest time gives a continuous curve, and the curves flatten below the maximum of u as t grows. Right: the same step function faint in grey, the function P one u as a blue curve, and orange circles for applying P one-half twice, matching the blue curve exactly." loading="lazy">
+  <figcaption>Proposition 2.7 in action, computed by exact Gaussian quadrature. <strong>Left.</strong> A discontinuous observable $u \in \mathcal{B}_b$ (two blocks) becomes continuous <em>instantly</em> — already at $t = 0.02$ — illustrating the strong Feller property (g); no curve ever exceeds $\lVert u \rVert_\infty = 1$, illustrating contraction (b). <strong>Right.</strong> The semigroup identity of Lemma 2.5: applying $P_{1/2}$ twice (orange circles) reproduces $P_1 u$ (blue) exactly.</figcaption>
+</figure>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof of Proposition 2.7</summary>
@@ -3390,6 +3405,11 @@ Let $(P_t)\_{t \ge 0}$ be a Feller semigroup. Then there exists a Markov process
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/cadlag_feller_path.png' | relative_url }}" alt="Two panels. Left: a continuous, jagged Brownian path in blue over the time interval zero to three. Right: a green piecewise-linear path with four jumps; at each jump time an open circle marks the left limit and a filled circle marks the value the path actually takes, with dotted vertical connectors and grey annotations reading right-continuous, filled dot, and left limit exists, open dot." loading="lazy">
+  <figcaption>Theorem 2.12: Feller theory delivers a càdlàg version. <strong>Left.</strong> Brownian motion, the continuous prototype of a Feller process. <strong>Right.</strong> A compound-Poisson-with-drift path — also Feller — shows exactly what càdlàg permits: at each jump the path is right-continuous (filled dot) while the left limit still exists (open dot). Jumps are allowed; wild oscillation is not.</figcaption>
+</figure>
+
 ### 2.4 The Generator
 
 We begin with a simple observation from deterministic calculus. Let $\varphi : [0, \infty) \to \mathbb{R}$ be continuous and satisfy the functional equation $\varphi(t) \varphi(s) = \varphi(t + s)$ with $\varphi(0) = 1$. Then there exists a unique $a \in \mathbb{R}$ with $\varphi(t) = e^{a t}$, and we recover this parameter via the derivative at zero,
@@ -3516,6 +3536,11 @@ The proof above highlights a profound mechanism: *pure, mean-zero Gaussian noise
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/generator_difference_quotient.png' | relative_url }}" alt="Two panels. Left: a black double-bump function u, three blue difference-quotient curves for t equal to 1, 0.3 and 0.05 that progressively approach a dashed red curve showing one half of the second derivative of u. Right: two curves of P t u evaluated at a fixed point against time; the blue curve, started at a peak, decreases, and the orange curve, started at a valley, increases, each with a dashed tangent line at time zero labelled with its slope, minus 1.38 for the peak and plus 0.71 for the valley." loading="lazy">
+  <figcaption>Example 2.14: the generator of Brownian motion is $\frac12\Delta$. <strong>Left.</strong> For $u$ a sum of two Gaussian bumps (black), the difference quotients $(P_t u - u)/t$ converge uniformly to $\frac12\Delta u$ (dashed red) as $t \to 0$; here $P_t u$ is the exact heat flow, so no simulation error enters. <strong>Right.</strong> The generator is the derivative at $t = 0$ of $t \mapsto P_t u(x_0)$: at a peak $\Delta u(x_0) < 0$ and the expected observable initially falls, at a valley $\Delta u(x_0) > 0$ and it rises — the dashed tangents have slope $\frac12\Delta u(x_0)$, exactly the peak-flattening / valley-filling mechanism described above.</figcaption>
+</figure>
+
 A straightforward extension of the previous computation handles affine transformations of Brownian motion.
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -3545,6 +3570,11 @@ This example is of paramount importance for modern generative AI:
 * The generator explicitly reveals how the deterministic drift $(b \cdot \nabla u)$ *translates probability mass*, while the diffusion term $\tfrac{1}{2}\,\mathrm{Tr}(C C^{\top} D^2 u)$ *smooths it out*.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/drift_diffusion_generator.png' | relative_url }}" alt="A single two-dimensional plot. Thirty-five thin grey sample paths fan out diagonally from a green dot at the origin. Three blue one-sigma ellipses, light to dark for times 0.5, 1 and 2, are tilted along the diagonal and grow while their centres move along a dashed red drift arrow; a red annotation reads drift b t translates the mean." loading="lazy">
+  <figcaption>Example 2.15 for $b = (1.2,\, 0.5)^{\top}$ and a non-diagonal $C$. Sample paths of $X_t = C B_t + b\,t$ (grey) with the $1\sigma$ ellipses of the exact law $\mathcal{N}(b\,t,\; t\,CC^{\top})$ at $t = 0.5, 1, 2$: the drift part $b \cdot \nabla$ translates the mean along $b$ (red arrow), while the diffusion part $\frac12\,\mathrm{Tr}(CC^{\top} D^2)$ spreads mass anisotropically along the eigendirections of $CC^{\top}$ — the tilt of the ellipses.</figcaption>
+</figure>
 
 Since every Feller semigroup $(P_t)\_{t \ge 0}$ is given by a family of measurable kernels, we can define linear operators of the form
 
@@ -4807,7 +4837,7 @@ and by the Borel–Cantelli lemma, $\sup_{0 \le s \le t} \lvert M_s^{n_k} - M_s 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.9 (Simple Integrals Live in $\mathcal{M}\_2^C$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.9 (Simple Integrals Live in $\mathcal{M}_2^C$)</span></p>
 
 For $X \in \mathcal{L}\_0$ and $M \in \mathcal{M}\_2^C$, it holds that
 
@@ -4953,7 +4983,7 @@ $$
 
 which has no counterpart in the classical chain rule. The heuristic: over a short interval, $(\mathrm{d}X)^2 \approx (\mathrm{d}M)^2 \approx \mathrm{d}\langle M \rangle$ is of order $\mathrm{d}t$ — *not* negligible — so the second-order Taylor term survives the limit. The classical chain rule is recovered exactly when $\langle M \rangle \equiv 0$, i.e., for bounded-variation paths (Lemma 4.5 territory). Two consequences worth internalising:
 
-* **This is where the generator's $\frac{1}{2}$ comes from.** For an SDE solution ($\mathrm{d}\langle M \rangle\_s = a(X_s)\, \mathrm{d}s$), taking expectations in Itô's rule yields $\frac{\mathrm{d}}{\mathrm{d}t} \mathbb{E}[f(X_t)] = \mathbb{E}\bigl[\frac{1}{2} a f'' + b f'\bigr](X_t)$ — precisely the differential operator $L(x, D)$ of Definition 3.1 and the Brownian generator $\frac{1}{2}\Delta$ of Example 2.14. Itô's rule is the path-wise engine behind the entire semigroup calculus of Chapters 2–3.
+* **This is where the generator's $\frac{1}{2}$ comes from.** For an SDE solution ($\mathrm{d}\langle M \rangle\_s = a(X_s)\, \mathrm{d}s$), taking expectations in Itô's rule yields $\frac{\mathrm{d}}{\mathrm{d}t} \mathbb{E}[f(X_t)] = \mathbb{E}\bigl[\frac{1}{2} a f'' + b f'\bigr] (X_t)$ — precisely the differential operator $L(x, D)$ of Definition 3.1 and the Brownian generator $\frac{1}{2}\Delta$ of Example 2.14. Itô's rule is the path-wise engine behind the entire semigroup calculus of Chapters 2–3.
 * The right panel of the figure above shows the correction path-wise for $f(x) = x^2$: $W_t^2 - 2\int_0^t W\, \mathrm{d}W = \langle W \rangle\_t = t$.
 
 </div>
@@ -5764,7 +5794,7 @@ Thus $\mathrm{KL}(P \,\Vert\, Q) \ge 2\delta^2 = 2\, \mathrm{TV}(P, Q)^2$. $\squ
    \mathrm{TV}(\Phi_{\#} P, \Phi_{\#} Q) \le \mathrm{TV}(P, Q) \qquad \text{and} \qquad \mathrm{KL}(\Phi_{\#} P \,\Vert\, \Phi_{\#} Q) \le \mathrm{KL}(P \,\Vert\, Q),
    $$
 
-   where $\Phi_{\#} P$ denotes the pushforward measure under $\Phi$ (defined by $(\Phi_{\#} P)(A) := P(\Phi^{-1}(A))$ — the distribution of $\Phi(X)$ when $X \sim P$).
+   where $\Phi_{\sharp} P$ denotes the pushforward measure under $\Phi$ (defined by $(\Phi_{\sharp} P)(A) := P(\Phi^{-1}(A))$ — the distribution of $\Phi(X)$ when $X \sim P$).
 2. Let $p_t$ be the distribution of the forward OU process at time $t$, and let $\gamma_d = \mathcal{N}(0, \mathrm{Id}\_d)$ be its invariant measure. Then
 
    $$
@@ -6063,7 +6093,7 @@ $$
 p_{T-t_k} = S_{\delta\#}\, p_{T-t} \ast \mathcal{N}\bigl(0, (1 - e^{-2\delta})\, \mathrm{Id}_d\bigr), \qquad \text{where } S_\delta(x) = e^{-\delta} x.
 $$
 
-Here $S_{\delta\#}\, p_{T-t}$ denotes the pushforward of $p_{T-t}$ under the map $x \mapsto e^{-\delta} x$. So the difference between the two scores comes from a *small contraction* $x \mapsto e^{-\delta} x$ and a *small Gaussian smoothing*. We first record the score perturbation lemma proved by Chen et al. [CCL22, Lemma 16], stated in the $d$-dimensional form relevant here.
+Here $S_{\delta\sharp}\, p_{T-t}$ denotes the pushforward of $p_{T-t}$ under the map $x \mapsto e^{-\delta} x$. So the difference between the two scores comes from a *small contraction* $x \mapsto e^{-\delta} x$ and a *small Gaussian smoothing*. We first record the score perturbation lemma proved by Chen et al. [CCL22, Lemma 16], stated in the $d$-dimensional form relevant here.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">5.9 (Score Perturbation; [CCL22], Lemma 16)</span></p>

@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "SDEs & Diffusion Models",
+   "url": "/subpages/books/sde_hd/",
+   "date": "2026-07-11",
+   "added": false
+  },
+  {
    "title": "Graph Algorithms",
    "url": "/subpages/books/graph_algorithms/",
    "date": "2026-07-10",
@@ -17,12 +23,6 @@
    "url": "/subpages/books/sde_hd/problems/sheet04/",
    "date": "2026-07-10",
    "added": true
-  },
-  {
-   "title": "SDEs & Diffusion Models",
-   "url": "/subpages/books/sde_hd/",
-   "date": "2026-07-10",
-   "added": false
   },
   {
    "title": "Algorithmic Randomness and Computable Analysis",
