@@ -2414,6 +2414,8 @@ By using the disjoint layers $F_i$, you successfully bypassed the unproven "cont
 
 ## Measurable Functions
 
+* ["The Lebesgue integral" by Tao](https://terrytao.wordpress.com/2010/09/19/245a-notes-2-the-lebesgue-integral/)
+
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Split the range, measure the domain)</span></p>
 
@@ -2983,7 +2985,7 @@ We verify the pre-requests of the theorem to apply it:
 
 Now show that $\bigcap_{n=1}^\infty F_n(k)$ set has measure zero.
 
-$$\bigcap_{n=1}^\infty \bigcup_{m=n}^\infty \lbrace x\in E \mid \lvert f_m(x) - f(x) \rvert \geq k^{-1} \rbrace = \lbrace x\in E \mid \lvert \limsup_{n\to\infty} \lvert f_n(x) - f(x) \rvert \geq k^{-1} \rbrace.$$
+$$\bigcap_{n=1}^\infty \bigcup_{m=n}^\infty \lbrace x\in E \mid \lvert f_m(x) - f(x) \rvert \geq k^{-1} \rbrace \subseteq \lbrace x\in E \mid \lvert \limsup_{n\to\infty} \lvert f_n(x) - f(x) \rvert \geq k^{-1} \rbrace.$$
 
 By assumption the latter set has measure zero: $f_n$ converges to $f$ a.e., so the amount of $x\in E$, where the given inequality holds is zero by the definition of a.e. convergence. So
 
@@ -3086,6 +3088,304 @@ Scalar multiples, linear combinations, and products of simple functions are agai
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Step functions are nearly continuous off a small set)</span></p>
+
+Let $a < b$. A simple function $\psi : [a,b] \to \mathbb{R}$ with range
+
+$$\psi([a,b]) = \lbrace a_1,\ldots,a_n\rbrace$$
+
+is a **step function** if for all $i = 1,\ldots,n$,
+
+$$\psi^{-1}(\lbrace a_i\rbrace)$$
+
+is a finite union of intervals. This is equivalent to
+
+$$\psi = \sum_{i=1}^n a_i \chi_{U_i},$$
+
+where for all $i$, $U_i \subset [a,b]$ is a finite union of intervals, for all $i \ne j$,
+
+$$U_i \cap U_j = \varnothing$$
+
+and
+
+$$\bigcup_{i=1}^n U_i = [a,b].$$
+
+---
+
+**(a)** Suppose that $\psi : [a,b] \to \mathbb{R}$ is a step function such that
+
+$$\sup_{x \in [a,b]} |\psi(x)| \le B.$$
+
+Let $\epsilon > 0$. Prove that there exists a continuous function
+
+$$g : [a,b] \to \mathbb{R}$$
+
+and a measurable set $E \subset [a,b]$ such that
+
+$$g(a) = g(b) = 0, \qquad  \sup_{x \in [a,b]} |g(x)| \le B, \qquad  m(E) < \epsilon,$$
+
+and
+
+$$\forall x \in E^c,  \qquad  |\psi(x) - g(x)| < \epsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Key idea.** Since $\psi$ has only finitely many interval boundaries, we replace each jump by a narrow polynomial transition. We include all transition regions in $E$; hence outside $E$, the approximation error is actually zero.
+
+Let $D$ be the finite set consisting of $a,b$ and all endpoints of the intervals appearing in the level sets of $\psi$. Write its distinct elements as
+
+$$a=t_0<t_1<\cdots<t_r=b.$$
+
+Then, for every $j=1,\ldots,r$, the function $\psi$ is constant on $(t_{j-1},t_j)$. Denote this value by $c_j$. Since $\sup\lvert\psi\rvert\le B$,
+
+$$|c_j|\le B \qquad \text{for every }j.$$
+
+Fix an integer $N\ge 1$. Choose $\delta>0$ sufficiently small that
+
+$$(r+1)\delta<\epsilon$$
+
+and
+
+$$3\delta<\min_{1\le j\le r}(t_j-t_{j-1}).$$
+
+The second condition ensures that the transition intervals introduced below do not overlap.
+
+Define the exceptional set
+
+$$E = [a,a+\delta] \cup \bigcup_{j=1}^{r-1}[t_j-\delta,t_j] \cup [b-\delta,b].$$
+
+There are $r+1$ intervals of length $\delta$, so
+
+$$m(E)\le (r+1)\delta<\epsilon.$$
+
+The endpoints $a,b$ and all possible discontinuity points $t_j$ belong to $E$.
+
+We now define $g$. Outside $E$, set
+
+$$g(x):=\psi(x).$$
+
+On the left endpoint transition, define
+
+$$g(x) = c_1\left(\frac{x-a}{\delta}\right)^N, \qquad x\in[a,a+\delta].$$
+
+Thus $g(a)=0$ and $g(a+\delta)=c_1$.
+
+For each internal boundary $t_j$, $j=1,\ldots,r-1$, define
+
+$$
+g(x)
+=
+\left(
+1-\left(\frac{x-(t_j-\delta)}{\delta}\right)^N
+\right)c_j
++
+\left(\frac{x-(t_j-\delta)}{\delta}\right)^N c_{j+1},
+$$
+
+for $x\in[t_j-\delta,t_j]$. This polynomial transition joins the level $c_j$ to the next level $c_{j+1}$.
+
+Finally, on the right endpoint transition, define
+
+$$
+g(x)
+=
+\left(
+1-\left(\frac{x-(b-\delta)}{\delta}\right)^N
+\right)c_r,
+\qquad
+x\in[b-\delta,b].
+$$
+
+Thus $g(b-\delta)=c_r$ and $g(b)=0$.
+
+**Continuity.** Each transition is polynomial on its interval. At every endpoint of a transition interval, its value agrees with the constant value of $g$ on the adjacent interval. Hence
+
+$$g\in C([a,b]), \qquad g(a)=g(b)=0.$$
+
+**Uniform bound.** On an internal transition interval, put
+
+$$\lambda = \left(\frac{x-(t_j-\delta)}{\delta}\right)^N.$$
+
+Then $0\le\lambda\le1$, and
+
+$$g(x)=(1-\lambda)c_j+\lambda c_{j+1}.$$
+
+Therefore $g(x)$ lies between $c_j$ and $c_{j+1}$, and hence
+
+$$|g(x)| \le \max{|c_j|,|c_{j+1}|} \le B.$$
+
+The same argument applies to the endpoint transitions, which interpolate between $0$ and $c_1$, or between $c_r$ and $0$. Consequently,
+
+$$\sup_{x\in[a,b]}|g(x)|\le B.$$
+
+Finally, by construction,
+
+$$g(x)=\psi(x) \qquad \text{for every }x\in E^c.$$
+
+Thus, more strongly,
+
+$$|\psi(x)-g(x)|=0<\epsilon \qquad \text{for every }x\in E^c.$$
+
+This proves the claim.
+
+**Terminology.** The resulting $g$ is not one polynomial on all of $[a,b]$; it is a continuous piecewise-polynomial function built from truncated and rescaled powers. Also, once the entire transition region is included in $E$, the exponent $N$ does not control $m(E)$; the width $\delta$ does. In fact, $N=1$ already works.
+
+**Remark:** Approximation using the piecewise linear interpolation would also work. 
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_step_function_polynomial_transition.png' | relative_url }}" alt="A step function drawn dashed and its continuous approximation drawn solid; each jump is replaced by a steep polynomial transition inside narrow shaded vertical bands forming the exceptional set E, with g vanishing at both endpoints" loading="lazy">
+  <figcaption>The construction of the main solution: outside the shaded set $E$ we have $g=\psi$ exactly, while on each band $[t_j-\delta,t_j]$ the polynomial blend $(1-\lambda^N)c_j+\lambda^N c_{j+1}$ (here $N=4$) joins the neighbouring levels continuously; the endpoint bands pull $g$ down to $g(a)=g(b)=0$, and $m(E)\le (r+1)\delta<\epsilon$.</figcaption>
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Simpler solution</summary>
+
+The previous construction is mathematically valid, but the $x^N$ transition and the logarithmic lower bound for $N$ are overkill.
+
+$$\text{step function} \longrightarrow \text{continuous function},$$
+
+followed by
+
+$$\text{simple function} \longrightarrow \text{step function},$$
+
+and then the general Lusin-type approximation for bounded measurable functions. So part (a) is intended as a routine “smooth the finitely many jumps on small intervals” argument, not as a quantitative study of the convergence $x^N\to\chi_{{1}}$. 
+
+**The simplest expected construction is piecewise linear interpolation.**
+
+Let $t_1,\dots,t_r$ be all the interval endpoints at which $\psi$ may change value, together with (a,b). Choose small intervals around these finitely many points whose total length is less than $\epsilon$, and let their union be $E$.
+
+Define $g=\psi$ outside $E$. On every component of $E$:
+
+* linearly interpolate between the constant values of $\psi$ on the two neighboring intervals;
+* at (a), interpolate between $0$ and the first value of (\psi);
+* at (b), interpolate between the last value of $\psi$ and $0$.
+
+Because every linear interpolation has the form
+
+$$g(x)=(1-\lambda)c+\lambda d, \qquad 0\le \lambda\le 1,$$
+
+where $\lvert c\rvert,\lvert d\rvert \le B$, one immediately gets
+
+$$|g(x)|\le B.$$
+
+Moreover,
+
+$$g=\psi \quad\text{on }E^c,$$
+
+so the error there is exactly zero.
+
+Thus the intended proof is probably about one paragraph. The previous main geometric idea was exactly right; the unnecessary part was introducing $N$ and solving an inequality for it. Since the entire transition region belongs to $E$, the shape and steepness of the transition do not matter. Even $N=1$ works.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Simple Function is nearly Continuous Function)</span></p>
+
+$$\boxed{\text{Every step function is nearly continuous.}}$$
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_step_function_linear_interpolation.png' | relative_url }}" alt="The same step function drawn dashed with a continuous piecewise-linear approximation drawn solid; straight segments cross each jump inside narrow shaded vertical bands forming the exceptional set E, with g vanishing at both endpoints" loading="lazy">
+  <figcaption>The simpler construction: on each component of $E$ the values $c_j$ and $c_{j+1}$ are joined by a straight segment $(1-\lambda)c_j+\lambda c_{j+1}$, so $|g|\le B$ is immediate; the shape of the transition is irrelevant because the whole transition region lies inside $E$.</figcaption>
+</figure>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/proof_sketch_measure_theory_pol_approx.png' | relative_url }}" alt="123" loading="lazy">
+  <figcaption>Sketch of the proof: approximating the step function by a continuous piecewise-polynomial function</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Simple functions are nearly step functions off a small set: Approximation of bounded simple functions by regular functions off small exceptional sets)</span></p>
+
+**(b)** Suppose that $\varphi : [a,b] \to \mathbb{R}$ is a simple function such that
+
+$$\sup_{x \in [a,b]} |\varphi(x)| \le B.$$
+
+Let $\epsilon > 0$. Prove that there exists a step function
+
+$$\psi : [a,b] \to \mathbb{R}$$
+
+and a measurable set $E \subset [a,b]$ such that
+
+$$\sup_{x \in [a,b]} |\psi(x)| \le B, \qquad  m(E) < \epsilon,$$
+
+and
+
+$$\forall x \in E^c, \qquad  |\varphi(x) - \psi(x)| < \epsilon.$$
+
+*Hint: See Littlewood’s first principle.*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+> **Idea:** As a proof sketch can we say that since the simple function is measurable, the preimage of each a_i from the finite range is measurable. According to the first Littlewood's principle, every measurable set is almost (with arbitrarily positive error) a finite union of open intervals. Then applying the same idea on every a_i from the finite range, every simple function is almost a step function, since the step function is a simple function, where every preimage is finite union of intervals. Let the error for each preimage from the first Littlewood's principle will be almost delta, then total error is almost n\cdot delta. Thus taking delta < epsilon/n makes the simple function a step function out of this "bad" set.
+
+Write
+
+$$\varphi=\sum_{i=1}^n a_i\chi_{A_i}, \qquad A_i:=\varphi^{-1}({a_i}).$$
+
+The sets $A_1,\dots,A_n$ are measurable and form a partition of $[a,b]$.
+
+For each $i=1,\dots,n-1$, Littlewood’s first principle gives a finite union of intervals $U_i\subset[a,b]$ such that
+
+$$m(A_i\triangle U_i)<\frac{\epsilon}{n}.$$
+
+Disjointize these sets by defining
+
+$$V_1:=U_1,\qquad V_i:=U_i\setminus\bigcup_{j<i}U_j \quad (2\le i<n),$$
+
+and
+
+$$V_n:=[a,b]\setminus\bigcup_{i=1}^{n-1}V_i.$$
+
+Each $V_i$ is a finite union of intervals, and the sets $V_i$ form a partition of $[a,b]$. Therefore
+
+$$\psi:=\sum_{i=1}^n a_i\chi_{V_i}$$
+
+is a step function. Since $\psi$ takes only values from the range of $\varphi$,
+
+$$\sup_{x\in[a,b]}|\psi(x)|\le B.$$
+
+Set
+
+$$E:=\bigcup_{i=1}^{n-1}(A_i\triangle U_i).$$
+
+Then
+
+$$m(E) \le \sum_{i=1}^{n-1}m(A_i\triangle U_i) <\frac{n-1}{n}\epsilon <\epsilon.$$
+
+Finally, if $x\notin E$, then $x\in U_i$ exactly when $x\in A_i$ for every $i<n$. Hence the disjointization assigns $x$ to the same level set as $\varphi$, so
+
+$$\psi(x)=\varphi(x).$$
+
+Thus, for every $x\in E^c$,
+
+$$|\varphi(x)-\psi(x)|=0<\epsilon.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Simple Function is nearly Step Function)</span></p>
+
+$$\boxed{\text{Every simple function is nearly a step function.}}$$
+
+</div>
+
 ### Approximation by Simple Functions
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3106,8 +3406,53 @@ If $f : E \to [0, \infty]$ is a nonnegative measurable function, then there exis
     $$E_n^k = \lbrace x \in E : k 2^{-n} < f(x) \le (k+1)2^{-n} \rbrace \quad (0 \le k \le 2^{2n} - 1), \qquad F_n = f^{-1}((2^n, \infty]),$$
     <p>and set $\phi_n = \sum_{k=0}^{2^{2n}-1} (k 2^{-n}) \chi_{E_n^k} + 2^n \chi_{F_n}$. Then $0 \le \phi_n \le f$ by construction.</p>
     <p><strong>Monotonicity (a):</strong> If $x \in E_n^k$ then $k2^{-n} < f(x) \le (k+1)2^{-n}$, which implies $x \in E_{n+1}^{2k} \cup E_{n+1}^{2k+1}$. In both cases $\phi_{n+1}(x) \ge (2k)2^{-(n+1)} = k2^{-n} = \phi_n(x)$. Similarly for $x \in F_n$.</p>
-    <p><strong>Convergence (b) and (c):</strong> On the set $\lbrace x : f(x) \le 2^n \rbrace$, we have $0 \le f(x) - \phi_n(x) \le 2^{-n}$. For any $x$ with $f(x) < \infty$, eventually $f(x) \le 2^n$ for large $n$, giving pointwise convergence. For $f(x) = \infty$, $\phi_n(x) = 2^n \to \infty$. On $\lbrace f(x) \le B \rbrace \subset \lbrace f(x) \le 2^N \rbrace$ for $N$ large enough, the bound $2^{-n}$ gives uniform convergence. $\square$</p>
   </details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Build $\phi_n$ with resolution $2^{-n}$ and range $[0, 2^n]$. Define
+
+$$E_n^k = \lbrace x \in E : k 2^{-n} < f(x) \le (k+1)2^{-n} \rbrace \quad (0 \le k \le 2^{2n} - 1), \qquad F_n = f^{-1}((2^n, \infty]),$$
+
+and set 
+
+$$\phi_n = \sum_{k=0}^{2^{2n}-1} (k 2^{-n}) \chi_{E_n^k} + 2^n \chi_{F_n}$$
+
+Then $0 \le \phi_n \le f$ by construction.
+
+**Monotonicity (a):** If $x \in E_n^k$ then 
+
+$$k2^{-n} < f(x) \le (k+1)2^{-n},$$
+
+which implies 
+
+$$x \in E_{n+1}^{2k} \cup E_{n+1}^{2k+1}.$$
+
+In both cases 
+
+$$\phi_{n+1}(x) \ge (2k)2^{-(n+1)} = k2^{-n} = \phi_n(x).$$
+
+Similarly for $x \in F_n$.
+
+**Convergence (b) and (c):** 
+
+* On the set $\lbrace x : f(x) \le 2^n \rbrace$, we have 
+
+  $$0 \le f(x) - \phi_n(x) \le 2^{-n}$$
+
+  * For any $x$ with $f(x) < \infty$, eventually $f(x) \le 2^n$ for large $n$, giving pointwise convergence. 
+  * For $f(x) = \infty$, $\phi_n(x) = 2^n \to \infty$. 
+
+* On 
+
+  $$\lbrace f(x) \le B \rbrace \subset \lbrace f(x) \le 2^N \rbrace$$
+
+  for $N$ large enough, the bound $2^{-n}$ gives uniform convergence.
+
+</details>
 </div>
 
 <figure class="math-figure">
@@ -3208,9 +3553,180 @@ $$(ii)\quad \phi_n \to f \quad \text{uniformly on} \quad \lbrace x : \lvert f(x)
 
 </div>
 
-The idea: split $f$ into real and imaginary parts, then each into positive and negative parts, apply the nonnegative approximation theorem to each, and recombine.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof Idea</summary>
+
+Split $f$ into real and imaginary parts, then each into positive and negative parts, apply the nonnegative approximation theorem to each, and recombine.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Lusin Approximation for Bounded Measurable Functions)</span></p>
+
+Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is a measurable function such that
+
+$$\sup_{x \in [a,b]} |f(x)| \le B.$$
+
+Let $\epsilon > 0$. Prove that there exists a continuous function
+
+$$g : [a,b] \to \mathbb{R}$$
+
+and a measurable set $E \subset [a,b]$ such that
+
+$$g(a) = g(b) = 0, \qquad \sup_{x \in [a,b]} |g(x)| \le B, \qquad m(E) < \epsilon,$$
+
+and
+
+$$\forall x \in E^c, \qquad |f(x) - g(x)| < \epsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution Idea and Different error contributions in each transtion of the proof</summary>
+
+> **Idea:** It is just a compilation of two exercises above + the theorem from the lecture that any measurable function on a measurable set could be approximated by simple functions. Then show measurable function -> simple function -> step function -> continuous function. In this chain errors are accumulated, because each such approximation transition introduces some new error. We bound the error from above using some configurable parameter (in the first transition it is a resolution from the lecture notes, in the second transition it is a number of open intervals in unions and in the third transition it is degrees of the polynomials). he we find such parameters values that the error is below epsilon.
+
+The overall chain is:
+
+$$f \longrightarrow \varphi \longrightarrow \psi \longrightarrow g,$$
+
+where
+
+$$\text{measurable}\to\text{simple}\to\text{step}\to\text{continuous}.$$
+
+But the errors are slightly different from what was described in the idea.
+
+**The first transition produces a vertical approximation error.** Since $f$ is bounded, the simple-function approximation theorem gives a simple $\varphi$ such that
+
+$$\sup_{x\in[a,b]}|f(x)-\varphi(x)|<\eta, \qquad \sup|\varphi|\le B.$$
+
+This convergence is uniform on bounded ranges in your notes. 
+
+**The next two transitions produce exceptional sets.**
+
+* For $\varphi\to\psi$, the parameter is the allowed symmetric-difference measure when approximating the measurable level sets—not the number of intervals.
+* For $\psi\to g$, the parameter is the total width of the small neighborhoods around the jump points—not the polynomial degree. Piecewise linear interpolation already works.
+
+Using the stronger versions proved above, choose
+
+$$\sup|f-\varphi|<\epsilon,$$
+
+then choose exceptional sets $E_1,E_2$ with
+
+$$m(E_1)<\frac{\epsilon}{2}, \qquad m(E_2)<\frac{\epsilon}{2},$$
+
+such that
+
+$$\varphi=\psi\quad\text{on }E_1^c, \qquad \psi=g\quad\text{on }E_2^c.$$
+
+Set (E=E_1\cup E_2). Then
+
+$$m(E)<\epsilon,$$
+
+and for $x\in E^c$,
+
+$$|f(x)-g(x)| = |f(x)-\varphi(x)| <\epsilon.$$
+
+So your compilation idea is correct. The main correction is that only the first stage contributes an actual value error; the other two can be arranged to give exact equality outside small exceptional sets.
+
+<!-- </details>
+</div> -->
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Littlewood’s third principle)</span></p>
+
+The result from the exercise above is known as **Littlewood’s third principle**
+
+$$\boxed{\text{Every measurable function is nearly continuous.}}$$
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_lusin_nearly_continuous.png' | relative_url }}" alt="A smooth blue curve g on an interval with two narrow orange vertical bands where a red curve f oscillates wildly; outside the bands the two curves coincide, dashed lines mark the bound B and minus B, and g vanishes at both endpoints" loading="lazy">
+  <figcaption>Littlewood's third principle in a picture: the measurable $f$ (red) may oscillate wildly, but only inside an exceptional set $E$ (orange bands) with $m(E)<\epsilon$. Outside $E$ it coincides with a continuous $g$ (blue) satisfying $g(a)=g(b)=0$ and $\sup|g|\le B$ — every measurable function is nearly continuous.</figcaption>
+</figure>
 
 ## The Lebesgue Integral
+
+### Density of Nice Functions in $L^1([a,b])$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Bounded Measurable Functions / Truncation of $L^1$ Functions)</span></p>
+
+Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is Lebesgue integrable.
+
+---
+
+(a) Let $\varepsilon > 0$. Prove that there exists a bounded measurable function $h : [a,b] \to \mathbb{R}$ such that
+   
+$$\int_a^b |f(x)-h(x)|\,dx < \varepsilon.$$
+
+*Hint:* Let $E_n = f^{-1}([-n,n])$ and $h_n = f\chi_{E_n}$. Prove that
+
+$$\lim_{n\to\infty}\int_a^b |f(x)-h_n(x)|\,dx = 0.$$
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_truncation.png' | relative_url }}" alt="An integrable function with two tall spikes; a bold blue truncated version follows it but drops to zero where the function exceeds the dashed level n, and the spike areas above the cut are shaded red as the error mass" loading="lazy">
+  <figcaption>Truncation $h_n=f\chi_{E_n}$ with $E_n=f^{-1}([-n,n])$: $h_n$ agrees with $f$ wherever $|f|\le n$ and vanishes on the spikes. The $L^1$-error $\int_a^b|f-h_n|$ is exactly the shaded mass sitting over $E_n^c=\{|f|>n\}$, and it shrinks to $0$ as $n\to\infty$ because $f$ is integrable.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Step Functions / Density of Step Functions in $L^1([a,b])$)</span></p>
+
+(b) Let $\varepsilon > 0$. Prove that there exists a step function $\psi : [a,b] \to \mathbb{R}$ such that
+
+$$\int_a^b |f(x)-\psi(x)|\,dx < \varepsilon.$$
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_step_approximation.png' | relative_url }}" alt="A smooth bounded curve overlaid by a blue step function on ten intervals; the thin region between the two graphs is shaded orange" loading="lazy">
+  <figcaption>Density of step functions in $L^1([a,b])$: the $L^1$-distance $\int_a^b|f-\psi|$ is the shaded area between the graphs. Refining the partition (after truncating $f$ to a bounded $h$ as in part (a)) makes this area smaller than any $\varepsilon$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Continuous Functions Vanishing at the Endpoints / Density of $C_0([a,b])$ in $L^1([a,b])$)</span></p>
+
+(c) Let $\varepsilon > 0$. Prove that there exists a continuous function $g : [a,b] \to \mathbb{R}$ such that $g(a)=g(b)=0$ and
+
+$$\int_a^b |f(x)-g(x)|\,dx < \varepsilon.$$
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_continuous_approximation.png' | relative_url }}" alt="A dashed step function and a green continuous function that follows it exactly except in narrow red vertical bands around each jump and at both endpoints, where the green curve ramps linearly and vanishes at the interval ends" loading="lazy">
+  <figcaption>From a step function $\psi$ (dashed) to a continuous $g$ (green) with $g(a)=g(b)=0$: they differ only inside narrow bands $E$ around the jumps and endpoints, where $|\psi-g|\le 2B$. Hence $\int_a^b|\psi-g|\le 2B\,m(E)<\varepsilon$, and combining with parts (a) and (b) gives density of $C_0([a,b])$ in $L^1$.</figcaption>
+</figure>
+
+### Riemann–Lebesgue Lemma for $L^1$ Functions
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Vanishing of Fourier Coefficients for Integrable Functions)</span></p>
+
+Suppose that $f : [-\pi,\pi] \to \mathbb{C}$ is Lebesgue integrable. The **Fourier coefficients** $\lbrace \hat f(n)\rbrace\_{n\in\mathbb{Z}}$ of $f$ are defined via
+
+$$\hat f(n) := \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)e^{-inx}\,dx, \qquad n\in\mathbb{Z}.$$
+
+Prove the Riemann-Lebesgue lemma:
+
+$$\lim_{|n|\to\infty} |\hat f(n)| = 0. \tag{\(\dagger\)}$$
+
+*Hint:* Prove $(\dagger)$ for step functions first. Then use problem 3 and an approximation argument.
+
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_riemann_lebesgue.png' | relative_url }}" alt="Left panel: a three-step function multiplied by a fast cosine, with positive lobes shaded green and negative lobes shaded red showing cancellation on each step. Right panel: a stem plot of Fourier coefficient magnitudes decaying to zero as n grows" loading="lazy">
+  <figcaption>Riemann–Lebesgue mechanism: on each constant step of $\psi$ the oscillation $e^{-inx}$ produces adjacent lobes of opposite sign that cancel, leaving only boundary contributions of size $O(1/n)$ (left). Approximating $f\in L^1$ by step functions transfers the decay to $\hat f$: $|\hat f(n)|\to 0$ (right).</figcaption>
+</figure>
 
 ### Integral of Nonnegative Functions
 
@@ -3236,6 +3752,11 @@ $$\int_E \phi = \sum_{j=1}^{n} a_j \, m(A_j) \in [0, \infty].$$
 
 </div>
 
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_simple_integral_definition.png' | relative_url }}" alt="A simple function taking three values drawn as colored horizontal plateaus over scattered pieces of the interval, with matching colored bars below the axis marking the measure of each level set and a boxed formula summing value times measure" loading="lazy">
+  <figcaption>The integral of a simple function $\phi=\sum_j a_j\chi_{A_j}$ in canonical form: each value $a_j$ is weighted by the measure of its preimage $A_j$ (color-coded bars below the axis). Each $A_j$ may be a scattered union of pieces — only $m(A_j)$ enters $\int_E\phi=\sum_j a_j\,m(A_j)$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Properties of the Integral for Simple Functions)</span></p>
 
@@ -3257,6 +3778,11 @@ $$\int_E f = \sup \left\lbrace \int_E \phi : \phi \in L^+(E) \text{ simple},\; \
 
 </div>
 
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_nonneg_integral_sup.png' | relative_url }}" alt="Two panels showing the same nonnegative curve: on the left a coarse blue staircase sits below the curve with shaded area 0.94, on the right a much finer green staircase hugs the curve from below with shaded area 1.08" loading="lazy">
+  <figcaption>The integral of $f\in L^+(E)$ as a supremum: every simple $\phi\le f$ contributes its integral (shaded area), and refining the minorant pushes $\int_E\phi$ up toward $\int_E f=\sup\{\int_E\phi:\phi\le f\text{ simple}\}$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Integral over Measure-Zero Set)</span></p>
 
@@ -3267,9 +3793,10 @@ $$E \subset \mathbb{R}:\ m(E) = 0 \implies \int_E f = 0\quad \forall f \in L^+(E
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Basic Properties of the Nonnegative Integral)</span></p>
 
-* If $f, g \in L^+(E)$, $c \in [0, \infty)$, and $F \subset E$ is measurable, then $\int_E cf = c \int_E f$, 
-* If $f \le g$ then $\int_E f \le \int_E g$,
-* If $f \le g$ a.e. then $\int_E f \le \int_E g$, and $\int_F f \le \int_E f$.
+* If $f, g \in L^+(E)$, $c \in [0, \infty)$, and $F \subset E$ is measurable, then 
+* $\int_E cf = c \int_E f$, 
+* $f \le g \implies \int_E f \le \int_E g$,
+* $f \le g \text{ a.e. } \implies \int_E f \le \int_E g \quad\text{ and }\quad \int_F f \le \int_E f$.
 
 </div>
 
@@ -3280,7 +3807,7 @@ $$E \subset \mathbb{R}:\ m(E) = 0 \implies \int_E f = 0\quad \forall f \in L^+(E
 
 If $\lbrace f_n \rbrace$ is a sequence of nonnegative measurable functions (in $L^+(E)$) such that $f_1 \le f_2 \le \cdots$ pointwise on $E$, and $f_n \to f$ pointwise on $E$ for some $f$ (which is in $L^+(E)$ by closure under limits), then
 
-$$\lim_{n \to \infty} \int_E f_n = \int_E f.$$
+$$\lim_{n \to \infty} \int_E f_n = \int_E \lim_{n \to \infty} f_n = \int_E f.$$
 
 </div>
 
@@ -3288,11 +3815,193 @@ The assumption of pointwise convergence here is much weaker than the uniform con
 
 <div class="accordion">
   <details>
-    <summary>proof</summary>
+    <summary>Proof I</summary>
     <p>Since $f_n \le f$ for all $n$, $\int_E f_n \le \int_E f$, so $\lim \int_E f_n \le \int_E f$. For the reverse, it suffices to show $\int_E \phi \le \lim \int_E f_n$ for every simple $\phi \le f$.</p>
     <p>Fix $\varepsilon \in (0, 1)$ and let $\phi = \sum_{j=1}^{m} a_j \chi_{A_j}$ be simple with $\phi \le f$. Define $E_n = \lbrace x \in E : f_n(x) \ge (1 - \varepsilon)\phi(x) \rbrace$. Since $f_n \nearrow f \ge \phi$, every $x$ is eventually in some $E_n$, so $\bigcup_{n=1}^{\infty} E_n = E$ and $E_1 \subset E_2 \subset \cdots$.</p>
     <p>Then $\int_E f_n \ge \int_{E_n} f_n \ge (1 - \varepsilon) \int_{E_n} \phi = (1 - \varepsilon) \sum_j a_j m(A_j \cap E_n)$. By continuity of measure ($A_j \cap E_n \nearrow A_j$), taking $n \to \infty$ gives $\lim \int_E f_n \ge (1 - \varepsilon) \sum_j a_j m(A_j) = (1 - \varepsilon) \int_E \phi$. Since $\varepsilon$ is arbitrary, $\lim \int_E f_n \ge \int_E \phi$. $\square$</p>
   </details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof II</summary>
+
+Let $E\subseteq\mathbb R$ be measurable, and let
+
+$$0\le f_1\le f_2\le\cdots$$
+
+be measurable functions on $E$ such that
+
+$$f_n(x)\longrightarrow f(x) \qquad\text{for every }x\in E.$$
+
+We prove that
+
+$$\lim_{n\to\infty}\int_E f_n=\int_E f,$$
+
+where the integrals may take the value $+\infty$.
+
+**The key idea is to compare $f_n$ with an arbitrary simple function below $f$, lowered slightly so that $f_n$ eventually reaches it pointwise.**
+
+Since $f_n\le f_{n+1}$, monotonicity of the integral gives
+
+$$\int_E f_n\le \int_E f_{n+1}.$$
+
+Consequently, the sequence of integrals is increasing, and therefore its extended-real limit exists:
+
+$$L:=\lim_{n\to\infty}\int_E f_n =\sup_{n\in\mathbb N}\int_E f_n.$$
+
+**The easy inequality is (L\le \int_E f).**
+
+Because $f_n\le f$ for every $n$, monotonicity gives
+
+$$\int_E f_n\le \int_E f.$$
+
+Taking the supremum over $n$,
+
+$$L\le \int_E f.$$
+
+It remains to prove the opposite inequality.
+
+**Fix an arbitrary simple test function below $f$.**
+
+Let $\phi\in L^+(E)$ be simple and satisfy
+
+$$0\le \phi\le f.$$
+
+We want to show
+
+$$\int_E\phi\le L.$$
+
+Once this is established for every such $\phi$, taking the supremum over all simple minorants of $f$ will give
+
+$$\int_E f\le L.$$
+
+The difficulty is that $\phi\le f$ does not imply that $\phi\le f_n$ for some $n$. For example, $f_n$ may approach $\phi=f$ strictly from below and never reach it.
+
+**Lower $\phi$ slightly to create a strict gap.**
+
+Fix $c\in(0,1)$, and define
+
+$$E_n:=\lbrace x\in E:f_n(x)\ge c\phi(x)\rbrace.$$
+
+These sets are measurable. Since $f_n\le f_{n+1}$,
+
+$$E_n\subseteq E_{n+1},$$
+
+so $(E_n)$ is increasing.
+
+We claim that
+
+$$\bigcup_{n=1}^{\infty}E_n=E.$$
+
+Indeed, fix $x\in E$.
+
+If $\phi(x)=0$, then
+
+$$f_n(x)\ge0=c\phi(x),$$
+
+so $x\in E_$n for every $n$.
+
+If $\phi(x)>0$, then because $c<1$,
+
+$$c\phi(x)<\phi(x)\le f(x).$$
+
+Since $f_n(x)\uparrow f(x)$, the increasing numerical sequence $f_n(x)$ must eventually exceed the strictly smaller number $c\phi(x)$. Thus there exists an index $N(x)$ such that
+
+$$f_n(x)\ge c\phi(x) \qquad\text{for all }n\ge N(x).$$
+
+Hence $x\in E_n$ eventually.
+
+Notice that the index $N(x)$ may depend on $x$. We do not claim that there is one $n$ for which $E_n=E$; we only have
+
+$$E_n\uparrow E.$$
+
+**Compare the integrals on $E_n$.**
+
+By the definition of $E_n$,
+
+$$c\phi,\mathbf 1_{E_n}\le f_n$$
+
+on all of $E$. Therefore,
+
+$$c\int_{E_n}\phi = \int_E c\phi,\mathbf 1_{E_n} \le \int_E f_n \le L.$$
+
+Now write the simple function in the form
+
+$$\phi=\sum_{j=1}^{N}a_j\mathbf 1_{A_j}, \qquad a_j>0,$$
+
+where the $A_j$ are measurable and pairwise disjoint. Then
+
+$$\int_{E_n}\phi = \sum_{j=1}^{N}a_j,m(A_j\cap E_n).$$
+
+Since $E_n\uparrow E$,
+
+$$A_j\cap E_n\uparrow A_j,$$
+
+and continuity of measure from below gives
+
+$$m(A_j\cap E_n)\longrightarrow m(A_j).$$
+
+Because the sum is finite,
+
+$$\int_{E_n}\phi\longrightarrow\int_E\phi.$$
+
+Passing to the limit in
+
+$$c\int_{E_n}\phi\le L$$
+
+therefore gives
+
+$$c\int_E\phi\le L.$$
+
+**Return from the lowered test function to the original one.**
+
+The preceding inequality holds for every $c\in(0,1)$. Letting $c\uparrow1$, we obtain
+
+$$\int_E\phi\le L.$$
+
+Thus every actual simple test function $\phi\le f$, not merely its lowered version, satisfies this inequality.
+
+Finally, take the supremum over all nonnegative simple functions $\phi\le f$:
+
+$$\int_E f = \sup_{\substack{\phi\text{ simple}\0\le\phi\le f}} \int_E\phi \le L.$$
+
+Combined with the earlier inequality $L\le\int_E f$, this yields
+
+$$\boxed{ \lim_{n\to\infty}\int_E f_n = \int_E f = \int_E\lim_{n\to\infty}f_n}.$$
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_mct_proof_trick.png' | relative_url }}" alt="Two panels with the limit function, an orange staircase test function below it, a dashed lowered copy of the staircase, and a blue curve from the increasing sequence; green bars on the axis mark where the blue curve exceeds the lowered staircase, covering only fragments in the left panel and the whole interval in the right panel" loading="lazy">
+  <figcaption>The lowering trick: comparing $f_n$ with a simple $\phi\le f$ directly can fail forever, but the lowered $c\phi$ (dashed) sits strictly below $f$ wherever $\phi>0$, so the sets $E_n=\{f_n\ge c\phi\}$ (green) grow up to $E$. Continuity of measure on the level sets $A_j\cap E_n\uparrow A_j$ then gives $c\int_E\phi\le L$, and $c\uparrow 1$ removes the lowering.</figcaption>
+</figure>
+
+**Remark.** The factor $c<1$ is essential because pointwise convergence to $f$ does not imply that $f_n$ ever reaches a test function that equals $f$ somewhere. Lowering the test function creates the strict pointwise gap needed for eventual domination.
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_mct_theorem.png' | relative_url }}" alt="Left panel: a family of blue curves increasing pointwise toward a bold black limit curve, with an upward arrow. Right panel: the integrals of the sequence plotted against n climbing monotonically toward a dashed line marking the integral of the limit" loading="lazy">
+  <figcaption>Monotone convergence: an increasing sequence $0\le f_1\le f_2\le\cdots$ of measurable functions converging pointwise to $f$ (left) forces the increasing sequence of integrals $\int_E f_n$ to climb exactly to $\int_E f$ (right) — pointwise convergence suffices, no uniformity needed.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The assumption of )</span></p>
+
+The assumption of pointwise convergence here is much weaker than the uniform convergence we usually need for Riemann integration.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Benefits and Caveats)</span></p>
+
+* **Putting the limit under the integral:** the Monotone Convergence Theorem is a fundamental tool in real analysis that strictly allows you to interchange the limit and the integral. It guarantees that the limit of the integrals is equal to the integral of the limit function
+
+**Important Caveats**
+
+* **Decreasing Sequences:** The Monotone Convergence Theorem does not natively work for decreasing sequences unless you modify it (e.g., multiplying by -1), or switch to using the **Dominated Convergence Theorem**.
+* **Riemann Integral:** While historically applicable to well-behaved Riemann integrals under strict conditions, the theorem is primarily a cornerstone of Lebesgue integration
+
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -3345,6 +4054,15 @@ $$\int_E f = 0 \quad\iff\quad f = 0 \quad\text{almost everywhere on } E.$$
   </details>
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Monotone Convergence — a.e. Version)</span></p>
 
@@ -3378,6 +4096,11 @@ Let $\lbrace f_n \rbrace$ be a sequence in $L^+(E)$. Then
 $$\int_E \liminf_{n \to \infty} f_n \le \liminf_{n \to \infty} \int_E f_n.$$
 
 </div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_fatou_sliding_bump.png' | relative_url }}" alt="Three unit-area bumps drawn with fading blue color at successive positions sliding to the right with an arrow labeled n to infinity; a bold red line along zero marks the pointwise liminf" loading="lazy">
+  <figcaption>Why Fatou's lemma is only an inequality: the sliding bump $f_n$ has $\int f_n=1$ for every $n$, yet $f_n\to 0$ pointwise (red line), so $\int\liminf_n f_n=0<1=\liminf_n\int f_n$ — the mass escapes to infinity and the integral of the liminf never sees it.</figcaption>
+</figure>
 
 <div class="accordion">
   <details>
@@ -3422,9 +4145,17 @@ Compact subsets of $\mathbb{R}$ are Borel sets with finite measure, so simple fu
 
 Suppose $f, g : E \to \mathbb{R}$ are integrable. Then:
 
-1. For all $c \in \mathbb{R}$, $cf$ is integrable and $\int_E cf = c \int_E f$.
-2. $f + g$ is integrable and $\int_E (f + g) = \int_E f + \int_E g$.
-3. If $A, B$ are disjoint measurable sets, $\int_{A \cup B} f = \int_A f + \int_B f$.
+1. For all $c \in \mathbb{R}$, $cf$ is integrable and 
+   
+   $$\int_E cf = c \int_E f.$$
+
+2. $f + g$ is integrable and 
+   
+   $$\int_E (f + g) = \int_E f + \int_E g.$$
+
+3. If $A, B$ are disjoint measurable sets, 
+   
+   $$\int_{A \cup B} f = \int_A f + \int_B f.$$
 
 </div>
 
@@ -3444,11 +4175,21 @@ Suppose $f, g : E \to \mathbb{R}$ are measurable. Then:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Dominated Convergence Theorem)</span></p>
 
-Let $g : E \to [0, \infty)$ be a nonnegative integrable function, and let $\lbrace f_n \rbrace$ be a sequence of real-valued measurable functions such that (1) $\lvert f_n \rvert \le g$ a.e. for all $n$, and (2) $f_n(x) \to f(x)$ pointwise a.e. on $E$. Then
+Let $g : E \to [0, \infty)$ be a nonnegative integrable function, and let $\lbrace f_n \rbrace$ be a sequence of real-valued measurable functions such that 
+
+* **(1)** $\lvert f_n \rvert \le g$ a.e. for all $n$,
+* **(2)** $f_n(x) \to f(x)$ pointwise a.e. on $E$.
+
+Then
 
 $$\lim_{n \to \infty} \int_E f_n = \int_E f.$$
 
 </div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_dct_theorem.png' | relative_url }}" alt="A green dashed envelope curve and its mirror image below zero bound a shaded tube; several blue curves wiggle inside the tube and settle onto a bold black limit curve" loading="lazy">
+  <figcaption>Dominated convergence: the integrable envelope $g$ pins the whole sequence inside the tube $\pm g$ (green), so no mass can escape to infinity as in Fatou's sliding-bump example — pointwise convergence $f_n\to f$ a.e. already forces $\int_E f_n\to\int_E f$.</figcaption>
+</figure>
 
 This is much stronger than anything available for Riemann integration — we only need pointwise convergence and a dominating integrable function.
 
@@ -3470,7 +4211,11 @@ This is much stronger than anything available for Riemann integration — we onl
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 126</span></p>
 
-Let $f \in C([a, b])$ for some real numbers $a < b$. Then $\int_{[a,b]} f = \int_a^b f(x)\,dx$: in other words, $f$ is integrable and the Riemann and Lebesgue integrals agree.
+Let $f \in C([a, b])$ for some real numbers $a < b$. Then 
+
+$$\int_{[a,b]} f = \int_a^b f(x)\,dx$$
+
+in other words, $f$ is integrable and the Riemann and Lebesgue integrals agree.
 
 </div>
 
@@ -3488,11 +4233,22 @@ Let $f \in C([a, b])$ for some real numbers $a < b$. Then $\int_{[a,b]} f = \int
 
 ### Complex-Valued Integrable Functions
 
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span>(Complex-Valued Integrable Functions)</p>
+
 Everything proved for real integrable functions carries over to complex-valued integrable functions: we define $f : E \to \mathbb{C}$ to be Lebesgue integrable if $\int_E \lvert f \rvert < \infty$, in which case
 
 $$\int_E f = \int_E \operatorname{Re} f + i \int_E \operatorname{Im} f.$$
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Generalized theorems results for complex-valued integrable functions)</p>
+
 Results like linearity of the integral and the Dominated Convergence Theorem generalize.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 127</span></p>
@@ -3666,9 +4422,17 @@ From here, we move on to more general topics in functional analysis. Our next to
 
 A **pre-Hilbert space** $H$ is a vector space over $\mathbb{C}$ with a **Hermitian inner product**, which is a map $\langle \cdot, \cdot \rangle : H \times H \to \mathbb{C}$ satisfying the following properties:
 
-1. For all $\lambda_1, \lambda_2 \in \mathbb{C}$ and $v_1, v_2, w \in H$, we have $\langle \lambda_1 v_1 + \lambda_2 v_2, w \rangle = \lambda_1 \langle v_1, w \rangle + \lambda_2 \langle v_2, w \rangle$.
-2. For all $v, w \in H$, we have $\langle v, w \rangle = \overline{\langle w, v \rangle}$.
-3. For all $v \in H$, we have $\langle v, v \rangle \ge 0$, with equality if and only if $v = 0$.
+1. For all $\lambda_1, \lambda_2 \in \mathbb{C}$ and $v_1, v_2, w \in H$, we have 
+   
+   $$\langle \lambda_1 v_1 + \lambda_2 v_2, w \rangle = \lambda_1 \langle v_1, w \rangle + \lambda_2 \langle v_2, w \rangle$$
+
+2. For all $v, w \in H$, we have 
+   
+   $$\langle v, w \rangle = \overline{\langle w, v \rangle}$$
+
+3. For all $v \in H$, we have
+   
+   $$\langle v, v \rangle \ge 0 \iff v = 0$$
 
 </div>
 

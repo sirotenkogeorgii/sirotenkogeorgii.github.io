@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-07-11",
+   "added": false
+  },
+  {
    "title": "SDEs & Diffusion Models",
    "url": "/subpages/books/sde_hd/",
    "date": "2026-07-11",
@@ -51,12 +57,6 @@
   {
    "title": "Embedded Machine Learning",
    "url": "/notes/embedded-machine-learning/",
-   "date": "2026-07-05",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-07-05",
    "added": false
   },
