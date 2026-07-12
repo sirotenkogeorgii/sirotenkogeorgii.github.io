@@ -120,7 +120,7 @@ $$\kappa(y\mid x) = \alpha(x,y)q(y\mid x) + \bigl(1-\alpha^*(x)\bigr)\delta_x(y)
 
 where
 
-$$\alpha^*(x) = \int \alpha(x,y)q(y\mid x),dy$$
+$$\alpha^*(x) = \int \alpha(x,y)q(y\mid x)dy$$
 
 is the overall probability of accepting a proposal from $x$, and $\delta_x$ denotes a point mass (Dirac delta) at $x$.
 

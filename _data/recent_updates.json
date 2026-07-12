@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Metropolis-Hastings Algorithm",
+   "url": "/subpages/monte-carlo-methods/mcmc/metropolis%E2%80%93hastings-algorithm/",
+   "date": "2026-07-12",
+   "added": false
+  },
+  {
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-07-12",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-07-11",
@@ -64,12 +76,6 @@
    "title": "Reinforcement Learning: An Overview",
    "url": "/subpages/books/reinforcement_learning_overview/",
    "date": "2026-07-05",
-   "added": false
-  },
-  {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-07-04",
    "added": false
   },
   {
@@ -173,12 +179,6 @@
    "url": "/subpages/computability-and-complexity/probabilistic-turing-machine/",
    "date": "2026-06-16",
    "added": false
-  },
-  {
-   "title": "Reinforcement Learning",
-   "url": "/subpages/books/reinforcement_learning_sutton/",
-   "date": "2026-06-16",
-   "added": true
   }
  ]
 }
