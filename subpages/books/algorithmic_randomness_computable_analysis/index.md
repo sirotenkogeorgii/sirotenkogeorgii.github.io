@@ -239,7 +239,7 @@ $$S = ([\![\sigma_0]\!], [\![\sigma_1]\!], \dots), \qquad \lambda(S) = \sum_i \l
   <figcaption>Basic open sets of Cantor space identified with dyadic intervals of $[0, 1]$. A finite word $\sigma$ of length $k$ corresponds to the set $[\![\sigma]\!]$ of all infinite binary sequences extending $\sigma$, which in turn corresponds to the dyadic interval $[0.\sigma,\ 0.\sigma + 2^{-k}]$ of length $2^{-k}$. Each level halves the measure of its parent.</figcaption>
 </figure>
 
-## Week 1: Introduction
+## Introduction
 
 ### Three Intuitions of Nonrandomness
 
@@ -751,7 +751,7 @@ Construct a Martin-Löf test $\mathcal{M}$ that covers every sequence $X$ which 
 
 </div>
 
-## Week 2-3: Kolmogorov complexity
+## Kolmogorov complexity
 
 In this section we examine the Kolmogorov complexity as a function on binary words, starting from the trivial upper bound and a few straightforward properties.
 
@@ -3673,7 +3673,8 @@ Combining the two notions yields the two central approximability classes of this
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.5 — Computably approximable, left-c.e.)</span></p>
 
-A real $\alpha$ is **computably approximable** (c.a.) if there exists a computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$. A real $\alpha$ is **left computably enumerable** (left-c.e.) if there exists a *nondecreasing* computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$.
+* A real $\alpha$ is **computably approximable** (c.a.) if there exists a computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$. 
+* A real $\alpha$ is **left computably enumerable** (left-c.e.) if there exists a *nondecreasing* computable Cauchy sequence $(a\_n)\_{n\in\mathbb{N}}$ converging to $\alpha$.
 
 </div>
 
@@ -3989,7 +3990,11 @@ For $\emptyset' \le\_T \Omega$: this is the dovetailing argument recorded in the
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the halting problem)</span></p>
 
-Knowing the first $N$ bits of $\Omega$, one could calculate the **halting problem** for all programs of a size up to $N$. Let the program $p$ for which the halting problem is to be solved be $N$ bits long. In **dovetailing** fashion, all programs of all lengths are run, until enough have halted to jointly contribute enough probability to match these first $N$ bits. If the program $p$ has not halted yet, then it never will, since its contribution to the halting probability would affect the first $N$ bits. Thus, the halting problem would be solved for $p$.
+Knowing the first $N$ bits of $\Omega$ allows one to decide the halting problem for every $\widetilde U$-program of length at most $N$. Indeed, dovetail all computations of $\widetilde U$, and let
+
+$$\Omega_s=\sum_{\sigma\in \operatorname{dom}(\widetilde U[s])}2^{-l(\sigma)}$$
+
+be the halting probability already observed by stage $s$. Since the first $N$ bits of $\Omega$ determine an interval of length $2^{-N}$ containing $\Omega$, we can wait until the remaining gap between $\Omega$ and $\Omega_s$ is smaller than $2^{-N}$. At that point, no unseen program of length at most $N$ can still halt, because such a program would contribute at least $2^{-N}$ to $\Omega$. Therefore, if a given program $p$ of length at most $N$ has not halted by then, it never halts.
 
 Because many outstanding problems in **number theory**, such as **Goldbach's conjecture**, are equivalent to solving the halting problem for special programs (which would basically search for counter-examples and halt if one is found), knowing enough bits of Chaitin's constant would also imply knowing the answer to these problems. But as the halting problem is not generally solvable, calculating any but the first few bits of Chaitin's constant is not possible for a universal language. This reduces hard problems to impossible ones, much like trying to build an **oracle machine for the halting problem** would be.
 
@@ -4008,7 +4013,7 @@ $$a_{n+1}−a_n \leq c(w_{n+1}−w_n) \qquad \text{ for all } n.$$
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Solution</summary>
 
 This is the Solovay domination property of $\Omega$.
 
@@ -4041,6 +4046,14 @@ So the required constant is $c=2^d$.
 </details>
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing-reducibility)</span></p>
+
+A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
+
+$$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}$$
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The halting problem is Turing reducible to Chaitin’s $\Omega$)</span></p>
@@ -4057,6 +4070,80 @@ $$\Omega = \sum_{\sigma \in \operatorname{dom} \widetilde U} 2^{-l(\sigma)}.$$
 
 $$\widetilde M(0^e1)\downarrow \quad \Longleftrightarrow \quad \Phi_e(e)\downarrow.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+> Consider we have an access to the oracle that tells us the first $n$ bits of the Chaitin’s Omega for any given $n\in\mathbb{N}$. Knowing the first $n$ bits of the Chaitin’s Omega, we run all programs of the size up to $n$ bits. Because the first $n$ bits of the Chaitin’s Omega are determined by the sums $2^{-l(\sigma)}$ of all programs that halt and have length $l(\sigma) \leq n$. So, once the sum is is equal to the first $n$ bits of the Chaitin’s Omega, then no other programs of the length up to $n$ will halt, otherwise they will alter the sum and it won't be equal to the first $n$ bits of the Chaitin’s Omega.
+
+The previous proof has the **right core idea**, but as written it is **not quite valid yet**.
+
+The main idea is correct:
+
+$$\text{enough bits of }\Omega \quad\Longrightarrow\quad \text{decide halting of all short }\widetilde U\text{-programs}.$$
+
+But two points need fixing.
+
+**1. The first $n$ bits are not determined only by programs of length $\le n$.**
+
+Longer programs also contribute to $\Omega$. Their total contribution may affect the first $n$ bits through carries. What is true is slightly different:
+
+If we know $\Omega$ to error $<2^{-n}$, then after enumerating enough halting programs, once the remaining possible measure is $<2^{-n}$, no unseen program of length $\le n$ can still halt, because such a program would contribute at least $2^{-n}$.
+
+So replace “once the sum is equal to the first $n$ bits” by a **gap argument**.
+
+**We still need to connect this to $\emptyset'$.**
+
+I use the sheet’s three exercise statements and the lecture notes’ conventions for prefix-free machines, Chaitin’s $\Omega$, left-c.e. approximations, and Solovay reducibility.  
+
+**Key idea.**
+The first $N$ bits of $\Omega$ decide halting of all $\widetilde U$-programs of length $\le N$. So we only need to encode the question “does $\Phi_e(e)$ halt?” as halting of one computable $\widetilde U$-program.
+
+Let $\widetilde M$ be the prefix-free machine defined by
+
+$$\widetilde M(0^e1)\downarrow \quad\Longleftrightarrow\quad \Phi_e(e)\downarrow.$$
+
+The set
+
+$$\lbrace 0^e1:e\in\mathbb N\rbrace$$
+
+is prefix-free: if $e<f$, then $0^e1$ and $0^f1$ first differ at the $(e+1)$-st symbol, where the first has $1$ and the second has $0$. Hence $\widetilde M$ is a prefix-free machine.
+
+By universality of $\widetilde U$, there is a fixed code $\rho$ such that
+
+$$\widetilde U(\rho,0^e1)\downarrow \quad\Longleftrightarrow\quad \widetilde M(0^e1)\downarrow \quad\Longleftrightarrow\quad \Phi_e(e)\downarrow.$$
+
+So, given $e$, compute the corresponding $\widetilde U$-program
+
+$$p_e:=\rho,0^e1.$$
+
+It remains to explain how $\Omega$ decides whether $p_e\in\operatorname{dom}\widetilde U$.
+
+Let $N=l(p_e)$. From the oracle $\Omega$, get a rational upper approximation $u$ with
+
+$$\Omega < u < \Omega+2^{-N}.$$
+
+Now dovetail all computations of $\widetilde U$, and let
+
+$$\omega_s = \sum_{\sigma\in\operatorname{dom}(\widetilde U[s])}2^{-l(\sigma)}$$
+
+be the finite halting weight seen by stage $s$. Wait until
+
+$$u-\omega_s<2^{-N}.$$
+
+This stage must eventually appear. If $p_e$ has halted by then, answer yes. If it has not halted, then it can never halt: otherwise its future contribution would be at least
+
+$$2^{-l(p_e)}=2^{-N},$$
+
+contradicting the fact that the remaining unseen halting weight is already $<2^{-N}$.
+
+Thus $\Omega$ decides whether $\Phi_e(e)\downarrow$. Therefore
+
+$$\emptyset'\le_T\Omega.$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -4089,7 +4176,7 @@ for all $w$.
 
 For $r \in (0,1)$, define the **watered-down halting probability**
 
-$$\Omega^r = \sum_{\sigma \in \operatorname{dom} U} 2^{-l(\sigma)/r}.$$
+$$\Omega^r = \sum_{\sigma \in \operatorname{dom} \widetilde U} 2^{-l(\sigma)/r}.$$
 
 Show that
 
@@ -4115,15 +4202,14 @@ Let $\alpha$ and $\beta$ be left-c.e. reals. Show that the following four condit
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Solution</summary>
 
 $\boxed{(i) \implies (ii)}$
 
-* For the increasing sequence of q rationals, approximating \beta from the left, we set b_n := q and preserve the same constant c. 
-* The function g(n) is a function that based on the rational q computes the value f(q) and given the sequence a_m waits for the index m such that a_m (is on the left from \alpha) approach sufficiently close to \alpha such that \alpha - a_m < c(\beta - b_n) and g(n) outputs m.
+> * For the increasing sequence of $q$ rationals, approximating $\beta$ from the left, we set $b_n := q$ and preserve the same constant $c$. 
+> * The function $g(n)$ is a function that based on the rational $q$ computes the value $f(q)$ and given the sequence $a_m$ waits for the index m such that $a_m$ (is on the left from $\alpha$) approach sufficiently close to $\alpha$ such that $\alpha - a_m < c(\beta - b_n)$ and $g(n)$ outputs $m$.
 
 Assessment:
-
 
 You cannot define $g(n)$ by waiting until
 
@@ -4145,71 +4231,139 @@ $$g(n)=\min\lbrace m:a_m>f(b_n)\rbrace.$$
 
 That fixes the proof.
 
----
-
 $\boxed{(i) \implies (iii)}$
 
-\alpha - f(b_{s-1}) \leq c(\beta - b_{s-1})
--
-\alpha - f(b_s) \leq c(\beta - b_s)
-= 
-f(b_s) - f(b_{s-1}) \leq c(b_s - b_{s-1})
+Assume (i), witnessed by $f$ and $c$. Fix an arbitrary left-c.e. approximation $(b_s)$ of $\beta$. Choose some $d>c$, say $d=2c$.
 
-Setting the approximating sequence b_n from the left as the rationals (from the original approximating we can get approximation by rationals, becase the set \mathbb{Q} is dense) and setting a_n = f(b_n).
+Let
 
-The main error of my previous solution is subtracting inequalities. From
+$$t_s:=f(b_s).$$
 
-\alpha-f(b_{s-1})\le c(\beta-b_{s-1})
+This is defined for every $s$, since $b_s<\beta$. We construct a left-c.e. approximation $(a_s)$ of $\alpha$ with controlled increments.
 
-and
+Set
 
-\alpha-f(b_s)\le c(\beta-b_s)
+$$a_0:=t_0.$$
 
-you cannot conclude
+Given $a_{s-1}$, define
 
-f(b_s)-f(b_{s-1})\le c(b_s-b_{s-1}).
+$$a_s := \min\Bigl( \max(a_{s-1},t_s), a_{s-1}+d(b_s-b_{s-1}) \Bigr).$$
 
-Also, (f) need not be monotone, so (a_s=f(b_s)) need not be increasing.
+Then $a_s\ge a_{s-1}$, $a_s<\alpha$, and
 
-The right repair is: first set
+$$a_s-a_{s-1}\le d(b_s-b_{s-1}).$$
 
-[
-A_s=\max_{t\le s}f(b_t),
-]
+It remains to show $a_s\to\alpha$. We prove the invariant
 
-so (A_s\nearrow\alpha), but then smooth the jumps by defining, for some (d>c),
+$$\alpha-a_s<d(\beta-b_s).$$
 
-[
-a_s=\min{A_s,\ a_{s-1}+d(b_s-b_{s-1})}.
-]
+For $s=0$,
+
+$$\alpha-a_0 = \alpha-f(b_0) < c(\beta-b_0) < d(\beta-b_0).$$
+
+Assume the invariant at stage $s-1$.
+
+If $a_s=\max(a_{s-1},t_s)$, then $a_s\ge t_s$, hence
+
+$$\alpha-a_s \le \alpha-t_s = \alpha-f(b_s) < c(\beta-b_s) < d(\beta-b_s).$$
+
+If instead
+
+$$a_s=a_{s-1}+d(b_s-b_{s-1}),$$
+
+then
+
+$$\alpha-a_s = \alpha-a_{s-1}-d(b_s-b_{s-1}) < d(\beta-b_{s-1})-d(b_s-b_{s-1}) = d(\beta-b_s).$$
+
+Thus the invariant holds for all $s$. Since $b_s\to\beta$, we get
+
+$$0\le \alpha-a_s<d(\beta-b_s)\to0.$$
+
+Therefore $a_s\to\alpha$, and the increment bound gives (iii).
+
+$\boxed{(ii) \implies (iv)}$
+
+**Note:** It seems to be trivial to just set the sequence $(a_n)\_{n\in\mathbb{N}}$ to $(a_g(n))\_{n\in\mathbb{N}}$ from (ii), but the catch is that the sequence $(a_g(n))\_{n\in\mathbb{N}}$ does not have to left approximation, specifically an increasing sequence.
+
+To fix this, we reorder the sequence (or taking the running maximum) $(a_g(n))\_{n\in\mathbb{N}}$ to make it $(a_g(n))\_{n\in\mathbb{N}}$ required for (iv). To do so, for the current $b_n$ we set the current $a_n$ as the maximum among $a_g(m)$ assigned for all previous previous $b_m < b_n$ and including myself $a_g(n)$. Doing so we obtain the monotone sequence approximating $\alpha$ from the left:
+
+$$a'_n = \max_{m \leq n} a_g(m)$$
 
 Then
 
-[
-a_s-a_{s-1}\le d(b_s-b_{s-1}),
-]
+$$\alpha - a'_n \leq \alpha - a_g(n) \leq c(\beta - b_n)$$
 
-and one proves (a_s\to\alpha) using
-
-[
-\alpha-a_s\le d(\beta-b_s).
-]
-
-So: first direction is basically right after replacing the noncomputable stopping condition; second direction needs a different argument.
-
-
-$\boxed{(ii) \implies (iv)}$
 $\boxed{(iv) \implies (i)}$
+
+For the given rational $q$ we start enumerating the pairs (a_n, b_n) from both approximating sequences from (iv). Once b_n \geq q, we set f(q) = a_n.
+
+\alpha - f(q) = \alpha - a_n < c(\beta - b_n) < c(\beta - q)
+
+**Note that made me struggle:** I thought that the approximating sequence from (iv) could be non-rational and we would have to find the rationals in the pairs of intervals. But in (iv), $(a_n)$ is a left-c.e. approximation of $\alpha$. By definition, that means $a_n\in\mathbb Q$ for every $n$, and $a_n\nearrow\alpha$.
+
 $\boxed{(iii) \implies (iv)}$
 
+> * The sequence b_n has a limit \beta implying the consecutive b_n - b_{n-1} shrinks to zero. 
+> * The consequtive distances a_n - a_{n-1} is bounded by b_n - b_{n-1} up to multiplicative constant, so it shirnks to and thus has a limit. 
+> * \alpha = \sum_{i}^\infty a_i - a_{i-1}
+> * \beta = \sum_{i}^\infty b_i - b_{i-1}
+> * \alpha - d\beta = \sum_{i}^\infty (a_i - db_i) - (a_{i-1} - db_{i-1})
+> * a_n = \sum_{i}^n a_i - a_{i-1}
+> * b_n = \sum_{i}^n b_i - b_{i-1}
+> * a_n - db_n = \sum_{i}^n (a_i - db_i) - (a_{i-1} - db_{i-1})
+> * From (iii) we know a_s - db_s \leq a_{s-1} - db_{s-1}, thus (a_i - db_i) - (a_{i-1} - db_{i-1}) \leq 0
+> * Then \alpha - d\beta = \sum_{i}^\infty (a_i - db_i) - (a_{i-1} - db_{i-1}) \leq \sum_{i}^n (a_i - db_i) - (a_{i-1} - db_{i-1}) = a_n - db_n
+> * Hence \alpha - a_n \leq d(\beta - b_n)
 
+Main issues:
 
+1. You do **not** need to prove that $(a_n)$ has a limit. In (iii), $(a_n)$ is already given as a left-c.e. approximation of $\alpha$, so $a_n\nearrow \alpha$.
 
+2. The identities
 
+   $$\alpha=\sum_i^\infty (a_i-a_{i-1}),\qquad \beta=\sum_i^\infty (b_i-b_{i-1})$$
 
+   are only true if $a_0=b_0=0$. Otherwise you need initial terms.
 
+3. The clean proof should use **tails**, not full sums.
 
+**So the main idea in your proof is right:** compare accumulated increments. But the sharp way is to compare the **remaining increments after stage (n)**:
 
+$$\text{tail of }a \le d\cdot \text{tail of }b.$$
+
+That gives exactly
+
+$$\alpha-a_n\le d(\beta-b_n).$$
+
+**Full proof:**
+
+Assume (iii). Thus for every left-c.e. approximation $(b_n)$ of $\beta$, there exist a constant $d$ and a left-c.e. approximation
+
+$$a_0<a_1<\cdots\to\alpha$$
+
+such that
+
+$$a_s-a_{s-1}\le d(b_s-b_{s-1})$$
+
+for all (s\ge 1).
+
+Fix such approximations ((a_n)) and ((b_n)). Since (a_n\nearrow\alpha), we have
+
+$$\alpha-a_n = \sum_{s=n+1}^{\infty}(a_s-a_{s-1}).$$
+
+Using the increment bound from (iii),
+
+$$\alpha-a_n = \sum_{s=n+1}^{\infty}(a_s-a_{s-1}) \le d\sum_{s=n+1}^{\infty}(b_s-b_{s-1}).$$
+
+Since (b_n\nearrow\beta), the last sum telescopes to
+
+$$\sum_{s=n+1}^{\infty}(b_s-b_{s-1}) = \beta-b_n.$$
+
+Therefore
+
+$$\alpha-a_n\le d(\beta-b_n).$$
+
+Hence $(a_n)$, $(b_n)$, and $d$ satisfy condition (iv).
 
 </details>
 </div>
@@ -4243,13 +4397,10 @@ $$K(\alpha \upharpoonright n) = K(\operatorname{bin}(n)) \pm O(1).$$
 <details markdown="1">
 <summary>Solution</summary>
 
-<!-- Solution:
-
-We know that a real \alpha is computable iff there is a computable sequence (a_i)\_{i\in\mathbb{N}} such that \lvert \alpha-a_i\rvert < 2^{-n} for all n\in\mathbb{N}.
-
-Give the number n\in\mathbb{N} and *given* (or computable in constant time by the *given* Turing machine) the approximating computable sequence (a_i)\_{i\in\mathbb{N}}, satisfying the property above, we obtain a_n, which has the same prefix as the real \alpha. So, K-complexity of the prefix alpha is reduced to the K-complexity of the number or index n\in\mathbb{N}. 
-
-**Note aside:** I guess that we assume that the approximation is given explicitly or implicitly via given Turing machine. Turing machine is given, because I suspect we would have to add the complexity of the Turing machine that computes the approximating sequence. -->
+> Solution:
+> We know that a real \alpha is computable iff there is a computable sequence (a_i)\_{i\in\mathbb{N}} such that \lvert \alpha-a_i\rvert < 2^{-n} for all n\in\mathbb{N}.
+> Give the number n\in\mathbb{N} and *given* (or computable in constant time by the *given* Turing machine) the approximating computable sequence (a_i)\_{i\in\mathbb{N}}, satisfying the property above, we obtain a_n, which has the same prefix as the real \alpha. So, K-complexity of the prefix alpha is reduced to the K-complexity of the number or index n\in\mathbb{N}. 
+> **Note aside:** I guess that we assume that the approximation is given explicitly or implicitly via given Turing machine. Turing machine is given, because I suspect we would have to add the complexity of the Turing machine that computes the approximating sequence.
 
 
 TODO: decide, why it is false.
@@ -4735,7 +4886,7 @@ A real $\alpha$ is Martin-Löf random iff
 
 $$\alpha \notin \bigcap_i U_i$$
 
-for every such test. Under the identification $[\![\sigma]\!] \leftrightarrow [0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$, this is exactly the Cantor-space definition transported to the unit interval.
+for every such test. Under the identification $[[\sigma]] \leftrightarrow [0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$, this is exactly the Cantor-space definition transported to the unit interval.
 
 <figure class="math-figure">
   <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px" aria-label="Martin-Lof tests on reals as shrinking open covers">
@@ -5182,6 +5333,8 @@ $$0 < \alpha - g(q) \downarrow < c(\beta - q)$$
 
 for every rational $q < \beta$.
 
+---
+
 Show that $\leq_S$ is a reflexive and transitive relation of $\mathbb{R}$.
 
 </div>
@@ -5190,8 +5343,44 @@ Show that $\leq_S$ is a reflexive and transitive relation of $\mathbb{R}$.
 <details markdown="1">
 <summary>Solution</summary>
 
+**Key idea.** Solovay reducibility is just a computable way of converting lower bounds for $\beta$ into comparably good lower bounds for $\alpha$.
+
+For reflexivity, take
+
+$$g(q)=q,\qquad c=2.$$
+
+If $q<\alpha$, then
+
+$$0<\alpha-g(q)=\alpha-q<2(\alpha-q),$$
+
+so $\alpha\le_S\alpha$.
+
+For transitivity, suppose
+
+$$\alpha\le_S\beta \quad\text{via }f,c,$$
+
+and
+
+$$\beta\le_S\gamma \quad\text{via }h,d.$$
+
+For every rational $q<\gamma$,
+
+$$h(q)<\beta \quad\text{and}\quad \beta-h(q)<d(\gamma-q).$$
+
+Therefore $f(h(q))\downarrow$, $f(h(q))<\alpha$, and
+
+$$\alpha-f(h(q)) <c(\beta-h(q)) <cd(\gamma-q).$$
+
+Thus $\alpha\le_S\gamma$, witnessed by $f\circ h$ and $cd$.
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is Solovay reducibility roughly about)</span></p>
+
+$$\boxed{\text{Solovay reducibility is just a computable way of converting lower bounds for $\beta$ into comparably good lower bounds for $\alpha$.}}$$
+
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5205,6 +5394,23 @@ Show that the left-c.e. reals are closed downward relative to $\leq_S$, i.e., if
 <details markdown="1">
 <summary>Solution</summary>
 
+Assume $\beta$ is left-c.e. and $\alpha\le_S\beta$, witnessed by $g,c$.
+
+Since $\beta$ is left-c.e., its left cut
+
+$$\lbrace q\in\mathbb Q:q<\beta\rbrace$$
+
+is c.e. Enumerate all such $q$, run $g(q)$, and enumerate the outputs $g(q)$.
+
+For every $q<\beta$,
+
+$$g(q)<\alpha,$$
+
+so all enumerated values are rational lower bounds for $\alpha$. Moreover, if $q\nearrow\beta$, then
+
+$$0<\alpha-g(q)<c(\beta-q)\to 0.$$
+
+Hence the enumerated lower bounds are cofinal below $\alpha$. Taking the running maximum gives a computable nondecreasing rational sequence converging to $\alpha$. Therefore $\alpha$ is left-c.e.
 
 </details>
 </div>
@@ -5222,8 +5428,83 @@ $$K(\alpha \upharpoonright n) \leq K(\beta \upharpoonright n) - O(1).$$
 <details markdown="1">
 <summary>Solution</summary>
 
+We show the usual form
+
+$$K(\alpha\upharpoonright n)\le K(\beta\upharpoonright n)+O(1),$$
+
+which is what the notation $K(\beta\upharpoonright n)-O(1)$ means here.
+
+Let $\alpha\le_S\beta$ via $g,c$. Choose a fixed integer $d$ so large that
+
+$$c2^{1-d}<1.$$
+
+Given $\beta\upharpoonright(n+d)$, compute a rational $q<\beta$ with
+
+$$\beta-q<2^{1-(n+d)}.$$
+
+Run $g(q)$. Then
+
+$$0<\alpha-g(q)<c2^{1-(n+d)}<2^{-n}.$$
+
+So $\alpha$ lies in an interval of length $<2^{-n}$ starting at the rational $g(q)$. This interval intersects only boundedly many dyadic intervals of length $2^{-n}$. Hence, from $\beta\upharpoonright(n+d)$ and one of finitely many extra indices, we can recover $\alpha\upharpoonright n$.
+
+Thus
+
+$$K(\alpha\upharpoonright n) \le K(\beta\upharpoonright(n+d))+O(1).$$
+
+Since $d$ is fixed,
+
+$$K(\beta\upharpoonright(n+d)) \le K(\beta\upharpoonright n)+O(1),$$
+
+by appending the next $d$ bits as constant-size extra information. Hence
+
+$$K(\alpha\upharpoonright n) \le K(\beta\upharpoonright n)+O(1).$$
 
 </details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>We do we actually read more than $n$ bits from prefix? Is it legal?</summary>
+
+You are right that we are reading more than $n$ bits of $\beta$. But the point is that $d$ is a **fixed constant**, depending only on the Solovay constant $c$, not on $n$. So we first get
+
+$$K(\alpha\upharpoonright n) \le K(\beta\upharpoonright(n+d))+O(1).$$
+
+Then, because $d$ is fixed,
+
+$$K(\beta\upharpoonright(n+d)) \le K(\beta\upharpoonright n)+O(1).$$
+
+Indeed, a program for $\beta\upharpoonright n$, plus the next $d$ bits written literally, gives $\beta\upharpoonright(n+d)$. Since $d$ is constant, those extra $d$ bits cost only $O(1)$.
+
+So the proof is not claiming that exactly $n$ bits of $\beta$ determine $n$ bits of $\alpha$. It claims:
+
+$$n+O(1)\text{ bits of }\beta \quad\text{determine}\quad n\text{ bits of }\alpha.$$
+
+In Kolmogorov complexity, a fixed finite loss in precision is invisible because it is absorbed into the $O(1)$ term.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Switching between Kolmogorov complexity and approximation)</span></p>
+
+The Solovay reduction is not directly a statement about descriptions; it is a statement about **precision transfer**. Namely, if $q<\beta$ is very close to $\beta$, then $g(q)<\alpha$ is comparably close to $\alpha$:
+
+$$\alpha-g(q) < c(\beta-q).$$
+
+Kolmogorov complexity enters because a finite prefix $\beta\upharpoonright n$ is itself a finite description of a rational approximation to $\beta$ with precision about $2^{-n}$. Therefore, a shortest program for $\beta\upharpoonright n$, together with the fixed Solovay reduction procedure, gives a program for $\alpha\upharpoonright n$, up to only constant overhead.
+
+So the inequality
+
+$$K(\alpha\upharpoonright n)\le K(\beta\upharpoonright n)+O(1)$$
+
+should be read as:
+
+$$\text{anything that describes }\beta\text{ to }n\text{ bits also describes }\alpha\text{ to }n\text{ bits,}$$
+
+because the Solovay reduction converts $n$-bit accuracy for $\beta$ into $n$-bit accuracy for $\alpha$, after paying only a fixed constant in precision and code length.
+
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5237,6 +5518,27 @@ Show that the computable reals are closed downwards in $\mathbb{R}$ relative to 
 <details markdown="1">
 <summary>Solution</summary>
 
+We use the following characterization of $\beta$ computability:
+
+>there exists a computable Cauchy sequence $(b\_n)\_{n\in\mathbb{N}}$ that converges *effectively*, i.e.
+>
+> $$\lvert \beta - b_n\rvert < 2^{-n} \qquad \text{for every } n.$$
+
+Let $b_n$ be a computable sequence such that $\lvert \beta - b_n \rvert \le 2^{-n}$. We shift each $b_n$ by $2^{-n}$ to the left, getting $b_n' := b_n - 2^{-n}$. Then $b_n'$ approximates $\beta$ from the left. Then
+
+$$0 \le \alpha - g(b_n') = \lvert \alpha - g(b_n') \rvert \le c(\beta - b_n') \le c2\cdot 2^{-n} = 2^{-n+1+\log_2(c)} \leq 2^{-n+k},$$
+
+where $k:= \left\lceil 1+\log_2(c) \right\rceil$. Then we reindex the sequence.
+
+$$a_n:=g!\left(b'_{n+k}\right).$$
+
+Then
+
+$$|\alpha-a_n| <2^{-(n+k)+k} =2^{-n}.$$
+
+Merely restricting to indices $n\ge k$ without reindexing would still leave the bound $2^{-n+k}$.
+
+Also, $a_n$ is computable: each $b'\_{n+k}<\beta$, so the partial computable function $g$ is guaranteed to halt on every such input.
 
 </details>
 </div>
@@ -5253,6 +5555,27 @@ Show that computable reals form the least Solovay degree on the set of left-c.e.
 <details markdown="1">
 <summary>Solution</summary>
 
+Let $(b_s)$ be a computable increasing rational sequence with $b_s\to\beta$, and let $(a_n)$ be a computable rational approximation to $\alpha$ satisfying
+
+$$|\alpha-a_n|<2^{-n}.$$
+
+For (q<\beta), search for the first $s$ with $b_s>q$. Then choose $n$ such that
+
+$$2^{1-n}<b_s-q,$$
+
+and define
+
+$$g(q):=a_n-2^{-n}.$$
+
+Since $q<\beta$, such an $s$ exists, so $g(q)\downarrow$. Moreover,
+
+$$0<\alpha-g(q) =\alpha-a_n+2^{-n} <2^{1-n} <b_s-q \le \beta-q.$$
+
+Thus $g$ witnesses
+
+$$\alpha\le_S\beta$$
+
+with constant $c=1$. 
 
 </details>
 </div>
@@ -5272,6 +5595,7 @@ for any left-c.e. real $\alpha$, including the computable ones.
 <details markdown="1">
 <summary>Solution</summary>
 
+TODO: have no idea
 
 </details>
 </div>
@@ -5607,7 +5931,7 @@ where $c$ is a computable real.
 
 Show that there exists a Turing machine $M$ such that, for every $\varepsilon > 0$, computes a bit $b \in \lbrace 0,1\rbrace$ such that
 
-$$\lambda(U \cap \llbracket b \rrbracket) \leq (1+\varepsilon)\frac{c}{2}.$$
+$$\lambda(U \cap [[b]]) \leq (1+\varepsilon)\frac{c}{2}.$$
 
 </div>
 
@@ -5794,4 +6118,375 @@ Show that the set of d.c.e. reals is closed downwards relative to $\leq^{2a}\_S$
 
 </details>
 </div>
+
+We now return to the main line of the section: the structure that Solovay reducibility imposes on the class of left-c.e. reals.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Randomness-test translation)</span></p>
+
+The proof of Proposition 7.3 is a *randomness-test translation*: a Martin-Löf test that $\beta$ fails is rewritten, interval by interval, through the Solovay reduction into a Martin-Löf test that $\alpha$ fails, with the Solovay constant $c = 2^N$ paying for the blow-up in measure. This translation mechanism is the reason why some authors (see e.g. Downey and Hirschfeldt, *Algorithmic Randomness and Complexity*, Springer, 2010) regard Solovay reducibility and its variants as a standard tool for measuring the *relative randomness* of reals.
+
+</div>
+
+Solovay reducibility is a reflexive and transitive relation (Sheet 6, Exercise 1(i) — carried out in the exercise *Properties of the Solovay reducibility on $\mathbb{R}$ (1)* above), so it induces a degree structure: call two reals *Solovay equivalent* if each is Solovay reducible to the other, and call the resulting equivalence classes **Solovay degrees**, partially ordered by $\le\_S$. Moreover, the set of left-c.e. reals is closed downwards relative to $\le\_S$ (Sheet 6, Exercise 1(ii) — the exercise *Properties of the Solovay reducibility on $\mathbb{R}$ (2)* above), so the $\le\_S$-degree structure on the left-c.e. reals is embedded in the $\le\_S$-degree structure on $\mathbb{R}$.
+
+In the remainder of the section we investigate the $\le\_S$-degree structure of the left-c.e. reals. The first observation is that Chaitin's $\Omega$ sits on top of it.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(7.4 — $\Omega$ is Solovay-above every left-c.e. real)</span></p>
+
+Every left-c.e. real is Solovay reducible to Chaitin's $\Omega$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $\alpha$ be a left-c.e. real. By Proposition 5.9(iii), there exists a prefix-free machine $\widetilde M$ whose halting probability is $\alpha$:
+
+$$\alpha = \sum_{\sigma \in \operatorname{dom}(\widetilde M)} 2^{-l(\sigma)}.$$
+
+Since $\widetilde M$ is prefix-free, the universal prefix-free machine simulates it in an *additively optimal* way: by the construction of Theorem 2.20, there is a self-delimiting machine code $i$ such that $\widetilde U(i\sigma) = \widetilde M(\sigma)$ for every word $\sigma$, and the input $i\sigma$ has length $e + l(\sigma)$, where $e := l(i)$ is a constant depending only on $\widetilde M$.
+
+**Two synchronized approximations.** Write $\widetilde U[s]$ for the finite part of $\operatorname{dom}(\widetilde U)$ enumerated after $s$ computation steps, and define, for all $s$,
+
+$$a_s := \sum_{\sigma \,:\, i\sigma \in \widetilde U[s]} 2^{-l(\sigma)}, \qquad\qquad w_s := \sum_{\tau \in \widetilde U[s]} 2^{-l(\tau)}.$$
+
+Both sequences are computable and nondecreasing; $(a\_s)\_{s \in \mathbb{N}}$ is a left-c.e. approximation of $\alpha$, and $(w\_s)\_{s \in \mathbb{N}}$ is the canonical left-c.e. approximation of $\Omega$.
+
+**Comparing the tails.** For every stage $s$,
+
+$$\alpha - a_s \;=\; \sum_{\substack{\sigma \,:\, i\sigma \in \operatorname{dom}(\widetilde U) \setminus \widetilde U[s]}} 2^{-l(\sigma)} \;=\; 2^{e} \sum_{\substack{\sigma \,:\, i\sigma \in \operatorname{dom}(\widetilde U) \setminus \widetilde U[s]}} 2^{-l(i\sigma)} \;\le\; 2^{e} \sum_{\tau \in \operatorname{dom}(\widetilde U) \setminus \widetilde U[s]} 2^{-l(\tau)} \;=\; 2^{e}\,(\Omega - w_s),$$
+
+where the inequality holds because every word $i\sigma$ counted in the middle sum is one of the words $\tau$ counted on the right. Since $\operatorname{dom}(\widetilde U)$ is infinite, we have $\Omega - w\_s > 0$ for every $s$, hence
+
+$$\alpha - a_s < 2^{e+1}(\Omega - w_s) \qquad \text{for all } s.$$
+
+By the speed-of-convergence characterization (iv) of Proposition 7.2, this synchronized pair of approximations witnesses $\alpha \le\_S \Omega$ with the constant $2^{e+1}$. $\square$
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="The halting-probability weights of alpha embedded into Omega, with the tails compared">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">The halting probability α, embedded program by program into Ω</text>
+
+      <!-- legend -->
+      <rect x="140" y="38" width="12" height="12" fill="#1d4ed8" />
+      <text x="158" y="48" font-size="11" fill="#5b6270">programs iσ — copies of M̃'s programs</text>
+      <rect x="410" y="38" width="12" height="12" fill="#5b6270" />
+      <text x="428" y="48" font-size="11" fill="#5b6270">other Ũ-programs</text>
+
+      <!-- Omega bar -->
+      <text x="76" y="104" text-anchor="end" font-size="14" font-weight="600" fill="#d65336">Ω</text>
+      <rect x="90" y="86" width="48" height="28" fill="#1d4ed8" />
+      <rect x="138" y="86" width="70" height="28" fill="#5b6270" />
+      <rect x="208" y="86" width="30" height="28" fill="#1d4ed8" />
+      <rect x="238" y="86" width="55" height="28" fill="#5b6270" />
+      <rect x="293" y="86" width="26" height="28" fill="#edf4ff" stroke="#1d4ed8" stroke-width="1" />
+      <rect x="319" y="86" width="88" height="28" fill="#eef0f4" stroke="#cbd2e0" stroke-width="1" />
+      <rect x="407" y="86" width="14" height="28" fill="#edf4ff" stroke="#1d4ed8" stroke-width="1" />
+      <rect x="421" y="86" width="219" height="28" fill="#eef0f4" stroke="#cbd2e0" stroke-width="1" />
+      <line x1="293" y1="78" x2="293" y2="122" stroke="#444" stroke-dasharray="4 3" />
+      <text x="191" y="78" text-anchor="middle" font-size="11" fill="#5b6270">wₛ (enumerated by stage s)</text>
+      <line x1="293" y1="118" x2="640" y2="118" stroke="#a86f00" stroke-width="4" opacity="0.35" />
+      <text x="466" y="134" text-anchor="middle" font-size="11" fill="#a86f00">Ω − wₛ</text>
+
+      <!-- connectors between corresponding blue segments -->
+      <g stroke="#cbd2e0" stroke-width="1.1">
+        <line x1="114" y1="114" x2="137" y2="210" />
+        <line x1="223" y1="114" x2="216" y2="210" />
+        <line x1="306" y1="114" x2="273" y2="210" />
+        <line x1="414" y1="114" x2="313" y2="210" />
+      </g>
+      <text x="173" y="172" text-anchor="middle" font-size="11" fill="#a86f00">weight ×2ᵉ</text>
+
+      <!-- alpha bar -->
+      <text x="76" y="228" text-anchor="end" font-size="14" font-weight="600" fill="#d65336">α</text>
+      <rect x="90" y="210" width="94" height="28" fill="#1d4ed8" />
+      <rect x="188" y="210" width="56" height="28" fill="#1d4ed8" />
+      <rect x="248" y="210" width="50" height="28" fill="#edf4ff" stroke="#1d4ed8" stroke-width="1" />
+      <rect x="300" y="210" width="26" height="28" fill="#edf4ff" stroke="#1d4ed8" stroke-width="1" />
+      <line x1="246" y1="202" x2="246" y2="246" stroke="#444" stroke-dasharray="4 3" />
+      <text x="345" y="228" font-size="11" fill="#5b6270">α = 2ᵉ · (total blue weight in Ω)</text>
+      <line x1="248" y1="242" x2="326" y2="242" stroke="#a86f00" stroke-width="4" opacity="0.35" />
+      <text x="167" y="258" text-anchor="middle" font-size="11" fill="#5b6270">aₛ (enumerated by stage s)</text>
+      <text x="287" y="258" text-anchor="middle" font-size="11" fill="#a86f00">α − aₛ</text>
+
+      <text x="350" y="300" text-anchor="middle" font-size="12.5" font-weight="600" fill="#a86f00">α − aₛ = 2ᵉ · (blue tail of Ω) ≤ 2ᵉ (Ω − wₛ)</text>
+    </g>
+  </svg>
+  <figcaption>Proposition 7.4 as a weight transfer. Every program $\sigma$ of the prefix-free machine $\widetilde M$ with $\alpha = \sum_\sigma 2^{-l(\sigma)}$ reappears inside $\operatorname{dom}(\widetilde U)$ as $i\sigma$, carrying $2^{-e}$ times its weight (blue); the universal machine also has programs of its own (gray). The $\alpha$-weight still missing at stage $s$ consists exactly of the blue $\Omega$-weight not yet enumerated, so $\alpha - a_s \le 2^e(\Omega - w_s)$: the tail of $\alpha$ is dominated by a constant multiple of the tail of $\Omega$, which is precisely a Solovay reduction.</figcaption>
+</figure>
+
+For a reflexive and transitive relation $\le$ on a set $X$, the **greatest $\le$-degree** on $X$, if it exists, consists of all elements $x \in X$ such that $y \le x$ for every $y \in X$. We now show that the greatest $\le\_S$-degree on the set of left-c.e. reals exists and contains exactly the Martin-Löf random left-c.e. reals.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(7.5 — Random left-c.e. reals are Solovay-complete)</span></p>
+
+For every two left-c.e. reals $\alpha$ and $\beta$ where $\beta$ is Martin-Löf random, it holds that $\alpha \le\_S \beta$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 6, Exercise 4 — the argument is developed step by step in the exercises *Kučera–Slaman theorem (1)–(3)* above.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(7.6 — Kučera–Slaman theorem, 2001)</span></p>
+
+On the set of left-c.e. reals, the Martin-Löf random left-c.e. reals form the greatest Solovay degree.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+A Martin-Löf random left-c.e. real exists: Chaitin's $\Omega$ is left-c.e. by Proposition 5.9 and Martin-Löf random by Theorem 6.2.
+
+By Proposition 7.5, every left-c.e. real is Solovay reducible to every Martin-Löf random left-c.e. real. Hence all Martin-Löf random left-c.e. reals lie in the greatest $\le\_S$-degree of the left-c.e. reals — which, in particular, therefore exists.
+
+Conversely, let $\gamma$ be a left-c.e. real lying in the greatest $\le\_S$-degree. Then in particular $\Omega \le\_S \gamma$, and since $\Omega$ is Martin-Löf random, Proposition 7.3 shows that $\gamma$ is Martin-Löf random as well.
+
+Thus the greatest Solovay degree on the left-c.e. reals consists exactly of the Martin-Löf random left-c.e. reals. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Randomness as an order-theoretic property)</span></p>
+
+On the left-c.e. reals, the Kučera–Slaman theorem turns Martin-Löf randomness into a purely order-theoretic property: a left-c.e. real is Martin-Löf random iff it lies $\le\_S$-above all left-c.e. reals, i.e. iff its lower cut is as hard to approximate as a left-c.e. lower cut can possibly be. In particular, all Martin-Löf random left-c.e. reals are Solovay equivalent to $\Omega$: from the point of view of $\le\_S$, there is only one "$\Omega$-like" degree.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="The Solovay degree structure of the left-c.e. reals with computable reals at the bottom and random reals at the top">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">Solovay degrees of the left-c.e. reals</text>
+      <text x="350" y="42" text-anchor="middle" font-size="11" fill="#5b6270">every left-c.e. real is ≤ₛ Ω (Prop 7.4); random left-c.e. reals are ≤ₛ-above all of them (Prop 7.5)</text>
+
+      <!-- greatest degree -->
+      <rect x="200" y="56" width="300" height="66" rx="8" fill="#fef2f2" stroke="#c62828" stroke-width="1.3" />
+      <text x="350" y="78" text-anchor="middle" font-weight="600" fill="#c62828">greatest Solovay degree (Thm 7.6)</text>
+      <text x="350" y="96" text-anchor="middle" font-size="11.5">Martin-Löf random left-c.e. reals</text>
+      <text x="350" y="112" text-anchor="middle" font-size="11" fill="#5b6270">Ω and everything Solovay-equivalent to it</text>
+
+      <!-- intermediate degrees -->
+      <rect x="235" y="176" width="230" height="54" rx="8" fill="#edf4ff" stroke="#1d4ed8" stroke-width="1.2" stroke-dasharray="5 4" />
+      <text x="350" y="197" text-anchor="middle" font-weight="600" fill="#1d4ed8">intermediate degrees</text>
+      <text x="350" y="214" text-anchor="middle" font-size="11" fill="#5b6270">noncomputable, nonrandom</text>
+
+      <!-- least degree -->
+      <rect x="200" y="286" width="300" height="56" rx="8" fill="#ecfdf5" stroke="#3d7a26" stroke-width="1.3" />
+      <text x="350" y="308" text-anchor="middle" font-weight="600" fill="#3d7a26">least Solovay degree</text>
+      <text x="350" y="326" text-anchor="middle" font-size="11.5">computable reals</text>
+
+      <!-- order arrows -->
+      <line x1="350" y1="286" x2="350" y2="236" stroke="#444" stroke-width="1.4" marker-end="url(#arrow-degs)" />
+      <line x1="350" y1="176" x2="350" y2="128" stroke="#444" stroke-width="1.4" marker-end="url(#arrow-degs)" />
+      <text x="362" y="262" font-size="12" fill="#444">≤ₛ</text>
+      <text x="362" y="154" font-size="12" fill="#444">≤ₛ</text>
+
+      <!-- side annotations -->
+      <line x1="560" y1="330" x2="560" y2="92" stroke="#a86f00" stroke-width="1.4" marker-end="url(#arrow-degs-amber)" />
+      <text x="578" y="190" font-size="11" fill="#a86f00">randomness</text>
+      <text x="578" y="206" font-size="11" fill="#a86f00">travels upward</text>
+      <text x="578" y="222" font-size="11" fill="#a86f00">(Prop 7.3)</text>
+
+      <line x1="140" y1="92" x2="140" y2="330" stroke="#5b6270" stroke-width="1.4" marker-end="url(#arrow-degs-gray)" />
+      <text x="122" y="190" text-anchor="end" font-size="11" fill="#5b6270">left-c.e. reals are</text>
+      <text x="122" y="206" text-anchor="end" font-size="11" fill="#5b6270">closed downwards</text>
+      <text x="122" y="222" text-anchor="end" font-size="11" fill="#5b6270">(Sheet 6, Ex. 1)</text>
+
+      <defs>
+        <marker id="arrow-degs" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#444" />
+        </marker>
+        <marker id="arrow-degs-amber" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#a86f00" />
+        </marker>
+        <marker id="arrow-degs-gray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#5b6270" />
+        </marker>
+      </defs>
+    </g>
+  </svg>
+  <figcaption>The Solovay degrees of the left-c.e. reals. The computable reals form the least degree, and by the Kučera–Slaman theorem the Martin-Löf random left-c.e. reals form the greatest one — the degree of $\Omega$. Proposition 7.3 gives the vertical direction its meaning: Martin-Löf randomness can only spread upward along $\le_S$, so the random reals sit exactly at the top of the order.</figcaption>
+</figure>
+
+## Relative Randomness and Relative Complexity
+
+This section explains some close connections between Solovay reducibility and the relative complexity of reals. Solovay reducibility compares two reals by how well rational lower bounds for one can be converted into rational lower bounds for the other. Kolmogorov complexity suggests a different, prefix-by-prefix comparison: $\alpha$ should count as "no more random" than $\beta$ if the initial segments of $\alpha$ are no harder to describe than those of $\beta$. The next two definitions make the second idea precise, and the theorem that follows shows how closely the two comparisons are aligned.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(8.1 — Kolmogorov reducibility, strong Kolmogorov reducibility)</span></p>
+
+A real $\alpha$ is **Kolmogorov reducible** to a real $\beta$, written $\alpha \le\_K \beta$, if
+
+$$K(\alpha \upharpoonright n) \le K(\beta \upharpoonright n) + O(1).$$
+
+A real $\alpha$ is **strongly Kolmogorov reducible** to a real $\beta$, written $\alpha \ll\_K \beta$, if
+
+$$K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \xrightarrow[n \to \infty]{} \infty.$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(8.2 — Strong Solovay reducibility)</span></p>
+
+A real $\alpha$ is **strongly Solovay reducible** to a real $\beta$, written $\alpha \ll\_S \beta$, if $\alpha \le\_S \beta$ via a function $g$ that fulfills
+
+$$\lim_{q \nearrow \beta} \frac{\alpha - g(q)}{\beta - q} = 0.$$
+
+</div>
+
+Both definitions strengthen a bounded comparison into a vanishing one. Ordinary Solovay reducibility requires the gap ratio $(\alpha - g(q))/(\beta - q)$ to stay bounded by the constant $c$ from Definition 7.1; strong Solovay reducibility requires that it vanish as the lower bounds $q$ approach $\beta$. Similarly, $\alpha \ll\_K \beta$ strengthens $\alpha \le\_K \beta$: not only do the prefixes of $\alpha$ stay describable within a constant of those of $\beta$, but the complexity gap between them grows without bound.
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="Bounded gap ratio for Solovay reducibility versus vanishing gap ratio for strong Solovay reducibility">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">The gap ratio (α − g(q)) / (β − q) as q approaches β</text>
+
+      <!-- panel frames -->
+      <g fill="none" stroke="#cbd2e0" stroke-width="1.1">
+        <rect x="45" y="44" width="285" height="200" rx="6" />
+        <rect x="375" y="44" width="285" height="200" rx="6" />
+      </g>
+
+      <!-- left panel: bounded ratio -->
+      <text x="187" y="62" text-anchor="middle" font-weight="600" font-size="12" fill="#5b6270">α ≤ₛ β: ratio bounded by c</text>
+      <text x="76" y="78" font-size="10.5" fill="#5b6270">gap ratio</text>
+      <line x1="70" y1="80" x2="70" y2="228" stroke="#444" />
+      <line x1="70" y1="228" x2="318" y2="228" stroke="#444" marker-end="url(#arrow-ratio)" />
+      <line x1="305" y1="223" x2="305" y2="233" stroke="#d65336" stroke-width="1.5" />
+      <text x="305" y="248" text-anchor="middle" font-size="11" fill="#d65336">β</text>
+      <text x="200" y="246" text-anchor="middle" font-size="11" fill="#5b6270">q ↗</text>
+      <line x1="70" y1="110" x2="318" y2="110" stroke="#a86f00" stroke-dasharray="5 4" />
+      <text x="62" y="114" text-anchor="end" font-size="11" fill="#a86f00">c</text>
+      <path d="M72 200 C95 150 115 215 140 180 C160 152 175 212 195 190 C215 165 235 205 255 145 C270 128 285 200 302 170" fill="none" stroke="#1d4ed8" stroke-width="2" />
+
+      <!-- right panel: vanishing ratio -->
+      <text x="517" y="62" text-anchor="middle" font-weight="600" font-size="12" fill="#5b6270">α ≪ₛ β: ratio vanishes</text>
+      <text x="406" y="78" font-size="10.5" fill="#5b6270">gap ratio</text>
+      <line x1="400" y1="80" x2="400" y2="228" stroke="#444" />
+      <line x1="400" y1="228" x2="648" y2="228" stroke="#444" marker-end="url(#arrow-ratio)" />
+      <line x1="635" y1="223" x2="635" y2="233" stroke="#d65336" stroke-width="1.5" />
+      <text x="635" y="248" text-anchor="middle" font-size="11" fill="#d65336">β</text>
+      <text x="530" y="246" text-anchor="middle" font-size="11" fill="#5b6270">q ↗</text>
+      <path d="M402 120 C425 85 445 175 470 140 C495 108 510 195 535 185 C560 172 585 215 610 212 C622 210 630 220 632 222" fill="none" stroke="#1d4ed8" stroke-width="2" />
+      <text x="612" y="190" text-anchor="middle" font-size="11" fill="#a86f00">→ 0</text>
+
+      <defs>
+        <marker id="arrow-ratio" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 Z" fill="#444" />
+        </marker>
+      </defs>
+    </g>
+  </svg>
+  <figcaption>Ordinary versus strong Solovay reducibility. In both cases the computable map $g$ turns rational lower bounds $q < \beta$ into rational lower bounds $g(q) < \alpha$; the difference lies in the behaviour of the gap ratio $(\alpha - g(q))/(\beta - q)$. For $\alpha \le_S \beta$ (Definition 7.1) the ratio merely stays below a fixed constant $c$, however good the lower bound $q$ becomes; for $\alpha \ll_S \beta$ (Definition 8.2) it must vanish as $q \nearrow \beta$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(8.3 — Solovay reducibility sits between the complexity reducibilities)</span></p>
+
+For every two reals $\alpha$ and $\beta$, the following implications hold:
+
+$$\alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
+
+On the set of left-c.e. reals, the following implication also holds:
+
+$$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**$\ll\_S$ implies $\le\_S$.** Immediate from Definition 8.2: a function $g$ witnessing $\alpha \ll\_S \beta$ witnesses $\alpha \le\_S \beta$ in particular.
+
+**$\le\_S$ implies $\le\_K$.** First we dispose of a degenerate case. If $\beta$ is dyadic, then $\beta$ is computable, hence so is $\alpha$ (see the exercise *Solovay reducibility and computable reals (1)* above); then $K(\mathrm{bin}(n)) \le K(\beta \upharpoonright n) + O(1)$ (the length $n$ is computable from the word $\beta \upharpoonright n$) and $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1)$ (the prefix of a computable real is computable from its length), so $\alpha \le\_K \beta$ holds outright. Hence assume that $\beta$ is not dyadic, so that $\beta \upharpoonright n < \beta$, i.e. $\beta \upharpoonright n \in L(\beta)$, for every $n$.
+
+Fix a natural number $N$ and a function $g$ on the rationals such that $\alpha \le\_S \beta$ via $g$ with the constant $c := 2^N$:
+
+$$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta.$$
+
+We define a Turing machine $\widetilde M$ that, given an input of the form $b\tau$ with a single advice bit $b \in \lbrace 0,1 \rbrace$, computes $w := \widetilde U(\tau)$ and $n := l(w)$, evaluates $g(w)$ (identifying the word $w$ with the dyadic rational $0.w$, as usual), and returns the word of length $n - N$ that represents the rational
+
+$$\big(\lfloor g(w) \cdot 2^{\,n-N} \rfloor + b\big) \cdot 2^{-(n-N)},$$
+
+that is, the truncation of $g(w)$ to $n - N$ binary places, shifted up by the advice bit. The machine $\widetilde M$ is prefix-free: if two inputs $b\tau$ and $b'\tau'$ in its domain were comparable, then $\tau$ and $\tau'$ would be comparable words in $\operatorname{dom}(\widetilde U)$, hence equal.
+
+Now fix $n$ and let $\tau$ be an optimal code of $\beta \upharpoonright n$, i.e. $\widetilde U(\tau) = \beta \upharpoonright n$ and $l(\tau) = K(\beta \upharpoonright n)$. Since $\beta \upharpoonright n \in L(\beta)$, the value $g(\beta \upharpoonright n)$ is defined, and taking $q = \beta \upharpoonright n$ in the displayed inequality, together with $\beta - \beta \upharpoonright n \le 2^{-n}$, gives
+
+$$0 < \alpha - g(\beta \upharpoonright n) < 2^N(\beta - \beta \upharpoonright n) \le 2^N 2^{-n} = 2^{-(n-N)}.$$
+
+Writing $m := n - N$ and $k := \lfloor g(\beta \upharpoonright n) \cdot 2^m \rfloor$, the real $\alpha$ therefore lies in the interval $(k 2^{-m}, (k+2) 2^{-m})$, so its prefix satisfies
+
+$$\alpha \upharpoonright m \in \lbrace k \cdot 2^{-m},\; (k+1) \cdot 2^{-m} \rbrace,$$
+
+and one advice bit $b$ decides which of the two candidates is correct. Hence $\widetilde M(b\tau) = \alpha \upharpoonright (n-N)$ for the right choice of $b$. Since $\widetilde M$ is prefix-free, $\widetilde U$ simulates it with constant overhead, so there exists a constant $C\_1$ such that
+
+$$K(\alpha \upharpoonright (n-N)) \le C_{\widetilde M}(\alpha \upharpoonright (n-N)) + c_{\widetilde M} \le \big(l(\tau) + 1\big) + c_{\widetilde M} = K(\beta \upharpoonright n) + C_1 \qquad \text{for all } n, \tag{30}$$
+
+where $c\_{\widetilde M}$ is the simulation constant of $\widetilde M$ and $C\_1 := c\_{\widetilde M} + 1$.
+
+Finally, $\alpha \upharpoonright n$ can be recovered from $\alpha \upharpoonright (n-N)$ together with the $N$ missing bits: a prefix-free machine first reads $N$ designated bits and then runs $\widetilde U$ on the rest — this is the prefix-free analogue of the last-bit stability from Proposition 2.12, iterated $N$ times. Since $N$ is a fixed constant, there exists a constant $C\_2$ such that
+
+$$K(\alpha \upharpoonright n) \le K(\alpha \upharpoonright (n-N)) + C_2 \qquad \text{for all } n. \tag{31}$$
+
+Together, (30) and (31) give $K(\alpha \upharpoonright n) \le K(\beta \upharpoonright n) + C\_1 + C\_2$ for all $n$, i.e. $\alpha \le\_K \beta$.
+
+**$\ll\_K$ implies $\ll\_S$ on the left-c.e. reals.** Let $\alpha$ and $\beta$ be left-c.e. reals that fulfill $K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to\_{n \to \infty} \infty$, and fix two left-c.e. approximations $(a\_n)\_{n \in \mathbb{N}}$ and $(b\_n)\_{n \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Replacing $a\_s$ by $a\_s - 2^{-s}$ and $b\_s$ by $b\_s - 2^{-s}$ if necessary, we may assume that both approximations are strictly increasing, so in particular $a\_s < \alpha$ and $b\_s < \beta$ for every $s$. To avoid trivial representation issues we also assume that $\alpha$ is not dyadic; for dyadic $\alpha$ the same argument runs with the non-terminating binary expansion of $\alpha$, whose prefixes have the same complexity as those of the terminating one up to an additive constant.
+
+We define a Turing machine $\widetilde M$ that, given a word $\sigma$, computes $n := l(\widetilde U(\sigma))$, then searches for the first index $s\_n$ (if it exists) such that
+
+$$a_{s_n} \upharpoonright n = \widetilde U(\sigma),$$
+
+and returns $b\_{s\_n} \upharpoonright n$. Then $\widetilde M$ is prefix-free since $\operatorname{dom}(\widetilde M) \subseteq \operatorname{dom}(\widetilde U)$, so $\widetilde U$ simulates it with constant overhead: there exists a constant $C$ such that
+
+$$K(w) \le C_{\widetilde M}(w) + C \qquad \text{for every word } w.$$
+
+For each $n$, let $\tau\_n$ be an optimal code of $\alpha \upharpoonright n$; that is, $\widetilde U(\tau\_n) = \alpha \upharpoonright n$ and $l(\tau\_n) = K(\alpha \upharpoonright n)$. Since $\alpha$ is not dyadic, we have $\alpha \upharpoonright n < \alpha < \alpha \upharpoonright n + 2^{-n}$, and since $a\_s \nearrow \alpha$, the index $s\_n$ exists; note also that $s\_n \le s\_{n+1}$ (agreement on $n+1$ bits implies agreement on $n$ bits) and $s\_n \to\_{n \to \infty} \infty$ (no single $a\_s < \alpha$ agrees with $\alpha$ on all prefixes). By construction, $\widetilde M(\tau\_n) \downarrow = b\_{s\_n} \upharpoonright n$, so
+
+$$K(b_{s_n} \upharpoonright n) \le C_{\widetilde M}(b_{s_n} \upharpoonright n) + C \le l(\tau_n) + C = K(\alpha \upharpoonright n) + C.$$
+
+Since $K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to\_{n \to \infty} \infty$, the latter inequality implies that
+
+$$K(\beta \upharpoonright n) - K(b_{s_n} \upharpoonright n) \xrightarrow[n \to \infty]{} \infty,$$
+
+which in turn implies that
+
+$$2^n(\beta - b_{s_n}) \xrightarrow[n \to \infty]{} \infty. \tag{32}$$
+
+Indeed, suppose that $2^n(\beta - b\_{s\_n}) \le k$ held for some fixed $k$ and infinitely many $n$. For each such $n$, the words $\beta \upharpoonright n$ and $b\_{s\_n} \upharpoonright n$, read as multiples of $2^{-n}$, differ by an integer $d$ with $0 \le d \le k+1$; a machine that reads a self-delimiting code for $d$ followed by an optimal code for $b\_{s\_n} \upharpoonright n$ computes $\beta \upharpoonright n$, so $K(\beta \upharpoonright n) \le K(b\_{s\_n} \upharpoonright n) + 2 l(\mathrm{bin}(k+1)) + O(1)$ along that infinite set — contradicting the divergence just established.
+
+**Constructing the witness $g$.** It remains to define a function $g$ witnessing $\alpha \ll\_S \beta$: given a rational $q$, the function $g$ searches for the first index $m$ such that $b\_m > q$ (which exists iff $q < \beta$) and returns $g(q) := a\_m$. Then, for every $q < \beta$, we obtain $g(q) \downarrow = a\_m < \alpha$, hence $\alpha - g(q) > 0$.
+
+Now fix $q < \beta$ close enough to $\beta$ that the corresponding first index $m$ with $b\_m > q$ satisfies $m \ge s\_0$ (only the limit $q \nearrow \beta$ matters, so this is no restriction), and (noncomputably) fix the index $n$ such that $s\_n \le m < s\_{n+1}$. Since both approximations are increasing:
+
+- $g(q) = a\_m \ge a\_{s\_n}$, and $a\_{s\_n} \upharpoonright n = \alpha \upharpoonright n$ gives $a\_{s\_n} \ge \alpha \upharpoonright n > \alpha - 2^{-n}$, hence $\alpha - g(q) \le \alpha - a\_{s\_n} \le 2^{-n}$;
+- $q < b\_m \le b\_{s\_{n+1}}$, hence $\beta - q > \beta - b\_{s\_{n+1}}$.
+
+Combining the two estimates,
+
+$$\frac{\alpha - g(q)}{\beta - q} \;\le\; \frac{\alpha - a_{s_n}}{\beta - b_{s_{n+1}}} \;\le\; \frac{2^{-n}}{\beta - b_{s_{n+1}}} \;=\; \frac{2}{2^{\,n+1}(\beta - b_{s_{n+1}})} \;\xrightarrow[n \to \infty]{}\; 0,$$
+
+where the convergence holds by (32). As $q \nearrow \beta$, the corresponding index $m$ tends to infinity, hence so does $n$; therefore the gap ratio tends to $0$. Finally, the ratio also stays bounded for $q$ bounded away from $\beta$ (for $q \le \beta - \delta$ we have $(\alpha - g(q))/(\beta - q) \le (\alpha - a\_0)/\delta$), so $g$ witnesses $\alpha \le\_S \beta$ and, with the vanishing limit, $\alpha \ll\_S \beta$. $\square$
+
+</details>
+</div>
+
+A weaker version of the last implication — that $\alpha \ll\_K \beta$ implies plain $\alpha \le\_S \beta$ on the left-c.e. reals — was the content of the exercise *Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals* above; the proof just given refines that construction so as to control the gap ratio in the limit. Taken together, Theorem 8.3 yields the following chain on the left-c.e. reals:
+
+$$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
 

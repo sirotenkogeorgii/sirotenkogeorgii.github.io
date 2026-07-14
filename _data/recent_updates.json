@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-07-14",
+   "added": false
+  },
+  {
    "title": "Metropolis-Hastings Algorithm",
    "url": "/subpages/monte-carlo-methods/mcmc/metropolis%E2%80%93hastings-algorithm/",
    "date": "2026-07-12",
@@ -41,12 +47,6 @@
    "url": "/subpages/books/sde_hd/problems/sheet04/",
    "date": "2026-07-10",
    "added": true
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-07-07",
-   "added": false
   },
   {
    "title": "Books",
