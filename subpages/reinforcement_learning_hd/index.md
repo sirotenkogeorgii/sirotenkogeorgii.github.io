@@ -101,7 +101,14 @@ tags:
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Multi-Armed Bandits)</span></p>
 
-In full reinforcement learning, an action simultaneously affects three things: the reward we receive now, the state we transition into, and — through that state — *what data we get to see in the future*. These three entanglements make the full problem hard. The multi-armed bandit is the setting obtained by deliberately stripping the last two entanglements away: there are no states to transition between and no delayed credit to assign. The only thing left is the interaction loop
+In full reinforcement learning, an action simultaneously affects three things: 
+1. the **reward** we receive now, 
+2. the **state** we transition into,
+3. and through that state — **what data we get to see in the future**. 
+These three entanglements make the full problem hard. The multi-armed bandit is the setting obtained by deliberately stripping the last two entanglements away: 
+* there are **no states to transition between**
+* there are **no delayed credit to assign**
+The only thing left is the interaction loop
 
 $$
 \text{choose action } A_t \;\longrightarrow\; \text{observe reward } R_t,
@@ -126,9 +133,9 @@ Reinforcement learning operates under evaluative feedback.
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why evaluative feedback forces exploration)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Evaluative feedback forces exploration)</span></p>
 
-**If you never try an action, you never observe its reward, so you never learn its value.**
+$$\boxed{\text{If you never try an action, you never observe its reward, so you never learn its value.}}$$
 
 Under evaluative feedback this is not a minor inconvenience — it is a hard wall. Unlike supervised learning, where a teacher can reveal the right label for an input the model has never actively chosen, an RL agent learns *only* about actions it samples. Exploration is therefore not optional: it is the only channel through which information about unused actions reaches the agent.
 
@@ -183,7 +190,12 @@ Every bandit algorithm is an answer to the question: *how do you balance trying 
 
 ### Sample Averages and $\varepsilon$-greedy
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Straightforward Value Estimator)</span></p>
+
 The most natural estimator of $q_\ast(a)$ is the empirical mean of the rewards observed from arm $a$.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sample-Average Action-Value Estimate)</span></p>
@@ -431,8 +443,10 @@ A constant step size makes recent rewards matter more than old ones.
 
 </div>
 
+[A bit on non-stationary processes](subpages/reinforcement_learning_hd/subpages/non-stationary-processes/index.md)
+
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Exponential Recency Weighting)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Exponential Recency Weighting)</span></p>
 
 Unrolling the constant step-size recursion from an initial estimate $Q_1$:
 
@@ -449,6 +463,259 @@ The coefficient of $R_i$ is $\alpha(1 - \alpha)^{n-i}$, which decays geometrical
 This is the mechanism that lets the estimate forget obsolete data and track the current value.
 
 </div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**By induction.**
+
+For $n=1$, we have
+
+$$Q_2 = (1-\alpha)Q_1 + \alpha R_1,$$
+
+which agrees with the claimed formula since
+
+$$(1-\alpha)^1 Q_1 + \sum_{i=1}^{1}\alpha(1-\alpha)^{1-i}R_i = (1-\alpha)Q_1 + \alpha R_1.$$
+
+Assume that the formula holds for some $n-1 \in \mathbb{N}$, i.e.
+
+$$Q_n = (1-\alpha)^{n-1}Q_1 + \sum_{i=1}^{n-1}\alpha(1-\alpha)^{n-1-i}R_i.$$
+
+Then
+
+$$
+\begin{aligned}
+Q_{n+1}
+&= (1-\alpha)Q_n + \alpha R_n \\
+&= (1-\alpha)\left((1-\alpha)^{n-1}Q_1
++ \sum_{i=1}^{n-1}\alpha(1-\alpha)^{n-1-i}R_i\right)
++ \alpha R_n \\
+&= (1-\alpha)^n Q_1
++ \sum_{i=1}^{n-1}\alpha(1-\alpha)^{n-i}R_i
++ \alpha R_n \\
+&= (1-\alpha)^n Q_1
++ \sum_{i=1}^{n}\alpha(1-\alpha)^{n-i}R_i.
+\end{aligned}
+$$
+
+Thus, the formula holds for all $n \in \mathbb{N}$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Normalization and Exponential Recency Weighting)</span></p>
+
+Verify that all weights
+
+$$(1-\alpha)^n, \qquad \alpha(1-\alpha)^{n-i}, \quad i=1,\ldots,n,$$
+
+in the expression above sum to $1$. Why is this called an **exponential recency-weighted average**?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+The weights in the expression from Task 1 are
+
+$$(1-\alpha)^n, \qquad \alpha(1-\alpha)^{n-i}, \quad i=1,\dots,n.$$
+
+Their sum is
+
+$$
+\begin{aligned}
+(1-\alpha)^n
++ \sum_{i=1}^{n}\alpha(1-\alpha)^{n-i}
+&= (1-\alpha)^n
++ \alpha \sum_{j=0}^{n-1}(1-\alpha)^j \\
+&= (1-\alpha)^n
++ \alpha \cdot \frac{1-(1-\alpha)^n}{1-(1-\alpha)} \\
+&= (1-\alpha)^n
++ 1 - (1-\alpha)^n \\
+&= 1.
+\end{aligned}
+$$
+
+Therefore, $Q_{n+1}$ is a weighted average of the initial value $Q_1$ and the rewards $R_1,\dots,R_n$.
+
+It is called an exponential recency-weighted average because the weight of reward $R_i$ is
+
+$$\alpha(1-\alpha)^{n-i}.$$
+
+More recent rewards have larger weights. For example, $R_n$ has weight $\alpha$, $R_{n-1}$ has weight $\alpha(1-\alpha)$, and older rewards are discounted by higher powers of $1-\alpha$. Thus, the influence of older rewards decays exponentially with time.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Sample Means as Uniform Memory)</span></p>
+
+Consider now the sample-mean rule
+
+$$\alpha_n=\frac1n, \qquad n\in\mathbb N.$$
+
+Show that the update
+
+$$Q_{n+1} = Q_n+\frac1n(R_n-Q_n), \qquad n\in\mathbb N,$$
+
+unrolls to
+
+$$Q_{n+1} = \frac1n\sum_{i=1}^n R_i$$
+
+for all $n\in\mathbb N$.
+
+What weight does each past reward receive? How does the initial value $Q_1$ enter the expression, and how does this compare to the initial-value bias $(1-\alpha)^nQ_1$ of the constant-$\alpha$ rule?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**By induction.**
+
+For $n=1$,
+
+$$Q_2 = Q_1 + (R_1 - Q_1) = R_1 = \frac{1}{1}\sum_{i=1}^{1}R_i.$$
+
+Hence the claim holds for $n=1$.
+
+Assume that for some $n-1 \in \mathbb{N}$,
+
+$$Q_n = \frac{1}{n-1}\sum_{i=1}^{n-1}R_i.$$
+
+Then
+
+$$
+\begin{aligned}
+Q_{n+1}
+&= \left(1-\frac{1}{n}\right)Q_n + \frac{1}{n}R_n \\
+&= \frac{n-1}{n}\cdot \frac{1}{n-1}\sum_{i=1}^{n-1}R_i
++ \frac{1}{n}R_n \\
+&= \frac{1}{n}\sum_{i=1}^{n-1}R_i + \frac{1}{n}R_n \\
+&= \frac{1}{n}\sum_{i=1}^{n}R_i.
+\end{aligned}
+$$
+
+Thus, the update unrolls to the sample average.
+
+In this case, each past reward $R_i$, $i=1,\dots,n$, receives the same weight $1/n$. The initial value $Q_1$ does not appear in the expression after the first update, because $\alpha_1=1$ gives $Q_2=R_1$. Therefore, the sample-mean rule has no persistent initial-value bias.
+
+This differs from the constant-$\alpha$ rule, where the initial value enters as
+
+$$(1-\alpha)^n Q_1.$$
+
+For $0<\alpha<1$, this term decays exponentially but does not become exactly zero after finitely many updates.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Decay of Initial-Value Bias: How Fast Optimistic Initialisation Is Forgotten)</span></p>
+
+Suppose $Q_1(a)=5$ for all arms in a $10$-armed testbed where
+
+$$q^\ast(a)\sim\mathcal N(0,1).$$
+
+Find the minimum number of pulls $n\in\mathbb N$ of the same arm such that the initial bias for the exponential-decay rule is smaller than $0.1$ for $\alpha=0.1$. Give an exact expression and a numerical value.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+For the constant-$\alpha$ update, from Task 1 we have
+
+$$Q_{n+1} = (1-\alpha)^n Q_1(a) + \sum_{i=1}^{n}\alpha(1-\alpha)^{n-i}R_i.$$
+
+Let $\beta = 1-\alpha$. Then
+
+$$Q_{n+1} = \beta^n Q_1(a) + \sum_{i=1}^{n}\alpha\beta^{n-i}R_i.$$
+
+For a fixed arm $a$, the rewards satisfy
+
+$$\mathbb{E}[R_i \mid q_\ast(a)] = q_\ast(a).$$
+
+Therefore,
+
+$$
+\begin{aligned}
+\mathbb{E}[Q_{n+1} \mid q_*(a)]
+&=
+\beta^n Q_1(a)
++
+\sum_{i=1}^{n}\alpha\beta^{n-i}\mathbb{E}[R_i \mid q_*(a)] \\
+&=
+\beta^n Q_1(a)
++
+q_*(a)\sum_{i=1}^{n}\alpha\beta^{n-i}.
+\end{aligned}
+$$
+
+Since
+
+$$\sum_{i=1}^{n}\alpha\beta^{n-i} = 1-\beta^n,$$
+
+we get
+
+$$\mathbb{E}[Q_{n+1} \mid q_*(a)] = \beta^n Q_1(a) + (1-\beta^n)q_*(a).$$
+
+Hence the conditional bias is
+
+$$
+\begin{aligned}
+\mathbb{E}[Q_{n+1} \mid q_*(a)] - q_*(a)
+&=
+\beta^n Q_1(a)
++
+(1-\beta^n)q_*(a)
+-
+q_\ast(a) \\
+&=
+\beta^n\bigl(Q_1(a)-q_\ast(a)\bigr).
+\end{aligned}
+$$
+
+Now we use the fact that
+
+$$q_\ast(a) \sim \mathcal{N}(0,1),$$
+
+so
+
+$$\mathbb{E}[q_\ast(a)] = 0.$$
+
+Taking expectation also over the random choice of $q_\ast(a)$ gives
+
+$$\mathbb{E}\left[\mathbb{E}[Q_{n+1} \mid q_\ast(a)] - q_\ast(a) \right] = \beta^n\left(Q_1(a)-\mathbb{E}[q_\ast(a)]\right).$$
+
+Since $Q_1(a)=5$ and $\mathbb{E}[q_\ast(a)]=0$, the expected initial bias is
+
+$$5\beta^n.$$
+
+For $\alpha=0.1$, we have $\beta=1-\alpha=0.9$. We want the smallest $n\in\mathbb{N}$ such that
+
+$$5(0.9)^n < 0.1.$$
+
+$$(0.9)^n < 0.02.$$
+
+$$n\log(0.9) < \log(0.02).$$
+
+$$n > \frac{\log(0.02)}{\log(0.9)}.$$
+
+$$n_{\min} = \left\lfloor \frac{\log(0.02)}{\log(0.9)} \right\rfloor + 1.$$
+
+$$\frac{\log(0.02)}{\log(0.9)} \approx 37.13,$$
+
+$$n_{\min}=38.$$
+
+</details>
+</div>
+
+TODO: add ar, var, attention, stochastic differential equation, alpha as a function (time-adaptive step-size), gd, kalman filter, kalman gain
 
 ### Optimism and Confidence Bounds
 
@@ -564,7 +831,8 @@ All three live between the extremes; they only differ in *how* they strike the b
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">New Paradigm</span><span class="math-callout__name">(From learning expecrted rewards (values) to learning action policy)</span></p>
 
-Every method above shares the same basic recipe: estimate $Q_t(a)$, then act nearly greedily on those estimates. Gradient bandits take a genuinely different route — they parameterize the **policy directly** and improve it by gradient ascent on expected reward. This is the first appearance in the course of the idea of **policy gradients**.
+* Every **method above** shares the same basic recipe: estimate $Q_t(a)$, then act nearly greedily on those estimates. 
+* **Gradient bandits** take a genuinely different route — they parameterize the **policy directly** and improve it by gradient ascent on expected reward. This is the first appearance in the course of the idea of **policy gradients**.
 
 </div>
 
@@ -578,7 +846,9 @@ $$
 $$
 
 * Larger $H_t(a) \Rightarrow$ larger $\pi_t(a)$, but every action keeps positive probability.
-* The policy is **shift-invariant**: adding the same constant to every $H_t(a)$ leaves $\pi_t$ unchanged. Only *relative* preferences matter.
+* The policy is **shift-invariant**: 
+  * adding the same constant to every $H_t(a)$ leaves $\pi_t$ unchanged. 
+  * only *relative* preferences matter.
 * We are no longer learning values directly — we are learning which actions to *prefer*.
 
 </div>
@@ -627,6 +897,15 @@ Increasing $H(c)$ raises $\pi(c)$ and — by the constraint $\sum_a \pi(a) = 1$ 
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Softmax Derivative</summary>
+
+TODO: rewrite from my paper notes.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(From the Exact Gradient to an Interpretable Form)</span></p>
 
@@ -638,7 +917,11 @@ $$
 \;=\; \sum_{x} q_*(x)\, \pi(x)\bigl(\mathbf{1}\lbrace x = a\rbrace - \pi(a)\bigr).
 $$
 
-Expanding and using $\sum_x \pi(x) = 1$ and $\sum_x \pi(x) q_\ast(x) = J(H)$ gives
+Expanding and using 
+* $\sum_x \pi(x) = 1$,
+* $\sum_x \pi(x) q_\ast(x) = J(H)$
+
+gives
 
 $$
 \frac{\partial J}{\partial H(a)}
@@ -661,6 +944,17 @@ $$
 
 This rewriting is useful precisely because it expresses the gradient as an expectation over actions the policy already samples — so we can estimate it from sampled data.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$$
+\frac{\partial J}{\partial H(a)}\;=\; \sum_{x} q_*(x)\, \pi(x)\bigl(\mathbf{1}\lbrace x = a\rbrace - \pi(a)\bigr) = \mathbb{E}_{A \sim \pi}\!\left[\, q_*(A)\bigl(\mathbf{1}\lbrace A = a\rbrace - \pi(a)\bigr)\,\right].
+$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -693,7 +987,8 @@ H_{t+1}(a) &= H_t(a) - \alpha\,(R_t - \bar R_t)\,\pi_t(a) \qquad \text{for } a \
 \end{aligned}
 $$
 
-If the reward is **above** the baseline, the chosen action's preference goes up and every other preference goes down; if it is **below**, the chosen action is pushed down and the others up.
+* If the reward is **above** the baseline, the chosen action's preference goes up and every other preference goes down.
+* If the reward is **below**, the chosen action is pushed down and the others up.
 
 </div>
 
@@ -705,7 +1000,62 @@ If the reward is **above** the baseline, the chosen action's preference goes up 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the baseline helps)</span></p>
 
-Subtracting $\bar R_t$ does **not** change the expected gradient direction — $\mathbb{E}\_{A \sim \pi}[(\mathbf{1}\lbrace A = a\rbrace - \pi(a))] = 0$, so any action-independent baseline cancels in expectation. What it *does* change is the variance of the stochastic estimate. By centering the rewards around a running average, the magnitude of the update stays comparable across problems with very different reward scales, and the learning curves become visibly smoother and faster — which is borne out by the experimental comparison of "with baseline" versus "without baseline" on the testbed.
+Subtracting $\bar R_t$ does **not** change the expected gradient direction — 
+
+$$\mathbb{E}\_{A \sim \pi}[(\mathbf{1}\lbrace A = a\rbrace - \pi(a))] = 0$$
+
+and we get
+
+$$
+\mathbb E\left[
+(R_t-\bar R_t)
+\left(\mathbf 1_{\{A_t=a\}}-\pi_t(a)\right)
+\right]
+=
+\mathbb E\left[
+R_t
+\left(\mathbf 1_{\{A_t=a\}}-\pi_t(a)\right)
+\right],
+$$
+
+so any action-independent baseline cancels in expectation. What it *does* change is the variance of the stochastic estimate. By centering the rewards around a running average, the magnitude of the update stays comparable across problems with very different reward scales, and the learning curves become visibly smoother and faster — which is borne out by the experimental comparison of "with baseline" versus "without baseline" on the testbed.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the gradient $\frac{\partial J}{\partial H(a)}$)</span></p>
+
+Yes, that is essentially correct.
+
+Because the policy is softmax, changing $H(a)$ changes **all** action probabilities:
+
+$$\frac{\partial \pi(x)}{\partial H(a)} = \pi(x)\bigl(\mathbf 1{x=a}-\pi(a)\bigr).$$
+
+So
+
+$$\frac{\partial J}{\partial H(a)} = \sum_x q_*(x)\frac{\partial \pi(x)}{\partial H(a)}$$
+
+adds together:
+
+$$\underbrace{q_*(a)\pi(a)(1-\pi(a))}_{\text{gain from increasing }\pi(a)} = \underbrace{\sum_{x\neq a}q_*(x)\pi(x)\pi(a)}_{\text{loss from decreasing other probabilities}}.$$
+
+This simplifies to
+
+$$\frac{\partial J}{\partial H(a)} = \pi(a)\bigl(q_*(a)-J(H)\bigr).$$
+
+Thus it is exactly a **net trade-off**:
+
+* increasing $H(a)$ shifts probability mass toward $a$;
+* that mass must be taken from the other actions;
+* the gradient measures whether this redistribution raises or lowers expected reward.
+
+The criterion is especially clean:
+
+$$q_*(a)>J(H) \quad\Longrightarrow\quad \frac{\partial J}{\partial H(a)}>0.$$
+
+So the preference of $a$ should increase precisely when $a$ is better than the current policy’s average action.
+
+One nuance: the gradient is with respect to the **preference $H(a)$**, not directly with respect to $\pi(a)$. The softmax coupling is what automatically accounts for how all other action probabilities react. 
 
 </div>
 
@@ -1085,9 +1435,7 @@ By convention $G_T = 0$: once the terminal state has been reached, no more rewar
 
 In a **continuing task** the interaction never terminates, and an undiscounted sum can diverge. We instead define the **discounted return**
 
-$$
-G_t \;\doteq\; R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \;=\; \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}, \qquad 0 \le \gamma < 1.
-$$
+$$G_t \;\doteq\; R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \;=\; \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}, \qquad 0 \le \gamma < 1.$$
 
 The discount factor $\gamma$ controls how much the agent cares about distant rewards: $\gamma$ near $0$ makes it short-sighted, $\gamma$ near $1$ makes it far-sighted.
 
@@ -1098,13 +1446,14 @@ The discount factor $\gamma$ controls how much the agent cares about distant rew
   <figcaption>How heavily a reward $k$ steps in the future contributes to today's return. Smaller $\gamma$ produces a short-sighted agent; $\gamma$ near $1$ produces a far-sighted one.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bounded rewards with discouning gamma guarantees finite returns)</span></p>
+
 If rewards are uniformly bounded by $\lvert R_{t+k} \rvert \le R_{\max}$ and $\gamma < 1$, then
 
-$$
-\lvert G_t \rvert \;\le\; \sum_{k=0}^{\infty} \gamma^k R_{\max} \;=\; \frac{R_{\max}}{1 - \gamma} \;<\; \infty.
-$$
+$$\lvert G_t \rvert \;\le\; \sum_{k=0}^{\infty} \gamma^k R_{\max} \;=\; \frac{R_{\max}}{1 - \gamma} \;<\; \infty.$$
 
-So the discounted return is *guaranteed* to be a well-defined finite random variable, and expectations of it are finite. This is the basic reason that the entire MDP machinery does not break on continuing tasks.
+So the discounted return is **guaranteed** to be a well-defined finite random variable, and expectations of it are finite. This is the basic reason that the entire MDP machinery does not break on continuing tasks.
 
 </div>
 
@@ -1400,6 +1749,160 @@ Doing the same for *every* state gives a linear system in $\lvert\mathcal{S}\rve
 
 </div>
 
+### Two States Deterministic MDP Example
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise Setting</span><span class="math-callout__name">(Value Function)</span></p>
+
+Consider a finite MDP with two non-terminal states 
+
+$$ \mathcal S=\lbrace s_1,s_2\rbrace$$
+
+and two actions 
+
+$$\mathcal A=\lbrace a_1,a_2\rbrace.$$
+
+Under the fixed policy $\pi$, each state has a single action: 
+
+$$\pi(a_1\mid s_1)=1, \qquad \pi(a_2\mid s_2)=1.$$
+
+The deterministic transition and reward structure is given by the following table:
+
+| State | Action | Next state $s'$ | Reward $r$ |
+|---|---|---|---|
+| $s_1$ | $a_1$ | $s_2$ | $+1$ |
+| $s_2$ | $a_2$ | $s_1$ | $0$ |
+
+Let $\gamma\in(0,1)$.
+
+</div>
+
+<div class="math-callout math-callout--exercise" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(From MDP Dynamics to Bellman Equations)</span></p>
+
+Write down the Bellman expectation equations for $v_\pi(s_1)$ and $v_\pi(s_2)$ by substituting the given dynamics directly into 
+
+$$ v_\pi(s) = \sum_{a\in\mathcal A} \pi(a\mid s) \sum_{s',r\in\mathcal S\times\lbrace 0,1\rbrace} p(s',r\mid s,a) \left(r+\gamma v_\pi(s')\right).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Key idea**
+
+Under the fixed deterministic policy, the process alternates forever:
+
+$$s_1 \xrightarrow{,r=1,} s_2 \xrightarrow{,r=0,} s_1 \xrightarrow{,r=1,} \cdots$$
+
+Thus each Bellman expectation equation contains only one nonzero transition term.
+
+From $s_1$, action $a_1$ is chosen with probability $1$, producing reward $1$ and next state $s_2$. Hence
+
+$$v_\pi(s_1)=1+\gamma v_\pi(s_2).$$
+
+From $s_2$, action $a_2$ is chosen with probability $1$, producing reward $0$ and next state $s_1$. Hence
+
+$$v_\pi(s_2)=\gamma v_\pi(s_1).$$
+
+Therefore,
+
+$$
+\boxed{
+\begin{aligned}
+v_\pi(s_1)&=1+\gamma v_\pi(s_2), \\
+v_\pi(s_2)&=\gamma v_\pi(s_1).
+\end{aligned}}
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--exercise" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Closing the Loop in a Two-State Cycle: Solving the Two-State Value System)</span></p>
+
+Solve the resulting $2\times2$ linear system in closed form to obtain $v_\pi(s_1)$ and $v_\pi(s_2)$ as functions of $\gamma$. Show all algebraic steps.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Substitute the second equation into the first:
+
+$$v_\pi(s_1) = 1+\gamma\bigl(\gamma v_\pi(s_1)\bigr) = 1+\gamma^2v_\pi(s_1).$$
+
+Therefore,
+
+$$(1-\gamma^2)v_\pi(s_1)=1.$$
+
+Since $\gamma\in(0,1)$, we have $1-\gamma^2>0$, and so
+
+$$\boxed{v_\pi(s_1)=\frac{1}{1-\gamma^2}}.$$
+
+Using $v_\pi(s_2)=\gamma v_\pi(s_1)$,
+
+$$\boxed{v_\pi(s_2)=\frac{\gamma}{1-\gamma^2}}.$$
+
+Equivalently,
+
+$$
+\boxed{
+\begin{aligned}
+v_\pi(s_1)&=\frac{1}{1-\gamma^2},\\
+v_\pi(s_2)&=\frac{\gamma}{1-\gamma^2}.
+\end{aligned}}
+$$
+
+Indeed, starting from $s_1$, the return is the geometric series
+
+$$1+\gamma^2+\gamma^4+\cdots = \frac{1}{1-\gamma^2}.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--exercise" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Discounting as a Regulator of Infinite-Horizon Value)</span></p>
+
+Interpret the limiting values $$ \lim_{\gamma\to0}v_\pi(s_1) \qquad\text{and}\qquad \lim_{\gamma\to1}v_\pi(s_1). $$ Why does $v_\pi(s_1)\to\infty$ as $\gamma\to1$? What does this say about the role of the discount factor in continuing tasks?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+As $\gamma\to0$,
+
+$$\boxed{\lim_{\gamma\to0}v_\pi(s_1)=1}.$$
+
+Only the immediate reward matters; all future rewards are suppressed.
+
+As $\gamma\to1$,
+
+$$\boxed{\lim_{\gamma\to1}v_\pi(s_1)=+\infty}.$$
+
+The process receives reward $1$ every two time steps forever. When $\gamma<1$, the geometric discount makes
+
+$$1+\gamma^2+\gamma^4+\cdots$$
+
+finite. As $\gamma\to1$, future rewards are discounted less and less, and this series approaches the undiscounted sum
+
+$$1+1+1+\cdots,$$
+
+which diverges.
+
+More precisely,
+
+$$v_\pi(s_1) = \frac{1}{(1-\gamma)(1+\gamma)} \sim \frac{1}{2(1-\gamma)} \qquad (\gamma\to1).$$
+
+Thus, in continuing tasks, the discount factor does two things: it determines how strongly future rewards matter and ensures that an infinite stream of bounded rewards has a finite total value.
+
+</details>
+</div>
+
 ### Optimal Policies and Optimal Values
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -1407,9 +1910,7 @@ Doing the same for *every* state gives a linear system in $\lvert\mathcal{S}\rve
 
 Compare policies **pointwise** by their state values:
 
-$$
-\pi \succeq \pi' \quad\Longleftrightarrow\quad v_\pi(s) \ge v_{\pi'}(s) \quad \forall s \in \mathcal{S}.
-$$
+$$\pi \succeq \pi' \quad\Longleftrightarrow\quad v_\pi(s) \ge v_{\pi'}(s) \quad \forall s \in \mathcal{S}.$$
 
 A policy $\pi^\ast$ is **optimal** if it dominates every other policy, $\pi^\ast \succeq \pi$ for all $\pi$. Equivalently, $\pi^\ast$ is at least as good as every other policy in every state simultaneously.
 
@@ -3504,7 +4005,11 @@ In one phrase: **TD learning is learning a prediction from another prediction.**
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The DP / MC / TD taxonomy)</span></p>
 
-All three methods estimate the *same object* — the value $v\_\pi(s) = \mathbb{E}\_\pi[\, G\_t \mid S\_t = s\,]$. They differ only in **how the expectation is approximated**.
+All three methods estimate the *same object* — the value 
+
+$$v\_\pi(s) = \mathbb{E}\_\pi[\, G\_t \mid S\_t = s\,].$$
+
+They differ only in **how the expectation is approximated**.
 
 | Method | Source of estimate | Backup type |
 | :----- | :----------------- | :---------- |
@@ -4025,7 +4530,7 @@ So far updates are **online**: each increment is applied immediately, so $V$ cha
 * freeze $V$;
 * walk through every transition $(S\_t, R\_{t+1}, S\_{t+1})$ in a fixed dataset $\mathcal{D}$, accumulating 
   
-  $$\Delta\_t = \alpha\,[\,\text{target}\_t - V(S\_t)\,]$$
+  $$\Delta_t = \alpha\,[\,\text{target}_t - V(S_t)\,]$$
 
 * apply the *summed* increment once, then repeat the sweep to convergence.
 
@@ -5067,6 +5572,7 @@ Loop for each episode:
      $$
      Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].
      $$
+     
    * Until $\tau = T - 1$.
 
 The guard `if $t < T$` stops *sampling* once the episode ends, while the loop keeps *issuing updates* until $\tau = T - 1$, so the last $n - 1$ visited pairs are still updated.
@@ -5137,17 +5643,19 @@ The product $\rho\_{t:h}$ has a clean interpretation, recalling the importance-s
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control variate for state values)</span></p>
 
-Write the $n$-step return recursively, $G^{\text{plain}}\_{t:h} = R\_{t+1} + \gamma\, G\_{t+1:h}$. A naive weighting multiplies the *whole* thing by $\rho\_t$ — but if $\rho\_t = 0$ the target collapses to **zero**, injecting variance (the estimate is yanked toward $0$ for no good reason). The fix folds in a **control variate**:
+Write the $n$-step return recursively, 
 
-$$
-G_{t:h} \;\doteq\; \rho_t\,\bigl(R_{t+1} + \gamma\, G_{t+1:h}\bigr) + (1 - \rho_t)\, V_{h-1}(S_t).
-$$
+$$G^{\text{plain}}_{t:h} = R_{t+1} + \gamma\, G_{t+1:h}.$$
+
+A naive weighting multiplies the *whole* thing by $\rho\_t$ — but if $\rho\_t = 0$ the target collapses to **zero**, injecting variance (the estimate is yanked toward $0$ for no good reason). The fix folds in a **control variate**:
+
+$$G_{t:h} \;\doteq\; \rho_t\,\bigl(R_{t+1} + \gamma\, G_{t+1:h}\bigr) + (1 - \rho_t)\, V_{h-1}(S_t).$$
 
 * If $\rho\_t = 0$, the target becomes $V\_{h-1}(S\_t)$ — the *current estimate* — so **no spurious change** is made.
 * Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$
   * because
 
-    $$\mathbb{E}\_b[\rho\_t \mid S\_t = s] = \sum\_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum\_a \pi(a\mid s) = 1.$$
+    $$\mathbb{E}_b[\rho_t \mid S_t = s] = \sum_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum_a \pi(a\mid s) = 1.$$
 
     So the control variate has **zero conditional expectation**: it **does not bias** the update — it only reduces variance.
 
@@ -5156,17 +5664,17 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Control variate for action values)</span></p>
 
-For action values we update the already-chosen pair $(S\_t, A\_t)$, so importance sampling starts at the *next* action. The naive form is $G^{\text{naive}}\_{t:h} \doteq R\_{t+1} + \gamma\, \rho\_{t+1}\, G\_{t+1:h}$. Rewriting the next return around its current estimate,
+For action values we update the already-chosen pair $(S\_t, A\_t)$, so importance sampling starts at the *next* action. The naive form is 
 
-$$
-G_{t+1:h} = Q_{h-1}(S_{t+1}, A_{t+1}) + \bigl(G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})\bigr),
-$$
+$$G^{\text{naive}}_{t:h} \doteq R_{t+1} + \gamma\, \rho_{t+1}\, G_{t+1:h}.$$
+
+Rewriting the next return around its current estimate,
+
+$$G_{t+1:h} = Q_{h-1}(S_{t+1}, A_{t+1}) + \bigl(G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})\bigr),$$
 
 we importance-sample **only the correction** and add back the target-policy expectation:
 
-$$
-G_{t:h} \;\doteq\; R_{t+1} + \gamma\Bigl(\, \bar V_{h-1}(S_{t+1}) + \rho_{t+1}\bigl[\, G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1}) \,\bigr] \Bigr),
-$$
+$$G_{t:h} \;\doteq\; R_{t+1} + \gamma\Bigl(\, \bar V_{h-1}(S_{t+1}) + \rho_{t+1}\bigl[\, G_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1}) \,\bigr] \Bigr),$$
 
 where 
 
@@ -5181,9 +5689,7 @@ This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
 
 The bracketed term
 
-$$
-G^{\text{cv}}_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})
-$$
+$$G^{\text{cv}}_{t+1:h} - Q_{h-1}(S_{t+1}, A_{t+1})$$
 
 is the **surprise** beyond the current estimate. The construction splits the return into a default and a correction:
 
@@ -5191,7 +5697,7 @@ is the **surprise** beyond the current estimate. The construction splits the ret
 * $\rho\_{t+1}[\cdots]$ corrects only the *sampled deviation* from the current action-value estimate.
 * If $\rho\_{t+1} = 0$, the target falls back to $\bar V\_{h-1}(S\_{t+1})$ — **not zero** — because 
   
-  $$\mathbb{E}\_b[\rho\_{t+1} Q\_{h-1}(S\_{t+1}, A\_{t+1}) \mid S\_{t+1}] = \bar V\_{h-1}(S\_{t+1}).$$
+  $$\mathbb{E}_b[\rho_{t+1} Q_{h-1}(S_{t+1}, A_{t+1}) \mid S_{t+1}] = \bar V_{h-1}(S_{t+1}).$$
 
 Subtracting $Q\_{h-1}$ is precisely what makes the importance-sampled piece a *zero-mean correction* on top of a low-variance baseline — the defining trick of a control variate.
 
@@ -5219,7 +5725,7 @@ Every row is the *same* skeleton — $n$ real rewards then a bootstrap — diffe
 * **A spectrum, not two camps.** $n$-step methods span a continuum from one-step TD ($n = 1$) to Monte Carlo ($n = \infty$); intermediate $n$ is usually best, and they remain TD methods throughout.
 * **The $n$-step return is the central object.** $n$ real rewards plus a bootstrap, 
   
-  $$G\_{t:t+n} = R\_{t+1} + \cdots + \gamma^{n-1}R\_{t+n} + \gamma^{n} V\_{t+n-1}(S\_{t+n});$$
+  $$G_{t:t+n} = R_{t+1} + \cdots + \gamma^{n-1}R_{t+n} + \gamma^{n} V_{t+n-1}(S_{t+n});$$
   
   the **error-reduction property** ($\gamma^{n}$ contraction) guarantees soundness for the whole family.
 
@@ -5460,9 +5966,11 @@ For each real step:
 1. Choose $A$ from current state $S$ by $\varepsilon$-greedy on $Q$.
 2. Execute $A$; observe reward $R$ and next state $S'$.
 3. **Direct RL update:**
+   
    $$
    Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max_{a} Q(S', a) - Q(S, A)\,\bigr].
    $$
+
 4. **Model learning:** store $\hat M(S, A) \leftarrow (R, S')$.
 5. **Planning — repeat $n$ times:**
    * sample a previously seen pair $(\tilde S, \tilde A)$;
@@ -5887,13 +6395,17 @@ For each trial:
 1. Start at an initial state $S$.
 2. Repeat until terminal:
    * choose a greedy action under the current model,
+     
      $$
      A \in \arg\max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
      $$
+
    * update the value with an expected backup,
+     
      $$
      V(S) \leftarrow \max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
      $$
+
    * move to the next state $S'$.
 
 Because it only ever backs up states reachable under greedy play, RTDP can solve goal-directed problems while leaving most of the state space untouched.
@@ -7085,7 +7597,7 @@ The key subtlety: width sets the **initial generalization speed**, but the **fin
 
 * a *single* tiling alone is exactly **state aggregation** (non-overlapping groups);
 * **multiple offset tilings** create overlapping receptive fields **without overhead**: a query state activates **exactly one tile per tiling**, so exactly $n$ features fire — sparse and binary;
-* the features are $O(\#\text{tilings})$ active per state, giving a cheap, fast update.
+* the features are $O(\sharp\text{tilings})$ active per state, giving a cheap, fast update.
 
 Because the active set is always $n$ tiles, the step size has a simple, interpretable form
 
@@ -7144,7 +7656,7 @@ where $n$ is the number of tilings: each update changes the prediction by about 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why tile coding beats a single coarse partition)</span></p>
 
-Fix the memory budget so the comparison is fair: $\#\text{weights} = \#\text{tilings} \times \#\text{tiles per tiling}$. On the 1000-state random walk:
+Fix the memory budget so the comparison is fair: $\sharp\text{weights} = \sharp\text{tilings} \times \sharp\text{tiles per tiling}$. On the 1000-state random walk:
 
 * **State aggregation:** $1$ tiling $\times\ 1000$ tiles $= 1000$ weights — a coarse staircase.
 * **Tile coding:** $50$ tilings $\times\ 20$ tiles $= 1000$ weights — far lower error.

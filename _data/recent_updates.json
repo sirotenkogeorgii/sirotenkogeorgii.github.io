@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Non-Stationary Processes and Recency-Weighted Estimation",
+   "url": "/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/",
+   "date": "2026-07-15",
+   "added": true
+  },
+  {
+   "title": "Reinforcement Learning (HD)",
+   "url": "/subpages/reinforcement_learning_hd/",
+   "date": "2026-07-15",
+   "added": false
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-07-14",
@@ -76,12 +88,6 @@
    "title": "Reinforcement Learning: An Overview",
    "url": "/subpages/books/reinforcement_learning_overview/",
    "date": "2026-07-05",
-   "added": false
-  },
-  {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-07-02",
    "added": false
   },
   {
@@ -171,12 +177,6 @@
   {
    "title": "Description Numbers",
    "url": "/subpages/computability-and-complexity/description-numbers/",
-   "date": "2026-06-16",
-   "added": false
-  },
-  {
-   "title": "Probabilistic Turing Machine",
-   "url": "/subpages/computability-and-complexity/probabilistic-turing-machine/",
    "date": "2026-06-16",
    "added": false
   }
