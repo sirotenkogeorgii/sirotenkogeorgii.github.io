@@ -434,25 +434,20 @@ What we want is **tracking** — an estimate that follows the moving target.
 
 For a non-stationary bandit we replace the shrinking step size $1/n$ by a **constant** $\alpha \in (0, 1]$:
 
-$$
-Q_{n+1} \;=\; Q_n + \alpha\,(R_n - Q_n)
-\;=\; (1 - \alpha)\, Q_n + \alpha\, R_n.
-$$
+$$Q_{n+1} \;=\; Q_n + \alpha\,(R_n - Q_n) \;=\; (1 - \alpha)\, Q_n + \alpha\, R_n.$$
 
 A constant step size makes recent rewards matter more than old ones.
 
 </div>
 
-[A bit on non-stationary processes](subpages/reinforcement_learning_hd/subpages/non-stationary-processes/index.md)
+[A bit on non-stationary processes](/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/)
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Exponential Recency Weighting)</span></p>
 
 Unrolling the constant step-size recursion from an initial estimate $Q_1$:
 
-$$
-Q_{n+1} \;=\; (1 - \alpha)^n Q_1 + \sum_{i=1}^n \alpha \,(1 - \alpha)^{n - i}\, R_i.
-$$
+$$Q_{n+1} \;=\; (1 - \alpha)^n Q_1 + \sum_{i=1}^n \alpha \,(1 - \alpha)^{n - i}\, R_i.$$
 
 The coefficient of $R_i$ is $\alpha(1 - \alpha)^{n-i}$, which decays geometrically in $n - i$ — the age of the reward.
 
@@ -1527,23 +1522,24 @@ Every algorithm in the rest of the course is a particular answer to "how do you 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(State-Value and Action-Value Functions)</span></p>
 
-Fix a policy $\pi$. The **state-value function** measures how good it is to *be in state $s$* and follow $\pi$ thereafter:
+Fix a policy $\pi$. 
 
-$$
-v_\pi(s) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s\,].
-$$
+* The **state-value function** measures how good it is to *be in state $s$* and follow $\pi$ thereafter:
 
-The **action-value function** (or Q-function) measures how good it is to *take action $a$ in state $s$* and follow $\pi$ thereafter:
+  $$v_\pi(s) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s\,].$$
 
-$$
-q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s,\, A_t = a\,].
-$$
+* The **action-value function** (or Q-function) measures how good it is to *take action $a$ in state $s$* and follow $\pi$ thereafter:
+
+  $$q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s,\, A_t = a\,].$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(State-value function is weighted Action-value function)</span></p>
 
 The two are related by averaging $q$ over actions chosen by the policy:
 
-$$
-v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).
-$$
+$$v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).$$
 
 </div>
 
@@ -1624,13 +1620,9 @@ Reading the formula left to right traces the three layers of the Bellman backup:
 
 </div>
 
-<figure>
-  <img src="{{ '/assets/images/notes/rl_hd/backup_v_pi.png' | relative_url }}" alt="Backup diagram for v_pi: state branches over actions weighted by policy, then over (s', r) pairs weighted by dynamics" loading="lazy">
-  <figcaption>Backup diagram for $v_\pi$. Open circles are states, filled circles are state-action pairs. Blue edges are weighted by the policy $\pi(a \mid s)$; green edges by the dynamics $p(s', r \mid s, a)$.</figcaption>
-</figure>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Bellman Expectation for $v_\pi$ — three lines)</span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Start from the definition and substitute the recursive identity for $G_t$:
 
@@ -1664,19 +1656,70 @@ $$
 
 Each of the three lines uses exactly one MDP ingredient: the **policy**, the **dynamics**, and the **Markov property**.
 
+</details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/backup_v_pi.png' | relative_url }}" alt="Backup diagram for v_pi: state branches over actions weighted by policy, then over (s', r) pairs weighted by dynamics" loading="lazy">
+  <figcaption>Backup diagram for $v_\pi$. Open circles are states, filled circles are state-action pairs. Blue edges are weighted by the policy $\pi(a \mid s)$; green edges by the dynamics $p(s', r \mid s, a)$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman Expectation Equation for $q_\pi$)</span></p>
 
 For every $(s, a)$,
 
-$$
-q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a) \Bigl[\, r + \gamma \sum_{a'} \pi(a' \mid s')\, q_\pi(s', a') \,\Bigr].
-$$
+$$q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a) \Bigl[\, r + \gamma \sum_{a'} \pi(a' \mid s')\, q_\pi(s', a') \,\Bigr].$$
 
 The order of operations is reversed compared to $v_\pi$: we first commit to taking action $a$ in state $s$, *then* let the environment draw $(s', r)$, *then* let $\pi$ control all subsequent actions.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$$
+\begin{aligned}
+q_\pi(s,a)
+&= \E_\pi\left[G_t\mid S_t=s,A_t=a\right] \\
+&= \E_\pi\left[R_{t+1}+\gamma G_{t+1}\mid S_t=s,A_t=a\right] \\
+&= \underbrace{\E_\pi\left[R_{t+1}\mid S_t=s,A_t=a\right]}_{(*)}
+   + \gamma\underbrace{\E_\pi\left[G_{t+1}\mid S_t=s,A_t=a\right]}_{(**)}.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(*)
+&= \sum_r p(r\mid s,a)r = \sum_{s',r} p(s',r\mid s,a)r.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+(**)
+&= \sum_{s',r} p(s',r\mid s,a)
+   \E_\pi\left[G_{t+1}\mid S_{t+1}=s',R_{t+1}=r,S_t=s,A_t=a\right] \\
+&= \sum_{s',r} p(s',r\mid s,a)
+   \sum_{a'} \pi(a'\mid s')
+   \E_\pi\left[G_{t+1}\mid S_{t+1}=s',A_{t+1}=a'\right] \\
+&= \sum_{s',r} p(s',r\mid s,a)
+   \sum_{a'} \pi(a'\mid s') q_\pi(s',a').
+\end{aligned}
+$$
+
+Therefore
+
+$$
+\begin{aligned}
+q_\pi(s,a)
+&= \sum_{s',r} p(s',r\mid s,a)
+\left[ r + \gamma \sum_{a'}\pi(a'\mid s')q_\pi(s',a')\right].
+\end{aligned}
+$$
+
+</details>
 </div>
 
 <figure>
@@ -1754,13 +1797,7 @@ Doing the same for *every* state gives a linear system in $\lvert\mathcal{S}\rve
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise Setting</span><span class="math-callout__name">(Value Function)</span></p>
 
-Consider a finite MDP with two non-terminal states 
-
-$$ \mathcal S=\lbrace s_1,s_2\rbrace$$
-
-and two actions 
-
-$$\mathcal A=\lbrace a_1,a_2\rbrace.$$
+Consider a finite MDP with two non-terminal states $\mathcal S=\lbrace s_1,s_2\rbrace$ and two actions $\mathcal A=\lbrace a_1,a_2\rbrace$.
 
 Under the fixed policy $\pi$, each state has a single action: 
 
@@ -1777,7 +1814,7 @@ Let $\gamma\in(0,1)$.
 
 </div>
 
-<div class="math-callout math-callout--exercise" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(From MDP Dynamics to Bellman Equations)</span></p>
 
 Write down the Bellman expectation equations for $v_\pi(s_1)$ and $v_\pi(s_2)$ by substituting the given dynamics directly into 
@@ -1819,7 +1856,7 @@ $$
 </details>
 </div>
 
-<div class="math-callout math-callout--exercise" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Closing the Loop in a Two-State Cycle: Solving the Two-State Value System)</span></p>
 
 Solve the resulting $2\times2$ linear system in closed form to obtain $v_\pi(s_1)$ and $v_\pi(s_2)$ as functions of $\gamma$. Show all algebraic steps.
@@ -1863,10 +1900,14 @@ $$1+\gamma^2+\gamma^4+\cdots = \frac{1}{1-\gamma^2}.$$
 </details>
 </div>
 
-<div class="math-callout math-callout--exercise" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Discounting as a Regulator of Infinite-Horizon Value)</span></p>
 
-Interpret the limiting values $$ \lim_{\gamma\to0}v_\pi(s_1) \qquad\text{and}\qquad \lim_{\gamma\to1}v_\pi(s_1). $$ Why does $v_\pi(s_1)\to\infty$ as $\gamma\to1$? What does this say about the role of the discount factor in continuing tasks?
+Interpret the limiting values 
+
+$$\lim_{\gamma\to0}v_\pi(s_1) \qquad\text{and}\qquad \lim_{\gamma\to1}v_\pi(s_1).$$ 
+
+Why does $v_\pi(s_1)\to\infty$ as $\gamma\to1$? What does this say about the role of the discount factor in continuing tasks?
 
 </div>
 
@@ -1932,21 +1973,20 @@ A few facts about optimality that are often glossed over:
 
 The **optimal state-value function** is the best $v_\pi(s)$ achievable over policies:
 
-$$
-v_*(s) \;\doteq\; \max_{\pi}\, v_\pi(s).
-$$
+$$v_*(s) \;\doteq\; \max_{\pi}\, v_\pi(s).$$
 
 The **optimal action-value function** is defined analogously:
 
-$$
-q_*(s, a) \;\doteq\; \max_{\pi}\, q_\pi(s, a).
-$$
+$$q_*(s, a) \;\doteq\; \max_{\pi}\, q_\pi(s, a).$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Optimal State-value function is maximal action-value function)</span></p>
 
 The two are related by maximising over actions:
 
-$$
-v_*(s) \;=\; \max_{a}\, q_*(s, a).
-$$
+$$v_*(s) \;=\; \max_{a}\, q_*(s, a).$$
 
 </div>
 
@@ -1970,9 +2010,7 @@ Compare with the Bellman *expectation* equation: the **expectation over actions 
 
 For every $(s, a)$,
 
-$$
-q_*(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\Bigl[\, r + \gamma\, \max_{a'}\, q_*(s', a')\,\Bigr].
-$$
+$$q_*(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\Bigl[\, r + \gamma\, \max_{a'}\, q_*(s', a')\,\Bigr].$$
 
 Take action $a$ once, then — after arriving in $s'$ — pick the best possible *next* action. This is exactly the equation behind value iteration and (later) Q-learning.
 
@@ -1995,22 +2033,107 @@ That single change is what turns *evaluation of a fixed policy* into *control*. 
   <figcaption>The two Bellman backups differ at exactly one layer: expectation averages over actions weighted by $\pi$ (left); optimality keeps only the best action and discards the others (right).</figcaption>
 </figure>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(An Average Cannot Exceed Its Best Component)</span></p>
+
+In this task, you will show that randomizing over actions at optimality is never beneficial; that is, there always exists an optimal policy that is **deterministic**.
+
+---
+
+**(a)** Let $\pi$ be any possibly stochastic policy. Using the identity
+
+$$v_\pi(s) = \sum_a \pi(a\mid s)q_\pi(s,a),$$
+
+show that 
+
+$$v_\pi(s) \le \max_{a\in\mathcal A(s)}q_\pi(s,a)$$
+
+for all $s\in\mathcal S$. When does equality hold, and what does this say about the form of the maximizing policy?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+For each fixed state $s$,
+
+$$v_\pi(s) =\sum_a\pi(a\mid s)q_\pi(s,a) \le \sum_a\pi(a\mid s)\max_{a'}q_\pi(s,a') =\max_{a'}q_\pi(s,a')\sum_a\pi(a\mid s) =\max_{a'}q_\pi(s,a').$$
+
+Equality holds if the policy assigns positive probability only to actions that maximize $q_\pi(s,a)$. Thus a maximizing policy may be deterministic: choose any action $a_s\in\arg\max_{a}q_\pi(s,a)$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Greedy Selection Recovers the Optimal Fixed Point)</span></p>
+
+**(b)** Now let $v^\ast$ and $q^\ast$ denote the optimal value functions, and define the greedy deterministic policy 
+
+$$\pi_d(s) \in \operatorname*{arg\,max}_a q^*(s,a).$$
+
+Show that 
+
+$$v_{\pi_d}(s)=v^*(s)$$
+
+for all $s\in\mathcal S$ by verifying that $v_{\pi_d}$ satisfies the Bellman optimality equation. 
+
+*Hint.* The Bellman optimality equation has a unique fixed point. Use this to conclude equality rather than merely an inequality.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+We show that $v_{\pi_d}=v^*$. Since $v^*(s)=\max_a q^*(s,a)$, and the way $\pi_d(s)$ is chosen, $v^*(s)=q^*(s,\pi_d(s))$. 
+
+Using the Bellman optimality equation for $q^*$,
+
+$$v^*(s) =q^*(s,\pi_d(s)) =\sum_{s',r}p(s',r\mid s,\pi_d(s)) \left[r+\gamma\max_{a'}q^*(s',a')\right] =\sum_{s',r}p(s',r\mid s,\pi_d(s)) \left[r+\gamma v^*(s')\right].$$
+
+This is exactly the Bellman expectation equation for the deterministic policy $\pi_d$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Why History-Dependent Mixing Adds No Value)</span></p>
+
+**(c)** Explain in one or two sentences why a stochastic mixture over actions at state $s$ can never exceed the optimal value $v^\ast(s)$, even if the mixture weights are chosen adaptively based on the full history.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+A stochastic mixture over actions at a state $s$ gives a weighted average of the action values $\sum_a\pi(a\mid s)q^*(s,a)$. A weighted average cannot exceed the largest value being averaged, so
+
+$$\sum_a\pi(a\mid s)q^*(s,a)\le \max_a q^*(s,a)=v^*(s).$$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Greedy Policies from Optimal Values)</span></p>
 
 Given the optimal state-value function $v_*$, define the **greedy policy** by
 
-$$
-\pi_{\text{greedy}}(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_*(s')\,\bigr].
-$$
+$$\pi_{\text{greedy}}(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_*(s')\,\bigr].$$
 
 Then **any policy greedy with respect to $v_\ast$ is optimal.** With $q_\ast$ the rule is even simpler — and no model is required:
 
-$$
-\pi^*(s) \;\in\; \arg\max_{a}\, q_*(s, a).
-$$
+$$\pi^*(s) \;\in\; \arg\max_{a}\, q_*(s, a).$$
 
-This is the punchline of MDP theory: once you can solve the Bellman optimality equations, optimal control reduces to a *one-step argmax* in every state.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Punchline of MDP theory)</span></p>
+
+This is the punchline of MDP theory: 
+
+$$\boxed{\text{Once you can solve the Bellman optimality equations, optimal control reduces to a one-step argmax in every state.}}$$
 
 </div>
 
@@ -2113,15 +2236,11 @@ The three primitives are **evaluation**, **improvement**, and **iteration**. The
 
 Given a policy $\pi$, compute its state-value function
 
-$$
-v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \qquad \text{for all } s \in \mathcal{S}.
-$$
+$$v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \qquad \text{for all } s \in \mathcal{S}.$$
 
 This is exactly the *prediction* problem from the previous lecture. The Bellman expectation equation supplies the recursive characterisation we need:
 
-$$
-v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
-$$
+$$v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].$$
 
 There is **one equation per state** in the unknowns $\lbrace v_\pi(s) \rbrace_{s \in \mathcal{S}}$.
 
@@ -2146,9 +2265,7 @@ Both viewpoints give the *same* answer; they differ only in computational strate
 
 Initialise $v_0(s)$ arbitrarily for all $s \in \mathcal{S}$ (and $v(\text{terminal}) = 0$). Then repeatedly apply the **Bellman expectation update**:
 
-$$
-v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
-$$
+$$v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].$$
 
 For discounted finite MDPs with $\gamma < 1$, the sequence $\lbrace v_k \rbrace$ converges to the true value $v_\pi$ as $k \to \infty$.
 
@@ -2159,8 +2276,8 @@ For discounted finite MDPs with $\gamma < 1$, the sequence $\lbrace v_k \rbrace$
 
 Each update uses an **expectation over all possible successor states and rewards**, weighted by the known dynamics. This is what DP terminology calls an *expected update* — in contrast to:
 
-* a **sample update**, used by Monte Carlo and TD, which replaces the sum $\sum_{s', r} p(s', r \mid s, a) \cdot$ by a single sampled transition,
-* a **max update**, used by value iteration, which replaces $\sum_a \pi(a \mid s) \cdot$ by $\max_a$.
+* a **sample update**, used by Monte Carlo and TD, which replaces the sum $\sum_{s', r} p(s', r \mid s, a)$ by a single sampled transition,
+* a **max update**, used by value iteration, which replaces $\sum_a \pi(a \mid s)$ by $\max_a$.
 
 The two key features of an expected update are **bootstrapping** (using the current estimate $v_k(s')$ in place of the true $v_\pi(s')$) and **full backups** (averaging over the entire next-state distribution).
 
@@ -2198,38 +2315,77 @@ Repeat:
 
 until $\Delta < \theta$ for a small tolerance $\theta > 0$.
 
-**Why a tolerance stop works.** The Bellman operator is a $\gamma$-contraction on $\mathbb{R}^{\lvert \mathcal{S}\rvert}$ in the max-norm (proved later), so a sweep with maximum change $\Delta$ guarantees $\lVert V - v_\pi \rVert_\infty \le \Delta / (1 - \gamma)$. Stopping at $\Delta < \theta$ thus controls the worst-case error.
+**Why a tolerance stop works.** The Bellman operator is a $\gamma$-contraction on $\mathbb{R}^{\lvert \mathcal{S}\rvert}$ in the max-norm (proved later), so a sweep with maximum change $\Delta$ guarantees 
+
+$$\lVert V - v_\pi \rVert_\infty \le \Delta / (1 - \gamma).$$
+
+Stopping at $\Delta < \theta$ thus controls the worst-case error.
 
 </div>
 
 #### Policy Evaluation as a Linear System
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Form of Policy Evaluation)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Vector Form of Policy Evaluation)</span></p>
 
 Order the $n = \lvert \mathcal{S} \rvert$ states and stack the value function into a vector $v \in \mathbb{R}^n$. Define:
 
 * **Expected one-step reward under $\pi$:**
 
-  $$
-  r_\pi(s_i) \;=\; \sum_{a} \pi(a \mid s_i) \sum_{s', r} p(s', r \mid s_i, a)\, r,
-  $$
+  $$r_\pi(s_i) \;=\; \sum_{a} \pi(a \mid s_i) \sum_{s', r} p(s', r \mid s_i, a)\, r,$$
 
   stacked into a vector $r_\pi \in \mathbb{R}^n$.
 * **Policy-induced transition matrix:**
 
-  $$
-  (P_\pi)_{ij} \;=\; \sum_{a} \pi(a \mid s_i)\, P(s_j \mid s_i, a),
-  $$
+  $$(P_\pi)_{ij} \;=\; \sum_{a} \pi(a \mid s_i)\, P(s_j \mid s_i, a),$$
 
   the probability of moving from $s_i$ to $s_j$ in one step under $\pi$.
 
 The Bellman expectation equation for $\pi$ then collapses to the linear identity
 
+$$v_\pi \;=\; r_\pi + \gamma\, P_\pi v_\pi.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Using the identity $v_\pi(s)=\sum_a \pi(a\mid s)q_\pi(s,a)$ and substituting the result of Task 1 gives
+
 $$
-v_\pi \;=\; r_\pi + \gamma\, P_\pi v_\pi.
+\begin{aligned}
+v_\pi(s)
+&= \sum_a \pi(a\mid s)q_\pi(s,a) \\
+&= \sum_a \pi(a\mid s)
+\sum_{s',r}p(s',r\mid s,a)
+\left[ r+\gamma\sum_{a'}\pi(a'\mid s')q_\pi(s',a')\right] \\
+&= \underbrace{\sum_a \pi(a\mid s)\sum_{s',r}r\,p(s',r\mid s,a)}_{(*)}
++ \gamma
+\underbrace{\sum_a \pi(a\mid s)\sum_{s',r}p(s',r\mid s,a)
+\sum_{a'}\pi(a'\mid s')q_\pi(s',a')}_{(**)}.
+\end{aligned}
 $$
 
+The first term is the policy-induced reward by definition:
+
+$$(*)=(r_\pi)_s.$$
+
+For the second term:
+
+$$
+\begin{aligned}
+(**)
+&= \sum_a \pi(a\mid s)\sum_{s'}p(s'\mid s,a)v_\pi(s') = \sum_{s'}\left(\sum_a\pi(a\mid s)p(s'\mid s,a)\right)v_\pi(s') \\
+&= \sum_{s'}(P_\pi)_{s,s'}v_\pi(s') = (P_\pi v_\pi)_s.
+\end{aligned}
+$$
+
+Thus, $v_\pi(s)=(r_\pi)_s+\gamma(P_\pi v_\pi)_s$ or wirtten in vectorized form $v_\pi = r_\pi + \gamma P_\pi v_\pi$.
+
+Then we get $v_\pi=(I-\gamma P_\pi)^{-1}r_\pi$, if $I-\gamma P_\pi$ is invertible. Since $P_\pi$ is row-stochastic, every eigenvalue $\lambda$ of $P_\pi$ satisfies $\lvert\lambda\rvert\leq 1$. Therefore every eigenvalue of $I-\gamma P_\pi$ has the form $1-\gamma\lambda$. Since $\gamma\in[0,1)$ and $\lvert\lambda\rvert\leq 1$, we cannot have $1-\gamma\lambda=0$. Hence $0$ is not an eigenvalue of $I-\gamma P_\pi$, so $I-\gamma P_\pi$ is invertible.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2374,9 +2530,7 @@ Policy evaluation answers a passive question — **how good is $\pi$?** — and 
 
 Suppose we start in state $s$, take an action $a$ *once*, and then follow $\pi$ thereafter. The expected return of this one-step deviation is
 
-$$
-q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
-$$
+$$q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].$$
 
 $q_\pi(s, a)$ measures how good it is to take $a$ now and behave according to $\pi$ afterwards. Compared with following $\pi$ from the start, the only difference is the first action.
 
@@ -2399,15 +2553,11 @@ The seductive question is: if a *one-step* deviation helps, does **permanently**
 
 Let $\pi$ and $\pi'$ be any pair of deterministic policies. If for **every** state $s$,
 
-$$
-q_\pi(s, \pi'(s)) \;\ge\; v_\pi(s),
-$$
+$$q_\pi(s, \pi'(s)) \;\ge\; v_\pi(s),$$
 
 then $\pi'$ is at least as good as $\pi$ everywhere:
 
-$$
-v_{\pi'}(s) \;\ge\; v_\pi(s) \qquad \text{for all } s \in \mathcal{S}.
-$$
+$$v_{\pi'}(s) \;\ge\; v_\pi(s) \qquad \text{for all } s \in \mathcal{S}.$$
 
 If the first inequality is strict in some state, $\pi'$ is strictly better there.
 
@@ -2418,11 +2568,11 @@ If the first inequality is strict in some state, $\pi'$ is strictly better there
 
 Unroll the assumption $q_\pi(s, \pi'(s)) \ge v_\pi(s)$ by repeated substitution. Starting from $S_t = s$ and using $\pi'$ to choose the *first* action, then $\pi$ thereafter, then again $\pi'$ for the second action, and so on:
 
-$$
-\pi, \pi, \pi, \dots \;\xrightarrow{\text{1 swap}}\; \pi', \pi, \pi, \dots \;\xrightarrow{\text{2 swaps}}\; \pi', \pi', \pi, \dots \;\xrightarrow{\text{}\cdots\text{}}\; \pi', \pi', \pi', \dots
-$$
+$$\pi, \pi, \pi, \dots \;\xrightarrow{\text{1 swap}}\; \pi', \pi, \pi, \dots \;\xrightarrow{\text{2 swaps}}\; \pi', \pi', \pi, \dots \;\xrightarrow{\text{}\cdots\text{}}\; \pi', \pi', \pi', \dots$$
 
-Each swap can only *increase* the value (by assumption). In the limit of swapping every step, the trajectory follows $\pi'$ throughout, and the limit value is $v_{\pi'}(s)$. So $v_{\pi'}(s) \ge v_\pi(s)$.
+Each swap can only *increase* the value (by assumption). In the limit of swapping every step, the trajectory follows $\pi'$ throughout, and the limit value is $v_{\pi'}(s)$. So 
+
+$$v_{\pi'}(s) \ge v_\pi(s).$$
 
 The "for all $s$" assumption is essential: after the first action, the agent may land in *any* successor state, and we must be sure that using $\pi'$ from there is still safe.
 
@@ -2433,11 +2583,13 @@ The "for all $s$" assumption is essential: after the first action, the agent may
 
 Given the value function $v_\pi$, define the **greedy policy with respect to $v_\pi$** by
 
-$$
-\pi'(s) \;\in\; \arg\max_{a}\, q_\pi(s, a) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
-$$
+$$\pi'(s) \;\in\; \arg\max_{a}\, q_\pi(s, a) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].$$
 
-By construction $q_\pi(s, \pi'(s)) = \max_a q_\pi(s, a) \ge q_\pi(s, \pi(s)) = v_\pi(s)$ at every state, so the improvement theorem applies: $\pi'$ is at least as good as $\pi$ everywhere, and strictly better whenever $\pi$ was not already greedy.
+By construction 
+
+$$q_\pi(s, \pi'(s)) = \max_a q_\pi(s, a) \ge q_\pi(s, \pi(s)) = v_\pi(s)$$
+
+at every state, so the improvement theorem applies: $\pi'$ is at least as good as $\pi$ everywhere, and strictly better whenever $\pi$ was not already greedy.
 
 </div>
 
@@ -2560,9 +2712,7 @@ Compare the two backups on the same value function:
 
 * **Policy evaluation backup (expectation over actions):**
 
-  $$
-  v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
-  $$
+  $$v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].$$
 
 * **Value iteration backup (max over actions):**
 
@@ -2591,9 +2741,7 @@ until $\Delta < \theta$.
 
 After convergence, $V \approx v_\ast$, and the **optimal greedy policy** is extracted in one final sweep:
 
-$$
-\pi^\ast(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr].
-$$
+$$\pi^\ast(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr].$$
 
 </div>
 
@@ -2634,7 +2782,10 @@ Conversely, policy iteration is value iteration with the *evaluation* step run t
 
 The biggest source of confusion is that *both* algorithms produce a sequence of value functions and a final policy, but:
 
-* In **policy iteration** the *intermediate* value functions $v_{\pi_0}, v_{\pi_1}, \dots$ are *true* values of *real* (deterministic) policies. The trace is $\pi_0 \to v_{\pi_0} \to \pi_1 \to v_{\pi_1} \to \cdots$.
+* In **policy iteration** the *intermediate* value functions $v_{\pi_0}, v_{\pi_1}, \dots$ are *true* values of *real* (deterministic) policies. The trace is 
+  
+  $$\pi_0 \to v_{\pi_0} \to \pi_1 \to v_{\pi_1} \to \cdots.$$
+
 * In **value iteration** the intermediate value functions $v_0, v_1, v_2, \dots$ are *not* the values of any particular policy. They are estimates of $v_\ast$ that happen to be related to the value of the greedy policy at sweep $k$, but no explicit policy is materialised until the very end.
 
 This distinction matters for analysis (error bounds, monotonicity) and for any later algorithm that wants to use intermediate policies (e.g. on-policy methods later in the course).
@@ -4007,7 +4158,7 @@ In one phrase: **TD learning is learning a prediction from another prediction.**
 
 All three methods estimate the *same object* — the value 
 
-$$v\_\pi(s) = \mathbb{E}\_\pi[\, G\_t \mid S\_t = s\,].$$
+$$v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s\,].$$
 
 They differ only in **how the expectation is approximated**.
 
@@ -6287,13 +6438,12 @@ On large gridworlds, prioritized sweeping can reach the optimal solution with **
 For control, the two ways to back up a single $(s, a)$ are:
 
 * **Expected update** — average over *all* possible successors weighted by the model:
-  $$
-  Q(s, a) \leftarrow \sum_{s', r} \hat p(s', r \mid s, a)\bigl[\, r + \gamma \max_{a'} Q(s', a')\,\bigr].
-  $$
+  
+  $$Q(s, a) \leftarrow \sum_{s', r} \hat p(s', r \mid s, a)\bigl[\, r + \gamma \max_{a'} Q(s', a')\,\bigr].$$
+
 * **Sample update** — use *one* sampled transition:
-  $$
-  Q(s, a) \leftarrow Q(s, a) + \alpha\bigl[\, R + \gamma \max_{a'} Q(S', a') - Q(s, a)\,\bigr].
-  $$
+  
+  $$Q(s, a) \leftarrow Q(s, a) + \alpha\bigl[\, R + \gamma \max_{a'} Q(S', a') - Q(s, a)\,\bigr].$$
 
 Expected updates are **exact given the model** but cost work proportional to the branching factor. Sample updates are **noisy but cheap**, and pay off when computation — not data — is the bottleneck, since many cheap sample updates can outrun a few expensive expected ones.
 
@@ -6396,15 +6546,11 @@ For each trial:
 2. Repeat until terminal:
    * choose a greedy action under the current model,
      
-     $$
-     A \in \arg\max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
-     $$
+     $$A \in \arg\max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];$$
 
    * update the value with an expected backup,
      
-     $$
-     V(S) \leftarrow \max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];
-     $$
+     $$V(S) \leftarrow \max_{a} \sum_{s', r} \hat p(s', r \mid S, a)\bigl[\, r + \gamma V(s')\,\bigr];$$
 
    * move to the next state $S'$.
 
@@ -8293,7 +8439,7 @@ where $\Pr(s \to x, k, \pi)$ is the probability of being in state $x$ after $k$ 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 5/5 — from $\nabla v\_\pi(s\_0)$ to $\mu$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 5/5 — from $\nabla v_\pi(s_0)$ to $\mu$)</span></p>
 
 Letting $K \to \infty$,
 
