@@ -1599,7 +1599,11 @@ The expectation in $v_\pi(s) = \mathbb{E}_\pi[G_t \mid S_t = s]$ averages over *
 * **Agent randomness:** $A_t \sim \pi(\cdot \mid S_t)$.
 * **Environment randomness:** $(S_{t+1}, R_{t+1}) \sim p(\cdot, \cdot \mid S_t, A_t)$.
 
-The same loop then repeats from $S_{t+1}$ onwards, so $G_t$ is a function of the random sequence $(A_t, S_{t+1}, R_{t+1}, A_{t+1}, S_{t+2}, R_{t+2}, \dots)$. Splitting the expectation into "first action, then environment, then *the rest of the future*" is exactly what the Bellman equation does.
+The same loop then repeats from $S_{t+1}$ onwards, so $G_t$ is a function of the random sequence 
+
+$$(A_t, S_{t+1}, R_{t+1}, A_{t+1}, S_{t+2}, R_{t+2}, \dots).$$
+
+Splitting the expectation into "first action, then environment, then *the rest of the future*" is exactly what the Bellman equation does.
 
 </div>
 
@@ -1863,6 +1867,8 @@ Solve the resulting $2\times2$ linear system in closed form to obtain $v_\pi(s_1
 
 </div>
 
+TODO: make two states and a loop
+
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Solution</summary>
@@ -2086,7 +2092,7 @@ for all $s\in\mathcal S$ by verifying that $v_{\pi_d}$ satisfies the Bellman opt
 <details markdown="1">
 <summary>Solution</summary>
 
-We show that $v_{\pi_d}=v^*$. Since $v^*(s)=\max_a q^*(s,a)$, and the way $\pi_d(s)$ is chosen, $v^*(s)=q^*(s,\pi_d(s))$. 
+We show that $v_{\pi_d}=v^\ast$. Since $v^\ast(s)=\max_a q^\ast(s,a)$, and the way $\pi_d(s)$ is chosen, $v^\ast(s)=q^\ast(s,\pi_d(s))$. 
 
 Using the Bellman optimality equation for $q^*$,
 
@@ -2130,8 +2136,6 @@ $$\pi^*(s) \;\in\; \arg\max_{a}\, q_*(s, a).$$
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Punchline of MDP theory)</span></p>
-
-This is the punchline of MDP theory: 
 
 $$\boxed{\text{Once you can solve the Bellman optimality equations, optimal control reduces to a one-step argmax in every state.}}$$
 
@@ -2315,7 +2319,12 @@ Repeat:
 
 until $\Delta < \theta$ for a small tolerance $\theta > 0$.
 
-**Why a tolerance stop works.** The Bellman operator is a $\gamma$-contraction on $\mathbb{R}^{\lvert \mathcal{S}\rvert}$ in the max-norm (proved later), so a sweep with maximum change $\Delta$ guarantees 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Why a tolerance stop works)</span></p>
+
+The Bellman operator is a $\gamma$-contraction on $\mathbb{R}^{\lvert \mathcal{S}\rvert}$ in the max-norm (proved later), so a sweep with maximum change $\Delta$ guarantees 
 
 $$\lVert V - v_\pi \rVert_\infty \le \Delta / (1 - \gamma).$$
 
@@ -2619,13 +2628,9 @@ A short memory aid: **evaluation changes values; improvement changes the policy.
 2. **Policy evaluation.** Compute $v_\pi$ (e.g. by iterative policy evaluation to tolerance $\theta$).
 3. **Policy improvement.** For every state, set
 
-   $$
-   \pi(s) \;\leftarrow\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
-   $$
+   $$\pi(s) \;\leftarrow\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].$$
 
 4. If the policy has not changed in any state, stop. Otherwise return to step 2.
-
-In a diagram,
 
 $$
 \pi_0 \;\xrightarrow{E}\; v_{\pi_0} \;\xrightarrow{I}\; \pi_1 \;\xrightarrow{E}\; v_{\pi_1} \;\xrightarrow{I}\; \pi_2 \;\xrightarrow{E}\; \cdots \;\xrightarrow{I}\; \pi_\ast.
@@ -2716,9 +2721,7 @@ Compare the two backups on the same value function:
 
 * **Value iteration backup (max over actions):**
 
-  $$
-  v_{k+1}(s) \;=\; \max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
-  $$
+  $$v_{k+1}(s) \;=\; \max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].$$
 
 The two differ in **exactly one place**: averaging over $a$ by $\pi$ is replaced by taking the max over $a$. The first iterates toward $v_\pi$; the second iterates toward $v_\ast$ directly — it uses the current estimate $v_k$ as a *guess for the optimal* future value and applies a greedy one-step lookahead.
 
@@ -2744,6 +2747,136 @@ After convergence, $V \approx v_\ast$, and the **optimal greedy policy** is extr
 $$\pi^\ast(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr].$$
 
 </div>
+
+TODO: add diagram to value iteration algorithm
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Bellman Operators Contract Value Errors: Discounting Makes Bellman Updates Contractive)</span></p>
+
+Let $\pi$ be a deterministic policy. Define the Bellman expectation operator
+
+$$T_\pi:\mathbb R^{|\mathcal S|}\to\mathbb R^{|\mathcal S|}$$
+
+and the Bellman optimality operator 
+
+$$T:\mathbb R^{\lvert\mathcal S\rvert}\to\mathbb R^{|\mathcal S|}$$
+
+by 
+
+$$(T_\pi v)(s) = \sum_{s',r} p(s',r\mid s,\pi(s)) \left( r+\gamma v(s') \right),$$ 
+
+and 
+
+$$(Tv)(s) = \max_a \sum_{s',r} p(s',r\mid s,a) \left( r+\gamma v(s') \right)$$
+
+for $s\in\mathcal S$. Let 
+
+$$\lVert v\rVert_\infty = \max_{s\in\mathcal S}|v(s)|$$
+
+denote the supremum norm on $\mathbb R^{\lvert\mathcal S\rvert}$. Let
+
+$$\gamma\in[0,1),$$
+
+and assume that rewards are bounded:
+
+$$|r|\le R_{\max}$$
+
+for all $(s,a,s',r)$. 
+
+---
+
+Prove that both $T_\pi$ and $T$ are $\gamma$-contractions in the supremum norm; that is, for any two value functions
+
+$$u,v\in\mathbb R^{\lvert\mathcal S\rvert},$$ 
+
+show that 
+
+$$\lVert T_\pi u-T_\pi v\rVert_\infty \le \gamma\lVert u-v\rVert_\infty$$
+
+and 
+
+$$\lVert Tu-Tv\rVert_\infty \le \gamma\lVert u-v\rVert_\infty.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Use the contraction property to show that value iteration 
+
+$$v_{k+1}=Tv_k,$$
+
+starting from any $v_0\in\mathbb R^{\lvert\mathcal S\rvert}$, satisfies 
+
+$$\lVert v_k-v^*\rVert_\infty \le \gamma^k\lVert v_0-v^*\rVert_\infty$$
+
+for all $k\in\mathbb N_0$, and conclude that 
+
+$$v_k\to v^*$$ 
+
+geometrically in $k$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Derive a stopping criterion. Given a tolerance $\varepsilon>0$, show that once
+
+$$\lVert v_{k+1}-v_k\rVert_\infty < \frac{\varepsilon(1-\gamma)}{\gamma},$$
+
+or equivalently, 
+
+$$\lVert v_{k+1}-v_k\rVert_\infty \frac{\gamma}{1-\gamma} < \varepsilon,$$
+
+the current iterate satisfies 
+
+$$\lVert v_k-v^*\rVert_\infty<\varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Suppose that 
+
+$$\gamma=0.9, \qquad \varepsilon=0.01, \qquad \lVert v_0-v^*\rVert_\infty\le10.$$
+
+Find the minimum number of iterations $k^*$ such that 
+
+$$\lVert v_{k^*}-v^*\rVert_\infty<\varepsilon.$$
+
+Give an exact expression and a numerical value. How does $k^\ast$ scale as $\gamma\to1$?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Value iteration as "truncated" policy iteration)</span></p>
@@ -3222,15 +3355,11 @@ The state $s$ is visited at times $\mathcal{T}(s) = \lbrace 0, 2 \rbrace$.
 
 * **First-visit MC.** Use only the return from the first visit:
 
-  $$
-  G_0 \;=\; R_1 + \gamma R_2 + \gamma^2 R_3 \;=\; 2 + 0.5 \cdot 1 + 0.25 \cdot 4 \;=\; 3.5, \qquad V(s) \leftarrow 3.5.
-  $$
+  $$G_0 \;=\; R_1 + \gamma R_2 + \gamma^2 R_3 \;=\; 2 + 0.5 \cdot 1 + 0.25 \cdot 4 \;=\; 3.5, \qquad V(s) \leftarrow 3.5.$$
 
 * **Every-visit MC.** Average the returns from both visits:
 
-  $$
-  G_0 = 3.5, \qquad G_2 = R_3 = 4, \qquad V(s) \leftarrow \frac{3.5 + 4}{2} \;=\; 3.75.
-  $$
+  $$G_0 = 3.5, \qquad G_2 = R_3 = 4, \qquad V(s) \leftarrow \frac{3.5 + 4}{2} \;=\; 3.75.$$
 
 The numerical disagreement on a single episode is expected; both estimators agree in the limit as the number of episodes goes to infinity.
 
@@ -3256,9 +3385,7 @@ Repeat for each episode:
 
 Storing the full list `Returns(s)` is wasteful. Replacing the explicit average by the **incremental mean update**
 
-$$
-V(s) \;\leftarrow\; V(s) + \frac{1}{N(s)}\bigl(\, G - V(s) \,\bigr),
-$$
+$$V(s) \;\leftarrow\; V(s) + \frac{1}{N(s)}\bigl(\, G - V(s) \,\bigr),$$
 
 where $N(s)$ counts how many returns have been seen for $s$, gives an *exactly equivalent* estimator with constant memory. This formula is also the template all later sample-based RL updates inherit — the only thing that changes is *what is plugged in for $G$* (a sampled return for MC, a bootstrapped target for TD, an importance-weighted return for off-policy MC, $\dots$).
 
@@ -3269,9 +3396,7 @@ where $N(s)$ counts how many returns have been seen for $s$, gives an *exactly e
 
 A single Blackjack episode might be
 
-$$
-(\text{player 13, dealer 10}) \to \textbf{hit}, \quad (\text{player 18, dealer 10}) \to \textbf{stick}, \quad \text{dealer plays} \to \text{player wins.}
-$$
+$$(\text{player 13, dealer 10}) \to \textbf{hit}, \quad (\text{player 18, dealer 10}) \to \textbf{stick}, \quad \text{dealer plays} \to \text{player wins.}$$
 
 The final return is $G = +1$, so this *one* episode contributes to two state estimates:
 
@@ -3280,9 +3405,7 @@ The final return is $G = +1$, so this *one* episode contributes to two state est
 
 The MC update rule is just
 
-$$
-V(s) \;\leftarrow\; \text{average of all observed first-visit returns to } s.
-$$
+$$V(s) \;\leftarrow\; \text{average of all observed first-visit returns to } s.$$
 
 After many games this average concentrates around the true $v_\pi(s)$ for each player-sum/dealer-showing state.
 
@@ -3293,18 +3416,21 @@ After many games this average concentrates around the true $v_\pi(s)$ for each p
 
 Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely to $v_\pi(s)$ as the number of first visits to $s$ goes to infinity.
 
-**Proof idea.**
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof Idea</summary>
 
 * Across independently generated episodes, the first-visit returns to $s$ are i.i.d. samples of a random variable with mean $v_\pi(s)$.
 * By the strong law of large numbers,
 
-  $$
-  \frac{1}{n}\sum_{i=1}^{n} G^{(i)} \xrightarrow{\text{a.s.}} \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;=\; v_\pi(s).
-  $$
+  $$\frac{1}{n}\sum_{i=1}^{n} G^{(i)} \xrightarrow{\text{a.s.}} \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;=\; v_\pi(s).$$
 
 * The key point is that "the return after the first visit to $s$" is *exactly* the random quantity whose expectation defines $v_\pi(s)$ — no model, no Bellman fixed point, no operator contraction is needed.
 
-</div>
+</details>
 
 <figure>
   <img src="{{ '/assets/images/notes/rl_hd/blackjack_mc_value.svg' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
@@ -3318,9 +3444,7 @@ Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely t
 
 In DP, policy improvement was a one-step lookahead using the *model*:
 
-$$
-\pi'(s) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v(s')\,\bigr].
-$$
+$$\pi'(s) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v(s')\,\bigr].$$
 
 The model $p(s', r \mid s, a)$ was the bridge that let us turn a *state*-value function into a *better policy*. **Without $p$, that bridge collapses.** Knowing $v_\pi(s)$ alone tells us nothing about which action to take in $s$, because we cannot evaluate the one-step lookahead any more.
 
@@ -3454,25 +3578,17 @@ $$
 
 Comparing the two expressions side by side:
 
-$$
-q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a),
-$$
+$$q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a),$$
 
-$$
-v_\pi(s) \;\leq\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).
-$$
+$$v_\pi(s) \;\leq\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).$$
 
 The right-hand sides are *identical*. Hence
 
-$$
-q_\pi(s, \pi') \;\geq\; v_\pi(s) \qquad \forall s.
-$$
+$$q_\pi(s, \pi') \;\geq\; v_\pi(s) \qquad \forall s.$$
 
 Choosing the first action according to $\pi'$ and then following $\pi$ has expected return at least as large as following $\pi$ from the start. By the **policy improvement theorem** (DP lecture),
 
-$$
-\boxed{\, v_{\pi'}(s) \;\geq\; v_\pi(s) \qquad \forall s. \,}
-$$
+$$\boxed{\, v_{\pi'}(s) \;\geq\; v_\pi(s) \qquad \forall s. \,}$$
 
 **Conclusion.** Even with forced exploration, the $\varepsilon$-greedy policy improves — or at least does not worsen — the old $\varepsilon$-soft policy. The argument is robust: the $\varepsilon/\lvert \mathcal{A}(s) \rvert$ "forced exploration" term cancels exactly on both sides, leaving the improvement entirely to the $(1 - \varepsilon)\max_a q_\pi(s, a)$ contribution.
 
@@ -3483,23 +3599,21 @@ $$
 
 Take a single state $s$ with two actions and action-values
 
-$$
-q_\pi(s, a_1) = 10, \qquad q_\pi(s, a_2) = 0.
-$$
+$$q_\pi(s, a_1) = 10, \qquad q_\pi(s, a_2) = 0.$$
 
 Suppose the old $\varepsilon$-soft policy is
 
-$$
-\pi(a_1 \mid s) = 0.6, \qquad \pi(a_2 \mid s) = 0.4, \qquad v_\pi(s) = 0.6 \cdot 10 + 0.4 \cdot 0 = 6.
-$$
+$$\pi(a_1 \mid s) = 0.6, \qquad \pi(a_2 \mid s) = 0.4, \qquad v_\pi(s) = 0.6 \cdot 10 + 0.4 \cdot 0 = 6.$$
 
 The new **$\varepsilon$-greedy policy** with $\varepsilon = 0.2$ assigns
 
-$$
-\pi'(a_1 \mid s) = 0.9, \qquad \pi'(a_2 \mid s) = 0.1, \qquad q_\pi(s, \pi') = 0.9 \cdot 10 + 0.1 \cdot 0 = 9.
-$$
+$$\pi'(a_1 \mid s) = 0.9, \qquad \pi'(a_2 \mid s) = 0.1, \qquad q_\pi(s, \pi') = 0.9 \cdot 10 + 0.1 \cdot 0 = 9.$$
 
-So $q_\pi(s, \pi'(s)) = 9 \geq 6 = v_\pi(s)$, confirming the theorem on this single example.
+So 
+
+$$q_\pi(s, \pi'(s)) = 9 \geq 6 = v_\pi(s),$$
+
+confirming the theorem on this single example.
 
 The mechanism is intuitive: **$\varepsilon$-greedy shifts probability mass toward the best action, increasing expected value**, while the small forced exploration mass is the *same* on both sides of the comparison and cancels.
 
@@ -3515,15 +3629,11 @@ Repeat for each episode:
 1. **Generate** an episode using the current policy $\pi$.
 2. **Policy evaluation.** For each first visit to a pair $(s, a)$ in the episode, update
 
-   $$
-   Q(s, a) \;\leftarrow\; \text{average of observed returns after } (s, a).
-   $$
+   $$Q(s, a) \;\leftarrow\; \text{average of observed returns after } (s, a).$$
 
 3. **Policy improvement.** For every visited state $s$, replace the action probabilities by
 
-   $$
-   \pi(\cdot \mid s) \;\leftarrow\; \varepsilon\text{-greedy w.r.t. } Q(s, \cdot).
-   $$
+   $$\pi(\cdot \mid s) \;\leftarrow\; \varepsilon\text{-greedy w.r.t. } Q(s, \cdot).$$
 
 The same policy that *generates* the data is the one being *improved* — hence the name **on-policy**. By the previous theorem, each improvement step is guaranteed to be monotone within the class of $\varepsilon$-soft policies.
 
@@ -3624,17 +3734,18 @@ In **on-policy** learning a single policy plays two roles at once: it generates 
 
 We want the target-policy expectation
 
-$$
-v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,],
-$$
+$$v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,],$$
 
 but the returns we observe come from episodes generated by $\mu$:
 
-$$
-G_t^{(1)}, G_t^{(2)}, \dots \;\sim\; \mu, \qquad \text{not } \pi.
-$$
+$$G_t^{(1)}, G_t^{(2)}, \dots \;\sim\; \mu, \qquad \text{not } \pi.$$
 
-**Core difficulty.** We need to compute an expectation under one distribution ($\mathbb{E}\_\pi[\cdot]$) while observing samples from another ($\mathbb{E}\_\mu[\cdot]$). Naively averaging the observed $G_t^{(i)}$ would estimate $v_\mu$, not $v_\pi$.
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Core difficulty of Off-Policy Prediction Problem)</span></p>
+
+We need to compute an expectation under one distribution ($\mathbb{E}\_\pi[\cdot]$) while observing samples from another ($\mathbb{E}\_\mu[\cdot]$). Naively averaging the observed $G_t^{(i)}$ would estimate $v_\mu$, not $v_\pi$.
 
 </div>
 
@@ -3643,9 +3754,7 @@ $$
 
 For off-policy learning to be possible at all, the behavior policy must "see" every action the target policy might take:
 
-$$
-\pi(a \mid s) > 0 \quad \Longrightarrow \quad \mu(a \mid s) > 0.
-$$
+$$\pi(a \mid s) > 0 \quad \Longrightarrow \quad \mu(a \mid s) > 0.$$
 
 That is, if the target policy would ever choose action $a$ in state $s$, the behavior policy must sometimes choose it too. Otherwise there are entire pieces of target-policy experience that *never* appear in the data — and no statistical trick can recover them.
 
@@ -3654,11 +3763,15 @@ That is, if the target policy would ever choose action $a$ in state $s$, the beh
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Importance sampling — the statistical idea)</span></p>
 
-Suppose we want $\mathbb{E}_\pi[f(X)] = \sum_x \pi(x) f(x)$, but our samples come from a *different* distribution $\mu$. Whenever coverage holds ($\mu(x) > 0$ whenever $\pi(x) > 0$), multiply and divide by $\mu(x)$:
+* Suppose we want 
 
-$$
-\mathbb{E}_\pi[f(X)] \;=\; \sum_{x} \pi(x) f(x) \;=\; \sum_{x} \mu(x) \frac{\pi(x)}{\mu(x)} f(x) \;=\; \mathbb{E}_\mu\!\left[\, \frac{\pi(X)}{\mu(X)}\, f(X) \,\right].
-$$
+  $$\mathbb{E}_\pi[f(X)] = \sum_x \pi(x) f(x),$$
+
+  but our samples come from a *different* distribution $\mu$. 
+
+* Whenever coverage holds, multiply and divide by $\mu(x)$:
+
+  $$\mathbb{E}_\pi[f(X)] \;=\; \sum_{x} \pi(x) f(x) \;=\; \sum_{x} \mu(x) \frac{\pi(x)}{\mu(x)} f(x) \;=\; \mathbb{E}_\mu\!\left[\, \frac{\pi(X)}{\mu(X)}\, f(X) \,\right].$$
 
 So samples drawn from $\mu$, after being **reweighted by the ratio $\pi(X)/\mu(X)$**, have the same expectation as if they had come from $\pi$. The ratio
 
@@ -3686,7 +3799,11 @@ $$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The IS Ratio Depends Only on the Policies)</span></p>
 
-For a trajectory $S_t, A_t, S_{t+1}, \dots, S_T$ generated under policy $\pi$ versus under $\mu$,
+For a trajectory 
+
+$$S_t, A_t, S_{t+1}, \dots, S_T$$
+
+generated under policy $\pi$ versus under $\mu$,
 
 $$
 \frac{\Pr\nolimits_\pi(\text{trajectory})}{\Pr\nolimits_\mu(\text{trajectory})} \;=\; \frac{\prod_{k=t}^{T-1} \pi(A_k \mid S_k)\, P(S_{k+1} \mid S_k, A_k)}{\prod_{k=t}^{T-1} \mu(A_k \mid S_k)\, P(S_{k+1} \mid S_k, A_k)} \;=\; \prod_{k=t}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=:\; \rho_{t}^{T}.
@@ -3883,15 +4000,11 @@ Two estimators are standard.
 
 * **Ordinary importance sampling.**
 
-  $$
-  V(s) \;=\; \frac{1}{\lvert \mathcal{T}(s) \rvert} \sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t.
-  $$
+  $$V(s) \;=\; \frac{1}{\lvert \mathcal{T}(s) \rvert} \sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t.$$
 
 * **Weighted importance sampling.**
 
-  $$
-  V(s) \;=\; \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}}.
-  $$
+  $$V(s) \;=\; \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s)} \rho_{t}^{T(t)}}.$$
 
 | Estimator       | Bias                  | Variance                         |
 | :-------------- | :-------------------- | :------------------------------- |
@@ -3907,26 +4020,20 @@ Two estimators are standard.
 
 For each state $s$ maintain two scalars:
 
-$$
-V(s) \;\approx\; v_\pi(s), \qquad C(s) \;=\; \text{cumulative sum of importance weights for } s.
-$$
+$$V(s) \;\approx\; v_\pi(s), \qquad C(s) \;=\; \text{cumulative sum of importance weights for } s.$$
 
 For each episode generated by the behaviour policy $\mu$:
 
 1. Compute the returns $G_t$ for all time steps.
 2. For each state $s$ that appears in the episode, let
 
-   $$
-   t_s = \min\lbrace\, t : S_t = s \,\rbrace
-   $$
+   $$t_s = \min\lbrace\, t : S_t = s \,\rbrace$$
 
    be its first visit time.
 
 3. Compute the importance weight from that first visit onward:
 
-   $$
-   \rho_{t_s}^{T} \;=\; \prod_{k=t_s}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)}.
-   $$
+   $$\rho_{t_s}^{T} \;=\; \prod_{k=t_s}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)}.$$
 
 4. **Update:**
 
@@ -3934,12 +4041,19 @@ For each episode generated by the behaviour policy $\mu$:
    C(s) \;\leftarrow\; C(s) + \rho_{t_s}^{T},
    $$
 
-   $$
-   V(s) \;\leftarrow\; V(s) + \frac{\rho_{t_s}^{T}}{C(s)}\bigl(\, G_{t_s} - V(s)\,\bigr).
-   $$
+   $$V(s) \;\leftarrow\; V(s) + \frac{\rho_{t_s}^{T}}{C(s)}\bigl(\, G_{t_s} - V(s)\,\bigr).$$
 
 **Meaning.** Each state is updated once per episode, using its first observed return and its first-visit importance weight. The update is a *weighted* incremental mean: weights $\rho_{t_s}^{T}$ accumulate in $C(s)$ and form the denominator of an effective sample average.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Recall</summary>
+
+$$\bar{Q_N} = \frac{Q_1 + \dots + Q_N}{N} = \frac{Q_1 + \dots + Q_{N-1}}{N} + \frac{Q_N}{N} = \frac{\bar{Q_{N-1}(N-1)}}{N} + \frac{Q_N}{N} = \bar{Q_{N-1}} + \frac{1}{N}(Q_N - \bar{Q_{N-1}})$$
+
+</details>
 </div>
 
 ### Off-Policy MC Control
@@ -3949,19 +4063,13 @@ For each episode generated by the behaviour policy $\mu$:
 
 Off-policy *prediction* estimated $V(s)$. Off-policy *control* must estimate $Q(s, a)$ — because, as in the on-policy case, policy improvement without a model requires comparing actions:
 
-$$
-v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \quad\Longrightarrow\quad q_\pi(s, a) = \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,].
-$$
+$$v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \quad\Longrightarrow\quad q_\pi(s, a) = \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,].$$
 
 Episodes are generated by a soft exploratory behaviour policy $\mu$, while the target policy $\pi$ is improved **greedily**:
 
-$$
-Q(s, a) \;\approx\; \frac{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}}, \qquad \rho_{t+1}^{T} = \prod_{k = t+1}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)},
-$$
+$$Q(s, a) \;\approx\; \frac{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}\, G_t}{\sum_{t \in \mathcal{T}(s, a)} \rho_{t+1}^{T(t)}}, \qquad \rho_{t+1}^{T} = \prod_{k = t+1}^{T-1} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)},$$
 
-$$
-\pi(s) \;=\; \arg\max_{a} Q(s, a).
-$$
+$$\pi(s) \;=\; \arg\max_{a} Q(s, a).$$
 
 Note that the ratio starts at $k = t+1$, not $k = t$: the action $A_t$ at the visited pair $(s, a)$ is *given* (we are conditioning on it), so only the *subsequent* actions need to be re-weighted. The rest is the same off-policy machinery as before: coverage, importance weights, weighted averaging, greedy improvement.
 
@@ -3974,15 +4082,11 @@ Off-policy MC control can learn a *greedy* target policy $\pi$ from exploratory 
 
 If the target policy is **deterministic greedy**, then any non-greedy behaviour action has zero probability under $\pi$,
 
-$$
-A_t \neq \pi(S_t) \quad\Longrightarrow\quad \pi(A_t \mid S_t) = 0,
-$$
+$$A_t \neq \pi(S_t) \quad\Longrightarrow\quad \pi(A_t \mid S_t) = 0,$$
 
 and the importance weight becomes
 
-$$
-\rho \;=\; \prod_{k} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=\; 0.
-$$
+$$\rho \;=\; \prod_{k} \frac{\pi(A_k \mid S_k)}{\mu(A_k \mid S_k)} \;=\; 0.$$
 
 **Consequence.** In long episodes, *many* MC updates receive zero or unstable weights. As soon as the behaviour policy takes even one non-greedy action, the entire remaining trajectory is discarded. Off-policy MC control is therefore notoriously **sample-inefficient**: episodes that *almost* match the greedy target policy contribute nothing past their first divergence.
 
@@ -4072,6 +4176,41 @@ Reading the table top to bottom recapitulates the whole lecture: average returns
 ## Lecture 6: Temporal-Difference Learning
 
 <div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem and Motivation</span><span class="math-callout__name">(Monte Carlo: High Variance and Long)</span></p>
+
+The MC method has very high variance (returns are sums of many random rewards) and is limited to episodic tasks (must unroll to the end of the episode). **Temporal difference** (TD) learning is a more efficient technique that incrementally reduces the Bellman error based on transitions instead of full trajectories.
+
+Given a state transition $(s_t, a_t, r_t, s_{t+1})$ where $a_t \sim \pi(s_t)$, we change the estimate $V(s_t)$ so that it moves towards the **target value** $y_t = r_t + \gamma V(s_{t+1}) \approx G_{t:t+1}$:
+
+$$
+V(s_t) \leftarrow V(s_t) + \eta\left[\underbrace{r_t + \gamma V(s_{t+1}) - V(s_t)}_{\delta_t}\right]
+$$
+
+The term $\delta_t = y_t - V(s_t)$ is the **TD error**. A more general form for parametric value function representations is:
+
+$$
+\boldsymbol{w} \leftarrow \boldsymbol{w} + \eta\left[r_t + \gamma V_{\boldsymbol{w}}(s_{t+1}) - V_{\boldsymbol{w}}(s_t)\right] \nabla_{\boldsymbol{w}} V_{\boldsymbol{w}}(s_t)
+$$
+
+The potential divergence arises because the update does not correspond to a gradient update on any objective function, despite having a form similar to SGD. Instead, TD learning is an example of **bootstrapping**: the estimate $V_{\boldsymbol{w}}(s_t)$ is updated to approach a target $r_t + \gamma V_{\boldsymbol{w}}(s_{t+1})$ that is itself defined by the value function estimate. MC estimation avoids this issue by using complete trajectory returns, but is often much less efficient.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bootstrapping)</span></p>
+
+The potential divergence arises because the update does not correspond to a gradient update on any objective function, despite having a form similar to SGD. Instead, TD learning is an example of **bootstrapping**: the estimate $V_{\boldsymbol{w}}(s_t)$ is updated to approach a target $r_t + \gamma V_{\boldsymbol{w}}(s_{t+1})$ that is itself defined by the value function estimate. This idea is shared by DP methods like value iteration, although they rely on the complete MDP model to compute an exact Bellman backup. In contrast, TD learning can be viewed as using sampled transitions to approximate such backups.
+
+An example of a non-bootstrapping approach is the Monte Carlo estimation in the previous lecture. It samples a complete trajectory, rather than individual transitions, to perform an update; this avoids the divergence issue, but is often much less efficient.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/diagram_mc_td0_dp.png' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
+  <figcaption>Backup diagrams of $V(s_t)$ for Monte Carlo, temporal difference, and dynamic programming updates of the state-value function.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Sampling experience, bootstrapping predictions)</span></p>
 
 The previous lecture left us with a clean but expensive idea: estimate values by averaging **complete returns** $G\_t$, which forces us to wait until the episode ends. **Temporal-difference (TD) learning** is the hybrid that removes that wait. It is *the* central idea of model-free RL, and almost every algorithm in the rest of the course is best read as "define a TD error, then take a step on it."
@@ -4081,7 +4220,10 @@ The lecture builds up in the following order:
 1. **The central idea.** TD = *sampling* (like Monte Carlo) + *bootstrapping* (like Dynamic Programming).
 2. **Prediction.** The TD(0) update, the TD error, and where the TD target comes from (the Bellman expectation equation).
 3. **Why bootstrap?** Computational advantages over DP and MC, soundness (convergence), and what TD converges to (certainty equivalence).
-4. **Control.** Moving from $v\_\pi$ to $q\_\pi$: **Sarsa** (on-policy), **Q-learning** (off-policy), and **Double Q-learning** (bias correction).
+4. **Control.** Moving from $v\_\pi$ to $q\_\pi$: 
+   * **Sarsa** (on-policy), 
+   * **Q-learning** (off-policy),
+   * **Double Q-learning** (bias correction).
 
 The guiding question of the lecture is:
 
@@ -4194,9 +4336,7 @@ In short, DP acts as a planner using full, exact mathematical expectations, wher
 
 Fix a policy $\pi$ and generate experience under it,
 
-$$
-S_0, A_0, R_1, S_1, A_1, R_2, S_2, \dots,
-$$
+$$S_0, A_0, R_1, S_1, A_1, R_2, S_2, \dots,$$
 
 with the goal of estimating $v\_\pi(s)$ for every nonterminal $s$. Both methods are instances of the same incremental-mean template 
 
@@ -4204,13 +4344,9 @@ $$V(S_t) \leftarrow V(S_t) + \alpha\,[\,\text{target} - V(S_t)\,]$$
 
 they differ only in the **target**:
 
-$$
-\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,G_t - V(S_t)\,\bigr]}_{\textbf{constant-}\alpha\text{ Monte Carlo, target } = \text{ full return}},
-$$
+$$\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,G_t - V(S_t)\,\bigr]}_{\textbf{constant-}\alpha\text{ Monte Carlo, target } = \text{ full return}},$$
 
-$$
-\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,R_{t+1} + \gamma V(S_{t+1}) - V(S_t)\,\bigr]}_{\textbf{TD(0)},\; \text{target } = R_{t+1} + \gamma V(S_{t+1})}.
-$$
+$$\underbrace{V(S_t) \;\leftarrow\; V(S_t) + \alpha\bigl[\,R_{t+1} + \gamma V(S_{t+1}) - V(S_t)\,\bigr]}_{\textbf{TD(0)},\; \text{target } = R_{t+1} + \gamma V(S_{t+1})}.$$
 
 MC plugs in the realised return $G\_t$ (known only at episode end); TD(0) plugs in the **TD target** $R\_{t+1} + \gamma V(S\_{t+1})$ (known one step later). This is the single substitution that turns a batch, episodic method into an online, incremental one.
 
@@ -4271,15 +4407,11 @@ MC plugs in the realised return $G\_t$ (known only at episode end); TD(0) plugs 
 
 The **TD error** is the difference between the old prediction and the (improved) one-step target:
 
-$$
-\delta_t \;\doteq\; R_{t+1} + \gamma V(S_{t+1}) - V(S_t).
-$$
+$$\delta_t \;\doteq\; R_{t+1} + \gamma V(S_{t+1}) - V(S_t).$$
 
 With it, the TD(0) update is simply
 
-$$
-V(S_t) \;\leftarrow\; V(S_t) + \alpha\,\delta_t.
-$$
+$$V(S_t) \;\leftarrow\; V(S_t) + \alpha\,\delta_t.$$
 
 So $\delta\_t$ measures the gap between the **old prediction** $V(S\_t)$ and the **updated prediction** $R\_{t+1} + \gamma V(S\_{t+1})$ — the difference between two successive predictions of the same quantity. Hence the name *temporal difference*.
 
@@ -4336,15 +4468,11 @@ Everything that changes from method to method is **what goes into the target** i
 
 The TD target is not an ad-hoc guess; it falls straight out of the definition of value. Start from
 
-$$
-v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s\,],
-$$
+$$v_\pi(s) = \mathbb{E}_\pi[\, G_t \mid S_t = s\,],$$
 
 and use the one-step recursion of the return,
 
-$$
-G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} = R_{t+1} + \gamma \sum_{k=0}^{\infty} \gamma^k R_{t+k+2} = R_{t+1} + \gamma\, G_{t+1}.
-$$
+$$G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} = R_{t+1} + \gamma \sum_{k=0}^{\infty} \gamma^k R_{t+k+2} = R_{t+1} + \gamma\, G_{t+1}.$$
 
 Substituting and applying the tower property of conditional expectation,
 
@@ -4363,14 +4491,14 @@ This is exactly the **Bellman expectation equation**. The TD target is what you 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The TD recipe — two approximations)</span></p>
 
-Starting from the exact identity $v\_\pi(s) = \mathbb{E}\_\pi[\,R\_{t+1} + \gamma v\_\pi(S\_{t+1}) \mid S\_t = s\,]$:
+Starting from the exact identity 
+
+$$v_\pi(s) = \mathbb{E}_\pi[\,R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s\,],$$
 
 1. **Replace the expectation by a single sample** — use the one transition $(R\_{t+1}, S\_{t+1})$ that actually occurred instead of averaging over all of them (this is the *sampling* part, shared with MC).
 2. **Replace the unknown $v\_\pi$ by the current estimate $V$** — we do not know the true value of the successor, so we bootstrap from our running guess (this is the *bootstrapping* part, shared with DP).
 
-$$
-\underbrace{R_{t+1} + \gamma\, v_\pi(S_{t+1})}_{\text{Bellman target (exact)}} \;\rightsquigarrow\; \underbrace{R_{t+1} + \gamma\, V(S_{t+1})}_{\text{TD(0) target (sampled + bootstrapped)}}.
-$$
+$$\underbrace{R_{t+1} + \gamma\, v_\pi(S_{t+1})}_{\text{Bellman target (exact)}} \;\rightsquigarrow\; \underbrace{R_{t+1} + \gamma\, V(S_{t+1})}_{\text{TD(0) target (sampled + bootstrapped)}}.$$
 
 This makes precise where each method sits relative to the same Bellman equation:
 
@@ -4484,11 +4612,13 @@ The actual trip took 43 minutes. The question — *when should we revise each pr
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(MC vs TD updates on the road)</span></p>
 
-Both methods apply $V(s) \leftarrow V(s) + \alpha\,(\text{target} - V(s))$, but with different targets:
+Both methods apply 
 
-$$
-\text{MC target} = \underbrace{G_t}_{\text{total time } - \text{ elapsed}}, \qquad \text{TD target} = \underbrace{R_{t+1}}_{\text{next elapsed } - \text{ current elapsed}} + V(S_{t+1}).
-$$
+$$V(s) \leftarrow V(s) + \alpha\,(\text{target} - V(s)),$$
+
+but with different targets:
+
+$$\text{MC target} = \underbrace{G_t}_{\text{total time } - \text{ elapsed}}, \qquad \text{TD target} = \underbrace{R_{t+1}}_{\text{next elapsed } - \text{ current elapsed}} + V(S_{t+1}).$$
 
 | state | old $V$ | MC target | MC error | TD target | TD error |
 | :---- | :------ | :-------- | :------- | :-------- | :------- |
@@ -4654,9 +4784,7 @@ Both MC and TD converge asymptotically to $v\_\pi$ for a fixed policy, and **no 
 
 Because $\gamma = 1$ and the only nonzero reward is $+1$ on terminating to the right, the value of a state equals the **probability of eventually exiting on the right**, which for a symmetric walk is linear in position:
 
-$$
-v(A) = \tfrac{1}{6}, \quad v(B) = \tfrac{2}{6}, \quad v(C) = \tfrac{3}{6}, \quad v(D) = \tfrac{4}{6}, \quad v(E) = \tfrac{5}{6}.
-$$
+$$v(A) = \tfrac{1}{6}, \quad v(B) = \tfrac{2}{6}, \quad v(C) = \tfrac{3}{6}, \quad v(D) = \tfrac{4}{6}, \quad v(E) = \tfrac{5}{6}.$$
 
 The estimates are initialised to $V(s) = 0.5$ for all states (correct only for the centre $C$).
 
@@ -4703,15 +4831,11 @@ The reason is the per-step target: batch MC drives $V$ toward $G\_t$ (the full s
 
 Eight observed episodes ($\gamma = 1$):
 
-$$
-A, 0, B, 0 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 0.
-$$
+$$A, 0, B, 0 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 1 \quad\mid\quad B, 0.$$
 
 Everyone agrees on $B$: it was visited 8 times and the return was $1$ in 6 of them, so
 
-$$
-V(B) = \tfrac{6}{8} = \tfrac{3}{4}.
-$$
+$$V(B) = \tfrac{6}{8} = \tfrac{3}{4}.$$
 
 But what is $V(A)$? State $A$ was visited exactly once, in the episode $A, 0, B, 0$. There are **two reasonable answers**.
 
@@ -4821,9 +4945,7 @@ As in model-free MC control, we cannot improve a policy from $V$ alone without a
 
 Treat the trajectory as alternating state–action pairs $S\_t, A\_t, R\_{t+1}, S\_{t+1}, A\_{t+1}, \dots$ and apply the TD(0) idea to each pair as though it were one enlarged "state":
 
-$$
-Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma\, Q(S_{t+1}, A_{t+1})}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].
-$$
+$$Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma\, Q(S_{t+1}, A_{t+1})}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].$$
 
 The update uses the quintuple $(S\_t, A\_t, R\_{t+1}, S\_{t+1}, A\_{t+1})$ — which spells the name **Sarsa**. Crucially, $A\_{t+1}$ is the action *actually taken* under the current policy (this is what makes Sarsa **on-policy**). If $S\_{t+1}$ is terminal, the TD target is just $R\_{t+1}$.
 
@@ -4841,12 +4963,15 @@ Loop for each episode:
 1. Initialise $S$; choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q$.
 2. Loop for each step of the episode:
    * Take action $A$; observe $R, S'$.
-   * **If $S'$ is terminal:** $Q(S, A) \leftarrow Q(S, A) + \alpha\,[\,R - Q(S, A)\,]$, then break.
+   * **If $S'$ is terminal:** 
+     
+     $$Q(S, A) \leftarrow Q(S, A) + \alpha\,[\,R - Q(S, A)\,]$$
+
+    then break.
+
    * **Else:** choose $A'$ from $S'$ using the $\varepsilon$-greedy policy; update
      
-     $$
-     Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma Q(S', A') - Q(S, A)\,\bigr];
-     $$
+     $$Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma Q(S', A') - Q(S, A)\,\bigr];$$
      
      then $S \leftarrow S'$, $A \leftarrow A'$.
 
@@ -4859,10 +4984,12 @@ Each TD update *evaluates* the current policy a little, and each $\varepsilon$-g
 
 Convergence to the optimal action-value function needs **two simultaneous conditions**:
 
-* **exploration:** every $(s, a)$ pair is visited infinitely often;
-* **greedy in the limit:** the policy becomes greedy with respect to $Q$ as $t \to \infty$.
+1. **exploration:** every $(s, a)$ pair is visited infinitely often;
+2.  **greedy in the limit:** the policy becomes greedy with respect to $Q$ as $t \to \infty$.
 
-Any schedule satisfying both is called **GLIE** (*Greedy in the Limit with Infinite Exploration*); a concrete recipe is $\varepsilon$-greedy with $\varepsilon\_t = 1/t$. Under GLIE *and* the standard step-size conditions, tabular Sarsa converges to the optimal action-value function $q\_\ast$ and an optimal policy.
+* Any schedule satisfying both is called **GLIE** (*Greedy in the Limit with Infinite Exploration*); 
+  * a concrete recipe is $\varepsilon$-greedy with $\varepsilon\_t = 1/t$.
+* Under GLIE *and* the standard step-size conditions, tabular Sarsa converges to the optimal action-value function $q\_\ast$ and an optimal policy.
 
 </div>
 
@@ -4873,12 +5000,12 @@ Any schedule satisfying both is called **GLIE** (*Greedy in the Limit with Infin
 
 Compare the two targets:
 
-$$
-\text{Sarsa: } R_{t+1} + \gamma\, Q(S_{t+1}, \underbrace{A_{t+1}}_{\text{action taken}}), \qquad \text{Q-learning: } R_{t+1} + \gamma \max_a Q(S_{t+1}, a).
-$$
+$$\text{Sarsa: } R_{t+1} + \gamma\, Q(S_{t+1}, \underbrace{A_{t+1}}_{\text{action taken}}), \qquad \text{Q-learning: } R_{t+1} + \gamma \max_a Q(S_{t+1}, a).$$
 
-Sarsa learns the value of the **policy it actually follows**. Q-learning learns the value of the **greedy policy** — regardless of which action it actually takes next. This is what makes Q-learning **off-policy**:
+* Sarsa learns the value of the **policy it actually follows**. 
+* Q-learning learns the value of the **greedy policy** — regardless of which action it actually takes next. 
 
+This is what makes Q-learning **off-policy**:
 * the **behaviour** policy is any $\varepsilon$-greedy policy (it must visit all $(s, a)$);
 * the **target** policy is greedy with respect to the current $Q$;
 * the two need not match.
@@ -4949,7 +5076,9 @@ $$
 Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma \max_a Q(S_{t+1}, a)}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].
 $$
 
-It uses the quadruple $(S\_t, A\_t, R\_{t+1}, S\_{t+1})$ — there is **no $A\_{t+1}$**. The term $\max\_a Q(S\_{t+1}, a)$ is the best possible value at the next state; if $S\_{t+1}$ is terminal, $\max\_a Q(S\_{t+1}, a) \doteq 0$.
+It uses the quadruple $(S\_t, A\_t, R\_{t+1}, S\_{t+1})$ — there is **no $A\_{t+1}$**: 
+* The term $\max\_a Q(S\_{t+1}, a)$ is the best possible value at the next state; 
+* If $S\_{t+1}$ is terminal, $\max\_a Q(S\_{t+1}, a) \doteq 0$.
 
 </div>
 
@@ -5008,17 +5137,97 @@ Online performance reflects the former — which is why Sarsa looks better *duri
 
 ### Maximization Bias and Double Q-Learning
 
+* [Reddit: Is my understanding of double Q-learning correct?](https://www.reddit.com/r/MachineLearning/comments/57ec9z/discussion_is_my_understanding_of_double/)
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/Q-learning_Double_Q-learning.png' | relative_url }}" alt="Two pairs of 3D surfaces of estimated Blackjack value functions (with and without a usable ace) after 10,000 and 500,000 sampled episodes, becoming visibly smoother as the sample size grows" loading="lazy">
+  <figcaption>Comparison of Q-learning and double Q-learning on a simple episodic MDP using $\varepsilon$-greedy action selection with $\varepsilon= 0.1$. The initial state is A, and squares denote absorbing states.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Maximization bias)</span></p>
+
+Standard Q-learning suffers from a problem known as the optimizer’s curse [SW06], or the maximization bias. The problem refers to the simple statistical inequality: $\mathbb{E}[\max_a X_a] \geq \max_a \mathbb{E}[X_a]$, for a set of random variables $\lbrace X_a\rbrace$. Thus, if we pick actions greedily according to their random scores $\lbrace X_a\rbrace$, we might pick a wrong action just because random noise makes it appealing.
+
+Figure above gives a simple example of how this can happen in an MDP. The start state is A. The right action gives a reward $0$ and terminates the episode. The left action also gives a reward of $0$, but then enters state B, from which there are many possible actions, with rewards drawn from $\mathcal N(−0.1,1.0)$. Thus the expected return for any trajectory starting with the left action is $−0.1$, making it suboptimal. Nevertheless, the RL algorithm may pick the left action due to the maximization bias making B appear to have a positive value.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A subtle problem in Q-learning)</span></p>
 
-The Q-learning target $R\_{t+1} + \gamma \max\_a Q(S\_{t+1}, a)$ uses the *same* estimates $Q$ to do two jobs at once: **select** the action with the largest estimate, and **evaluate** that selected action. This double-duty introduces **maximization bias** — even if every individual estimate is unbiased, the maximum is biased *upward*:
+The Q-learning target 
 
-$$
-\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_a \mathbb{E}\bigl[Q(s, a)\bigr].
-$$
+$$R\_{t+1} + \gamma \max\_a Q(S\_{t+1}, a)$$
 
-In particular, if $\mathbb{E}[Q(s, a)] = q(s, a)$, then $\mathbb{E}[\max\_a Q(s, a)] \ge \max\_a q(s, a)$ — Q-learning is systematically optimistic about the value of the best action.
+uses the *same* estimates $Q$ to do two jobs at once: 
+* **select** the action with the largest estimate, and 
+* **evaluate** that selected action. 
 
+This double-duty introduces **maximization bias** — even if every individual estimate is unbiased, the maximum is biased *upward*:
+
+$$\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_a \mathbb{E}\bigl[Q(s, a)\bigr].$$
+
+In particular, if 
+
+$$\mathbb{E}[Q(s, a)] = q(s, a),$$
+
+then 
+
+$$\mathbb{E}[\max\_a Q(s, a)] \ge \max\_a q(s, a)$$ 
+
+— Q-learning is systematically optimistic about the value of the best action.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>What is meant by two jobs</summary>
+
+You are right to distinguish the two actions. The remark uses **“evaluate” in a different sense** from “update the action that was executed.”
+
+At time $t$:
+
+1. The behavior policy chooses $A_t$ in $S_t$.
+2. Executing $A_t$ produces $R_{t+1}$ and $S_{t+1}$.
+3. Q-learning updates the executed pair $Q(S_t,A_t)$:
+
+$$Q(S_t,A_t)\leftarrow Q(S_t,A_t) +\alpha\left[ R_{t+1} +\gamma\max_a Q(S_{t+1},a) -Q(S_t,A_t) \right].$$
+
+So yes: the **entry being updated** corresponds to the behavior action $A_t$ that led to $S_{t+1}$. 
+
+But inside the target, Q-learning defines
+
+$$A^*=\arg\max_a Q(S_{t+1},a)$$
+
+and then uses
+
+$$Q(S_{t+1},A^*)$$
+
+as its estimate of the future value. This is what the remark calls:
+
+* **selection:** use $Q$ to choose $A^\ast$;
+* **evaluation:** use the same $Q$ to assign the numerical value $Q(S_{t+1},A^\ast)$ to that selected action.
+
+The word “evaluate” here does **not** mean that $A^\ast$ was executed in the environment. It means that its value estimate is inserted into the TD target.
+
+The action roles are therefore:
+
+$$\underbrace{A_t}_{\substack{\text{behavior action}\\text{actually executed}}} \quad\longrightarrow\quad R_{t+1},S_{t+1},$$
+
+then
+
+$$\underbrace{A^*=\arg\max_a Q(S_{t+1},a)}_{\substack{\text{hypothetical greedy next action}\\text{selected and valued inside target}}}.$$
+
+The actual next behavior action $A_{t+1}$ may be different because the behavior policy is $\varepsilon$-greedy. Q-learning ignores $A_{t+1}$ in its update; Sarsa uses it:
+
+$$\text{Sarsa target} = R_{t+1}+\gamma Q(S_{t+1},A_{t+1}),$$
+
+$$\text{Q-learning target} = R_{t+1}+\gamma Q(S_{t+1},A^*).$$
+
+So your objection is valid about the wording: **Q-learning updates the action that was behaviorally executed, but it “selects and evaluates” a possibly unexecuted greedy action at the next state.** Maximization bias arises in this second part. 
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -5026,21 +5235,19 @@ In particular, if $\mathbb{E}[Q(s, a)] = q(s, a)$, then $\mathbb{E}[\max\_a Q(s,
 
 Let $b^\ast \in \arg\max\_b \mathbb{E}[Q(s, b)]$. Since the maximum is at least as large as any particular action value,
 
-$$
-\max_a Q(s, a) \;\ge\; Q(s, b^\ast).
-$$
+$$\max_a Q(s, a) \;\ge\; Q(s, b^\ast).$$
 
 Taking expectations on both sides,
 
-$$
-\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \mathbb{E}[Q(s, b^\ast)].
-$$
+$$\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \mathbb{E}[Q(s, b^\ast)].$$
 
-By the definition of $b^\ast$, $\mathbb{E}[Q(s, b^\ast)] = \max\_b \mathbb{E}[Q(s, b)]$, hence
+By the definition of $b^\ast$, 
 
-$$
-\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_b \mathbb{E}[Q(s, b)].
-$$
+$$\mathbb{E}[Q(s, b^\ast)] = \max\_b \mathbb{E}[Q(s, b)],$$
+
+hence
+
+$$\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \max_b \mathbb{E}[Q(s, b)].$$
 
 So taking a maximum over *noisy* estimates injects optimism — the inequality is strict whenever the estimates have genuine variance and are not all maximised at the same action.
 
@@ -5057,7 +5264,11 @@ $$
 
 with $\mathbb{E}[\text{error}\_1] = \mathbb{E}[\text{error}\_2] = 0$. Even so, $\max\lbrace Q(s, a\_1), Q(s, a\_2)\rbrace$ tends to select whichever estimate happens to have the **more positive error**.
 
-The key realisation: each estimate may be unbiased, but the *selected* one is **not random** — it is, by construction, the one that currently looks best. In Q-learning the same table $Q$ both selects $A^\ast = \arg\max\_a Q(S\_{t+1}, a)$ and evaluates $Q(S\_{t+1}, A^\ast)$, so the positive selection error is preserved straight into the TD target.
+The key realisation: each estimate may be unbiased, but the *selected* one is **not random** — it is, by construction, the one that currently looks best. In Q-learning the same table $Q$ both 
+* **selects** $A^\ast = \arg\max\_a Q(S\_{t+1}, a)$ and
+* **evaluates** $Q(S\_{t+1}, A^\ast)$,
+
+so the positive selection error is preserved straight into the TD target.
 
 </div>
 
@@ -5116,9 +5327,7 @@ The key realisation: each estimate may be unbiased, but the *selected* one is **
 
 Maintain **two** independent action-value estimates $Q\_1(s, a)$ and $Q\_2(s, a)$. Use one to *select* the maximising action and the *other* to *evaluate* its value:
 
-$$
-A^\ast = \arg\max_a Q_1(s, a), \qquad \text{value} = Q_2(s, A^\ast).
-$$
+$$A^\ast = \arg\max_a Q_1(s, a), \qquad \text{value} = Q_2(s, A^\ast).$$
 
 Because the noise in $Q\_1$ (which made the selection) is **independent** of the noise in $Q\_2$ (which does the evaluation), the upward bias is removed in expectation. Swapping the roles symmetrically yields a second unbiased estimate.
 
@@ -5136,20 +5345,455 @@ Loop for each episode, and for each step:
 1. Choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q\_1 + Q\_2$; take $A$, observe $R, S'$.
 2. With probability $\tfrac{1}{2}$, **update $Q\_1$** (select with $Q\_1$, evaluate with $Q\_2$):
 
-   $$
-   Q_1(S, A) \leftarrow Q_1(S, A) + \alpha\Bigl[\,R + \gamma\, Q_2\bigl(S', \arg\max_a Q_1(S', a)\bigr) - Q_1(S, A)\,\Bigr].
-   $$
+   $$Q_1(S, A) \leftarrow Q_1(S, A) + \alpha\Bigl[\,R + \gamma\, Q_2\bigl(S', \arg\max_a Q_1(S', a)\bigr) - Q_1(S, A)\,\Bigr].$$
 
 3. **Otherwise update $Q\_2$** symmetrically (select with $Q\_2$, evaluate with $Q\_1$):
 
-   $$
-   Q_2(S, A) \leftarrow Q_2(S, A) + \alpha\Bigl[\,R + \gamma\, Q_1\bigl(S', \arg\max_a Q_2(S', a)\bigr) - Q_2(S, A)\,\Bigr].
-   $$
+   $$Q_2(S, A) \leftarrow Q_2(S, A) + \alpha\Bigl[\,R + \gamma\, Q_1\bigl(S', \arg\max_a Q_2(S', a)\bigr) - Q_2(S, A)\,\Bigr].$$
 
 4. $S \leftarrow S'$ (and at a terminal $S'$ the target is just $R$).
 
 The behaviour policy is $\varepsilon$-greedy with respect to $Q\_1 + Q\_2$. The cost is a **$\times 2$ memory** footprint; the per-step computation is the same as ordinary Q-learning.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Intuition validation</summary>
+
+> Is my intuition of of double Q-learning correct: we basically have two interleaving Q-learning process with different experiences, which makes their noise independent and each of the processes getting less / no biased on its own biased / noisy experience and they have sort of cooperate and try to agree with each other, because they one after another take actions according  to any of them and another one has to update its own knowledge, which looks like they introduce their own biases and noisy into each other, which on average gives no bias, because the biases are random, so it cancels out
+
+This intuition is **close**, especially the idea that two estimates prevent an estimator from validating an action selected because of its own noise. But the precise mechanism is slightly different.
+
+Write
+
+$$Q_1(s,a)=q(s,a)+\varepsilon_1(a), \qquad Q_2(s,a)=q(s,a)+\varepsilon_2(a).$$
+
+Ordinary Q-learning uses
+
+$$\max_a Q_1(s,a) = Q_1!\left(s,\arg\max_a Q_1(s,a)\right).$$
+
+The selected action tends to have an unusually positive $\varepsilon_1(a)$, precisely because that noise helped it win the maximum. The same positive error is then used to evaluate it.
+
+Double Q-learning instead uses, for example,
+
+$$A^*=\arg\max_a Q_1(s,a), \qquad \text{target value}=Q_2(s,A^*).$$
+
+Now $A^\ast$ may have been selected because $\varepsilon_1(A^\ast)$ was unusually positive, but its evaluation uses $\varepsilon_2(A^\ast)$, which has no reason to be positive merely because $\varepsilon_1(A^\ast)$ was positive. This breaks the selection–evaluation correlation responsible for maximization bias. 
+
+### What is correct in your intuition
+
+There are indeed two interleaved estimators. At each transition, one is chosen for updating:
+
+$$Q_1(S,A)\leftarrow Q_1(S,A) +\alpha\left[ R+\gamma Q_2!\left(S',\arg\max_a Q_1(S',a)\right)-Q_1(S,A) \right],$$
+
+or symmetrically with $Q_1,Q_2$ exchanged. 
+
+Thus each table sometimes selects the next action and the other table evaluates it.
+
+### Three corrections
+
+**They do not generally receive separate independent trajectories.**
+Usually both tables observe the same stream of transitions, with each transition randomly assigned to update one table. Their errors are therefore not perfectly independent. The algorithm merely tries to keep them sufficiently decorrelated.
+
+**The other table does not get updated.**
+When updating $Q_1$, $Q_1$ selects the maximizing action, $Q_2$ evaluates it, but the entry actually changed is $Q_1(S,A)$. $Q_2$ remains fixed on that step.
+
+**The biases do not cancel by averaging opposite signs.**
+The mechanism is not
+
+$$\text{positive bias}+\text{negative bias}=0.$$
+
+Rather, the noise responsible for winning the maximization is not reused for evaluation. Conditional on the action selected by $Q_1$, the error from $Q_2$ is approximately mean-zero:
+
+$$\mathbb E!\left[\varepsilon_2(A^*)\mid A^* \text{ selected using }Q_1\right]\approx 0.$$
+
+So the upward selection bias disappears. Double Q-learning can sometimes mildly underestimate; it is not guaranteed to be exactly unbiased at every finite stage.
+
+The clean interpretation is:
+
+$$\boxed{\text{Two estimators do not cancel noise; they decouple selection noise from evaluation noise.}}$$
+
+They still cooperate through shared targets and through the behaviour policy, commonly chosen $\varepsilon$-greedily with respect to $Q_1+Q_2$, so over time both tables approach the same optimal action values. 
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Show how double Q-learning removes this problem</summary>
+
+**Key idea:** Double Q-learning does not take a maximum of the estimates used for evaluation. It uses one estimator to choose the action and the other to evaluate it.
+
+Write two estimates at the next state (s'):
+
+[
+Q_1(s',a)=q_*(s',a)+\varepsilon_{1,a},
+\qquad
+Q_2(s',a)=q_*(s',a)+\varepsilon_{2,a},
+]
+
+where the errors have mean zero and are approximately independent or at least decorrelated.
+
+### Ordinary Q-learning
+
+Ordinary Q-learning uses
+
+[
+\max_a Q_1(s',a).
+]
+
+Equivalently, define
+
+[
+A^*=\arg\max_a Q_1(s',a).
+]
+
+Then the value inserted into the target is
+
+[
+Q_1(s',A^*).
+]
+
+The problem is that (A^*) was selected partly because (\varepsilon_{1,A^*}) was unusually large. Therefore,
+
+[
+\mathbb E[\varepsilon_{1,A^*}]>0
+]
+
+in typical noisy settings. Selection and evaluation reuse the same favorable error.
+
+---
+
+### Double Q-learning
+
+When updating (Q_1), Double Q-learning instead uses
+
+[
+A^*=\arg\max_a Q_1(s',a)
+]
+
+for selection, but evaluates this action with (Q_2):
+
+[
+Q_2(s',A^*).
+]
+
+Condition on the whole table (Q_1). Then (A^*) is fixed. Assuming (Q_2)'s error is independent of the selection noise,
+
+[
+\begin{aligned}
+\mathbb E!\left[Q_2(s',A^*)\mid Q_1\right]
+&=
+\mathbb E!\left[q_*(s',A^*)+\varepsilon_{2,A^*}\mid Q_1\right]\
+&=
+q_*(s',A^*).
+\end{aligned}
+]
+
+The error that made the action win in (Q_1) is not present in its evaluation by (Q_2). Hence
+
+[
+\mathbb E!\left[Q_2(s',A^*)\right]
+==================================
+
+\mathbb E!\left[q_*(s',A^*)\right]
+\leq
+\max_a q_*(s',a).
+]
+
+So the systematic upward bias
+
+[
+\mathbb E[\max_a Q(s',a)]
+\geq
+\max_a q_*(s',a)
+]
+
+is gone.
+
+### The two-action example
+
+Suppose both actions have true value (0), and both tables independently estimate each action as either (-1) or (+1), each with probability (1/2).
+
+Ordinary Q-learning gives
+
+[
+\mathbb E[\max{Q_1(a_1),Q_1(a_2)}]
+==================================
+
+\frac12.
+]
+
+Now let
+
+[
+A^*=\arg\max_a Q_1(a).
+]
+
+Double Q-learning evaluates using (Q_2(A^*)). Since (Q_2) is independent of which action happened to look best in (Q_1),
+
+[
+\mathbb E[Q_2(A^*)\mid A^*]=0,
+]
+
+and therefore
+
+[
+\mathbb E[Q_2(A^*)]=0.
+]
+
+Thus:
+
+[
+\boxed{
+\text{ordinary Q-learning: expected target value }=\frac12
+}
+]
+
+while
+
+[
+\boxed{
+\text{Double Q-learning: expected target value }=0.
+}
+]
+
+The actual update alternates symmetrically:
+
+[
+Q_1(S,A)\leftarrow Q_1(S,A)+
+\alpha\left[
+R+\gamma Q_2!\left(S',\arg\max_aQ_1(S',a)\right)-Q_1(S,A)
+\right],
+]
+
+or the same formula with (Q_1,Q_2) exchanged. 
+
+One nuance: Double Q-learning removes the **positive maximization bias**, but it can mildly underestimate because (Q_1) may select a genuinely suboptimal action, which (Q_2) then evaluates honestly. The noises do not cancel; the noise responsible for selection is simply not reused for evaluation.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why is the exception of Q is q^*? Is it guaranteed?</summary>
+
+You mean **expectation**, and no: it is **not automatically guaranteed** that
+
+[
+\mathbb E[Q_i(s,a)] = q_*(s,a)
+]
+
+at every stage of Q-learning.
+
+That equality was an **idealized assumption used to isolate maximization bias**.
+
+**What the derivation assumes.**
+Imagine that each action-value estimate has the form
+
+[
+Q_i(s,a)=q_*(s,a)+\varepsilon_{i,a},
+\qquad
+\mathbb E[\varepsilon_{i,a}]=0.
+]
+
+Then immediately,
+
+[
+\mathbb E[Q_i(s,a)]=q_*(s,a).
+]
+
+This says that each action is estimated correctly **on average**, even though any particular estimate is noisy. The derivation then shows that maximization alone introduces bias:
+
+[
+\mathbb E!\left[\max_a Q_i(s,a)\right]
+\geq
+\max_a q_*(s,a).
+]
+
+So the point is stronger than “Q-learning estimates are bad”: **even perfectly unbiased individual estimates become biased after taking their maximum**. This is the assumption made in the notes’ derivation. 
+
+**Actual Q-learning estimates need not be unbiased.**
+
+During learning, (Q_t(s,a)) can be biased for many reasons:
+
+* initialization;
+* bootstrapping from other inaccurate estimates;
+* changing targets as the policy improves;
+* finite data;
+* correlated samples.
+
+Thus generally,
+
+[
+\mathbb E[Q_t(s,a)]\neq q_*(s,a)
+]
+
+for finite (t).
+
+What is guaranteed under the standard tabular convergence assumptions is an **asymptotic statement**:
+
+[
+Q_t(s,a)\longrightarrow q_*(s,a)
+]
+
+with probability (1), provided, roughly, that every state-action pair is visited infinitely often, the step sizes satisfy the Robbins–Monro conditions, rewards are bounded, and the discounted or episodic MDP is well behaved.
+
+This convergence is not the same as finite-time unbiasedness.
+
+**What Double Q-learning actually needs for the clean argument.**
+
+Suppose (Q_1) selects
+
+[
+A^*=\arg\max_a Q_1(s,a),
+]
+
+and (Q_2) evaluates it. The clean calculation assumes that (Q_2)'s evaluation error is mean-zero and independent of the information used to select (A^*):
+
+[
+Q_2(s,a)=q_*(s,a)+\varepsilon_{2,a}.
+]
+
+Then
+
+[
+\mathbb E[\varepsilon_{2,A^*}\mid Q_1]=0,
+]
+
+so
+
+[
+\mathbb E[Q_2(s,A^*)\mid Q_1]
+=============================
+
+q_*(s,A^*).
+]
+
+Notice that this is generally **not**
+
+[
+q_*(s,a_*),
+\qquad
+a_*\in\arg\max_a q_*(s,a),
+]
+
+because (Q_1) may select the wrong action. Therefore,
+
+[
+\mathbb E[Q_2(s,A^*)]
+=====================
+
+\mathbb E[q_*(s,A^*)]
+\leq
+\max_a q_*(s,a).
+]
+
+So Double Q-learning removes the **upward bias caused by reusing the winning noise**, but it may introduce some underestimation because the selecting estimator can choose a genuinely suboptimal action.
+
+The precise conclusion is therefore:
+
+[
+\boxed{
+\mathbb E[Q_i]=q_*
+\text{ is an analytical assumption, not a finite-time guarantee.}
+}
+]
+
+Double Q-learning’s real convergence result is asymptotic; the unbiased-noise model is used only to make the maximization-bias mechanism transparent.
+
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>In q-learning do we really have this bias in estimation? I mean I would expect it going to her over time. The error in coupled system could introduce bias in estimation, but asymptotically it should be similar to double q-learning, no?</summary>
+
+Yes—your intuition is basically correct.
+
+**Under the standard tabular Q-learning assumptions, the maximization bias is a finite-time phenomenon, not a different asymptotic limit.**
+
+If
+
+[
+Q_t(s,a)\xrightarrow[t\to\infty]{a.s.}q_*(s,a)
+]
+
+for every state-action pair, then continuity of the finite maximum gives
+
+[
+\max_a Q_t(s,a)\xrightarrow[t\to\infty]{a.s.}\max_a q_*(s,a).
+]
+
+Hence the noise vanishes, and there is eventually no positive estimation error for the maximum to select. Ordinary Q-learning and Double Q-learning both converge to (q_*), subject to the usual conditions: sufficient exploration, bounded rewards, and decreasing step sizes satisfying the stochastic-approximation conditions.
+
+**Why then is maximization bias considered a problem?**
+
+At finite time, write
+
+[
+Q_t(s,a)=q_*(s,a)+\varepsilon_{t,a}.
+]
+
+Even when each error is individually centered, the maximum tends to select a positive error:
+
+[
+\mathbb E!\left[\max_a Q_t(s,a)\right]
+\geq
+\max_a \mathbb E[Q_t(s,a)].
+]
+
+This inflated estimate is placed inside another Q-value’s bootstrap target:
+
+[
+R_{t+1}+\gamma\max_a Q_t(S_{t+1},a).
+]
+
+Thus the bias can propagate backward through the coupled Bellman updates. It may cause poor action choices, which then change what data are collected, slowing down correction. The example in your notes is exactly of this kind: Q-learning substantially prefers the suboptimal left action early in training, even though it would eventually recover under ideal convergence conditions. 
+
+**Double Q-learning improves the path, not usually the final destination.**
+
+Both algorithms aim at
+
+$$q_*.$$
+
+The difference is roughly
+
+$$
+\begin{array}{c}
+\text{Q-learning: noisy and systematically optimistic route to }q_*,
+[2mm]
+\text{Double Q-learning: less optimistic route to }q_*.
+\end{array}
+$$
+
+Double Q-learning can therefore learn a better policy much earlier and avoid wasting many samples on actions whose values were inflated by noise.
+
+**The bias need not vanish in practical variants.**
+
+The asymptotic equivalence relies on the estimation noise actually going to zero. That can fail or become irrelevant when:
+
+* a constant step size is used, so estimates keep fluctuating;
+* the environment is nonstationary;
+* function approximation continually introduces approximation error;
+* data are limited;
+* deep Q-learning uses noisy targets and imperfect optimization.
+
+In these regimes,
+
+$$\operatorname{Var}(Q_t(s,a))\not\to 0,$$
+
+so maximization can keep generating overestimation indefinitely. This is why Double DQN is useful even when training for a long time.
+
+So the clean conclusion is
+
+$$\boxed{\text{Tabular, diminishing-step-size case: same asymptotic }q_*,\text{ but different finite-time behavior.}}$$
+
+The derivation in the notes explains a bias in the **current noisy bootstrap target**, not a claim that ordinary Q-learning necessarily converges to a permanently biased limit. 
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5184,7 +5828,9 @@ Every row is the same skeleton $Q \leftarrow Q + \alpha\,[\,\text{target} - Q\,]
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — Temporal-Difference Learning)</span></p>
 
 * **TD = sampling $+$ bootstrapping.** The defining hybrid of Monte Carlo (learn from raw experience) and Dynamic Programming (update toward an estimate built from estimates).
-* **The TD error is the central object.** $\delta\_t = R\_{t+1} + \gamma V(S\_{t+1}) - V(S\_t)$; nearly every later algorithm is "define a TD error, then step on it."
+* **The TD error is the central object.** 
+  * $\delta\_t = R\_{t+1} + \gamma V(S\_{t+1}) - V(S\_t)$; 
+  * nearly every later algorithm is "define a TD error, then step on it."
 * **Why TD is useful:** no model needed (vs DP), online and incremental (vs MC), often more data-efficient, and batch TD equals **certainty equivalence** on the empirical Markov model.
 * **Control via action values.** **Sarsa** (on-policy) learns the value of the behaviour it follows, exploration included; **Q-learning** (off-policy) learns the value of the greedy target regardless of behaviour; **Double Q-learning** decouples selection from evaluation to remove maximization bias.
 * **Final message.** TD methods are not merely RL algorithms — they are general-purpose tools for *learning long-term predictions from other predictions* in dynamical systems.
@@ -5196,8 +5842,6 @@ Every row is the same skeleton $Q \leftarrow Q + \alpha\,[\,\text{target} - Q\,]
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Does not TD operate in dynamical programming manner, i.e. to update the current $V(S_t)$, we need to know $V(S_{t+1})$? Why does it allow to make the updates faster without waiting the whole trajectory to end, if we still need the final state to send the updates  backwards in DP chain?</summary>
-
-This is a fantastic question, and you have hit on the exact, counterintuitive "magic" of Temporal-Difference (TD) learning.
 
 You are completely correct that TD bootstraps—it uses the value of the next state, $V(S_{t+1})$, to update the current state, $V(S_t)$. Your intuition about having to wait for the final state to send updates "backwards" perfectly describes how Monte Carlo (MC) works.
 
@@ -5264,7 +5908,11 @@ By modifying the table in-place, surprise and reward information ripple through 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Bridging Monte Carlo and one-step TD)</span></p>
 
-The previous lecture set up the two extremes of model-free value estimation. **Monte Carlo** waits for the *complete return* $G\_t$ before updating; **one-step TD** updates immediately, after a single transition, by bootstrapping from $V(S\_{t+1})$. This lecture fills in everything *between* them: the family of **$n$-step methods**, which use the first $n$ real rewards and then bootstrap.
+The previous lecture set up the two extremes of model-free value estimation. 
+* **Monte Carlo** waits for the *complete return* $G\_t$ before updating; 
+* **one-step TD** updates immediately, after a single transition, by bootstrapping from $V(S\_{t+1})$. 
+
+This lecture fills in everything *between* them: the family of **$n$-step methods**, which use the first $n$ real rewards and then bootstrap.
 
 The build-up is:
 
@@ -5385,9 +6033,7 @@ These pull in opposite directions. We usually want to *act fast* — react to wh
 
 The target of an $n$-step update is the **$n$-step return**:
 
-$$
-G_{t:t+n} \;\doteq\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} V_{t+n-1}(S_{t+n}),
-$$
+$$G_{t:t+n} \;\doteq\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} V_{t+n-1}(S_{t+n}),$$
 
 defined for $n \geq 1$ and $0 \leq t < T - n$. Here $V\_{t+n-1}$ denotes the value-function estimate *as it stands at time $t+n-1$* (estimates change over time, so the bootstrap uses the most recent one).
 
@@ -5402,9 +6048,7 @@ defined for $n \geq 1$ and $0 \leq t < T - n$. Here $V\_{t+n-1}$ denotes the val
 
 The natural learning rule, applied when the data becomes available (at time $t + n$):
 
-$$
-V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr], \qquad 0 \leq t < T,
-$$
+$$V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr], \qquad 0 \leq t < T,$$
 
 with all other states left unchanged ($V\_{t+n}(s) = V\_{t+n-1}(s)$ for $s \neq S\_t$). Two book-keeping consequences of the timing subtlety:
 
@@ -5442,7 +6086,11 @@ Because of error reduction, **all $n$-step TD methods converge to $v\_\pi$** und
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5-state random walk — credit travels $n$ states)</span></p>
 
-Consider a short chain $0 \leftrightarrow A \leftrightarrow B \leftrightarrow C \leftrightarrow D \leftrightarrow E \leftrightarrow 1$, starting in $C$, with reward $+1$ only on terminating at the right end. Suppose the first episode goes $C \to D \to E \to$ terminate-right, return $+1$, with all values initialised at $0.5$.
+Consider a short chain 
+
+$$0 \leftrightarrow A \leftrightarrow B \leftrightarrow C \leftrightarrow D \leftrightarrow E \leftrightarrow 1,$$
+
+starting in $C$, with reward $+1$ only on terminating at the right end. Suppose the first episode goes $C \to D \to E \to$ terminate-right, return $+1$, with all values initialised at $0.5$.
 
 * **1-step:** only $V(E)$ moves toward $1$ — credit travels just one state.
 * **2-step:** both $V(D)$ and $V(E)$ move toward $1$.
@@ -5714,15 +6362,11 @@ Loop for each episode:
    * Let $\tau \leftarrow t - n + 1$ ($\tau$ is the time of the estimate now being updated).
    * **If $\tau \geq 0$:**
      
-     $$
-     G \leftarrow \sum_{i=\tau+1}^{\min(\tau+n,\, T)} \gamma^{\,i-\tau-1} R_i;
-     $$
+     $$G \leftarrow \sum_{i=\tau+1}^{\min(\tau+n,\, T)} \gamma^{\,i-\tau-1} R_i;$$
      
      if $\tau + n < T$, add the bootstrap $G \leftarrow G + \gamma^{n} Q(S_{\tau+n}, A_{\tau+n})$; then
      
-     $$
-     Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].
-     $$
+     $$Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].$$
      
    * Until $\tau = T - 1$.
 
@@ -5735,15 +6379,11 @@ The guard `if $t < T$` stops *sampling* once the episode ends, while the loop ke
 
 Same update, but the **last** node is a full expectation over the target policy rather than a single sampled action:
 
-$$
-G_{t:t+n} \;\doteq\; R_{t+1} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} \bar V_{t+n-1}(S_{t+n}),
-$$
+$$G_{t:t+n} \;\doteq\; R_{t+1} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n} \bar V_{t+n-1}(S_{t+n}),$$
 
 where the **expected approximate value** is
 
-$$
-\bar V_{t+n-1}(S_{t+n}) \;\doteq\; \sum_a \pi(a \mid S_{t+n})\, Q_{t+n-1}(S_{t+n}, a).
-$$
+$$\bar V_{t+n-1}(S_{t+n}) \;\doteq\; \sum_a \pi(a \mid S_{t+n})\, Q_{t+n-1}(S_{t+n}, a).$$
 
 The terminal branch averages over *all* actions, weighted by $\pi$. This has **lower variance** than Sarsa's sampled last step; the quantity $\bar V$ reappears in several later contexts (notably the off-policy control variates below).
 
@@ -5756,23 +6396,17 @@ The terminal branch averages over *all* actions, weighted by $\pi$. This has **l
 
 To learn about a target policy $\pi$ while following a behaviour policy $b$, we reweight each $n$-step return by the **importance-sampling ratio** — the product of per-step action-probability ratios over the segment:
 
-$$
-\rho_{t:h} \;\doteq\; \prod_{k=t}^{\min(h,\, T-1)} \frac{\pi(A_k \mid S_k)}{b(A_k \mid S_k)},
-$$
+$$\rho_{t:h} \;\doteq\; \prod_{k=t}^{\min(h,\, T-1)} \frac{\pi(A_k \mid S_k)}{b(A_k \mid S_k)},$$
 
 where $T$ is the terminal time step and $h$ is the last action index included in the product. The off-policy updates simply premultiply the TD error by the appropriate ratio.
 
 **Off-policy $n$-step TD (state values):**
 
-$$
-V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\, \rho_{t:t+n-1}\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr].
-$$
+$$V_{t+n}(S_t) \;\doteq\; V_{t+n-1}(S_t) + \alpha\, \rho_{t:t+n-1}\,\bigl[\, G_{t:t+n} - V_{t+n-1}(S_t) \,\bigr].$$
 
 **Off-policy $n$-step Sarsa (action values):**
 
-$$
-Q_{t+n}(S_t, A_t) \;\doteq\; Q_{t+n-1}(S_t, A_t) + \alpha\, \rho_{t+1:t+n}\,\bigl[\, G_{t:t+n} - Q_{t+n-1}(S_t, A_t) \,\bigr].
-$$
+$$Q_{t+n}(S_t, A_t) \;\doteq\; Q_{t+n-1}(S_t, A_t) + \alpha\, \rho_{t+1:t+n}\,\bigl[\, G_{t:t+n} - Q_{t+n-1}(S_t, A_t) \,\bigr].$$
 
 The ratio for the action-value version starts at $t+1$, not $t$: the pair $(S\_t, A\_t)$ being updated is *given*, so its own action is not reweighted — only the actions chosen *afterwards* need correcting.
 
@@ -5893,7 +6527,11 @@ Every row is the *same* skeleton — $n$ real rewards then a bootstrap — diffe
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Unifying model-free and model-based RL)</span></p>
 
-Every method so far has improved value estimates from **real experience**: Monte Carlo from complete returns, TD and $n$-step methods from sampled transitions. Dynamic Programming (Lecture 4) was the exception — it improved values *without acting*, by sweeping a known model of the environment. This lecture closes the gap between those two worlds.
+Every method so far has improved value estimates from **real experience**:
+* Monte Carlo from complete returns, 
+* TD and $n$-step methods from sampled transitions.
+
+Dynamic Programming (Lecture 4) was the exception — it improved values *without acting*, by sweeping a known model of the environment. This lecture closes the gap between those two worlds.
 
 The organising claim is simple:
 
@@ -5942,8 +6580,16 @@ It helps to locate the new method against everything covered so far. The only ge
 
 A **model** is anything the agent can use to predict what the environment does next — given a state and action, it returns information about the resulting next state and reward. Models come in two flavours:
 
-* **Distribution model.** Represents *all* possible next state–reward pairs together with their probabilities: formally $\hat p(s', r \mid s, a)$. It carries complete information but is harder to obtain and store.
-* **Sample model.** Produces a *single* sampled outcome $(s,a) \mapsto (S', R)$ drawn according to the true dynamics. It is easier to simulate from and often far easier to obtain in practice (e.g. a game engine or physics simulator).
+* **Distribution model.** Represents *all* possible next state–reward pairs together with their probabilities: 
+  
+  $$\hat p(s', r \mid s, a).$$
+  
+  It carries complete information but is harder to obtain and store.
+* **Sample model.** Produces a *single* sampled outcome 
+  
+  $$(s,a) \mapsto (S', R)$$
+  
+  drawn according to the true dynamics. It is easier to simulate from and often far easier to obtain in practice (e.g. a game engine or physics simulator).
 
 A distribution model can always *generate* samples; a sample model cannot recover the full distribution. Either kind can be used to **simulate experience**: starting from any state–action pair, a model can produce a transition, and chaining transitions produces an entire simulated trajectory.
 
@@ -6005,6 +6651,60 @@ Once planning is framed as *backups over simulated transitions*, every value-upd
   </svg>
   <figcaption>Planning is not a new kind of value update. It is the familiar backup operation applied to model-generated experience instead of environment-generated experience.</figcaption>
 </figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>What are backups?</summary>
+
+In RL, a **backup** means one update that propagates value information **backward** from possible future states to an earlier state or state–action pair.
+
+For example, the Q-learning backup is
+
+$$Q(S,A) \leftarrow Q(S,A) + \alpha \left[ R+\gamma\max_a Q(S',a)-Q(S,A) \right].$$
+
+Here, information from the successor $S'$ is “backed up” into the predecessor pair $(S,A)$:
+
+$$S,A \longrightarrow R,S' \qquad\text{but value information flows backward}\qquad S' \longrightarrow S,A.$$
+
+So a backup is essentially **one Bellman-style value update**, not a stored copy.
+
+### Expected versus sample backups
+
+An **expected backup** averages over every possible next outcome:
+
+$$Q(s,a) \leftarrow \sum_{s',r} p(s',r\mid s,a) \left[ r+\gamma\max_{a'}Q(s',a') \right].$$
+
+This is the usual DP-style backup. It requires the distribution model.
+
+A **sample backup** uses one observed or simulated transition:
+
+$$(s,a,r,s')$$
+
+and updates toward
+
+$$r+\gamma\max_{a'}Q(s',a').$$
+
+TD, Q-learning and Dyna-Q commonly use sample backups.
+
+### Why this matters in Lecture 8
+
+Lecture 8 discusses planning with learned models. Both real experience and model-generated experience can produce the same backup:
+
+$$Q(S,A) \leftarrow Q(S,A)+\alpha \left[ R+\gamma\max_aQ(S',a)-Q(S,A) \right].$$
+
+The only difference is where $(S,A,R,S')$ came from:
+
+* **direct RL:** a real environment transition;
+* **planning:** a transition generated by the model.
+
+Thus when Dyna-Q performs $n$ planning steps, it performs $n$ additional backups. Prioritized sweeping asks which state–action pairs should be backed up first. 
+
+A useful mental translation is:
+
+$$\boxed{\text{backup}=\text{use later-value information to revise an earlier value estimate}.}$$
+
+</details>
+</div>
 
 ### Dyna: Integrating Learning and Planning
 
@@ -6122,7 +6822,10 @@ For each real step:
    Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max_{a} Q(S', a) - Q(S, A)\,\bigr].
    $$
 
-4. **Model learning:** store $\hat M(S, A) \leftarrow (R, S')$.
+4. **Model learning:** store 
+   
+   $$\hat M(S, A) \leftarrow (R, S').$$
+
 5. **Planning — repeat $n$ times:**
    * sample a previously seen pair $(\tilde S, \tilde A)$;
    * retrieve $(\tilde R, \tilde S') = \hat M(\tilde S, \tilde A)$;
@@ -6413,17 +7116,32 @@ In short: **do the most urgent backups first.**
 
 Initialise $Q(s,a)$, a model $\hat M(s,a)$, and an empty priority queue $PQueue$. For a small threshold $\theta > 0$, loop forever:
 
-1. $S \leftarrow$ current (nonterminal) state; $A \leftarrow$ policy$(S, Q)$.
-2. Execute $A$; observe $R, S'$, and store $\hat M(S, A) \leftarrow (R, S')$.
-3. Compute the priority $P \leftarrow \lvert R + \gamma \max\_{a} Q(S', a) - Q(S, A) \rvert$.
+1. $S \leftarrow$ current (nonterminal) state; 
+   
+   $$A \leftarrow \text{ policy }(S, Q).$$
+
+2. Execute $A$; observe $R, S'$, and store 
+   
+   $$\hat M(S, A) \leftarrow (R, S').$$
+
+3. Compute the priority 
+   
+   $$P \leftarrow \lvert R + \gamma \max\_{a} Q(S', a) - Q(S, A) \rvert.$$
+
 4. If $P > \theta$, insert $(S, A)$ into $PQueue$ with priority $P$.
 5. Repeat $n$ times while $PQueue$ is nonempty:
-   * pop the highest-priority pair $(S, A)$; retrieve $(R, S') = \hat M(S, A)$;
-   * update $Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max\_{a} Q(S', a) - Q(S, A)\,\bigr]$;
+   * pop the highest-priority pair $(S, A)$; retrieve 
+     
+     $$(R, S') = \hat M(S, A);$$
+
+   * update 
+     
+     $$Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max\_{a} Q(S', a) - Q(S, A)\,\bigr];$$
+
    * for each predicted predecessor $(\bar S, \bar A)$ of $S$ with reward $\bar R$, compute
-     $$
-     P \leftarrow \bigl\lvert \bar R + \gamma \max_{a} Q(S, a) - Q(\bar S, \bar A) \bigr\rvert;
-     $$
+     
+     $$P \leftarrow \bigl\lvert \bar R + \gamma \max_{a} Q(S, a) - Q(\bar S, \bar A) \bigr\rvert;$$
+
    * if $P > \theta$, insert $(\bar S, \bar A)$ into $PQueue$ with priority $P$.
 
 On large gridworlds, prioritized sweeping can reach the optimal solution with **orders of magnitude fewer updates** than uniform Dyna-Q — **search control matters as much as the update rule itself.**
@@ -6714,9 +7432,17 @@ Leaf nodes are evaluated with a **heuristic** value estimate $\hat v$ rather tha
 
 Take a tree rooted at $s$ with $\gamma = 1$. From $s$, action $a\_1$ leads to node $x$ and action $a\_2$ to a leaf valued $4$. From $x$, action $b\_1$ leads through a **stochastic** action $o\_1$ to leaves $\lbrace 12, 2\rbrace$ with equal probability, and $b\_2$ to a leaf valued $6$. Backing up bottom-up:
 
-* **average** at the stochastic node $o\_1$: $\;\mathbb{E} = 0.5(12) + 0.5(2) = 7$;
-* **max** at each decision node: $v(m) = \max(7, 5) = 7$, then $v(x) = \max(7, 6) = 7$;
-* at the root: $Q(s, a\_1) = 7$, $Q(s, a\_2) = 4 \Rightarrow$ play $a\_1$.
+* **average** at the stochastic node $o\_1$: 
+  
+  $$\mathbb{E} = 0.5(12) + 0.5(2) = 7$$
+
+* **max** at each decision node: 
+  
+  $$v(m) = \max(7, 5) = 7, \text{ then } v(x) = \max(7, 6) = 7;$$
+
+* at the root: 
+  
+  $$Q(s, a_1) = 7, Q(s, a_2) = 4 \Rightarrow \text{ play } a_1.$$
 
 Bottom-up, the operators **alternate**: *average* at stochastic (chance) nodes, *max* at decision nodes. Expanding only promising lines — selective depth — is what makes the search *heuristic* rather than exhaustive.
 
@@ -6819,9 +7545,11 @@ Rollout does **not** learn a full global value function — it estimates *just e
    * simulate $K$ trajectories starting with $a$;
    * follow $\pi$ after the first step;
    * average the returns,
+     
      $$
      \hat q(s, a) = \frac{1}{K} \sum_{i=1}^{K} G^{(i)}.
      $$
+
 2. Choose the action with the largest $\hat q(s, a)$.
 
 A better rollout policy $\pi$ gives a better estimate; more simulations $K$ reduce its variance.
@@ -6944,9 +7672,8 @@ A single iteration touches the tree as follows:
 2. **Expand** — add *one* new node.
 3. **Simulate** — roll out from it to the end, returning a return $G$.
 4. **Backup** — along the path just taken, increment each visit count and fold $G$ into each running mean:
-   $$
-   N \leftarrow N + 1, \qquad Q \leftarrow Q + \tfrac{1}{N}\,(G - Q).
-   $$
+   
+   $$N \leftarrow N + 1, \qquad Q \leftarrow Q + \tfrac{1}{N}\,(G - Q).$$
 
 The rollout trajectory itself is **not stored** — only the statistics on the in-tree nodes are kept. The tree thus stores only the slice of the future worth thinking about for the decision in front of the agent.
 
@@ -7213,7 +7940,11 @@ read as: *"the value at $S\_t$ should look more like the target $U\_t$."* The me
 Plugging a regression method into RL is not as innocent as the $S\_t\mapsto U\_t$ view suggests. Three difficulties have no analogue in ordinary supervised learning:
 
 * **We learn online**, from states visited under the **state-visitation distribution** $d\_\pi$. Nearby examples are *correlated*, coverage is uneven, and the shared weights couple the effects of different updates.
-* **Bootstrapping makes the target depend on the current weights:** $U\_t = R\_{t+1} + \gamma\,\hat v(S\_{t+1},\mathbf{w}\_t)$. The "label" therefore **moves as we learn** — we are chasing a target we are simultaneously editing.
+* **Bootstrapping makes the target depend on the current weights:** 
+  
+  $$U_t = R_{t+1} + \gamma\,\hat v(S_{t+1},\mathbf{w}_t)$$
+  
+  The "label" therefore **moves as we learn** — we are chasing a target we are simultaneously editing.
 * **In control, the value function feeds back into the policy**, which changes the future data distribution — the problem is *nonstationary* by construction.
 
 The three recurring headaches are thus **coupled updates**, **moving targets / bootstrapping bias**, and **nonstationarity**. Keep them in mind; the rest of the lecture is largely about taming them.
@@ -8312,11 +9043,13 @@ $$
 \nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta}),
 $$
 
-where $\mu$ is the **on-policy state distribution** under $\pi\_{\boldsymbol{\theta}}$ — the same visitation weighting that appeared in the $\overline{\text{VE}}$ objective of Lecture 9. Using $\nabla \pi(a \mid s, \boldsymbol{\theta}) = \pi(a \mid s, \boldsymbol{\theta})\, \nabla \log \pi(a \mid s, \boldsymbol{\theta})$, the same statement reads as an expectation:
+where $\mu$ is the **on-policy state distribution** under $\pi\_{\boldsymbol{\theta}}$ — the same visitation weighting that appeared in the $\overline{\text{VE}}$ objective of Lecture 9. Using
 
-$$
-\nabla J(\boldsymbol{\theta}) \;\propto\; \mathbb{E}_{S \sim \mu,\; A \sim \pi(\cdot \mid S, \boldsymbol{\theta})}\bigl[\, q_\pi(S, A)\, \nabla \log \pi(A \mid S, \boldsymbol{\theta}) \,\bigr].
-$$
+$$\nabla \pi(a \mid s, \boldsymbol{\theta}) = \pi(a \mid s, \boldsymbol{\theta})\, \nabla \log \pi(a \mid s, \boldsymbol{\theta}),$$
+
+the same statement reads as an expectation:
+
+$$\nabla J(\boldsymbol{\theta}) \;\propto\; \mathbb{E}_{S \sim \mu,\; A \sim \pi(\cdot \mid S, \boldsymbol{\theta})}\bigl[\, q_\pi(S, A)\, \nabla \log \pi(A \mid S, \boldsymbol{\theta}) \,\bigr].$$
 
 </div>
 
@@ -8340,11 +9073,7 @@ The expectation form is a recipe with three steps:
 
 We suppress the dependence of $\pi$ on $\boldsymbol{\theta}$, and all gradients are with respect to $\boldsymbol{\theta}$. Recall from Lecture 3:
 
-$$
-v_\pi(s) = \sum_a \pi(a \mid s)\, q_\pi(s, a),
-\qquad
-q_\pi(s, a) = \sum_{s', r} p(s', r \mid s, a)\bigl[ r + \gamma\, v_\pi(s') \bigr].
-$$
+$$v_\pi(s) = \sum_a \pi(a \mid s)\, q_\pi(s, a), \qquad q_\pi(s, a) = \sum_{s', r} p(s', r \mid s, a)\bigl[ r + \gamma\, v_\pi(s') \bigr].$$
 
 We want $\nabla J(\boldsymbol{\theta}) = \nabla v\_\pi(s\_0)$, so we expand $\nabla v\_\pi(s)$ for an arbitrary state $s$. The plan:
 
@@ -8371,7 +9100,7 @@ The first term involves the policy gradient *at* $s$ — this is the part we wan
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 2/5 — differentiate $q\_\pi$ via Bellman)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 2/5 — differentiate $q_\pi$ via Bellman)</span></p>
 
 In the Bellman equation for $q\_\pi$, the dynamics $p(s', r \mid s, a)$ and the reward value $r$ do **not** depend on $\boldsymbol{\theta}$ — only $v\_\pi(s')$ does:
 
@@ -8387,7 +9116,7 @@ $$
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 3/5 — a one-step recursion in $\nabla v\_\pi$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 3/5 — a one-step recursion in $\nabla v_\pi$)</span></p>
 
 Substitute Step 2 into Step 1:
 
@@ -8490,7 +9219,7 @@ This is where **on-policy sampling** earns its keep: when we generate episodes u
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Action sampling — from $q\_\pi$ to the sampled return $G\_t$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Action sampling — from $q_\pi$ to the sampled return $G_t$)</span></p>
 
 Now fix one sampled on-policy state $S\_t$. The inner sum over actions is not yet an expectation over the *sampled* action — fix that by multiplying and dividing by $\pi(a \mid S\_t, \boldsymbol{\theta})$:
 
@@ -8503,11 +9232,13 @@ $$
 \end{aligned}
 $$
 
-The action $A\_t \sim \pi(\cdot \mid S\_t, \boldsymbol{\theta})$ generated during the episode is a sample from exactly this expectation. One unknown remains: $q\_\pi(S\_t, A\_t)$. But by definition $q\_\pi(S\_t, A\_t) = \mathbb{E}\_\pi[\, G\_t \mid S\_t, A\_t \,]$, so the observed **Monte Carlo return** $G\_t$ is an unbiased sample of it. One on-policy time step thus yields a Monte Carlo sample of the *full* policy gradient:
+The action $A\_t \sim \pi(\cdot \mid S\_t, \boldsymbol{\theta})$ generated during the episode is a sample from exactly this expectation. One unknown remains: $q\_\pi(S\_t, A\_t)$. But by definition 
 
-$$
-\widehat{\nabla J} \;\propto\; G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}).
-$$
+$$q_\pi(S_t, A_t) = \mathbb{E}_\pi[\, G_t \mid S_t, A_t \,],$$
+
+so the observed **Monte Carlo return** $G\_t$ is an unbiased sample of it. One on-policy time step thus yields a Monte Carlo sample of the *full* policy gradient:
+
+$$\widehat{\nabla J} \;\propto\; G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}).$$
 
 </div>
 
@@ -8516,21 +9247,19 @@ $$
 
 For the *discounted* start-state objective, the sample direction at time $t$ picks up an additional weight:
 
-$$
-\text{sample direction at time } t \;=\; \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
-$$
+$$\text{sample direction at time } t \;=\; \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).$$
 
-The key point is the **perspective of the objective** $J(\boldsymbol{\theta}) = v\_\pi(s\_0) = \mathbb{E}\_\pi[G\_0]$. We are asking: *"how much does the action at time $t$ matter for $G\_0$?"* Take the action $A\_3$ as an example. Its consequences unfold in
+The key point is the **perspective of the objective** 
 
-$$
-G_3 = R_4 + \gamma R_5 + \gamma^2 R_6 + \cdots,
-$$
+$$J(\boldsymbol{\theta}) = v_\pi(s_0) = \mathbb{E}_\pi[G_0].$$
+
+We are asking: *"how much does the action at time $t$ matter for $G\_0$?"* Take the action $A\_3$ as an example. Its consequences unfold in
+
+$$G_3 = R_4 + \gamma R_5 + \gamma^2 R_6 + \cdots,$$
 
 the future return *from time 3 onward*. But inside the original objective $G\_0$, that same future is **delayed**:
 
-$$
-\gamma^3 G_3 = \gamma^3 R_4 + \gamma^4 R_5 + \gamma^5 R_6 + \cdots
-$$
+$$\gamma^3 G_3 = \gamma^3 R_4 + \gamma^4 R_5 + \gamma^5 R_6 + \cdots$$
 
 So $G\_t$ estimates $q\_\pi(S\_t, A\_t)$ — the *quality* of the action — while $\gamma^t$ weights *how much time $t$ contributes* to $J(\boldsymbol{\theta}) = \mathbb{E}[G\_0]$. An action can only influence $G\_0$ through its delayed, $\gamma^t$-weighted slice, so its update carries the same $\gamma^t$.
 
@@ -8596,15 +9325,11 @@ So $G\_t$ estimates $q\_\pi(S\_t, A\_t)$ — the *quality* of the action — whi
 
 The REINFORCE update for the discounted episodic case is
 
-$$
-\boldsymbol{\theta}_{t+1} \;\doteq\; \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
-$$
+$$\boldsymbol{\theta}_{t+1} \;\doteq\; \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).$$
 
 Using $\nabla \ln \pi = \nabla \pi / \pi$, this is equivalently
 
-$$
-\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \underbrace{\frac{\nabla \pi(A_t \mid S_t, \boldsymbol{\theta}_t)}{\pi(A_t \mid S_t, \boldsymbol{\theta}_t)}}_{\text{eligibility vector}}.
-$$
+$$\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \underbrace{\frac{\nabla \pi(A_t \mid S_t, \boldsymbol{\theta}_t)}{\pi(A_t \mid S_t, \boldsymbol{\theta}_t)}}_{\text{eligibility vector}}.$$
 
 In words: *increase the log-probability of the sampled action $A\_t$ in state $S\_t$, scaled by its return estimate $G\_t$ and its time weight $\gamma^t$.* The division by $\pi(A\_t \mid S\_t, \boldsymbol{\theta}\_t)$ in the eligibility vector also corrects for how often the action would be chosen anyway: frequently-taken actions get proportionally smaller pushes, so favourites do not win merely by being sampled more.
 
@@ -8615,9 +9340,7 @@ In words: *increase the log-probability of the sampled action $A\_t$ in state $S
 
 Think of one episode as a chain of decisions
 
-$$
-S_0 \xrightarrow{\ A_0\ } S_1 \xrightarrow{\ A_1\ } S_2 \xrightarrow{\ A_2\ } \cdots \xrightarrow{\ A_{T-1}\ } \text{end}.
-$$
+$$S_0 \xrightarrow{\ A_0\ } S_1 \xrightarrow{\ A_1\ } S_2 \xrightarrow{\ A_2\ } \cdots \xrightarrow{\ A_{T-1}\ } \text{end}.$$
 
 At every time step the policy asks: *"should I make this sampled action more or less likely next time?"* REINFORCE answers with $\Delta \boldsymbol{\theta}\_t \propto G\_t\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$, whose two factors have clean roles:
 
@@ -8650,9 +9373,7 @@ Loop forever (for each episode):
 
 For $\pi(a \mid s, \boldsymbol{\theta}) \propto e^{\boldsymbol{\theta}^\top \mathbf{x}(s,a)}$,
 
-$$
-\ln \pi(a \mid s, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a) - \ln \sum_b e^{\boldsymbol{\theta}^\top \mathbf{x}(s, b)}.
-$$
+$$\ln \pi(a \mid s, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a) - \ln \sum_b e^{\boldsymbol{\theta}^\top \mathbf{x}(s, b)}.$$
 
 Differentiating,
 
@@ -8797,7 +9518,10 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remarks on the baseline — and what it is <em>not</em>)</span></p>
 
-* The baseline is usually a **learned value function**, $b(s) = \hat v(s, \mathbf{w})$, updated by Monte Carlo regression $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G\_t - \hat v(S\_t, \mathbf{w}) \bigr) \nabla \hat v(S\_t, \mathbf{w})$.
+* The baseline is usually a **learned value function**, $b(s) = \hat v(s, \mathbf{w})$, updated by Monte Carlo regression 
+  
+  $$\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G\_t - \hat v(S\_t, \mathbf{w}) \bigr) \nabla \hat v(S\_t, \mathbf{w}).$$
+
 * The policy update uses an **advantage-like signal** $G\_t - \hat v(S\_t, \mathbf{w})$: we ask whether the action was *better or worse than expected*, not whether the return was large in absolute terms.
 * This does **not** turn the method into a value-based method. The policy $\pi(a \mid s, \boldsymbol{\theta})$ is still the **actor** — the value function never selects actions, it only sharpens the update. (Since $\hat v$ here evaluates but does not yet *bootstrap*, it is not a critic in the strict actor–critic sense; that step comes next lecture.)
 * With **neural networks**, replace the linear preferences by logits: $h\_{\boldsymbol{\theta}}(s, a) = \text{NN}\_{\boldsymbol{\theta}}(s)\_a$ and $\pi(a \mid s, \boldsymbol{\theta}) = \operatorname{softmax}(h\_{\boldsymbol{\theta}}(s))\_a$; the gradients $\nabla \ln \pi$ are then computed by backpropagation.
@@ -8817,7 +9541,12 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
 1. **Policies can be learned directly.** Parameterize $\pi(a \mid s, \boldsymbol{\theta})$ and do gradient ascent on $J(\boldsymbol{\theta}) = v\_{\pi\_{\boldsymbol{\theta}}}(s\_0)$; a value function becomes optional machinery for the update, not the decision-maker.
 2. **Soft-max in preferences** gives a smooth, differentiable policy class that can approach determinism *and* represent stochastic optima — $\varepsilon$-greedy can do neither.
 3. **The short corridor** shows the stakes: under state aliasing the best representable policy is genuinely stochastic, and every $\varepsilon$-greedy action-value method is beaten by a modest stochastic policy ($-11.6$ vs. $-44$).
-4. **The policy gradient theorem** is the enabling result: $\nabla J \propto \sum\_s \mu(s) \sum\_a q\_\pi(s,a) \nabla \pi(a \mid s, \boldsymbol{\theta})$ — no derivative of the state distribution required.
+4. **The policy gradient theorem** is the enabling result: 
+   
+   $$\nabla J \propto \sum\_s \mu(s) \sum\_a q\_\pi(s,a) \nabla \pi(a \mid s, \boldsymbol{\theta})$$
+   
+   no derivative of the state distribution required.
+
 5. **REINFORCE** samples the theorem: states from on-policy visitation, actions from the policy, $q\_\pi$ from the Monte Carlo return; the $\gamma^t$ weight is the objective's own credit assignment over time.
 6. **REINFORCE is unbiased but high-variance** — it works, but slowly and with delicate step sizes.
 7. **A baseline** $b(s) = \hat v(s, \mathbf{w})$ subtracts common-mode noise: identical expected gradient, much lower variance, dramatically faster learning.

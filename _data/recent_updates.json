@@ -1,16 +1,16 @@
 {
  "entries": [
   {
+   "title": "Reinforcement Learning (HD)",
+   "url": "/subpages/reinforcement_learning_hd/",
+   "date": "2026-07-17",
+   "added": false
+  },
+  {
    "title": "Non-Stationary Processes and Recency-Weighted Estimation",
    "url": "/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/",
    "date": "2026-07-15",
    "added": true
-  },
-  {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-07-15",
-   "added": false
   },
   {
    "title": "Algorithmic Randomness and Computable Analysis",
