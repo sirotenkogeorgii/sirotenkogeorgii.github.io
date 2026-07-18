@@ -1001,17 +1001,7 @@ $$\mathbb{E}\_{A \sim \pi}[(\mathbf{1}\lbrace A = a\rbrace - \pi(a))] = 0$$
 
 and we get
 
-$$
-\mathbb E\left[
-(R_t-\bar R_t)
-\left(\mathbf 1_{\{A_t=a\}}-\pi_t(a)\right)
-\right]
-=
-\mathbb E\left[
-R_t
-\left(\mathbf 1_{\{A_t=a\}}-\pi_t(a)\right)
-\right],
-$$
+$$\mathbb E\left[ (R_t-\bar R_t) \left(\mathbf 1_{\lbrace A_t=a\rbrace}-\pi_t(a)\right) \right] = \mathbb E\left[ R_t \left(\mathbf 1_{lbrace A_t=a\rbrace}-\pi_t(a)\right) \right],$$
 
 so any action-independent baseline cancels in expectation. What it *does* change is the variance of the stochastic estimate. By centering the rewards around a running average, the magnitude of the update stays comparable across problems with very different reward scales, and the learning curves become visibly smoother and faster — which is borne out by the experimental comparison of "with baseline" versus "without baseline" on the testbed.
 
@@ -7962,15 +7952,11 @@ The three recurring headaches are thus **coupled updates**, **moving targets / b
 
 The tabular prediction update
 
-$$
-V(S_t) \;\leftarrow\; V(S_t) + \alpha\,[\,U_t - V(S_t)\,]
-$$
+$$V(S_t) \;\leftarrow\; V(S_t) + \alpha\,[\,U_t - V(S_t)\,]$$
 
 gives each state its **own** estimate; updating $S\_t$ leaves $V(s)$ for every other state untouched. With function approximation
 
-$$
-\hat v(s,\mathbf{w}) \approx v_\pi(s),
-$$
+$$\hat v(s,\mathbf{w}) \approx v_\pi(s),$$
 
 a *single* weight vector $\mathbf{w}$ is shared across many states, so changing $\mathbf{w}$ to improve one state can change predictions elsewhere. This raises a question that simply did not exist in the tabular world: **when you cannot be right everywhere, what should count as the best compromise across states?**
 
@@ -7981,15 +7967,11 @@ a *single* weight vector $\mathbf{w}$ is shared across many states, so changing 
 
 Choose a non-negative **state weighting** $\mu(s)$ saying how much we care about being accurate at each state, with
 
-$$
-\mu(s) \geq 0, \qquad \sum_s \mu(s) = 1.
-$$
+$$\mu(s) \geq 0, \qquad \sum_s \mu(s) = 1.$$
 
 The objective is the **mean-squared value error**
 
-$$
-\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .
-$$
+$$\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .$$
 
 For **on-policy prediction** the natural choice is $\mu(s) = $ *how often policy $\pi$ visits state $s$.* States we visit often weigh more — both because we have more data there **and** because those are the states relevant to evaluating $\pi$ in the first place.
 
@@ -8014,9 +7996,7 @@ A practical consequence: changing *where episodes start* changes which states ar
 
 The objective is a $\mu$-weighted sum over **all** states:
 
-$$
-\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .
-$$
+$$\overline{\text{VE}}(\mathbf{w}) \;=\; \sum_s \mu(s)\,\bigl[\,v_\pi(s) - \hat v(s,\mathbf{w})\,\bigr]^2 .$$
 
 Differentiating keeps the same $\mu$-weighting, and the $\mu$-weighted sum is exactly an expectation over $S \sim \mu$:
 
@@ -8028,10 +8008,7 @@ $$
 
 Under on-policy sampling, visited states occur with long-run frequency $\mu(s)$, so the **visited state is itself a stochastic sample** of this expectation:
 
-$$
--\tfrac{1}{2}\,\nabla_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w})
-\;\approx\; \bigl[\,v_\pi(S_t) - \hat v(S_t,\mathbf{w})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}).
-$$
+$$-\tfrac{1}{2}\,\nabla_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w}) \;\approx\; \bigl[\,v_\pi(S_t) - \hat v(S_t,\mathbf{w})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}).$$
 
 Following this sample gradient downhill on the per-sample squared error gives, assuming for now that we know $v\_\pi$,
 
@@ -8050,23 +8027,22 @@ The step is deliberately **small**: driving the error at $S\_t$ all the way to z
 
 We never actually know $v\_\pi(S\_t)$, so substitute a **target** $U\_t$:
 
-$$
-\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \hat v(S_t,\mathbf{w}_t)\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_t).
-$$
+$$\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \hat v(S_t,\mathbf{w}_t)\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_t).$$
 
 If the target is **correct in expectation** (unbiased),
 
-$$
-\mathbb{E}[\,U_t \mid S_t = s\,] \;=\; v_\pi(s),
-$$
+$$\mathbb{E}[\,U_t \mid S_t = s\,] \;=\; v_\pi(s),$$
 
 then under standard stochastic-approximation conditions — a Robbins–Monro step-size schedule $\alpha\_t$ that decreases to zero but not too quickly — the weights converge to a **local minimum** of $\overline{\text{VE}}$:
 
-$$
-\mathbf{w}_t \;\to\; \mathbf{w}^\ast, \qquad \mathbf{w}^\ast \text{ a local minimum of } \overline{\text{VE}}.
-$$
+$$\mathbf{w}_t \;\to\; \mathbf{w}^\ast, \qquad \mathbf{w}^\ast \text{ a local minimum of } \overline{\text{VE}}.$$
 
-*Caveats.* Bootstrapping targets are generally **biased**, so they fall outside this guarantee. And in nonstationary problems one often keeps a **constant** step size $\alpha$ instead, so the estimate keeps adapting rather than fully converging.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Caveat of convergence: Bootstrapping targets are generally biased)</span></p>
+
+Bootstrapping targets are generally **biased**, so they fall outside this guarantee. And in nonstationary problems one often keeps a **constant** step size $\alpha$ instead, so the estimate keeps adapting rather than fully converging.
 
 </div>
 
@@ -8086,7 +8062,13 @@ $$
 1. Generate $S\_0, A\_0, R\_1, \dots, R\_T, S\_T$ following $\pi$.
 2. For $t = 0, 1, \dots, T-1$: apply the update above with the realized return $G\_t$.
 
-**Pro:** true SGD on $\overline{\text{VE}}$ — converges to a local optimum (and, in the linear case, the global one). **Con:** must wait until the episode ends, and the returns are **high variance**.
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Monte Carlo with Function Approximation)</span></p>
+
+* **Pro:** true SGD on $\overline{\text{VE}}$ — converges to a local optimum (and, in the linear case, the global one). 
+* **Con:** must wait until the episode ends, and the returns are **high variance**.
 
 </div>
 
@@ -8097,11 +8079,11 @@ $$
 
 TD(0)'s target depends on $\mathbf{w}\_t$ **itself**:
 
-$$
-U_t \;=\; R_{t+1} + \gamma\,\hat v(S_{t+1},\mathbf{w}_t).
-$$
+$$U_t \;=\; R_{t+1} + \gamma\,\hat v(S_{t+1},\mathbf{w}_t).$$
 
-A *true* gradient method would differentiate through **both** appearances of the approximation — $\hat v(S\_t,\cdot)$ and $\hat v(S\_{t+1},\cdot)$. But the bootstrapped target is not an external label; it moves with $\mathbf{w}$. Worse, because the target is a biased estimate of $v\_\pi$, the unbiasedness condition $\mathbb{E}[U\_t \mid S\_t] = v\_\pi(S\_t)$ fails, so the convergence theorem no longer covers it.
+* A *true* gradient method would differentiate through **both** appearances of the approximation — $\hat v(S\_t,\cdot)$ and $\hat v(S\_{t+1},\cdot)$. 
+* But the bootstrapped target is not an external label; it moves with $\mathbf{w}$.
+* Worse, because the target is a biased estimate of $v\_\pi$, the unbiasedness condition $\mathbb{E}[U\_t \mid S\_t] = v\_\pi(S\_t)$ fails, so the convergence theorem no longer covers it.
 
 </div>
 
@@ -8209,22 +8191,18 @@ $$
 
 At $s = 0.4$ the three features fire by different amounts, so the value is a weighted blend:
 
-$$
-\mathbf{x}(0.4) \approx (0.61,\, 0.80,\, 0.07)^\top, \qquad \hat v(0.4,\mathbf{w}) = 0.61\,w_1 + 0.80\,w_2 + 0.07\,w_3.
-$$
+$$\mathbf{x}(0.4) \approx (0.61,\, 0.80,\, 0.07)^\top, \qquad \hat v(0.4,\mathbf{w}) = 0.61\,w_1 + 0.80\,w_2 + 0.07\,w_3.$$
 
 **Reading the vector:** each weight $w\_i$ "owns" a region of state space. A state's value blends the weights whose features it activates — so nearby states (firing the *same* features) get *similar* values automatically. That automatic local similarity is precisely the generalization we wanted.
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The gradient is the feature vector)</span></p>
 
 With a fixed feature map, the value is linear in $\mathbf{w}$, so its gradient is just the feature vector:
 
-$$
-\nabla_{\mathbf{w}}\,\hat v(s,\mathbf{w}) \;=\; \nabla_{\mathbf{w}}\,\mathbf{w}^\top\mathbf{x}(s) \;=\; \mathbf{x}(s).
-$$
+$$\nabla_{\mathbf{w}}\,\hat v(s,\mathbf{w}) \;=\; \nabla_{\mathbf{w}}\,\mathbf{w}^\top\mathbf{x}(s) \;=\; \mathbf{x}(s).$$
 
 Two clean consequences:
 
@@ -8235,14 +8213,22 @@ Two clean consequences:
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Gradient of linear function approximation)</span></p>
+
+* $\overline{\text{VE}}$ is **convex in $\mathbf{w}$** — a *single* optimum, no local minima.
+* The **semi-gradient** update moves $\mathbf{w}$ **directly along $\mathbf{x}(s)$**.
+
+**Take-home:** almost all convergence guarantees in RL with function approximation are for the *linear* case.
+
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(The linear update rules)</span></p>
 
 Substituting $\nabla\_{\mathbf{w}}\hat v(S\_t,\mathbf{w}) = \mathbf{x}\_t$ with $\mathbf{x}\_t \doteq \mathbf{x}(S\_t)$, the general update collapses to
 
-$$
-\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \mathbf{w}_t^\top \mathbf{x}_t\,\bigr]\,\mathbf{x}_t .
-$$
+$$\mathbf{w}_{t+1} \;=\; \mathbf{w}_t + \alpha\,\bigl[\,U_t - \mathbf{w}_t^\top \mathbf{x}_t\,\bigr]\,\mathbf{x}_t .$$
 
 The method is chosen entirely by the target:
 
@@ -8256,17 +8242,15 @@ The method is chosen entirely by the target:
 
 Semi-gradient TD uses bootstrapping, so it is **not** ordinary gradient descent on $\overline{\text{VE}}$. Yet in one important case there *is* a guarantee:
 
-$$
-\textbf{linear function approximation } + \textbf{ on-policy data.}
-$$
+$$\textbf{linear function approximation } + \textbf{ on-policy data.}$$
 
 Then semi-gradient TD(0) converges to a **TD fixed point** $\mathbf{w}\_{TD}$, where predictions stop changing **on average**. This is not, in general, the weight vector that minimizes $\overline{\text{VE}}$ — but its error is **bounded relative to the best achievable** with these features:
 
-$$
-\overline{\text{VE}}(\mathbf{w}_{TD}) \;\leq\; \frac{1}{1-\gamma}\,\min_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w}).
-$$
+$$\overline{\text{VE}}(\mathbf{w}_{TD}) \;\leq\; \frac{1}{1-\gamma}\,\min_{\mathbf{w}}\,\overline{\text{VE}}(\mathbf{w}).$$
 
-The guarantee is special to the **linear, on-policy** setting (Sutton 1988; Tsitsiklis & Van Roy 1997). With nonlinear approximation or off-policy data, TD can become **unstable**. The factor $\tfrac{1}{1-\gamma}$ can be large for $\gamma$ near $1$, so "bounded" does not mean "tight".
+* The guarantee is special to the **linear, on-policy** setting (Sutton 1988; Tsitsiklis & Van Roy 1997). 
+  * With nonlinear approximation or off-policy data, TD can become **unstable**. 
+* The factor $\tfrac{1}{1-\gamma}$ can be large for $\gamma$ near $1$, so "bounded" does not mean "tight".
 
 </div>
 
@@ -8275,17 +8259,21 @@ The guarantee is special to the **linear, on-policy** setting (Sutton 1988; Tsit
 
 The $n$-step return target carries over unchanged, now bootstrapping from the *approximate* value:
 
-$$
-G_{t:t+n} \;=\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}\,\hat v(S_{t+n},\mathbf{w}_{t+n-1}),
-$$
+$$G_{t:t+n} \;=\; R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}\,\hat v(S_{t+n},\mathbf{w}_{t+n-1}),$$
 
 with update
 
-$$
-\mathbf{w}_{t+n} \;=\; \mathbf{w}_{t+n-1} + \alpha\,\bigl[\,G_{t:t+n} - \hat v(S_t,\mathbf{w}_{t+n-1})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_{t+n-1}).
-$$
+$$\mathbf{w}_{t+n} \;=\; \mathbf{w}_{t+n-1} + \alpha\,\bigl[\,G_{t:t+n} - \hat v(S_t,\mathbf{w}_{t+n-1})\,\bigr]\,\nabla_{\mathbf{w}}\hat v(S_t,\mathbf{w}_{t+n-1}).$$
 
 **Bias / variance dial.** Small $n$ means more bootstrapping ⇒ low variance, high bias; large $n$ approaches Monte Carlo ⇒ low bias, high variance. The same dial governs **both** linear and nonlinear $\hat v$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Bias / Variance: $n$-step semi-gradient TD)</span></p>
+
+* Small $n$ means more bootstrapping ⇒ low variance, high bias; 
+* Large $n$ approaches Monte Carlo ⇒ low bias, high variance. The same dial governs **both** linear and nonlinear $\hat v$.
 
 </div>
 
@@ -8295,6 +8283,11 @@ $$
 Sweeping $n$ traces the textbook bias–variance curve: **bias decreases** with $n$, **variance grows** with $n$, and their sum — the total error — is **U-shaped**, minimized at some *intermediate* $n$. The best value is **problem-dependent**: it depends on how long you train and how stable the step size $\alpha$ is. The lesson is the same as in plain $n$-step TD — neither extreme ($n=1$ or $n=\infty$) is usually best.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/Bias–VarianceTrade-off_n-step-td.png' | relative_url }}" alt="Soft-max policy probability rising smoothly with the preference gap, versus the epsilon-greedy step function that can only occupy two probability levels and jumps at the decision boundary" loading="lazy">
+  <!-- <figcaption>Why "smooth" matters. $\varepsilon$-greedy can only reach two probability levels and <em>jumps</em> at the decision boundary; the soft-max moves $\pi(\text{right} \mid s)$ continuously with $\theta$ — exactly what $\nabla_\theta J$ needs — and it can approach a deterministic optimum.</figcaption> -->
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Which on-policy prediction methods converge?)</span></p>
@@ -8322,7 +8315,7 @@ The pattern: **linearity buys global optima for gradient methods and bounded-err
 The set of functions a linear model can represent — its **hypothesis space** — is exactly the span of the features:
 
 $$
-\hat v(\cdot,\mathbf{w}) \in \operatorname{span}\{\,x_1(\cdot), \dots, x_d(\cdot)\,\}.
+\hat v(\cdot,\mathbf{w}) \in \operatorname{span}\lbrace\,x_1(\cdot), \dots, x_d(\cdot)\,\rbrace.
 $$
 
 If $v\_\pi$ lies **outside** this span, no $\mathbf{w}$ recovers it exactly. Feature design therefore answers two questions at once:
@@ -8339,9 +8332,7 @@ Good features encode **domain knowledge** as useful priors: a robot's location s
 
 **State aggregation** partitions states into groups and learns one weight per group — the simplest possible feature map. With one-hot indicator features
 
-$$
-x_i(s) = \mathbf{1}[\,s \in \text{group } i\,], \qquad \hat v(s,\mathbf{w}) = w_{g(s)},
-$$
+$$x_i(s) = \mathbf{1}[\,s \in \text{group } i\,], \qquad \hat v(s,\mathbf{w}) = w_{g(s)},$$
 
 where $g(s)$ is the group of $s$. Properties:
 
@@ -8367,21 +8358,15 @@ States $1, \dots, 1000$, episodes start at $500$. From each non-terminal state t
 
 For a 1-D state $s \in [0,1]$ and integer order $i \geq 0$, the **Fourier cosine features** are
 
-$$
-x_i(s) \;=\; \cos(i\pi s).
-$$
+$$x_i(s) \;=\; \cos(i\pi s).$$
 
 Here $i = 0$ is the constant feature; higher $i$ gives **higher frequency**. Stacking orders $0, \dots, n$ gives a basis; e.g. for $n = 3$,
 
-$$
-\mathbf{x}(s) = \bigl(1,\, \cos\pi s,\, \cos 2\pi s,\, \cos 3\pi s\bigr)^\top .
-$$
+$$\mathbf{x}(s) = \bigl(1,\, \cos\pi s,\, \cos 2\pi s,\, \cos 3\pi s\bigr)^\top .$$
 
-Low-frequency terms capture broad structure; higher-frequency terms add finer detail. For a $k$-dimensional state $s = (s\_1, \dots, s\_k) \in [0,1]^k$, choose a frequency vector $\mathbf{c} \in \{0, \dots, n\}^k$ per feature,
+Low-frequency terms capture broad structure; higher-frequency terms add finer detail. For a $k$-dimensional state $s = (s\_1, \dots, s\_k) \in [0,1]^k$, choose a frequency vector $\mathbf{c} \in \lbrace 0, \dots, n\rbrace^k$ per feature,
 
-$$
-x_{\mathbf{c}}(s) \;=\; \cos\bigl(\pi\, \mathbf{c}^\top s\bigr) \;=\; \cos\bigl(\pi(c_1 s_1 + \cdots + c_k s_k)\bigr).
-$$
+$$x_{\mathbf{c}}(s) \;=\; \cos\bigl(\pi\, \mathbf{c}^\top s\bigr) \;=\; \cos\bigl(\pi(c_1 s_1 + \cdots + c_k s_k)\bigr).$$
 
 A **zero** entry in $\mathbf{c}$ ignores that dimension; **larger** entries oscillate faster; the **ratio** of entries sets the orientation of the wave. A useful per-feature step-size rescaling is $\alpha\_i = \alpha / \lVert \mathbf{c}^{(i)} \rVert\_2$ (and $\alpha\_i = \alpha$ when $\mathbf{c}^{(i)} = \mathbf{0}$), so high-frequency features are not over-stepped.
 
@@ -8392,9 +8377,7 @@ A **zero** entry in $\mathbf{c}$ ignores that dimension; **larger** entries osci
 
 **Coarse coding** uses **binary indicators of overlapping regions** (e.g. circles covering the state space):
 
-$$
-x_i(s) \in \{0,1\}, \qquad x_i(s) = 1 \iff s \in \text{region } i .
-$$
+$$x_i(s) \in \lbrace 0,1\rbrace, \qquad x_i(s) = 1 \iff s \in \text{region } i .$$
 
 The **generalization mechanism** is geometric:
 
@@ -8411,15 +8394,11 @@ Two states inside many common regions generalize strongly; two states sharing on
 
 Let $s \in [0,1]$ (say, a cartpole position). Cover the interval with overlapping regions
 
-$$
-[0.0,0.3],\quad [0.2,0.5],\quad [0.4,0.7],\quad [0.6,0.9],\quad [0.8,1.0].
-$$
+$$[0.0,0.3],\quad [0.2,0.5],\quad [0.4,0.7],\quad [0.6,0.9],\quad [0.8,1.0].$$
 
 Each region is one binary feature. If $s = 0.45$ lies in regions $2$ and $3$, then
 
-$$
-\mathbf{x}(0.45) = (0, 1, 1, 0, 0)^\top, \qquad \hat v(0.45,\mathbf{w}) = \mathbf{w}^\top\mathbf{x}(0.45) = w_2 + w_3 .
-$$
+$$\mathbf{x}(0.45) = (0, 1, 1, 0, 0)^\top, \qquad \hat v(0.45,\mathbf{w}) = \mathbf{w}^\top\mathbf{x}(0.45) = w_2 + w_3 .$$
 
 **Controlled generalization:** updating at $s = 0.45$ changes only $w\_2$ and $w\_3$. It therefore *also* nudges nearby states that share those active features, such as $s' = 0.35$, but leaves far-away states such as $s'' = 0.95$ untouched.
 
@@ -8482,9 +8461,7 @@ The key subtlety: width sets the **initial generalization speed**, but the **fin
 
 Because the active set is always $n$ tiles, the step size has a simple, interpretable form
 
-$$
-\alpha \;=\; \frac{1}{\tau\, n},
-$$
+$$\alpha \;=\; \frac{1}{\tau\, n},$$
 
 where $n$ is the number of tilings: each update changes the prediction by about a $1/\tau$ fraction of the TD error, so $\tau$ is roughly the **number of samples we want to average over**. Hashing multi-dimensional tile coordinates into a fixed-size weight vector avoids storing every possible tile.
 
@@ -8617,7 +8594,15 @@ The crucial difference from the linear case is that the hidden layers' features 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Nonlinearity is mandatory; universal approximation)</span></p>
 
-**Claim.** A network of purely *linear* units is itself a linear function. *Proof sketch:* if layer $\ell$ computes 
+A network of purely *linear* units is itself a linear function.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof Sketch</summary>
+
+if layer $\ell$ computes 
 
 $$\mathbf{a}^{(\ell)} = W^{(\ell)}\mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)}$$
 
@@ -8627,7 +8612,13 @@ $$\mathbf{a}^{(L)} \;=\; \Bigl(\textstyle\prod_{\ell=L}^{1} W^{(\ell)}\Bigr)\mat
 
 which is again **affine** in $\mathbf{a}^{(0)}$ — stacking adds no expressiveness. The nonlinear activations are what make depth meaningful.
 
-**Universal approximation (Cybenko, 1989).** A *single* hidden layer with enough sigmoid units can approximate any continuous function on a compact domain to arbitrary accuracy.
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal approximation (Cybenko, 1989))</span></p>
+
+A *single* hidden layer with enough sigmoid units can approximate any continuous function on a compact domain to arbitrary accuracy.
 
 **Catch:** expressiveness is *not* the bottleneck — **optimization** is. Being able to represent $v\_\pi$ in principle says nothing about being able to *find* the weights that do.
 
@@ -8645,7 +8636,12 @@ The gradient $\nabla\_{\mathbf{w}}\hat v$ is computed by **backpropagation**, in
 * **Forward pass.** Compute every layer's activations and store them.
 * **Backward pass.** Apply the chain rule, layer by layer, to compute $\partial L / \partial w$ for every weight.
 
-**Difficulties for deep networks:** **vanishing / exploding gradients** — mitigated by residual connections, batch normalization, and careful initialization.
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Difficulties for deep networks: vanishing / exploding gradients)</span></p>
+
+**Vanishing / Exploding gradients** are mitigated by residual connections, batch normalization, and careful initialization.
 
 </div>
 
@@ -8658,7 +8654,10 @@ Three properties that, **together**, can make TD-style updates **diverge**:
 * **Bootstrapping** — so targets depend on $\mathbf{w}$;
 * **Off-policy** learning — so the update distribution is "wrong" (we update along a distribution that does not match the policy generating the targets).
 
-Any **two** are usually safe; it is the **combination of all three** that risks divergence. *Caveat:* with deep nets and bootstrapping, even *on-policy* learning can wobble, which is why deep RL leans so heavily on engineering tricks to stay stable.
+---
+
+* Any **two** are usually safe; it is the **combination of all three** that risks divergence. 
+* **Caveat**: with deep nets and bootstrapping, even *on-policy* learning can wobble, which is why deep RL leans so heavily on engineering tricks to stay stable.
 
 </div>
 
@@ -8686,12 +8685,32 @@ Any **two** are usually safe; it is the **combination of all three** that risks 
 
 Modern deep RL stays stable by a toolbox of engineering fixes, each targeting a specific failure of naive SGD on bootstrapped, correlated data:
 
-1. **Target networks.** The bootstrap target $U\_t = R\_{t+1} + \gamma\max\_a \hat v(S\_{t+1},\mathbf{w}\_t)$ uses the *same* weights we are updating — a feedback loop that can spiral. **Fix:** keep a frozen copy $\mathbf{w}^- = \theta^-$ used **only** to compute targets, refreshed $\mathbf{w}^- \leftarrow \mathbf{w}$ every $C$ steps (DQN). A momentarily *stationary* target turns a moving-goalpost problem into ordinary supervised regression between refreshes.
-2. **Experience replay.** Consecutive transitions are **highly correlated** (the agent moves smoothly), violating the i.i.d. assumption and wasting each rare experience after one use. **Fix:** store transitions $(S, A, R, S')$ in a **replay buffer** and sample a uniform random minibatch per update — this **decorrelates** samples *and* makes each transition **reusable** (data efficiency).
-3. **Batch normalization.** As lower layers learn, the distribution of inputs to higher layers keeps shifting (**internal covariate shift**). **Fix:** per minibatch, normalize a layer's pre-activations to mean $0$, variance $1$, then rescale by learned $\gamma, \beta$: $\hat z = (z - \mu\_B)/\sqrt{\sigma\_B^2 + \epsilon}$, $\tilde z = \gamma\hat z + \beta$. Well-scaled signals keep gradients healthy and allow larger steps.
-4. **Residual / skip connections.** In very deep stacks gradients shrink as they propagate back (**vanishing gradients**). **Fix:** add an identity skip around a block, $\mathbf{y} = F(\mathbf{x}) + \mathbf{x}$, so the block only learns the **residual** $F(\mathbf{x})$ and gradients get a short-circuit straight to earlier layers.
-5. **Gradient clipping.** A single sharp target error (common with bootstrapping) can produce a huge gradient that throws the weights far off. **Fix:** cap the gradient norm at a threshold $c$, $\mathbf{g} \leftarrow \mathbf{g}\cdot\min\!\bigl(1, c/\lVert\mathbf{g}\rVert\bigr)$ — direction is kept, only the length is limited.
-6. **Dropout.** Units **co-adapt**, so the network overfits and generalizes poorly. **Fix:** on each training pass randomly "drop" each hidden unit with probability $p$; at test time use the full network with weights scaled to match. Training a different random sub-network each step is like averaging an **ensemble**, forcing each unit to be individually useful.
+1. **Target networks.** The bootstrap target 
+   
+   $$U_t = R_{t+1} + \gamma\max_a \hat v(S_{t+1},\mathbf{w}_t)$$
+   
+   uses the *same* weights we are updating — a feedback loop that can spiral.
+   * **Fix:** keep a frozen copy $\mathbf{w}^- = \theta^-$ used **only** to compute targets, refreshed $\mathbf{w}^- \leftarrow \mathbf{w}$ every $C$ steps (DQN). A momentarily *stationary* target turns a moving-goalpost problem into ordinary supervised regression between refreshes.
+2. **Experience replay.** Consecutive transitions are **highly correlated** (the agent moves smoothly), violating the i.i.d. assumption and wasting each rare experience after one use. 
+   * **Fix:** store transitions $(S, A, R, S')$ in a **replay buffer** and sample a uniform random minibatch per update — this **decorrelates** samples *and* makes each transition **reusable** (data efficiency).
+3. **Batch normalization.** As lower layers learn, the distribution of inputs to higher layers keeps shifting (**internal covariate shift**). 
+   * **Fix:** per minibatch, normalize a layer's pre-activations to mean $0$, variance $1$, then rescale by learned $\gamma, \beta$: 
+   
+   $$\hat z = (z - \mu\_B)/\sqrt{\sigma\_B^2 + \epsilon}$$
+
+   $$\tilde z = \gamma\hat z + \beta$$
+   
+   Well-scaled signals keep gradients healthy and allow larger steps.
+4. **Residual / skip connections.** In very deep stacks gradients shrink as they propagate back (**vanishing gradients**). 
+   * **Fix:** add an identity skip around a block, $\mathbf{y} = F(\mathbf{x}) + \mathbf{x}$, so the block only learns the **residual** $F(\mathbf{x})$ and gradients get a short-circuit straight to earlier layers.
+5. **Gradient clipping.** A single sharp target error (common with bootstrapping) can produce a huge gradient that throws the weights far off. 
+   * **Fix:** cap the gradient norm at a threshold $c$, 
+   
+   $$\mathbf{g} \leftarrow \mathbf{g}\cdot\min\!\bigl(1, c/\lVert\mathbf{g}\rVert\bigr)$$ 
+   
+   — direction is kept, only the length is limited.
+6. **Dropout.** Units **co-adapt**, so the network overfits and generalizes poorly. 
+   * **Fix:** on each training pass randomly "drop" each hidden unit with probability $p$; at test time use the full network with weights scaled to match. Training a different random sub-network each step is like averaging an **ensemble**, forcing each unit to be individually useful.
 
 </div>
 
@@ -8981,25 +9000,23 @@ The corridor has three nonterminal states and a goal; the reward is $-1$ per ste
 * In the **middle** state the actions are **reversed**: `right` moves left and `left` moves right.
 * All nonterminal states **share the same action features**,
 
-$$
-\mathbf{x}(s, \text{right}) = [1, 0]^\top, \qquad \mathbf{x}(s, \text{left}) = [0, 1]^\top,
-$$
+  $$\mathbf{x}(s, \text{right}) = [1, 0]^\top, \qquad \mathbf{x}(s, \text{left}) = [0, 1]^\top,$$
 
   so under this representation the states are *indistinguishable* and every policy must behave identically in all of them.
 
 **Why action-value methods lose here.** Since the states look identical, a deterministic policy must treat them the same way — and always-right loops forever in the middle state, while always-left never leaves the start. An $\varepsilon$-greedy action-value method can only realize
 
-$$
-\pi(\text{right}) \in \lbrace \varepsilon/2,\ 1 - \varepsilon/2 \rbrace ,
-$$
+$$\pi(\text{right}) \in \lbrace \varepsilon/2,\ 1 - \varepsilon/2 \rbrace ,$$
 
 and for $\varepsilon = 0.1$ the better of the two choices earns expected return about $-44$. A **stochastic** policy, by contrast, can learn *any* $p = \pi(\text{right}) \in (0,1)$; the closed-form performance is
 
-$$
-J(p) \;=\; -\frac{2(2 - p)}{p(1 - p)},
-$$
+$$J(p) \;=\; -\frac{2(2 - p)}{p(1 - p)},$$
 
-maximized at $p^\ast = 2 - \sqrt{2} \approx 0.59$ with $J(p^\ast) \approx -11.6$ — roughly *four times better* than anything $\varepsilon$-greedy can reach.
+maximized at 
+
+$$p^\ast = 2 - \sqrt{2} \approx 0.59$$
+
+with $J(p^\ast) \approx -11.6$ — roughly *four times better* than anything $\varepsilon$-greedy can reach.
 
 </div>
 
@@ -9092,7 +9109,11 @@ We want $\nabla J(\boldsymbol{\theta}) = \nabla v\_\pi(s\_0)$, so we expand $\na
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Step 1/5 — apply the product rule)</span></p>
 
-Differentiate $v\_\pi(s) = \sum\_a \pi(a \mid s)\, q\_\pi(s,a)$ using the product rule:
+Differentiate 
+
+$$v_\pi(s) = \sum_a \pi(a \mid s)\, q_\pi(s,a)$$
+
+using the product rule:
 
 $$
 \nabla v_\pi(s)
@@ -9365,7 +9386,11 @@ Locally: $G\_t > 0 \Rightarrow$ make $A\_t$ more likely in $S\_t$; $G\_t < 0 \Ri
 
 Loop forever (for each episode):
 
-1. Generate an episode $S\_0, A\_0, R\_1, \dots, S\_{T-1}, A\_{T-1}, R\_T$ following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
+1. Generate an episode 
+   
+   $$S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T$$
+   
+   following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
 2. Loop for each step of the episode, $t = 0, 1, \dots, T-1$:
    * $G \leftarrow \sum\_{k=t+1}^{T} \gamma^{k-t-1} R\_k$  (this is $G\_t$);
    * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha\, \gamma^{t}\, G\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$.
@@ -9510,7 +9535,11 @@ $$
 
 Loop forever (for each episode):
 
-1. Generate an episode $S\_0, A\_0, R\_1, \dots, S\_{T-1}, A\_{T-1}, R\_T$ following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
+1. Generate an episode 
+   
+   $$S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T$$
+   
+   following $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$.
 2. Loop for each step of the episode, $t = 0, 1, \dots, T-1$:
    * $G \leftarrow \sum\_{k=t+1}^{T} \gamma^{k-t-1} R\_k$;
    * $\delta \leftarrow G - \hat v(S\_t, \mathbf{w})$;
@@ -9526,11 +9555,19 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
 
 * The baseline is usually a **learned value function**, $b(s) = \hat v(s, \mathbf{w})$, updated by Monte Carlo regression 
   
-  $$\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G\_t - \hat v(S\_t, \mathbf{w}) \bigr) \nabla \hat v(S\_t, \mathbf{w}).$$
+  $$\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G_t - \hat v(S_t, \mathbf{w}) \bigr) \nabla \hat v(S_t, \mathbf{w}).$$
 
 * The policy update uses an **advantage-like signal** $G\_t - \hat v(S\_t, \mathbf{w})$: we ask whether the action was *better or worse than expected*, not whether the return was large in absolute terms.
 * This does **not** turn the method into a value-based method. The policy $\pi(a \mid s, \boldsymbol{\theta})$ is still the **actor** — the value function never selects actions, it only sharpens the update. (Since $\hat v$ here evaluates but does not yet *bootstrap*, it is not a critic in the strict actor–critic sense; that step comes next lecture.)
-* With **neural networks**, replace the linear preferences by logits: $h\_{\boldsymbol{\theta}}(s, a) = \text{NN}\_{\boldsymbol{\theta}}(s)\_a$ and $\pi(a \mid s, \boldsymbol{\theta}) = \operatorname{softmax}(h\_{\boldsymbol{\theta}}(s))\_a$; the gradients $\nabla \ln \pi$ are then computed by backpropagation.
+* With **neural networks**, replace the linear preferences by logits: 
+  
+  $$h_{\boldsymbol{\theta}}(s, a) = \text{NN}_{\boldsymbol{\theta}}(s)_a$$
+  
+  and 
+  
+  $$\pi(a \mid s, \boldsymbol{\theta}) = \operatorname{softmax}(h_{\boldsymbol{\theta}}(s))_a;$$ 
+  
+  the gradients $\nabla \ln \pi$ are then computed by backpropagation.
 
 </div>
 
@@ -9549,7 +9586,7 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
 3. **The short corridor** shows the stakes: under state aliasing the best representable policy is genuinely stochastic, and every $\varepsilon$-greedy action-value method is beaten by a modest stochastic policy ($-11.6$ vs. $-44$).
 4. **The policy gradient theorem** is the enabling result: 
    
-   $$\nabla J \propto \sum\_s \mu(s) \sum\_a q\_\pi(s,a) \nabla \pi(a \mid s, \boldsymbol{\theta})$$
+   $$\nabla J \propto \sum_s \mu(s) \sum_a q_\pi(s,a) \nabla \pi(a \mid s, \boldsymbol{\theta})$$
    
    no derivative of the state distribution required.
 
