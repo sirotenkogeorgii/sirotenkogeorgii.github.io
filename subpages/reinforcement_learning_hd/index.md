@@ -7096,7 +7096,7 @@ Initialise $Q(s,a)$, a model $\hat M(s,a)$, and an empty priority queue $PQueue$
 
 3. Compute the priority 
    
-   $$P \leftarrow \lvert R + \gamma \max\_{a} Q(S', a) - Q(S, A) \rvert.$$
+   $$P \leftarrow \lvert R + \gamma \max_{a} Q(S', a) - Q(S, A) \rvert.$$
 
 4. If $P > \theta$, insert $(S, A)$ into $PQueue$ with priority $P$.
 5. Repeat $n$ times while $PQueue$ is nonempty:
@@ -7106,13 +7106,13 @@ Initialise $Q(s,a)$, a model $\hat M(s,a)$, and an empty priority queue $PQueue$
 
    * update 
      
-     $$Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max\_{a} Q(S', a) - Q(S, A)\,\bigr];$$
+     $$Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\, R + \gamma \max_{a} Q(S', a) - Q(S, A)\,\bigr];$$
 
    * for each predicted predecessor $(\bar S, \bar A)$ of $S$ with reward $\bar R$, compute
      
      $$P \leftarrow \bigl\lvert \bar R + \gamma \max_{a} Q(S, a) - Q(\bar S, \bar A) \bigr\rvert;$$
 
-   * if $P > \theta$, insert $(\bar S, \bar A)$ into $PQueue$ with priority $P$.
+     * if $P > \theta$, insert $(\bar S, \bar A)$ into $PQueue$ with priority $P$.
 
 On large gridworlds, prioritized sweeping can reach the optimal solution with **orders of magnitude fewer updates** than uniform Dyna-Q — **search control matters as much as the update rule itself.**
 
@@ -7193,8 +7193,12 @@ Expected updates are **exact given the model** but cost work proportional to the
 
 We now have *two* complementary answers to the question "**where** should planning spend its updates?"
 
-* **Prioritized sweeping** (already seen) — works **backward** from states whose value just changed. Criterion: **Bellman-error magnitude**. Goal: propagate new information to the predecessors that depend on it. *"Fix what is most wrong first."*
-* **Trajectory sampling** (next) — works **forward** from the current state along the policy. Criterion: **on-policy visitation**. Goal: concentrate compute on states the agent actually reaches. *"Work on what is most relevant."*
+* **Prioritized sweeping** (already seen) — works **backward** from states whose value just changed. 
+  * Criterion: **Bellman-error magnitude**. 
+  * Goal: propagate new information to the predecessors that depend on it. *"Fix what is most wrong first."*
+* **Trajectory sampling** (next) — works **forward** from the current state along the policy. 
+  * Criterion: **on-policy visitation**. 
+  * Goal: concentrate compute on states the agent actually reaches. *"Work on what is most relevant."*
 
 One is error-driven and backward; the other is distribution-driven and forward. They are **complementary**, and can be combined.
 
@@ -7226,7 +7230,9 @@ The contrast with classical DP is purely one of *coverage*:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(RTDP — sketch)</span></p>
 
-**Maintain:** state values $V(s)$ and a transition model $\hat p$.
+**Maintain:** 
+* state values $V(s)$
+* transition model $\hat p$.
 
 For each trial:
 
@@ -7397,6 +7403,18 @@ Leaf nodes are evaluated with a **heuristic** value estimate $\hat v$ rather tha
 
 </div>
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Heuristic search)</span></p>
+
+Heuristic search is like a deeper greedy policy: it does not just ask “what happens next?” but “what happens after that, and after that?”
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/heuristic_search_example.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Backing up a small look-ahead tree)</span></p>
 
@@ -7516,9 +7534,7 @@ Rollout does **not** learn a full global value function — it estimates *just e
    * follow $\pi$ after the first step;
    * average the returns,
      
-     $$
-     \hat q(s, a) = \frac{1}{K} \sum_{i=1}^{K} G^{(i)}.
-     $$
+     $$\hat q(s, a) = \frac{1}{K} \sum_{i=1}^{K} G^{(i)}.$$
 
 2. Choose the action with the largest $\hat q(s, a)$.
 
@@ -7592,6 +7608,11 @@ MCTS focuses simulation effort on **promising prefixes** rather than restarting 
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/MCTS01.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
+</figure>
+
 <figure class="rl-diagram">
   <svg viewBox="0 0 760 320" role="img" aria-label="MCTS search tree: a root node with visit counts N and mean values Q, an in-memory tree, and a dashed frontier where rollouts begin; the tree policy selects inside the tree and the rollout policy takes over beyond the frontier">
     <!-- root -->
@@ -7649,6 +7670,11 @@ The rollout trajectory itself is **not stored** — only the statistics on the i
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/MCTS02.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
+</figure>
+
 <figure class="rl-diagram">
   <svg viewBox="0 0 820 390" role="img" aria-label="One MCTS iteration selects a path, expands a new node, simulates a rollout, and backs up the return to update N and Q">
     <text x="410" y="35" text-anchor="middle" font-size="15">One MCTS iteration: select → expand → simulate → backup</text>
@@ -7704,9 +7730,7 @@ The rollout trajectory itself is **not stored** — only the statistics on the i
 
 After the simulation budget is spent, pick the real move by
 
-$$
-\arg\max_{a} N(s_0, a),
-$$
+$$\arg\max_{a} N(s_0, a),$$
 
 the **most-visited** root action — *not* the one with the highest mean $Q$. Why most visits rather than best mean?
 
@@ -7716,6 +7740,11 @@ the **most-visited** root action — *not* the one with the highest mean $Q$. Wh
 **Then move on (decision-time):** play the chosen action, observe the true $s', r$, **reuse the subtree** under that move as the new root, and replan from $s'$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/MCTS03.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(Why MCTS mattered)</span></p>
@@ -7774,6 +7803,11 @@ All of Part I of the course fits in a single design space spanned by two axes:
 The four corners are familiar: **TD learning** (sample, shallow), **dynamic programming** (expected, shallow), **Monte Carlo** (sample, deep), and **exhaustive search** (expected, deep). Every planning method in this lecture is just a different position — and a different *search control* — in the same space.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/planning_dimensions_view.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
+  <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core takeaways — Planning and Learning)</span></p>
@@ -8503,7 +8537,11 @@ where $n$ is the number of tilings: each update changes the prediction by about 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why tile coding beats a single coarse partition)</span></p>
 
-Fix the memory budget so the comparison is fair: $\sharp\text{weights} = \sharp\text{tilings} \times \sharp\text{tiles per tiling}$. On the 1000-state random walk:
+Fix the memory budget so the comparison is fair: 
+
+$$\sharp\text{weights} = \sharp\text{tilings} \times \sharp\text{tiles per tiling}$$
+
+On the 1000-state random walk:
 
 * **State aggregation:** $1$ tiling $\times\ 1000$ tiles $= 1000$ weights — a coarse staircase.
 * **Tile coding:** $50$ tilings $\times\ 20$ tiles $= 1000$ weights — far lower error.
