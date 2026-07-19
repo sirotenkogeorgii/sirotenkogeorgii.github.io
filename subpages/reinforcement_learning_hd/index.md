@@ -5414,7 +5414,7 @@ They still cooperate through shared targets and through the behaviour policy, co
 
 **Key idea:** Double Q-learning does not take a maximum of the estimates used for evaluation. It uses one estimator to choose the action and the other to evaluate it.
 
-Write two estimates at the next state (s'):
+Write two estimates at the next state $s'$:
 
 $$Q_1(s',a)=q_*(s',a)+\varepsilon_{1,a}, \qquad Q_2(s',a)=q_*(s',a)+\varepsilon_{2,a},$$
 
@@ -5424,27 +5424,19 @@ where the errors have mean zero and are approximately independent or at least de
 
 Ordinary Q-learning uses
 
-[
-\max_a Q_1(s',a).
-]
+$$\max_a Q_1(s',a).$$
 
 Equivalently, define
 
-[
-A^*=\arg\max_a Q_1(s',a).
-]
+$$A^*=\arg\max_a Q_1(s',a).$$
 
 Then the value inserted into the target is
 
-[
-Q_1(s',A^*).
-]
+$$Q_1(s',A^*).$$
 
-The problem is that (A^*) was selected partly because (\varepsilon_{1,A^*}) was unusually large. Therefore,
+The problem is that $A^\ast$ was selected partly because $\varepsilon_{1,A^\ast}$ was unusually large. Therefore,
 
-[
-\mathbb E[\varepsilon_{1,A^*}]>0
-]
+$$\mathbb E[\varepsilon_{1,A^*}]>0$$
 
 in typical noisy settings. Selection and evaluation reuse the same favorable error.
 
@@ -5452,110 +5444,67 @@ in typical noisy settings. Selection and evaluation reuse the same favorable err
 
 ### Double Q-learning
 
-When updating (Q_1), Double Q-learning instead uses
+When updating $Q_1$, Double Q-learning instead uses
 
-[
-A^*=\arg\max_a Q_1(s',a)
-]
+$$A^*=\arg\max_a Q_1(s',a)$$
 
-for selection, but evaluates this action with (Q_2):
+for selection, but evaluates this action with $Q_2$:
 
-[
-Q_2(s',A^*).
-]
+$$Q_2(s',A^*).$$
 
-Condition on the whole table (Q_1). Then (A^*) is fixed. Assuming (Q_2)'s error is independent of the selection noise,
+Condition on the whole table (Q_1). Then $A^\ast$ is fixed. Assuming $Q_2$'s error is independent of the selection noise,
 
-[
+$$
 \begin{aligned}
-\mathbb E!\left[Q_2(s',A^*)\mid Q_1\right]
-&=
-\mathbb E!\left[q_*(s',A^*)+\varepsilon_{2,A^*}\mid Q_1\right]\
-&=
-q_*(s',A^*).
+\mathbb E!\left[Q_2(s',A^*)\mid Q_1\right] &= \mathbb E!\left[q_*(s',A^*)+\varepsilon_{2,A^*}\mid Q_1\right]\ &= q_*(s',A^*).
 \end{aligned}
-]
+$$
 
-The error that made the action win in (Q_1) is not present in its evaluation by (Q_2). Hence
+The error that made the action win in $Q_1$ is not present in its evaluation by $Q_2$. Hence
 
-[
-\mathbb E!\left[Q_2(s',A^*)\right]
-==================================
-
-\mathbb E!\left[q_*(s',A^*)\right]
-\leq
-\max_a q_*(s',a).
-]
+$$\mathbb E!\left[Q_2(s',A^*)\right] = \mathbb E!\left[q_*(s',A^*)\right] \leq \max_a q_*(s',a).$$
 
 So the systematic upward bias
 
-[
-\mathbb E[\max_a Q(s',a)]
-\geq
-\max_a q_*(s',a)
-]
+$$\mathbb E[\max_a Q(s',a)] \geq \max_a q_*(s',a)$$
 
 is gone.
 
 ### The two-action example
 
-Suppose both actions have true value (0), and both tables independently estimate each action as either (-1) or (+1), each with probability (1/2).
+Suppose both actions have true value $0$, and both tables independently estimate each action as either $-1$ or $+1$, each with probability $1/2$.
 
 Ordinary Q-learning gives
 
-[
-\mathbb E[\max{Q_1(a_1),Q_1(a_2)}]
-==================================
-
-\frac12.
-]
+$$\mathbb E[\max{Q_1(a_1),Q_1(a_2)}] = \frac12.$$
 
 Now let
 
-[
-A^*=\arg\max_a Q_1(a).
-]
+$$A^*=\arg\max_a Q_1(a).$$
 
-Double Q-learning evaluates using (Q_2(A^*)). Since (Q_2) is independent of which action happened to look best in (Q_1),
+Double Q-learning evaluates using $Q_2(A^\ast)$. Since $Q_2$ is independent of which action happened to look best in $Q_1$,
 
-[
-\mathbb E[Q_2(A^*)\mid A^*]=0,
-]
+$$\mathbb E[Q_2(A^*)\mid A^*]=0,$$
 
 and therefore
 
-[
-\mathbb E[Q_2(A^*)]=0.
-]
+$$\mathbb E[Q_2(A^*)]=0.$$
 
 Thus:
 
-[
-\boxed{
-\text{ordinary Q-learning: expected target value }=\frac12
-}
-]
+$$\boxed{\text{ordinary Q-learning: expected target value }=\frac12}$$
 
 while
 
-[
-\boxed{
-\text{Double Q-learning: expected target value }=0.
-}
-]
+$$\boxed{\text{Double Q-learning: expected target value }=0.}$$
 
 The actual update alternates symmetrically:
 
-[
-Q_1(S,A)\leftarrow Q_1(S,A)+
-\alpha\left[
-R+\gamma Q_2!\left(S',\arg\max_aQ_1(S',a)\right)-Q_1(S,A)
-\right],
-]
+$$Q_1(S,A)\leftarrow Q_1(S,A)+ \alpha\left[ R+\gamma Q_2!\left(S',\arg\max_aQ_1(S',a)\right)-Q_1(S,A) \right],$$
 
-or the same formula with (Q_1,Q_2) exchanged. 
+or the same formula with $Q_1,Q_2$ exchanged. 
 
-One nuance: Double Q-learning removes the **positive maximization bias**, but it can mildly underestimate because (Q_1) may select a genuinely suboptimal action, which (Q_2) then evaluates honestly. The noises do not cancel; the noise responsible for selection is simply not reused for evaluation.
+One nuance: Double Q-learning removes the **positive maximization bias**, but it can mildly underestimate because $Q_1$ may select a genuinely suboptimal action, which $Q_2$ then evaluates honestly. The noises do not cancel; the noise responsible for selection is simply not reused for evaluation.
 
 </details>
 </div>
@@ -5566,9 +5515,7 @@ One nuance: Double Q-learning removes the **positive maximization bias**, but it
 
 You mean **expectation**, and no: it is **not automatically guaranteed** that
 
-[
-\mathbb E[Q_i(s,a)] = q_*(s,a)
-]
+$$\mathbb E[Q_i(s,a)] = q_*(s,a)$$
 
 at every stage of Q-learning.
 
@@ -5577,25 +5524,15 @@ That equality was an **idealized assumption used to isolate maximization bias**.
 **What the derivation assumes.**
 Imagine that each action-value estimate has the form
 
-[
-Q_i(s,a)=q_*(s,a)+\varepsilon_{i,a},
-\qquad
-\mathbb E[\varepsilon_{i,a}]=0.
-]
+$$Q_i(s,a)=q_*(s,a)+\varepsilon_{i,a}, \qquad \mathbb E[\varepsilon_{i,a}]=0.$$
 
 Then immediately,
 
-[
-\mathbb E[Q_i(s,a)]=q_*(s,a).
-]
+$$\mathbb E[Q_i(s,a)]=q_*(s,a).$$
 
 This says that each action is estimated correctly **on average**, even though any particular estimate is noisy. The derivation then shows that maximization alone introduces bias:
 
-[
-\mathbb E!\left[\max_a Q_i(s,a)\right]
-\geq
-\max_a q_*(s,a).
-]
+$$\mathbb E!\left[\max_a Q_i(s,a)\right] \geq \max_a q_*(s,a).$$
 
 So the point is stronger than “Q-learning estimates are bad”: **even perfectly unbiased individual estimates become biased after taking their maximum**. This is the assumption made in the notes’ derivation. 
 
@@ -5611,17 +5548,13 @@ During learning, (Q_t(s,a)) can be biased for many reasons:
 
 Thus generally,
 
-[
-\mathbb E[Q_t(s,a)]\neq q_*(s,a)
-]
+$$\mathbb E[Q_t(s,a)]\neq q_*(s,a)$$
 
 for finite (t).
 
 What is guaranteed under the standard tabular convergence assumptions is an **asymptotic statement**:
 
-[
-Q_t(s,a)\longrightarrow q_*(s,a)
-]
+$$Q_t(s,a)\longrightarrow q_*(s,a)$$
 
 with probability (1), provided, roughly, that every state-action pair is visited infinitely often, the step sizes satisfy the Robbins–Monro conditions, rewards are bounded, and the discounted or episodic MDP is well behaved.
 
@@ -5631,30 +5564,19 @@ This convergence is not the same as finite-time unbiasedness.
 
 Suppose (Q_1) selects
 
-[
-A^*=\arg\max_a Q_1(s,a),
-]
+$$A^*=\arg\max_a Q_1(s,a),$$
 
 and (Q_2) evaluates it. The clean calculation assumes that (Q_2)'s evaluation error is mean-zero and independent of the information used to select (A^*):
 
-[
-Q_2(s,a)=q_*(s,a)+\varepsilon_{2,a}.
-]
+$$Q_2(s,a)=q_*(s,a)+\varepsilon_{2,a}.$$
 
 Then
 
-[
-\mathbb E[\varepsilon_{2,A^*}\mid Q_1]=0,
-]
+$$\mathbb E[\varepsilon_{2,A^*}\mid Q_1]=0,$$
 
 so
 
-[
-\mathbb E[Q_2(s,A^*)\mid Q_1]
-=============================
-
-q_*(s,A^*).
-]
+$$\mathbb E[Q_2(s,A^*)\mid Q_1] = q_*(s,A^*).$$
 
 Notice that this is generally **not**
 
@@ -5671,7 +5593,6 @@ The precise conclusion is therefore:
 $$\boxed{ \mathbb E[Q_i]=q_* \text{ is an analytical assumption, not a finite-time guarantee.} }$$
 
 Double Q-learning’s real convergence result is asymptotic; the unbiased-noise model is used only to make the maximization-bias mechanism transparent.
-
 
 </details>
 </div>
@@ -8696,7 +8617,7 @@ Modern deep RL stays stable by a toolbox of engineering fixes, each targeting a 
 3. **Batch normalization.** As lower layers learn, the distribution of inputs to higher layers keeps shifting (**internal covariate shift**). 
    * **Fix:** per minibatch, normalize a layer's pre-activations to mean $0$, variance $1$, then rescale by learned $\gamma, \beta$: 
    
-   $$\hat z = (z - \mu\_B)/\sqrt{\sigma\_B^2 + \epsilon}$$
+   $$\hat z = (z - \mu_B)/\sqrt{\sigma_{B}^2 + \epsilon}$$
 
    $$\tilde z = \gamma\hat z + \beta$$
    
@@ -8784,12 +8705,14 @@ Every control method so far — from $\varepsilon$-greedy bandits through Sarsa,
 4. **The policy gradient theorem.** The central result: a formula for $\nabla J$ that does **not** require differentiating the state distribution.
 5. **REINFORCE.** Turning the theorem into a Monte Carlo algorithm, one sampled state–action pair at a time.
 6. **Baselines.** Same expected gradient, drastically lower variance.
+7. **Actor–critic.** Bootstrapping the return estimate turns the baseline into a true *critic*: fully online, incremental updates driven by the TD error.
+8. **Case study: AlphaGo.** The algorithms of this lecture at scale — REINFORCE self-play plus a value-network baseline.
 
 The guiding question of the lecture:
 
 > *How can we follow the gradient of expected return with respect to the policy parameters, even though the state distribution itself depends on the policy?*
 
-The arc continues in the next lecture: bootstrapping the return estimate turns REINFORCE-with-baseline into **actor–critic** methods, and a Gaussian policy handles **continuous** action spaces.
+The arc continues in the next lecture: a **Gaussian policy** extends the same score-function machinery to **continuous** action spaces.
 
 </div>
 
@@ -9016,7 +8939,11 @@ maximized at
 
 $$p^\ast = 2 - \sqrt{2} \approx 0.59$$
 
-with $J(p^\ast) \approx -11.6$ — roughly *four times better* than anything $\varepsilon$-greedy can reach.
+with 
+
+$$J(p^\ast) \approx -11.6$$
+
+— roughly *four times better* than anything $\varepsilon$-greedy can reach.
 
 </div>
 
@@ -9088,6 +9015,11 @@ The expectation form is a recipe with three steps:
 **Why this matters.** The right-hand side involves only $\nabla \pi$ — how changing $\boldsymbol{\theta}$ changes the **action probabilities**. The effect of $\boldsymbol{\theta}$ on the future **state distribution** $\mu(s)$ appears nowhere: the theorem has already accounted for it. This is what makes model-free policy-gradient learning possible.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/PolicyGradientTheoremReading.png' | relative_url }}" alt="Learning curves of REINFORCE on the short corridor for three step sizes: the middle step size converges near the optimum, the smallest converges more slowly, and the largest plateaus well below the optimum" loading="lazy">
+  <!-- <figcaption>REINFORCE on the short corridor ($\gamma = 1$, $\theta_0$ chosen so that $\pi(\text{right}) \approx 0.05$; episodes capped at 500 steps; smoothed average of 200 runs). $\alpha = 2^{-13}$ converges toward $v_*(s_0)$; $\alpha = 2^{-14}$ converges more slowly; $\alpha = 2^{-12}$ is too aggressive — in a fraction of runs the noisy updates temporarily collapse $\pi(\text{right})$ toward $0$, and the average pays for it.</figcaption> -->
+</figure>
 
 #### Proof of the Policy Gradient Theorem
 
@@ -9248,7 +9180,9 @@ This is where **on-policy sampling** earns its keep: when we generate episodes u
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Action sampling — from $q_\pi$ to the sampled return $G_t$)</span></p>
 
-Now fix one sampled on-policy state $S\_t$. The inner sum over actions is not yet an expectation over the *sampled* action — fix that by multiplying and dividing by $\pi(a \mid S\_t, \boldsymbol{\theta})$:
+* Now fix one sampled on-policy state $S\_t$. 
+* The inner sum over actions is not yet an expectation over the *sampled* action
+  * fix that by multiplying and dividing by $\pi(a \mid S\_t, \boldsymbol{\theta})$:
 
 $$
 \begin{aligned}
@@ -9259,7 +9193,12 @@ $$
 \end{aligned}
 $$
 
-The action $A\_t \sim \pi(\cdot \mid S\_t, \boldsymbol{\theta})$ generated during the episode is a sample from exactly this expectation. One unknown remains: $q\_\pi(S\_t, A\_t)$. But by definition 
+TODO: cannot we do this trick only if $\pi(a \mid S_t, \boldsymbol{\theta})$ \neq 0 for all $a$ in the sum? Is the non-zero probability guaranteed by a softmax that probably gives non-zero probability to any action?
+
+* The action $A\_t \sim \pi(\cdot \mid S\_t, \boldsymbol{\theta})$ generated during the episode is a sample from exactly this expectation. 
+* One unknown remains: $q\_\pi(S\_t, A\_t)$. 
+
+But by definition 
 
 $$q_\pi(S_t, A_t) = \mathbb{E}_\pi[\, G_t \mid S_t, A_t \,],$$
 
@@ -9358,7 +9297,12 @@ Using $\nabla \ln \pi = \nabla \pi / \pi$, this is equivalently
 
 $$\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, G_t\, \underbrace{\frac{\nabla \pi(A_t \mid S_t, \boldsymbol{\theta}_t)}{\pi(A_t \mid S_t, \boldsymbol{\theta}_t)}}_{\text{eligibility vector}}.$$
 
-In words: *increase the log-probability of the sampled action $A\_t$ in state $S\_t$, scaled by its return estimate $G\_t$ and its time weight $\gamma^t$.* The division by $\pi(A\_t \mid S\_t, \boldsymbol{\theta}\_t)$ in the eligibility vector also corrects for how often the action would be chosen anyway: frequently-taken actions get proportionally smaller pushes, so favourites do not win merely by being sampled more.
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(The REINFORCE update in words)</span></p>
+
+*Increase the log-probability of the sampled action $A\_t$ in state $S\_t$, scaled by its return estimate $G\_t$ and its time weight $\gamma^t$.* The division by $\pi(A\_t \mid S\_t, \boldsymbol{\theta}\_t)$ in the eligibility vector also corrects for how often the action would be chosen anyway: frequently-taken actions get proportionally smaller pushes, so favourites do not win merely by being sampled more.
 
 </div>
 
@@ -9369,20 +9313,30 @@ Think of one episode as a chain of decisions
 
 $$S_0 \xrightarrow{\ A_0\ } S_1 \xrightarrow{\ A_1\ } S_2 \xrightarrow{\ A_2\ } \cdots \xrightarrow{\ A_{T-1}\ } \text{end}.$$
 
-At every time step the policy asks: *"should I make this sampled action more or less likely next time?"* REINFORCE answers with $\Delta \boldsymbol{\theta}\_t \propto G\_t\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$, whose two factors have clean roles:
+At every time step the policy asks: *"should I make this sampled action more or less likely next time?"* REINFORCE answers with 
 
-* $G\_t$ — *increase or decrease?* The observed quality of everything that followed the action;
+$$\Delta \boldsymbol{\theta}_t \propto G_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}),$$
+
+whose two factors have clean roles:
+
+* $G\_t$ — *increase or decrease?* The observed quality of everything that followed the action; TODO: does not the magnitude of the G_t matters, not the sign. The policy could be any non-linear function of the current state, so what matters more is the direction of the update + the magnitude of the update. We do not know, which direction correspond to the lowering the probability of action to be chosen in the given state without knowing a specific policy function, do not we?
 * $\nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$ — *which direction in parameter space* increases $\pi(A\_t \mid S\_t)$.
 
-Locally: $G\_t > 0 \Rightarrow$ make $A\_t$ more likely in $S\_t$; $G\_t < 0 \Rightarrow$ make it less likely.
+Locally: 
+* $G\_t > 0 \Rightarrow$ make $A\_t$ more likely in $S\_t$;
+* $G\_t < 0 \Rightarrow$ make it less likely.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(REINFORCE — Monte-Carlo policy-gradient control, episodic)</span></p>
 
-**Input:** a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$.
-**Parameter:** step size $\alpha > 0$. Initialise $\boldsymbol{\theta} \in \mathbb{R}^{d'}$.
+* **Input:** 
+  * a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$.
+* **Parameter:** 
+  * step size $\alpha > 0$. 
+
+Initialise $\boldsymbol{\theta} \in \mathbb{R}^{d'}$.
 
 Loop forever (for each episode):
 
@@ -9395,7 +9349,13 @@ Loop forever (for each episode):
    * $G \leftarrow \sum\_{k=t+1}^{T} \gamma^{k-t-1} R\_k$  (this is $G\_t$);
    * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha\, \gamma^{t}\, G\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$.
 
-**Intuition:** try an action according to your current stochastic policy. See how good the outcome was. If the outcome was good, make that action more likely next time; if it was bad, make it less likely.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(REINFORCE — Monte-Carlo policy-gradient control, episodic)</span></p>
+
+Try an action according to your current stochastic policy. See how good the outcome was. If the outcome was good, make that action more likely next time; if it was bad, make it less likely.
 
 </div>
 
@@ -9414,14 +9374,26 @@ $$
 = \mathbf{x}(s, a) - \sum_b \pi(b \mid s, \boldsymbol{\theta})\, \mathbf{x}(s, b).
 $$
 
-**Interpretation:** the eligibility vector points from the **expected feature vector under $\pi$** toward the **feature vector of the action actually taken**. (This is the state-dependent generalization of the soft-max derivative we computed for gradient bandits in Lecture 2.)
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Eligibility vector for the soft-max linear policy)</span></p>
+
+The eligibility vector points from the **expected feature vector under $\pi$** toward the **feature vector of the action actually taken**. (This is the state-dependent generalization of the soft-max derivative we computed for gradient bandits in Lecture 2.)
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One REINFORCE step by hand)</span></p>
 
-**Setup.** Short corridor, features $\mathbf{x}(s, \text{right}) = [1, 0]^\top$, $\mathbf{x}(s, \text{left}) = [0, 1]^\top$, current parameters $\boldsymbol{\theta} = [0.4,\, -0.1]^\top$, step size $\alpha = 0.1$, $\gamma = 1$.
+**Setup.** 
+* Short corridor, 
+* features 
+  * $\mathbf{x}(s, \text{right}) = [1, 0]^\top$, 
+  * $\mathbf{x}(s, \text{left}) = [0, 1]^\top$, 
+* current parameters $\boldsymbol{\theta} = [0.4,\, -0.1]^\top$, 
+* step size $\alpha = 0.1$, 
+* $\gamma = 1$.
 
 **Policy.**
 
@@ -9471,7 +9443,12 @@ $\Rightarrow$ $\pi(\text{right} \mid s)$ drops from $0.622$ to $\approx 0.493$. 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(Variance is the practical bottleneck)</span></p>
 
-The same parameter step depends on the **entire random future trajectory**: every reward from $t+1$ to the end of the episode enters $G\_t$. Two episodes that visit similar state–action sequences can still produce very different returns — and hence very different updates. This single weakness motivates the two classical fixes: **baselines** (below) and **bootstrapping** (next lecture, actor–critic).
+* The same parameter step depends on the **entire random future trajectory**: 
+  * every reward from $t+1$ to the end of the episode enters $G\_t$. 
+* Two episodes that visit similar state–action sequences can still produce very different returns — and hence very different updates. 
+* This single weakness motivates the two classical fixes: 
+  * **bootstrapping** (next lecture, actor–critic) and
+  * **baselines** (below). 
 
 </div>
 
@@ -9490,17 +9467,11 @@ $$
 
 For each fixed state $s$, the subtracted term vanishes because the action probabilities always sum to one:
 
-$$
-\sum_a b(s)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
-= b(s)\, \nabla \sum_a \pi(a \mid s, \boldsymbol{\theta})
-= b(s)\, \nabla 1 = 0.
-$$
+$$\sum_a b(s)\, \nabla \pi(a \mid s, \boldsymbol{\theta}) = b(s)\, \nabla \sum_a \pi(a \mid s, \boldsymbol{\theta}) = b(s)\, \nabla 1 = 0.$$
 
 Therefore the policy gradient theorem **also holds with a baseline**:
 
-$$
-\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a \bigl( q_\pi(s, a) - b(s) \bigr)\, \nabla \pi(a \mid s, \boldsymbol{\theta}).
-$$
+$$\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a \bigl( q_\pi(s, a) - b(s) \bigr)\, \nabla \pi(a \mid s, \boldsymbol{\theta}).$$
 
 (The bandit ancestor of this trick: subtracting the running average reward $\bar R\_t$ in the gradient-bandit update of Lecture 2.)
 
@@ -9511,14 +9482,23 @@ $$
 
 The discounted episodic update with a baseline is
 
-$$
-\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t} \bigl( G_t - b(S_t) \bigr)\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).
-$$
+$$\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t} \bigl( G_t - b(S_t) \bigr)\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).$$
 
-* Adding $-b(s)\, \nabla \ln \pi$ to the estimator does **not** change its mean — that is the derivation above.
-* But it can **drastically change its variance**. A good baseline removes *common-mode noise*: if all actions in $s$ lead to a high return, the update should reflect the **relative** preference among actions, not the absolute return size.
+* Adding $-b(s)\, \nabla \ln \pi$ to the estimator does **not** change its mean
+  * see the derivation above.
+* But it can **drastically change its variance**. 
+  * A good baseline removes *common-mode noise*: 
+  * if all actions in $s$ lead to a high return, the update should reflect the **relative** preference among actions, not the absolute return size.
 
-**Natural choice:** $b(s) = \hat v(s, \mathbf{w})$, a learned state-value estimate. Then $G\_t - \hat v(S\_t, \mathbf{w})$ is approximately the **advantage** of the chosen action — *was this action better or worse than what we typically achieve from this state?*
+**Natural choice:** 
+
+$$b(s) = \hat v(s, \mathbf{w}),$$
+
+a learned state-value estimate. Then 
+
+$$G_t - \hat v(S_t, \mathbf{w})$$
+
+is approximately the **advantage** of the chosen action — *was this action better or worse than what we typically achieve from this state?*
 
 </div>
 
@@ -9530,8 +9510,14 @@ $$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(REINFORCE with baseline — episodic)</span></p>
 
-**Input:** a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$ and a differentiable value function $\hat v(s, \mathbf{w})$.
-**Parameters:** step sizes $\alpha^{\boldsymbol{\theta}} > 0$ and $\alpha^{\mathbf{w}} > 0$. Initialise $\boldsymbol{\theta}$, $\mathbf{w}$.
+* **Input:** 
+  * a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$
+  * a differentiable value function $\hat v(s, \mathbf{w})$.
+* **Parameters:** 
+  * step size $\alpha^{\boldsymbol{\theta}} > 0$
+  * step size $\alpha^{\mathbf{w}} > 0$. 
+
+Initialise $\boldsymbol{\theta}$, $\mathbf{w}$.
 
 Loop forever (for each episode):
 
@@ -9546,7 +9532,9 @@ Loop forever (for each episode):
    * $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\, \delta\, \nabla \hat v(S\_t, \mathbf{w})$;
    * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha^{\boldsymbol{\theta}}\, \gamma^{t}\, \delta\, \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$.
 
-Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v$ onto observed returns, as in Lecture 9) is often easy to tune; $\alpha^{\boldsymbol{\theta}}$ depends on the reward scale and the policy parameterization and is the delicate one.
+Two step sizes: 
+* $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v$ onto observed returns, as in Lecture 9) is often easy to tune; 
+* $\alpha^{\boldsymbol{\theta}}$ depends on the reward scale and the policy parameterization and is the delicate one.
 
 </div>
 
@@ -9558,7 +9546,7 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
   $$\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}} \bigl( G_t - \hat v(S_t, \mathbf{w}) \bigr) \nabla \hat v(S_t, \mathbf{w}).$$
 
 * The policy update uses an **advantage-like signal** $G\_t - \hat v(S\_t, \mathbf{w})$: we ask whether the action was *better or worse than expected*, not whether the return was large in absolute terms.
-* This does **not** turn the method into a value-based method. The policy $\pi(a \mid s, \boldsymbol{\theta})$ is still the **actor** — the value function never selects actions, it only sharpens the update. (Since $\hat v$ here evaluates but does not yet *bootstrap*, it is not a critic in the strict actor–critic sense; that step comes next lecture.)
+* This does **not** turn the method into a value-based method. The policy $\pi(a \mid s, \boldsymbol{\theta})$ is still the **actor** — the value function never selects actions, it only sharpens the update. (Since $\hat v$ here evaluates but does not yet *bootstrap*, it is not a critic in the strict actor–critic sense; that step comes in the next section.)
 * With **neural networks**, replace the linear preferences by logits: 
   
   $$h_{\boldsymbol{\theta}}(s, a) = \text{NN}_{\boldsymbol{\theta}}(s)_a$$
@@ -9575,6 +9563,413 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
   <img src="{{ '/assets/images/notes/rl_hd/pg_reinforce_baseline_comparison.png' | relative_url }}" alt="Learning curves comparing plain REINFORCE with REINFORCE plus a learned baseline on the short corridor; the baseline version converges within about a hundred episodes while plain REINFORCE takes many hundreds" loading="lazy">
   <figcaption>Baseline in practice (short corridor; smoothed average of 200 runs). Plain REINFORCE at its best step size $\alpha = 2^{-13}$ takes hundreds of episodes; REINFORCE with a learned scalar baseline ($\alpha^\theta = 2^{-9}$, $\alpha^w = 2^{-6}$) converges much faster. Same expected gradient direction, lower variance — the baseline itself introduces no bias.</figcaption>
 </figure>
+
+### Actor–Critic Methods
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From baseline to critic: bootstrapping)</span></p>
+
+In REINFORCE with baseline, $\hat v(S\_t, \mathbf{w})$ is *only* a baseline. It does **not** replace the Monte Carlo return $G\_t$ — every update still waits for the end of the episode.
+
+What if we bootstrap, replacing $G\_t$ with the **one-step return**
+
+$$G_{t:t+1} \;=\; R_{t+1} + \gamma\, \hat v(S_{t+1}, \mathbf{w})\,?$$
+
+Then the value function is used **both** as a baseline at $S\_t$ **and** as a forecast of the future from $S\_{t+1}$. It is now a **critic**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Actor–critic method)</span></p>
+
+An **actor–critic** method is a policy-gradient method that uses a learned value function to **bootstrap** the return estimate.
+
+* **Actor:** the policy $\pi(a \mid s, \boldsymbol{\theta})$ — it selects the actions.
+* **Critic:** the value function $\hat v(s, \mathbf{w})$ — it evaluates (criticizes) the actor's action choices.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 800 380" role="img" aria-label="The actor-critic loop: the actor sends an action to the environment, the environment returns reward and next state to the critic, the critic feeds its value estimates into the TD error, and the TD error both steers the actor and improves the critic.">
+    <rect x="90" y="60" width="210" height="64" rx="10" class="accent"></rect>
+    <text x="195" y="87" text-anchor="middle" font-size="15" font-weight="700" fill="#2c3e94">ACTOR</text>
+    <text x="195" y="108" text-anchor="middle" font-size="13" fill="#2c3e94">policy π(a | s, θ)</text>
+
+    <rect x="90" y="260" width="210" height="64" rx="10" class="green"></rect>
+    <text x="195" y="287" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">CRITIC</text>
+    <text x="195" y="308" text-anchor="middle" font-size="13" fill="#047857">value v̂(s, w)</text>
+
+    <rect x="350" y="160" width="130" height="62" rx="10" class="box"></rect>
+    <text x="415" y="186" text-anchor="middle" font-size="13" font-weight="700">TD error</text>
+    <text x="415" y="208" text-anchor="middle" font-size="14">δₜ</text>
+
+    <rect x="580" y="155" width="170" height="72" rx="10" class="box"></rect>
+    <text x="665" y="197" text-anchor="middle" font-size="14" font-weight="700">ENVIRONMENT</text>
+
+    <path d="M300,84 C450,52 570,74 638,150" class="line" stroke="#2c3e94" marker-end="url(#pg-ac-blue)"></path>
+    <text x="470" y="56" text-anchor="middle" font-size="12" fill="#2c3e94">action A</text>
+
+    <path d="M638,230 C560,326 420,312 306,300" class="line" marker-end="url(#pg-ac-gray)"></path>
+    <text x="490" y="330" text-anchor="middle" font-size="12" class="muted">R, S′</text>
+
+    <path d="M290,258 C320,240 340,232 362,226" fill="none" stroke="#047857" stroke-width="2" marker-end="url(#pg-ac-green)"></path>
+    <text x="288" y="242" text-anchor="middle" font-size="11" fill="#047857">v̂(Sₜ), v̂(Sₜ₊₁)</text>
+
+    <path d="M366,158 C336,142 316,134 288,128" fill="none" stroke="#b45309" stroke-width="2" marker-end="url(#pg-ac-amber)"></path>
+    <text x="352" y="132" text-anchor="middle" font-size="11" fill="#b45309">steer policy</text>
+
+    <path d="M398,226 C360,248 320,256 292,260" fill="none" stroke="#b45309" stroke-width="2" marker-end="url(#pg-ac-amber)"></path>
+    <text x="392" y="252" text-anchor="middle" font-size="11" fill="#b45309">improve value</text>
+
+    <text x="400" y="362" text-anchor="middle" font-size="12" class="muted">δₜ = Rₜ₊₁ + γ v̂(Sₜ₊₁) − v̂(Sₜ)   drives both updates</text>
+
+    <defs>
+      <marker id="pg-ac-gray" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+      <marker id="pg-ac-blue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#2c3e94"></path>
+      </marker>
+      <marker id="pg-ac-green" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#047857"></path>
+      </marker>
+      <marker id="pg-ac-amber" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#b45309"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The actor–critic loop. One signal, $\delta_t$, does double duty: it <em>steers the actor</em> and <em>improves the critic</em>. And because $\delta_t$ uses $\hat v(S_{t+1})$, the critic now <em>bootstraps</em> — enabling fully online, incremental updates.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(What is the critic estimating?)</span></p>
+
+The policy-gradient theorem suggests an actor update of the form
+
+$$\Delta \boldsymbol{\theta} \;\propto\; q_\pi(S_t, A_t)\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}).$$
+
+A critic can estimate the action value directly:
+
+$$q_\pi(S_t, A_t) \;\approx\; \hat q(S_t, A_t, \mathbf{w}).$$
+
+This is actor–critic **without an explicit advantage baseline**. More commonly, we use a *value* critic and subtract a baseline:
+
+$$\widehat{A}_t \;=\; \underbrace{R_{t+1} + \gamma \hat v(S_{t+1}, \mathbf{w})}_{=\, \hat q(S_t, A_t, \mathbf{w})} \;-\; \hat v(S_t, \mathbf{w}).$$
+
+**Terminology:** *actor–critic* is the general family. *Advantage actor–critic* uses an advantage estimate to reduce variance.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The one-step actor–critic update)</span></p>
+
+Start from the REINFORCE-with-baseline update:
+
+$$\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \alpha\, \gamma^{t} \underbrace{\bigl( G_t - \hat v(S_t, \mathbf{w}) \bigr)}_{\text{Monte Carlo advantage estimate}} \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).$$
+
+Actor–critic replaces the full return $G\_t$ by the one-step bootstrapped estimate of $q\_\pi(S\_t, A\_t)$:
+
+$$G_t \;\rightsquigarrow\; R_{t+1} + \gamma\, \hat v(S_{t+1}, \mathbf{w}).$$
+
+Therefore the **advantage estimate** becomes
+
+$$\widehat{A}_t = R_{t+1} + \gamma \hat v(S_{t+1}, \mathbf{w}) - \hat v(S_t, \mathbf{w}) = \delta_t$$
+
+— exactly the **TD error** of Lecture 6, computed with the learned $\hat v$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(One-step actor–critic update, discounted episodic)</span></p>
+
+$$\boldsymbol{\theta}_{t+1} \;=\; \boldsymbol{\theta}_t + \alpha\, \gamma^{t}\, \delta_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}_t).$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(Bias–variance trade-off)</span></p>
+
+Replacing $G\_t$ by a bootstrapped estimate usually **lowers variance**, but can **introduce bias** when $\hat v$ is inaccurate. This is the same dial we turned in Lecture 7: Monte Carlo at one end, one-step TD at the other, $n$-step targets in between — except now it sits *inside* the policy-gradient update rather than inside a value-learning rule.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(One-step actor–critic — episodic)</span></p>
+
+* **Input:**
+  * a differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$
+  * a differentiable value function $\hat v(s, \mathbf{w})$.
+* **Parameters:**
+  * step size $\alpha^{\boldsymbol{\theta}} > 0$
+  * step size $\alpha^{\mathbf{w}} > 0$.
+
+Initialise $\boldsymbol{\theta}$, $\mathbf{w}$.
+
+Loop forever (for each episode):
+
+1. Initialise $S$ (first state of the episode); $I \leftarrow 1$.
+2. Loop while $S$ is not terminal:
+   * $A \sim \pi(\cdot \mid S, \boldsymbol{\theta})$;
+   * take action $A$, observe $S'$, $R$;
+   * $\delta \leftarrow R + \gamma \hat v(S', \mathbf{w}) - \hat v(S, \mathbf{w})$  (with $\hat v(\text{terminal}) \doteq 0$);
+   * $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\, \delta\, \nabla \hat v(S, \mathbf{w})$;
+   * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha^{\boldsymbol{\theta}}\, I\, \delta\, \nabla \ln \pi(A \mid S, \boldsymbol{\theta})$;
+   * $I \leftarrow \gamma I$;  $S \leftarrow S'$.
+
+Two features worth noting:
+
+* **Fully online and incremental** — every step of experience produces an update; there is no need to wait for the episode to end. (The running factor $I = \gamma^t$ plays the role of the explicit $\gamma^t$ in REINFORCE.)
+* **Generalizes to $n$-step returns** — replace the one-step target by an $n$-step target (or an eligibility-trace variant) to tune the bias–variance trade-off.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 780 360" role="img" aria-label="Family tree of policy-gradient methods: the policy gradient theorem at the top, REINFORCE below it, and two children of REINFORCE at the bottom - REINFORCE with baseline on the left and actor-critic on the right.">
+    <rect x="250" y="36" width="280" height="66" rx="10" class="accent"></rect>
+    <text x="390" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#2c3e94">Policy Gradient Theorem</text>
+    <text x="390" y="86" text-anchor="middle" font-size="13" fill="#2c3e94">∇J ∝ Σₛ μ(s) Σₐ q<tspan font-size="10" dy="3">π</tspan><tspan dy="-3"> ∇π</tspan></text>
+
+    <rect x="290" y="152" width="200" height="62" rx="10" class="box"></rect>
+    <text x="390" y="178" text-anchor="middle" font-size="14" font-weight="700">REINFORCE</text>
+    <text x="390" y="200" text-anchor="middle" font-size="13" class="muted">γᵗ Gₜ ∇ln π</text>
+
+    <rect x="70" y="266" width="270" height="62" rx="10" class="box"></rect>
+    <text x="205" y="292" text-anchor="middle" font-size="14" font-weight="700">REINFORCE w/ baseline</text>
+    <text x="205" y="314" text-anchor="middle" font-size="13" class="muted">γᵗ (Gₜ − v̂) ∇ln π</text>
+
+    <rect x="460" y="266" width="220" height="62" rx="10" class="box"></rect>
+    <text x="570" y="292" text-anchor="middle" font-size="14" font-weight="700">Actor–Critic</text>
+    <text x="570" y="314" text-anchor="middle" font-size="13" class="muted">γᵗ δₜ ∇ln π</text>
+
+    <line x1="390" y1="102" x2="390" y2="146" class="line" marker-end="url(#pg-tree-arrow)"></line>
+    <line x1="350" y1="214" x2="235" y2="260" class="line" marker-end="url(#pg-tree-arrow)"></line>
+    <line x1="430" y1="214" x2="545" y2="260" class="line" marker-end="url(#pg-tree-arrow)"></line>
+
+    <defs>
+      <marker id="pg-tree-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>The family tree of this lecture. <strong>Baseline:</strong> variance reduction without bias. <strong>Critic:</strong> bootstrapping enables online learning and trades a little bias for lower variance.</figcaption>
+</figure>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 280" role="img" aria-label="A horizontal axis from more bootstrapping on the left to full Monte Carlo on the right, with four methods placed along it: one-step actor-critic (low variance, some bias), n-step or lambda actor-critic (tunable trade-off), REINFORCE with baseline (unbiased, lower variance), and REINFORCE (unbiased, high variance).">
+    <line x1="50" y1="200" x2="806" y2="200" class="line" marker-end="url(#pg-axis-arrow)"></line>
+    <text x="60" y="230" font-size="12" class="muted">more bootstrapping</text>
+    <text x="800" y="230" text-anchor="end" font-size="12" class="muted">full Monte-Carlo</text>
+
+    <text x="160" y="58" text-anchor="middle" font-size="11" font-style="italic" fill="#047857">low variance</text>
+    <text x="160" y="74" text-anchor="middle" font-size="11" font-style="italic" fill="#047857">some bias</text>
+    <rect x="85" y="96" width="150" height="56" rx="8" class="green"></rect>
+    <text x="160" y="119" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">one-step</text>
+    <text x="160" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">actor–critic</text>
+    <line x1="160" y1="152" x2="160" y2="192" class="line"></line>
+    <g fill="#047857"><circle cx="160" cy="200" r="7"></circle></g>
+
+    <text x="350" y="58" text-anchor="middle" font-size="11" font-style="italic" fill="#2c3e94">tunable</text>
+    <text x="350" y="74" text-anchor="middle" font-size="11" font-style="italic" fill="#2c3e94">trade-off</text>
+    <rect x="275" y="96" width="150" height="56" rx="8" class="accent"></rect>
+    <text x="350" y="119" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">n-step / λ</text>
+    <text x="350" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">actor–critic</text>
+    <line x1="350" y1="152" x2="350" y2="192" class="line"></line>
+    <circle cx="350" cy="200" r="7" fill="#2c3e94"></circle>
+
+    <text x="565" y="58" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">unbiased</text>
+    <text x="565" y="74" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">lower variance</text>
+    <rect x="480" y="96" width="170" height="56" rx="8" class="amber"></rect>
+    <text x="565" y="119" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">REINFORCE</text>
+    <text x="565" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">w/ baseline</text>
+    <line x1="565" y1="152" x2="565" y2="192" class="line"></line>
+    <g fill="#b45309"><circle cx="565" cy="200" r="7"></circle></g>
+
+    <text x="740" y="58" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">unbiased</text>
+    <text x="740" y="74" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">high variance</text>
+    <rect x="665" y="96" width="150" height="56" rx="8" class="amber"></rect>
+    <text x="740" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">REINFORCE</text>
+    <line x1="740" y1="152" x2="740" y2="192" class="line"></line>
+    <g fill="#b45309"><circle cx="740" cy="200" r="7"></circle></g>
+
+    <defs>
+      <marker id="pg-axis-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>One axis: how much do we bootstrap? Moving left trades a little bias for much lower variance and online learning; moving right keeps the estimator unbiased but pays in variance.</figcaption>
+</figure>
+
+### Case Study: AlphaGo
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(The game of Go, as an MDP)</span></p>
+
+* Two players, **Black** and **White**, alternately place stones on a $19 \times 19$ grid.
+* **Goal:** surround and control more territory (and capture enemy stones) than the opponent.
+* Hard for computers: about **250 legal moves** per turn over $\sim 150$ moves $\Rightarrow \sim 10^{170}$ positions.
+* And positions are **hard to evaluate** by hand (unlike chess piece values).
+
+As an MDP:
+
+* **State** = board position, **actions** = legal moves, **reward** = $+1$ win / $-1$ loss at the end (zero along the way).
+* Brute-force search is hopeless; AlphaGo *learns* a policy and a value to guide a focused search.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(AlphaGo — this lecture, at scale)</span></p>
+
+* AlphaGo (DeepMind, 2016) was the first program to beat a professional Go player on a full board — **Fan Hui 5–0**, then **Lee Sedol 4–1**.
+* Its policy was improved by **exactly the algorithm in this lecture**: REINFORCE on self-play games.
+* On the second training pass it used a learned value function as a **baseline** — the variance-reduction trick from the previous section.
+
+**The one-line summary.** Training consists of 3 steps: **supervised learning** to give it a strong starting policy; **REINFORCE self-play** to improve it; and a **value network** (baseline + leaf evaluator) and **tree search** to evaluate.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 400" role="img" aria-label="AlphaGo's training pipeline in three stages: supervised learning trains an SL policy and a fast rollout policy from human expert games; reinforcement learning improves an RL policy by REINFORCE self-play, initialized from the SL policy; and the value network is trained by regression on self-play outcomes.">
+    <text x="150" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#2c3e94">1. Supervised</text>
+    <text x="430" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">2. Reinforcement</text>
+    <text x="710" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">3. Evaluation</text>
+
+    <line x1="295" y1="62" x2="295" y2="370" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 6"></line>
+    <line x1="575" y1="62" x2="575" y2="370" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 6"></line>
+
+    <rect x="55" y="80" width="190" height="48" rx="8" class="box"></rect>
+    <text x="150" y="109" text-anchor="middle" font-size="13">human expert games</text>
+
+    <line x1="150" y1="128" x2="150" y2="176" class="line" marker-end="url(#pg-ago-gray)"></line>
+    <text x="164" y="158" font-size="11" class="muted">train</text>
+
+    <rect x="55" y="180" width="190" height="60" rx="8" class="accent"></rect>
+    <text x="150" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">SL policy  p<tspan font-size="10" dy="3">σ</tspan></text>
+    <text x="150" y="226" text-anchor="middle" font-size="11" class="muted">supervised, ~57%</text>
+
+    <path d="M66,128 C24,180 24,250 62,296" class="line" marker-end="url(#pg-ago-gray)"></path>
+
+    <rect x="55" y="290" width="190" height="60" rx="8" class="box"></rect>
+    <text x="150" y="314" text-anchor="middle" font-size="13" font-weight="700">rollout policy  p<tspan font-size="10" dy="3">π</tspan></text>
+    <text x="150" y="336" text-anchor="middle" font-size="11" class="muted">fast, ~24%</text>
+
+    <line x1="245" y1="210" x2="331" y2="210" stroke="#2c3e94" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#pg-ago-blue)"></line>
+    <text x="288" y="200" text-anchor="middle" font-size="11" class="muted">init</text>
+
+    <rect x="335" y="180" width="190" height="60" rx="8" class="green"></rect>
+    <text x="430" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">RL policy  p<tspan font-size="10" dy="3">ρ</tspan></text>
+    <text x="430" y="226" text-anchor="middle" font-size="11" class="muted">self-play; reward z = ±1</text>
+
+    <path d="M385,176 C365,110 495,110 475,176" fill="none" stroke="#047857" stroke-width="2" marker-end="url(#pg-ago-green)"></path>
+    <text x="430" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">REINFORCE</text>
+
+    <line x1="525" y1="210" x2="611" y2="210" class="line" marker-end="url(#pg-ago-gray)"></line>
+    <text x="568" y="196" text-anchor="middle" font-size="10" class="muted">self-play</text>
+    <text x="568" y="232" text-anchor="middle" font-size="10" class="muted">data</text>
+
+    <rect x="615" y="180" width="190" height="60" rx="8" class="amber"></rect>
+    <text x="710" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">value net  v<tspan font-size="10" dy="3">θ</tspan></text>
+    <text x="710" y="226" text-anchor="middle" font-size="11" class="muted">regress to outcome</text>
+
+    <defs>
+      <marker id="pg-ago-gray" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+      <marker id="pg-ago-blue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#2c3e94"></path>
+      </marker>
+      <marker id="pg-ago-green" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#047857"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>AlphaGo's training pipeline. The REINFORCE stage updates the RL policy by $\Delta\rho \propto \nabla_{\rho} \log p_\rho(a_t \mid s_t)\,(z_t - b)$ with baseline $b = v_\theta$ — the REINFORCE-with-baseline update of this lecture, with the game outcome $z = \pm 1$ as the (undiscounted) return. Concept re-creation. Source: Silver <em>et al.</em>, "Mastering the game of Go with deep neural networks and tree search," <em>Nature</em> 529:484–489 (2016).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The four networks)</span></p>
+
+| Network | Trained how | Role |
+|---|---|---|
+| $p\_\pi$ — rollout | supervised, linear soft-max | fast move sampling inside MCTS rollouts ($\sim 24\%$) |
+| $p\_\sigma$ — SL policy | supervised on $\sim 30$M expert moves | strong prior; seeds MCTS priors ($\sim 57\%$) |
+| $p\_\rho$ — RL policy | **REINFORCE** self-play, init from $p\_\sigma$ | generates self-play data to train $v\_\theta$ |
+| $v\_\theta$ — value | regression to self-play outcomes | leaf evaluation + REINFORCE baseline |
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A subtlety worth noting)</span></p>
+
+The *SL* policy $p\_\sigma$ (not the stronger RL policy $p\_\rho$) gave better MCTS priors — it is more **diverse**. The RL policy's real job was to produce the data that trains the value network $v\_\theta$.
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 300" role="img" aria-label="Shared network architecture: stacked input planes of size 19 by 19 by 48 feed a shared convolutional body of 13 layers with 192 filters, which branches into a policy head producing move probabilities and a value head producing a win probability.">
+    <text x="430" y="36" text-anchor="middle" font-size="12" font-style="italic" class="muted">Three networks share one conv body; the value net adds an FC layer + scalar output.</text>
+
+    <rect x="78" y="106" width="76" height="76" rx="4" class="box"></rect>
+    <rect x="70" y="98" width="76" height="76" rx="4" class="box"></rect>
+    <rect x="62" y="90" width="76" height="76" rx="4" class="box"></rect>
+    <rect x="54" y="82" width="76" height="76" rx="4" class="box"></rect>
+    <text x="104" y="216" text-anchor="middle" font-size="11" class="muted">input 19 × 19 × 48</text>
+
+    <line x1="160" y1="130" x2="216" y2="130" class="line" marker-end="url(#pg-net-gray)"></line>
+
+    <rect x="224" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="243" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="262" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="281" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="300" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="319" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <rect x="338" y="78" width="11" height="104" rx="2" fill="#94a3b8"></rect>
+    <text x="286" y="216" text-anchor="middle" font-size="11" class="muted">13 conv layers, 192 filters</text>
+
+    <path d="M355,112 C385,96 400,92 424,88" class="line" marker-end="url(#pg-net-gray)"></path>
+    <path d="M355,148 C385,164 400,168 424,172" class="line" marker-end="url(#pg-net-gray)"></path>
+
+    <rect x="430" y="58" width="170" height="56" rx="8" class="accent"></rect>
+    <text x="515" y="81" text-anchor="middle" font-size="13" font-weight="700" fill="#2c3e94">policy head</text>
+    <text x="515" y="102" text-anchor="middle" font-size="12" fill="#2c3e94">p<tspan font-size="10" dy="3">σ</tspan><tspan dy="-3">, p</tspan><tspan font-size="10" dy="3">ρ</tspan></text>
+
+    <line x1="600" y1="86" x2="656" y2="86" class="line" marker-end="url(#pg-net-gray)"></line>
+
+    <rect x="662" y="58" width="150" height="56" rx="8" class="box"></rect>
+    <text x="737" y="81" text-anchor="middle" font-size="13">move probs</text>
+    <text x="737" y="102" text-anchor="middle" font-size="12" class="muted">p(a | s)</text>
+
+    <rect x="430" y="146" width="170" height="56" rx="8" class="amber"></rect>
+    <text x="515" y="169" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">value head</text>
+    <text x="515" y="190" text-anchor="middle" font-size="12" fill="#b45309">v<tspan font-size="10" dy="3">θ</tspan></text>
+
+    <line x1="600" y1="174" x2="656" y2="174" class="line" marker-end="url(#pg-net-gray)"></line>
+
+    <rect x="662" y="146" width="150" height="56" rx="8" class="box"></rect>
+    <text x="737" y="169" text-anchor="middle" font-size="13">win prob</text>
+    <text x="737" y="190" text-anchor="middle" font-size="12" class="muted">v(s)</text>
+
+    <defs>
+      <marker id="pg-net-gray" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Shared architecture, different heads. Concept re-creation. Source: Silver <em>et al.</em>, <em>Nature</em> 529:484–489 (2016).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Playing a move: look-ahead search — propose, judge, decide)</span></p>
+
+To choose its *real* move, AlphaGo does not just sample the policy network. It runs thousands of look-ahead simulations, using **MCTS** — the selection / expansion / evaluation / backup loop from Lecture 8 — and then plays the move that held up best under all that scrutiny.
+
+The division of labour:
+
+* the **policy network** *proposes* which moves are worth looking at (it seeds the tree's priors),
+* the **value network** *judges* how good the resulting positions are (leaf evaluation, alongside fast $p\_\pi$ rollouts),
+* and the **search** *decides* — by accumulating those judgements over many simulations.
+
+</div>
 
 ### Summary
 
@@ -9593,17 +9988,43 @@ Two step sizes: $\alpha^{\mathbf{w}}$ (a plain Monte Carlo regression of $\hat v
 5. **REINFORCE** samples the theorem: states from on-policy visitation, actions from the policy, $q\_\pi$ from the Monte Carlo return; the $\gamma^t$ weight is the objective's own credit assignment over time.
 6. **REINFORCE is unbiased but high-variance** — it works, but slowly and with delicate step sizes.
 7. **A baseline** $b(s) = \hat v(s, \mathbf{w})$ subtracts common-mode noise: identical expected gradient, much lower variance, dramatically faster learning.
+8. **Actor–critic** bootstraps: replacing $G\_t$ by the one-step return $R\_{t+1} + \gamma \hat v(S\_{t+1}, \mathbf{w})$ collapses the advantage estimate to the TD error $\delta\_t$, and the update becomes fully online and incremental — lower variance, possible bias when $\hat v$ is off.
+9. **One axis — how much to bootstrap:** one-step actor–critic, $n$-step / $\lambda$ variants, REINFORCE with baseline, and plain REINFORCE all sit on the same bias–variance dial as in Lecture 7.
+10. **AlphaGo** is this lecture at scale: REINFORCE self-play improved its policy, and a learned value network served both as the baseline and as the leaf evaluator inside MCTS.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Where this goes next: actor–critic and continuous actions)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Method map)</span></p>
 
-Two threads are left deliberately hanging:
+| Method | Update direction | Trade-off |
+|---|---|---|
+| REINFORCE | $\gamma^t G\_t \nabla \ln \pi(A\_t \mid S\_t, \boldsymbol{\theta})$ | unbiased, high variance |
+| REINFORCE with baseline | $\gamma^t (G\_t - \hat v(S\_t, \mathbf{w})) \nabla \ln \pi$ | unbiased, lower variance |
+| One-step actor–critic | $\gamma^t \delta\_t \nabla \ln \pi$ with $\delta\_t = R\_{t+1} + \gamma \hat v(S\_{t+1}) - \hat v(S\_t)$ | bootstrapped, online |
+| $n$-step / $\lambda$ actor–critic | $\gamma^t (G\_t^{(n)} - \hat v(S\_t)) \nabla \ln \pi$ or trace variants | tunable bias–variance |
+| Gaussian PG | Gaussian score function $\nabla \ln \pi$ | continuous control *(next lecture)* |
 
-* The baseline $\hat v(s, \mathbf{w})$ *evaluates* states but never *bootstraps* — the update still waits for the full Monte Carlo return $G\_t$. Replacing $G\_t$ by the one-step target $R\_{t+1} + \gamma \hat v(S\_{t+1}, \mathbf{w})$ turns the value function into a true **critic** and REINFORCE into an **actor–critic** method: online, incremental, and with the bias–variance dial of Lecture 7 back in our hands.
-* Nothing in the policy-gradient machinery requires a finite action set. With a **Gaussian policy** — mean and standard deviation as parameterized functions of the state — the same theorem handles **continuous action spaces** directly.
+**Common skeleton.** Every method here is
 
-Both are the subject of the next lecture.
+$$\boldsymbol{\theta} \;\leftarrow\; \boldsymbol{\theta} + \alpha\, \widehat{A}_t\, \nabla \ln \pi(A_t \mid S_t, \boldsymbol{\theta}),$$
+
+where $\widehat{A}\_t$ is some estimate of how much better than average $A\_t$ was in $S\_t$. For discounted episodic start-state objectives, $\widehat{A}\_t$ includes the outer factor $\gamma^t$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Takeaway</span><span class="math-callout__name">(Final message)</span></p>
+
+Policy gradients exchange *"find the best action for each state"* for *"shape a probability distribution over actions."* The gradient of $\ln \pi$ is where the parameterization enters; the return or advantage term supplies the credit signal.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Where this goes next: continuous actions)</span></p>
+
+One thread is left deliberately hanging: nothing in the policy-gradient machinery requires a finite action set. With a **Gaussian policy** — mean and standard deviation as parameterized functions of the state — the same score-function idea handles **continuous action spaces** directly; that is the "Gaussian PG" row of the method map above.
+
+This is the subject of the next lecture.
 
 </div>
