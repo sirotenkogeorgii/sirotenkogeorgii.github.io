@@ -3925,6 +3925,65 @@ Restricting attention to $\varepsilon$-soft policies guarantees that every $q(s,
 
 </div>
 
+<figure class="rl-diagram">
+  <svg viewBox="0 0 720 430" role="img" aria-label="The total probability 1 is split into an exploration budget epsilon, spent as a uniform floor of epsilon over the number of actions to every action, and a greedy leftover of one minus epsilon handed entirely to the greedy action; the resulting per-action probabilities are shown below">
+    <text x="32" y="34" font-size="18" font-weight="700">ε-greedy as a probability budget</text>
+    <text x="32" y="58" font-size="13" class="muted">the whole budget must sum to 1 · illustration: |A(s)| = 4 actions, ε = 0.4</text>
+
+    <!-- Panel 1: the budget bar [0,1] -->
+    <text x="32" y="98" font-size="14" font-weight="700">Spend the budget [0, 1]</text>
+
+    <!-- exploration budget: 4 equal floor slices, one per action -->
+    <rect x="110" y="112" width="58" height="46" class="amber"></rect>
+    <rect x="168" y="112" width="58" height="46" class="amber"></rect>
+    <rect x="226" y="112" width="58" height="46" class="amber"></rect>
+    <rect x="284" y="112" width="58" height="46" class="amber"></rect>
+    <text x="139" y="140" text-anchor="middle" font-size="13" font-weight="700">a★</text>
+    <text x="197" y="140" text-anchor="middle" font-size="13" font-weight="700">a₂</text>
+    <text x="255" y="140" text-anchor="middle" font-size="13" font-weight="700">a₃</text>
+    <text x="313" y="140" text-anchor="middle" font-size="13" font-weight="700">a₄</text>
+
+    <!-- greedy leftover: one minus epsilon, all to the greedy action -->
+    <rect x="342" y="112" width="348" height="46" class="accent"></rect>
+    <text x="516" y="136" text-anchor="middle" font-size="14" font-weight="700">1 − ε = 0.6</text>
+    <text x="516" y="152" text-anchor="middle" font-size="12" class="muted">all to greedy a★</text>
+
+    <!-- ticks -->
+    <line x1="110" y1="112" x2="110" y2="176" class="line"></line>
+    <line x1="342" y1="112" x2="342" y2="176" class="line" stroke-dasharray="4 4"></line>
+    <line x1="690" y1="112" x2="690" y2="176" class="line"></line>
+    <text x="110" y="192" text-anchor="middle" font-size="12" class="muted">0</text>
+    <text x="342" y="192" text-anchor="middle" font-size="12" class="muted">ε = 0.4</text>
+    <text x="690" y="192" text-anchor="middle" font-size="12" class="muted">1</text>
+
+    <!-- brace labels -->
+    <text x="226" y="216" text-anchor="middle" font-size="12">exploration budget ε → ε/|A(s)| = 0.1 to every action</text>
+    <text x="516" y="216" text-anchor="middle" font-size="12">greedy leftover 1 − ε → the argmax action</text>
+
+    <!-- Panel 2: resulting per-action probabilities -->
+    <text x="32" y="262" font-size="14" font-weight="700">Resulting π(a | s)</text>
+
+    <!-- greedy action: floor slice + leftover -->
+    <rect x="110" y="278" width="58" height="24" class="amber"></rect>
+    <rect x="168" y="278" width="348" height="24" class="accent"></rect>
+    <text x="96" y="295" text-anchor="end" font-size="13" font-weight="700">a★</text>
+    <text x="524" y="295" font-size="12">0.7 = (1 − ε) + ε/|A(s)|</text>
+
+    <rect x="110" y="312" width="58" height="24" class="amber"></rect>
+    <text x="96" y="329" text-anchor="end" font-size="13" font-weight="700">a₂</text>
+    <text x="176" y="329" font-size="12">0.1 = ε/|A(s)|</text>
+
+    <rect x="110" y="346" width="58" height="24" class="amber"></rect>
+    <text x="96" y="363" text-anchor="end" font-size="13" font-weight="700">a₃</text>
+    <text x="176" y="363" font-size="12" class="muted">0.1</text>
+
+    <rect x="110" y="380" width="58" height="24" class="amber"></rect>
+    <text x="96" y="397" text-anchor="end" font-size="13" font-weight="700">a₄</text>
+    <text x="176" y="397" font-size="12" class="muted">0.1</text>
+  </svg>
+  <figcaption>The total probability $1$ is a budget. First spend $\varepsilon$ on a uniform <em>floor</em> — $\tfrac{\varepsilon}{\lvert\mathcal{A}(s)\rvert}$ handed to <em>every</em> action, which is exactly what keeps each $\pi(a\mid s) > 0$ so no action-value ever starves. The leftover $1-\varepsilon$ is handed entirely to the greedy action. The greedy action therefore collects <em>both</em> pieces, $\pi(a^\star\mid s) = (1-\varepsilon) + \tfrac{\varepsilon}{\lvert\mathcal{A}(s)\rvert}$, while every other action keeps just its floor $\tfrac{\varepsilon}{\lvert\mathcal{A}(s)\rvert}$. The slices sum to $1$: $\bigl[(1-\varepsilon)+\tfrac{\varepsilon}{\lvert\mathcal{A}(s)\rvert}\bigr] + (\lvert\mathcal{A}(s)\rvert - 1)\tfrac{\varepsilon}{\lvert\mathcal{A}(s)\rvert} = 1$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(The tension in MC control)</span></p>
 
