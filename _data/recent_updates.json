@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Cheatsheet — Lecture 3: Finite MDPs",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/",
+   "date": "2026-07-21",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Lecture 4: Dynamic Programming",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/",
+   "date": "2026-07-21",
+   "added": true
+  },
+  {
    "title": "Reinforcement Learning (HD)",
    "url": "/subpages/reinforcement_learning_hd/",
    "date": "2026-07-21",
@@ -167,18 +179,6 @@
    "url": "/subpages/math_topics/tensors/tensors_gentle/",
    "date": "2026-06-21",
    "added": true
-  },
-  {
-   "title": "Reinforcement Learning (HD): Problem Sheet 5",
-   "url": "/subpages/reinforcement_learning_hd/problems/sheet05/",
-   "date": "2026-06-17",
-   "added": true
-  },
-  {
-   "title": "Description Numbers",
-   "url": "/subpages/computability-and-complexity/description-numbers/",
-   "date": "2026-06-16",
-   "added": false
   }
  ]
 }
