@@ -1564,15 +1564,15 @@ Almost every method in the next lectures fits into one of these two slots — or
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Why Bellman equations are needed)</span></p>
 
-Computing $v_\pi(s) = \mathbb{E}_\pi[G_t \mid S_t = s]$ directly would require averaging over the **entire future trajectory**
+Computing $v_\pi(s) = \mathbb{E}\_\pi[G_t \mid S_t = s]$ directly would require averaging over the **entire future trajectory**
 
-$$
-(A_t,\, S_{t+1},\, R_{t+1},\, A_{t+1},\, S_{t+2},\, R_{t+2},\, \dots),
-$$
+$$(A_t,\, S_{t+1},\, R_{t+1},\, A_{t+1},\, S_{t+2},\, R_{t+2},\, \dots),$$
 
 i.e. summing over an exponentially large branching tree of all paths. This is hopeless for any non-trivial MDP.
 
-**Bellman's idea.** Replace the full path expectation by a **recursive one-step decomposition**: relate $v_\pi(s)$ to the values of states reachable in one step. The exponential blow-up collapses to a fixed-point equation in $\lvert\mathcal{S}\rvert$ unknowns.
+**Bellman's idea.** Replace the full path expectation by a **recursive one-step decomposition**: 
+* relate $v_\pi(s)$ to the values of states reachable in one step. 
+* The exponential blow-up collapses to a fixed-point equation in $\lvert\mathcal{S}\rvert$ unknowns.
 
 </div>
 
@@ -1620,33 +1620,23 @@ Reading the formula left to right traces the three layers of the Bellman backup:
 
 Start from the definition and substitute the recursive identity for $G_t$:
 
-$$
-v_\pi(s) \;=\; \mathbb{E}_\pi[G_t \mid S_t = s] \;=\; \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s].
-$$
+$$v_\pi(s) \;=\; \mathbb{E}_\pi[G_t \mid S_t = s] \;=\; \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s].$$
 
 **Step 1.** Condition on the first action via the law of total expectation. Since $\Pr(A_t = a \mid S_t = s) = \pi(a \mid s)$,
 
-$$
-v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s,\, A_t = a].
-$$
+$$v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s,\, A_t = a].$$
 
 **Step 2.** Expand the inner expectation over the environment outcome $(S_{t+1}, R_{t+1}) \sim p(\cdot, \cdot \mid s, a)$:
 
-$$
-\mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid s, a] \;=\; \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, \mathbb{E}_\pi[G_{t+1} \mid s, a, s', r]\,\bigr].
-$$
+$$\mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid s, a] \;=\; \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, \mathbb{E}_\pi[G_{t+1} \mid s, a, s', r]\,\bigr].$$
 
 **Step 3.** Apply the **Markov property**: once $S_{t+1} = s'$ is known, the past $(s, a, r)$ adds no information about the future, so
 
-$$
-\mathbb{E}_\pi[G_{t+1} \mid S_t = s,\, A_t = a,\, S_{t+1} = s',\, R_{t+1} = r] \;=\; \mathbb{E}_\pi[G_{t+1} \mid S_{t+1} = s'] \;=\; v_\pi(s').
-$$
+$$\mathbb{E}_\pi[G_{t+1} \mid S_t = s,\, A_t = a,\, S_{t+1} = s',\, R_{t+1} = r] \;=\; \mathbb{E}_\pi[G_{t+1} \mid S_{t+1} = s'] \;=\; v_\pi(s').$$
 
 Combining,
 
-$$
-v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
-$$
+$$v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, v_\pi(s')\,\bigr].$$
 
 Each of the three lines uses exactly one MDP ingredient: the **policy**, the **dynamics**, and the **Markov property**.
 
@@ -1676,10 +1666,10 @@ The order of operations is reversed compared to $v_\pi$: we first commit to taki
 $$
 \begin{aligned}
 q_\pi(s,a)
-&= \E_\pi\left[G_t\mid S_t=s,A_t=a\right] \\
-&= \E_\pi\left[R_{t+1}+\gamma G_{t+1}\mid S_t=s,A_t=a\right] \\
-&= \underbrace{\E_\pi\left[R_{t+1}\mid S_t=s,A_t=a\right]}_{(*)}
-   + \gamma\underbrace{\E_\pi\left[G_{t+1}\mid S_t=s,A_t=a\right]}_{(**)}.
+&= \mathbb{E}_\pi\left[G_t\mid S_t=s,A_t=a\right] \\
+&= \mathbb{E}_\pi\left[R_{t+1}+\gamma G_{t+1}\mid S_t=s,A_t=a\right] \\
+&= \underbrace{\mathbb{E}_\pi\left[R_{t+1}\mid S_t=s,A_t=a\right]}_{(*)}
+   + \gamma\underbrace{\mathbb{E}_\pi\left[G_{t+1}\mid S_t=s,A_t=a\right]}_{(**)}.
 \end{aligned}
 $$
 
@@ -1694,10 +1684,10 @@ $$
 \begin{aligned}
 (**)
 &= \sum_{s',r} p(s',r\mid s,a)
-   \E_\pi\left[G_{t+1}\mid S_{t+1}=s',R_{t+1}=r,S_t=s,A_t=a\right] \\
+   \mathbb{E}_\pi\left[G_{t+1}\mid S_{t+1}=s',R_{t+1}=r,S_t=s,A_t=a\right] \\
 &= \sum_{s',r} p(s',r\mid s,a)
    \sum_{a'} \pi(a'\mid s')
-   \E_\pi\left[G_{t+1}\mid S_{t+1}=s',A_{t+1}=a'\right] \\
+   \mathbb{E}_\pi\left[G_{t+1}\mid S_{t+1}=s',A_{t+1}=a'\right] \\
 &= \sum_{s',r} p(s',r\mid s,a)
    \sum_{a'} \pi(a'\mid s') q_\pi(s',a').
 \end{aligned}
@@ -1825,7 +1815,7 @@ $$ v_\pi(s) = \sum_{a\in\mathcal A} \pi(a\mid s) \sum_{s',r\in\mathcal S\times\l
 
 Under the fixed deterministic policy, the process alternates forever:
 
-$$s_1 \xrightarrow{,r=1,} s_2 \xrightarrow{,r=0,} s_1 \xrightarrow{,r=1,} \cdots$$
+$$s_1 \xrightarrow{r=1} s_2 \xrightarrow{r=0} s_1 \xrightarrow{r=1} \cdots$$
 
 Thus each Bellman expectation equation contains only one nonzero transition term.
 
@@ -1857,7 +1847,31 @@ Solve the resulting $2\times2$ linear system in closed form to obtain $v_\pi(s_1
 
 </div>
 
-TODO: make two states and a loop
+<figure class="rl-diagram">
+  <svg viewBox="0 0 680 330" role="img" aria-label="Two-state cycle: from s1 take action a1 for reward +1 into s2, from s2 take action a2 for reward 0 back to s1">
+    <defs>
+      <marker id="tc-arrow-cycle" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+    </defs>
+
+    <text x="30" y="34" font-size="18" font-weight="700">Two-state cycle</text>
+    <text x="30" y="56" font-size="14" class="muted">deterministic policy π,  γ ∈ (0, 1)</text>
+
+    <circle cx="185" cy="185" r="56" class="accent"></circle>
+    <text x="185" y="193" text-anchor="middle" font-size="30" font-weight="700">s₁</text>
+
+    <circle cx="495" cy="185" r="56" class="box"></circle>
+    <text x="495" y="193" text-anchor="middle" font-size="30" font-weight="700">s₂</text>
+
+    <path d="M228 150 Q 340 78 452 150" class="line" marker-end="url(#tc-arrow-cycle)"></path>
+    <text x="340" y="66" text-anchor="middle" font-size="16" font-weight="700">a₁  :  r = +1</text>
+
+    <path d="M452 220 Q 340 292 228 220" class="line" marker-end="url(#tc-arrow-cycle)"></path>
+    <text x="340" y="312" text-anchor="middle" font-size="16" font-weight="700">a₂  :  r = 0</text>
+  </svg>
+  <figcaption>The deterministic cycle behind the value system: from $s_1$ the only available action gives reward $+1$ and moves to $s_2$; from $s_2$ the only available action gives reward $0$ and returns to $s_1$. The process loops forever, so $v_\pi(s_1)=1+\gamma v_\pi(s_2)$ and $v_\pi(s_2)=\gamma v_\pi(s_1)$.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -2066,7 +2080,7 @@ Equality holds if the policy assigns positive probability only to actions that m
 
 **(b)** Now let $v^\ast$ and $q^\ast$ denote the optimal value functions, and define the greedy deterministic policy 
 
-$$\pi_d(s) \in \operatorname*{arg\,max}_a q^*(s,a).$$
+$$\pi_d(s) \in \arg\max_a q^*(s,a).$$
 
 Show that 
 
@@ -2322,6 +2336,79 @@ Stopping at $\Delta < \theta$ thus controls the worst-case error.
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Turning Successive-Iterate Error into an Optimality Guarantee)</span></p>
+
+Derive a stopping criterion. Given a tolerance $\varepsilon>0$, show that once 
+
+$$\lVert v_{k+1}-v_k\rVert_\infty < \frac{\varepsilon(1-\gamma)}{\gamma}$$
+
+(or equivalently, $\lVert v_{k+1}-v_k\rVert_\infty \frac{\gamma}{1-\gamma} < \varepsilon$) the current iterate satisfies 
+
+$$\lVert v_k-v^*\rVert_\infty<\varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+I believe there is an error in the problem statement. I am considering the statement about $\|v_{k+1} - v^\ast\|\_\infty$:
+
+$$\norm{v_k-v^*}_\infty \le \norm{v_{k+1}- v_k}_\infty + \norm{v_{k+1}-v^*}_\infty$$
+
+$$\norm{v_{k+1}-v^*}_\infty \le \gamma\norm{v_{k+1}- v^*}_\infty + \gamma\norm{v_{k+1}-v_k}_\infty$$
+
+$$(1-\gamma)\norm{v_{k+1}-v^*}_\infty < \gamma\frac{\varepsilon(1-\gamma)}{\gamma}$$
+
+$$\norm{v_{k+1}-v^*}_\infty < \varepsilon$$
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 680 300" role="img" aria-label="A value-space line showing how the measurable step between successive iterates certifies the unknown distance to the fixed point">
+    <text x="30" y="34" font-size="18" font-weight="700">From a measurable step to a certified error</text>
+    <text x="30" y="56" font-size="14" class="muted">one backup T is a γ-contraction, so the visible gap between iterates bounds the invisible error</text>
+
+    <line x1="120" y1="118" x2="640" y2="118" class="line"></line>
+
+    <line x1="170" y1="113" x2="170" y2="150" class="line" stroke-dasharray="4 4"></line>
+    <line x1="430" y1="113" x2="430" y2="150" class="line" stroke-dasharray="4 4"></line>
+    <line x1="600" y1="113" x2="600" y2="150" class="line" stroke-dasharray="4 4"></line>
+
+    <circle cx="170" cy="118" r="6" class="box"></circle>
+    <circle cx="430" cy="118" r="6" class="box"></circle>
+    <circle cx="600" cy="118" r="6" class="accent"></circle>
+
+    <text x="170" y="102" text-anchor="middle" font-size="15" font-weight="700">v<tspan baseline-shift="sub" font-size="10">k</tspan></text>
+    <text x="430" y="102" text-anchor="middle" font-size="15" font-weight="700">v<tspan baseline-shift="sub" font-size="10">k+1</tspan></text>
+    <text x="600" y="102" text-anchor="middle" font-size="15" font-weight="700">v<tspan baseline-shift="super" font-size="10">*</tspan></text>
+    <text x="600" y="88" text-anchor="middle" font-size="12" class="muted">fixed point</text>
+
+    <line x1="170" y1="150" x2="430" y2="150" class="strong-line"></line>
+    <line x1="170" y1="145" x2="170" y2="155" class="strong-line"></line>
+    <line x1="430" y1="145" x2="430" y2="155" class="strong-line"></line>
+    <text x="300" y="174" text-anchor="middle" font-size="15" font-weight="700">‖v<tspan baseline-shift="sub" font-size="10">k+1</tspan> − v<tspan baseline-shift="sub" font-size="10">k</tspan>‖<tspan baseline-shift="sub" font-size="10">∞</tspan></text>
+    <text x="300" y="192" text-anchor="middle" font-size="13" class="muted">measurable step</text>
+
+    <line x1="430" y1="150" x2="600" y2="150" class="line" stroke-dasharray="6 4"></line>
+    <line x1="600" y1="145" x2="600" y2="155" class="line"></line>
+    <text x="515" y="174" text-anchor="middle" font-size="15" font-weight="700">‖v<tspan baseline-shift="sub" font-size="10">k+1</tspan> − v<tspan baseline-shift="super" font-size="10">*</tspan>‖<tspan baseline-shift="sub" font-size="10">∞</tspan></text>
+    <text x="515" y="192" text-anchor="middle" font-size="13" class="muted">true error (unknown)</text>
+
+    <rect x="70" y="212" width="540" height="72" rx="8" class="accent"></rect>
+    <text x="340" y="242" text-anchor="middle" font-size="15" font-weight="700">‖v<tspan baseline-shift="sub" font-size="10">k+1</tspan> − v<tspan baseline-shift="super" font-size="10">*</tspan>‖<tspan baseline-shift="sub" font-size="10">∞</tspan>  ≤  γ ⁄ (1−γ) · ‖v<tspan baseline-shift="sub" font-size="10">k+1</tspan> − v<tspan baseline-shift="sub" font-size="10">k</tspan>‖<tspan baseline-shift="sub" font-size="10">∞</tspan></text>
+    <text x="340" y="268" text-anchor="middle" font-size="13" class="muted">so once the step drops below  ε (1−γ) ⁄ γ,  the true error is below ε</text>
+  </svg>
+  <figcaption>The step you can measure, $\lVert v_{k+1}-v_k\rVert_\infty$, controls the error you cannot, $\lVert v_{k+1}-v^\ast\rVert_\infty$. The triangle inequality gives $\lVert v_{k+1}-v^\ast\rVert_\infty \le \gamma\lVert v_k-v^\ast\rVert_\infty \le \gamma\bigl(\lVert v_{k+1}-v_k\rVert_\infty+\lVert v_{k+1}-v^\ast\rVert_\infty\bigr)$, and solving for the true error yields the amplification factor $\gamma/(1-\gamma)$. Choosing the stopping threshold $\varepsilon(1-\gamma)/\gamma$ exactly cancels it.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/stopping_criterion.png' | relative_url }}" alt="Log-scale convergence plot of the measurable successive-iterate gap, its amplified guaranteed bound, and the true error, all versus iteration, with the tolerance and stopping threshold marked" loading="lazy">
+  <figcaption>Iterative policy evaluation $v_{k+1}=T_\pi v_k$ on an 8-state chain ($\gamma=0.9$). The orange measurable gap $\lVert v_{k+1}-v_k\rVert_\infty$ is all the algorithm ever sees; scaling it by $\gamma/(1-\gamma)$ gives the red bound, which sits above the blue true error $\lVert v_{k+1}-v^\ast\rVert_\infty$ at every iteration. The instant the gap falls below the threshold $\varepsilon(1-\gamma)/\gamma$ (orange dotted), the certified bound — and hence the true error — is guaranteed below the tolerance $\varepsilon$ (green dotted).</figcaption>
+</figure>
+
+</details>
+</div>
+
 #### Policy Evaluation as a Linear System
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2380,17 +2467,39 @@ $$
 \end{aligned}
 $$
 
-Thus, $v_\pi(s)=(r_\pi)_s+\gamma(P_\pi v_\pi)_s$ or wirtten in vectorized form $v_\pi = r_\pi + \gamma P_\pi v_\pi$.
-
-Then we get $v_\pi=(I-\gamma P_\pi)^{-1}r_\pi$, if $I-\gamma P_\pi$ is invertible. Since $P_\pi$ is row-stochastic, every eigenvalue $\lambda$ of $P_\pi$ satisfies $\lvert\lambda\rvert\leq 1$. Therefore every eigenvalue of $I-\gamma P_\pi$ has the form $1-\gamma\lambda$. Since $\gamma\in[0,1)$ and $\lvert\lambda\rvert\leq 1$, we cannot have $1-\gamma\lambda=0$. Hence $0$ is not an eigenvalue of $I-\gamma P_\pi$, so $I-\gamma P_\pi$ is invertible.
 
 </details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Uniqueness of Bellman expectation equation from a vector form)</span></p>
+
+$$v_\pi(s)=(r_\pi)_s+\gamma(P_\pi v_\pi)_s$$ 
+
+or wirtten in vectorized form 
+
+$$v_\pi = r_\pi + \gamma P_\pi v_\pi$$
+
+* We get $v_\pi=(I-\gamma P_\pi)^{-1}r_\pi$, if $I-\gamma P_\pi$ is invertible. 
+* Since $P_\pi$ is row-stochastic, every eigenvalue $\lambda$ of $P_\pi$ satisfies $\lvert\lambda\rvert\leq 1$. 
+* Therefore every eigenvalue of $I-\gamma P_\pi$ has the form $1-\gamma\lambda$. 
+* Since $\gamma\in[0,1)$ and $\lvert\lambda\rvert\leq 1$, we cannot have $1-\gamma\lambda=0$. 
+* Hence $0$ is not an eigenvalue of $I-\gamma P_\pi$, so $I-\gamma P_\pi$ is invertible.
+
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A fixed policy turns the MDP into a Markov chain)</span></p>
 
-Once $\pi$ is fixed, the action is no longer a decision — it is a random variable with distribution $\pi(\cdot \mid s)$. Marginalising over it leaves only a **state-to-state transition kernel** $P_\pi$, plus a state-indexed expected reward $r_\pi$. This is exactly a (reward-augmented) **Markov chain**: the MDP structure has been collapsed to its dynamics-under-$\pi$. Every later prediction algorithm — TD(0), every-visit MC, $\lambda$-returns — is, in effect, trying to compute $v_\pi$ for this chain.
+* Once $\pi$ is fixed, the action is no longer a decision
+  * it is a random variable with distribution $\pi(\cdot \mid s)$.
+  * marginalising over it leaves only a **state-to-state transition kernel** $P_\pi$: 
+    * $(P_\pi)\_{ij} = \sum_{a} \pi(a \mid s_i) P(s_j \mid s_i, a),$
+  * plus a state-indexed expected reward $r_\pi$:
+    * $r_\pi(s_i) = \sum_{a} \pi(a \mid s_i) \sum_{s', r} p(s', r \mid s_i, a) r.$
+*  This is exactly a (reward-augmented) **Markov chain**: 
+   *  the MDP structure has been collapsed to its dynamics-under-$\pi$. 
+   *  every later **prediction algorithm** (TD(0), every-visit MC, $\lambda$-returns) is, in effect, trying to compute $v_\pi$ for this chain.
 
 </div>
 
@@ -2399,17 +2508,17 @@ Once $\pi$ is fixed, the action is no longer a decision — it is a random varia
 
 Define $T_\pi : \mathbb{R}^n \to \mathbb{R}^n$ by
 
-$$
-T_\pi v \;\doteq\; r_\pi + \gamma\, P_\pi v.
-$$
+$$T_\pi v \;\doteq\; r_\pi + \gamma\, P_\pi v.$$
 
 $T_\pi$ is an **affine map** on value vectors. The iterative-policy-evaluation update is simply
 
-$$
-v_{k+1} \;=\; T_\pi v_k,
-$$
+$$v_{k+1} \;=\; T_\pi v_k,$$
 
-and the true value function $v_\pi$ is the unique vector satisfying $v_\pi = T_\pi v_\pi$ — the **fixed point** of $T_\pi$.
+and the true value function $v_\pi$ is the unique vector satisfying 
+
+$$v_\pi = T_\pi v_\pi$$
+
+— the **fixed point** of $T_\pi$.
 
 </div>
 
@@ -2418,20 +2527,21 @@ and the true value function $v_\pi$ is the unique vector satisfying $v_\pi = T_\
 
 Rearranging the fixed-point equation:
 
-$$
-(I - \gamma P_\pi)\, v_\pi \;=\; r_\pi.
-$$
+$$(I - \gamma P_\pi)\, v_\pi \;=\; r_\pi.$$
 
 For finite discounted MDPs with $\gamma < 1$, the matrix $I - \gamma P_\pi$ is invertible (its spectrum lies in $\lbrace 1 - \gamma \mu : \lvert \mu \rvert \le 1\rbrace$, none of which crosses the origin), so
 
-$$
-v_\pi \;=\; (I - \gamma P_\pi)^{-1}\, r_\pi.
-$$
+$$v_\pi \;=\; (I - \gamma P_\pi)^{-1}\, r_\pi.$$
 
 **Two viewpoints, one answer:**
 
-* **Linear-system view:** solve $(I - \gamma P_\pi)\, v_\pi = r_\pi$ once.
-* **Fixed-point view:** iterate $v_{k+1} = T_\pi v_k$ until convergence.
+* **Linear-system view:** solve once 
+  
+  $$(I - \gamma P_\pi)\, v_\pi = r_\pi$$
+
+* **Fixed-point view:** iterate until convergence
+  
+  $$v_{k+1} = T_\pi v_k$$
 
 **Why iteration is preferred in practice.**
 
@@ -2442,17 +2552,168 @@ $$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why is spectral radius of a row stochastic matrix $leq 1$?</summary>
+
+Because two separate facts combine:
+
+**1. Row sums equal to $1$ force $1$ to be an eigenvalue.**
+
+Let
+
+$$\mathbf 1=(1,\ldots,1)^\top.$$
+
+The $i$-th component of $P\mathbf 1$ is
+
+$$(P\mathbf 1)_i=\sum_{j=1}^n P_{ij}=1.$$
+
+Hence
+
+$$P\mathbf 1=\mathbf 1,$$
+
+so $\mathbf 1$ is an eigenvector with eigenvalue $1$. Therefore
+
+$$\rho(P)\ge 1.$$
+
+**2. Nonnegativity prevents any eigenvalue from having modulus greater than $1$.**
+
+If $Pv=\lambda v$, choose $i$ such that
+
+$$|v_i|=\max_j |v_j|.$$
+
+Then
+
+$$|\lambda|,|v_i| =|(Pv)_i| =\left|\sum_j P_{ij}v_j\right| \le \sum_j P_{ij}|v_j| \le |v_i|\sum_j P_{ij} =|v_i|.$$
+
+Since $v_i\neq 0$,
+
+$$|\lambda|\le 1.$$
+
+Thus every eigenvalue lies in the closed unit disk, while $1$ itself is an eigenvalue. Consequently,
+
+$$\boxed{\rho(P)=1}.$$
+
+The nonnegativity assumption is essential. Row sums equal to $1$ alone only guarantee that $1$ is an eigenvalue; for example,
+
+$$
+A=
+\begin{pmatrix}
+2&-1\\
+0&1
+\end{pmatrix}
+$$
+
+has row sums $1$, but eigenvalues $2$ and $1$, so $\rho(A)=2$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Row stochastic matrix could have negative eigenvalues</summary>
+
+For a row-stochastic matrix $P$, the correct statement is
+
+$$\boxed{|\lambda|\le 1}$$
+
+for every eigenvalue $\lambda$, not necessarily $0<\lambda\le 1$.
+
+Eigenvalues may be negative. For example,
+
+$$
+P=
+\begin{pmatrix}
+0&1\\
+1&0
+\end{pmatrix}
+$$
+
+is row-stochastic, but its eigenvalues are
+
+$$1,-1.$$
+
+They may also be complex. The cyclic permutation matrix
+
+$$
+P=
+\begin{pmatrix}
+0&1&0\\
+0&0&1\\
+1&0&0
+\end{pmatrix}
+$$
+
+has eigenvalues
+
+$$1,\quad e^{2\pi i/3},\quad e^{4\pi i/3}.$$
+
+All have modulus $1$, but only one lies in $(0,1]$.
+
+Zero is also possible. For instance,
+
+$$
+P=
+\begin{pmatrix}
+1&0\\
+1&0
+\end{pmatrix}
+$$
+
+has eigenvalues $1$ and $0$.
+
+Thus the spectrum satisfies
+
+$$\sigma(P)\subseteq{z\in\mathbb C:|z|\le1},$$
+
+and because $1$ is always an eigenvalue,
+
+$$\rho(P)=1.$$
+
+Eigenvalues lie in $[0,1]$ only under extra assumptions, for example when $P$ is symmetric positive semidefinite.
+
+</details>
+</div>
+
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric picture)</span></p>
 
 Iterative policy evaluation is a sequence of points $v_0,\, v_1,\, v_2, \dots$ in $\mathbb{R}^{\lvert \mathcal{S} \rvert}$ obtained by repeatedly applying the same affine map $T_\pi$. Each step pulls $v_k$ closer to $v_\pi$:
 
-$$
-\lVert v_{k+1} - v_\pi \rVert_\infty \;=\; \lVert T_\pi v_k - T_\pi v_\pi \rVert_\infty \;\le\; \gamma\,\lVert v_k - v_\pi \rVert_\infty.
-$$
+$$\lVert v_{k+1} - v_\pi \rVert_\infty \;=\; \lVert T_\pi v_k - T_\pi v_\pi \rVert_\infty \;\le\; \gamma\,\lVert v_k - v_\pi \rVert_\infty.$$
 
 So convergence is **geometric with rate $\gamma$** — the smaller $\gamma$, the faster the chase. This same contraction estimate underwrites the convergence of every algorithm built on top of expected backups.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For the policy evaluation operator,
+
+$$
+\begin{aligned}
+(\Tpi u)(s)-(\Tpi v)(s)
+&= \sum_{s',r}p(s',r\mid s,\pi(s))\gamma\bigl(u(s')-v(s')\bigr).
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\left|(\Tpi u)(s)-(\Tpi v)(s)\right|
+&\le \gamma\sum_{s',r}p(s',r\mid s,\pi(s))|u(s')-v(s')| \\
+&\le \gamma\norm{u-v}_\infty \sum_{s',r}p(s',r\mid s,\pi(s)) \\
+&= \gamma\norm{u-v}_\infty.
+\end{aligned}
+$$
+
+the maximum over $s$ gives 
+
+$$\norm{\Tpi u-\Tpi v}_\infty \le \gamma\norm{u-v}_\infty$$
+
+</details>
 </div>
 
 <figure>
@@ -2477,9 +2738,7 @@ Under the random policy the value $v_\pi(s)$ has a very transparent meaning:
 
 **One Bellman equation in the corner.** For the state immediately to the right of the upper-left terminal, $\mathsf{up}$ keeps the agent in place, $\mathsf{right}$ and $\mathsf{down}$ move to neighbouring non-terminals $s_R$ and $s_D$, and $\mathsf{left}$ enters the terminal. Averaging over the four equiprobable actions:
 
-$$
-v_\pi(s) \;=\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_R)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_D)] \;+\; \tfrac{1}{4}[-1 + \gamma \cdot 0].
-$$
+$$v_\pi(s) \;=\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_R)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_D)] \;+\; \tfrac{1}{4}[-1 + \gamma \cdot 0].$$
 
 A state's value depends only on the values of states **reachable in one step** — that is the whole structural content of a Bellman equation.
 
@@ -2509,7 +2768,9 @@ Iterative policy evaluation is, geometrically, a kind of *information diffusion*
 * Policy evaluation computes $v_\pi$ for a fixed policy $\pi$.
 * With a known model, the Bellman expectation equation gives an **exact** update rule.
 * Iterative policy evaluation applies that update repeatedly until convergence.
-* Equivalent linear-algebra view: solve $(I - \gamma P_\pi)\, v_\pi = r_\pi$.
+* Equivalent linear-algebra view: solve 
+  
+  $$(I - \gamma P_\pi)\, v_\pi = r_\pi.$$
 
 We can now answer *"how good is $\pi$?"* — the natural next question is **"how do we improve it?"**.
 
@@ -2562,10 +2823,39 @@ If the first inequality is strict in some state, $\pi'$ is strictly better there
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Assume that for every state $s\in\Sset$ we have $q_\pi(s,\pi'(s))\ge v_\pi(s)$. Then
+
+$$v_\pi(s) \le \mathbb E\bigl[R_{t+1}+\gamma v_\pi(S_{t+1}) \mid S_t=s,A_t=\pi'(s)\bigr].$$
+
+$$v_\pi(S_{t+1}) \le \mathbb E\bigl[R_{t+2}+\gamma v_\pi(S_{t+2}) \mid S_{t+1},A_{t+1}=\pi'(S_{t+1})\bigr].$$
+
+Substituting this inequality into the previous expectation gives
+
+$$v_\pi(s) \le \mathbb E_{\pi'}\bigl[R_{t+1}+\gamma R_{t+2}+\gamma^2v_\pi(S_{t+2})\mid S_t=s\bigr].$$
+
+Repeating the same argument $n$ times gives
+
+$$v_\pi(s) \le \mathbb E_{\pi'}\left[ \sum_{i=0}^{n-1}\gamma^i R_{t+i+1} + \gamma^n v_\pi(S_{t+n}) \mid S_t=s \right].$$
+
+Because the MDP is finite and $\gamma<1$, the value function $v_\pi$ is bounded, we have $\gamma^n v_\pi(S_{t+n})\to 0$ with $n$ goes to infinity. Taking the limit gives
+
+$$v_\pi(s) \le \mathbb E_{\pi'}\left[ \sum_{i=0}^{\infty}\gamma^i R_{t+i+1} \mid S_t=s \right] = v_{\pi'}(s).$$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Why local one-step improvement implies global improvement)</span></p>
 
-Unroll the assumption $q_\pi(s, \pi'(s)) \ge v_\pi(s)$ by repeated substitution. Starting from $S_t = s$ and using $\pi'$ to choose the *first* action, then $\pi$ thereafter, then again $\pi'$ for the second action, and so on:
+Unroll the assumption 
+
+$$q_\pi(s, \pi'(s)) \ge v_\pi(s)$$
+
+by repeated substitution. Starting from $S_t = s$ and using $\pi'$ to choose the *first* action, then $\pi$ thereafter, then again $\pi'$ for the second action, and so on:
 
 $$\pi, \pi, \pi, \dots \;\xrightarrow{\text{1 swap}}\; \pi', \pi, \pi, \dots \;\xrightarrow{\text{2 swaps}}\; \pi', \pi', \pi, \dots \;\xrightarrow{\text{}\cdots\text{}}\; \pi', \pi', \pi', \dots$$
 
@@ -2633,6 +2923,38 @@ $$
   <figcaption>Policy iteration alternates two arrows: <strong>E</strong> (evaluation, blue) maps a policy to its value function; <strong>I</strong> (improvement, green) maps a value function to its greedy policy. Each <strong>I</strong>-step is monotone — $v_{\pi_{k+1}} \ge v_{\pi_k}$ pointwise — and the number of deterministic policies is finite, so the chain must terminate at $\pi_\ast$.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(A Stable Greedy Policy Is Already Optimal)</span></p>
+
+Suppose policy improvement does not change the policy; that is, the greedy policy $\pi'$ obtained from $v_\pi$ satisfies $\pi'=\pi$. Show that 
+
+$$v_\pi(s) = \max_a \sum_{s',r} p(s',r\mid s,a) \left( r+\gamma v_\pi(s') \right)$$
+
+for all $s\in\mathcal S$, and conclude that $v_\pi=v^\ast$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Suppose the greedy policy $\pi'$ obtained from $v_\pi$ satisfies $\pi'=\pi$:
+
+$$\pi(s) \in \arg\max_a \sum_{s',r}p(s',r\mid s,a)\bigl[r+\gamma v_\pi(s')\bigr].$$
+
+$$
+\begin{aligned}
+v_\pi(s) = q_\pi(s,\pi(s)) 
+&= \sum_{s',r}p(s',r\mid s,\pi(s))\bigl[r+\gamma v_\pi(s')\bigr] \\
+&= \max_a \sum_{s',r}p(s',r\mid s,a)\bigl[r+\gamma v_\pi(s')\bigr].
+\end{aligned}
+$$
+
+This is the Bellman optimality equation. In a finite discounted MDP, the Bellman optimality equation has a unique solution, namely the optimal value function $v^\ast$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Why policy iteration converges — and in *finitely* many steps)</span></p>
 
@@ -2642,10 +2964,48 @@ For a finite discounted MDP:
 * If improvement makes any change, the new policy is **strictly** better in at least one state — so the same policy is never revisited.
 * The number of deterministic policies is finite ($\lvert \mathcal{A} \rvert^{\lvert \mathcal{S} \rvert}$ at most).
 
-Therefore the algorithm cannot keep improving forever; it must terminate in finitely many iterations with a policy $\pi$ satisfying $\pi(s) \in \arg\max_a q_\pi(s, a)$ for every $s$. That fixed-point condition is precisely the Bellman optimality equation — so the limit policy is **optimal**.
+Therefore the algorithm cannot keep improving forever:
+* it must terminate in finitely many iterations with a policy $\pi$ satisfying 
+
+  $$\pi(s) \in \arg\max_a q_\pi(s, a)$$
+
+  for every $s$. 
+* That fixed-point condition is precisely the Bellman optimality equation
+  * so the limit policy is **optimal**.
 
 In practice, policy iteration tends to need surprisingly *few* outer iterations (often single digits even on substantial problems), because each greedy step makes large jumps in policy space.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Finite Policy Spaces Force Termination)</span></p>
+
+Argue that policy iteration must converge to an optimal policy in finitely many steps. Your argument should use: 
+1. the Policy Improvement Theorem from Task 1; 
+2. the stopping criterion from Task 2; 
+3. the finiteness of the number of deterministic policies.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+* At each step of policy iteration, we perform policy evaluation plus policy improvement.  
+* Let $\pi_k$ be the current policy and let $\pi_{k+1}$ be the greedy policy with respect to $v_{\pi_k}$. 
+* By the Policy Improvement Theorem from Task 1, we have $v_{\pi_{k+1}}(s) \ge v_{\pi_k}(s)$ for all states $s$.
+* Thus the sequence of value functions is monotonically non-decreasing. 
+  * If the improvement step does not change the policy
+    * then by Task 2 the current policy satisfies the Bellman optimality equation, 
+    * hence $v_{\pi_k}=v^\ast$.
+    * therefore $\pi_k$ is optimal and policy iteration terminates. 
+  * If the policy changes,
+    * then under a fixed tie-breaking rule policy iteration moves to a new deterministic policy. 
+* Since the state and action spaces are finite, the number of deterministic policies is finite. 
+* Therefore policy iteration cannot generate infinitely many distinct improved deterministic policies. 
+* Hence after finitely many steps it must reach a policy that is unchanged by the improvement step and by Task 2, this policy is optimal.
+
+</details>
 </div>
 
 #### Jack's Car Rental: Policy Iteration in Action
@@ -2732,58 +3092,38 @@ Repeat:
 
 until $\Delta < \theta$.
 
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Optimal Greedy Policy from Value Iteration)</span></p>
+
 After convergence, $V \approx v_\ast$, and the **optimal greedy policy** is extracted in one final sweep:
 
 $$\pi^\ast(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr].$$
 
 </div>
 
-TODO: add diagram to value iteration algorithm
-
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Bellman Operators Contract Value Errors: Discounting Makes Bellman Updates Contractive)</span></p>
 
-Let $\pi$ be a deterministic policy. Define the Bellman expectation operator
+Let $\pi$ be a deterministic policy. Define
 
-$$T_\pi:\mathbb R^{|\mathcal S|}\to\mathbb R^{|\mathcal S|}$$
-
-and the Bellman optimality operator 
-
-$$T:\mathbb R^{\lvert\mathcal S\rvert}\to\mathbb R^{|\mathcal S|}$$
-
-by 
+* **Bellman expectation operator:** $T_\pi:\mathbb R^{\lvert\mathcal S\rvert}\to\mathbb R^{\lvert\mathcal S\rvert}$
+* **Bellman optimality operator:** $T:\mathbb R^{\lvert\mathcal S\rvert}\to\mathbb R^{\lvert\mathcal S\rvert}$
 
 $$(T_\pi v)(s) = \sum_{s',r} p(s',r\mid s,\pi(s)) \left( r+\gamma v(s') \right),$$ 
 
-and 
-
 $$(Tv)(s) = \max_a \sum_{s',r} p(s',r\mid s,a) \left( r+\gamma v(s') \right)$$
 
-for $s\in\mathcal S$. Let 
+for $s\in\mathcal S$. 
 
-$$\lVert v\rVert_\infty = \max_{s\in\mathcal S}|v(s)|$$
-
-denote the supremum norm on $\mathbb R^{\lvert\mathcal S\rvert}$. Let
-
-$$\gamma\in[0,1),$$
-
-and assume that rewards are bounded:
-
-$$|r|\le R_{\max}$$
-
-for all $(s,a,s',r)$. 
+Let $\lVert v\rVert_\infty = \max_{s\in\mathcal S}\lvert v(s)\rvert$. Denote the supremum norm on $\mathbb R^{\lvert\mathcal S\rvert}$. Let $\gamma\in[0,1)$, and assume that rewards are bounded $\lvert r\rvert\le R_{\max}$ for all $(s,a,s',r)$. 
 
 ---
 
-Prove that both $T_\pi$ and $T$ are $\gamma$-contractions in the supremum norm; that is, for any two value functions
-
-$$u,v\in\mathbb R^{\lvert\mathcal S\rvert},$$ 
-
-show that 
+Prove that both $T_\pi$ and $T$ are $\gamma$-contractions in the supremum norm; that is, for any two value functions $u,v\in\mathbb R^{\lvert\mathcal S\rvert}$$, show that 
 
 $$\lVert T_\pi u-T_\pi v\rVert_\infty \le \gamma\lVert u-v\rVert_\infty$$
-
-and 
 
 $$\lVert Tu-Tv\rVert_\infty \le \gamma\lVert u-v\rVert_\infty.$$
 
@@ -2793,12 +3133,29 @@ $$\lVert Tu-Tv\rVert_\infty \le \gamma\lVert u-v\rVert_\infty.$$
 <details markdown="1">
 <summary>Solution</summary>
 
+For $T_\pi$ we have already proven.
+
+For the Bellman optimality operator.
+
+$$Q_u(s,a) := \sum_{s',r}p(s',r\mid s,a)\bigl[r+\gamma u(s')\bigr].$$
+
+$$
+\begin{aligned}
+|\T u(s)-\T v(s)|
+&= \left|\max_a Q_u(s,a)-\max_a Q_v(s,a)\right| \\
+&\le \max_a |Q_u(s,a)-Q_v(s,a)| \\
+&= \max_a \left| \gamma\sum_{s',r}p(s',r\mid s,a)\bigl(u(s')-v(s')\bigr) \right| \\
+&\le \gamma\norm{u-v}_\infty.
+\end{aligned}
+$$
+
+the maximum over $s$ gives $\norm{\T u-\T v}\_\infty \le \gamma\norm{u-v}\_\infty$.
 
 </details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Repeated Bellman Updates Erase Initial Error: Geometric Convergence to the Optimal Fixed Point)</span></p>
 
 Use the contraction property to show that value iteration 
 
@@ -2820,45 +3177,19 @@ geometrically in $k$.
 <details markdown="1">
 <summary>Solution</summary>
 
+$$\norm{v_{k+1}-v^*}_\infty =\norm{\T v_k-\T v^*}_\infty \le \gamma\norm{v_k-v^*}_\infty.$$
+
+Repeating this gives $\norm{v_k-v^\ast}\_\infty \le \gamma^k\norm{v_0-v^\ast}\_\infty$. Since $0\le\gamma<1$, then $\gamma^k\to0$ and $v_k\to v^\ast$, concluding the proof.
 
 </details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The Cost of Discount Factors Near One)</span></p>
 
-Derive a stopping criterion. Given a tolerance $\varepsilon>0$, show that once
+Suppose that $\gamma=0.9$, $\varepsilon=0.01$ and $\lVert v_0-v^\ast\rVert_\infty\le10$.
 
-$$\lVert v_{k+1}-v_k\rVert_\infty < \frac{\varepsilon(1-\gamma)}{\gamma},$$
-
-or equivalently, 
-
-$$\lVert v_{k+1}-v_k\rVert_\infty \frac{\gamma}{1-\gamma} < \varepsilon,$$
-
-the current iterate satisfies 
-
-$$\lVert v_k-v^*\rVert_\infty<\varepsilon.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
-
-Suppose that 
-
-$$\gamma=0.9, \qquad \varepsilon=0.01, \qquad \lVert v_0-v^*\rVert_\infty\le10.$$
-
-Find the minimum number of iterations $k^*$ such that 
-
-$$\lVert v_{k^*}-v^*\rVert_\infty<\varepsilon.$$
+Find the minimum number of iterations $k^\ast$ such that $\lVert v_{k^*}-v^*\rVert_\infty<\varepsilon$.
 
 Give an exact expression and a numerical value. How does $k^\ast$ scale as $\gamma\to1$?
 
@@ -2868,6 +3199,17 @@ Give an exact expression and a numerical value. How does $k^\ast$ scale as $\gam
 <details markdown="1">
 <summary>Solution</summary>
 
+Assuming $\gamma=0.9$, $\varepsilon=0.01$ and $\norm{v_0-v^*}_\infty\le 10$, 
+
+$$\norm{v_k-v^*}_\infty \le 0.9^k\cdot 10$$
+
+$$10\cdot 0.9^k<0.01.$$
+
+$$k> \frac{\log(10^{-3})}{\log(0.9)}.$$
+
+$$k^* = \left\lfloor \frac{\log(10^{-3})}{\log(0.9)} \right\rfloor+1 = 66$$
+
+As $\gamma\to1$, then $-\log\gamma\sim 1-\gamma$ implying that value iteration becomes slow when $\gamma$ is close to $1$.
 
 </details>
 </div>
@@ -3335,9 +3677,7 @@ Both estimators converge to $v_\pi(s)$. First-visit is the *theoretically* clean
 
 Take $\gamma = 0.5$ and one sampled episode
 
-$$
-S_0 = s,\quad S_1 = x,\quad S_2 = s,\quad S_3 = \text{terminal}, \qquad R_1 = 2,\; R_2 = 1,\; R_3 = 4.
-$$
+$$S_0 = s,\quad S_1 = x,\quad S_2 = s,\quad S_3 = \text{terminal}, \qquad R_1 = 2,\; R_2 = 1,\; R_3 = 4.$$
 
 The state $s$ is visited at times $\mathcal{T}(s) = \lbrace 0, 2 \rbrace$.
 
@@ -3360,7 +3700,8 @@ Initialise $V(s)$ arbitrarily for all $s \in \mathcal{S}$, and maintain a sample
 
 Repeat for each episode:
 
-1. Generate an episode following $\pi$: $S_0, A_0, R_1, \dots, S_T$.
+1. Generate an episode following 
+   * $\pi$: $S_0, A_0, R_1, \dots, S_T$.
 2. For each state $s$ that appears in the episode:
    * Let $G$ be the return after the **first** visit to $s$.
    * Append $G$ to `Returns(s)`.
@@ -3377,6 +3718,34 @@ $$V(s) \;\leftarrow\; V(s) + \frac{1}{N(s)}\bigl(\, G - V(s) \,\bigr),$$
 
 where $N(s)$ counts how many returns have been seen for $s$, gives an *exactly equivalent* estimator with constant memory. This formula is also the template all later sample-based RL updates inherit — the only thing that changes is *what is plugged in for $G$* (a sampled return for MC, a bootstrapped target for TD, an importance-weighted return for off-policy MC, $\dots$).
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Show that the first-visit MC estimator $V_n(s)$ can be updated *incrementally*: if a new episode yields return $G$ at the first visit to $s$, then
+
+$$V_{n+1}(s) = V_n(s) + \frac{1}{n+1}\bigl(G-V_n(s)\bigr).$$
+
+Generalise this update by replacing $\frac{1}{n+1}$ with a fixed step size $\alpha\in(0,1]$ and explain what role $\alpha$ plays in a non-stationary environment.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+By definition, $V_n(s) = \frac1n\sum_{i=1}^n G^{(i)}$. After observing one additional return $G$, we have
+
+$$V_{n+1}(s) = \frac1{n+1}\left(\sum_{i=1}^n G^{(i)} + G\right).$$
+
+Since $\sum_{i=1}^n G^{(i)} = nV_n(s)$, we get
+
+$$V_{n+1}(s) = \frac{nV_n(s)+G}{n+1} = V_n(s) + \frac1{n+1}\bigl(G - V_n(s)\bigr).$$
+
+The term $G - V_n(s)$ is the prediction error: $V_{n+1}(s) = (1-\alpha)V_n(s)+\alpha G$. In a non-stationary environment, the value $v_\pi(s)$ may change over time. A decreasing step size such as $\frac1{n+1}$ eventually becomes too small to track such changes. A fixed step size $\alpha$ gives more weight to recent returns, allowing the estimator to adapt to changing environment.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -3399,11 +3768,58 @@ After many games this average concentrates around the true $v_\pi(s)$ for each p
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Let $G^{(1)},G^{(2)},\ldots$ be the sequence of returns observed at the first visit to $s$ across successive episodes. Explain why these random variables are identically distributed with
+
+$$\mathbb{E}!\left[G^{(i)}\right]=v_\pi(s),$$
+
+and why they are mutually independent.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let $\tau_i$ be the first hitting time of $s$ in episode $i$ (only episodes with $\tau_i < \infty$ are kept). By the Markov property applied to $\tau_i$, conditional on $\tau_i < \infty$, the post-$\tau_i$ trajectory has the law of a fresh episode started from $s$ under $\pi$. The return $G^{(i)} := G_{\tau_i}$ depends only on that post-$\tau_i$ trajectory, so its conditional law equals that of $G_0$ under $\mathbb{P}\pi(\cdot \mid S_0 = s)$. In particular, 
+
+$$\mathbb{E}[G^{(i)}] = \mathbb{E}\pi[G_0 \mid S_0 = s] =: v_\pi(s).$$
+
+Moreover, every episode is generated independently from the same policy $\pi$, starting from the same initial state $s_0$. Each $G^{(i)}$ is a function only of the $i$-th episode. Therefore the random variables $G^{(1)},G^{(2)},\dots$ are mutually independent. They are also identically distributed, because every episode is generated according to the same transition probabilities and the same fixed policy $\pi$. Hence $G^{(1)},G^{(2)},\dots$ are iid random variables with $\mathbb{E}[G^{(i)}]=v_\pi(s)$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Use Task 1 to show that the first-visit MC estimator $V_n(s)$ is an unbiased estimator of $v_\pi(s)$, i.e.
+
+$$\mathbb{E}[V_n(s)]=v_\pi(s).$$
+
+Then apply the strong law of large numbers to conclude that
+
+$$V_n(s)\xrightarrow{\mathrm{a.s.}}v_\pi(s) \qquad\text{as }n\to\infty.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+$$\mathbb{E}[V_n(s)] = \mathbb{E}\left[ \frac1n \sum_{i=1}^n G^{(i)} \right] = \frac1n \sum_{i=1}^n \mathbb{E}[G^{(i)}] = \frac1n \sum_{i=1}^n v_\pi(s) = v_\pi(s).$$
+
+Therefore $V_n(s)$ is an unbiased estimator of $v_\pi(s)$. Since the rewards are bounded and $\gamma\in[0,1)$, $G^{(i)}$ is also bounded. Since the boundedness and iid of $G^{(i)}$, strong law of large numbers gives $V_\pi (s)\overset{\text{a.s.}}{\longrightarrow} v_\pi(s)$ as $n\to\infty$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Convergence of First-Visit MC)</span></p>
 
 Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely to $v_\pi(s)$ as the number of first visits to $s$ goes to infinity.
-
 
 </div>
 
@@ -3417,6 +3833,25 @@ Fix a policy $\pi$. The first-visit MC estimate $V(s)$ converges almost surely t
   $$\frac{1}{n}\sum_{i=1}^{n} G^{(i)} \xrightarrow{\text{a.s.}} \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \;=\; v_\pi(s).$$
 
 * The key point is that "the return after the first visit to $s$" is *exactly* the random quantity whose expectation defines $v_\pi(s)$ — no model, no Bellman fixed point, no operator contraction is needed.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Explain why every-visit MC is *not* an unbiased estimator of $v_\pi(s)$ for a single episode, but argue that it is still consistent (converges to $v_\pi(s)$ as the number of episodes grows). Under what condition do first-visit and every-visit MC estimates coincide? 
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+The reason every-visit MC is not an unbiased estimator of $v_\pi(s)$ is that the returns from the same episode are not independent. They are correlated because they come from the same trajectory. However, every-visit Monte Carlo is still consistent. Across many independent episodes, the total collection of visits to $s$ produces more and more returns generated under the same policy $\pi$. Although returns within a single episode may be dependent, different episodes are independent, and the Markov property implies that each visit to $s$ has the correct conditional expected return $v_\pi(s)$. Hence, as the number of episodes grows, the average over all visits converges to \$v_\pi(s)$.
+
+First-visit and every-visit Monte Carlo estimates coincide whenever $s$ is visited at most once in each episode. In that case, the set of all visits to $s$ is exactly the same as the set of first visits to $s$.
+
 
 </details>
 </div>
@@ -3446,15 +3881,11 @@ The fix is to estimate **action-values** $q_\pi(s, a)$ instead — and to estima
 
 For each state-action pair $(s, a)$, define the MC estimate
 
-$$
-q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,] \;\approx\; \frac{1}{n}\sum_{i=1}^{n} G_i(s, a),
-$$
+$$q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\, G_t \mid S_t = s,\, A_t = a \,] \;\approx\; \frac{1}{n}\sum_{i=1}^{n} G_i(s, a),$$
 
 where each $G_i(s, a)$ is the return following a visit to the *pair* $(s, a)$ in some sampled episode. Once $q_\pi(s, a)$ is available, policy improvement becomes a one-line, *model-free* operation:
 
-$$
-\pi'(s) \;=\; \arg\max_{a} q_\pi(s, a).
-$$
+$$\pi'(s) \;=\; \arg\max_{a} q_\pi(s, a).$$
 
 </div>
 
@@ -3478,9 +3909,7 @@ So MC control inherits an inescapable need for **exploration**: we must keep pla
 
 A policy $\pi$ is **$\varepsilon$-soft** for some $\varepsilon > 0$ if it always assigns *at least* a uniform-exploration probability to every action:
 
-$$
-\pi(a \mid s) \;\geq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \qquad \forall s,\, \forall a \in \mathcal{A}(s).
-$$
+$$\pi(a \mid s) \;\geq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \qquad \forall s,\, \forall a \in \mathcal{A}(s).$$
 
 The simplest $\varepsilon$-soft policy is **$\varepsilon$-greedy with respect to $Q$**:
 
@@ -3519,15 +3948,11 @@ Let $\pi$ be any $\varepsilon$-soft policy with action-value function $q_\pi(s, 
 
 Write
 
-$$
-q_\pi(s, \pi') \;\doteq\; \sum_{a} \pi'(a \mid s)\, q_\pi(s, a),
-$$
+$$q_\pi(s, \pi') \;\doteq\; \sum_{a} \pi'(a \mid s)\, q_\pi(s, a),$$
 
 the expected $q_\pi$-value obtained by choosing the first action according to $\pi'$ and then following $\pi$. Because $\pi'$ is $\varepsilon$-greedy,
 
-$$
-q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).
-$$
+$$q_\pi(s, \pi') \;=\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a) \;+\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a).$$
 
 So $\pi'$ is a *mixture*: mostly the best action, plus a small uniform-exploration average.
 
@@ -3538,27 +3963,23 @@ So $\pi'$ is a *mixture*: mostly the best action, plus a small uniform-explorati
 
 Now compare with the value of the *old* policy $\pi$,
 
-$$
-v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).
-$$
+$$v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).$$
 
-Since $\pi$ is $\varepsilon$-soft, $\pi(a \mid s) \geq \varepsilon / \lvert \mathcal{A}(s) \rvert$ for every action, so we can split
+Since $\pi$ is $\varepsilon$-soft, 
 
-$$
-\pi(a \mid s) \;=\; \underbrace{\tfrac{\varepsilon}{\lvert \mathcal{A}(s) \rvert}}_{\text{forced exploration}} \;+\; \underbrace{(1 - \varepsilon)\,\tilde{\pi}(a \mid s)}_{\text{remaining mass}},
-$$
+$$\pi(a \mid s) \geq \varepsilon / \lvert \mathcal{A}(s) \rvert \quad \forall a,$$
+
+so we can split
+
+$$\pi(a \mid s) \;=\; \underbrace{\tfrac{\varepsilon}{\lvert \mathcal{A}(s) \rvert}}_{\text{forced exploration}} \;+\; \underbrace{(1 - \varepsilon)\,\tilde{\pi}(a \mid s)}_{\text{remaining mass}},$$
 
 where $\tilde{\pi}(\cdot \mid s)$ is another probability distribution. Plugging into $v_\pi(s)$,
 
-$$
-v_\pi(s) \;=\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\sum_{a} \tilde{\pi}(a \mid s)\, q_\pi(s, a).
-$$
+$$v_\pi(s) \;=\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\sum_{a} \tilde{\pi}(a \mid s)\, q_\pi(s, a).$$
 
 The second sum is an average of $q_\pi(s, a)$ under $\tilde{\pi}$, so it cannot exceed $\max_{a} q_\pi(s, a)$. Therefore
 
-$$
-v_\pi(s) \;\leq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a).
-$$
+$$v_\pi(s) \;\leq\; \frac{\varepsilon}{\lvert \mathcal{A}(s) \rvert} \sum_{a} q_\pi(s, a) \;+\; (1 - \varepsilon)\, \max_{a} q_\pi(s, a).$$
 
 </div>
 
@@ -3579,7 +4000,11 @@ Choosing the first action according to $\pi'$ and then following $\pi$ has expec
 
 $$\boxed{\, v_{\pi'}(s) \;\geq\; v_\pi(s) \qquad \forall s. \,}$$
 
-**Conclusion.** Even with forced exploration, the $\varepsilon$-greedy policy improves — or at least does not worsen — the old $\varepsilon$-soft policy. The argument is robust: the $\varepsilon/\lvert \mathcal{A}(s) \rvert$ "forced exploration" term cancels exactly on both sides, leaving the improvement entirely to the $(1 - \varepsilon)\max_a q_\pi(s, a)$ contribution.
+**Conclusion.** Even with forced exploration, the $\varepsilon$-greedy policy improves — or at least does not worsen — the old $\varepsilon$-soft policy. The argument is robust: the $\varepsilon/\lvert \mathcal{A}(s) \rvert$ "forced exploration" term cancels exactly on both sides, leaving the improvement entirely to the 
+
+$$(1 - \varepsilon)\max_a q_\pi(s, a)$$ 
+
+contribution.
 
 </div>
 
@@ -5061,13 +5486,12 @@ This is what makes Q-learning **off-policy**:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Q-learning update)</span></p>
 
-$$
-Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma \max_a Q(S_{t+1}, a)}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].
-$$
+$$Q(S_t, A_t) \;\leftarrow\; Q(S_t, A_t) + \alpha\Bigl[\, \underbrace{R_{t+1} + \gamma \max_a Q(S_{t+1}, a)}_{\text{TD target}} - Q(S_t, A_t) \,\Bigr].$$
 
 It uses the quadruple $(S\_t, A\_t, R\_{t+1}, S\_{t+1})$ — there is **no $A\_{t+1}$**: 
 * The term $\max\_a Q(S\_{t+1}, a)$ is the best possible value at the next state; 
-* If $S\_{t+1}$ is terminal, $\max\_a Q(S\_{t+1}, a) \doteq 0$.
+* If $S\_{t+1}$ is terminal
+  * $\max\_a Q(S\_{t+1}, a) \doteq 0$.
 
 </div>
 
@@ -5081,7 +5505,8 @@ Loop for each episode:
 1. Initialise $S$.
 2. Loop for each step of the episode, until $S$ is terminal:
    * Choose $A$ from $S$ using a policy derived from $Q$ (e.g. $\varepsilon$-greedy).
-   * Take action $A$; observe $R, S'$.
+   * Take action $A$; 
+   * Observe $R, S'$.
    * $Q(S, A) \leftarrow Q(S, A) + \alpha\bigl[\,R + \gamma \max\_a Q(S', a) - Q(S, A)\,\bigr]$.
    * $S \leftarrow S'$.
 
@@ -5136,7 +5561,11 @@ Online performance reflects the former — which is why Sarsa looks better *duri
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Maximization bias)</span></p>
 
-Standard Q-learning suffers from a problem known as the optimizer’s curse [SW06], or the maximization bias. The problem refers to the simple statistical inequality: $\mathbb{E}[\max_a X_a] \geq \max_a \mathbb{E}[X_a]$, for a set of random variables $\lbrace X_a\rbrace$. Thus, if we pick actions greedily according to their random scores $\lbrace X_a\rbrace$, we might pick a wrong action just because random noise makes it appealing.
+Standard Q-learning suffers from a problem known as the optimizer’s curse [SW06], or the maximization bias. The problem refers to the simple statistical inequality:
+
+$$\mathbb{E}[\max_a X_a] \geq \max_a \mathbb{E}[X_a]$$
+
+for a set of random variables $\lbrace X_a\rbrace$. Thus, if we pick actions greedily according to their random scores $\lbrace X_a\rbrace$, we might pick a wrong action just because random noise makes it appealing.
 
 Figure above gives a simple example of how this can happen in an MDP. The start state is A. The right action gives a reward $0$ and terminates the episode. The left action also gives a reward of $0$, but then enters state B, from which there are many possible actions, with rewards drawn from $\mathcal N(−0.1,1.0)$. Thus the expected return for any trajectory starting with the left action is $−0.1$, making it suboptimal. Nevertheless, the RL algorithm may pick the left action due to the maximization bias making B appear to have a positive value.
 
@@ -5147,7 +5576,7 @@ Figure above gives a simple example of how this can happen in an MDP. The start 
 
 The Q-learning target 
 
-$$R\_{t+1} + \gamma \max\_a Q(S\_{t+1}, a)$$
+$$R_{t+1} + \gamma \max_a Q(S_{t+1}, a)$$
 
 uses the *same* estimates $Q$ to do two jobs at once: 
 * **select** the action with the largest estimate, and 
@@ -5163,7 +5592,7 @@ $$\mathbb{E}[Q(s, a)] = q(s, a),$$
 
 then 
 
-$$\mathbb{E}[\max\_a Q(s, a)] \ge \max\_a q(s, a)$$ 
+$$\mathbb{E}[\max_a Q(s, a)] \ge \max_a q(s, a)$$ 
 
 — Q-learning is systematically optimistic about the value of the best action.
 
@@ -5202,11 +5631,11 @@ The word “evaluate” here does **not** mean that $A^\ast$ was executed in the
 
 The action roles are therefore:
 
-$$\underbrace{A_t}_{\substack{\text{behavior action}\\text{actually executed}}} \quad\longrightarrow\quad R_{t+1},S_{t+1},$$
+$$\underbrace{A_t}_{\substack{\text{behavior action. }\text{actually executed}}} \quad\longrightarrow\quad R_{t+1},S_{t+1},$$
 
 then
 
-$$\underbrace{A^*=\arg\max_a Q(S_{t+1},a)}_{\substack{\text{hypothetical greedy next action}\\text{selected and valued inside target}}}.$$
+$$\underbrace{A^*=\arg\max_a Q(S_{t+1},a)}_{\substack{\text{hypothetical greedy next action. }\text{selected and valued inside target}}}.$$
 
 The actual next behavior action $A_{t+1}$ may be different because the behavior policy is $\varepsilon$-greedy. Q-learning ignores $A_{t+1}$ in its update; Sarsa uses it:
 
@@ -5232,7 +5661,7 @@ $$\mathbb{E}\Bigl[\max_a Q(s, a)\Bigr] \;\ge\; \mathbb{E}[Q(s, b^\ast)].$$
 
 By the definition of $b^\ast$, 
 
-$$\mathbb{E}[Q(s, b^\ast)] = \max\_b \mathbb{E}[Q(s, b)],$$
+$$\mathbb{E}[Q(s, b^\ast)] = \max_b \mathbb{E}[Q(s, b)],$$
 
 hence
 
@@ -5247,11 +5676,17 @@ So taking a maximum over *noisy* estimates injects optimism — the inequality i
 
 Suppose two actions are *truly equally good*, $q(s, a\_1) = q(s, a\_2) = 0$, but our estimates are noisy,
 
-$$
-Q(s, a_1) = q(s, a_1) + \text{error}_1, \qquad Q(s, a_2) = q(s, a_2) + \text{error}_2,
-$$
+$$Q(s, a_1) = q(s, a_1) + \text{error}_1, \qquad Q(s, a_2) = q(s, a_2) + \text{error}_2,$$
 
-with $\mathbb{E}[\text{error}\_1] = \mathbb{E}[\text{error}\_2] = 0$. Even so, $\max\lbrace Q(s, a\_1), Q(s, a\_2)\rbrace$ tends to select whichever estimate happens to have the **more positive error**.
+with 
+
+$$\mathbb{E}[\text{error}_1] = \mathbb{E}[\text{error}_2] = 0.$$
+
+Even so,
+
+$$\max\lbrace Q(s, a_1), Q(s, a_2)\rbrace$$
+ 
+tends to select whichever estimate happens to have the **more positive error**.
 
 The key realisation: each estimate may be unbiased, but the *selected* one is **not random** — it is, by construction, the one that currently looks best. In Q-learning the same table $Q$ both 
 * **selects** $A^\ast = \arg\max\_a Q(S\_{t+1}, a)$ and
@@ -5331,16 +5766,18 @@ $$Q_1(\text{terminal}, \cdot) = Q_2(\text{terminal}, \cdot) = 0$$
 
 Loop for each episode, and for each step:
 
-1. Choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q\_1 + Q\_2$; take $A$, observe $R, S'$.
-2. With probability $\tfrac{1}{2}$, **update $Q\_1$** (select with $Q\_1$, evaluate with $Q\_2$):
+1. Choose $A$ from $S$ using an $\varepsilon$-greedy policy derived from $Q\_1 + Q\_2$; 
+2. Take $A$;
+3. Observe $R, S'$;
+4. With probability $\tfrac{1}{2}$, **update $Q\_1$** (select with $Q\_1$, evaluate with $Q\_2$):
 
    $$Q_1(S, A) \leftarrow Q_1(S, A) + \alpha\Bigl[\,R + \gamma\, Q_2\bigl(S', \arg\max_a Q_1(S', a)\bigr) - Q_1(S, A)\,\Bigr].$$
 
-3. **Otherwise update $Q\_2$** symmetrically (select with $Q\_2$, evaluate with $Q\_1$):
+5. **Otherwise update $Q\_2$** symmetrically (select with $Q\_2$, evaluate with $Q\_1$):
 
    $$Q_2(S, A) \leftarrow Q_2(S, A) + \alpha\Bigl[\,R + \gamma\, Q_1\bigl(S', \arg\max_a Q_2(S', a)\bigr) - Q_2(S, A)\,\Bigr].$$
 
-4. $S \leftarrow S'$ (and at a terminal $S'$ the target is just $R$).
+6. $S \leftarrow S'$ (and at a terminal $S'$ the target is just $R$).
 
 The behaviour policy is $\varepsilon$-greedy with respect to $Q\_1 + Q\_2$. The cost is a **$\times 2$ memory** footprint; the per-step computation is the same as ordinary Q-learning.
 
@@ -7776,9 +8213,7 @@ Trouble (b) is the deeper one: it survives even infinite memory, and it is what 
 
 Suppose the state is a small grayscale image, $84 \times 84$ pixels, each pixel one of $256$ levels. The number of possible configurations is
 
-$$
-256^{\,84 \times 84} \;=\; 256^{\,7056},
-$$
+$$256^{\,84 \times 84} \;=\; 256^{\,7056},$$
 
 which is astronomically larger than the number of atoms in the observable universe. No table can index such a set, and no agent could ever revisit a particular image. The only way forward is to **act sensibly in states never seen before**, by exploiting regularities learned from the states that *were* seen.
 
@@ -7803,9 +8238,7 @@ Generalization is not a bonus here; it is the only thing that makes the problem 
 
 Replace the table $V(s)$ by a parameterized approximation
 
-$$
-\hat v(s,\mathbf{w}) \;\approx\; v_\pi(s), \qquad \mathbf{w} \in \mathbb{R}^{d}, \qquad d \ll |\mathcal{S}|,
-$$
+$$\hat v(s,\mathbf{w}) \;\approx\; v_\pi(s), \qquad \mathbf{w} \in \mathbb{R}^{d}, \qquad d \ll |\mathcal{S}|,$$
 
 where $\mathbf{w}$ is the **weight vector**, updated incrementally. Three consequences follow immediately from $d \ll \lvert\mathcal{S}\rvert$:
 
@@ -8831,17 +9264,20 @@ Performance depends on **both** the action probabilities **and** the resulting s
 
 For a discrete action space, define numerical **action preferences** $h(s, a, \boldsymbol{\theta}) \in \mathbb{R}$ and set
 
-$$
-\pi(a \mid s, \boldsymbol{\theta}) \;\doteq\; \frac{e^{h(s,a,\boldsymbol{\theta})}}{\sum_b e^{h(s,b,\boldsymbol{\theta})}}.
-$$
+$$\pi(a \mid s, \boldsymbol{\theta}) \;\doteq\; \frac{e^{h(s,a,\boldsymbol{\theta})}}{\sum_b e^{h(s,b,\boldsymbol{\theta})}}.$$
 
-The denominator is a normalizer: for any fixed $s$, $\pi(\cdot \mid s, \boldsymbol{\theta})$ is a probability distribution over actions. Two standard choices for the preferences:
+The denominator is a normalizer: for any fixed $s$, $\pi(\cdot \mid s, \boldsymbol{\theta})$ is a probability distribution over actions.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Action preferences and the soft-max policy)</span></p>
+
+Two standard choices for the preferences:
 
 * **Linear in features:**
 
-$$
-h(s, a, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a), \qquad \mathbf{x}(s, a) \in \mathbb{R}^{d'},
-$$
+  $$h(s, a, \boldsymbol{\theta}) = \boldsymbol{\theta}^\top \mathbf{x}(s, a), \qquad \mathbf{x}(s, a) \in \mathbb{R}^{d'},$$
 
   with state–action feature vectors $\mathbf{x}(s,a)$ built by any of the constructions from Lecture 9.
 * **Nonlinear:** $h(s, a, \boldsymbol{\theta})$ represented by a neural network with weights $\boldsymbol{\theta}$.
@@ -8851,7 +9287,10 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why preferences, not action values?)</span></p>
 
-Preferences are **relative**: adding the same constant to every preference in a state changes nothing — only differences matter. This is precisely the freedom action values lack: a soft-max over *values* would tie the action probabilities to the *scale* of the returns, so approaching determinism would require a hand-tuned temperature schedule. With preferences, the optimal action's preference can simply **grow relative to the others**, so $\pi(a^\ast \mid s) \to 1$ on its own. This is the same shift-invariance we proved for the gradient-bandit soft-max in Lecture 2 — $h(s, a, \boldsymbol{\theta})$ generalizes the bandit preferences $H\_t(a)$ from a table over actions to a parameterized function of state *and* action.
+* Preferences are **relative**: adding the same constant to every preference in a state changes nothing — only differences matter. 
+* This is precisely the freedom action values lack: a soft-max over *values* would tie the action probabilities to the *scale* of the returns, so approaching determinism would require a hand-tuned temperature schedule. 
+* With preferences, the optimal action's preference can simply **grow relative to the others**, so $\pi(a^\ast \mid s) \to 1$ on its own. 
+* This is the same shift-invariance we proved for the gradient-bandit soft-max in Lecture 2 — $h(s, a, \boldsymbol{\theta})$ generalizes the bandit preferences $H\_t(a)$ from a table over actions to a parameterized function of state *and* action.
 
 </div>
 
@@ -8966,13 +9405,66 @@ Until now, randomness in the policy was a *means* — exploration bolted onto an
 
 Assume every episode starts in a fixed state $s\_0$. Define the performance of $\boldsymbol{\theta}$ as the value of the start state under the policy it induces:
 
-$$
-J(\boldsymbol{\theta}) \;\doteq\; v_{\pi_{\boldsymbol{\theta}}}(s_0)
-\;=\; \mathbb{E}_{\pi_{\boldsymbol{\theta}}}\!\left[\, \sum_{t=0}^{T-1} \gamma^{t} R_{t+1} \,\middle|\, S_0 = s_0 \right].
-$$
+$$J(\boldsymbol{\theta}) \;\doteq\; v_{\pi_{\boldsymbol{\theta}}}(s_0)\;=\; \mathbb{E}_{\pi_{\boldsymbol{\theta}}}\!\left[\, \sum_{t=0}^{T-1} \gamma^{t} R_{t+1} \,\middle|\, S_0 = s_0 \right].$$
 
 For undiscounted episodic examples (like the short corridor) set $\gamma = 1$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Does not MC from the previous lectures estimate the same thing?</summary>
+
+Yes. **For a fixed policy and fixed start state, Monte Carlo prediction can estimate exactly the same scalar quantity.**
+
+Lecture 10 defines
+
+$$J(\boldsymbol\theta) = v_{\pi_{\boldsymbol\theta}}(s_0) =  \mathbb E_{\pi_{\boldsymbol\theta}} \left[G_0\mid S_0=s_0\right].$$
+
+Thus, if we generate $N$ episodes from $s_0$ under the fixed policy $\pi_{\boldsymbol\theta}$, then
+
+$$\widehat J_N(\boldsymbol\theta) = \frac1N\sum_{i=1}^N G_0^{(i)}$$
+
+is the ordinary Monte Carlo estimate of $v_{\pi_{\boldsymbol\theta}}(s_0)$. 
+
+**The difference is the role assigned to this quantity.**
+
+Earlier MC prediction treats $\pi$ as fixed and asks:
+
+$$\text{What is }v_\pi(s)?$$
+
+It may estimate $v_\pi(s)$ for every visited state $s$, using complete returns. 
+
+Policy-gradient methods treat the policy as parameterized and ask:
+
+$$\text{How should }\boldsymbol\theta\text{ change to increase } J(\boldsymbol\theta)?$$
+
+So $J$ is not a new kind of return. It is the familiar value function, restricted to the start state and viewed as an **objective function over policies**:
+
+$$\boxed{J(\boldsymbol\theta) = v_{\pi_{\boldsymbol\theta}}(s_0).}$$
+
+The conceptual progression is:
+
+$$
+\begin{array}{c|c}
+\text{MC prediction} &
+\text{estimate }J(\boldsymbol\theta)\text{ for fixed }\boldsymbol\theta [2mm]
+\text{Policy gradient} &
+\text{estimate }\nabla_{\boldsymbol\theta}J(\boldsymbol\theta)
+\text{ and change }\boldsymbol\theta
+\end{array}
+$$
+
+REINFORCE still uses Monte Carlo returns, but now $G_t$ supplies a sample of
+
+$$q_\pi(S_t,A_t) = \mathbb E_\pi[G_t\mid S_t,A_t],$$
+
+which is inserted into the policy-gradient update. 
+
+So yes: **MC already knows how to evaluate the objective. Lecture 10 introduces how to differentiate and optimize that objective with respect to the policy itself.**
+
+
+</details>
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -8989,11 +9481,16 @@ $J(\boldsymbol{\theta})$ depends on the *state distribution* induced by $\pi\_{\
 
 For any differentiable policy $\pi(a \mid s, \boldsymbol{\theta})$,
 
-$$
-\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta}),
-$$
+$$\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta}),$$
 
-where $\mu$ is the **on-policy state distribution** under $\pi\_{\boldsymbol{\theta}}$ — the same visitation weighting that appeared in the $\overline{\text{VE}}$ objective of Lecture 9. Using
+where $\mu$ is the **on-policy state distribution** under $\pi\_{\boldsymbol{\theta}}$ — the same visitation weighting that appeared in the $\overline{\text{VE}}$ objective of Lecture 9.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Policy gradient theorem — episodic case: Expactation form)</span></p>
+
+Using
 
 $$\nabla \pi(a \mid s, \boldsymbol{\theta}) = \pi(a \mid s, \boldsymbol{\theta})\, \nabla \log \pi(a \mid s, \boldsymbol{\theta}),$$
 
@@ -9079,25 +9576,15 @@ $$
 
 Substitute Step 2 into Step 1:
 
-$$
-\nabla v_\pi(s)
-= \underbrace{\sum_a \nabla \pi(a \mid s)\, q_\pi(s, a)}_{=:\ \varphi(s)}
-\;+\; \gamma \sum_a \pi(a \mid s) \sum_{s'} p(s' \mid s, a)\, \nabla v_\pi(s').
-$$
+$$\nabla v_\pi(s)= \underbrace{\sum_a \nabla \pi(a \mid s)\, q_\pi(s, a)}_{=:\ \varphi(s)}\;+\; \gamma \sum_a \pi(a \mid s) \sum_{s'} p(s' \mid s, a)\, \nabla v_\pi(s').$$
 
 Define the **local term** and the **transition kernel under $\pi$**:
 
-$$
-\varphi(s) \doteq \sum_a \nabla \pi(a \mid s)\, q_\pi(s, a),
-\qquad
-P_\pi(s' \mid s) \doteq \sum_a \pi(a \mid s)\, p(s' \mid s, a).
-$$
+$$\varphi(s) \doteq \sum_a \nabla \pi(a \mid s)\, q_\pi(s, a), \qquad P_\pi(s' \mid s) \doteq \sum_a \pi(a \mid s)\, p(s' \mid s, a).$$
 
 The recursion becomes
 
-$$
-\nabla v_\pi(s) \;=\; \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \nabla v_\pi(s').
-$$
+$$\nabla v_\pi(s) \;=\; \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \nabla v_\pi(s').$$
 
 **Same shape as Bellman:** this is a Bellman-style recursion for the *gradient* of the value function, with $\varphi(s)$ playing the role of the immediate reward.
 
@@ -9108,19 +9595,11 @@ $$
 
 Apply the same identity to the future state $s'$, substitute back, and repeat. After one substitution,
 
-$$
-\nabla v_\pi(s)
-= \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \varphi(s')
-+ \gamma^2 \sum_{s''} \underbrace{\sum_{s'} P_\pi(s' \mid s) P_\pi(s'' \mid s')}_{=\ \Pr(s \to s'',\, 2,\, \pi)} \nabla v_\pi(s''),
-$$
+$$\nabla v_\pi(s) = \varphi(s) + \gamma \sum_{s'} P_\pi(s' \mid s)\, \varphi(s') + \gamma^2 \sum_{s''} \underbrace{\sum_{s'} P_\pi(s' \mid s) P_\pi(s'' \mid s')}_{=\ \Pr(s \to s'',\, 2,\, \pi)} \nabla v_\pi(s''),$$
 
 and after $K$ unrollings,
 
-$$
-\nabla v_\pi(s)
-= \sum_{k=0}^{K-1} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x)
-\;+\; \gamma^K \sum_x \Pr(s \to x,\, K,\, \pi)\, \nabla v_\pi(x),
-$$
+$$\nabla v_\pi(s) = \sum_{k=0}^{K-1} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x) \;+\; \gamma^K \sum_x \Pr(s \to x,\, K,\, \pi)\, \nabla v_\pi(x),$$
 
 where $\Pr(s \to x, k, \pi)$ is the probability of being in state $x$ after $k$ steps when starting from $s$ and following $\pi$. The accumulated sum collects the local policy-gradient contributions $\varphi(x)$ along the way; the leftover recursion term vanishes as $K \to \infty$.
 
@@ -9131,35 +9610,224 @@ where $\Pr(s \to x, k, \pi)$ is the probability of being in state $x$ after $k$ 
 
 Letting $K \to \infty$,
 
-$$
-\nabla v_\pi(s) = \sum_{k=0}^{\infty} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x)
-= \sum_x \left( \sum_{k=0}^{\infty} \gamma^k \Pr(s \to x,\, k,\, \pi) \right) \varphi(x).
-$$
+$$\nabla v_\pi(s) = \sum_{k=0}^{\infty} \gamma^k \sum_x \Pr(s \to x,\, k,\, \pi)\, \varphi(x) = \sum_x \left( \sum_{k=0}^{\infty} \gamma^k \Pr(s \to x,\, k,\, \pi) \right) \varphi(x).$$
 
 Set $s = s\_0$ and define the **discounted expected visitation count**
 
-$$
-\eta(x) \;\doteq\; \sum_{k=0}^{\infty} \gamma^k \Pr(s_0 \to x,\, k,\, \pi)
-$$
+$$\eta(x) \;\doteq\; \sum_{k=0}^{\infty} \gamma^k \Pr(s_0 \to x,\, k,\, \pi)$$
 
 ("add up the probability of being in state $x$ at every future time step, with later time steps discounted"). Substituting $\varphi(x) = \sum\_a \nabla \pi(a \mid x)\, q\_\pi(x, a)$:
 
-$$
-\nabla J(\boldsymbol{\theta}) = \nabla v_\pi(s_0)
-= \sum_x \eta(x) \sum_a \nabla \pi(a \mid x)\, q_\pi(x, a).
-$$
+$$\nabla J(\boldsymbol{\theta}) = \nabla v_\pi(s_0)= \sum_x \eta(x) \sum_a \nabla \pi(a \mid x)\, q_\pi(x, a).$$
 
 **Normalize.** Define $C \doteq \sum\_{x'} \eta(x')$ and $\mu(x) = \eta(x)/C$. Then
 
-$$
-\nabla J(\boldsymbol{\theta})
-= C \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x)
-\;\propto\; \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x). \qquad \blacksquare
-$$
+$$\nabla J(\boldsymbol{\theta})= C \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x)\;\propto\; \sum_x \mu(x) \sum_a q_\pi(x, a)\, \nabla \pi(a \mid x). \qquad \blacksquare$$
 
 $C$ is the total discounted visitation mass; if $\gamma = 1$ in an episodic task, $C$ is the expected episode length. The constant is absorbed into the step size $\alpha$ during gradient ascent, which is why the theorem is stated with $\propto$ rather than $=$.
 
 </div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Local Policy Sensitivity and Its Bellman Propagation)</span></p>
+
+Consider a finite discounted episodic MDP with fixed start-state distribution $d_0^\top$ and discount $\gamma \in [0,1)$. Let $P_\pi$ denote the transition matrix induced by the differentiable policy $\pi_\theta$, and let $v_\pi$ be its value vector. For a state $s$, define
+
+$$\phi(s) := \sum_a \nabla_\theta \pi(a \mid s,\theta),q_\pi(s,a).$$
+
+All gradients below are with respect to $\theta$.
+
+---
+
+Starting from
+
+$$v_\pi(s)=\sum_a \pi(a\mid s)q_\pi(s,a),$$
+
+show that
+
+$$\nabla v_\pi=\phi+\gamma P_\pi\nabla v_\pi.$$
+
+You may use that the environment transition kernel is independent of $\theta$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Starting from
+
+$$v_\pi(s)=\sum_a\pi(a\mid s)q_\pi(s,a),$$
+
+the product rule gives
+
+$$\nabla v_\pi(s) = \sum_a \nabla\pi(a\mid s)q_\pi(s,a) + \sum_a \pi(a\mid s)\nabla q_\pi(s,a).$$
+
+The first term is precisely (\phi(s)).
+
+For the second term, use the Bellman equation
+
+$$q_\pi(s,a) = \sum_{s',r} p(s',r\mid s,a) \bigl(r+\gamma v_\pi(s')\bigr).$$
+
+Because the transition and reward kernel is independent of $\theta$,
+
+$$\nabla q_\pi(s,a) = \gamma\sum_{s'}p(s'\mid s,a)\nabla v_\pi(s').$$
+
+Consequently,
+
+$$
+\begin{aligned}
+\nabla v_\pi(s)
+&= \phi(s) + \gamma \sum_a\pi(a\mid s) \sum_{s'}p(s'\mid s,a)\nabla v_\pi(s') \\
+&= \phi(s) + \gamma\sum_{s'}P_\pi(s,s')\nabla v_\pi(s').
+\end{aligned}
+$$
+
+Stacking these identities over all states gives
+
+$$\boxed{\nabla v_\pi=\phi+\gamma P_\pi\nabla v_\pi. }$$
+
+This is exactly the Bellman-style recursion developed in the lecture notes. 
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Resolvent Form of the Policy Gradient: Summing Future Sensitivities via the Bellman Resolvent)</span></p>
+
+Use $\gamma<1$ to solve the recursion and prove
+
+$$\nabla J(\theta) = d_0^\top (I-\gamma P_\pi)^{-1}\phi, \qquad J(\theta)=d_0^\top v_\pi.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**The recursion is solved by the discounted resolvent of $P_\pi$.**
+
+Rearranging,
+
+$$(I-\gamma P_\pi)\nabla v_\pi=\phi.$$
+
+Since $P_\pi$ is stochastic or substochastic,
+
+$$\rho(P_\pi)\leq 1.$$
+
+Because $0\leq\gamma<1$,
+
+$$\rho(\gamma P_\pi)<1,$$
+
+so $I-\gamma P_\pi$ is invertible. Therefore
+
+$$\nabla v_\pi=(I-\gamma P_\pi)^{-1}\phi.$$
+
+Since $d_0$ is fixed and
+
+$$J(\theta)=d_0^\top v_\pi,$$
+
+we have
+
+$$\nabla J(\theta) = d_0^\top\nabla v_\pi.$$
+
+Hence
+
+$$\boxed{\nabla J(\theta) = d_0^\top(I-\gamma P_\pi)^{-1}\phi.}$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Is the suggested form of $J(\theta)$ suggested in the exercise actually correct? Does not it suggest the expectation of the state-value function over all state instead of the being conditioned like in the definition on a fixed state?</summary>
+
+You are right to distinguish them. **As written, Exercise 2 uses a slightly more general objective than the lecture definition.**
+
+The lecture defines
+
+$$J(\theta)=v_{\pi_\theta}(s_0) = \mathbb E_{\pi_\theta}[G_0\mid S_0=s_0],$$
+
+where $s_0$ is deterministic.
+
+Exercise 2 instead assumes a fixed initial-state distribution $d_0$ and writes
+
+$$J(\theta)=d_0^\top v_\pi = \sum_s d_0(s)v_\pi(s) = \mathbb E_{S_0\sim d_0,\pi_\theta}[G_0].$$
+
+So these are not literally the same objective for arbitrary $d_0$.
+
+**The lecture objective is recovered by choosing a point mass.**
+
+Set
+
+$$d_0=\delta_{s_0},$$
+
+or, in vector notation, $d_0=e_{s_0}$. Then
+
+$$d_0^\top v_\pi = e_{s_0}^\top v_\pi = v_\pi(s_0),$$
+
+and hence
+
+$$J(\theta) = \mathbb E_{\pi_\theta}[G_0\mid S_0=s_0].$$
+
+Therefore:
+
+$$\boxed{\text{Exercise 2 is correct, but it generalizes the lecture’s fixed-start-state objective.}}$$
+
+It is not “the expectation over all states” in the sense of averaging uniformly over the state space. It averages only over the possible **initial states**, weighted by $d_0$. Nevertheless, unless $d_0=\delta_{s_0}$, it is a genuinely different performance objective from the one stated in the lecture.
+
+The sheet does explicitly say “fixed start-state distribution $d_0^\top$,” rather than “fixed start state $s_0$.”  So this appears intentional, although it would have been clearer to state that the lecture formulation is the special case $d_0=\delta_{s_0}$.
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Discounted State-Visitation Measure)</span></p>
+
+Define the row vector
+
+$$\eta^\top:=d_0^\top(I-\gamma P_\pi)^{-1}.$$
+
+Prove that
+
+$$\eta^\top = \sum_{t=0}^{\infty}\gamma^t d_0^\top P_\pi^t,$$
+
+and interpret $\eta(s)$ as a discounted expected visitation count.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**The inverse is the Neumann series.**
+
+Because $\rho(\gamma P_\pi)<1$,
+
+$$(I-\gamma P_\pi)^{-1} = \sum_{t=0}^\infty(\gamma P_\pi)^t = \sum_{t=0}^\infty\gamma^tP_\pi^t.$$
+
+Thus
+
+$$\boxed{ \eta^\top = d_0^\top(I-\gamma P_\pi)^{-1} = \sum_{t=0}^\infty \gamma^t d_0^\top P_\pi^t.}$$
+
+Now
+
+$$\bigl(d_0^\top P_\pi^t\bigr)(s) = \Pr_\pi(S_t=s),$$
+
+where $S_0\sim d_0$. Therefore
+
+$$\eta(s) = \sum_{t=0}^\infty\gamma^t\Pr_\pi(S_t=s).$$
+
+Equivalently,
+
+$$\boxed{ \eta(s) = \mathbb E_\pi\left[ \sum_{t=0}^\infty \gamma^t\mathbf 1_{{S_t=s}} \right]. }$$
+
+Thus $\eta(s)$ is the expected number of visits to $s$, with a visit at time $t$ weighted by $\gamma^t$. It is an unnormalized discounted visitation measure.
+
+</details>
+</div>
+
 
 ### REINFORCE: Monte-Carlo Policy Gradient
 
@@ -9168,10 +9836,7 @@ $C$ is the total discounted visitation mass; if $\gamma = 1$ in an episodic task
 
 For clarity, consider first the undiscounted episodic case ($\gamma = 1$). The policy-gradient theorem says
 
-$$
-\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta})
-\;=\; \mathbb{E}_{S \sim \mu}\!\left[ \sum_a q_\pi(S, a)\, \nabla \pi(a \mid S, \boldsymbol{\theta}) \right].
-$$
+$$\nabla J(\boldsymbol{\theta}) \;\propto\; \sum_s \mu(s) \sum_a q_\pi(s, a)\, \nabla \pi(a \mid s, \boldsymbol{\theta}) \;=\; \mathbb{E}_{S \sim \mu}\!\left[ \sum_a q_\pi(S, a)\, \nabla \pi(a \mid S, \boldsymbol{\theta}) \right].$$
 
 This is where **on-policy sampling** earns its keep: when we generate episodes using the *current* policy $\pi(\cdot \mid \cdot, \boldsymbol{\theta})$, the visited states $S\_t$ *are* samples from $\mu$. An empirical average over visited on-policy states therefore approximates the state expectation for free — no reweighting, no importance sampling.
 
@@ -9710,11 +10375,14 @@ Loop forever (for each episode):
 1. Initialise $S$ (first state of the episode); $I \leftarrow 1$.
 2. Loop while $S$ is not terminal:
    * $A \sim \pi(\cdot \mid S, \boldsymbol{\theta})$;
-   * take action $A$, observe $S'$, $R$;
-   * $\delta \leftarrow R + \gamma \hat v(S', \mathbf{w}) - \hat v(S, \mathbf{w})$  (with $\hat v(\text{terminal}) \doteq 0$);
+   * take action $A$;
+   * observe $S'$, $R$;
+   * $\delta \leftarrow R + \gamma \hat v(S', \mathbf{w}) - \hat v(S, \mathbf{w})$  
+     * with $\hat v(\text{terminal}) \doteq 0$;
    * $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\, \delta\, \nabla \hat v(S, \mathbf{w})$;
    * $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \alpha^{\boldsymbol{\theta}}\, I\, \delta\, \nabla \ln \pi(A \mid S, \boldsymbol{\theta})$;
-   * $I \leftarrow \gamma I$;  $S \leftarrow S'$.
+   * $I \leftarrow \gamma I$;  
+   * $S \leftarrow S'$.
 
 Two features worth noting:
 
@@ -10027,4 +10695,352 @@ One thread is left deliberately hanging: nothing in the policy-gradient machiner
 
 This is the subject of the next lecture.
 
+</div>
+
+## What to read to continue
+
+### Proximal Policy Optimization
+
+* [A Natural Policy Gradient (2001)](https://papers.nips.cc/paper_files/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf)
+* [Trust Region Policy Optimization (2015)](https://arxiv.org/abs/1502.05477)
+* [Proximal Policy Optimization Algorithms (2017)](https://arxiv.org/abs/1707.06347)
+
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Why Action-Independent Baselines Do Not Change the Policy Gradient: The Zero-Mean Geometry of Baselines)</span></p>
+
+Let
+
+$$g(s,a):=\nabla_\theta \ln \pi(a\mid s,\theta)$$
+
+and let
+
+$$\hat v=v_\pi+e$$
+
+be an approximate critic, where $e$ is its approximation error. Define the one-step TD error
+
+$$\hat\delta_t = R_{t+1} + \gamma \hat v(S_{t+1}) - \hat v(S_t).$$
+
+---
+
+Prove the baseline identity
+
+$$\sum_a \pi(a\mid s,\theta)b(s)g(s,a)=0$$
+
+for every function $b(s)$ independent of the sampled action.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Any state-only term is orthogonal in expectation to the score.**
+
+For a function $b(s)$ independent of the sampled action,
+
+$$
+\begin{aligned}
+\sum_a\pi(a\mid s)b(s)g(s,a)
+&= b(s)\sum_a \pi(a\mid s)\nabla\log\pi(a\mid s) \\
+&=b(s)\sum_a\nabla\pi(a\mid s) \\
+&= b(s)\nabla\sum_a\pi(a\mid s) \\
+&= b(s)\nabla 1 \\ 
+&=0.
+\end{aligned}
+$$
+
+Therefore
+
+$$\boxed{\sum_a\pi(a\mid s,\theta)b(s)g(s,a)=0.}$$
+
+This is why a state-value baseline can reduce variance without changing the expected policy-gradient direction. 
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The Exact TD Error as an Unbiased Advantage Estimator: Exact TD Errors Recover the Advantage Signal)</span></p>
+
+Let
+
+$$\delta_t^\star = R_{t+1} + \gamma v_\pi(S_{t+1}) - v_\pi(S_t)$$
+
+use the exact value function. Show that
+
+$$\mathbb E!\left[\delta_t^\star\mid S_t=s,A_t=a\right] = q_\pi(s,a)-v_\pi(s) =:A_\pi(s,a).$$
+
+Deduce that the expected actor direction based on
+
+$$\delta_t^\star g(S_t,A_t)$$
+
+equals the policy-gradient direction with the state-value baseline.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let
+
+$$\delta_t^\star= R_{t+1} + \gamma v_\pi(S_{t+1}) - v_\pi(S_t).$$
+
+Conditioning on $S_t=s,A_t=a$,
+
+$$
+\begin{aligned}
+\mathbb E[\delta_t^\star\mid s,a]
+&= \mathbb E[ R_{t+1}+\gamma v_\pi(S_{t+1}) \mid s,a] - v_\pi(s) \\
+&= q_\pi(s,a)-v_\pi(s).
+\end{aligned}
+$$
+
+Thus
+
+$$\boxed{\mathbb E[\delta_t^\star\mid S_t=s,A_t=a] = A_\pi(s,a).}$$
+
+Now consider the conditional expected actor direction:
+
+$$
+\begin{aligned}
+\mathbb E[ \delta_t^\star g(S_t,A_t) \mid S_t=s]
+&= \sum_a \pi(a\mid s) A_\pi(s,a)g(s,a) \\
+&= \sum_a A_\pi(s,a)\nabla\pi(a\mid s).
+\end{aligned}
+$$
+
+Since $A_\pi(s,a)=q_\pi(s,a)-v_\pi(s)$,
+
+$$
+\begin{aligned}
+\sum_a A_\pi(s,a)\nabla\pi(a\mid s)
+&= \sum_aq_\pi(s,a)\nabla\pi(a\mid s) - v_\pi(s)\sum_a\nabla\pi(a\mid s) \\
+&= \sum_aq_\pi(s,a)\nabla\pi(a\mid s).
+\end{aligned}
+$$
+
+Therefore
+
+$$\boxed{ \mathbb E[ \delta_t^\star g(S_t,A_t) \mid S_t=s] = \sum_aq_\pi(s,a)\nabla\pi(a\mid s).}$$
+
+After weighting states by $\eta(s)$, this is exactly the policy-gradient direction with the state-value baseline $v_\pi(s)$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Show that an approximate critic changes the conditional mean of the TD error to
+
+$$\mathbb E[\hat\delta_t\mid s,a] = A_\pi(s,a) + \gamma \sum_{s'}p(s'\mid s,a)e(s') - e(s).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Since $\widehat v=v_\pi+e$,
+
+$$
+\begin{aligned}
+\widehat\delta_t
+&= R_{t+1} + \gamma\widehat v(S_{t+1}) - \widehat v(S_t) \\
+&= R_{t+1} + \gamma v_\pi(S_{t+1}) - v_\pi(S_t) + \gamma e(S_{t+1}) - e(S_t) \\
+&= \delta_t^\star + \gamma e(S_{t+1}) - e(S_t).
+\end{aligned}
+$$
+
+Conditioning on $S_t=s,A_t=a$,
+
+$$
+\begin{aligned}
+\mathbb E[\widehat\delta_t\mid s,a]
+&= A_\pi(s,a) + \gamma\mathbb E[e(S_{t+1})\mid s,a] - e(s) \\
+&= A_\pi(s,a) + \gamma\sum_{s'}p(s'\mid s,a)e(s') - e(s).
+\end{aligned}
+$$
+
+Hence
+
+$$\boxed{ \mathbb E[\widehat\delta_t\mid s,a] = A_\pi(s,a) + \gamma\sum_{s'}p(s'\mid s,a)e(s') - e(s).}$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Derive the action-dependent bias term in the expected actor direction. Show that the term involving $-e(s)$ cancels, but in general the remaining term
+
+$$B(s) = \gamma \sum_a \nabla \pi(a\mid s,\theta) \sum_{s'} p(s'\mid s,a)e(s')$$
+
+need not vanish. Give a sufficient condition under which
+
+$$B(s)=0.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let
+
+$$\widehat D(s) = \mathbb E[ \widehat\delta_tg(S_t,A_t) \mid S_t=s].$$
+
+Using Task 3,
+
+$$
+\begin{aligned}
+\widehat D(s)
+&= \sum_a\pi(a\mid s)g(s,a) \left[ A_\pi(s,a) + \gamma\sum_{s'}p(s'\mid s,a)e(s') - e(s) \right].
+\end{aligned}
+$$
+
+The first term is the exact policy-gradient direction. The term involving $-e(s)$ is
+
+$$-e(s)\sum_a\pi(a\mid s)g(s,a)=0$$
+
+by the baseline identity. Therefore
+
+$$\widehat D(s) = D^\star(s)+B(s),$$
+
+where
+
+$$\boxed{B(s) = \gamma \sum_a \nabla_\theta\pi(a\mid s,\theta) \sum_{s'} p(s'\mid s,a)e(s').}$$
+
+The error $-e(s)$ is harmless because it is the same for all actions at $s$. By contrast, the expected successor error
+
+$$\overline e(s,a) := \sum_{s'}p(s'\mid s,a)e(s')$$
+
+may vary with $a$, and therefore acts like an erroneous action-dependent advantage.
+
+A sufficient condition for the bias to vanish is that $\overline e(s,a)$ be independent of $a$: suppose
+
+$$\sum_{s'}p(s'\mid s,a)e(s')=c(s) \qquad\text{for every }a.$$
+
+Then
+
+$$B(s) =  \gamma c(s)\sum_a\nabla\pi(a\mid s) = 0.$$
+
+Thus
+
+$$\boxed{ B(s)=0 \quad\text{whenever the expected next-state critic error is action-independent.} }$$
+
+In particular, this holds when $e\equiv0$, when $e$ is constant over all possible successor states, or when the next-state distribution is independent of the action. This is the source of the usual actor–critic bias–variance trade-off: bootstrapping lowers variance but an inaccurate critic can introduce bias. 
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">()</span></p>
+
+A critic error at the current state behaves like an ordinary baseline and cancels. Only critic error that predicts different future errors for different actions can rotate the expected actor update away from the true policy gradient.
+
+</div>
+
+---
+
+## Exercise 2 — $\varepsilon$-Greedy MC Control
+
+Let $\mathcal S$ and $\mathcal A$ be finite state and action spaces with $|\mathcal A|\geq 2$, and let $\varepsilon\in(0,1)$.
+
+* A policy $\pi$ is called $\varepsilon$-soft if
+
+  $$\pi(a\mid s)\geq\frac{\varepsilon}{|\mathcal A|} \qquad \text{for all }s\in\mathcal S,\ a\in\mathcal A.$$
+
+* Given an action-value function
+
+  $$q:\mathcal S\times\mathcal A\to\mathbb R,$$
+
+  the $\varepsilon$-greedy policy with respect to $q$ is
+
+  $$
+  \pi'(a\mid s)
+  =
+  \begin{cases}
+  1-\varepsilon+\dfrac{\varepsilon}{|\mathcal A|},
+  & a=\displaystyle\arg\max_{a'}q(s,a'),[6pt]
+  \dfrac{\varepsilon}{|\mathcal A|},
+  & \text{otherwise}.
+  \end{cases}
+  $$
+
+Ties in the $\arg\max$ are broken arbitrarily but consistently. Note that every $\varepsilon$-greedy policy is $\varepsilon$-soft, but not vice versa. 
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Let $\pi$ be any $\varepsilon$-soft policy and let $\pi'$ be the $\varepsilon$-greedy policy with respect to $q_\pi$. Prove the $\varepsilon$-soft policy improvement theorem:
+
+$$v_{\pi'}(s)\geq v_\pi(s) \qquad \text{for all }s\in\mathcal S.$$
+
+> **Hint.** Start from
+>
+> $$v_\pi(s)=\sum_a\pi(a\mid s)q_\pi(s,a)$$
+>
+> and write
+>
+> $$\pi(a\mid s) = \left(\pi(a\mid s)-\frac{\varepsilon}{|\mathcal A|}\right) + \frac{\varepsilon}{|\mathcal A|}.$$
+>
+> Use the $\varepsilon$-soft condition to bound the first term from above.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+Suppose $\varepsilon$-greedy policy improvement does not change the policy, i.e. $\pi'=\pi$. Show that in this case
+
+$$v_\pi(s) = \frac{\varepsilon}{|\mathcal A|} \sum_a q_\pi(s,a) + (1-\varepsilon)\max_a q_\pi(s,a) \qquad \text{for all }s\in\mathcal S,$$
+
+and interpret this equation as a fixed-point condition.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">()</span></p>
+
+A sequence of policies ${\pi_k}$ is called **GLIE** (*Greedy in the Limit with Infinite Exploration*) if:
+
+1. Every state-action pair is visited infinitely often:
+
+   $$\sum_{k=1}^{\infty} \mathbf 1[(s,a)\text{ visited in episode }k] = \infty \qquad \text{for all }(s,a).$$
+
+2. The policies converge to the greedy policy:
+
+   $$\pi_k(a\mid s) \longrightarrow \mathbf 1\left[ a=\arg\max_{a'}q(s,a') \right] \qquad \text{as }k\to\infty$$
+
+   for all $s$.
+
+Show that $\varepsilon$-greedy with
+
+$$\varepsilon_k=\frac{1}{k}$$
+
+satisfies both GLIE conditions, assuming every state-action pair is visited at least once per episode. 
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+</details>
 </div>
