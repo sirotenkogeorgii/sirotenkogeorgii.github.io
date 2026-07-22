@@ -4388,7 +4388,7 @@ $$\pi_k(a\mid s)=\frac1{km}\longrightarrow0.$$
 
 Hence
 
-$$\boxed{\pi_k(a\mid s)\longrightarrow \mathbf 1_{{a=a^*(s)}}.}$$
+$$\boxed{\pi_k(a\mid s)\longrightarrow \mathbf 1_{ {a=a^*(s)}}.}$$
 
 Thus the policies become greedy in the limit.
 
@@ -4396,11 +4396,11 @@ Thus the policies become greedy in the limit.
 
 Under the assumption literally stated on the sheet—that every state–action pair is visited at least once per episode—we have
 
-$$\mathbf 1_{{(s,a)\text{ visited in episode }k}}=1$$
+$$\mathbf 1_{ {(s,a)\text{ visited in episode }k}}=1$$
 
 for every $k$. Hence
 
-$$\sum_{k=1}^{\infty} = \mathbf 1_{{(s,a)\text{ visited in episode }k}} =  \sum_{k=1}^{\infty}1 = \infty.$$
+$$\sum_{k=1}^{\infty} = \mathbf 1_{ {(s,a)\text{ visited in episode }k}} =  \sum_{k=1}^{\infty}1 = \infty.$$
 
 Thus every pair is visited infinitely often.
 
@@ -7652,7 +7652,9 @@ Loop for each episode:
 2. Choose and store $A\_0 \sim \varepsilon\text{-greedy}(\cdot \mid S\_0)$.
 3. Set $T \leftarrow \infty$.
 4. Loop $t = 0, 1, 2, \dots$:
-   * **If $t < T$:** take action $A\_t$; observe and store $R\_{t+1}, S\_{t+1}$.
+   * **If $t < T$:** 
+     * take action $A\_t$; 
+     * observe and store $R\_{t+1}, S\_{t+1}$.
      * If $S\_{t+1}$ is terminal: 
        * $T \leftarrow t + 1$.
      * Else: choose and store 
@@ -7662,11 +7664,13 @@ Loop for each episode:
      
      $$G \leftarrow \sum_{i=\tau+1}^{\min(\tau+n,\, T)} \gamma^{\,i-\tau-1} R_i;$$
      
-     if $\tau + n < T$, add the bootstrap $G \leftarrow G + \gamma^{n} Q(S_{\tau+n}, A_{\tau+n})$; then
+   * If $\tau + n < T$, 
+     * add the bootstrap $G \leftarrow G + \gamma^{n} Q(S_{\tau+n}, A_{\tau+n})$; 
+     * then
      
-     $$Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].$$
+       $$Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha\,\bigl[\, G - Q(S_\tau, A_\tau) \,\bigr].$$
      
-   * Until $\tau = T - 1$.
+5.  Until $\tau = T - 1$.
 
 The guard `if $t < T$` stops *sampling* once the episode ends, while the loop keeps *issuing updates* until $\tau = T - 1$, so the last $n - 1$ visited pairs are still updated.
 
@@ -10799,7 +10803,7 @@ $$\eta(s) = \sum_{t=0}^\infty\gamma^t\Pr_\pi(S_t=s).$$
 
 Equivalently,
 
-$$\boxed{ \eta(s) = \mathbb E_\pi\left[ \sum_{t=0}^\infty \gamma^t\mathbf 1_{{S_t=s}} \right]. }$$
+$$\boxed{ \eta(s) = \mathbb E_\pi\left[ \sum_{t=0}^\infty \gamma^t\mathbf 1_{ {S_t=s}} \right]. }$$
 
 Thus $\eta(s)$ is the expected number of visits to $s$, with a visit at time $t$ weighted by $\gamma^t$. It is an unnormalized discounted visitation measure.
 
@@ -12138,7 +12142,7 @@ $$\pi_k(a\mid s)=\frac1{km}\longrightarrow0.$$
 
 Hence
 
-$$\boxed{\pi_k(a\mid s)\longrightarrow \mathbf 1_{{a=a^*(s)}}.}$$
+$$\boxed{\pi_k(a\mid s)\longrightarrow \mathbf 1_{ {a=a^*(s)}}.}$$
 
 Thus the policies become greedy in the limit.
 
@@ -12146,11 +12150,11 @@ Thus the policies become greedy in the limit.
 
 Under the assumption literally stated on the sheet—that every state–action pair is visited at least once per episode—we have
 
-$$\mathbf 1_{{(s,a)\text{ visited in episode }k}}=1$$
+$$\mathbf 1_{ {(s,a)\text{ visited in episode }k}}=1$$
 
 for every $k$. Hence
 
-$$\sum_{k=1}^{\infty} = \mathbf 1_{{(s,a)\text{ visited in episode }k}} =  \sum_{k=1}^{\infty}1 = \infty.$$
+$$\sum_{k=1}^{\infty} = \mathbf 1_{ {(s,a)\text{ visited in episode }k}} =  \sum_{k=1}^{\infty}1 = \infty.$$
 
 Thus every pair is visited infinitely often.
 
