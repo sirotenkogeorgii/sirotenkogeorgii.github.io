@@ -101,6 +101,7 @@ tags:
 * [Lecture 02: Bandits](/subpages/reinforcement_learning_hd/cheatsheet-lecture2-bandits/)
 * [Lecture 03: MDP](/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/)
 * [Lecture 04: DP](/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/)
+* [Lecture 05: Monte Carlo](/subpages/reinforcement_learning_hd/cheatsheet-lecture5-monte-carlo/)
 * [Lecture 06: TD-Learning](/subpages/reinforcement_learning_hd/cheatsheet-lecture6-td-learning/)
 * [Lecture 07: n-Step-Bootstrapping](/subpages/reinforcement_learning_hd/cheatsheet-lecture7-n-step-bootstrapping/)
 * [Lecture 08: Planning & Learning](/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/)
@@ -1006,7 +1007,7 @@ $$
 
 Subtracting $\bar R_t$ does **not** change the expected gradient direction — 
 
-$$\mathbb{E}\_{A \sim \pi}[(\mathbf{1}\lbrace A = a\rbrace - \pi(a))] = 0$$
+$$\mathbb{E}_{A \sim \pi}[(\mathbf{1}\lbrace A = a\rbrace - \pi(a))] = 0$$
 
 and we get
 
@@ -1018,8 +1019,6 @@ so any action-independent baseline cancels in expectation. What it *does* change
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the gradient $\frac{\partial J}{\partial H(a)}$)</span></p>
-
-Yes, that is essentially correct.
 
 Because the policy is softmax, changing $H(a)$ changes **all** action probabilities:
 

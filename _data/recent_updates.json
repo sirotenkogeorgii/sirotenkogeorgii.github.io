@@ -13,6 +13,12 @@
    "added": true
   },
   {
+   "title": "Cheatsheet — Lecture 5: Monte Carlo Methods",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture5-monte-carlo/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
    "title": "Cheatsheet — Lecture 6: Temporal-Difference Learning",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture6-td-learning/",
    "date": "2026-07-23",
@@ -173,12 +179,6 @@
    "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
    "date": "2026-06-24",
    "added": false
-  },
-  {
-   "title": "What is an integral, really? From Newton to measures, and back",
-   "url": "/subpages/stuff_i_found_interesting/measure_theoretic_integration/measure_theoretic_integration_gentle/",
-   "date": "2026-06-22",
-   "added": true
   }
  ]
 }
