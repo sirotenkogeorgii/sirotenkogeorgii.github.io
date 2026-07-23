@@ -1,8 +1,44 @@
 {
  "entries": [
   {
+   "title": "Cheatsheet — Lecture 10: Policy Gradient Methods",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture10-policy-gradients/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Lecture 2: Multi-Armed Bandits",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture2-bandits/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Lecture 6: Temporal-Difference Learning",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture6-td-learning/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Lecture 7: n-step Bootstrapping",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture7-n-step-bootstrapping/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
    "title": "Cheatsheet — Lecture 8: Planning & Learning (Tabular)",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Lecture 9: On-Policy Prediction with Function Approximation",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture9-function-approximation/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Problems from the Reinforcement Learning course",
+   "url": "/subpages/reinforcement_learning_hd/problems/",
    "date": "2026-07-23",
    "added": true
   },
@@ -11,6 +47,12 @@
    "url": "/subpages/reinforcement_learning_hd/",
    "date": "2026-07-23",
    "added": false
+  },
+  {
+   "title": "Reinforcement Learning (HD): Problem Sheet 6",
+   "url": "/subpages/reinforcement_learning_hd/problems/sheet06/",
+   "date": "2026-07-23",
+   "added": true
   },
   {
    "title": "Cheatsheet — Lecture 3: Finite MDPs",
@@ -136,48 +178,6 @@
    "title": "What is an integral, really? From Newton to measures, and back",
    "url": "/subpages/stuff_i_found_interesting/measure_theoretic_integration/measure_theoretic_integration_gentle/",
    "date": "2026-06-22",
-   "added": true
-  },
-  {
-   "title": "Maths Topics",
-   "url": "/notes/maths_topics/",
-   "date": "2026-06-21",
-   "added": false
-  },
-  {
-   "title": "Problems from the Introduction to Geometric Deep Learning course",
-   "url": "/subpages/books/geometric_deep_learning_hd/problems/",
-   "date": "2026-06-21",
-   "added": false
-  },
-  {
-   "title": "Problems from the NMBIP course",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/",
-   "date": "2026-06-21",
-   "added": false
-  },
-  {
-   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 02",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet02/",
-   "date": "2026-06-21",
-   "added": true
-  },
-  {
-   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 04",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet04/",
-   "date": "2026-06-21",
-   "added": true
-  },
-  {
-   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 05",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet05/",
-   "date": "2026-06-21",
-   "added": true
-  },
-  {
-   "title": "What is a tensor, really? One idea behind a confusing word",
-   "url": "/subpages/math_topics/tensors/tensors_rigorous/",
-   "date": "2026-06-21",
    "added": true
   }
  ]
