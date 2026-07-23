@@ -92,9 +92,15 @@ tags:
 
 # Reinforcement Learning
 
-## Problems
+<!-- ## Problems
 
-[Selected Problems](/subpages/reinforcement_learning_hd/problems/)
+[Selected Problems](/subpages/reinforcement_learning_hd/problems/) -->
+
+## Cheatsheets
+
+* [Lecture 03: MDP](/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/)
+* [Lecture 04: DP](/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/)
+* [Lecture 08: DP](/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/)
 
 ## Lecture 2: Multi-Armed Bandits
 
@@ -110,9 +116,7 @@ These three entanglements make the full problem hard. The multi-armed bandit is 
 * there are **no delayed credit to assign**
 The only thing left is the interaction loop
 
-$$
-\text{choose action } A_t \;\longrightarrow\; \text{observe reward } R_t,
-$$
+$$\text{choose action } A_t \;\longrightarrow\; \text{observe reward } R_t,$$
 
 and yet even here, one essential RL difficulty refuses to disappear: the tension between **exploration** and **exploitation**. Because of this, bandits are the cleanest laboratory for isolating the central learning problem of RL — how to act in a world that only tells you how good your choices were, never what the right choice would have been.
 
@@ -6479,7 +6483,7 @@ So your objection is valid about the wording: **Q-learning updates the action th
 
 Let 
 
-$$b^\ast \in \arg\max\_b \mathbb{E}[Q(s, b)].$$
+$$b^\ast \in \arg\max_b \mathbb{E}[Q(s, b)].$$
 
 Since the maximum is at least as large as any particular action value,
 
@@ -7290,15 +7294,7 @@ with all other states left unchanged ($V\_{t+n}(s) = V\_{t+n-1}(s)$ for $s \neq 
 
 Show that the $n$-step return interpolates between one-step TD, corresponding to $n=1$, and Monte Carlo, corresponding to $n\geq T-t$.
 
-Specifically, write out
-
-$$G_{t+1}$$
-
-and
-
-$$G_{t}$$
-
-explicitly and identify them as the usual TD target and the full episodic return $G_t$, respectively.
+Specifically, write out $G_{t+1}$ and $G_{t}$ explicitly and identify them as the usual TD target and the full episodic return $G_t$, respectively.
 
 Then argue why $n$-step methods are still TD methods: they update an earlier estimate using a later estimate, only $n$ steps later.
 
@@ -7354,21 +7350,11 @@ $$v_\pi(s) = \mathbb E_\pi\! \left[ R_{t+1} +\gamma R_{t+2} +\cdots +\gamma^{n-1
 
 Subtracting this identity from the expected $n$-step return gives
 
-$$
-\begin{aligned}
-&\mathbb E_\pi[G_{t:t+n}\mid S_t=s]-v_\pi(s)\\
-&\qquad = \mathbb E_\pi\! \left[ \gamma^n \bigl( V(S_{t+n})-v_\pi(S_{t+n}) \bigr) \,\middle|\, S_t=s \right].
-\end{aligned}
-$$
+$$\mathbb E_\pi[G_{t:t+n}\mid S_t=s]-v_\pi(s) = \mathbb E_\pi\! \left[ \gamma^n \bigl( V(S_{t+n})-v_\pi(S_{t+n}) \bigr) \,\middle|\, S_t=s \right].$$
 
 Therefore
 
-$$
-\begin{aligned}
-\left| \mathbb E_\pi[G_{t:t+n}\mid S_t=s]-v_\pi(s) \right| &\leq \gamma^n \mathbb E_\pi\! \left[ \left| V(S_{t+n})-v_\pi(S_{t+n}) \right| \,\middle|\, S_t=s \right] \\
-&\leq \gamma^n \max_{s'} |V(s')-v_\pi(s')|.
-\end{aligned}
-$$
+$$\left| \mathbb E_\pi[G_{t:t+n}\mid S_t=s]-v_\pi(s) \right| \leq \gamma^n \mathbb E_\pi\! \left[ \left| V(S_{t+n})-v_\pi(S_{t+n}) \right| \,\middle|\, S_t=s \right] \leq \gamma^n \max_{s'} |V(s')-v_\pi(s')|.$$
 
 Taking the maximum over $s$ gives
 
@@ -7657,8 +7643,8 @@ Loop for each episode:
      * observe and store $R\_{t+1}, S\_{t+1}$.
      * If $S\_{t+1}$ is terminal: 
        * $T \leftarrow t + 1$.
-     * Else: choose and store 
-       * $A\_{t+1} \sim \varepsilon\text{-greedy}(\cdot \mid S\_{t+1})$.
+     * Else: 
+       * choose and store $A\_{t+1} \sim \varepsilon\text{-greedy}(\cdot \mid S\_{t+1})$.
    * Let $\tau \leftarrow t - n + 1$ ($\tau$ is the time of the estimate now being updated).
    * **If $\tau \geq 0$:**
      
@@ -7688,6 +7674,122 @@ where the **expected approximate value** is
 $$\bar V_{t+n-1}(S_{t+n}) \;\doteq\; \sum_a \pi(a \mid S_{t+n})\, Q_{t+n-1}(S_{t+n}, a).$$
 
 The terminal branch averages over *all* actions, weighted by $\pi$. This has **lower variance** than Sarsa's sampled last step; the quantity $\bar V$ reappears in several later contexts (notably the off-policy control variates below).
+
+</div>
+
+<figure class="rl-diagram">
+  <svg viewBox="0 0 860 400" role="img" aria-label="Backup diagram for n-step Expected Sarsa: from the state-action pair being updated, n sampled transitions produce discounted rewards, and at the last state S t plus n the diagram branches to every action weighted by the policy pi, forming the expected value V-bar used to bootstrap.">
+    <defs>
+      <marker id="es-arrow" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"></path>
+      </marker>
+      <marker id="es-arrow-green" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#047857"></path>
+      </marker>
+    </defs>
+
+    <text x="32" y="32" font-size="18" font-weight="700">n-step Expected Sarsa — backup diagram</text>
+    <text x="32" y="54" font-size="13" class="muted">sample n transitions along the spine, then take the expectation over π at the last state</text>
+
+    <!-- spine edges -->
+    <line x1="114" y1="170" x2="203" y2="170" class="line" marker-end="url(#es-arrow)"></line>
+    <line x1="251" y1="170" x2="330" y2="170" class="line" marker-end="url(#es-arrow)"></line>
+    <path d="M374 170 H 564" class="line" stroke-dasharray="6 5" marker-end="url(#es-arrow)"></path>
+
+    <!-- reward / discount labels -->
+    <text x="158" y="156" text-anchor="middle" font-size="13" font-weight="700">Rₜ₊₁</text>
+    <text x="470" y="150" text-anchor="middle" font-size="13">Rₜ₊₂ + ⋯ + γⁿ⁻¹Rₜ₊ₙ</text>
+    <text x="470" y="192" text-anchor="middle" font-size="12" class="muted">sampled, discounted by γ</text>
+
+    <!-- spine nodes: filled = sampled action/pair, open = state -->
+    <circle cx="82" cy="170" r="30" class="accent"></circle>
+    <text x="82" y="175" text-anchor="middle" font-size="14" font-weight="700">Sₜ,Aₜ</text>
+    <text x="82" y="222" text-anchor="middle" font-size="12" class="muted">pair updated</text>
+
+    <circle cx="227" cy="170" r="22" class="box"></circle>
+    <text x="227" y="175" text-anchor="middle" font-size="13" font-weight="700">Sₜ₊₁</text>
+
+    <circle cx="352" cy="170" r="20" class="accent"></circle>
+    <text x="352" y="175" text-anchor="middle" font-size="12" font-weight="700">Aₜ₊₁</text>
+
+    <circle cx="600" cy="170" r="32" class="box" style="stroke:#047857;"></circle>
+    <text x="600" y="175" text-anchor="middle" font-size="14" font-weight="700">Sₜ₊ₙ</text>
+
+    <!-- expectation fan: branch to EVERY action weighted by pi -->
+    <text x="690" y="56" text-anchor="middle" font-size="12">branch to every action, weighted by π(a | Sₜ₊ₙ)</text>
+    <line x1="628" y1="156" x2="752" y2="96" style="stroke:#047857;stroke-width:2;fill:none;" marker-end="url(#es-arrow-green)"></line>
+    <line x1="632" y1="170" x2="752" y2="170" style="stroke:#047857;stroke-width:2;fill:none;" marker-end="url(#es-arrow-green)"></line>
+    <line x1="628" y1="184" x2="752" y2="244" style="stroke:#047857;stroke-width:2;fill:none;" marker-end="url(#es-arrow-green)"></line>
+
+    <circle cx="772" cy="92" r="15" class="green"></circle>
+    <text x="772" y="97" text-anchor="middle" font-size="12" font-weight="700">a₁</text>
+    <circle cx="772" cy="170" r="15" class="green"></circle>
+    <text x="772" y="175" text-anchor="middle" font-size="12" font-weight="700">a₂</text>
+    <text x="772" y="214" text-anchor="middle" font-size="16" font-weight="700">⋮</text>
+    <circle cx="772" cy="250" r="15" class="green"></circle>
+    <text x="772" y="255" text-anchor="middle" font-size="12" font-weight="700">aₖ</text>
+
+    <text x="806" y="175" font-size="13" font-weight="700">= V̄</text>
+
+    <!-- return formula -->
+    <text x="32" y="300" font-size="14" font-weight="700">Return</text>
+    <text x="32" y="326" font-size="14">Gₜ:ₜ₊ₙ = Rₜ₊₁ + γRₜ₊₂ + ⋯ + γⁿ⁻¹Rₜ₊ₙ + γⁿ · V̄ₜ₊ₙ₋₁(Sₜ₊ₙ)</text>
+    <text x="32" y="352" font-size="13" class="muted">V̄ₜ₊ₙ₋₁(Sₜ₊ₙ) = Σₐ π(a | Sₜ₊ₙ) · Q(Sₜ₊ₙ, a)   —  the last node is an average over π, not one sampled action</text>
+
+    <!-- legend -->
+    <circle cx="44" cy="382" r="7" class="accent"></circle>
+    <text x="56" y="386" font-size="12" class="muted">sampled action node</text>
+    <circle cx="214" cy="382" r="7" class="box"></circle>
+    <text x="226" y="386" font-size="12" class="muted">state node</text>
+    <circle cx="330" cy="382" r="7" class="green"></circle>
+    <text x="342" y="386" font-size="12" class="muted">expectation over π (all actions)</text>
+  </svg>
+  <figcaption>$n$-step <strong>Expected Sarsa</strong> backs up along a <em>single</em> sampled trajectory of length $n$ — collecting $R_{t+1}, \dots, R_{t+n}$, each discounted by a power of $\gamma$ — but replaces Sarsa's sampled last action with a full <strong>expectation over the target policy</strong> at $S_{t+n}$: $G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}\,\bar V_{t+n-1}(S_{t+n})$, where $\bar V_{t+n-1}(S_{t+n}) = \sum_a \pi(a \mid S_{t+n})\, Q_{t+n-1}(S_{t+n}, a)$. The blue spine is <em>sampled</em> (one action per step); the green fan at $S_{t+n}$ <em>averages</em> over all actions weighted by $\pi$. That terminal average is exactly what gives Expected Sarsa its lower variance relative to $n$-step Sarsa, whose last node would instead be a single sampled $A_{t+n}$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why classical Sarsa samples the last action instead of averaging it)</span></p>
+
+If averaging over the last action has lower variance, why does one-step **Sarsa** keep a single sampled $Q(S\_{t+1}, A\_{t+1})$ at all? The answer is *computational*, not statistical.
+
+**Statistically, the expectation is a free lunch (Rao–Blackwell).** Once the transition has landed in $S\_{t+1}$, the only randomness left in Sarsa's target is the draw $A\_{t+1} \sim \pi(\cdot \mid S\_{t+1})$. Expected Sarsa replaces it by its conditional mean $\bar V(S\_{t+1})$. Both share the *same* conditional expectation given $S\_{t+1}$ — so the fixed point (and the bias) is unchanged — but by the law of total variance,
+
+$$\mathrm{Var}\bigl(Q(S', A')\bigr) = \underbrace{\mathrm{Var}\bigl(\bar V(S')\bigr)}_{\text{Expected Sarsa}} \; + \; \mathbb{E}\bigl[\mathrm{Var}(Q(S', A') \mid S')\bigr] \;\ge\; \mathrm{Var}\bigl(\bar V(S')\bigr).$$
+
+This is exactly the **Rao–Blackwellisation** of Sarsa: integrate the action out analytically instead of sampling it. Lower target variance means larger usable step sizes and faster, more stable learning, so Expected Sarsa *weakly dominates* — there is no statistical reason to sample.
+
+**So why keep the sampling version? Three practical reasons.**
+
+* **Cost per update, $O(1)$ vs $O(\lvert \mathcal{A} \rvert)$.** The average $\sum\_a \pi(a \mid S')\,Q(S', a)$ touches every action on every step; Sarsa reuses the single value it already has. With **continuous** actions the sum becomes an integral $\int \pi(a \mid s)\,Q(s, a)\,\mathrm{d}a$ with no closed form — sampling still works, the expectation does not.
+* **You drew $A\_{t+1}$ anyway.** On-policy you must sample the next action to continue the trajectory; Sarsa reuses that draw for free, while Expected Sarsa spends extra work marginalising out something you were going to sample regardless.
+* **It needs only to *sample* $\pi$, not to know it.** The average requires the explicit probabilities $\pi(a \mid s)$ for all $a$; Sarsa needs only a sampler $A\_{t+1} \sim \pi$.
+
+**When the trade favours sampling.** The variance removed is only the *action-selection* variance. If the policy is nearly deterministic (small $\varepsilon$) that variance is already tiny, so a large or continuous action space makes the $O(\lvert \mathcal{A} \rvert)$ average a poor bargain. Rule of thumb: small action space with known $\pi$ ⇒ prefer Expected Sarsa; large/continuous actions or a peaked policy ⇒ sample.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Expected Sarsa contains Q-learning — but only at a single step)</span></p>
+
+Expected Sarsa's leaf and Q-learning's leaf are the *same shape*: both replace the sampled next action by a deterministic function of $Q$,
+
+$$\text{Expected Sarsa: } \sum_a \pi(a \mid S')\, Q(S', a), \qquad \text{Q-learning: } \max_a Q(S', a).$$
+
+If the target policy $\pi$ is **greedy** with respect to $Q$, it puts all its mass on the arg-max, so the weighted sum collapses to a single surviving term,
+
+$$\sum_a \pi_{\text{greedy}}(a \mid S')\, Q(S', a) = \max_a Q(S', a).$$
+
+Hence **one-step Expected Sarsa with a greedy target policy is *exactly* Q-learning.** A clean way to see it: Expected Sarsa's leaf estimates $v\_\pi(S') = \sum\_a \pi(a \mid S')\,Q(S', a)$ while Q-learning's leaf estimates $v\_\ast(S') = \max\_a Q(S', a)$; a greedy $\pi$ makes the two coincide.
+
+**The equivalence is a one-step statement — it breaks at $n > 1$.** The $n$-step return takes the expectation *only at the last node*; the intermediate rewards $R\_{t+2}, \dots, R\_{t+n}$ were generated by the actions actually taken, i.e. drawn from the **behaviour** policy $b$. If the greedy target differs from $b$ (the usual off-policy setting), those middle steps are left uncorrected and the naive $n$-step return is biased for $q\_{\text{greedy}}$. Fixing it needs importance-sampling ratios on the intermediate actions (next section) — and a hard-greedy $\pi$ sends those ratios to $0$ the moment $b$ explores, collapsing the return.
+
+**The honest multi-step generalisation of Q-learning is Tree Backup**, not $n$-step Expected Sarsa: take the target-policy expectation at *every* node (the taken action continues the backup, every non-taken action contributes its expected value on the spot), weighting each deeper level by a product of $\pi(A\_k \mid S\_k)$ — never a ratio $\pi / b$, so **no importance sampling is required**. One-step Tree Backup equals one-step Expected Sarsa, and Tree Backup with a greedy target *is* "$n$-step Q-learning". The whole family is unified by **Q($\sigma$)**: at each node, choose to sample ($\sigma = 1$, Sarsa-like) or take the expectation ($\sigma = 0$, Tree-Backup-like).
+
+| method | leaf / bootstrap target | greedy-$\pi$ special case |
+| :-- | :-- | :-- |
+| 1-step Expected Sarsa | $\sum\_a \pi(a \mid S')\,Q(S', a)$ | **= Q-learning** |
+| $n$-step Expected Sarsa | expectation only at the leaf; spine sampled from $b$ | needs IS on the spine — *not* Q-learning |
+| $n$-step Tree Backup | expectation at **every** node, no IS | **= "$n$-step Q-learning"** |
 
 </div>
 
@@ -7734,17 +7836,21 @@ Write the $n$-step return recursively,
 
 $$G^{\text{plain}}_{t:h} = R_{t+1} + \gamma\, G_{t+1:h}.$$
 
-A naive weighting multiplies the *whole* thing by $\rho\_t$ — but if $\rho\_t = 0$ the target collapses to **zero**, injecting variance (the estimate is yanked toward $0$ for no good reason). The fix folds in a **control variate**:
+A naive weighting multiplies the *whole* thing by $\rho\_t$ — but if $\rho\_t = 0$ the target collapses to **zero**, injecting variance
+* the estimate is yanked toward $0$ for no good reason. 
+
+The fix folds in a **control variate**:
 
 $$G_{t:h} \;\doteq\; \rho_t\,\bigl(R_{t+1} + \gamma\, G_{t+1:h}\bigr) + (1 - \rho_t)\, V_{h-1}(S_t).$$
 
-* If $\rho\_t = 0$, the target becomes $V\_{h-1}(S\_t)$ — the *current estimate* — so **no spurious change** is made.
-* Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$
-  * because
+* If $\rho\_t = 0$, the target becomes $V\_{h-1}(S\_t)$
+  * — the *current estimate* — so **no spurious change** is made.
+* Given $S\_t$, the term $V\_{h-1}(S\_t)$ is fixed and $\mathbb{E}\_b[\,1 - \rho\_t \mid S\_t\,] = 0$ because
 
     $$\mathbb{E}_b[\rho_t \mid S_t = s] = \sum_a b(a \mid s)\tfrac{\pi(a\mid s)}{b(a\mid s)} = \sum_a \pi(a\mid s) = 1.$$
 
-    So the control variate has **zero conditional expectation**: it **does not bias** the update — it only reduces variance.
+  So the control variate has **zero conditional expectation**:
+  * it **does not bias** the update — it only reduces variance.
 
 </div>
 
@@ -7771,6 +7877,82 @@ This is the **Expected-Sarsa-flavoured, variance-reduced off-policy return**.
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Is it legit to replace $Q$ with $\bar V$ there? It is a variance reduction trick to preserve mean, but to reduce variance</summary>
+
+It is **replaced**, not algebraically cancelled.
+
+Start from the naive action-value return
+
+$$G^{\text{naive}}_{t:h} = R_{t+1}+\gamma \rho_{t+1}G_{t+1:h}.$$
+
+Insert
+
+$$G_{t+1:h} = Q_{h-1}(S_{t+1},A_{t+1}) + \left( G_{t+1:h}-Q_{h-1}(S_{t+1},A_{t+1}) \right).$$
+
+Then
+
+$$
+\begin{aligned}
+\rho_{t+1}G_{t+1:h}
+&= \rho_{t+1}Q_{h-1}(S_{t+1},A_{t+1}) \\
+&\quad+ \rho_{t+1} \left[ G_{t+1:h} - Q_{h-1}(S_{t+1},A_{t+1}) \right].
+\end{aligned}
+$$
+
+So the literal substitution would give
+
+$$
+R_{t+1} + \gamma\left(
+\rho_{t+1}Q_{h-1}(S_{t+1},A_{t+1})
++ \rho_{t+1}\left[G_{t+1:h}-Q_{h-1}(S_{t+1},A_{t+1})\right]
+\right).
+$$
+
+The control-variate construction then replaces the first random term by its conditional expectation:
+
+$$\rho_{t+1}Q_{h-1}(S_{t+1},A_{t+1}) \quad\rightsquigarrow\quad \bar V_{h-1}(S_{t+1}).$$
+
+Why is that valid? Conditioned on $S\_{t+1}=s$,
+
+$$
+\begin{aligned}
+\mathbb E_b\left[\rho_{t+1}Q_{h-1}(s,A_{t+1}) \mid S_{t+1}=s\right]
+&= \sum_a b(a\mid s)\frac{\pi(a\mid s)}{b(a\mid s)}Q_{h-1}(s,a) \\
+&= \sum_a\pi(a\mid s)Q_{h-1}(s,a) \\
+&= \bar V_{h-1}(s).
+\end{aligned}
+$$
+
+Therefore,
+
+$$\bar V_{h-1}(S_{t+1}) - \rho_{t+1}Q_{h-1}(S_{t+1},A_{t+1})$$
+
+has conditional expectation zero.
+
+The new estimator is thus
+
+$$
+G_{t:h} = R_{t+1} + \gamma\left(
+\bar V_{h-1}(S_{t+1})
++ \rho_{t+1}\left[G_{t+1:h} - Q_{h-1}(S_{t+1},A_{t+1})\right]
+\right).
+$$
+
+It has the **same conditional expectation** as the naive estimator, but generally lower variance. The notes describe this as importance-sampling only the correction and adding back the target-policy expectation.
+
+So the exact relation is
+
+$$
+\boxed{\text{new estimator} = \text{naive estimator} + \gamma\left[\bar V_{h-1}(S_{t+1}) - \rho_{t+1}Q_{h-1}(S_{t+1},A_{t+1})\right].}
+$$
+
+The added bracket is the zero-mean control variate. It is not a sample-wise equality; it is an expectation-preserving replacement. The notes make this point through the identity $\mathbb E\_b[\rho\_{t+1}Q\mid S\_{t+1}]=\bar V$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why subtract $Q_{h-1}$?)</span></p>
 
@@ -7788,6 +7970,66 @@ is the **surprise** beyond the current estimate. The construction splits the ret
 
 Subtracting $Q\_{h-1}$ is precisely what makes the importance-sampled piece a *zero-mean correction* on top of a low-variance baseline — the defining trick of a control variate.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why and when do we take expectations wrt $b$ in this section</summary>
+
+Because the trajectory is actually generated by the **behaviour policy** $b$. Therefore, when we ask whether an estimator is unbiased, its randomness must be averaged under the distribution that produced the sample.
+
+Condition on $S\_{t+1}=s$. The sampled action satisfies
+
+$$A_{t+1}\sim b(\cdot\mid s),$$
+
+not $\pi(\cdot\mid s)$. We want to estimate the target-policy quantity
+
+$$\bar V(s) = \mathbb E_\pi[Q(s,A)\mid s] = \sum_a\pi(a\mid s)Q(s,a).$$
+
+Importance sampling converts this target expectation into an expectation over the distribution we can sample from:
+
+$$
+\begin{aligned}
+\mathbb E_b[\rho_{t+1}Q(s,A_{t+1})\mid s]
+&= \sum_a b(a\mid s)\frac{\pi(a\mid s)}{b(a\mid s)}Q(s,a) \\
+&= \sum_a\pi(a\mid s)Q(s,a) \\
+&= \bar V(s).
+\end{aligned}
+$$
+
+Thus
+
+$$C = \bar V(s)-\rho_{t+1}Q(s,A_{t+1})$$
+
+satisfies
+
+$$\mathbb E_b[C\mid s]=0.$$
+
+That is why it is a valid control variate: adding it does not change the expected update **under the data-generating process**. The notes use exactly this identity when explaining why the replacement preserves expectation.
+
+If instead you took expectation under $\pi$, then
+
+$$
+\begin{aligned}
+\mathbb E_\pi[\rho_{t+1}Q(s,A_{t+1})\mid s]
+&= \sum_a \pi(a\mid s)\frac{\pi(a\mid s)}{b(a\mid s)}Q(s,a) \\
+&= \sum_a\frac{\pi(a\mid s)^2}{b(a\mid s)}Q(s,a),
+\end{aligned}
+$$
+
+which is generally **not**
+
+$$\sum_a\pi(a\mid s)Q(s,a).$$
+
+So the control variate would not have zero expectation under $\pi$.
+
+The general importance-sampling identity is
+
+$$\boxed{\mathbb E_\pi[f(A)] = \mathbb E_b\left[\frac{\pi(A)}{b(A)}f(A)\right].}$$
+
+The expectation is taken under $b$ precisely because the ratio $\pi/b$ converts samples distributed according to $b$ into an estimator of an expectation under $\pi$.
+
+</details>
 </div>
 
 ### Summary
@@ -8002,6 +8244,788 @@ Thus when Dyna-Q performs $n$ planning steps, it performs $n$ additional backups
 A useful mental translation is:
 
 $$\boxed{\text{backup}=\text{use later-value information to revise an earlier value estimate}.}$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Does not off-policy learning behave similarly to planning & learning?</summary>
+
+Yes, there is a real similarity, but they differ in **where the mismatch comes from**.
+
+**Shared structure:** both can update a target policy using experience not generated by that target policy.
+
+In off-policy learning,
+
+$$
+\text{behavior policy }\mu
+\longrightarrow
+\text{real experience}
+\longrightarrow
+\text{learn target policy }\pi.
+$$
+
+For example, Q-learning may behave $\varepsilon$-greedily but update toward the greedy target:
+
+$$
+Q(S_t,A_t)
+\leftarrow
+Q(S_t,A_t)
++
+\alpha\left[
+R_{t+1}
++\gamma\max_a Q(S_{t+1},a)
+-Q(S_t,A_t)
+\right].
+$$
+
+The transition is real, but the continuation in the target corresponds to a policy different from the behavior policy.
+
+In planning,
+
+$$
+\text{model}
+\longrightarrow
+\text{simulated experience}
+\longrightarrow
+\text{learn or improve a policy}.
+$$
+
+For example, Dyna-Q samples an imagined transition
+
+$$
+(\tilde S,\tilde A,\tilde R,\tilde S')
+$$
+
+from its model and applies essentially the same Q-learning backup. Your notes emphasize that learning and planning can use the same backup rule; the difference is whether the transition is real or model-generated.
+
+## The main distinction
+
+Off-policy describes a **policy mismatch**:
+
+$$
+\boxed{\text{data generated under }\mu,\quad \text{values learned for }\pi.}
+$$
+
+Planning describes a **data-source choice**:
+
+$$
+\boxed{\text{updates use simulated experience generated by a model.}}
+$$
+
+These are independent axes. A method can be:
+
+* model-free and off-policy, such as Q-learning;
+* model-based and off-policy, such as Dyna-Q using exploratory simulated actions while learning a greedy target;
+* model-based and on-policy;
+* model-free and on-policy, such as Sarsa.
+
+## Why planning can feel especially off-policy
+
+A planner can choose arbitrary state-action pairs from the model, even pairs the real behavior policy has not recently visited. In that sense, the simulated data are not constrained by the current real behavior trajectory.
+
+But this is not automatically “off-policy.” It becomes off-policy only when the policy implicit in the update differs from the policy used to choose simulated actions.
+
+For instance, Dyna-Q may sample arbitrary $(s,a)$ from its model and use
+
+$$
+R+\gamma\max_{a'}Q(s',a'),
+$$
+
+so it is both:
+
+$$
+\boxed{\text{planning, because the transition is simulated}}
+$$
+
+and
+
+$$
+\boxed{\text{off-policy, because the target is greedy regardless of sampled behavior}.}
+$$
+
+So your intuition is correct at the structural level: both loosen the connection between the experience source and the policy being learned. Planning does this by changing **where experience comes from**; off-policy learning does it by changing **which policy the experience is used to evaluate or improve**.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Is not the main point of planning from the lecture 8 to make learning cheaper? Instead of learning purely from real experiences, we interleave it with a learning from simulated experience?</summary>
+
+Yes. That is one of the main points of Lecture 8.
+
+Planning makes **real experience more valuable**. Instead of using one real transition only once,
+
+$$
+(S,A,R,S')
+$$
+
+the agent uses it in two ways:
+
+1. update $Q$ directly;
+2. update a model $\hat M$.
+
+The model can then generate many simulated transitions, and the agent performs additional backups without further interaction with the real environment. In Dyna-Q, one real step can therefore produce
+
+$$
+1 \text{ direct update} + n \text{ planning updates}.
+$$
+
+The same Q-learning update is used in both cases; only the source of the transition differs. 
+
+So, schematically,
+
+$$
+\text{real experience}
+\longrightarrow
+\begin{cases}
+\text{direct RL update},\\
+\text{model update}
+\end{cases}
+$$
+
+and then
+
+$$
+\text{model}
+\longrightarrow
+\text{simulated experience}
+\longrightarrow
+\text{additional RL updates}.
+$$
+
+This can greatly improve **sample efficiency**:
+
+$$
+\boxed{\text{fewer expensive real interactions for the same amount of learning}.}
+$$
+
+That is especially useful when real interaction is costly, slow, or dangerous—for example, robotics or physical control.
+
+But “cheaper” needs qualification. Planning reduces the cost in **environment samples**, not necessarily the total cost:
+
+* learning and storing the model costs computation and memory;
+* generating simulated experience costs computation;
+* an inaccurate model can generate misleading updates;
+* too many planning updates may waste computation on irrelevant states.
+
+So the trade-off is
+
+$$
+\boxed{\text{real-world interaction cost}
+\quad\leftrightarrow\quad
+\text{model and computation cost}.}
+$$
+
+This is why search control matters: once simulation is cheap, the important question becomes which state–action pairs are worth simulating. Lecture 8’s main message is indeed that Dyna interleaves direct learning and planning so that each real transition supports many value updates.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Do we have two models like in off-policy learning: one for the generation and one for optimal execution?</summary>
+
+Not usually. In planning, we generally have **one environment model**, not two models.
+
+The objects are:
+
+$$
+\hat M(s,a)\approx p(s',r\mid s,a),
+$$
+
+which predicts what the environment will do, and one or more **policies** that decide which actions to consider or execute.
+
+A useful separation is:
+
+$$
+\boxed{\text{model answers: what happens if I take }a\text{ in }s?}
+$$
+
+$$
+\boxed{\text{policy answers: which action should I take?}}
+$$
+
+### In Dyna-Q
+
+There is typically:
+
+* one learned model $\hat M$;
+* a behavior policy, often $\varepsilon$-greedy, used for real interaction;
+* a greedy target implicit in the Q-learning backup;
+* a search-control rule deciding which simulated $(s,a)$ pairs to query from the model.
+
+The model-generated transition is
+
+$$
+(\tilde S,\tilde A,\tilde R,\tilde S')
+\sim \hat M.
+$$
+
+Then Q-learning performs
+
+$$
+Q(\tilde S,\tilde A)
+\leftarrow
+Q(\tilde S,\tilde A)
++
+\alpha
+\left[
+\tilde R+\gamma\max_{a'}Q(\tilde S',a')
+-Q(\tilde S,\tilde A)
+\right].
+$$
+
+The same $Q$-function determines the eventual execution policy:
+
+$$
+\pi_{\text{greedy}}(s)\in\arg\max_a Q(s,a).
+$$
+
+So the simulated experience generator is the **model**, while optimal execution is governed by the **learned policy/Q-function**. These are different kinds of objects, not two competing models. Lecture 8 describes planning as applying RL updates to model-generated experience. 
+
+### The analogy with off-policy learning
+
+There can still be two policies:
+
+$$
+\text{behavior/search policy}
+\qquad\text{and}\qquad
+\text{target policy}.
+$$
+
+For example:
+
+* simulated actions may be sampled broadly for exploration;
+* the update may target the greedy policy through $\max_{a'}Q(s',a')$.
+
+That is off-policy planning. But both policies use the same environment model.
+
+So the closest correspondence is:
+
+$$
+\begin{array}{c|c}
+\text{Off-policy RL} & \text{Planning}\ \hline
+\mu \text{ generates actions/data} &
+\text{search control chooses simulated }(s,a)\\
+\pi \text{ is learned/evaluated} &
+\text{greedy target policy is learned}\\
+\text{real environment generates outcomes} &
+\hat M \text{ generates outcomes}
+\end{array}
+$$
+
+The key correction is:
+
+$$
+\boxed{\text{planning may use two policies, but normally only one environment model.}}
+$$
+
+In specialized methods such as model ensembles, one may deliberately maintain several models to represent uncertainty, but that is not the basic Lecture 8 setup.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Because in simulation step we would probably like to have more generative behaviour, while policy in inference should be more deterministic</summary>
+
+Yes—your intuition is right, but the exploratory object used during planning is better called **search control**, not a second environment model.
+
+There are three distinct roles:
+
+$$
+\boxed{\text{Environment model }\hat M(s,a)}
+$$
+
+generates the consequence $(r,s')$ of a queried state–action pair.
+
+$$
+\boxed{\text{Search-control distribution }\mu_{\text{plan}}(s,a)}
+$$
+
+decides which state–action pairs should be simulated. This can be deliberately broad or exploratory.
+
+$$
+\boxed{\text{Target/execution policy }\pi(s)}
+$$
+
+is the policy whose values we are learning and which we eventually want to execute, often
+
+$$
+\pi(s)\in\arg\max_a Q(s,a).
+$$
+
+Thus the planning loop can look like
+
+$$
+(S,A)\sim\mu_{\text{plan}}
+\quad\longrightarrow\quad
+(R,S')\sim\hat M(S,A)
+\quad\longrightarrow\quad
+Q(S,A)\text{ update toward greedy control}.
+$$
+
+The search-control rule may sample uncertain, rarely visited, or high-priority state–action pairs rather than behaving greedily. The final execution policy can be much more exploitative.
+
+### In basic Dyna-Q
+
+There is not necessarily a coherent “simulation policy” producing full trajectories. Basic tabular Dyna-Q often simply:
+
+1. samples a previously observed pair $(s,a)$;
+2. queries the model once;
+3. performs one Q-learning backup.
+
+So its planning exploration is a distribution over **backup locations**, not necessarily a policy walking through the simulated MDP. Your notes call this role search control: it decides which state–action pairs receive simulated backups. 
+
+### In rollout-based planning
+
+Your description becomes even more literal in methods such as Monte Carlo tree search:
+
+* inside simulation, actions are selected exploratively to gather information;
+* after planning, the real action is chosen much more greedily.
+
+So the pattern is
+
+$$
+\boxed{\text{exploratory simulation behavior}
+\quad\longrightarrow\quad
+\text{exploitative execution decision}.}
+$$
+
+This resembles off-policy learning: simulated behavior generates information, while a different target policy is optimized.
+
+One qualification: the final policy is not always deterministic. In an ordinary finite fully observed MDP, there exists a deterministic optimal policy, so greedy execution is natural. In partially observable problems, games, or entropy-regularized RL, a stochastic execution policy may be preferable or required.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>why is the learning from simulated environment called planning? How is it related to "plan"</summary>
+
+Because the agent uses a **model of the future to improve what it will do before collecting more real experience**. That is the mathematical analogue of making a plan.
+
+A human plan looks like:
+
+> “If I do $a_1$, this may happen; then I could do $a_2$; which sequence leads to the best outcome?”
+
+In RL:
+
+$$
+(s,a)
+\overset{\hat M}{\longrightarrow}
+(r,s')
+\overset{\hat M}{\longrightarrow}\cdots
+$$
+
+The agent queries its model $\hat M$, considers possible consequences, and propagates those consequences backward into its values or policy. It is therefore deciding on future behaviour by **reasoning about hypothetical outcomes**, rather than learning only after those outcomes occur in reality.
+
+### Planning need not produce an explicit written sequence
+
+In search or MCTS, the connection to an ordinary “plan” is direct: simulate several future action sequences and choose the most promising current action.
+
+In Dyna-Q, it is less visually obvious. The algorithm may merely sample isolated model transitions and perform backups:
+
+$$
+Q(s,a)\leftarrow Q(s,a)+
+\alpha\left[
+r+\gamma\max_{a'}Q(s',a')-Q(s,a)
+\right].
+$$
+
+But repeated simulated backups eventually encode which actions lead to good futures. The “plan” is stored implicitly in $Q$, rather than as an explicit sequence such as
+
+$$
+a_0,a_1,a_2,\ldots
+$$
+
+So planning in RL means more broadly:
+
+$$
+\boxed{\text{using an environment model to improve values or decisions without new real interaction}.}
+$$
+
+This also explains the distinction:
+
+* **model learning:** discover what would happen;
+* **planning:** use that model to decide what should be done;
+* **acting:** execute a decision in the real environment.
+
+Lecture 8 defines the distinction in exactly this way: direct learning backs up real transitions, while planning backs up simulated transitions produced by a model. 
+
+The model is effectively the agent’s imagination; planning is learning or choosing through that imagination.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>does not it look more like a training for real experience?</summary>
+
+Yes. For **Dyna-style background planning**, “training on simulated experience before facing more real experience” is a very accurate interpretation.
+
+The terminology emphasizes different aspects:
+
+$$
+\boxed{\text{training}=\text{changing the parameters or value estimates}}
+$$
+
+$$
+\boxed{\text{planning}=\text{using a model to improve future decisions}}
+$$
+
+A simulated transition
+
+$$
+(s,a)\xrightarrow{\hat M}(r,s')
+$$
+
+is used to train $Q$:
+
+$$
+Q(s,a)\leftarrow Q(s,a)+
+\alpha\left[r+\gamma\max_{a'}Q(s',a')-Q(s,a)\right].
+$$
+
+Since this training data came from an internal model rather than the real environment, it is called **planning**.
+
+The distinction is clearer when comparing three stages:
+
+$$
+\text{real experience}
+\longrightarrow
+\underbrace{\text{learn the model}}_{\text{model learning}}
+$$
+
+$$
+\text{model}
+\longrightarrow
+\underbrace{\text{simulated experience and value updates}}_{\text{planning / simulated training}}
+$$
+
+$$
+\text{learned }Q
+\longrightarrow
+\underbrace{\text{choose a real action}}_{\text{acting}}.
+$$
+
+In Dyna, planning is essentially **rehearsal**: the agent mentally practises transitions so that it is better prepared when acting in reality.
+
+However, “planning” is broader than ordinary training. In decision-time methods such as tree search, the agent may simulate futures specifically to choose the **current action**, without permanently training a global value function. That is recognizably closer to the everyday meaning of constructing a plan.
+
+So your wording is correct for Dyna:
+
+$$
+\boxed{\text{Dyna planning is model-generated training for better real-world behaviour.}}
+$$
+
+The lecture deliberately stresses that learning and planning can use exactly the same backup; the main difference is whether the transition is real or simulated. 
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>But the model in tabular Dyna-Q algorithms stores exactly the dynamics we observed and used to update the state-value estimation Q. Then in planning we basically do the same n times, with randomly samples pairs $S,R$. It looks like we just reinforce the behaviour we have already learned.</summary>
+
+Your intuition is good: **in basic tabular Dyna-Q, planning does replay information that was already observed**. The crucial point is that the information may have become more useful since it was first observed.
+
+Also, the planner samples previously observed **state–action pairs $(S,A)$**, not $(S,R)$. The stored model returns
+
+$$
+\hat M(S,A)=(R,S').
+$$
+
+### Why the repeated update is not necessarily redundant
+
+Consider the deterministic chain
+
+$$
+s_1 \xrightarrow[;0;]{} s_2
+\xrightarrow[;1;]{} \text{terminal},
+\qquad \gamma=1.
+$$
+
+Initially, all $Q$-values are zero.
+
+When the agent first observes
+
+$$
+s_1\to s_2,\qquad R=0,
+$$
+
+the direct update gives
+
+$$
+Q(s_1,a)
+\leftarrow
+0+\alpha[0+\max_{a'}Q(s_2,a')-0]
+=0,
+$$
+
+because the agent does not yet know that $s_2$ is valuable.
+
+Later it observes
+
+$$
+s_2\to\text{terminal},\qquad R=1,
+$$
+
+and learns
+
+$$
+Q(s_2,a)=1.
+$$
+
+Now the stored transition $s_1\to s_2$ contains no new environmental information, but backing it up again gives
+
+$$
+Q(s_1,a)
+\leftarrow
+0+\alpha[0+Q(s_2,a)-0],
+$$
+
+so $Q(s_1,a)$ moves toward $1$.
+
+Without planning, the agent must physically revisit $s_1$ before this new information propagates backward. With planning, it can revisit the **stored transition computationally**.
+
+Thus:
+
+$$
+\boxed{\text{The model transition is old, but its bootstrap target may be new.}}
+$$
+
+### What the $n$ planning updates accomplish
+
+Repeatedly sampling stored pairs approximately performs value iteration over the portion of the MDP that has already been discovered:
+
+$$
+Q(s,a)
+\leftarrow
+r+\gamma\max_{a'}Q(s',a').
+$$
+
+Each update propagates newly learned downstream values toward their predecessors. After one real discovery, many earlier state–action pairs can be corrected without further real interaction. This is how one real transition can support many useful updates. Your notes describe Dyna-Q exactly this way: real experience updates $Q$ and the deterministic model, then planning applies additional Q-learning backups to model-generated transitions. 
+
+### But some planning updates really are wasted
+
+Suppose a sampled pair was just updated, its successor values have not changed, and $\alpha=1$. Repeating the same backup does nothing. Even with $\alpha<1$, repeated updates may merely move the estimate gradually toward the same unchanged target.
+
+So uniform random planning is crude. It may repeatedly sample pairs whose Bellman error is already tiny. This motivates **prioritized sweeping**: preferentially update transitions whose targets have changed significantly, especially predecessors of recently changed states.
+
+Therefore your diagnosis is partly right:
+
+$$
+\boxed{\text{Planning reuses learned experience, but its main value is propagating later knowledge through earlier stored transitions.}}
+$$
+
+It is not simply reinforcing the current behaviour; it is repeatedly solving the Bellman equations of the currently learned model.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>But the model in tabular Dyna-Q algorithms stores exactly the dynamics it observed and used to update the state-value estimation Q. It does not generate transition pairs $S',R'$ we did not observe from the real experience. What is the value of it? Then in planning we basically do the same n times, with randomly samples pairs $S,R$. It looks like we just reinforce the behaviour we have already learned.</summary>
+
+You are identifying the exact limitation of basic tabular Dyna-Q.
+
+$$
+\boxed{\text{Its model is replay memory with transition structure, not a generator of genuinely new dynamics.}}
+$$
+
+In the deterministic version, it stores
+
+$$
+\hat M(s,a)=(r,s')
+$$
+
+for previously experienced state–action pairs. During planning it samples a previously seen **$(s,a)$** pair—not $(s,r)$—and retrieves the same stored $(r,s')$. 
+
+So why is this useful?
+
+## The old transition can have a new target
+
+Suppose initially
+
+$$
+s_1 \xrightarrow[;0;]{a_1} s_2,
+\qquad
+s_2 \xrightarrow[;1;]{a_2} \text{terminal}.
+$$
+
+When $s_1\to s_2$ is first observed, perhaps
+
+$$
+Q(s_2,a_2)=0.
+$$
+
+Therefore the direct update of $Q(s_1,a_1)$ has target
+
+$$
+0+\gamma\max_a Q(s_2,a)=0.
+$$
+
+Later, the agent experiences the rewarding transition from $s_2$, so that
+
+$$
+Q(s_2,a_2)\approx 1.
+$$
+
+The stored transition $s_1\to s_2$ has not changed. But its Bellman target has:
+
+$$
+0+\gamma\max_a Q(s_2,a)
+\approx \gamma.
+$$
+
+Replaying that old transition now propagates the newly discovered value of $s_2$ backward to $s_1$.
+
+Without planning, the agent must physically return to $s_1$, choose $a_1$, and experience the transition again. With planning, it can update $s_1$ computationally.
+
+$$
+\boxed{\text{The transition is old, but the successor-value information is new.}}
+$$
+
+Repeated planning backups therefore approximately perform asynchronous value iteration on the currently learned part of the MDP. This is why reward information can spread far toward the starting state before the agent revisits all those states in reality. 
+
+## Your criticism is still partly correct
+
+Many random planning backups really are redundant.
+
+If
+
+* the successor values have not changed,
+* the pair was already backed up,
+* and especially if $\alpha=1$,
+
+then repeating the same backup changes nothing. With $\alpha<1$, it may only move $Q(s,a)$ incrementally toward the same target.
+
+That is why uniform random Dyna-Q planning can waste substantial computation. **Prioritized sweeping** improves it by backing up predecessors whose targets have recently changed instead of choosing all previously observed pairs uniformly. 
+
+And basic Dyna-Q cannot infer an unobserved transition. If a shortcut exists but the agent has never experienced it, the model cannot simulate it. Planning exploits and propagates known information; real exploration is still required to discover new dynamics.
+
+So the precise value of basic Dyna-Q is not generating novel knowledge:
+
+$$
+\boxed{\text{It reuses known dynamics to propagate newly learned values without costly real revisitation.}}
+$$
+
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Ok, from this perspective, I not view the planning process of Dyna-Q differently: synchronisation step with potentially newly successor-value information. </summary>
+
+Yes—that is a much better way to view basic Dyna-Q planning.
+
+Each planning backup is a kind of **asynchronous synchronization step**:
+
+$$
+Q(s,a)
+\leftarrow
+Q(s,a)+\alpha\Bigl[
+r+\gamma\max_{a'}Q(s',a')-Q(s,a)
+\Bigr].
+$$
+
+The stored transition
+
+$$
+(s,a)\mapsto(r,s')
+$$
+
+may be old, but $Q(s',\cdot)$ may have changed since the last time that transition was processed. Planning updates $Q(s,a)$ so that it becomes consistent with the **current** successor values.
+
+So the process is:
+
+$$
+\text{new information at }s'
+\quad\Longrightarrow\quad
+\text{resynchronize predecessors of }s'.
+$$
+
+Repeated backups propagate the new information farther backward through the learned transition graph.
+
+One nuance: it is not synchronization between two independent copies of $Q$. It is synchronization of the different entries of one $Q$-function with the Bellman equations of the learned model:
+
+$$
+Q(s,a)\approx \hat r(s,a)
++\gamma\max_{a'}Q(\hat s'(s,a),a').
+$$
+
+Uniform Dyna-Q performs this synchronization at random stored pairs. Prioritized sweeping performs it more intelligently by first updating pairs whose successor values changed substantially.
+
+So a precise interpretation is:
+
+$$
+\boxed{\text{Dyna-Q planning repeatedly restores Bellman consistency after downstream values change.}}
+$$
+
+That explains why planning remains useful even though the model contains no transitions that were never observed.
+
+Exactly. The fact that planning step $i$ uses the value table produced by step $i-1$ is precisely why the updates are called **asynchronous**.
+
+Here, “asynchronous” does not mean parallel or unaware of previous updates. It contrasts with a **synchronous Bellman sweep**.
+
+In a synchronous sweep, every new value is computed from the same frozen old table:
+
+$$
+Q_{k+1}(s,a)
+=
+\mathcal T Q_k(s,a)
+\qquad
+\text{for all }(s,a).
+$$
+
+Only after all pairs have been processed do we replace $Q_k$ by $Q_{k+1}$.
+
+In Dyna-Q planning, we maintain one live table. At planning step $i$, we sample one pair $(S_i,A_i)$ and update it immediately:
+
+$$
+Q(S_i,A_i)
+\leftarrow
+Q(S_i,A_i)
++
+\alpha\left[
+R_i+\gamma\max_a Q(S_i',a)-Q(S_i,A_i)
+\right].
+$$
+
+Planning step $i+1$ then reads this already modified table. Thus information may propagate through several transitions during the same sequence of $n$ planning updates.
+
+For example, suppose the planner happens to sample in this order:
+
+$$
+s_3\to\text{terminal},
+\qquad
+s_2\to s_3,
+\qquad
+s_1\to s_2.
+$$
+
+Then the update at $s_2$ can use the newly updated value of $s_3$, and the update at $s_1$ can immediately use the newly updated value of $s_2$. This is analogous to a Gauss–Seidel iteration.
+
+So:
+
+$$
+\boxed{\text{synchronous}=\text{update all entries from a frozen previous table}}
+$$
+
+$$
+\boxed{\text{asynchronous}=\text{update selected entries in place, using the latest table}}
+$$
+
+Your objection also exposes a weakness in my earlier phrase “asynchronous synchronization step.” A cleaner description is:
+
+> Each Dyna-Q planning step is an **in-place asynchronous Bellman-consistency update**.
+
+It is “asynchronous” because state–action pairs are updated individually and in no global sweep order; it is a consistency update because each selected $Q(s,a)$ is moved toward its current Bellman target. Your notes likewise describe TD and Dyna updates as immediate, in-place updates using whatever values are currently stored. 
 
 </details>
 </div>
@@ -8298,6 +9322,58 @@ The shortcut maze exposes the core danger: **if planning trusts an outdated mode
   <figcaption>Planning amplifies the model. If the model is stale, it can keep rehearsing a blocked route or ignore a newly opened shortcut until exploration forces a correction.</figcaption>
 </figure>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Is not Dyna-Q just a Q-learning with a planning step?</summary>
+
+Yes. **At the level of the value-update rule, Dyna-Q is Q-learning plus planning.**
+
+Both real and simulated transitions use exactly
+
+$$
+Q(S,A)\leftarrow Q(S,A)+\alpha
+\left[R+\gamma\max_a Q(S',a)-Q(S,A)\right].
+$$
+
+The difference is where $(S,A,R,S')$ comes from:
+
+$$
+\begin{array}{c|c}
+\text{Direct Q-learning} & \text{real environment transition}\\
+\text{Dyna planning} & \text{transition produced by learned model }\hat M
+\end{array}
+$$
+
+The Dyna-Q loop is therefore:
+
+1. Take one real step and perform an ordinary Q-learning update.
+2. Use that transition to update the model $\hat M(S,A)$.
+3. Sample previously encountered $(\tilde S,\tilde A)$ pairs from the model and perform $n$ additional Q-learning updates.
+
+The notes explicitly say that the same backup is applied whether the transition is real or model-generated; only the source of experience changes. With $n=0$, Dyna-Q reduces exactly to ordinary Q-learning. 
+
+The only reason not to describe it merely as “Q-learning with planning” is that the planning step itself requires two additional components:
+
+$$
+\boxed{
+\text{Dyna-Q}
+=
+\text{Q-learning}
++
+\text{model learning}
++
+\text{search control}.
+}
+$$
+
+* **Model learning:** predicts $R,S'$ from $S,A$.
+* **Search control:** chooses which stored/modelled state-action pair to back up next.
+
+So your description is fundamentally correct. Dyna is not a different value-learning principle; it reuses the Q-learning backup on simulated experience, allowing one real transition to produce many value updates. 
+
+</details>
+</div>
+
 #### Dyna-Q+: Exploration as Model Maintenance
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -8305,12 +9381,115 @@ The shortcut maze exposes the core danger: **if planning trusts an outdated mode
 
 **Dyna-Q+** adds an exploration bonus *inside planning*. If a transition has not been tried for $\tau$ time steps, planning treats its reward as
 
-$$
-r^{+} = r + \kappa \sqrt{\tau},
-$$
+$$r^{+} = r + \kappa \sqrt{\tau},$$
 
 for a small $\kappa > 0$. Long-untried state–action pairs accrue extra value, so the agent is encouraged to recheck parts of the world it has neglected — which is exactly how it discovers that the environment has changed.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>I do not get the Dyna-Q+ exploration bonus: it samples pairs $s,a$ randomly, there is not prioritisation based on the reward. The current state is sampled, the reward and the next state are hardcoded. The only point of it that I see is the while estimating the current pair $(s_1,a_1)$, the value of $Q(s_2,a_2)$ is higher, because $Q(s_2,a_2)=r_2 + \gamma\max_{a_3}\gamma Q(s_3,a_3)$ is higher, since $r_2$ could be higher if the edge $(s_2,s_3)$ was not used often.</summary>
+
+You are right that **Dyna-Q+ does not prioritize which pair is sampled**. The exploration bonus changes the **planning target**, not the random search-control distribution.
+
+**The mechanism is: optimistic planning values cause real exploration later.**
+
+During a planning step, Dyna-Q+ samples a stored state–action pair $(s,a)$, not the current real state and not a pair $(s,r)$. The model returns the stored outcome
+
+$$
+\hat M(s,a)=(r,s'),
+$$
+
+but the update uses
+
+$$
+Q(s,a)\leftarrow Q(s,a)
++\alpha\left[
+r+\kappa\sqrt{\tau(s,a)}
++\gamma\max_b Q(s',b)-Q(s,a)
+\right].
+$$
+
+Here $\tau(s,a)$ is how long it has been since the action was actually tried in the real environment. 
+
+So a long-untried action gets an artificially optimistic value.
+
+## How this leads to exploration
+
+Suppose at state $s_2$ there are two actions:
+
+$$
+Q(s_2,a_{\text{usual}})=5,
+\qquad
+Q(s_2,a_{\text{old}})=3.
+$$
+
+The agent has not really tried $a_{\text{old}}$ for a long time, so its bonus is $3$. When that pair is randomly selected during planning, its target might become
+
+$$
+r+\kappa\sqrt{\tau}
++\gamma\max_b Q(s',b)=6.
+$$
+
+Thus $Q(s_2,a_{\text{old}})$ rises toward $6$. Later, when the agent **actually reaches $s_2$**, its $\varepsilon$-greedy behavior policy is more likely to choose $a_{\text{old}}$.
+
+That real action then reveals whether the old model is still correct:
+
+* if nothing changed, the bonus disappears after the real trial and its value falls back;
+* if a new shortcut or reward has appeared, the agent discovers it and updates the model.
+
+Therefore,
+
+$$
+\boxed{
+\text{bonus in simulated update}
+;\longrightarrow;
+\text{optimistic }Q(s,a)
+;\longrightarrow;
+\text{action tried in reality}.
+}
+$$
+
+## Your propagation interpretation is also correct
+
+Your last observation is essentially right. If the bonus raises $Q(s_2,a_2)$, then a predecessor update uses
+
+$$
+Q(s_1,a_1)
+\leftarrow
+r_1+\gamma\max_a Q(s_2,a),
+$$
+
+so the optimism can propagate backward. This can make earlier actions leading toward $s_2$ more attractive, helping the agent physically return to the region containing the neglected action.
+
+The correction is that $r_2$ is not changed because the downstream edge $(s_2,s_3)$ has been used rarely. Rather, the bonus belongs directly to the neglected pair:
+
+$$
+r_2^+
+=
+r_2+\kappa\sqrt{\tau(s_2,a_2)}.
+$$
+
+## Why random sampling is enough
+
+Uniform random sampling does not favor neglected pairs, but:
+
+1. every stored pair is eventually sampled;
+2. the longer a pair remains untried in reality, the larger its bonus becomes;
+3. once sampled, it can receive a large optimistic update.
+
+Prioritized sweeping changes **which pair is updated first**. Dyna-Q+ instead changes **what target a neglected pair receives when it happens to be updated**.
+
+One standard implementation detail is important: for every state already encountered, previously untried actions can be inserted into the model as zero-reward self-loops. Otherwise, a completely untried action would never be available for planning and could never receive the bonus.
+
+So the core idea is not to prioritize simulation:
+
+$$
+\boxed{\text{Dyna-Q+ uses simulated optimism to provoke real-world rechecking.}}
+$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -8322,9 +9501,7 @@ Dyna-Q+ keeps the entire Dyna-Q loop and adds one piece of bookkeeping and one c
 
 **Planning change.** During planning, use the bonus-augmented reward
 
-$$
-r^{+} = r + \kappa \sqrt{\tau(s, a)}
-$$
+$$r^{+} = r + \kappa \sqrt{\tau(s, a)}$$
 
 in place of the stored reward $r$. Recently tried actions receive a negligible bonus; long-neglected actions become worth rechecking.
 
@@ -8335,6 +9512,140 @@ in place of the stored reward $r$. Recently tried actions receive a negligible b
 
 Dyna-Q+ explores **not just for reward, but to test whether its model has gone stale**. The $\sqrt{\tau}$ bonus is a form of *computational curiosity*: it makes "I haven't checked this in a while" a reason to act, which keeps the model honest in non-stationary environments.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Bellman Targets with Time-Dependent Optimism)</span></p>
+
+In Dyna-Q+, a planning backup for a state-action pair $(s,a)$ uses the modified reward
+
+$$\widehat r(s,a) + \kappa\sqrt{\tau(s,a)},$$
+
+where $\tau(s,a)$ is the number of time steps since $(s,a)$ was last tried. Consider a state $s$ with two actions $a\_1$ and $a\_2$. The learned model currently predicts deterministic self-loops with rewards
+
+$$\widehat r(s,a_1)=r_1 \qquad\text{and}\qquad \widehat r(s,a_2)=r_2.$$
+
+Let
+
+$$L = \max\{Q(s,a_1),\,Q(s,a_2)\}.$$
+
+Write down the one-step planning target for each action under Dyna-Q+.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+The planning targets are
+
+$$\boxed{Y_1^{+} = r_1+\kappa\sqrt{\tau_1}+\gamma L}$$
+
+and
+
+$$\boxed{Y_2^{+} = r_2+\kappa\sqrt{\tau_2}+\gamma L.}$$
+
+The ordinary Dyna-Q targets would be
+
+$$Y_j=r_j+\gamma L.$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The Staleness Threshold for Reconsidering an Action)</span></p>
+
+Derive a sufficient condition on $\tau(s,a\_2)$ under which the Dyna-Q+ planning target for $a\_2$ exceeds the ordinary Dyna-Q planning target for $a\_1$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+We want the Dyna-Q+ target for $a\_2$ to exceed the ordinary Dyna-Q target for $a\_1$:
+
+$$r_2+\kappa\sqrt{\tau_2}+\gamma L > r_1+\gamma L.$$
+
+The continuation terms cancel, leaving
+
+$$\kappa\sqrt{\tau_2}>r_1-r_2.$$
+
+If $r\_1>r\_2$, this is equivalent to
+
+$$\boxed{\tau(s,a_2)>\left(\frac{r_1-r_2}{\kappa}\right)^2.}$$
+
+If $r\_2>r\_1$, the target for $a\_2$ is already larger even without a bonus. If $r\_1=r\_2$, any $\tau(s,a\_2)>0$ suffices.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Why Every Neglected Action Eventually Becomes Attractive)</span></p>
+
+Suppose all learned rewards are bounded by $\lvert\widehat r(s,a)\rvert\leq R\_{\max}$ and all current action values satisfy $\lvert Q(s,a)\rvert\leq Q\_{\max}$. Show that, for any fixed $\kappa>0$, the exploration bonus of an untried action eventually dominates any bounded value disadvantage.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Every ordinary planning target is bounded by
+
+$$\lvert r_b(s,a)+\gamma\max_{a'}Q(s',a')\rvert \le R_{\max}+\gamma Q_{\max}.$$
+
+For an untried action, its Dyna-Q+ target is bounded below by
+
+$$Y^{+} \ge -R_{\max}-\gamma Q_{\max}+\kappa\sqrt{\tau},$$
+
+while every competing ordinary target is bounded above by
+
+$$Y\le R_{\max}+\gamma Q_{\max}.$$
+
+Therefore $Y^{+}>Y$ is guaranteed whenever
+
+$$-R_{\max}-\gamma Q_{\max}+\kappa\sqrt{\tau} > R_{\max}+\gamma Q_{\max},$$
+
+or equivalently,
+
+$$\boxed{\tau>\left(\frac{2(R_{\max}+\gamma Q_{\max})}{\kappa}\right)^2.}$$
+
+The ordinary value disadvantage is bounded, while $\kappa\sqrt{\tau}\longrightarrow\infty$. Hence every action that remains untried long enough eventually becomes attractive.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Using Optimism to Detect That the World Has Changed)</span></p>
+
+Discuss the failure mode this bonus is meant to address in an environment whose transition structure has changed after the model was learned. Give the argument in terms of stale Bellman targets.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Suppose the environment changes, but the learned model still contains the old transition
+
+$$(s,a)\mapsto (\hat r,\hat s').$$
+
+Ordinary Dyna-Q repeatedly uses the stale Bellman target
+
+$$\hat r+\gamma\max_{a'}Q(\hat s',a').$$
+
+Planning therefore reinforces the obsolete model. An action that used to be bad may remain permanently undervalued, so the agent never retries it and never discovers that the environment changed.
+
+Dyna-Q+ replaces the stale target by
+
+$$\hat r+\kappa\sqrt{\tau(s,a)}+\gamma\max_{a'}Q(\hat s',a').$$
+
+As the action remains untried, its bonus grows. Eventually the action is selected again; the real transition is observed, the model is corrected, and $\tau(s,a)$ is reset.
+
+**Punchline:** the bonus turns "this action has not been tried recently" into evidence that the old model may no longer be trustworthy.
+
+</details>
 </div>
 
 ### Prioritized Sweeping
@@ -8412,6 +9723,134 @@ In short: **do the most urgent backups first.**
   <figcaption>Prioritized sweeping is search control, not a new target. A value change at one state makes its predecessors suspicious; the queue orders those predecessor backups by urgency.</figcaption>
 </figure>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why do not we propagate the change of Q$s,a$ backwards like we do in neural nets??</summary>
+
+We can—and in tabular planning this is essentially **prioritized sweeping**. But it is not the same operation as neural-network backpropagation.
+
+**The key distinction:** backpropagation follows dependencies inside one differentiable computation, whereas Bellman propagation follows dependencies between fixed-point equations.
+
+### Why neural-network backpropagation is immediate
+
+Suppose
+
+$$
+y=f_3(f_2(f_1(x;\mathbf w_1);\mathbf w_2);\mathbf w_3)
+$$
+
+and we have a loss $L(y)$. Every intermediate quantity was used to compute $L$, so the chain rule gives an exact derivative path:
+
+$$
+\frac{\partial L}{\partial \mathbf w_1}
+=
+\frac{\partial L}{\partial y}
+\frac{\partial y}{\partial f_2}
+\frac{\partial f_2}{\partial f_1}
+\frac{\partial f_1}{\partial \mathbf w_1}.
+$$
+
+The computational graph already records exactly how changing an earlier parameter changes the final loss.
+
+### In tabular Q-learning, entries are separate variables
+
+Suppose the model contains
+
+$$
+(s_1,a_1)\longrightarrow s_2.
+$$
+
+Bellman consistency says
+
+$$
+Q(s_1,a_1)
+\approx
+r_1+\gamma\max_a Q(s_2,a).
+$$
+
+If $Q(s_2,a_2)$ changes, $Q(s_1,a_1)$ has **not algebraically changed**. They are distinct table entries. Instead, its Bellman target has become outdated:
+
+$$
+r_1+\gamma\max_a Q(s_2,a)
+\quad\text{has changed}.
+$$
+
+We must explicitly perform another backup of $(s_1,a_1)$.
+
+So this is not a gradient flowing automatically through a computation graph. It is a need to re-solve coupled equations.
+
+### We can propagate it backward using the model
+
+When $Q(s_2,a_2)$ changes, we can ask:
+
+$$
+\text{Which }(\bar s,\bar a)\text{ can transition into }s_2?
+$$
+
+For every such predecessor, compute its new Bellman error:
+
+$$
+\left|
+\bar r+\gamma\max_a Q(s_2,a)-Q(\bar s,\bar a)
+\right|.
+$$
+
+Then update the predecessors with the largest errors first. That is precisely prioritized sweeping: a changed state causes its predecessors to be placed into a priority queue, and the effect propagates backward through the learned transition graph. 
+
+Thus,
+
+$$
+\boxed{
+\text{prioritized sweeping is the Bellman analogue of targeted backward propagation}.
+}
+$$
+
+### Why basic Dyna-Q does not do this
+
+Basic Dyna-Q uses uniform random search control. After $Q(s_2,a_2)$ changes, it does not explicitly ask which pairs depend on $s_2$. It waits until those predecessor pairs happen to be sampled.
+
+That is simpler because it does not require maintaining a reverse model
+
+$$
+s'\mapsto
+{(s,a,r):\hat M(s,a)=(r,s')}.
+$$
+
+But it wastes planning updates. Prioritized sweeping stores or searches for predecessors and propagates important changes backward deliberately. Your notes describe it as: a value change makes predecessors “suspicious,” and the priority queue orders their backups by urgency. 
+
+### Why it is still not literally backpropagation
+
+There are several differences:
+
+* Transitions may be stochastic, so one successor is only part of an expected Bellman target.
+* A state can have many predecessors, forming a general cyclic graph rather than a feedforward computational graph.
+* The $\max$ chooses actions and can change discontinuously.
+* The model may be incomplete or inaccurate.
+* Bellman updates seek a fixed point, so one backward propagation may create further changes requiring additional propagation.
+
+With function approximation, one gradient update may change many state values through shared weights, but this is **generalization in feature space**, not necessarily propagation along actual predecessor transitions.
+
+So your proposed idea is valid. The sharper formulation is:
+
+$$
+\boxed{
+\text{Basic Dyna-Q samples backward dependencies randomly;}
+\quad
+\text{prioritized sweeping propagates value changes explicitly to predecessors.}
+}
+$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary></summary>
+
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Prioritized sweeping — deterministic environment)</span></p>
 
@@ -8447,6 +9886,136 @@ Initialise $Q(s,a)$, a model $\hat M(s,a)$, and an empty priority queue $PQueue$
 
 On large gridworlds, prioritized sweeping can reach the optimal solution with **orders of magnitude fewer updates** than uniform Dyna-Q — **search control matters as much as the update rule itself.**
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(One Backward Sweep Solves the Reward-Propagation Problem)</span></p>
+
+Consider the deterministic chain MDP with nonterminal states $0,1,\ldots,L-1$ and terminal state $L$. The only action $a$ moves the agent from state $i$ to state $i+1$. Rewards are zero except for the final transition $L-1\longrightarrow L$, which gives reward $1$. Let $Q\_0(i,a)=0$ for all $i$. Dyna-Q uses the update
+
+$$Q(i,a)\leftarrow Q(i,a)+\alpha\left(r_i+\gamma Q(i+1,a)-Q(i,a)\right)$$
+
+for both real and simulated transitions, with $Q(L,a)=0$.
+
+For $\alpha=1$, compute the values $Q(i,a)$ after applying exactly one backward sweep over the model transitions $(L-1,a),(L-2,a),\ldots,(0,a)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+For $\alpha=1$,
+
+$$Q(i)\leftarrow r_i+\gamma Q(i+1).$$
+
+A backward sweep begins with $i=L-1$:
+
+$$Q(L-1)=1.$$
+
+Then
+
+$$Q(L-2)=\gamma Q(L-1)=\gamma,$$
+
+and inductively,
+
+$$Q(L-k)=\gamma^{k-1}.$$
+
+Therefore, after one backward sweep,
+
+$$\boxed{Q(i,a)=\gamma^{L-1-i},\qquad i=0,\ldots,L-1.}$$
+
+In particular, $Q(0,a)=\gamma^{L-1}$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Why Backup Order Determines Propagation Speed)</span></p>
+
+Show that, with $\alpha=1$, a backward sweep propagates the terminal reward to all predecessor states in one sweep, whereas a forward sweep $(0,a),(1,a),\ldots,(L-1,a)$ only updates the final predecessor nontrivially during its first pass.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Backward order uses freshly updated successors.** When $Q(i)$ is backed up, $Q(i+1)$ has already been updated:
+
+$$1 \longrightarrow \gamma \longrightarrow \gamma^2 \longrightarrow\cdots\longrightarrow\gamma^{L-1}.$$
+
+Thus the reward travels through the entire chain in one sweep.
+
+**Forward order uses stale successors.** Initially all values are zero. During the forward sweep, $Q(0),Q(1),\ldots,Q(L-2)$ remain zero because their successor values are still zero when they are backed up. Only the final backup changes:
+
+$$Q(L-1)=1.$$
+
+Hence after the first forward sweep,
+
+$$\boxed{Q(L-1)=1,\qquad Q(i)=0\ \text{for }i<L-1.}$$
+
+A forward sweep propagates the value only one additional edge per sweep. Therefore it requires $L$ full sweeps, rather than one backward sweep, to reach state $0$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Planning Backups as a Geometric Relaxation Process)</span></p>
+
+Let $0<\alpha<1$. Derive the value of $Q(L-1,a)$ after $k$ repeated planning backups of the final transition only. What limit is obtained as $k\to\infty$?
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Let $q\_k := Q(L-1,a)$ after $k$ backups of the final transition. Since its target is always $1$,
+
+$$q_{k+1}=q_k+\alpha(1-q_k),\qquad q_0=0.$$
+
+Equivalently,
+
+$$1-q_{k+1}=(1-\alpha)(1-q_k).$$
+
+Therefore, $1-q_k=(1-\alpha)^k$, and hence
+
+$$\boxed{Q_k(L-1,a)=1-(1-\alpha)^k.}$$
+
+Since $0<1-\alpha<1$,
+
+$$\boxed{\lim_{k\to\infty}Q_k(L-1,a)=1.}$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Trading Planning Computation for Real Experience)</span></p>
+
+Explain mathematically why additional planning steps can reduce the number of real environment interactions needed to propagate sparse reward information. Your answer should refer to the *ordering* of backups, not only to their number.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+After one real traversal of the chain, the model contains every transition and the terminal reward. Planning can then replay these transitions without further interaction.
+
+The important point is not merely to perform many backups, but to perform them in a causally useful order:
+
+$$(L-1)\to(L-2)\to\cdots\to0.$$
+
+Each backup then uses a successor value that already contains the reward information. For $\alpha=1$:
+
+* backward planning needs $L$ simulated backups;
+* repeated forward sweeps need $L$ sweeps, hence $L^2$ backups;
+* without planning, online forward trajectories may require roughly $L$ episodes before the reward reaches state $0$.
+
+Thus planning replaces expensive real experience with cheap simulated backups, while backward ordering prevents those backups from being wasted on stale targets.
+
+</details>
 </div>
 
 #### Expected vs Sample Updates
@@ -8538,7 +10107,10 @@ One is error-driven and backward; the other is distribution-driven and forward. 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On-policy trajectory sampling can win big)</span></p>
 
-Generating updates by **following the current policy** focuses effort on the states that matter under that policy and ignores unreachable ones. Empirically, on-policy trajectory sampling often wins **early**: on large problems it reaches good values far faster than uniform sweeps, which waste computation on states the policy never visits. Uniform sweeps may catch up eventually on *small* problems, but on large state spaces, focusing updates where the policy actually goes is a major advantage.
+* Generating updates by **following the current policy** focuses effort on the states that matter under that policy and ignores unreachable ones. 
+* Empirically, on-policy trajectory sampling often wins **early**: 
+  * on large problems it reaches good values far faster than uniform sweeps, which waste computation on states the policy never visits. 
+  * Uniform sweeps may catch up eventually on *small* problems, but on large state spaces, focusing updates where the policy actually goes is a major advantage.
 
 </div>
 
@@ -8580,6 +10152,33 @@ For each trial:
    * move to the next state $S'$.
 
 Because it only ever backs up states reachable under greedy play, RTDP can solve goal-directed problems while leaving most of the state space untouched.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is RTDP planning or learning? Where does $\hat p$ come from?)</span></p>
+
+A natural worry: RTDP *needs* the model $\hat p$, yet the sketch above never **learns** it — so is RTDP planning or learning?
+
+**RTDP is planning** — asynchronous, trajectory-focused *value iteration*. It **assumes** the model and does not learn transitions; the algorithm above is complete as a planning method.
+
+**The tell is the update, not the fact that it acts.** The backup
+
+$$V(S) \leftarrow \max_a \sum_{s',r} \hat p(s',r \mid S,a)\bigl[r + \gamma V(s')\bigr]$$
+
+is an **expected (full) backup** — it sums over *all* successors weighted by the model. That is a DP/planning update. *Learning* would instead use a **sample** update from a single observed $(S,A,R,S')$, as in Q-learning. RTDP uses real experience only to choose *which* states to back up — never as data for the backup itself.
+
+**So why the hat on $\hat p$?** It points at the adaptive cousin:
+
+* **RTDP** — the model is **given** (a known but large MDP, e.g. a stochastic shortest-path / goal-directed problem); planning merely focuses its expected backups on the states greedy play actually reaches, leaving the rest untouched.
+* **Adaptive RTDP (ARTDP)** — additionally **estimates** $\hat p$ online from observed transitions and runs the *same* backups on the current estimate. *Now* there is a learning part — model estimation — while RTDP stays the planner on top (a Dyna-style split of model-learning vs planning).
+
+The sketch above is therefore the *planning half*: if $\hat p$ is genuinely estimated rather than given, an ARTDP-style model-update step is what's missing. The original title — *"Learning to act using real-time dynamic programming"* — refers to improving the value function / policy while acting (and to the adaptive variant), **not** to learning the transitions.
+
+| variant | model $\hat p$ | learning part? |
+| :-- | :-- | :-- |
+| **RTDP** | given | none — pure planning |
+| **Adaptive RTDP** | estimated online from experience | yes — model estimation feeds the same backups |
 
 </div>
 
@@ -8839,6 +10438,29 @@ At the current state $s$:
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Decision nodes vs chance nodes — and why a chance node is not a leaf)</span></p>
+
+The look-ahead tree is an **expectimax tree** whose levels **alternate** by *who acts*:
+
+* **Decision node** — the **agent's** turn to choose an action; backed up with **max** (the $\max\_a$). In the example above, $s$ and $x$.
+* **Chance node** (a.k.a. *stochastic node*) — the **environment's** turn to resolve the random outcome of the action just taken; backed up with an **expectation** weighted by the transition probabilities (the $\sum\_{s',r} p$). In the example, $o\_1$.
+
+This alternation is just the **Bellman optimality backup**, unrolled for several steps:
+
+$$v_*(s) = \underbrace{\max_a}_{\text{decision node}} \; \underbrace{\sum_{s',r} p(s',r \mid s,a)}_{\text{chance node}} \bigl[r + \gamma\, v_*(s')\bigr].$$
+
+**A chance node is *not* a leaf.** "Decision vs chance" and "internal vs leaf" are two **independent** axes:
+
+| axis | what it says | values |
+| :-- | :-- | :-- |
+| decision vs chance | the node's **role** — which operator backs it up | max (agent) vs expectation (environment) |
+| internal vs leaf | whether we **stop expanding** there | expand children vs plug in the heuristic $\hat v$ |
+
+A chance node is an **interior** node and *is* expanded — we branch over its outcomes and average them. In the example, $o\_1$ has children $\lbrace 12, 2\rbrace$ and is expanded to $0.5(12)+0.5(2)=7$; the **leaves** are $12, 2, 6, 4$ — the nodes we do *not* expand and evaluate directly. A node becomes a leaf only at the **depth / budget frontier**, where we substitute $\hat v$ instead of recursing — a matter of *where we truncate*, not of the node's type.
+
+</div>
+
 #### Rollout Algorithms
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -9001,6 +10623,32 @@ The rollout trajectory itself is **not stored** — only the statistics on the i
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Which node gets expanded? Tree policy vs rollout policy)</span></p>
+
+Which node to expand is chosen by the **tree policy** in the *Selection* phase — an **explore/exploit** rule. It is **not** "pick the highest $Q$", **not** random, and **not** the rollout policy (which acts only later, beyond the frontier).
+
+The standard tree policy is **UCB applied to trees (UCT)**: at each in-tree node, descend to the child maximising
+
+$$a = \arg\max_{a}\Bigl[\, \underbrace{Q(s,a)}_{\text{exploit}} + \underbrace{c\sqrt{\tfrac{\ln N(s)}{N(s,a)}}}_{\text{explore}} \,\Bigr],$$
+
+with $N(s)$ the parent's visit count, $N(s,a)$ the child's, and $c$ an exploration constant. Two consequences:
+
+* **Untried actions come first, for free.** An untried action has $N(s,a)=0$, so its bonus is $+\infty$ and it is always selected — hence *every action is tried once* before UCT starts trading off among the tried ones. "Expand untried actions first" is not a separate rule; it falls out of UCB.
+* **After that it is a genuine trade-off.** UCT can prefer a slightly-worse-mean action that has been visited far less — pure $\max Q$ never would.
+
+You descend by UCT until reaching a node that still has an untried action (not *fully expanded*); **Expansion** then adds one such child (usually uniformly among the untried, or by a prior — e.g. a policy-network prior in AlphaGo); only *then* does the **rollout policy** run from the new node to produce the return $G$.
+
+| phase | mechanism | uses | chooses the node? |
+| :-- | :-- | :-- | :-- |
+| **Selection** | tree policy (UCB / UCT) | $Q$ **and** visit counts $N$ | **yes** — picks the path to the expansion point |
+| **Expansion** | add one untried child | random among untried / prior | adds the new node |
+| **Simulation** | rollout policy (often random) | — | no — only produces the value |
+
+So *which node* is decided by the tree policy, which uses $Q$ **and** $N$: "$\max Q$" is only its exploitation half, "random" is the rollout, and the rollout policy is a separate, later phase. (Relatedly, the **final real move** after the budget is $\arg\max\_a N(s\_0,a)$ — most-visited — not highest $Q$.)
+
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/rl_hd/MCTS02.png' | relative_url }}" alt="Expected return on the short corridor as a function of the probability of choosing right, a smooth curve peaking near 0.59, with the two probability levels reachable by epsilon-greedy marked as dashed vertical lines far from the peak" loading="lazy">
   <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
@@ -9102,6 +10750,27 @@ MCTS combines several ideas this lecture has built up:
 | More compute means | deeper $d$ | larger $K$ | more iterations |
 
 Heuristic search needs a good $\hat v$; rollout drops it for sampled returns; **MCTS keeps the sampled returns and adds a reusable tree plus selective search on top.**
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is MCTS just heuristic search with Monte-Carlo leaves?)</span></p>
+
+A tempting reading: *MCTS is heuristic search where the leaf value comes from rollouts, the node to expand is "whichever action is untried", and reusing simulations is a mere optimisation.* The first part is right; the last two invert what is actually core.
+
+**Right.** MCTS is decision-time look-ahead tree search (same family as heuristic search), and it replaces the static heuristic $\hat v$ at a leaf with a **Monte-Carlo rollout return** — approximating the node's value (and the environment's expectation) by *sampling*. A consequence: it needs only a **sample model** (a simulator), not a distribution model $p(s',r \mid s,a)$.
+
+**But selection is the explore/exploit tree policy, not "the untried action".** In the *Selection* phase you descend the existing tree **by the tree policy** (UCB / UCT: favour high mean $Q$ *and* low visit count $N$) over the *already-tried* actions; reaching a node that still *has* an untried action is merely the **stopping condition** that triggers *Expansion*. That explore/exploit rule is MCTS's search control — the thing that grows the tree **asymmetrically** toward promising lines — not an afterthought.
+
+**And the reusable tree is the core, not an optimisation.** Following the progression $\text{heuristic search} \to \text{rollout} \to \text{MCTS}$,
+
+$$\text{MCTS} = \text{rollout} + \text{a persistent tree of } (N, Q) + \text{explore/exploit selection}.$$
+
+Delete the tree/reuse and you are left with *exactly plain rollout*. The stored per-node statistics **are** the memory the selection policy reads to decide where to simulate next — constitutive, not incidental.
+
+**One more.** The backup is a **running mean**, $Q \leftarrow Q + \tfrac{1}{N}(G - Q)$, not an explicit max/expectation pass. The "max" is *implicit and asymptotic*: the tree policy concentrates visits on the best action, so each mean sharpens toward the best child's value in the limit (UCT $\to$ optimal). Heuristic search instead does an explicit max-at-decision / exact-expectation-at-chance backup.
+
+**In one line:** the two pieces easy to dismiss as "detail" — the *explore/exploit selection* and the *reuse of the tree* — are exactly what turn a flat rollout into MCTS.
 
 </div>
 
@@ -12174,5 +13843,3 @@ the exploration probabilities are not summable, so each action continues to be s
 
 </details>
 </div>
-
----

@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Cheatsheet — Lecture 8: Planning & Learning (Tabular)",
+   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/",
+   "date": "2026-07-23",
+   "added": true
+  },
+  {
+   "title": "Reinforcement Learning (HD)",
+   "url": "/subpages/reinforcement_learning_hd/",
+   "date": "2026-07-23",
+   "added": false
+  },
+  {
    "title": "Cheatsheet — Lecture 3: Finite MDPs",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/",
    "date": "2026-07-22",
@@ -11,12 +23,6 @@
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/",
    "date": "2026-07-22",
    "added": true
-  },
-  {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-07-22",
-   "added": false
   },
   {
    "title": "Non-Stationary Processes and Recency-Weighted Estimation",
@@ -171,12 +177,6 @@
   {
    "title": "What is a tensor, really? One idea behind a confusing word",
    "url": "/subpages/math_topics/tensors/tensors_rigorous/",
-   "date": "2026-06-21",
-   "added": true
-  },
-  {
-   "title": "What is a tensor? The many faces of one idea",
-   "url": "/subpages/math_topics/tensors/tensors_gentle/",
    "date": "2026-06-21",
    "added": true
   }
