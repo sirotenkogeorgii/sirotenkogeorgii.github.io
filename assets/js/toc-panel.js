@@ -447,6 +447,85 @@
     return { open: open, close: close, toggle: toggle, mode: mode };
   }
 
+  function createFilter(instance, doc) {
+    var listEl = instance.listEl;
+    var rootEl = doc.documentElement;
+    var active = false;
+
+    function markOut(li, out) {
+      if (out) li.setAttribute('data-filtered', 'out');
+      else li.removeAttribute('data-filtered');
+    }
+
+    function clear() {
+      var items = listEl.querySelectorAll('li[data-toc-id]');
+      for (var i = 0; i < items.length; i++) markOut(items[i], false);
+      rootEl.setAttribute('data-toc-filtering', 'false');
+      active = false;
+      instance.accordion.restore();
+      // accordion.restore() only clears user-locks and lastTopId; it does not
+      // collapse anything, so on its own it would leave every branch expanded
+      // from the apply()-time expandAll() above. spy.refresh() cannot fix
+      // that either: pick() only invokes onChange (which calls
+      // accordion.syncTo) when the active heading id changes, and clearing a
+      // filter does not move the reader, so the id is unchanged and
+      // onChange never fires. Re-sync explicitly against the reader's actual
+      // position instead.
+      if (instance.spy) {
+        var activeId = instance.spy.activeId;
+        if (activeId) instance.accordion.syncTo(activeId, topLevelAncestorId(listEl, activeId));
+      }
+    }
+
+    function apply(query) {
+      var needle = stripMath(query);
+      if (!needle) { clear(); return; }
+
+      active = true;
+      rootEl.setAttribute('data-toc-filtering', 'true');
+
+      var keep = {};
+      instance.entries.forEach(function (entry) {
+        if (entry.filterKey.indexOf(needle) === -1) return;
+        keep[entry.id] = true;
+        // Keep every ancestor so the match has context.
+        var node = entry.liEl.parentElement;
+        while (node && node !== listEl) {
+          if (node.tagName === 'LI' && node.hasAttribute('data-toc-id')) {
+            keep[node.getAttribute('data-toc-id')] = true;
+          }
+          node = node.parentElement;
+        }
+      });
+
+      var items = listEl.querySelectorAll('li[data-toc-id]');
+      for (var i = 0; i < items.length; i++) {
+        markOut(items[i], !keep[items[i].getAttribute('data-toc-id')]);
+      }
+      instance.accordion.expandAll();
+    }
+
+    function matches() {
+      return Array.prototype.filter.call(
+        listEl.querySelectorAll('a.toc-panel__link'),
+        function (a) { return a.getBoundingClientRect().height > 0; }
+      );
+    }
+
+    instance.filterEl.addEventListener('input', function () {
+      apply(instance.filterEl.value);
+    });
+
+    rootEl.setAttribute('data-toc-filtering', 'false');
+
+    return {
+      apply: apply,
+      clear: function () { instance.filterEl.value = ''; clear(); },
+      matches: matches,
+      get active() { return active; }
+    };
+  }
+
   function init(doc) {
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
@@ -517,6 +596,8 @@
       },
       rails.position
     );
+
+    instance.filter = createFilter(instance, doc);
 
     return instance;
   }
