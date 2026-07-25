@@ -2183,3 +2183,9 @@ body.tag-graph-noscroll {
 .toc-panel__item[data-filtered="out"] {
   display: none;
 }
+
+.toc-panel__item[data-kbd="true"] > .toc-panel__link {
+  background: var(--accent-muted);
+  color: var(--accent);
+  outline: 1px solid var(--accent);
+}

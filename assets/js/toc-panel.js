@@ -526,6 +526,103 @@
     };
   }
 
+  function isTypingTarget(el) {
+    if (!el) return false;
+    var tag = el.tagName;
+    return (
+      tag === 'INPUT' ||
+      tag === 'TEXTAREA' ||
+      tag === 'SELECT' ||
+      el.isContentEditable === true
+    );
+  }
+
+  function createKeyboard(instance, doc) {
+    var cursor = -1;
+    var rowsCache = null;
+
+    // instance.filter.matches() calls getBoundingClientRect() on every
+    // a.toc-panel__link to test visibility (Task 8) — up to ~700 rows on the
+    // largest real page. rows() is on the hot path of every arrow keypress,
+    // so calling matches() straight through here would turn cursor-walking
+    // into an O(rows) layout read per key. The visible set can only change
+    // when the filter text changes or when this module opens/closes the
+    // panel (Escape also clears the filter as part of closing), so cache
+    // the row list and invalidate only at those points. Mouse-driven
+    // open/close (hover, fab, backdrop) never touches the filtered set, so
+    // it does not need to invalidate the cache.
+    function invalidateRows() { rowsCache = null; }
+
+    function rows() {
+      if (!rowsCache) rowsCache = instance.filter.matches();
+      return rowsCache;
+    }
+
+    function highlight(index) {
+      var list = rows();
+      var previous = instance.listEl.querySelector('li[data-kbd="true"]');
+      if (previous) previous.removeAttribute('data-kbd');
+
+      if (!list.length) { cursor = -1; return; }
+
+      cursor = Math.max(0, Math.min(index, list.length - 1));
+      var li = list[cursor].parentElement;
+      li.setAttribute('data-kbd', 'true');
+      if (li.scrollIntoView) li.scrollIntoView({ block: 'nearest' });
+    }
+
+    function openForSearch() {
+      invalidateRows();
+      instance.reveal.open();
+      instance.filterEl.focus();
+      instance.filterEl.select();
+    }
+
+    doc.addEventListener('keydown', function (event) {
+      var typing = isTypingTarget(doc.activeElement);
+      var inFilter = doc.activeElement === instance.filterEl;
+
+      if (!typing && event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        openForSearch();
+        return;
+      }
+
+      if ((event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
+        event.preventDefault();
+        openForSearch();
+        return;
+      }
+
+      if (event.key === 'Escape') {
+        if (instance.filter.active) instance.filter.clear();
+        instance.reveal.close(true);
+        invalidateRows();
+        if (inFilter) instance.filterEl.blur();
+        return;
+      }
+
+      if (!inFilter) return;
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        highlight(cursor + 1);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        highlight(cursor - 1);
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        var list = rows();
+        var target = list[cursor >= 0 ? cursor : 0];
+        if (target) target.click();
+      }
+    });
+
+    instance.filterEl.addEventListener('input', function () { invalidateRows(); highlight(0); });
+
+    return { highlight: highlight };
+  }
+
   function init(doc) {
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
@@ -598,6 +695,7 @@
     );
 
     instance.filter = createFilter(instance, doc);
+    instance.keyboard = createKeyboard(instance, doc);
 
     return instance;
   }
