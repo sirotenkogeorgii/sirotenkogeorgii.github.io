@@ -257,6 +257,74 @@
     return String(value).replace(/["\\]/g, '\\$&');
   }
 
+  function createAccordion(listEl) {
+    var lastTopId = null;
+
+    function branches() {
+      return listEl.querySelectorAll('li.toc-panel__item--branch');
+    }
+
+    function setExpanded(li, expanded) {
+      li.setAttribute('data-expanded', expanded ? 'true' : 'false');
+      var twisty = li.querySelector(':scope > .toc-panel__twisty');
+      if (twisty) twisty.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+
+    function ancestorChain(id) {
+      var chain = [];
+      var node = listEl.querySelector('li[data-toc-id="' + cssEscape(id) + '"]');
+      while (node && node !== listEl) {
+        if (node.tagName === 'LI' && node.classList.contains('toc-panel__item--branch')) {
+          chain.push(node);
+        }
+        node = node.parentElement;
+      }
+      return chain;
+    }
+
+    function clearLocks() {
+      var locked = listEl.querySelectorAll('li[data-user-locked="true"]');
+      for (var i = 0; i < locked.length; i++) locked[i].removeAttribute('data-user-locked');
+    }
+
+    function syncTo(id, topId) {
+      if (topId !== lastTopId) {
+        clearLocks();
+        lastTopId = topId;
+      }
+
+      var chain = ancestorChain(id);
+      var all = branches();
+      for (var i = 0; i < all.length; i++) {
+        var li = all[i];
+        if (li.getAttribute('data-user-locked') === 'true') continue;
+        setExpanded(li, chain.indexOf(li) !== -1);
+      }
+    }
+
+    listEl.addEventListener('click', function (event) {
+      var twisty = event.target.closest ? event.target.closest('.toc-panel__twisty') : null;
+      if (!twisty) return;
+      event.preventDefault();
+      var li = twisty.parentElement;
+      var next = li.getAttribute('data-expanded') !== 'true';
+      setExpanded(li, next);
+      li.setAttribute('data-user-locked', 'true');
+    });
+
+    function expandAll() {
+      var all = branches();
+      for (var i = 0; i < all.length; i++) setExpanded(all[i], true);
+    }
+
+    function restore() {
+      lastTopId = null;
+      clearLocks();
+    }
+
+    return { syncTo: syncTo, expandAll: expandAll, restore: restore, setExpanded: setExpanded };
+  }
+
   function init(doc) {
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
@@ -288,6 +356,8 @@
     var rails = renderTicks(shell.rail, entries, doc);
     instance.ticks = rails;
 
+    instance.accordion = createAccordion(instance.listEl);
+
     instance.spy = createScrollSpy(
       entries,
       doc.querySelector('.page-content') || doc.body,
@@ -302,6 +372,8 @@
         Object.keys(rails.ticks).forEach(function (tickId) {
           rails.ticks[tickId].classList.toggle('toc-rail__tick--active', tickId === topId);
         });
+
+        instance.accordion.syncTo(id, topId);
 
         doc.dispatchEvent(new CustomEvent('toc:active', { detail: { id: id, topId: topId } }));
       },

@@ -2114,3 +2114,14 @@ body.tag-graph-noscroll {
   border-left-color: var(--accent);
   background: var(--accent-muted);
 }
+
+/* data-toc-mode="pinned" is the reveal controller's persisted-open state
+   (Task 6 owns the rest of that controller: the toggle, hover reveal, etc.).
+   This minimal rule is added now because the accordion's manual-override
+   test drives a real pointer click on a twisty, which requires the panel to
+   actually be on-screen — without it .toc-panel sits fully off-canvas
+   (transform: translateX(100%)) and the click always lands on .toc-rail
+   instead. Task 6 should extend, not replace, this selector. */
+:root[data-toc-mode="pinned"] .toc-panel {
+  transform: translateX(0);
+}
