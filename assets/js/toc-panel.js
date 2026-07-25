@@ -545,17 +545,33 @@
     // a.toc-panel__link to test visibility (Task 8) — up to ~700 rows on the
     // largest real page. rows() is on the hot path of every arrow keypress,
     // so calling matches() straight through here would turn cursor-walking
-    // into an O(rows) layout read per key. The visible set can only change
-    // when the filter text changes or when this module opens/closes the
-    // panel (Escape also clears the filter as part of closing), so cache
-    // the row list and invalidate only at those points. Mouse-driven
-    // open/close (hover, fab, backdrop) never touches the filtered set, so
-    // it does not need to invalidate the cache.
+    // into an O(rows) layout read per key. Cache the row list instead.
+    //
+    // The visible set changes exactly when one of two attributes flips on a
+    // row's ancestry: data-filtered (the filter, Task 8) or data-expanded
+    // (the accordion, Task 5) — see the matching CSS rules at the bottom of
+    // site.css. data-expanded does not only change on this module's own
+    // open/close: createScrollSpy's onChange calls accordion.syncTo() on
+    // every scroll-driven active-heading change (the ordinary way to use a
+    // pinned panel while reading), and createAccordion's own click listener
+    // toggles a twisty independently of both reveal and keyboard. Rather
+    // than hand-enumerate every call site that can flip those two
+    // attributes (and silently go stale the next time createAccordion
+    // changes), watch instance.listEl directly and invalidate on any
+    // matching mutation, wherever it comes from.
     function invalidateRows() { rowsCache = null; }
 
     function rows() {
       if (!rowsCache) rowsCache = instance.filter.matches();
       return rowsCache;
+    }
+
+    if (window.MutationObserver) {
+      new window.MutationObserver(invalidateRows).observe(instance.listEl, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['data-expanded', 'data-filtered']
+      });
     }
 
     function highlight(index) {
