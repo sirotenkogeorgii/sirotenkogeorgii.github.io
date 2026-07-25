@@ -353,24 +353,19 @@
   }
 
   var CLOSE_DELAY = 250;
-  // 1660 = .wrapper's 1100px content column + a 280px panel on each side, so a
-  // pinned panel never overlaps the card. At the old 1600 the panel covered the
-  // rightmost 30px of the column and clipped anything overflowing it (wide
-  // tables, long code lines). Keep this in step with --toc-panel-width and
-  // .wrapper's max-width in site.css.
-  var PIN_QUERY = '(min-width: 1660px)';
   var MOBILE_QUERY = '(max-width: 899px)';
 
   function createReveal(instance, doc) {
     var rootEl = doc.documentElement;
-    var pinMedia = window.matchMedia(PIN_QUERY);
     var mobileMedia = window.matchMedia(MOBILE_QUERY);
     var timer = 0;
 
+    // Two modes only. The panel is never pinned open at any width: it stays
+    // shut until the pointer reaches the right edge and slides back out of the
+    // way when the pointer leaves. That is the whole point of the feature —
+    // the reading column is never permanently narrowed by a sidebar.
     function mode() {
-      if (mobileMedia.matches) return 'mobile';
-      if (pinMedia.matches) return 'pinned';
-      return 'overlay';
+      return mobileMedia.matches ? 'mobile' : 'overlay';
     }
 
     function setOpen(next) {
@@ -396,15 +391,10 @@
     function applyMode() {
       var next = mode();
       rootEl.setAttribute('data-toc-mode', next);
-      if (next === 'pinned') {
-        setOpen(true);
-      } else if (next === 'mobile') {
-        // Shrinking from pinned straight past 900px leaves data-toc-open
-        // "true", which in mobile means an open drawer *plus* the modal
-        // backdrop dimming and swallowing taps on the article. There is no
-        // mouse-leave to undo that on a touch device, so close explicitly.
-        // The overlay case is deliberately left alone: there the panel is
-        // hover-driven and closes on the next mouse-leave.
+      if (next === 'mobile') {
+        // Crossing into mobile with data-toc-open still "true" means an open
+        // drawer *plus* the modal backdrop dimming and swallowing taps on the
+        // article, and there is no mouse-leave to undo that on a touch device.
         close(true);
       } else if (rootEl.getAttribute('data-toc-open') !== 'true') {
         setOpen(false);
@@ -422,13 +412,12 @@
 
     function close(immediate) {
       cancelClose();
-      if (mode() === 'pinned') return;
       if (immediate) {
         setOpen(false);
       } else {
         timer = window.setTimeout(function () {
           timer = 0;
-          if (mode() !== 'pinned') setOpen(false);
+          setOpen(false);
         }, CLOSE_DELAY);
       }
     }
@@ -453,18 +442,16 @@
     instance.listEl.addEventListener('click', function (event) {
       var link = event.target.closest ? event.target.closest('.toc-panel__link') : null;
       if (!link) return;
-      if (mode() !== 'pinned') close(true);
+      close(true);
     });
 
     instance.fab.addEventListener('click', function () { toggle(); });
     instance.backdrop.addEventListener('click', function () { close(true); });
 
     applyMode();
-    if (pinMedia.addEventListener) {
-      pinMedia.addEventListener('change', applyMode);
+    if (mobileMedia.addEventListener) {
       mobileMedia.addEventListener('change', applyMode);
-    } else if (pinMedia.addListener) {
-      pinMedia.addListener(applyMode);
+    } else if (mobileMedia.addListener) {
       mobileMedia.addListener(applyMode);
     }
 
@@ -751,19 +738,20 @@
       fab: shell.fab
     };
     window.TocPanel.instance = instance;
-    // Must run before renderTicks/createAccordion/createScrollSpy below: they
-    // call getBoundingClientRect(), which forces a synchronous layout pass
-    // and thereby commits .toc-panel's off-screen translateX(100%) as an
-    // already-rendered style. If that happened first, the pinned-mode
-    // attribute flip createReveal() performs next would be a *change* from a
-    // real prior frame, and .toc-panel's 0.22s CSS transition (Task 3) would
-    // genuinely animate it in on page load instead of it starting resting
-    // in place. Wiring reveal here means the very first style computation
-    // for this freshly-inserted node already bakes in the pinned position,
-    // so there is nothing to transition from and no on-load flash. Do not
-    // "align this with the brief" (which places this call after the spy) —
-    // that reintroduces the flash silently, since ordinary test timing does
-    // not reliably catch it.
+    // Kept ahead of renderTicks/createAccordion/createScrollSpy below, which
+    // call getBoundingClientRect() and so force a synchronous layout pass that
+    // commits .toc-panel's off-screen translateX(100%) as an already-rendered
+    // style. createReveal()'s applyMode() writes data-toc-mode/data-toc-open
+    // synchronously; doing that before any layout read means the very first
+    // style computation for this freshly-inserted node already reflects the
+    // resting state, so a later attribute flip can never be a change from a
+    // real prior frame that .toc-panel's 0.22s transition would animate on
+    // page load. This mattered acutely while a pinned mode existed (the panel
+    // opened at load, so the flip was visible); with the panel now always
+    // starting closed the ordering is cheap insurance rather than a live bug,
+    // and it stays because reintroducing any open-at-load state would bring
+    // the flash straight back, silently — ordinary test timing does not
+    // reliably catch it.
     instance.reveal = createReveal(instance, doc);
 
     var rails = renderTicks(shell.rail, entries, doc);
@@ -790,8 +778,8 @@
         // force-expands every branch so deep matches are visible; syncTo()
         // would immediately collapse everything outside the reader's own
         // ancestor chain and take matched rows down with it. That fires from
-        // ordinary scrolling in pinned mode (where the panel is always open),
-        // and even with no scrolling at all when MathJax reflow re-measures.
+        // any scroll while the panel is open, and even with no scrolling at
+        // all when MathJax reflow re-measures.
         // filter.clear() re-syncs against the reader's real position, so the
         // accordion catches up the moment the filter is dropped.
         if (!(instance.filter && instance.filter.active)) instance.accordion.syncTo(id, topId);

@@ -2127,8 +2127,7 @@ body.tag-graph-noscroll {
   background: var(--accent-muted);
 }
 
-:root[data-toc-open="true"] .toc-panel,
-:root[data-toc-mode="pinned"] .toc-panel {
+:root[data-toc-open="true"] .toc-panel {
   transform: none;
   visibility: visible;
   /* Applies to both transitions; transform's delay was already 0s. Drops the
@@ -2137,10 +2136,6 @@ body.tag-graph-noscroll {
      `transition` shorthand: that would out-specify the reduced-motion
      `transition: none` below and keep animating the open panel. */
   transition-delay: 0s;
-}
-
-:root[data-toc-mode="pinned"] .toc-root__hotzone {
-  display: none;
 }
 
 :root[data-toc-open="true"] .toc-rail__tick {
