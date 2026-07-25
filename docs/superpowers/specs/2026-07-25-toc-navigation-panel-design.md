@@ -113,8 +113,9 @@ Progressive enhancement, entirely client-side. All 64 TOC-bearing pages use
 | File | Change |
 |---|---|
 | `assets/js/toc-panel.js` | new; vanilla JS, no dependencies, target ≤14 KB unminified |
+| `assets/js/heading-anchors.js` | new; the `¶` copy-link affordance, independent of the panel |
 | `assets/css/site.css` | new section appended; extends the `prefers-reduced-motion` block at line 236 |
-| `_layouts/default.html` | one `<script defer>` tag |
+| `_layouts/default.html` | two `<script defer>` tags, one per file |
 
 No markdown files are edited. No Jekyll plugins are added — GitHub Pages would
 reject them.
@@ -127,8 +128,8 @@ TOC holds fewer than 4 entries, where a panel would be noise.
 
 ## Components
 
-Six units in one file. Each owns exactly one concern, and each can be understood
-without reading the others.
+Six units across two files. Each owns exactly one concern, and each can be
+understood without reading the others.
 
 **`parseToc()`** — the only unit that knows kramdown's markup contract. Reads
 `ul#markdown-toc` and returns `[{id, text, level, headingEl}]`. If kramdown's
@@ -137,9 +138,13 @@ output ever changes, this is the only function that needs to change.
 **`renderPanel(model)`** — builds the rail and panel DOM from the model. A pure
 function of its input; knows nothing about scrolling or hovering.
 
-**`createScrollSpy(model, onChange)`** — an `IntersectionObserver` with
-`rootMargin: '0px 0px -80% 0px'`, so the active heading is the last one to cross
-the upper fifth of the viewport. Sole owner of "where am I"; emits an id.
+**`createScrollSpy(model, onChange)`** — cached heading offsets plus a
+rAF-throttled scroll handler, not an `IntersectionObserver`. Sections in these
+notes routinely run several screens tall, so a 20vh intersection band would go
+unintersected for most of a scroll and the active heading would blank out
+instead of tracking the reader. The offsets are recomputed on load, on resize,
+and on a `ResizeObserver` reflow (MathJax re-typesets well after page load, with
+no scroll event of its own). Sole owner of "where am I"; emits an id.
 
 **`createRevealController()`** — sole owner of open/closed state: the hover zone,
 the width-driven pin, the mobile drawer, and Esc.
@@ -149,7 +154,8 @@ row: the raw heading text, and a math-stripped variant with `$` and TeX control
 sequences removed, so typing `V pi` matches a heading rendered as `$V^\pi$`.
 
 **`createAnchors()`** — the `¶` links. Fully independent of the panel; deleting it
-touches nothing else.
+touches nothing else. Ships as its own file, `assets/js/heading-anchors.js`,
+rather than inside `toc-panel.js`, precisely because it is independent.
 
 ## Styling
 
@@ -164,8 +170,7 @@ ordinary block at the top of the document, with the accordion fully expanded and
 the filter field hidden. On a page where the script did not run, the inline TOC
 is untouched and prints as it does today.
 
-`@media (prefers-reduced-motion: reduce)` disables the slide transition and
-smooth scrolling.
+`@media (prefers-reduced-motion: reduce)` disables the slide transition.
 
 ## Verification
 
@@ -202,7 +207,7 @@ Axes to check on those pages:
 ## Out of scope
 
 - Any edit to the 64 markdown files
-- Site-wide navigation changes beyond the single script tag
+- Site-wide navigation changes beyond the two script tags
 - Persisting pin state across pages
 - A reading-progress fill on the rail
 - New Jekyll plugins

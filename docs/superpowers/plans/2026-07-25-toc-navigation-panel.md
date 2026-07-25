@@ -14,7 +14,7 @@
 - **No new Jekyll plugins.** GitHub Pages rejects them.
 - **No runtime JS dependencies.** The shipped files must be plain `<script>`-loadable, no bundler, no imports.
 - **Test tooling is gitignored.** `package.json`, `package-lock.json`, `node_modules/` and `tests/` must never be committed and must never ship to `_site`.
-- Panel width `280px`; pin breakpoint `min-width: 1600px`; mobile breakpoint `max-width: 899px` (pairs with the existing `900px` breakpoint in `site.css`).
+- Panel width `280px`; pin breakpoint `min-width: 1660px`; mobile breakpoint `max-width: 899px` (pairs with the existing `900px` breakpoint in `site.css`).
 - Activation threshold: the panel initialises only when the page has a `ul#markdown-toc` with **4 or more** entries.
 - Styling uses only existing custom properties: `--surface`, `--surface-muted`, `--line`, `--muted`, `--accent`, `--accent-muted`, `--shadow`, `--font-body`.
 - `.site-header` is `z-index: 30`; the panel uses `z-index: 40`.
@@ -22,11 +22,13 @@
 
 ## Deviations from the spec
 
-Three, all deliberate. Record them in the commit messages.
+Five, all deliberate. Record them in the commit messages.
 
 1. **Two JS files, not one.** `createAnchors()` is described in the spec as "fully independent of the panel; deleting it touches nothing else." It therefore ships as `assets/js/heading-anchors.js` rather than being bolted into `toc-panel.js`, which keeps the panel file under ~400 lines.
 2. **Scroll spy uses a rAF-throttled scroll handler, not `IntersectionObserver`.** The spec proposed `rootMargin: '0px 0px -80% 0px'`. That band is 20vh tall, but sections in these notes are routinely several screens tall, so no heading intersects the band for most of the scroll and the active item would blank out. A cached-offsets + binary-scan approach is correct for tall sections and is what a `ResizeObserver` can keep accurate as MathJax reflows the page.
 3. **Automated tests exist.** The spec said manual verification only. Approved change: gitignored Playwright harness.
+4. **`createReveal` is wired before `renderTicks`/`createAccordion`/`createScrollSpy` in `init`, not after them as Task 6 originally specified.** `renderTicks` and `createScrollSpy` both call `getBoundingClientRect()`, which forces a synchronous layout pass and commits `.toc-panel`'s off-screen `translateX(100%)` as an already-rendered style. If that layout happened first, `createReveal`'s pinned-mode attribute flip would be a *change* from a real prior frame and the panel's 0.22s transition would visibly slide it in on every page load. Wiring reveal first means the very first style computation for the freshly-inserted panel already bakes in the resting position, so there is nothing to transition from. Reviewed and judged sound; do not "align this with the brief" — that silently reintroduces the on-load flash, since ordinary test timing does not reliably catch it.
+5. **The `@media print` block sets `transition: none` on `.toc-panel`.** Task 6's Critical finding (see Task 6 below) was about suppressing a *screen* transition to satisfy a synchronous test assertion, which genuinely deleted a user-visible animation. This is categorically different: `@media print` cannot affect screen media at all, the protected hover-slide test never emulates print so it still exercises a real animation, and print is a static-snapshot context where nothing user-perceivable is being removed. Cleared as a normal, independently common print convention rather than a repeat of the Task 6 mistake.
 
 ## File Structure
 
@@ -102,7 +104,7 @@ site, and changing that is unrelated to this work.
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test --test-concurrency=1 tests/",
+    "test": "node --test --test-concurrency=1 \"tests/**/*.spec.mjs\"",
     "build": "BUNDLE_GEMFILE=Gemfile.local bundle exec jekyll build"
   },
   "devDependencies": {
@@ -110,6 +112,8 @@ site, and changing that is unrelated to this work.
   }
 }
 ```
+
+The glob is quoted and passed explicitly rather than the bare directory `tests/`: on Node 24, `node --test` does not recurse into a directory argument, so a bare `tests/` silently runs zero files.
 
 - [ ] **Step 3: Install Playwright without re-downloading browsers**
 
@@ -168,55 +172,66 @@ export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const FIXTURE_DIR = path.join(REPO, 'tests', 'fixtures');
 
 export async function startServer() {
+  // -u: unbuffered stdout. Without it, Python's http.server buffers the
+  // "Serving HTTP on ..." startup line (it isn't a tty on the other end of
+  // the pipe) and we'd never see it in time. The line is also printed to
+  // stdout, not stderr.
   const proc = spawn(
     'python3',
-    ['-m', 'http.server', '0', '--bind', '127.0.0.1', '--directory', REPO],
-    { stdio: ['ignore', 'ignore', 'pipe'] }
+    ['-u', '-m', 'http.server', '0', '--bind', '127.0.0.1', '--directory', REPO],
+    { stdio: ['ignore', 'pipe', 'ignore'] }
   );
 
-  const port = await new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('server did not report a port')), 10000);
-    proc.stderr.on('data', (chunk) => {
-      const match = /port (\d+)/.exec(String(chunk));
-      if (match) {
-        clearTimeout(timer);
-        resolve(Number(match[1]));
-      }
+  try {
+    const port = await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('server did not report a port')), 10000);
+      proc.stdout.on('data', (chunk) => {
+        const match = /port (\d+)/.exec(String(chunk));
+        if (match) {
+          clearTimeout(timer);
+          resolve(Number(match[1]));
+        }
+      });
+      proc.on('error', reject);
     });
-    proc.on('error', reject);
-  });
 
-  return {
-    origin: `http://127.0.0.1:${port}`,
-    close: () => proc.kill()
-  };
+    return {
+      origin: `http://127.0.0.1:${port}`,
+      close: () => proc.kill()
+    };
+  } catch (err) {
+    // Never leave an orphaned http.server running if we didn't hand back a
+    // close() the caller could use to kill it themselves.
+    proc.kill();
+    throw err;
+  }
 }
 
 export async function withPage(opts, fn) {
   const browser = await chromium.launch();
-  const context = await browser.newContext({
-    viewport: opts.viewport ?? { width: 1280, height: 900 },
-    javaScriptEnabled: opts.js !== false
-  });
-  const page = await context.newPage();
-
-  // MathJax is slow and non-deterministic; block it so headings keep their raw
-  // "$...$" source, which is exactly what the filter indexes.
-  await page.route('**/cdn.jsdelivr.net/**', (route) => route.abort());
-
-  // Serve JS and CSS from the working tree so no Jekyll rebuild is needed.
-  await page.route('**/assets/js/*.js', (route) => {
-    const name = path.basename(new URL(route.request().url()).pathname);
-    const file = path.join(REPO, 'assets', 'js', name);
-    return existsSync(file)
-      ? route.fulfill({ path: file, contentType: 'application/javascript' })
-      : route.continue();
-  });
-  await page.route('**/assets/css/site.css', (route) =>
-    route.fulfill({ path: path.join(REPO, 'assets', 'css', 'site.css'), contentType: 'text/css' })
-  );
-
   try {
+    const context = await browser.newContext({
+      viewport: opts.viewport ?? { width: 1280, height: 900 },
+      javaScriptEnabled: opts.js !== false
+    });
+    const page = await context.newPage();
+
+    // MathJax is slow and non-deterministic; block it so headings keep their raw
+    // "$...$" source, which is exactly what the filter indexes.
+    await page.route('**/cdn.jsdelivr.net/**', (route) => route.abort());
+
+    // Serve JS and CSS from the working tree so no Jekyll rebuild is needed.
+    await page.route('**/assets/js/*.js', (route) => {
+      const name = path.basename(new URL(route.request().url()).pathname);
+      const file = path.join(REPO, 'assets', 'js', name);
+      return existsSync(file)
+        ? route.fulfill({ path: file, contentType: 'application/javascript' })
+        : route.continue();
+    });
+    await page.route('**/assets/css/site.css', (route) =>
+      route.fulfill({ path: path.join(REPO, 'assets', 'css', 'site.css'), contentType: 'text/css' })
+    );
+
     return await fn(page);
   } finally {
     await browser.close();
@@ -487,10 +502,12 @@ Replace `assets/js/toc-panel.js` with:
   var MIN_ENTRIES = 4;
 
   function stripMath(text) {
+    // Unwrap $...$ / $$...$$ delimiters and drop TeX punctuation ({ } ^ _ and the
+    // backslash itself), but keep the command name (e.g. "\pi" -> "pi", "\ell" ->
+    // "ell") so a heading rendered as $V^\pi$ is still findable by typing "pi".
     return String(text)
-      .replace(/\$\$?([^$]*)\$\$?/g, ' $1 ')
-      .replace(/\\[a-zA-Z]+/g, ' ')
-      .replace(/[\\{}^_$]/g, ' ')
+      .replace(/\$\$?/g, ' ')
+      .replace(/[\\{}^_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
@@ -508,6 +525,7 @@ Replace `assets/js/toc-panel.js` with:
 
   function collectEntries(tocRoot, doc) {
     var entries = [];
+    if (!tocRoot) return entries;
     var anchors = tocRoot.querySelectorAll('li > a[href^="#"]');
     for (var i = 0; i < anchors.length; i++) {
       var anchor = anchors[i];
@@ -600,7 +618,7 @@ git commit -m "feat: parse markdown-toc into a heading model"
 - Consumes: `collectEntries`, `buildTree`, `shouldActivate` from Task 2.
 - Produces, on `window.TocPanel`:
   - `init(doc?) => Instance | null`, auto-invoked on `DOMContentLoaded`. Returns `null` when the page should not activate.
-  - `Instance = {entries, root, rail, panel, listEl, filterEl}` where `root` is `.toc-root`.
+  - `Instance = {entries, tree, root, hotzone, rail, panel, listEl, filterEl}` where `root` is `.toc-root` and `tree` is `buildTree(entries)` (kept on the instance as the model layer's shape contract, not read internally).
   - `window.TocPanel.instance` holds the live instance or `null`.
 - DOM contract later tasks rely on: `.toc-root`, `.toc-root__hotzone`, `.toc-rail`, `.toc-panel`, `.toc-panel__filter`, `.toc-panel__list`, `li.toc-panel__item[data-toc-id]`, `li.toc-panel__item--branch[data-expanded]`, `button.toc-panel__twisty`, `a.toc-panel__link`.
 
@@ -999,7 +1017,7 @@ Append to the end of `assets/css/site.css`:
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 9 tests.
+Expected: PASS, 13 tests.
 
 - [ ] **Step 6: Commit**
 
@@ -1019,7 +1037,7 @@ git commit -m "feat: reparent inline TOC into a fixed side panel"
 **Interfaces:**
 - Consumes: `init` and the `Instance` shape from Task 3.
 - Produces:
-  - `createScrollSpy(entries, contentEl, onChange) => {measure(), refresh(), activeId}`
+  - `createScrollSpy(entries, contentEl, onChange, onMeasure) => {measure(), refresh(), activeId}` — `onMeasure` is an optional callback invoked at the end of every `measure()` (initial load, resize, and `ResizeObserver` reflow), not from `onChange`. Step 4 below passes `rails.position` as `onMeasure` so tick placement stays correct after a MathJax reflow that involves no scrolling at all.
   - `instance.spy` on the instance.
   - DOM: `.toc-rail__tick[data-toc-id]`, gaining `.toc-rail__tick--active`; the active `li` gains `data-active="true"`.
   - Custom event `toc:active` dispatched on `document` with `detail.id`.
@@ -1148,7 +1166,7 @@ Expected: FAIL — no element matches `.toc-panel__item[data-active="true"]`.
 Add before `init`:
 
 ```js
-  function createScrollSpy(entries, contentEl, onChange) {
+  function createScrollSpy(entries, contentEl, onChange, onMeasure) {
     var offsets = [];
     var activeId = null;
     var frame = 0;
@@ -1161,6 +1179,11 @@ Add before `init`:
         };
       });
       offsets.sort(function (a, b) { return a.top - b.top; });
+      // Tick positions depend only on document height and heading offsets,
+      // both invariant under pure scrolling, so recompute them wherever
+      // measure() runs (initial load, resize, MathJax reflow) instead of on
+      // every scroll-driven active-heading change.
+      if (onMeasure) onMeasure();
     }
 
     function pick() {
@@ -1174,9 +1197,12 @@ Add before `init`:
         else break;
       }
 
-      var atBottom =
-        window.innerHeight + window.pageYOffset >=
-        document.documentElement.scrollHeight - 2;
+      // Only defer to "last heading wins" when the page actually has room to
+      // scroll; otherwise a short page (fits on one screen) reports atBottom
+      // true at pageYOffset 0 and the last heading would be wrongly active
+      // before the reader has scrolled at all.
+      var scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+      var atBottom = scrollRange > 2 && window.pageYOffset >= scrollRange - 2;
       if (atBottom) found = offsets[offsets.length - 1].id;
 
       if (found !== activeId) {
@@ -1221,12 +1247,18 @@ Add before `init`:
 
     function position() {
       var height = Math.max(document.documentElement.scrollHeight, 1);
-      Object.keys(ticks).forEach(function (id) {
+      var ids = Object.keys(ticks);
+      // Batch every getBoundingClientRect() read before any style.top write
+      // so this never interleaves reads and writes per tick (layout thrash).
+      var pcts = ids.map(function (id) {
         var heading = document.getElementById(id);
-        if (!heading) return;
+        if (!heading) return null;
         var top = heading.getBoundingClientRect().top + window.pageYOffset;
-        var pct = Math.min(100, Math.max(0, (top / height) * 100));
-        ticks[id].style.top = pct.toFixed(3) + '%';
+        return Math.min(100, Math.max(0, (top / height) * 100));
+      });
+      ids.forEach(function (id, i) {
+        if (pcts[i] === null) return;
+        ticks[id].style.top = pcts[i].toFixed(3) + '%';
       });
     }
 
@@ -1275,11 +1307,13 @@ Inside `init`, after `window.TocPanel.instance = instance;` and before `return i
           rails.ticks[tickId].classList.toggle('toc-rail__tick--active', tickId === topId);
         });
 
-        rails.position();
         doc.dispatchEvent(new CustomEvent('toc:active', { detail: { id: id, topId: topId } }));
-      }
+      },
+      rails.position
     );
 ```
+
+`rails.position` is passed as the fourth argument, `onMeasure`, **not** called from inside the `onChange` callback above. Ticks' `top%` depends only on document height and heading offsets — both invariant under pure scrolling — so recomputing them on every scroll-driven active-heading change is redundant work today and goes stale the day a MathJax reflow moves headings with no scroll at all. Get this backwards and the "still responsive" check on the largest real page (Task 11, several hundred headings) is the symptom that catches it.
 
 - [ ] **Step 5: Append the tick CSS**
 
@@ -1310,7 +1344,7 @@ Inside `init`, after `window.TocPanel.instance = instance;` and before `return i
 - [ ] **Step 6: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 13 tests.
+Expected: PASS, 19 tests once the `onMeasure` threading and the `atBottom` scroll-range guard above are in place (17 on the first pass, before those two review fixes).
 
 - [ ] **Step 7: Commit**
 
@@ -1329,7 +1363,7 @@ git commit -m "feat: track the active heading and draw rail ticks"
 
 **Interfaces:**
 - Consumes: `toc:active` event and `topLevelAncestorId` from Task 4; `.toc-panel__twisty` from Task 3.
-- Produces: `createAccordion(listEl) => {syncTo(id), expandAll(), restore()}` on `instance.accordion`. `li[data-user-locked="true"]` marks a manually toggled branch.
+- Produces: `createAccordion(listEl) => {syncTo(id, topId), expandAll(), restore(), setExpanded(li, expanded)}` on `instance.accordion`. `li[data-user-locked="true"]` marks a manually toggled branch. `setExpanded` is returned alongside the other three even though nothing outside this module calls it directly today.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1536,16 +1570,18 @@ In `init`, create the accordion before the spy:
     instance.accordion = createAccordion(instance.listEl);
 ```
 
-and inside the spy's `onChange`, after the tick update and before `rails.position()`:
+and inside the spy's `onChange`, after the tick update and before the `dispatchEvent(new CustomEvent('toc:active', ...))` call:
 
 ```js
         instance.accordion.syncTo(id, topId);
 ```
 
+(Task 4's `onChange` no longer calls `rails.position()` itself — that moved to `measure()` via the `onMeasure` callback — so the tick update is directly followed by this line and then the dispatch.)
+
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 16 tests.
+Expected: PASS, 23 tests. (22 on the first pass; the review added one more test locking a level-2 branch and then scrolling within the same chapter, so `clearLocks` genuinely does not fire and `syncTo` is exercised with the locked branch outside the active ancestor chain.)
 
 - [ ] **Step 6: Commit**
 
@@ -1581,7 +1617,7 @@ const mode = (page) => page.evaluate(() => document.documentElement.getAttribute
 const isOpen = (page) => page.evaluate(() => document.documentElement.getAttribute('data-toc-open') === 'true');
 const panelX = (page) => page.evaluate(() => document.querySelector('.toc-panel').getBoundingClientRect().left);
 
-test('mode is width-driven: pinned at 1600, overlay between, mobile below 900', async () => {
+test('mode is width-driven: pinned at 1660, overlay between, mobile below 900', async () => {
   const server = await startServer();
   try {
     const url = buildFixture('reveal-mode', headingSeries(24), { filler: 20 });
@@ -1685,7 +1721,12 @@ Add before `init`:
 
 ```js
   var CLOSE_DELAY = 250;
-  var PIN_QUERY = '(min-width: 1600px)';
+  // 1660 = .wrapper's 1100px content column + a 280px panel on each side, so a
+  // pinned panel never overlaps the card. At 1600 the panel would cover the
+  // rightmost 30px of the column and clip anything overflowing it (wide
+  // tables, long code lines). Keep this in step with --toc-panel-width and
+  // .wrapper's max-width in site.css.
+  var PIN_QUERY = '(min-width: 1660px)';
   var MOBILE_QUERY = '(max-width: 899px)';
 
   function createReveal(instance, doc) {
@@ -1750,7 +1791,8 @@ Add before `init`:
     instance.panel.addEventListener('mouseleave', function () { close(); });
 
     instance.listEl.addEventListener('click', function (event) {
-      if (!event.target.closest('.toc-panel__link')) return;
+      var link = event.target.closest ? event.target.closest('.toc-panel__link') : null;
+      if (!link) return;
       if (mode() !== 'pinned') close(true);
     });
 
@@ -1769,11 +1811,13 @@ Add before `init`:
 
 - [ ] **Step 4: Wire it into `init`**
 
-After the spy is created, add:
+Do **not** add this after the spy. Wire it immediately after `window.TocPanel.instance = instance;` — before `renderTicks`, `createAccordion`, and `createScrollSpy` are called:
 
 ```js
     instance.reveal = createReveal(instance, doc);
 ```
+
+This ordering is load-bearing, not stylistic. `renderTicks` and `createScrollSpy` both read layout (`getBoundingClientRect()`), which forces the browser to commit `.toc-panel`'s off-screen `transform: translateX(100%)` as an already-rendered style. If that layout read happened first, `createReveal`'s pinned-mode attribute flip would be a *change* from a real prior frame, and the panel's 0.22s CSS transition (Task 3) would genuinely animate it into view on every page load. Wiring reveal first means the very first style computation for the freshly-inserted `.toc-panel` already bakes in the resting position, so there is nothing to transition from and no on-load flash. See Deviation 4 in "Deviations from the spec" above.
 
 - [ ] **Step 5: Append the reveal CSS**
 
@@ -1795,13 +1839,15 @@ After the spy is created, add:
 - [ ] **Step 6: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 21 tests.
+Expected: PASS, 28 tests. (27 on the first pass; no test up to that point could tell an eased slide apart from an instant snap, so the review round added one that can before checking anything else.)
+
+**Watch for this while implementing:** it is tempting to suppress `.toc-panel`'s transition before flipping `data-toc-open` and force a synchronous reflow, so the open state is guaranteed correct the instant a test asserts on it. Do not do this in `open()` — it makes every hover-triggered reveal snap open instantly with nothing left to animate, which destroys the slide the human partner chose. That exact shortcut shipped once and passed every existing test green precisely because none of them could distinguish a slide from a jump. If a test's timing assertion needs help, fix the test (arm a `transitionend` listener before the triggering event, with a bounded timeout), not the production code.
 
 - [ ] **Step 7: Commit**
 
 ```bash
 git add assets/js/toc-panel.js assets/css/site.css
-git commit -m "feat: reveal the panel on right-edge hover, pin it above 1600px"
+git commit -m "feat: reveal the panel on right-edge hover, pin it above 1660px"
 ```
 
 ---
@@ -2005,7 +2051,7 @@ Use `setOpen(true)` in `open()` and `applyMode()`'s pinned branch, and `setOpen(
 - [ ] **Step 6: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 24 tests.
+Expected: PASS, 31 tests.
 
 - [ ] **Step 7: Commit**
 
@@ -2160,7 +2206,18 @@ Add before `init`:
       rootEl.setAttribute('data-toc-filtering', 'false');
       active = false;
       instance.accordion.restore();
-      if (instance.spy) instance.spy.refresh();
+      // accordion.restore() only clears user-locks and lastTopId; it does not
+      // collapse anything, so on its own it would leave every branch expanded
+      // from the apply()-time expandAll() above. spy.refresh() cannot fix
+      // that either: pick() only invokes onChange (which calls
+      // accordion.syncTo) when the active heading id changes, and clearing a
+      // filter does not move the reader, so the id is unchanged and
+      // onChange never fires. Re-sync explicitly against the reader's actual
+      // position instead.
+      if (instance.spy) {
+        var activeId = instance.spy.activeId;
+        if (activeId) instance.accordion.syncTo(activeId, topLevelAncestorId(listEl, activeId));
+      }
     }
 
     function apply(query) {
@@ -2213,7 +2270,7 @@ Add before `init`:
   }
 ```
 
-Note `clear()` calls `instance.spy.refresh()` so the accordion snaps back to the section actually being read, which is what the "restores the accordion" test asserts.
+Note `clear()` re-syncs the accordion directly, using `instance.spy.activeId` and `topLevelAncestorId` (Task 4), rather than calling `instance.spy.refresh()`. `refresh()` looks like the obvious fix — it re-runs `measure()` and `pick()` — but `pick()` only calls `onChange` (which is what calls `accordion.syncTo`) when the active heading id **changes**, and clearing a filter does not move the reader, so the id is unchanged and `onChange` never fires. Combined with `accordion.restore()` not collapsing anything on its own, that combination would leave every branch expanded from the filter's `expandAll()` forever. This is what the "restores the accordion" test asserts, and it fails against the `restore()` + `refresh()` form for exactly this reason.
 
 - [ ] **Step 4: Wire it into `init`**
 
@@ -2234,7 +2291,7 @@ After `instance.reveal = createReveal(instance, doc);`:
 - [ ] **Step 6: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 28 tests.
+Expected: PASS, 35 tests.
 
 - [ ] **Step 7: Commit**
 
@@ -2382,8 +2439,40 @@ Add before `init`:
 
   function createKeyboard(instance, doc) {
     var cursor = -1;
+    var rowsCache = null;
 
-    function rows() { return instance.filter.matches(); }
+    // instance.filter.matches() calls getBoundingClientRect() on every
+    // a.toc-panel__link to test visibility (Task 8) — up to ~700 rows on the
+    // largest real page. rows() is on the hot path of every arrow keypress,
+    // so calling matches() straight through here would turn cursor-walking
+    // into an O(rows) layout read per key. Cache the row list instead.
+    //
+    // The visible set changes exactly when one of two attributes flips on a
+    // row's ancestry: data-filtered (the filter, Task 8) or data-expanded
+    // (the accordion, Task 5) — see the matching CSS rules at the bottom of
+    // site.css. data-expanded does not only change on this module's own
+    // open/close: createScrollSpy's onChange calls accordion.syncTo() on
+    // every scroll-driven active-heading change (the ordinary way to use a
+    // pinned panel while reading), and createAccordion's own click listener
+    // toggles a twisty independently of both reveal and keyboard. Rather
+    // than hand-enumerate every call site that can flip those two
+    // attributes (and silently go stale the next time createAccordion
+    // changes), watch instance.listEl directly and invalidate on any
+    // matching mutation, wherever it comes from.
+    function invalidateRows() { rowsCache = null; }
+
+    function rows() {
+      if (!rowsCache) rowsCache = instance.filter.matches();
+      return rowsCache;
+    }
+
+    if (window.MutationObserver) {
+      new window.MutationObserver(invalidateRows).observe(instance.listEl, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['data-expanded', 'data-filtered']
+      });
+    }
 
     function highlight(index) {
       var list = rows();
@@ -2399,6 +2488,7 @@ Add before `init`:
     }
 
     function openForSearch() {
+      invalidateRows();
       instance.reveal.open();
       instance.filterEl.focus();
       instance.filterEl.select();
@@ -2423,6 +2513,7 @@ Add before `init`:
       if (event.key === 'Escape') {
         if (instance.filter.active) instance.filter.clear();
         instance.reveal.close(true);
+        invalidateRows();
         if (inFilter) instance.filterEl.blur();
         return;
       }
@@ -2443,7 +2534,7 @@ Add before `init`:
       }
     });
 
-    instance.filterEl.addEventListener('input', function () { highlight(0); });
+    instance.filterEl.addEventListener('input', function () { invalidateRows(); highlight(0); });
 
     return { highlight: highlight };
   }
@@ -2470,7 +2561,7 @@ After `instance.filter = createFilter(instance, doc);`:
 - [ ] **Step 6: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 32 tests.
+Expected: PASS, 43 tests. (40 on the first pass; the review found a Critical — the row cache above was invalidated only at this module's own touchpoints, so a scroll-driven `syncTo` collapsing a branch, or a manual twisty click, left arrow-key navigation walking a stale row list. The `MutationObserver` above is the fix, and it earned three new tests.)
 
 - [ ] **Step 7: Commit**
 
@@ -2596,13 +2687,29 @@ Expected: FAIL — `.heading-anchor` count is 0.
     anchor.textContent = '\u00B6';
     anchor.setAttribute('aria-label', 'Copy link to this section');
 
+    var clearTimer = 0;
+
     anchor.addEventListener('click', function (event) {
       if (!navigator.clipboard || !navigator.clipboard.writeText) return; // plain link
       event.preventDefault();
-      navigator.clipboard.writeText(absoluteUrl(heading.id)).then(function () {
-        anchor.setAttribute('data-copied', 'true');
-        window.setTimeout(function () { anchor.removeAttribute('data-copied'); }, COPIED_MS);
-      });
+      navigator.clipboard.writeText(absoluteUrl(heading.id)).then(
+        function () {
+          if (clearTimer) window.clearTimeout(clearTimer);
+          anchor.setAttribute('data-copied', 'true');
+          clearTimer = window.setTimeout(function () {
+            anchor.removeAttribute('data-copied');
+            clearTimer = 0;
+          }, COPIED_MS);
+        },
+        function () {
+          // The write was denied or otherwise failed. preventDefault() above
+          // already stopped the browser's own navigation, so without this
+          // the click would be a silent dead end (no feedback, and an
+          // unhandled rejection). Fall back to an ordinary same-page
+          // navigation instead, so the click still does something useful.
+          window.location.hash = heading.id;
+        }
+      );
     });
 
     heading.appendChild(anchor);
@@ -2625,6 +2732,8 @@ Expected: FAIL — `.heading-anchor` count is 0.
   window.HeadingAnchors = { init: init };
 })();
 ```
+
+`writeText(...).then(...)` is called with both the fulfilled and the rejected handler, not just the first. A permissions-denied clipboard write is a real browser outcome, not a hypothetical: `preventDefault()` above already cancelled the anchor's own navigation, so without a rejection handler a denied write is a silent dead end — no feedback, and an unhandled promise rejection to boot. The rejection handler falls back to an ordinary same-page navigation to the fragment, so the click still does something. `clearTimer` is scoped inside `decorate()`, so it is per-anchor: rapid repeated clicks on the *same* pilcrow clear and restart their own timer, without touching any other heading's `data-copied` state.
 
 Because `toc-panel.js` moves `#markdown-toc` out of `.page-content` on `DOMContentLoaded`, and its script tag runs first, the TOC links are already gone from `.page-content` by the time this runs — so the panel never receives `¶` marks.
 
@@ -2671,7 +2780,7 @@ Because `toc-panel.js` moves `#markdown-toc` out of `.page-content` on `DOMConte
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 35 tests.
+Expected: PASS, 47 tests. (46 on the first pass; the review's fix round added a rejection-path test for the clipboard write.)
 
 - [ ] **Step 6: Commit**
 
@@ -2792,10 +2901,6 @@ Expected: FAIL — panel `position` is `absolute` under print media.
   .toc-panel__twisty::before {
     transition: none;
   }
-
-  html {
-    scroll-behavior: auto;
-  }
 }
 
 @media print {
@@ -2820,6 +2925,7 @@ Expected: FAIL — panel `position` is `absolute` under print media.
     position: static;
     width: auto;
     transform: none;
+    transition: none;
     box-shadow: none;
     border: 0;
     background: transparent;
@@ -2839,26 +2945,16 @@ Expected: FAIL — panel `position` is `absolute` under print media.
 }
 ```
 
-The `.toc-root` rule must come before the `display: none` block so specificity is not fought over; `!important` on the hidden chrome keeps the earlier `:root[data-toc-mode="mobile"] .toc-fab { display: flex }` rule from winning.
+The `.toc-root` rule must come before the `display: none` block so specificity is not fought over; `!important` on the hidden chrome keeps the earlier `:root[data-toc-mode="mobile"] .toc-fab { display: flex }` rule from winning. `.toc-panel`'s print rule also sets `transition: none` — see Deviation 5 above for why that is not a repeat of Task 6's Critical mistake.
 
-- [ ] **Step 4: Add smooth scrolling for in-panel jumps**
+There is no site-wide `html { scroll-behavior: smooth }` rule, and none should be added. It was tried and measured at 1618–1629ms for a single long jump on the 806-heading real page (`scrollHeight` 468,075px) — over a second and a half for what a navigation panel exists to make instant. The human partner ruled it out entirely; a jump through `scrollIntoView`/`location.hash` now lands in ~100ms. Because the rule never existed, the reduced-motion block above has nothing to override and carries no `scroll-behavior` line.
 
-Append:
-
-```css
-html {
-  scroll-behavior: smooth;
-}
-```
-
-Place it **above** the `@media (prefers-reduced-motion: reduce)` block added in Step 3 so the override wins.
-
-- [ ] **Step 5: Run to verify it passes**
+- [ ] **Step 4: Run to verify it passes**
 
 Run: `npm test`
-Expected: PASS, 38 tests.
+Expected: PASS, 50 tests.
 
-- [ ] **Step 6: Rebuild the site and write the real-page test**
+- [ ] **Step 5: Rebuild the site and write the real-page test**
 
 Run: `BUNDLE_GEMFILE=Gemfile.local bundle exec jekyll build`
 
@@ -2933,14 +3029,17 @@ test('a page without a TOC is untouched', { skip: !built }, async () => {
 
 Note these navigate `/_site/...` directly, because the helper serves the repository root.
 
-- [ ] **Step 7: Run the whole suite**
+- [ ] **Step 6: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS, 41 tests.
+Expected: PASS, 54 tests. (53 on the first implementation pass — see below for the review round that added the last one.)
 
-If the "still responsive" assertion fails on the 719-heading page, the cause is almost certainly `rails.position()` running on every active-heading change. Move it out of `onChange` and into `measure()` only.
+**Two review findings surfaced here, both worth watching for on a re-run of this task:**
 
-- [ ] **Step 8: Manual check against the live preview**
+- A racy assertion in the presentation spec needed the same armed/bounded pattern as Tasks 6 and 7 (assert against an event, not a fixed `waitForTimeout`).
+- The scroll latency this step's real-page run surfaces is real: measure it, don't widen a ceiling to make it pass. It is what led to the human ruling against smooth scrolling recorded in Step 3 above.
+
+- [ ] **Step 7: Manual check against the live preview**
 
 Run: `BUNDLE_GEMFILE=Gemfile.local bundle exec jekyll serve`
 
@@ -2951,14 +3050,14 @@ Open `http://127.0.0.1:4000/subpages/books/reinforcement_learning_overview/` and
 - Toggling the Menlo font button changes the panel's font.
 - The rail ticks land in sensible places after MathJax has finished reflowing.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add assets/css/site.css
 git commit -m "feat: theme, print and reduced-motion handling for the TOC panel"
 ```
 
-- [ ] **Step 10: Confirm nothing dev-only was committed**
+- [ ] **Step 9: Confirm nothing dev-only was committed**
 
 ```bash
 git status --short
@@ -2982,7 +3081,7 @@ Expected: `No such file or directory` for all three.
 |---|---|
 | Rail with per-chapter ticks, active tick highlighted | 4 |
 | Hover rail or 24px edge zone opens; ~250ms close delay | 6 |
-| Pin at ≥1600px, no manual toggle, no persistence | 6 |
+| Pin at ≥1660px, no manual toggle, no persistence | 6 |
 | Accordion: top level always shown, active branch expands | 5 |
 | Manual twisty overrides until the section changes | 5 |
 | Filter field narrowing the tree | 8 |
@@ -3006,3 +3105,18 @@ No gaps.
 **Type consistency:** `collectEntries`/`buildTree`/`shouldActivate` (Task 2) are consumed under those exact names in Task 3. `cssEscape` and `topLevelAncestorId` are defined in Task 4 and reused in Task 5. `instance.accordion.expandAll`/`restore` (Task 5) are called in Task 8. `instance.filter.matches()` (Task 8) is called in Task 9. `instance.reveal.open`/`close` (Task 6) are called in Tasks 7 and 9. `setOpen` (Task 7) replaces the inline attribute writes introduced in Task 6 — Task 7 Step 4 says so explicitly.
 
 **One caveat worth flagging during execution:** Task 6's tests are written against the Task 6 implementation, which sets `data-toc-open` directly. Task 7 Step 4 refactors those writes into `setOpen`. Re-run the full suite after Task 7, not just the mobile spec.
+
+## What actually shipped
+
+The 11 tasks above land the feature; a whole-branch review afterward — reading the finished code as a whole rather than task-by-task — found four more cross-task interaction bugs and brought the suite from 54 to 67 tests. The fixes are in `assets/js/toc-panel.js`, `assets/js/heading-anchors.js`, and `assets/css/site.css`, not in a Task 12. What follows is what a future change to this feature needs to know and cannot get from re-reading the code cold.
+
+**Two ordering constraints in `init()` are load-bearing, not stylistic:**
+
+1. `instance.reveal = createReveal(instance, doc);` runs immediately after `window.TocPanel.instance = instance;`, before `renderTicks`, `createAccordion`, and `createScrollSpy`. Those three read layout (`getBoundingClientRect()`), which commits `.toc-panel`'s off-screen `translateX(100%)` as an already-rendered style. Reveal after them turns the pinned-mode attribute flip into a *change* from a real prior frame, and the panel visibly slides in on every page load instead of resting in place. See Deviation 4.
+2. `createFilter` is wired before `createKeyboard`. Both attach an `input` listener to the same filter field; listeners run in registration order. Filter's marks rows in/out, keyboard's then invalidates its row cache and highlights row 0. Swapped, `highlight(0)` runs against the *previous* keystroke's visible set. Nothing throws — it fails silently.
+
+**The closed panel is `visibility: hidden`, not transform-only.** `transform: translateX(100%)` alone moves the panel off screen but leaves it in the tab order and the accessibility tree — on the largest real page that is over a thousand focusable elements a keyboard user tabs into after the footer, and a screen reader reads the whole TOC there too. `visibility` is switched instantly on close, not eased: it is held at `visible` through the whole 0.22s slide-out by a matching `transition-delay`, then drops. On open the delay is cancelled so it flips to `visible` on the same tick as `data-toc-open`. An *eased* visibility would still compute as `hidden` at t=0 on open, which silently fails `filterEl.focus()` — and with it the `/` keyboard shortcut, since focusing a hidden element is a no-op.
+
+**Scroll-spy must not re-sync the accordion while a filter is active.** `apply()` force-expands every branch so deep matches stay visible; the spy's `onChange` calling `accordion.syncTo()` unconditionally would immediately collapse everything outside the reader's current ancestor chain, taking matched rows down with it — with the query still sitting in the filter box. This fires from ordinary scrolling in pinned mode, and even with no scrolling at all when MathJax reflow re-measures. The guard is a single `if (!(instance.filter && instance.filter.active))` around the `syncTo` call; `filter.clear()` re-syncs explicitly against the reader's real position once the filter drops (see Task 8's `clear()`).
+
+**The test suite is deliberately gitignored.** `package.json`, `node_modules/`, and `tests/` never reach `_site` or the repository. The harness serves the **repository root**, not a Jekyll build, so a fixture under `/tests/fixtures/*.html` can reference `/assets/js/toc-panel.js` and `/assets/css/site.css` straight from the working tree — edit a script, re-run tests, no rebuild step. Only Task 11's real-page suite needs `_site` to exist, and it skips itself when that directory is absent.
