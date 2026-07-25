@@ -4,3 +4,7 @@ _site/
 .sass-cache/
 /vendor/
 .bundle/
+node_modules/
+package.json
+package-lock.json
+tests/
