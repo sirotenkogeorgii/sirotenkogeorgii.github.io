@@ -2226,10 +2226,6 @@ body.tag-graph-noscroll {
   letter-spacing: 0.04em;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .toc-panel,
   .toc-rail__tick,
@@ -2237,10 +2233,6 @@ html {
   .heading-anchor,
   .toc-panel__twisty::before {
     transition: none;
-  }
-
-  html {
-    scroll-behavior: auto;
   }
 }
 
