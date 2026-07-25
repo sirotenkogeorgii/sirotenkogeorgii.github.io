@@ -16,13 +16,29 @@
     anchor.textContent = '¶';
     anchor.setAttribute('aria-label', 'Copy link to this section');
 
+    var clearTimer = 0;
+
     anchor.addEventListener('click', function (event) {
       if (!navigator.clipboard || !navigator.clipboard.writeText) return; // plain link
       event.preventDefault();
-      navigator.clipboard.writeText(absoluteUrl(heading.id)).then(function () {
-        anchor.setAttribute('data-copied', 'true');
-        window.setTimeout(function () { anchor.removeAttribute('data-copied'); }, COPIED_MS);
-      });
+      navigator.clipboard.writeText(absoluteUrl(heading.id)).then(
+        function () {
+          if (clearTimer) window.clearTimeout(clearTimer);
+          anchor.setAttribute('data-copied', 'true');
+          clearTimer = window.setTimeout(function () {
+            anchor.removeAttribute('data-copied');
+            clearTimer = 0;
+          }, COPIED_MS);
+        },
+        function () {
+          // The write was denied or otherwise failed. preventDefault() above
+          // already stopped the browser's own navigation, so without this
+          // the click would be a silent dead end (no feedback, and an
+          // unhandled rejection). Fall back to an ordinary same-page
+          // navigation instead, so the click still does something useful.
+          window.location.hash = heading.id;
+        }
+      );
     });
 
     heading.appendChild(anchor);
