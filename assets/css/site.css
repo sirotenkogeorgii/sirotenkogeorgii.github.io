@@ -2258,8 +2258,15 @@ body.tag-graph-noscroll {
 @media print {
   /* The panel's shell is appended to <body>, so in source order it lands
      after the footer. Order the body's children so the TOC prints as a block
-     at the top of the document, ahead of the article. */
-  body {
+     at the top of the document, ahead of the article. Scoped to
+     :root[data-toc="on"] — the attribute toc-panel.js sets only once the
+     panel actually activates — so pages with no panel (no #markdown-toc, or
+     JS disabled) are not turned into a flex container for printing: that
+     would disable margin collapsing between header/main/footer and make
+     print pagination depend on flexbox fragmentation support, which is
+     historically weak in WebKit. .toc-root only ever exists in the DOM
+     alongside this same attribute, so its `order: -1` below still applies. */
+  :root[data-toc="on"] body {
     display: flex;
     flex-direction: column;
   }

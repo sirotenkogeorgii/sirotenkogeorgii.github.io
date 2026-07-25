@@ -380,6 +380,17 @@
         'aria-label',
         next ? 'Close table of contents' : 'Open table of contents'
       );
+      // createKeyboard (instance.keyboard) is wired up after createReveal —
+      // see the ordering comment above instance.reveal's assignment in init()
+      // — and this very branch already runs once during that earlier
+      // construction (applyMode()'s initial overlay-mode close), before
+      // instance.keyboard exists. A doc-level event, the same pattern as
+      // 'toc:active' below, lets the two modules stay decoupled either way:
+      // this fires on every close regardless of whether a listener exists
+      // yet, and createKeyboard attaches clearHighlight() to it whenever it
+      // is constructed, in either order, with no reference back into
+      // instance.reveal required.
+      if (!next) doc.dispatchEvent(new CustomEvent('toc:closed'));
     }
 
     function applyMode() {
@@ -542,15 +553,29 @@
     };
   }
 
+  // Types that are never genuine text entry. A focused <input type="range">
+  // or type="checkbox"> cannot receive typed characters at all, so treating
+  // it as "typing" only blocks the shortcuts below with nothing to show for
+  // it — this site's note pages carry plenty of both (e.g. subpages/books/
+  // sde_hd and subpages/books/pdeds, each with a {:toc} and a dozen-plus
+  // range sliders). A missing or unrecognised type falls through to the
+  // default below, matching how the browser itself treats a bare <input>.
+  var NON_TEXT_INPUT_TYPES = {
+    range: true,
+    checkbox: true,
+    radio: true,
+    button: true,
+    submit: true,
+    reset: true,
+    color: true,
+    file: true
+  };
+
   function isTypingTarget(el) {
     if (!el) return false;
     var tag = el.tagName;
-    return (
-      tag === 'INPUT' ||
-      tag === 'TEXTAREA' ||
-      tag === 'SELECT' ||
-      el.isContentEditable === true
-    );
+    if (tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable === true) return true;
+    return tag === 'INPUT' && !NON_TEXT_INPUT_TYPES[el.type];
   }
 
   function createKeyboard(instance, doc) {
@@ -601,6 +626,15 @@
       cursor = -1;
     }
 
+    // Every close path that is not Escape — mouseleave, a backdrop tap, or
+    // clicking a TOC link — goes through createReveal's setOpen(false), never
+    // through this module directly, so it cannot call clearHighlight() here
+    // without instance.keyboard reaching back into instance.reveal (or vice
+    // versa). Listening for the event setOpen(false) dispatches instead keeps
+    // the two modules independent of each other's construction order; see the
+    // comment at that dispatch site for why an event and not a direct call.
+    doc.addEventListener('toc:closed', clearHighlight);
+
     function highlight(index) {
       var list = rows();
       clearHighlight();
@@ -631,12 +665,16 @@
         return;
       }
 
-      // Same !typing guard as the '/' branch above. Cmd/Ctrl+K must not be
-      // stolen from an input the reader is genuinely typing in either; that it
-      // has never misfired is an accident of deployment (the only page with a
-      // search box has no #markdown-toc, so this listener is never bound
-      // there), not a property of this code.
-      if (!typing && (event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
+      // Same !typing guard as the '/' branch above, with one exception:
+      // focus already inside the panel's own filter (inFilter) must not be
+      // blocked by it, or Cmd/Ctrl+K becomes a no-op while the reader is
+      // filtering instead of re-running openForSearch (re-focus, re-select).
+      // Cmd/Ctrl+K must still not be stolen from an input the reader is
+      // genuinely typing in otherwise; that it has never misfired there is an
+      // accident of deployment (the only page with a search box has no
+      // #markdown-toc, so this listener is never bound there), not a
+      // property of this code.
+      if ((!typing || inFilter) && (event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
         event.preventDefault();
         openForSearch();
         return;
