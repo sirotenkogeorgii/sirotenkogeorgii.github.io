@@ -70,11 +70,121 @@
     return !!entries && entries.length >= MIN_ENTRIES;
   }
 
+  function decorate(entries, tocRoot) {
+    tocRoot.classList.add('toc-panel__list');
+    entries.forEach(function (entry) {
+      var li = entry.liEl;
+      li.classList.add('toc-panel__item', 'toc-panel__item--l' + entry.level);
+      li.setAttribute('data-toc-id', entry.id);
+      entry.anchorEl.classList.add('toc-panel__link');
+
+      var sublist = li.querySelector(':scope > ul');
+      if (!sublist) return;
+
+      sublist.classList.add('toc-panel__sublist');
+      li.classList.add('toc-panel__item--branch');
+      li.setAttribute('data-expanded', 'false');
+
+      var twisty = document.createElement('button');
+      twisty.type = 'button';
+      twisty.className = 'toc-panel__twisty';
+      twisty.setAttribute('aria-expanded', 'false');
+      twisty.setAttribute('aria-label', 'Toggle ' + entry.text);
+      li.insertBefore(twisty, entry.anchorEl);
+    });
+  }
+
+  function hideLegacyCaption(tocRoot) {
+    var prev = tocRoot.previousElementSibling;
+    if (!prev || prev.tagName !== 'P') return;
+    var strong = prev.querySelector('strong');
+    if (strong && strong.textContent.trim() === 'Table of Contents') {
+      prev.classList.add('toc-legacy-caption');
+    }
+  }
+
+  function renderShell(doc) {
+    var root = doc.createElement('div');
+    root.className = 'toc-root';
+
+    var hotzone = doc.createElement('div');
+    hotzone.className = 'toc-root__hotzone';
+
+    var rail = doc.createElement('div');
+    rail.className = 'toc-rail';
+    rail.setAttribute('aria-hidden', 'true');
+
+    var panel = doc.createElement('nav');
+    panel.className = 'toc-panel';
+    panel.setAttribute('role', 'navigation');
+    panel.setAttribute('aria-label', 'Table of contents');
+
+    var header = doc.createElement('div');
+    header.className = 'toc-panel__header';
+
+    var filter = doc.createElement('input');
+    filter.type = 'search';
+    filter.className = 'toc-panel__filter';
+    filter.placeholder = 'Filter sections…';
+    filter.setAttribute('aria-label', 'Filter sections');
+    filter.autocomplete = 'off';
+
+    var body = doc.createElement('div');
+    body.className = 'toc-panel__body';
+
+    header.appendChild(filter);
+    panel.appendChild(header);
+    panel.appendChild(body);
+    root.appendChild(hotzone);
+    root.appendChild(rail);
+    root.appendChild(panel);
+
+    return { root: root, hotzone: hotzone, rail: rail, panel: panel, filterEl: filter, bodyEl: body };
+  }
+
+  function init(doc) {
+    doc = doc || document;
+    var tocRoot = doc.getElementById('markdown-toc');
+    if (!tocRoot) return null;
+
+    var entries = collectEntries(tocRoot, doc);
+    if (!shouldActivate(entries)) return null;
+
+    decorate(entries, tocRoot);
+    hideLegacyCaption(tocRoot);
+
+    var shell = renderShell(doc);
+    shell.bodyEl.appendChild(tocRoot);   // move, do not clone: MathJax typesets once
+    doc.body.appendChild(shell.root);
+    doc.documentElement.setAttribute('data-toc', 'on');
+
+    var instance = {
+      entries: entries,
+      tree: buildTree(entries),
+      root: shell.root,
+      hotzone: shell.hotzone,
+      rail: shell.rail,
+      panel: shell.panel,
+      listEl: tocRoot,
+      filterEl: shell.filterEl
+    };
+    window.TocPanel.instance = instance;
+    return instance;
+  }
+
   window.TocPanel = {
     MIN_ENTRIES: MIN_ENTRIES,
     stripMath: stripMath,
     collectEntries: collectEntries,
     buildTree: buildTree,
-    shouldActivate: shouldActivate
+    shouldActivate: shouldActivate,
+    init: init,
+    instance: null
   };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { init(document); });
+  } else {
+    init(document);
+  }
 })();
