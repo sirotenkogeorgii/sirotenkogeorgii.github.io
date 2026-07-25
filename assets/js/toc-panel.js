@@ -357,18 +357,7 @@
 
     function open() {
       cancelClose();
-      // A hover-triggered reveal should land at its final position on the
-      // same tick the caller observes data-toc-open flip to "true" — not
-      // mid-flight through .toc-panel's 0.22s CSS transition (Task 3).
-      // Suppress the transition for this one write, force the layout that
-      // commits it, then restore the stylesheet's transition so a later
-      // close() still eases out normally.
-      var panel = instance.panel;
-      var prevTransition = panel.style.transition;
-      panel.style.transition = 'none';
       rootEl.setAttribute('data-toc-open', 'true');
-      void panel.offsetHeight;
-      panel.style.transition = prevTransition;
     }
 
     function close(immediate) {
@@ -402,7 +391,8 @@
     instance.panel.addEventListener('mouseleave', function () { close(); });
 
     instance.listEl.addEventListener('click', function (event) {
-      if (!event.target.closest('.toc-panel__link')) return;
+      var link = event.target.closest ? event.target.closest('.toc-panel__link') : null;
+      if (!link) return;
       if (mode() !== 'pinned') close(true);
     });
 
@@ -445,6 +435,19 @@
       filterEl: shell.filterEl
     };
     window.TocPanel.instance = instance;
+    // Must run before renderTicks/createAccordion/createScrollSpy below: they
+    // call getBoundingClientRect(), which forces a synchronous layout pass
+    // and thereby commits .toc-panel's off-screen translateX(100%) as an
+    // already-rendered style. If that happened first, the pinned-mode
+    // attribute flip createReveal() performs next would be a *change* from a
+    // real prior frame, and .toc-panel's 0.22s CSS transition (Task 3) would
+    // genuinely animate it in on page load instead of it starting resting
+    // in place. Wiring reveal here means the very first style computation
+    // for this freshly-inserted node already bakes in the pinned position,
+    // so there is nothing to transition from and no on-load flash. Do not
+    // "align this with the brief" (which places this call after the spy) —
+    // that reintroduces the flash silently, since ordinary test timing does
+    // not reliably catch it.
     instance.reveal = createReveal(instance, doc);
 
     var rails = renderTicks(shell.rail, entries, doc);
