@@ -142,7 +142,7 @@
     return { root: root, hotzone: hotzone, rail: rail, panel: panel, filterEl: filter, bodyEl: body };
   }
 
-  function createScrollSpy(entries, contentEl, onChange) {
+  function createScrollSpy(entries, contentEl, onChange, onMeasure) {
     var offsets = [];
     var activeId = null;
     var frame = 0;
@@ -155,6 +155,11 @@
         };
       });
       offsets.sort(function (a, b) { return a.top - b.top; });
+      // Tick positions depend only on document height and heading offsets,
+      // both invariant under pure scrolling, so recompute them wherever
+      // measure() runs (initial load, resize, MathJax reflow) instead of on
+      // every scroll-driven active-heading change.
+      if (onMeasure) onMeasure();
     }
 
     function pick() {
@@ -168,9 +173,12 @@
         else break;
       }
 
-      var atBottom =
-        window.innerHeight + window.pageYOffset >=
-        document.documentElement.scrollHeight - 2;
+      // Only defer to "last heading wins" when the page actually has room to
+      // scroll; otherwise a short page (fits on one screen) reports atBottom
+      // true at pageYOffset 0 and the last heading would be wrongly active
+      // before the reader has scrolled at all.
+      var scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+      var atBottom = scrollRange > 2 && window.pageYOffset >= scrollRange - 2;
       if (atBottom) found = offsets[offsets.length - 1].id;
 
       if (found !== activeId) {
@@ -215,12 +223,18 @@
 
     function position() {
       var height = Math.max(document.documentElement.scrollHeight, 1);
-      Object.keys(ticks).forEach(function (id) {
+      var ids = Object.keys(ticks);
+      // Batch every getBoundingClientRect() read before any style.top write
+      // so this never interleaves reads and writes per tick (layout thrash).
+      var pcts = ids.map(function (id) {
         var heading = document.getElementById(id);
-        if (!heading) return;
+        if (!heading) return null;
         var top = heading.getBoundingClientRect().top + window.pageYOffset;
-        var pct = Math.min(100, Math.max(0, (top / height) * 100));
-        ticks[id].style.top = pct.toFixed(3) + '%';
+        return Math.min(100, Math.max(0, (top / height) * 100));
+      });
+      ids.forEach(function (id, i) {
+        if (pcts[i] === null) return;
+        ticks[id].style.top = pcts[i].toFixed(3) + '%';
       });
     }
 
@@ -289,9 +303,9 @@
           rails.ticks[tickId].classList.toggle('toc-rail__tick--active', tickId === topId);
         });
 
-        rails.position();
         doc.dispatchEvent(new CustomEvent('toc:active', { detail: { id: id, topId: topId } }));
-      }
+      },
+      rails.position
     );
 
     return instance;
