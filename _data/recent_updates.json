@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "MCU 2026: S2a-reducibility and differentiation in Martin-Löf random reals",
+   "url": "/subpages/presentations/conferences/mcu_2026/",
+   "date": "2026-07-25",
+   "added": true
+  },
+  {
+   "title": "Presentations and Talks",
+   "url": "/notes/presentations/",
+   "date": "2026-07-25",
+   "added": true
+  },
+  {
    "title": "Cheatsheet — Lecture 10: Policy Gradient Methods",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture10-policy-gradients/",
    "date": "2026-07-23",
@@ -167,18 +179,6 @@
    "url": "/subpages/stuff_i_found_interesting/gramian_in_infinite_dim/",
    "date": "2026-06-27",
    "added": true
-  },
-  {
-   "title": "The Variational Principles of Mechanics — Cornelius Lanczos",
-   "url": "/subpages/books/the_variational_principles_of_mechanics/",
-   "date": "2026-06-25",
-   "added": false
-  },
-  {
-   "title": "Mathematical Analysis (Klazar) — Semester 1",
-   "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
-   "date": "2026-06-24",
-   "added": false
   }
  ]
 }
