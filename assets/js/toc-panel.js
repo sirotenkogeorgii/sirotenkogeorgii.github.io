@@ -325,6 +325,99 @@
     return { syncTo: syncTo, expandAll: expandAll, restore: restore, setExpanded: setExpanded };
   }
 
+  var CLOSE_DELAY = 250;
+  var PIN_QUERY = '(min-width: 1600px)';
+  var MOBILE_QUERY = '(max-width: 899px)';
+
+  function createReveal(instance, doc) {
+    var rootEl = doc.documentElement;
+    var pinMedia = window.matchMedia(PIN_QUERY);
+    var mobileMedia = window.matchMedia(MOBILE_QUERY);
+    var timer = 0;
+
+    function mode() {
+      if (mobileMedia.matches) return 'mobile';
+      if (pinMedia.matches) return 'pinned';
+      return 'overlay';
+    }
+
+    function applyMode() {
+      var next = mode();
+      rootEl.setAttribute('data-toc-mode', next);
+      if (next === 'pinned') {
+        rootEl.setAttribute('data-toc-open', 'true');
+      } else if (rootEl.getAttribute('data-toc-open') !== 'true') {
+        rootEl.setAttribute('data-toc-open', 'false');
+      }
+    }
+
+    function cancelClose() {
+      if (timer) { window.clearTimeout(timer); timer = 0; }
+    }
+
+    function open() {
+      cancelClose();
+      // A hover-triggered reveal should land at its final position on the
+      // same tick the caller observes data-toc-open flip to "true" — not
+      // mid-flight through .toc-panel's 0.22s CSS transition (Task 3).
+      // Suppress the transition for this one write, force the layout that
+      // commits it, then restore the stylesheet's transition so a later
+      // close() still eases out normally.
+      var panel = instance.panel;
+      var prevTransition = panel.style.transition;
+      panel.style.transition = 'none';
+      rootEl.setAttribute('data-toc-open', 'true');
+      void panel.offsetHeight;
+      panel.style.transition = prevTransition;
+    }
+
+    function close(immediate) {
+      cancelClose();
+      if (mode() === 'pinned') return;
+      if (immediate) {
+        rootEl.setAttribute('data-toc-open', 'false');
+      } else {
+        timer = window.setTimeout(function () {
+          timer = 0;
+          if (mode() !== 'pinned') rootEl.setAttribute('data-toc-open', 'false');
+        }, CLOSE_DELAY);
+      }
+    }
+
+    function toggle() {
+      if (rootEl.getAttribute('data-toc-open') === 'true') close(true);
+      else open();
+    }
+
+    instance.hotzone.addEventListener('mouseenter', function () {
+      if (mode() === 'mobile') return;
+      open();
+    });
+    instance.rail.addEventListener('mouseenter', function () {
+      if (mode() === 'mobile') return;
+      open();
+    });
+    instance.rail.addEventListener('mouseleave', function () { close(); });
+    instance.panel.addEventListener('mouseenter', cancelClose);
+    instance.panel.addEventListener('mouseleave', function () { close(); });
+
+    instance.listEl.addEventListener('click', function (event) {
+      if (!event.target.closest('.toc-panel__link')) return;
+      if (mode() !== 'pinned') close(true);
+    });
+
+    applyMode();
+    if (pinMedia.addEventListener) {
+      pinMedia.addEventListener('change', applyMode);
+      mobileMedia.addEventListener('change', applyMode);
+    } else if (pinMedia.addListener) {
+      pinMedia.addListener(applyMode);
+      mobileMedia.addListener(applyMode);
+    }
+
+    return { open: open, close: close, toggle: toggle, mode: mode };
+  }
+
   function init(doc) {
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
@@ -352,6 +445,7 @@
       filterEl: shell.filterEl
     };
     window.TocPanel.instance = instance;
+    instance.reveal = createReveal(instance, doc);
 
     var rails = renderTicks(shell.rail, entries, doc);
     instance.ticks = rails;
