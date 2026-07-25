@@ -353,7 +353,12 @@
   }
 
   var CLOSE_DELAY = 250;
-  var PIN_QUERY = '(min-width: 1600px)';
+  // 1660 = .wrapper's 1100px content column + a 280px panel on each side, so a
+  // pinned panel never overlaps the card. At the old 1600 the panel covered the
+  // rightmost 30px of the column and clipped anything overflowing it (wide
+  // tables, long code lines). Keep this in step with --toc-panel-width and
+  // .wrapper's max-width in site.css.
+  var PIN_QUERY = '(min-width: 1660px)';
   var MOBILE_QUERY = '(max-width: 899px)';
 
   function createReveal(instance, doc) {
@@ -382,6 +387,14 @@
       rootEl.setAttribute('data-toc-mode', next);
       if (next === 'pinned') {
         setOpen(true);
+      } else if (next === 'mobile') {
+        // Shrinking from pinned straight past 900px leaves data-toc-open
+        // "true", which in mobile means an open drawer *plus* the modal
+        // backdrop dimming and swallowing taps on the article. There is no
+        // mouse-leave to undo that on a touch device, so close explicitly.
+        // The overlay case is deliberately left alone: there the panel is
+        // hover-driven and closes on the next mouse-leave.
+        close(true);
       } else if (rootEl.getAttribute('data-toc-open') !== 'true') {
         setOpen(false);
       }
@@ -516,6 +529,9 @@
       apply(instance.filterEl.value);
     });
 
+    // Public hook, not dead code: no rule in site.css keys off
+    // data-toc-filtering; it is the page-level "a filter is running" signal
+    // for user styles and tests, and is asserted by tests/toc-filter.spec.mjs.
     rootEl.setAttribute('data-toc-filtering', 'false');
 
     return {
@@ -574,12 +590,22 @@
       });
     }
 
-    function highlight(index) {
-      var list = rows();
+    // The outline (data-kbd) and the cursor it indexes must always be dropped
+    // together. Leaving either behind across a close means the next session
+    // starts with a stale selection: a row is visibly outlined while Enter
+    // navigates to whatever now sits at the old cursor index in a row list
+    // that has since been rebuilt (filter cleared, branches re-collapsed).
+    function clearHighlight() {
       var previous = instance.listEl.querySelector('li[data-kbd="true"]');
       if (previous) previous.removeAttribute('data-kbd');
+      cursor = -1;
+    }
 
-      if (!list.length) { cursor = -1; return; }
+    function highlight(index) {
+      var list = rows();
+      clearHighlight();
+
+      if (!list.length) return;
 
       cursor = Math.max(0, Math.min(index, list.length - 1));
       var li = list[cursor].parentElement;
@@ -589,6 +615,7 @@
 
     function openForSearch() {
       invalidateRows();
+      clearHighlight();
       instance.reveal.open();
       instance.filterEl.focus();
       instance.filterEl.select();
@@ -604,7 +631,12 @@
         return;
       }
 
-      if ((event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
+      // Same !typing guard as the '/' branch above. Cmd/Ctrl+K must not be
+      // stolen from an input the reader is genuinely typing in either; that it
+      // has never misfired is an accident of deployment (the only page with a
+      // search box has no #markdown-toc, so this listener is never bound
+      // there), not a property of this code.
+      if (!typing && (event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
         event.preventDefault();
         openForSearch();
         return;
@@ -614,6 +646,7 @@
         if (instance.filter.active) instance.filter.clear();
         instance.reveal.close(true);
         invalidateRows();
+        clearHighlight();
         if (inFilter) instance.filterEl.blur();
         return;
       }
@@ -640,6 +673,12 @@
   }
 
   function init(doc) {
+    // Idempotent: a second call would build a second .toc-root, a second set
+    // of twisties inside the same <ul>, and a second scroll-spy/ResizeObserver
+    // pair fighting the first over data-active. No production path calls init
+    // twice, but nothing stopped one from doing so either.
+    if (window.TocPanel.instance) return window.TocPanel.instance;
+
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
     if (!tocRoot) return null;
@@ -653,10 +692,16 @@
     var shell = renderShell(doc);
     shell.bodyEl.appendChild(tocRoot);   // move, do not clone: MathJax typesets once
     doc.body.appendChild(shell.root);
+    // Public hook, not dead code: data-toc="on" is the page-level signal that
+    // the panel took over, for user styles/bookmarklets and for debugging a
+    // live page. No rule in site.css keys off it by design.
     doc.documentElement.setAttribute('data-toc', 'on');
 
     var instance = {
       entries: entries,
+      // Public hook, not dead code: nothing inside this module reads the tree
+      // (rendering reuses kramdown's own nesting), but buildTree is exported
+      // and pinned by tests as the model layer's shape contract.
       tree: buildTree(entries),
       root: shell.root,
       hotzone: shell.hotzone,
@@ -703,13 +748,31 @@
           rails.ticks[tickId].classList.toggle('toc-rail__tick--active', tickId === topId);
         });
 
-        instance.accordion.syncTo(id, topId);
+        // Only follow the reader's position while no filter is active. apply()
+        // force-expands every branch so deep matches are visible; syncTo()
+        // would immediately collapse everything outside the reader's own
+        // ancestor chain and take matched rows down with it. That fires from
+        // ordinary scrolling in pinned mode (where the panel is always open),
+        // and even with no scrolling at all when MathJax reflow re-measures.
+        // filter.clear() re-syncs against the reader's real position, so the
+        // accordion catches up the moment the filter is dropped.
+        if (!(instance.filter && instance.filter.active)) instance.accordion.syncTo(id, topId);
 
+        // Public hook, not dead code: no listener ships with the site; the
+        // event exists so page-level scripts can follow the active heading
+        // without reaching into instance internals.
         doc.dispatchEvent(new CustomEvent('toc:active', { detail: { id: id, topId: topId } }));
       },
       rails.position
     );
 
+    // Ordering constraint: createFilter must be wired before createKeyboard.
+    // Both attach an 'input' listener to the same filter field, and listeners
+    // fire in registration order. createFilter's marks the rows in or out;
+    // createKeyboard's then invalidates its row cache and calls highlight(0).
+    // Swapped, highlight(0) runs against the *previous* keystroke's visible
+    // set and outlines a row the query no longer matches. Nothing throws, so
+    // this fails silently — keep filter first.
     instance.filter = createFilter(instance, doc);
     instance.keyboard = createKeyboard(instance, doc);
 

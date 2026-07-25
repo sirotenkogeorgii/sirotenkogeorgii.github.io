@@ -14,7 +14,16 @@
     anchor.className = 'heading-anchor';
     anchor.href = '#' + heading.id;
     anchor.textContent = '¶';
-    anchor.setAttribute('aria-label', 'Copy link to this section');
+    // Hidden from assistive tech, and out of the tab order with it. The label
+    // used to join the heading's accessible name, so a screen reader announced
+    // every one of a long page's headings as "... Copy link to this section" —
+    // and heading navigation is the main way such a page is read. aria-hidden
+    // alone on a focusable element would be worse than the problem it fixes
+    // (a tab stop that announces nothing), hence tabindex="-1": the pilcrow is
+    // a mouse affordance, and its target stays reachable from the TOC panel
+    // and the address bar.
+    anchor.setAttribute('aria-hidden', 'true');
+    anchor.setAttribute('tabindex', '-1');
 
     var clearTimer = 0;
 
