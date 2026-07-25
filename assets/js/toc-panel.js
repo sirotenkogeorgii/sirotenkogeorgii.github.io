@@ -4,10 +4,12 @@
   var MIN_ENTRIES = 4;
 
   function stripMath(text) {
+    // Unwrap $...$ / $$...$$ delimiters and drop TeX punctuation ({ } ^ _ and the
+    // backslash itself), but keep the command name (e.g. "\pi" -> "pi", "\ell" ->
+    // "ell") so a heading rendered as $V^\pi$ is still findable by typing "pi".
     return String(text)
-      .replace(/\$\$?([^$]*)\$\$?/g, ' $1 ')
-      .replace(/\\[a-zA-Z]+/g, ' ')
-      .replace(/[\\{}^_$]/g, ' ')
+      .replace(/\$\$?/g, ' ')
+      .replace(/[\\{}^_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
@@ -25,6 +27,7 @@
 
   function collectEntries(tocRoot, doc) {
     var entries = [];
+    if (!tocRoot) return entries;
     var anchors = tocRoot.querySelectorAll('li > a[href^="#"]');
     for (var i = 0; i < anchors.length; i++) {
       var anchor = anchors[i];
