@@ -1995,7 +1995,19 @@ body.tag-graph-noscroll {
   border-left: 1px solid var(--line);
   box-shadow: var(--shadow);
   transform: translateX(100%);
-  transition: transform 0.22s ease;
+  /* translateX alone only moves the panel off screen: it stays visible to
+     hit-testing, to the tab order (hundreds of links on a long page, focused
+     with no visible indicator) and to screen readers, which read the whole
+     TOC after the footer. visibility:hidden removes all three.
+
+     The 0.22s slide is untouched in both directions. visibility is switched
+     rather than eased, with a delay equal to the slide, so the panel stays
+     visible for the whole slide-out and only hides once it has finished. The
+     open rule below cancels the delay so it turns visible immediately on the
+     way in — an *eased* visibility would still compute as hidden at t=0,
+     which makes .focus() on the filter (the '/' shortcut) silently fail. */
+  visibility: hidden;
+  transition: transform 0.22s ease, visibility 0s linear 0.22s;
 }
 
 .toc-panel__header {
@@ -2118,6 +2130,13 @@ body.tag-graph-noscroll {
 :root[data-toc-open="true"] .toc-panel,
 :root[data-toc-mode="pinned"] .toc-panel {
   transform: none;
+  visibility: visible;
+  /* Applies to both transitions; transform's delay was already 0s. Drops the
+     hide-after-the-slide delay above so the panel becomes visible (and so
+     focusable) in the same style recalc that opens it. Deliberately not the
+     `transition` shorthand: that would out-specify the reduced-motion
+     `transition: none` below and keep animating the open panel. */
+  transition-delay: 0s;
 }
 
 :root[data-toc-mode="pinned"] .toc-root__hotzone {
@@ -2237,10 +2256,19 @@ body.tag-graph-noscroll {
 }
 
 @media print {
+  /* The panel's shell is appended to <body>, so in source order it lands
+     after the footer. Order the body's children so the TOC prints as a block
+     at the top of the document, ahead of the article. */
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
   .toc-root {
     position: static;
     width: auto;
     pointer-events: auto;
+    order: -1;
   }
 
   .toc-rail,
@@ -2263,6 +2291,10 @@ body.tag-graph-noscroll {
     border: 0;
     background: transparent;
     display: block;
+    /* Printing happens in whatever state the panel is in, which in overlay
+       mode is closed — i.e. visibility:hidden. Without this the printed TOC
+       silently disappears. */
+    visibility: visible;
   }
 
   .toc-panel__body {
