@@ -2092,3 +2092,25 @@ body.tag-graph-noscroll {
 .toc-panel__item--branch[data-expanded="true"] > .toc-panel__twisty::before {
   transform: rotate(90deg);
 }
+
+.toc-rail__tick {
+  position: absolute;
+  right: 7px;
+  width: 6px;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--line);
+  transition: width 0.18s ease, background 0.18s ease;
+}
+
+.toc-rail__tick--active {
+  width: 13px;
+  background: var(--accent);
+}
+
+.toc-panel__item[data-active="true"] > .toc-panel__link {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-muted);
+}

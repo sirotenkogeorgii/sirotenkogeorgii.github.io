@@ -142,6 +142,107 @@
     return { root: root, hotzone: hotzone, rail: rail, panel: panel, filterEl: filter, bodyEl: body };
   }
 
+  function createScrollSpy(entries, contentEl, onChange) {
+    var offsets = [];
+    var activeId = null;
+    var frame = 0;
+
+    function measure() {
+      offsets = entries.map(function (entry) {
+        return {
+          id: entry.id,
+          top: entry.headingEl.getBoundingClientRect().top + window.pageYOffset
+        };
+      });
+      offsets.sort(function (a, b) { return a.top - b.top; });
+    }
+
+    function pick() {
+      frame = 0;
+      if (!offsets.length) return;
+
+      var probe = window.pageYOffset + window.innerHeight * 0.2;
+      var found = offsets[0].id;
+      for (var i = 0; i < offsets.length; i++) {
+        if (offsets[i].top <= probe) found = offsets[i].id;
+        else break;
+      }
+
+      var atBottom =
+        window.innerHeight + window.pageYOffset >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom) found = offsets[offsets.length - 1].id;
+
+      if (found !== activeId) {
+        activeId = found;
+        onChange(found);
+      }
+    }
+
+    function schedule() {
+      if (!frame) frame = window.requestAnimationFrame(pick);
+    }
+
+    measure();
+    pick();
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', function () { measure(); schedule(); });
+
+    // MathJax reflows the page long after load; watch the content box rather
+    // than depending on MathJax's own promises.
+    if (window.ResizeObserver && contentEl) {
+      new window.ResizeObserver(function () { measure(); schedule(); }).observe(contentEl);
+    }
+
+    return {
+      measure: measure,
+      refresh: function () { measure(); pick(); },
+      get activeId() { return activeId; }
+    };
+  }
+
+  function renderTicks(railEl, entries, doc) {
+    var ticks = {};
+    entries.forEach(function (entry) {
+      if (entry.level !== 1) return;
+      var tick = doc.createElement('span');
+      tick.className = 'toc-rail__tick';
+      tick.setAttribute('data-toc-id', entry.id);
+      railEl.appendChild(tick);
+      ticks[entry.id] = tick;
+    });
+
+    function position() {
+      var height = Math.max(document.documentElement.scrollHeight, 1);
+      Object.keys(ticks).forEach(function (id) {
+        var heading = document.getElementById(id);
+        if (!heading) return;
+        var top = heading.getBoundingClientRect().top + window.pageYOffset;
+        var pct = Math.min(100, Math.max(0, (top / height) * 100));
+        ticks[id].style.top = pct.toFixed(3) + '%';
+      });
+    }
+
+    position();
+    return { ticks: ticks, position: position };
+  }
+
+  function topLevelAncestorId(listEl, id) {
+    var li = listEl.querySelector('li[data-toc-id="' + cssEscape(id) + '"]');
+    var top = null;
+    while (li && li !== listEl) {
+      if (li.tagName === 'LI' && li.hasAttribute('data-toc-id')) top = li;
+      li = li.parentElement;
+    }
+    return top ? top.getAttribute('data-toc-id') : null;
+  }
+
+  function cssEscape(value) {
+    if (window.CSS && window.CSS.escape) return window.CSS.escape(value);
+    return String(value).replace(/["\\]/g, '\\$&');
+  }
+
   function init(doc) {
     doc = doc || document;
     var tocRoot = doc.getElementById('markdown-toc');
@@ -169,6 +270,30 @@
       filterEl: shell.filterEl
     };
     window.TocPanel.instance = instance;
+
+    var rails = renderTicks(shell.rail, entries, doc);
+    instance.ticks = rails;
+
+    instance.spy = createScrollSpy(
+      entries,
+      doc.querySelector('.page-content') || doc.body,
+      function (id) {
+        var previous = instance.listEl.querySelector('li[data-active="true"]');
+        if (previous) previous.removeAttribute('data-active');
+
+        var current = instance.listEl.querySelector('li[data-toc-id="' + cssEscape(id) + '"]');
+        if (current) current.setAttribute('data-active', 'true');
+
+        var topId = topLevelAncestorId(instance.listEl, id);
+        Object.keys(rails.ticks).forEach(function (tickId) {
+          rails.ticks[tickId].classList.toggle('toc-rail__tick--active', tickId === topId);
+        });
+
+        rails.position();
+        doc.dispatchEvent(new CustomEvent('toc:active', { detail: { id: id, topId: topId } }));
+      }
+    );
+
     return instance;
   }
 
