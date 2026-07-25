@@ -2127,3 +2127,55 @@ body.tag-graph-noscroll {
 :root[data-toc-open="true"] .toc-rail__tick {
   opacity: 0;
 }
+
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+.toc-fab {
+  display: none;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 1;
+}
+
+:root[data-toc-mode="mobile"] .toc-rail,
+:root[data-toc-mode="mobile"] .toc-root__hotzone {
+  display: none;
+}
+
+:root[data-toc-mode="mobile"] .toc-fab {
+  display: flex;
+}
+
+:root[data-toc-mode="mobile"] .toc-root {
+  width: min(320px, 85vw);
+}
+
+:root[data-toc-mode="mobile"][data-toc-open="true"] .toc-backdrop {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+:root[data-toc-mode="mobile"][data-toc-open="true"] .toc-fab {
+  display: none;
+}

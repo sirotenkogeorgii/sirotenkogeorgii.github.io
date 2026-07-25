@@ -139,7 +139,34 @@
     root.appendChild(rail);
     root.appendChild(panel);
 
-    return { root: root, hotzone: hotzone, rail: rail, panel: panel, filterEl: filter, bodyEl: body };
+    var backdrop = doc.createElement('div');
+    backdrop.className = 'toc-backdrop';
+
+    var fab = doc.createElement('button');
+    fab.type = 'button';
+    fab.className = 'toc-fab';
+    fab.setAttribute('aria-expanded', 'false');
+    fab.setAttribute('aria-label', 'Open table of contents');
+    fab.innerHTML =
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">' +
+      '<line x1="4" y1="7" x2="20" y2="7"></line>' +
+      '<line x1="4" y1="12" x2="20" y2="12"></line>' +
+      '<line x1="4" y1="17" x2="14" y2="17"></line></svg>';
+
+    root.insertBefore(backdrop, panel);
+    root.appendChild(fab);
+
+    return {
+      root: root,
+      hotzone: hotzone,
+      rail: rail,
+      panel: panel,
+      filterEl: filter,
+      bodyEl: body,
+      backdrop: backdrop,
+      fab: fab
+    };
   }
 
   function createScrollSpy(entries, contentEl, onChange, onMeasure) {
@@ -341,13 +368,22 @@
       return 'overlay';
     }
 
+    function setOpen(next) {
+      rootEl.setAttribute('data-toc-open', next ? 'true' : 'false');
+      instance.fab.setAttribute('aria-expanded', next ? 'true' : 'false');
+      instance.fab.setAttribute(
+        'aria-label',
+        next ? 'Close table of contents' : 'Open table of contents'
+      );
+    }
+
     function applyMode() {
       var next = mode();
       rootEl.setAttribute('data-toc-mode', next);
       if (next === 'pinned') {
-        rootEl.setAttribute('data-toc-open', 'true');
+        setOpen(true);
       } else if (rootEl.getAttribute('data-toc-open') !== 'true') {
-        rootEl.setAttribute('data-toc-open', 'false');
+        setOpen(false);
       }
     }
 
@@ -357,18 +393,18 @@
 
     function open() {
       cancelClose();
-      rootEl.setAttribute('data-toc-open', 'true');
+      setOpen(true);
     }
 
     function close(immediate) {
       cancelClose();
       if (mode() === 'pinned') return;
       if (immediate) {
-        rootEl.setAttribute('data-toc-open', 'false');
+        setOpen(false);
       } else {
         timer = window.setTimeout(function () {
           timer = 0;
-          if (mode() !== 'pinned') rootEl.setAttribute('data-toc-open', 'false');
+          if (mode() !== 'pinned') setOpen(false);
         }, CLOSE_DELAY);
       }
     }
@@ -395,6 +431,9 @@
       if (!link) return;
       if (mode() !== 'pinned') close(true);
     });
+
+    instance.fab.addEventListener('click', function () { toggle(); });
+    instance.backdrop.addEventListener('click', function () { close(true); });
 
     applyMode();
     if (pinMedia.addEventListener) {
@@ -432,7 +471,9 @@
       rail: shell.rail,
       panel: shell.panel,
       listEl: tocRoot,
-      filterEl: shell.filterEl
+      filterEl: shell.filterEl,
+      backdrop: shell.backdrop,
+      fab: shell.fab
     };
     window.TocPanel.instance = instance;
     // Must run before renderTicks/createAccordion/createScrollSpy below: they
