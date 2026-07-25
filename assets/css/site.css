@@ -2225,3 +2225,62 @@ body.tag-graph-noscroll {
   font-size: 0.85em;
   letter-spacing: 0.04em;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-panel,
+  .toc-rail__tick,
+  .toc-backdrop,
+  .heading-anchor,
+  .toc-panel__twisty::before {
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media print {
+  .toc-root {
+    position: static;
+    width: auto;
+    pointer-events: auto;
+  }
+
+  .toc-rail,
+  .toc-root__hotzone,
+  .toc-fab,
+  .toc-backdrop,
+  .toc-panel__header,
+  .toc-panel__filter,
+  .toc-panel__twisty,
+  .heading-anchor {
+    display: none !important;
+  }
+
+  .toc-panel {
+    position: static;
+    width: auto;
+    transform: none;
+    transition: none;
+    box-shadow: none;
+    border: 0;
+    background: transparent;
+    display: block;
+  }
+
+  .toc-panel__body {
+    overflow: visible;
+    padding: 0;
+  }
+
+  /* Printing must show the whole tree regardless of accordion state. */
+  .toc-panel__item--branch[data-expanded="false"] > .toc-panel__sublist,
+  .toc-panel__item[data-filtered="out"] {
+    display: block;
+  }
+}
