@@ -1,3 +1,7 @@
+**Table of Contents**
+- TOC
+{:toc}
+
 ## Abstract
 
 Solovay reducibility is studied intensively as a tool to compare the approximability and the degree of randomness of left-c.e. reals. By definition, a real is left-c.e. if it has a left-c.e. approximation, that is, it is the limit of an effective nondecreasing sequence of rationals. If reals $\alpha$ and $\beta$ have left-c.e. approximations $a_0,a_1,\ldots$ and $b_0,b_1,\ldots$, respectively, such that the approximation ratios

@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-07-26",
+   "added": false
+  },
+  {
    "title": "MCU 2026: S2a-reducibility and differentiation in Martin-Löf random reals",
    "url": "/subpages/presentations/conferences/mcu_2026/",
    "date": "2026-07-25",
@@ -89,12 +95,6 @@
    "url": "/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/",
    "date": "2026-07-15",
    "added": true
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-07-14",
-   "added": false
   },
   {
    "title": "Metropolis-Hastings Algorithm",

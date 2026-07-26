@@ -5418,9 +5418,7 @@ Hence the enumerated lower bounds are cofinal below $\alpha$. Taking the running
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Properties of the Solovay reducibility on $\mathbb{R}$ (3))</span></p>
 
-Show that $\alpha \leq_S \beta$ implies that
-
-$$K(\alpha \upharpoonright n) \leq K(\beta \upharpoonright n) - O(1).$$
+$$\alpha \leq_S \beta \implies K(\alpha \upharpoonright n) \leq K(\beta \upharpoonright n) - O(1).$$
 
 </div>
 
@@ -5596,100 +5594,6 @@ for any left-c.e. real $\alpha$, including the computable ones.
 <summary>Solution</summary>
 
 TODO: have no idea
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals)</span></p>
-
-Let $\alpha$ and $\beta$ be two left-c.e. reals such that
-
-$$K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to_{n \to \infty} \infty.$$
-
-Show that
-
-$$\alpha \leq_S \beta.$$
-
-*Hint: fix two left-c.e. approximations $(a_i)\_{i \in \mathbb{N}}$ and $(b_i)\_{i \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Then, given an optimal prefix-free code $\tau$ of $\alpha \upharpoonright n$, we can compute the first index $s$ such that*
-
-$$a_s \upharpoonright n = \alpha \upharpoonright n.$$
-
-*What do we know about $b_s$?*
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (1))</span></p>
-
-Recall that the left derivation on a function $f$ in a point $x$ is defined by
-
-$$f^{(l)}(x) := \lim_{y \nearrow x} \frac{g(x)-g(y)}{x-y}.$$
-
-Let $g$ be a monotone nondecreasing piecewise linear function from $[0,\beta]$ to $[0,\alpha]$, where $\alpha,\beta \in (0,1)$.
-
-Show that
-
-$$\lambda\lbrace x \in [0,\beta) : g^{(l)}(x) > 2^k\rbrace < 2^{-k}$$
-
-for every natural number $k$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (2))</span></p>
-
-Let $(a_n)\_{n \in \mathbb{N}}$ and $(b_n)\_{n \in \mathbb{N}}$, where $a_0 = b_0 = 0$, be two left-c.e. approximations of $\alpha \in (0,1)$ and $\beta \in (0,1)$, respectively.
-
-Show that the family of c.e. open sets
-
-$$L = (L_1, L_2, \dots)$$
-
-defined by
-
-$$x \in L_i \iff \exists m,n \left( b_n < x \text{ and } \frac{a_m - a_n}{x - b_n} > 2^k \right)$$
-
-is a Martin-Löf test.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (3))</span></p>
-
-Let $\alpha$ be a left-c.e. real and $\beta$ be Martin-Löf random left-c.e. real. Show that
-
-$$\alpha \leq_S \beta.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
 
 </details>
 </div>
@@ -6000,64 +5904,6 @@ Show that there exists no universal Schnorr test.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (1))</span></p>
-
-For two c.a. reals $\alpha$ and $\beta$, we say that $\alpha$ is **$S2a$-reducible** to a real $\beta$, written
-
-$$\alpha \leq^{2a}_S \beta,$$
-
-if there exist a constant $c$ and two computable approximations
-
-$$(a_n)_{n \in \mathbb{N}} \qquad\text{and}\qquad (b_n)_{n \in \mathbb{N}}$$
-
-such that
-
-$$|\alpha - a_n| < c\left(|\beta - b_n| + 2^{-n}\right)$$
-
-for all $n$.
-
-Show that $\leq^{2a}\_S$ is transitive.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (2))</span></p>
-
-Show that, on the set of left-c.e. reals, $\leq^{2a}\_S$ is equivalent to $\leq_S$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The $S2a$ reducibility (3))</span></p>
-
-Show that $\leq^{2a}\_S$ implies $\leq_K$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(D.c.e. reals (1))</span></p>
@@ -6221,7 +6067,14 @@ By the speed-of-convergence characterization (iv) of Proposition 7.2, this synch
   <figcaption>Proposition 7.4 as a weight transfer. Every program $\sigma$ of the prefix-free machine $\widetilde M$ with $\alpha = \sum_\sigma 2^{-l(\sigma)}$ reappears inside $\operatorname{dom}(\widetilde U)$ as $i\sigma$, carrying $2^{-e}$ times its weight (blue); the universal machine also has programs of its own (gray). The $\alpha$-weight still missing at stage $s$ consists exactly of the blue $\Omega$-weight not yet enumerated, so $\alpha - a_s \le 2^e(\Omega - w_s)$: the tail of $\alpha$ is dominated by a constant multiple of the tail of $\Omega$, which is precisely a Solovay reduction.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Martin-Löf random left-c.e. reals form the greatest $\le$-degree)</span></p>
+
 For a reflexive and transitive relation $\le$ on a set $X$, the **greatest $\le$-degree** on $X$, if it exists, consists of all elements $x \in X$ such that $y \le x$ for every $y \in X$. We now show that the greatest $\le\_S$-degree on the set of left-c.e. reals exists and contains exactly the Martin-Löf random left-c.e. reals.
+
+</div>
+
+TODO: what about general ML random reals, not left-c.e.?
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(7.5 — Random left-c.e. reals are Solovay-complete)</span></p>
@@ -6234,7 +6087,110 @@ For every two left-c.e. reals $\alpha$ and $\beta$ where $\beta$ is Martin-Löf 
 <details markdown="1">
 <summary>Proof</summary>
 
-Sheet 6, Exercise 4 — the argument is developed step by step in the exercises *Kučera–Slaman theorem (1)–(3)* above.
+Recall that the left derivation on a function $f$ in a point $x$ is defined by
+
+$$f^{(l)}(x) := \lim_{y \nearrow x} \frac{f(x)-f(y)}{x-y}.$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (1))</span></p>
+
+Let $g$ be a monotone nondecreasing piecewise linear function from $[0,\beta]$ to $[0,\alpha]$, where $\alpha,\beta \in (0,1)$.
+
+Show that
+
+$$\lambda\lbrace x \in [0,\beta) : g^{(l)}(x) > 2^k\rbrace < 2^{-k}$$
+
+for every natural number $k$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Write the pieces of $g$ as
+
+$$0=x_0<\cdots<x_r=\beta$$
+
+with slope $s_i\ge 0$ on $[x_{i-1},x_i]$. For $x\in(x_{i-1},x_i]$, the left difference quotients are eventually computed inside the $i$-th piece, so
+
+$$g^{(l)}(x)=s_i.$$
+
+Hence, with
+
+$$I:=\lbrace i:s_i>2^k\rbrace,$$
+
+the set
+
+$$E:=\lbrace x\in[0,\beta):g^{(l)}(x)>2^k\rbrace$$
+
+agrees with
+
+$$\bigcup_{i\in I}(x_{i-1},x_i]$$
+
+up to finitely many points, and by Markov’s inequality for the Stieltjes measure $dg$,
+
+$$
+\begin{aligned}
+2^k\lambda(E)
+&=\sum_{i\in I}2^k(x_i-x_{i-1}) \
+&\le \sum_{i\in I}s_i(x_i-x_{i-1}) \
+&=\sum_{i\in I}\bigl(g(x_i)-g(x_{i-1})\bigr) \\
+&\le g(\beta)-g(0) \\
+&\le \alpha<1,
+\end{aligned}
+$$
+
+using monotonicity of $g$ for the second-to-last inequality. Thus
+
+$$\lambda(E)\le 2^{-k}\alpha<2^{-k}.$$
+
+The bound $2^{-k}\alpha$ is sharp in the limit, with slopes decreasing to $2^k$ and exhausting the full rise $\alpha$; strictness against $2^{-k}$ comes precisely from $\alpha<1$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (2))</span></p>
+
+Let $(a_n)\_{n \in \mathbb{N}}$ and $(b_n)\_{n \in \mathbb{N}}$, where $a_0 = b_0 = 0$, be two left-c.e. approximations of $\alpha \in (0,1)$ and $\beta \in (0,1)$, respectively.
+
+Show that the family of c.e. open sets
+
+$$L = (L_1, L_2, \dots)$$
+
+defined by
+
+$$x \in L_i \iff \exists m,n \left( b_n < x \text{ and } \frac{a_m - a_n}{x - b_n} > 2^k \right)$$
+
+is a Martin-Löf test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Kučera–Slaman theorem (3))</span></p>
+
+Let $\alpha$ be a left-c.e. real and $\beta$ be Martin-Löf random left-c.e. real. Show that
+
+$$\alpha \leq_S \beta.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
 
 </details>
 </div>
@@ -6325,7 +6281,16 @@ On the left-c.e. reals, the Kučera–Slaman theorem turns Martin-Löf randomnes
 
 ## Relative Randomness and Relative Complexity
 
-This section explains some close connections between Solovay reducibility and the relative complexity of reals. Solovay reducibility compares two reals by how well rational lower bounds for one can be converted into rational lower bounds for the other. Kolmogorov complexity suggests a different, prefix-by-prefix comparison: $\alpha$ should count as "no more random" than $\beta$ if the initial segments of $\alpha$ are no harder to describe than those of $\beta$. The next two definitions make the second idea precise, and the theorem that follows shows how closely the two comparisons are aligned.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Relative Randomness and Relative Complexity)</span></p>
+
+This section explains some close connections between **Solovay reducibility** and the **relative complexity of reals**:
+* **Solovay reducibility** compares two reals by how well rational lower bounds for one can be converted into rational lower bounds for the other. 
+* **Kolmogorov complexity** suggests a different, prefix-by-prefix comparison: 
+  * $\alpha$ should count as "no more random" than $\beta$ if the initial segments of $\alpha$ are no harder to describe than those of $\beta$. 
+The next two definitions make the second idea precise, and the theorem that follows shows how closely the two comparisons are aligned.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(8.1 — Kolmogorov reducibility, strong Kolmogorov reducibility)</span></p>
@@ -6394,6 +6359,33 @@ Both definitions strengthen a bounded comparison into a vanishing one. Ordinary 
   </svg>
   <figcaption>Ordinary versus strong Solovay reducibility. In both cases the computable map $g$ turns rational lower bounds $q < \beta$ into rational lower bounds $g(q) < \alpha$; the difference lies in the behaviour of the gap ratio $(\alpha - g(q))/(\beta - q)$. For $\alpha \le_S \beta$ (Definition 7.1) the ratio merely stays below a fixed constant $c$, however good the lower bound $q$ becomes; for $\alpha \ll_S \beta$ (Definition 8.2) it must vanish as $q \nearrow \beta$.</figcaption>
 </figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals)</span></p>
+
+Let $\alpha$ and $\beta$ be two left-c.e. reals such that
+
+$$K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to_{n \to \infty} \infty.$$
+
+Show that
+
+$$\alpha \leq_S \beta.$$
+
+*Hint: fix two left-c.e. approximations $(a_i)\_{i \in \mathbb{N}}$ and $(b_i)\_{i \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Then, given an optimal prefix-free code $\tau$ of $\alpha \upharpoonright n$, we can compute the first index $s$ such that*
+
+$$a_s \upharpoonright n = \alpha \upharpoonright n.$$
+
+*What do we know about $b_s$?*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(8.3 — Solovay reducibility sits between the complexity reducibilities)</span></p>
@@ -6490,3 +6482,1135 @@ A weaker version of the last implication — that $\alpha \ll\_K \beta$ implies 
 
 $$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
 
+## Universal Randomness Tests
+
+Every randomness notion we have met so far is defined by *quantifying over tests*: a sequence is Martin-Löf nonrandom if **some** Martin-Löf test covers it, Schnorr nonrandom if **some** Schnorr test covers it. A natural question is whether that quantifier can be eliminated — whether one single test already detects every nonrandom sequence.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Why universal tests matter)</span></p>
+
+Suppose a randomness notion $X$ admits one distinguished test $T$ that every $X$-nonrandom sequence fails. Then the infinite quantifier "for **all** $X$-tests $T^{\prime}$, the sequence passes $T^{\prime}$" collapses to the single condition "the sequence passes $T$", and randomness becomes a property one can *construct against*:
+
+* to **build** an $X$-random real, it suffices to build a real that survives the one test $T$;
+* to **certify** a real as $X$-random, it suffices to check it against $T$;
+* the class of $X$-nonrandom sequences becomes a single effectively presented null set, rather than a countable union of them presented only indirectly.
+
+This section determines for which of our randomness notions such a distinguished test exists. The answer separates the notions sharply: Martin-Löf randomness and Solovay tests admit universal tests, Schnorr randomness does not.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Universal randomness test)</span></p>
+
+For a randomness notion $X$, an $X$-randomness test $T$ is called **universal** if *all* $X$-nonrandom sequences fail $T$.
+
+</div>
+
+Note that the converse inclusion is automatic: whatever fails an $X$-test is $X$-nonrandom by definition. So a universal test is one whose failure set is *exactly* the set of $X$-nonrandom sequences.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.1 — Existence of a universal Martin-Löf test)</span></p>
+
+There exists a universal Martin-Löf test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Step 1: an effective list of all candidates.** Let
+
+$$U^0 = (U^0_1, U^0_2, \dots), \quad U^1 = (U^1_1, U^1_2, \dots), \quad \dots$$
+
+be a computable enumeration of *all* uniformly c.e. sequences of open sets — for instance, obtained by letting $U^p$ be the sequence of open sets generated by the $p$-th c.e. set of pairs $(\sigma, j)$ under the reading "$\sigma$ is enumerated into layer $j$". This list contains inter alia all Martin-Löf tests, but it also contains a great deal of junk: nothing forces $\lambda(U^p\_j) \le 2^{-j}$.
+
+**Step 2: trimming the junk away.** From this enumeration we compute an enumeration of Martin-Löf tests
+
+$$L^0 = (L^0_1, L^0_2, \dots), \quad L^1 = (L^1_1, L^1_2, \dots), \quad \dots$$
+
+as follows. To enumerate the layer $L^p\_j$, run the enumeration of $U^p\_j$ and add the basic cylinders it produces one at a time, but *before* adding a new cylinder check whether the measure of the finite union built so far would exceed $2^{-j}$; if it would, stop the enumeration of that layer permanently. The check is a comparison of finitely many dyadic rationals, hence decidable, so the family $(L^p\_j)\_{p,j}$ is again uniformly c.e., and by construction
+
+$$\lambda(L^p_j) \le 2^{-j} \qquad \text{for all } p, j.$$
+
+Thus every $L^p$ is a Martin-Löf test. Moreover, if $U^p$ *was* already a Martin-Löf test, then the measure bound was never violated and no cylinder was ever discarded, so $L^p = U^p$. Hence $L^0, L^1, \dots$ enumerates **all** Martin-Löf tests (each of them appears, possibly alongside harmless trimmed copies of non-tests).
+
+**Step 3: the diagonal union.** Define a sequence of open sets $\bar L = (\bar L\_0, \bar L\_1, \dots)$ by
+
+$$\bar L_i := L^0_{i+1} \cup L^1_{i+2} \cup L^2_{i+3} \cup \dots = \bigcup_{p \ge 0} L^p_{i+p+1} \qquad \text{for every } i.$$
+
+Each $\bar L\_i$ is c.e. open uniformly in $i$, since the family $(L^p\_j)\_{p,j}$ is uniformly c.e. and the index shift $j = i + p + 1$ is computable. For the measure, subadditivity gives
+
+$$\lambda(\bar L_i) \;\le\; \lambda(L^0_{i+1}) + \lambda(L^1_{i+2}) + \lambda(L^2_{i+3}) + \dots \;\le\; 2^{-(i+1)} + 2^{-(i+2)} + 2^{-(i+3)} + \dots \;=\; 2^{-i};$$
+
+thus $\bar L$ is a Martin-Löf test. The shift $p \mapsto i + p + 1$ is exactly what pays for the union: the $p$-th test only contributes its $(i+p+1)$-st — that is, an exponentially thin — layer.
+
+**Step 4: universality.** Let $A$ be a Martin-Löf nonrandom sequence. Since $L^0, L^1, \dots$ enumerates all Martin-Löf tests, there is an index $p$ such that $A$ fails $L^p$, i.e. $A \in L^p\_j$ for *every* $j$. In particular, for every $i$ we have $A \in L^p\_{i+p+1} \subseteq \bar L\_i$. So $A$ lies in every layer of $\bar L$, i.e. $A$ fails the Martin-Löf test $\bar L$. $\square$
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="The universal Martin-Löf test as a shifted diagonal through the table of all Martin-Löf tests">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">Building the layer L̄₁ of the universal test</text>
+
+      <!-- column headers -->
+      <text x="150" y="60" text-anchor="middle" font-size="11" fill="#5b6270">layer 1</text>
+      <text x="255" y="60" text-anchor="middle" font-size="11" fill="#5b6270">layer 2</text>
+      <text x="360" y="60" text-anchor="middle" font-size="11" fill="#5b6270">layer 3</text>
+      <text x="465" y="60" text-anchor="middle" font-size="11" fill="#5b6270">layer 4</text>
+      <text x="570" y="60" text-anchor="middle" font-size="11" fill="#5b6270">layer 5</text>
+
+      <!-- row headers -->
+      <text x="82" y="92" text-anchor="end" font-size="11" fill="#5b6270">test L⁰</text>
+      <text x="82" y="142" text-anchor="end" font-size="11" fill="#5b6270">test L¹</text>
+      <text x="82" y="192" text-anchor="end" font-size="11" fill="#5b6270">test L²</text>
+      <text x="82" y="242" text-anchor="end" font-size="11" fill="#5b6270">test L³</text>
+
+      <!-- grid of cells -->
+      <g fill="none" stroke="#cbd2e0" stroke-width="1">
+        <rect x="98" y="72" width="104" height="30" rx="4" />
+        <rect x="203" y="72" width="104" height="30" rx="4" />
+        <rect x="308" y="72" width="104" height="30" rx="4" />
+        <rect x="413" y="72" width="104" height="30" rx="4" />
+        <rect x="518" y="72" width="104" height="30" rx="4" />
+
+        <rect x="98" y="122" width="104" height="30" rx="4" />
+        <rect x="203" y="122" width="104" height="30" rx="4" />
+        <rect x="308" y="122" width="104" height="30" rx="4" />
+        <rect x="413" y="122" width="104" height="30" rx="4" />
+        <rect x="518" y="122" width="104" height="30" rx="4" />
+
+        <rect x="98" y="172" width="104" height="30" rx="4" />
+        <rect x="203" y="172" width="104" height="30" rx="4" />
+        <rect x="308" y="172" width="104" height="30" rx="4" />
+        <rect x="413" y="172" width="104" height="30" rx="4" />
+        <rect x="518" y="172" width="104" height="30" rx="4" />
+
+        <rect x="98" y="222" width="104" height="30" rx="4" />
+        <rect x="203" y="222" width="104" height="30" rx="4" />
+        <rect x="308" y="222" width="104" height="30" rx="4" />
+        <rect x="413" y="222" width="104" height="30" rx="4" />
+        <rect x="518" y="222" width="104" height="30" rx="4" />
+      </g>
+
+      <!-- selected diagonal cells -->
+      <g fill="#e3f2fd" stroke="#1d4ed8" stroke-width="1.6">
+        <rect x="203" y="72" width="104" height="30" rx="4" />
+        <rect x="308" y="122" width="104" height="30" rx="4" />
+        <rect x="413" y="172" width="104" height="30" rx="4" />
+        <rect x="518" y="222" width="104" height="30" rx="4" />
+      </g>
+      <g font-size="11" fill="#1d4ed8" text-anchor="middle">
+        <text x="255" y="92">L⁰₂ ≤ 2⁻²</text>
+        <text x="360" y="142">L¹₃ ≤ 2⁻³</text>
+        <text x="465" y="192">L²₄ ≤ 2⁻⁴</text>
+        <text x="570" y="242">L³₅ ≤ 2⁻⁵</text>
+      </g>
+      <text x="640" y="272" text-anchor="middle" font-size="12" fill="#5b6270">⋱</text>
+
+      <!-- total -->
+      <line x1="98" y1="286" x2="622" y2="286" stroke="#cbd2e0" stroke-width="1" />
+      <text x="360" y="308" text-anchor="middle" font-size="12" fill="#a86f00">λ(L̄₁) ≤ 2⁻² + 2⁻³ + 2⁻⁴ + ⋯ = 2⁻¹</text>
+    </g>
+  </svg>
+  <figcaption>Theorem 9.1 in one picture. The rows are the (trimmed) Martin-Löf tests $L^0, L^1, L^2, \dots$; the columns are their layers. The $i$-th layer of the universal test collects the shifted diagonal $L^p_{i+p+1}$, drawn here for $i = 1$. The shift makes the measures a geometric series summing to exactly $2^{-i}$, so $\bar L$ is itself a Martin-Löf test; and since the $p$-th test contributes one of its layers to *every* $\bar L_i$, a sequence caught by $L^p$ is caught by all of $\bar L$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.2 — No universal Schnorr test)</span></p>
+
+There exists no universal Schnorr test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 8, Exercise 2 — carried out in the five-part exercise *No universal Schnorr test: a formal proof (1)–(5)* above. The decisive step is part (4): every Schnorr test is failed by some **computable** sequence, which can be computed from the test itself by a bisection argument on the exact, computable measures of its layers. Since computable sequences are Schnorr nonrandom but no single Schnorr test can catch all of them, no Schnorr test is universal. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the trimming trick fails for Schnorr tests)</span></p>
+
+The whole weight of Theorem 9.1 rests on Step 2 of its proof: an arbitrary uniformly c.e. sequence of open sets can be *effectively repaired* into a Martin-Löf test, because the defining condition
+
+$$\lambda(L_i) \le 2^{-i}$$
+
+is a **c.e. condition to violate** — the measure of a c.e. open set is approximable from below, so the moment the bound is exceeded we notice it and can stop. Nothing is lost, because a genuine test never triggers the stop.
+
+A Schnorr test demands the *exact* equality
+
+$$\lambda(L_i) = 2^{-i}$$
+
+with a computable measure. That is a $\Pi$-type requirement: no finite stage of an enumeration ever certifies it, and there is no way to repair a defective candidate into a Schnorr test by truncating it — truncating can only lower the measure, and lowering it below $2^{-i}$ breaks the test just as badly. So the list of all Schnorr tests is *not* effectively enumerable, the diagonal union of Theorem 9.1 cannot be formed, and — by Theorem 9.2 — no other construction can replace it either.
+
+</div>
+
+We now introduce a second style of test, in which the layers are replaced by a single sequence of intervals of finite total measure and "failing" means being hit infinitely often. This is a Borel–Cantelli reformulation of Martin-Löf randomness, and it is often the most convenient one in practice.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(9.3 — Solovay test, total Solovay test)</span></p>
+
+A **Solovay test** $S = (I\_0, I\_1, \dots)$ is a computable sequence of intervals with rational endpoints such that
+
+$$\sum_{i \in \mathbb{N}} \lambda(I_i) < \infty.$$
+
+A sequence $A$ **fails** the Solovay test $S$ if the real $0.A$ is contained in infinitely many $I\_i$.
+
+A Solovay test is called **total** iff $\sum\_{i \in \mathbb{N}} \lambda(I\_i)$ is a computable real.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Solovay tests versus Martin-Löf tests)</span></p>
+
+The two test formats trade the same information in opposite directions.
+
+* A **Martin-Löf test** is *stratified*: the layers are indexed, and the failure condition ("lies in every layer") refers to the index. The measure condition is imposed layer by layer.
+* A **Solovay test** is *unstratified*: there is one flat list of intervals, no layers, and the failure condition ("lies in infinitely many intervals") is purely combinatorial. The measure condition is imposed globally, as a single convergent series.
+
+By Borel–Cantelli, $\sum\_i \lambda(I\_i) < \infty$ already implies that the set of reals covered infinitely often is null; so a Solovay test is a null test by construction. Theorem 9.4 says that this apparently much weaker bookkeeping detects exactly the same nonrandom sequences. The gain is practical: to build a Solovay test one need not distribute one's intervals into layers of controlled measure, only keep one running total finite.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.4 — Solovay characterization of Martin-Löf randomness)</span></p>
+
+A sequence $A$ is Martin-Löf nonrandom iff it fails some Solovay test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**($\Longrightarrow$) From a Martin-Löf test to a Solovay test.** Suppose $A$ fails the Martin-Löf test $\bar L = (\bar L\_1, \bar L\_2, \dots)$, where for every $i$ the layer is generated by a uniformly c.e. set of words $L\_i = (\sigma^i\_0, \sigma^i\_1, \dots)$,
+
+$$\bar L_i = [[\sigma^i_0]] \;\dot\cup\; [[\sigma^i_1]] \;\dot\cup\; \dots,$$
+
+which we may take to be prefix-free and pairwise disjoint (the splitting device already used in the proof of Theorem 4.1), so that $\lambda(\bar L\_i) = \sum\_j 2^{-l(\sigma^i\_j)}$. Under the identification $[[\sigma]] \leftrightarrow [0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$ of cylinders with dyadic intervals, put
+
+$$I^i_j := \big[\,0.\sigma^i_j,\ 0.\sigma^i_j + 2^{-l(\sigma^i_j)}\,\big] \qquad \text{for all } i, j,$$
+
+and let $S$ be any computable enumeration of the doubly indexed family $(I^i\_j)\_{i,j}$, obtained by dovetailing:
+
+$$S := (I^0_0,\ I^1_0,\ I^0_1,\ I^2_0,\ I^0_2,\ I^1_1,\ I^3_0,\ \dots).$$
+
+Then $S$ is a Solovay test, since
+
+$$\sum_{i, j \in \mathbb{N}} \lambda(I^i_j) \;=\; \sum_{i \ge 1} \lambda(\bar L_i) \;\le\; \sum_{i \ge 1} 2^{-i} \;=\; 1 \;<\; \infty.$$
+
+Further, for every $i$ we have $A \in \bar L\_i$, so there exists some $\sigma^i\_j$ with $A \in [[\sigma^i\_j]]$ and thus $0.A \in I^i\_j$. As $i$ ranges over $\mathbb{N}$ these are infinitely many entries of the list $S$, so $0.A$ lies in infinitely many intervals of $S$, i.e. $A$ fails the Solovay test $S$.
+
+**($\Longleftarrow$) From a Solovay test to a Martin-Löf test.** Fix a Solovay test $S = ([l\_0, r\_0], [l\_1, r\_1], \dots)$ failed by a sequence $A$, and consider the real $\alpha := 0.A$. Since $\sum\_{i \in \mathbb{N}}(r\_i - l\_i) < \infty$, there exists an index $N$ such that
+
+$$\sum_{i \ge N}(r_i - l_i) < 1. \tag{33}$$
+
+If $\alpha$ is rational, then $\alpha$ is computable and therefore obviously Martin-Löf nonrandom. So assume $\alpha$ is irrational. Then $\alpha$ cannot coincide with the (rational) endpoint of any interval of $S$, so from the infinitely many intervals containing $\alpha$ we obtain infinitely many indices $i \ge N$ with $l\_i < \alpha < r\_i$ — that is, $\alpha$ lies in the *open* interval.
+
+**The multiplicity layers.** For every $i \ge 1$ define
+
+$$\bar L_i := \Big\lbrace x \in [0,1] \;:\; \#\lbrace j \ge N \,:\, x \in (l_j, r_j)\rbrace \ge 2^i \Big\rbrace,$$
+
+the set of points covered at least $2^i$ times by the tail of the test.
+
+**$\bar L$ is a uniformly c.e. sequence of open sets.** For every $n \ge N$ the finite-stage approximation
+
+$$\bar L^{(n)}_i := \Big\lbrace x \in [0,1] \;:\; \#\lbrace j \in \lbrace N, \dots, n\rbrace \,:\, x \in (l_j, r_j)\rbrace \ge 2^i \Big\rbrace$$
+
+is a finite union of open intervals with rational endpoints, computable from $n$ and $i$; and every interval with rational endpoints is computably transformed into a cylinder $[[\tau]]$ or a computable sequence of nodes $\tau\_1, \tau\_2, \dots$. So the sets $\bar L^{(n)}\_i$ are uniformly (in $n$ and $i$) c.e. open sets on Cantor space, and by
+
+$$\bar L_i = \bigcup_{n \ge N} \bar L^{(n)}_i$$
+
+the sequence $\bar L = (\bar L\_1, \bar L\_2, \dots)$ is a uniformly c.e. sequence of open sets as well.
+
+**$\bar L$ is a Martin-Löf test.** Let $F(x) := \#\lbrace j \ge N : x \in (l\_j, r\_j)\rbrace$ be the coverage-counting function, so that $\bar L\_i = \lbrace F \ge 2^i \rbrace$. Integrating $F$ term by term and applying Markov's inequality,
+
+$$2^i \, \lambda(\bar L_i) \;\le\; \int_0^1 F \, d\lambda \;=\; \sum_{j \ge N}(r_j - l_j) \;<\; 1$$
+
+by (33); hence $\lambda(\bar L\_i) < 2^{-i}$ for every $i$, and $\bar L$ is a well-defined Martin-Löf test.
+
+**$A$ fails it.** Finally, for every $i$ there exist infinitely many — and thus in particular more than $2^i$ — indices $j \ge N$ with $l\_j < \alpha < r\_j$, so $F(\alpha) = \infty$ and therefore $A \in \bar L\_i$ by construction. Hence $A$ fails the Martin-Löf test $\bar L$, i.e. $A$ is Martin-Löf nonrandom. $\square$
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="A Solovay test and the multiplicity layers built from it">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="24" text-anchor="middle" font-weight="600">From coverage multiplicity to Martin-Löf layers</text>
+
+      <!-- interval stack -->
+      <text x="40" y="56" font-size="11" fill="#5b6270">intervals of the test S, tail j ≥ N</text>
+      <g stroke-width="4" fill="none">
+        <line x1="90"  y1="74"  x2="330" y2="74"  stroke="#1d4ed8" />
+        <line x1="230" y1="92"  x2="500" y2="92"  stroke="#1d4ed8" />
+        <line x1="300" y1="110" x2="430" y2="110" stroke="#1d4ed8" />
+        <line x1="345" y1="128" x2="620" y2="128" stroke="#1d4ed8" />
+        <line x1="360" y1="146" x2="405" y2="146" stroke="#1d4ed8" />
+        <line x1="150" y1="164" x2="392" y2="164" stroke="#1d4ed8" />
+        <line x1="376" y1="182" x2="560" y2="182" stroke="#1d4ed8" />
+      </g>
+      <text x="640" y="200" text-anchor="middle" font-size="12" fill="#5b6270">⋮</text>
+
+      <!-- alpha marker -->
+      <line x1="384" y1="66" x2="384" y2="250" stroke="#b91c1c" stroke-width="1.6" stroke-dasharray="4 3" />
+      <circle cx="384" cy="250" r="4" fill="#b91c1c" />
+      <text x="384" y="270" text-anchor="middle" font-size="12" fill="#b91c1c">α = 0.A</text>
+
+      <!-- the unit interval -->
+      <line x1="60" y1="250" x2="650" y2="250" stroke="#444" stroke-width="1.2" />
+      <text x="60" y="268" text-anchor="middle" font-size="11" fill="#5b6270">0</text>
+      <text x="650" y="268" text-anchor="middle" font-size="11" fill="#5b6270">1</text>
+
+      <!-- layers -->
+      <g font-size="11">
+        <rect x="60" y="292" width="590" height="18" rx="3" fill="#ecfdf5" stroke="#3d7a26" stroke-width="1" />
+        <text x="70" y="305" fill="#3d7a26">L̄₁ = covered ≥ 2 times</text>
+        <text x="640" y="305" text-anchor="end" fill="#3d7a26">λ &lt; 2⁻¹</text>
+
+        <rect x="60" y="316" width="440" height="18" rx="3" fill="#fff7e0" stroke="#a86f00" stroke-width="1" />
+        <text x="70" y="329" fill="#a86f00">L̄₂ = covered ≥ 4 times</text>
+        <text x="490" y="329" text-anchor="end" fill="#a86f00">λ &lt; 2⁻²</text>
+
+        <rect x="60" y="340" width="240" height="18" rx="3" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1" />
+        <text x="70" y="353" fill="#7b1fa2">L̄₃ = covered ≥ 8 times</text>
+        <text x="290" y="353" text-anchor="end" fill="#7b1fa2">λ &lt; 2⁻³</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption>The backward direction of Theorem 9.4. A Solovay test is a flat list of rational intervals of finite total length; the real $\alpha = 0.A$ fails it when it is covered infinitely often. Grading the unit interval by *coverage multiplicity* recovers the missing layer structure: $\bar L_i$ is the set of points covered at least $2^i$ times by the tail $j \ge N$, which is c.e. open, has measure below $2^{-i}$ by Markov's inequality against the budget (33), and contains every infinitely-covered point — in particular $\alpha$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.5 — Existence of a universal Solovay test)</span></p>
+
+There exists a universal Solovay test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 8, Exercise 1 — the exercise *A universal Solovay test* above. Combine Theorem 9.1 with the forward direction of Theorem 9.4: apply the interval translation of that proof to the universal Martin-Löf test $\bar L$ of Theorem 9.1. The resulting Solovay test is failed by every sequence that fails $\bar L$, i.e. by every Martin-Löf nonrandom sequence. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.6 — Solovay characterization of Schnorr randomness)</span></p>
+
+A sequence is Schnorr nonrandom iff it fails some **total** Solovay test.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 9, Exercise 1. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading of Theorem 9.6, and a source correction)</span></p>
+
+The lecture notes state Theorem 9.6 as "a sequence is Schnorr **random** iff it fails some total Solovay test". As printed this contradicts the intended meaning: failing a test is what makes a sequence *non*random, exactly as in Theorem 9.4, whose statement Theorem 9.6 mirrors. The version above is the corrected one.
+
+Note also the perfect parallel between the two theorems and the two universality results:
+
+| test format | measure bookkeeping | characterizes | universal test? |
+|---|---|---|---|
+| Martin-Löf test | $\lambda(L\_i) \le 2^{-i}$, c.e. from below | Martin-Löf randomness | **yes** (Theorem 9.1) |
+| Schnorr test | $\lambda(L\_i) = 2^{-i}$, computable | Schnorr randomness | **no** (Theorem 9.2) |
+| Solovay test | $\sum\_i \lambda(I\_i) < \infty$ | Martin-Löf randomness | **yes** (Theorem 9.5) |
+| total Solovay test | $\sum\_i \lambda(I\_i)$ computable | Schnorr randomness | **no**, by Theorems 9.2 and 9.6 |
+
+In every row the pattern is the same: as long as the measure requirement can only be *violated* effectively, the tests can be enumerated and diagonalized into a universal one; as soon as the requirement demands an exactly computable value, that enumeration disappears and universality fails with it.
+
+</div>
+
+## Relative Randomness of Computably Approximable Reals
+
+Solovay reducibility, and with it the whole degree structure of Sections 7 and 8, is tailored to the left-c.e. reals: the witness $g$ maps rational lower bounds of $\beta$ to rational lower bounds of $\alpha$, which presupposes that approaching a real *from below* is the meaningful mode of approximation. For a general computably approximable real there is no such preferred direction — the approximation oscillates around its limit — and $\le\_S$ degenerates.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(What has to change outside the left-c.e. reals)</span></p>
+
+Two features of Definition 7.1 have to be given up when we leave the left-c.e. world.
+
+1. **Signed gaps become absolute values.** The quantity $\beta - q > 0$ measured how far a lower bound still is from its target. For a two-sided approximation the right quantity is $\lvert \beta - b\_n \rvert$, which no longer records a direction.
+2. **A rate has to be supplied from outside.** A left-c.e. approximation carries its own certificate of progress: $a\_n < \alpha$, so $\alpha - a\_n$ is a genuine error bound. A general computable approximation carries none — $\lvert \beta - b\_n \rvert$ may be zero at some stages by accident and large again later. Comparing two such error sequences literally is far too rigid, and the fix is to allow a **vanishing additive slack** $2^{-n}$ alongside the multiplicative constant.
+
+The resulting notion is written $\le^{2a}\_S$ ("$S2a$", for *Solovay, two-sided, additive*). The rest of this section shows that it is the right generalization: it is a preorder (Proposition 10.3), it agrees with $\le\_S$ where the latter makes sense (Theorem 10.2), it still implies $\le\_K$ (Proposition 10.9), and the additive slack in it is not decorative — dropping it destroys transitivity (Proposition 10.5).
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(10.1 — $S2a$-reducibility)</span></p>
+
+A c.a. real $\alpha$ is **$S2a$-reducible** to a c.a. real $\beta$, written $\alpha \le^{2a}\_S \beta$, if there exist a constant $c$ and two computable approximations $(a\_n)\_{n \in \mathbb{N}}$ and $(b\_n)\_{n \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively, such that
+
+$$\lvert \alpha - a_n \rvert \le c\big(\lvert \beta - b_n \rvert + 2^{-n}\big) \qquad \text{for all } n. \tag{34}$$
+
+</div>
+
+Informally speaking, $\alpha$ is $S2a$-reducible to $\beta$ if $\alpha$ possesses a computable approximation that is not slower than some computable approximation of $\beta$ — up to a multiplicative constant **and an additive term** which falls to $0$ as the index increases.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What the additive term buys)</span></p>
+
+The term $2^{-n}$ says: *we never demand that $\alpha$ be approximated better than $2^{-n}$ at stage $n$, no matter how good $\beta$'s approximation happens to be at that stage.* It is exactly the accuracy that any real — computable or not — can be guaranteed at stage $n$ for free. Its two effects run in opposite directions and are both essential:
+
+* it **weakens** the requirement, which is what makes the relation transitive at all (Proposition 10.5 shows transitivity fails without it), and makes every computable real reducible to everything (Proposition 10.4);
+* it **does not weaken it too much**, because it vanishes: over the whole sequence the constraint $\lvert \alpha - a\_n \rvert \le c \lvert \beta - b\_n \rvert$ is still enforced asymptotically wherever $\beta$'s approximation is much better than $2^{-n}$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(10.2 — $S2a$ extends Solovay reducibility)</span></p>
+
+On the set of left-c.e. reals, $\alpha \le^{2a}\_S \beta$ is equivalent to $\alpha \le\_S \beta$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**($\le\_S \Longrightarrow \le^{2a}\_S$).** Obviously, $\alpha \le\_S \beta$ witnessed — via Proposition 7.2 (iv) — by two left-c.e. approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(b\_n)\_{n\in\mathbb{N}}$ with $\alpha - a\_n < c(\beta - b\_n)$ automatically implies $\alpha \le^{2a}\_S \beta$ for the same constant and the same pair of approximations: both gaps are nonnegative, so $\lvert \alpha - a\_n\rvert = \alpha - a\_n$ and $\lvert \beta - b\_n \rvert = \beta - b\_n$, and the additive term is simply not used.
+
+**($\le^{2a}\_S \Longrightarrow \le\_S$).** Fix two left-c.e. reals $\alpha$ and $\beta$ and computable — but not necessarily monotone — approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(b\_n)\_{n\in\mathbb{N}}$ satisfying (34) for a fixed constant $c$. Our goal is to construct left-c.e. approximations $(\hat a\_k)\_{k\in\mathbb{N}}$ and $(\hat b\_k)\_{k\in\mathbb{N}}$ of $\alpha$ and $\beta$ that fulfill
+
+$$\alpha - \hat a_k \le c\,(\beta - \hat b_k) \qquad \text{for all } k, \tag{35}$$
+
+since Proposition 7.2 (iv) then yields $\alpha \le\_S \beta$. Because $\alpha$ and $\beta$ are left-c.e., they possess some left-c.e. approximations $(a^{\prime}\_n)\_{n\in\mathbb{N}}$ and $(b^{\prime}\_n)\_{n\in\mathbb{N}}$, which we take strictly increasing; these are used only as *pacemakers*.
+
+**Step 1: thinning $(a\_n)$ into a left-c.e. approximation.**
+
+* In case $a\_n \ge \alpha$ for all but finitely many $n$, say for all $n \ge n\_\ast$, the sequence $a^{\prime\prime}\_n := \min\lbrace a\_m : n\_\ast \le m \le n \rbrace$ is a computable nonincreasing sequence converging to $\alpha$, so $\alpha$ is right-c.e.; being also left-c.e., $\alpha$ is computable, and thus $\alpha \le\_S \beta$ since the computable reals form the least Solovay degree in the left-c.e. reals.
+
+So, in what follows, assume that there are infinitely many $n$ with $a\_n < \alpha$. Then we can compute an index sequence $(n\_k)\_{k\in\mathbb{N}}$ such that $(a\_{n\_k})\_{k\in\mathbb{N}}$ is a left-c.e. approximation of $\alpha$: fix $n\_0$ with $a\_{n\_0} < \alpha$ (a single piece of finite, noncomputable advice, which does not affect the computability of the resulting sequence) and define $n\_1, n\_2, \dots$ step-wise. At step $k+1$, assuming $n\_k$ is already defined, enumerate $a\_{n\_k+1}, a\_{n\_k+2}, \dots$ and $a^{\prime}\_0, a^{\prime}\_1, \dots$ in parallel until we meet
+
+$$a_m \text{ and } a'_\ell \qquad \text{such that} \qquad a_{n_k} < a_m < a'_\ell,$$
+
+and set $n\_{k+1} := m$. Every step terminates: by the induction hypothesis $a\_{n\_k} < \alpha$, and both $(a\_n)\_{n\in\mathbb{N}}$ and $(a^{\prime}\_n)\_{n\in\mathbb{N}}$ have elements in an arbitrarily small left neighbourhood of $\alpha$. By $a\_{n\_k} < a\_m < a^{\prime}\_\ell < \alpha$ we get $a\_{n\_{k+1}} \in (a\_{n\_k}, \alpha)$, so the sequence $(a\_{n\_k})\_{k\in\mathbb{N}}$ is infinite, computable and strictly increasing, and it converges to $\alpha$ as a subsequence of an approximation of $\alpha$. The pacemaker $(a^{\prime}\_\ell)$ is what certifies $a\_m < \alpha$ without our being able to decide that inequality directly.
+
+**Step 2: thinning again, so that $\beta$'s approximation becomes left-c.e.** Since $(n\_k)\_{k\in\mathbb{N}}$ is a computable index sequence, $(b\_{n\_k})\_{k\in\mathbb{N}}$ is a computable approximation of $\beta$.
+
+* In case $b\_{n\_k} \ge \beta$ for all but finitely many $k$, we obtain as in Step 1 that $\beta$ is computable. Then every element of the sequence $\big(\lvert \beta - b\_{n\_k}\rvert + 2^{-n\_k}\big)\_{k \in \mathbb{N}}$ is computable, and this sequence converges to $0$; since $\lvert \alpha - a\_{n\_k}\rvert \le c\big(\lvert \beta - b\_{n\_k}\rvert + 2^{-n\_k}\big)$ for all $k$, we can compute $\alpha$ with arbitrary given precision. Thus $\alpha$ is computable, and again $\alpha \le\_S \beta$ since the computable reals form the least Solovay degree in the left-c.e. reals.
+
+So assume there are infinitely many $k$ with $b\_{n\_k} < \beta$. In exactly the same way as in Step 1 we compute an index sequence $(k\_\ell)\_{\ell\in\mathbb{N}}$ such that $(b\_{n\_{k\_\ell}})\_{\ell\in\mathbb{N}}$ is a left-c.e. approximation of $\beta$; and $(a\_{n\_{k\_\ell}})\_{\ell\in\mathbb{N}}$ is still a left-c.e. approximation of $\alpha$, being a computable subsequence of the strictly increasing $(a\_{n\_k})\_{k\in\mathbb{N}}$. To simplify notation set
+
+$$\tilde a_\ell := a_{n_{k_\ell}} \qquad\text{and}\qquad \tilde b_\ell := b_{n_{k_\ell}} \qquad \text{for all } \ell.$$
+
+Since (34) holds for all $n$, it holds in particular along the index sequence, and using $n\_{k\_\ell} \ge \ell$ we obtain two left-c.e. approximations with
+
+$$\alpha - \tilde a_\ell \;=\; \lvert \alpha - \tilde a_\ell \rvert \;\le\; c\big(\lvert \beta - \tilde b_\ell\rvert + 2^{-n_{k_\ell}}\big) \;\le\; c\big(\beta - \tilde b_\ell + 2^{-\ell}\big) \qquad \text{for all } \ell.$$
+
+**Step 3: eliminating the term $2^{-\ell}$.** We compute an index sequence $(m\_k)\_{k \in \mathbb{N}}$ as follows: for every $k$, wait for the first $m > m\_{k-1}$ (where, by convention, $m\_{-1} := -1$) such that
+
+$$\tilde b_m - \tilde b_k > 2^{-m}.$$
+
+Such an $m$ always exists, since
+
+$$\lim_{m \to \infty}\big(\tilde b_m - \tilde b_k\big) = \beta - \tilde b_k > 0 = \lim_{m \to \infty} 2^{-m}.$$
+
+Due to $m\_0 < m\_1 < \dots$, the sequence $(\tilde a\_{m\_k})\_{k \in \mathbb{N}}$ is again a left-c.e. approximation of $\alpha$. Finally, for every $k$ we have
+
+$$\alpha - \tilde a_{m_k} \;\le\; c\big(\beta - \tilde b_{m_k} + 2^{-m_k}\big) \;<\; c\Big(\big(\beta - \tilde b_{m_k}\big) + \big(\tilde b_{m_k} - \tilde b_k\big)\Big) \;=\; c\big(\beta - \tilde b_k\big).$$
+
+So $\hat a\_k := \tilde a\_{m\_k}$ and $\hat b\_k := \tilde b\_k$ are left-c.e. approximations of $\alpha$ and $\beta$ satisfying (35), and Proposition 7.2 (iv) gives $\alpha \le\_S \beta$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The shape of the proof of Theorem 10.2)</span></p>
+
+The proof is a three-stage *purification* of a two-sided approximation into a one-sided one, and each stage removes exactly one of the defects listed in the motivation above.
+
+1. **Step 1** removes the oscillation of $(a\_n)$ by keeping only indices at which the approximation has provably improved. "Provably" is the operative word: we cannot decide $a\_m < \alpha$, so we borrow a left-c.e. pacemaker $(a^{\prime}\_\ell)$ and accept $a\_m$ only once some $a^{\prime}\_\ell$ has overtaken it.
+2. **Step 2** repeats the same purification for $\beta$, *along the index sequence already fixed for $\alpha$* — this is why the two thinnings have to be nested rather than performed independently: the pair $(a\_n, b\_n)$ must stay synchronized, because (34) couples them index by index.
+3. **Step 3** removes the additive slack. Once both approximations increase strictly, the slack $2^{-m}$ can be *absorbed into the progress of $\beta$ itself*: we simply wait until $\tilde b$ has advanced by more than $2^{-m}$ since stage $k$, and charge the additive term to that advance.
+
+Two degenerate cases are peeled off along the way, and both end the same way: if either approximation is eventually one-sided from *above*, the corresponding real is simultaneously left-c.e. and right-c.e., hence computable, and computable reals sit in the least Solovay degree. The constant is not damaged by any of this — the proof delivers (35) with the original constant $c$, where the lecture notes only claim $2c$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.3 — $S2a$-reducibility is a preorder)</span></p>
+
+The $S2a$-reducibility is a reflexive and transitive relation.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Reflexivity** is obvious: take the same computable approximation on both sides and $c = 1$.
+
+**Transitivity, warm-up: the synchronized case.** Suppose first that the two reductions
+
+$$\alpha \le^{2a}_S \beta \le^{2a}_S \gamma$$
+
+are witnessed through the *same* middle approximation $(b\_n)\_{n\in\mathbb{N}}$ of $\beta$. That is, for computable approximations $(a\_n)\_{n\in\mathbb{N}}$, $(b\_n)\_{n\in\mathbb{N}}$ and $(d\_n)\_{n\in\mathbb{N}}$ of $\alpha$, $\beta$ and $\gamma$ we have
+
+$$\lvert \alpha - a_n \rvert < c_1\big(\lvert \beta - b_n \rvert + 2^{-n}\big),$$
+
+$$\lvert \beta - b_n \rvert < c_2\big(\lvert \gamma - d_n \rvert + 2^{-n}\big).$$
+
+Then
+
+$$
+\begin{aligned}
+\lvert \alpha - a_n \rvert
+&< c_1\big(\lvert \beta - b_n \rvert + 2^{-n}\big) \\
+&< c_1\Big(c_2\big(\lvert \gamma - d_n \rvert + 2^{-n}\big) + 2^{-n}\Big) \\
+&= c_1 c_2 \lvert \gamma - d_n \rvert + (c_1c_2 + c_1)\,2^{-n} \\
+&\le c_3 \big(\lvert \gamma - d_n \rvert + 2^{-n}\big),
+\end{aligned}
+$$
+
+where $c\_3 := c\_1c\_2 + c\_1$. So $(a\_n)\_{n\in\mathbb{N}}$ and $(d\_n)\_{n\in\mathbb{N}}$ witness $\alpha \le^{2a}\_S \gamma$ directly.
+
+**Transitivity, general case: synchronizing two approximations of $\beta$.** In general the two reductions come with *different* approximations of $\beta$, and the whole content of the proof is to bring them into step. Fix constants $c\_1, c\_2 \in [1, \infty)$ — enlarging a constant never hurts — and computable approximations $(a\_n)\_{n\in\mathbb{N}}$, $(b\_n)\_{n\in\mathbb{N}}$, $(b^{\prime}\_n)\_{n\in\mathbb{N}}$ and $(d\_n)\_{n\in\mathbb{N}}$ of $\alpha$, $\beta$, $\beta$ and $\gamma$, respectively, witnessing the $S2a$-reducibilities from $\alpha$ to $\beta$ and from $\beta$ to $\gamma$:
+
+$$\lvert \alpha - a_n \rvert < c_1\big(\lvert \beta - b_n \rvert + 2^{-n}\big) \quad\text{and}\quad \lvert \beta - b'_n \rvert < c_2\big(\lvert \gamma - d_n \rvert + 2^{-n}\big) \qquad \text{for all } n.$$
+
+Since $b\_n \to\_{n\to\infty} \beta$ and $b^{\prime}\_n \to\_{n\to\infty} \beta$, we have $\lvert b^{\prime}\_n - b\_n \rvert \to\_{n\to\infty} 0$. This implies the **totality** — and hence total computability — of the index function $f$ defined as follows: for every $n$, the value $f(n)$ is the first $m \ge n$ such that
+
+$$\lvert b_m - b'_m \rvert < 2^{-m}.$$
+
+Then, for every $n$, we obtain
+
+$$
+\begin{aligned}
+\lvert \alpha - a_{f(n)} \rvert
+&< c_1\big(\lvert \beta - b_{f(n)} \rvert + 2^{-f(n)}\big) \\
+&\le c_1\big(\lvert \beta - b'_{f(n)} \rvert + \lvert b'_{f(n)} - b_{f(n)} \rvert + 2^{-f(n)}\big) \\
+&< c_1\Big(c_2\big(\lvert \gamma - d_{f(n)} \rvert + 2^{-f(n)}\big) + 2^{-f(n)} + 2^{-f(n)}\Big) \\
+&= c_1c_2\lvert \gamma - d_{f(n)} \rvert + c_1c_2 2^{-f(n)} + 2c_1 2^{-f(n)} \\
+&\le 3c_1c_2\big(\lvert \gamma - d_{f(n)} \rvert + 2^{-n}\big),
+\end{aligned}
+$$
+
+where the last inequality holds since $f(n) \ge n$ and $c\_1, c\_2 \ge 1$. Since $f$ is total computable with $f(n) \ge n$, the sequences $(a\_{f(n)})\_{n\in\mathbb{N}}$ and $(d\_{f(n)})\_{n\in\mathbb{N}}$ are again computable approximations of $\alpha$ and $\gamma$; hence they witness $\alpha \le^{2a}\_S \gamma$ with the constant $3c\_1c\_2$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where the additive term is spent in Proposition 10.3)</span></p>
+
+The synchronizing function $f$ is the only nontrivial device in the proof, and it is affordable **only** because of the additive term. Searching for a stage at which two approximations of $\beta$ agree to within $2^{-m}$ is a terminating search precisely because $2^{-m}$ is a *slack we are allowed to introduce*: the discrepancy $\lvert b\_m - b^{\prime}\_m \rvert$ is then paid for out of the additive budget of the composed reduction, not out of the multiplicative one. Without the additive term there is no budget to pay from, no synchronization is possible, and — by Proposition 10.5 — transitivity genuinely fails.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.4 — The least $S2a$-degree)</span></p>
+
+On the set of all computably approximable reals, the computable reals form the least $\le^{2a}\_S$-degree.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+**Computable reals are $S2a$-below everything.** Let $\alpha$ be computable and let $\beta$ be any c.a. real. Choose a computable approximation $(a\_n)\_{n \in \mathbb{N}}$ of $\alpha$ with $\lvert \alpha - a\_n \rvert \le 2^{-n}$ (possible by Proposition 5.6), and let $(b\_n)\_{n \in \mathbb{N}}$ be any computable approximation of $\beta$. Then
+
+$$\lvert \alpha - a_n \rvert \le 2^{-n} \le 1 \cdot \big(\lvert \beta - b_n \rvert + 2^{-n}\big) \qquad \text{for all } n,$$
+
+so $\alpha \le^{2a}\_S \beta$ with the constant $c = 1$.
+
+**Nothing else is that low.** Conversely, let $\alpha \le^{2a}\_S \beta$ with $\beta$ computable, witnessed by $(a\_n)$, $(b\_n)$ and $c$. Replacing $(b\_n)$ by a computable approximation with $\lvert \beta - b\_n \rvert \le 2^{-n}$ is harmless (it only changes the constant, by the synchronization argument of Proposition 10.3), so the right-hand side of (34) is a computable sequence converging to $0$ and bounding $\lvert \alpha - a\_n\rvert$. Hence $\alpha$ can be computed to any prescribed precision, i.e. $\alpha$ is computable.
+
+Together: the computable reals form a single $\le^{2a}\_S$-degree, and it lies below every other one. $\square$
+
+</details>
+</div>
+
+The next proposition shows that omitting the additive term $2^{-n}$ in the definition of $\le^{2a}\_S$ breaks its transitivity. Write $\alpha \le^{2}\_S \beta$ for the additive-term-free variant: there exist a constant $c$ and computable approximations $(a\_n)\_{n\in\mathbb{N}}$, $(b\_n)\_{n\in\mathbb{N}}$ of $\alpha$, $\beta$ with $\lvert \alpha - a\_n \rvert \le c \lvert \beta - b\_n \rvert$ for all $n$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.5 — Without the additive term, transitivity fails)</span></p>
+
+There exist three reals $\alpha$, $\beta$, $\gamma$ such that
+
+1. there exist a constant $c\_1$ and two computable approximations $(a^{(1)}\_n)\_{n\in\mathbb{N}}$ and $(b^{(1)}\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\beta$, respectively, such that
+
+    $$\lvert \alpha - a^{(1)}_n \rvert \le c_1 \lvert \beta - b^{(1)}_n \rvert \qquad \text{for all } n;$$
+
+2. there exist a constant $c\_2$ and two computable approximations $(b^{(2)}\_n)\_{n\in\mathbb{N}}$ and $(d^{(2)}\_n)\_{n\in\mathbb{N}}$ of $\beta$ and $\gamma$, respectively, such that
+
+    $$\lvert \beta - b^{(2)}_n \rvert \le c_2 \lvert \gamma - d^{(2)}_n \rvert \qquad \text{for all } n;$$
+
+3. for every two computable approximations $(a\_n)\_{n\in\mathbb{N}}$ and $(d\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\gamma$ and every constant $c$, it holds that
+
+    $$\lvert \alpha - a_n \rvert > c \lvert \gamma - d_n \rvert \qquad \text{for some } n.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 9, Exercise 2. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Source note on Proposition 10.5)</span></p>
+
+The lecture notes print the additive term $2^{-n}$ inside all three items of Proposition 10.5. Read literally, items 1–3 would then assert
+
+$$\alpha \le^{2a}_S \beta, \qquad \beta \le^{2a}_S \gamma, \qquad \alpha \not\le^{2a}_S \gamma,$$
+
+which directly contradicts Proposition 10.3. The sentence introducing the proposition — *"omitting the additive term $2^{-n}$ in the definition of $\le^{2a}\_S$ breaks its transitivity"* — makes the intended reading unambiguous, and that is the version stated above. Item 3 in the notes carries a second slip: it compares $\alpha$ with $\beta$ instead of with $\gamma$, which would not be a failure of transitivity at all.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.6 — The d.c.e. reals are $S2a$-downward closed)</span></p>
+
+If $\alpha \le^{2a}\_S \beta$ and $\beta$ is a d.c.e. real, then $\alpha$ is a d.c.e. real as well.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+This is the exercise *D.c.e. reals (3)* above: the set of d.c.e. reals is closed downwards relative to $\le^{2a}\_S$ in the set of computably approximable reals. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(10.7 — $\Omega$ is $S2a$-complete for the d.c.e. reals)</span></p>
+
+A computably approximable real $\alpha$ is d.c.e. iff $\alpha \le^{2a}\_S \Omega$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 9, Exercise 2. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The $S2a$-analogue of Proposition 7.4 and Theorem 7.6)</span></p>
+
+Theorem 10.7 is the exact counterpart, one level up, of what Section 7 proved for the left-c.e. reals. There, Proposition 7.4 put $\Omega$ on top of the left-c.e. reals under $\le\_S$, and the Kučera–Slaman theorem identified that top degree with Martin-Löf randomness. Here:
+
+* the class rises from **left-c.e.** to **d.c.e.**, the reals expressible as a difference of two left-c.e. reals;
+* the reducibility rises from $\le\_S$ to $\le^{2a}\_S$, which by Theorem 10.2 is a conservative extension — nothing about the left-c.e. reals changes;
+* $\Omega$ remains the top element, and now the statement is an **iff**: the reals $S2a$-below $\Omega$ are *precisely* the d.c.e. ones (the "only if" direction is Proposition 10.6, since $\Omega$ is left-c.e. and hence d.c.e.).
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(10.8 — Rettinger, Zheng, 2005)</span></p>
+
+On the set of d.c.e. reals, the Martin-Löf random left-c.e. or right-c.e. reals form the greatest Solovay degree.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.9 — $S2a$ against the complexity reducibilities)</span></p>
+
+1. For all c.a. reals $\alpha$, $\beta$, the following implication holds:
+
+    $$\alpha \le^{2a}_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
+
+2. There exist two c.a. reals $\alpha$ and $\beta$ such that $\alpha \ll\_K \beta$ but $\alpha \not\le^{2a}\_S \beta$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relation to Theorem 8.3)</span></p>
+
+On the set of left-c.e. reals, the first statement of Proposition 10.9 implies $\le\_S \Longrightarrow \le\_K$ — the nontrivial part of Theorem 8.3 — via Theorem 10.2, and it can be proved very similarly: one replays the advice-bit machine of that proof, with the two-sided error $\lvert \beta - b\_n\rvert$ in place of the one-sided gap.
+
+The second statement is the interesting one, because it says that the chain of Theorem 8.3 **does not survive** the passage from left-c.e. to c.a. reals. There, on the left-c.e. reals, we had
+
+$$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta,$$
+
+so a large complexity gap forced a Solovay reduction. Proposition 10.9 (2) shows that for computably approximable reals the leftmost implication fails outright: $\alpha$ may have prefixes that are *vastly* easier to describe than those of $\beta$ and still admit no approximation that keeps pace with $\beta$'s. Complexity and approximation speed, tightly coupled in the left-c.e. world, come apart one level higher.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 10.9 (1)</summary>
+
+Sheet 8, Exercise 3. $\square$
+
+</details>
+</div>
+
+The proof of the second part is a construction, and it rests on the following lemma; for its proof, see Sheet 9, Exercise 3.
+
+<div class="math-callout math-callout--lemma" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(10.10 — Nonspeedability of Chaitin's $\Omega$)</span></p>
+
+For every two left-c.e. approximations $(w\_n)\_{n\in\mathbb{N}}$ and $(w^{\prime}\_n)\_{n\in\mathbb{N}}$ of Chaitin's $\Omega$, we have
+
+$$\frac{\Omega - w_n}{\Omega - w'_n} \xrightarrow[n \to \infty]{} 1.$$
+
+</div>
+
+The lemma says that all left-c.e. approximations of $\Omega$ converge at *asymptotically the same speed*: no clever approximation can shrink the remaining gap $\Omega - w\_n$ by even a constant factor more than the standard one does. It is the precise sense in which $\Omega$ cannot be sped up, and it is exactly the obstruction that the construction below plays against.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 10.9 (2)</summary>
+
+In order to contradict the implication $\ll\_K \Longrightarrow \le^{2a}\_S$, we construct a computably approximable real $\alpha$ such that $\alpha \ll\_K \Omega$ but $\alpha \not\le^{2a}\_S \Omega$; so $\beta := \Omega$.
+
+**The construction of $\alpha$.** Let $(w\_s)\_{s\in\mathbb{N}}$, where $w\_0 = 0$, be the standard left-c.e. approximation of $\Omega$, and compute the sequence of dyadic rationals $a\_0 = 0, a\_1, \dots$ iteratively: for every $s > 0$ let $i\_s$ be the first position at which $w\_{s-1}$ and $w\_s$ differ, which — since $w\_{s-1} < w\_s$ — means that
+
+$$w_{s-1} \upharpoonright i_s = w_s \upharpoonright i_s \qquad\text{and}\qquad w_{s-1}(i_s) = 0 < 1 = w_s(i_s).$$
+
+Then fix $k$ such that $i\_s = 4k + r$ for some $r \in \lbrace 0, 1, 2, 3 \rbrace$, i.e. $k = \lfloor i\_s / 4 \rfloor$, and define
+
+$$a_s(2k) := 1 - a_{s-1}(2k) \qquad\text{and}\qquad a_s(p) := a_{s-1}(p) \quad \text{for all } p \ne 2k.$$
+
+In words: **a change of $\Omega$'s approximation inside the block of positions $\lbrace 4k, 4k+1, 4k+2, 4k+3 \rbrace$ flips the single bit $2k$ of $\alpha$'s approximation.** Four blocks of $\Omega$ are compressed into one even position of $\alpha$, and all odd positions of $\alpha$ stay $0$ forever.
+
+* The sequence $(a\_s)\_{s\in\mathbb{N}}$ converges, since $i\_s \to\_{s\to\infty} \infty$ (for every $n$, eventually $w\_s \upharpoonright n = \Omega \upharpoonright n$) and hence $k = \lfloor i\_s/4\rfloor \to\_{s\to\infty}\infty$, so each fixed position is flipped only finitely often. Thus its limit $\alpha$ is a computably approximable real.
+* Since $a\_s(2p+1) = 0$ for every $s$ and $p$, we have $\alpha(2p+1) = 0$ for all $p$, so a prefix $\alpha \upharpoonright n$ is determined by its $\lceil n/2 \rceil$ even bits together with $n$; hence
+
+    $$\frac{K(\alpha \upharpoonright n)}{n} \xrightarrow[n\to\infty]{} \tfrac12 \qquad\text{while}\qquad \frac{K(\Omega \upharpoonright n)}{n} \xrightarrow[n\to\infty]{} 1$$
+
+    since $\Omega$ is $1$-random. In particular $K(\Omega\upharpoonright n) - K(\alpha \upharpoonright n) \to\_{n\to\infty} \infty$, that is, $\alpha \ll\_K \Omega$.
+
+**The nonreducibility.** It remains to show $\alpha \not\le^{2a}\_S \Omega$. We do it by contradiction. Suppose that there exist two computable approximations $(a^{\prime}\_n)\_{n\in\mathbb{N}}$ and $(w^{\prime}\_n)\_{n\in\mathbb{N}}$ of $\alpha$ and $\Omega$, respectively, that witness $\alpha \le^{2a}\_S \Omega$ with a constant $c$.
+
+Since $\Omega$ is noncomputable, there are infinitely many $w^{\prime}\_n$ in $L(\Omega)$; thus, by the thinning argument in the proof of Theorem 10.2, there exists a strictly increasing computable subsequence $w^{\prime}\_{i\_0}, w^{\prime}\_{i\_1}, \dots$ (where $i\_0 < i\_1 < \dots$) with $w^{\prime}\_{i\_n} > w\_n$ for every $n$. Thus, for all $n$,
+
+$$\lvert \alpha - a'_{i_n}\rvert < c\big(\lvert \Omega - w'_{i_n}\rvert + 2^{-i_n}\big) = c\big(\Omega - w'_{i_n} + 2^{-i_n}\big) < 2c\big(\Omega - w'_{i_n}\big), \tag{36}$$
+
+where the last inequality follows for large $n$ from the Martin-Löf randomness of $\Omega$: no left-c.e. approximation of a random real converges as fast as $2^{-n}$, so $\Omega - w^{\prime}\_{i\_n} > 2^{-i\_n}$ eventually.
+
+Since $(a\_n)\_{n\in\mathbb{N}}$ and $(a^{\prime}\_n)\_{n\in\mathbb{N}}$ converge to the same real, we can compute an index sequence $(n\_m)\_{m\in\mathbb{N}}$ such that $\lvert a^{\prime}\_{i\_{n\_m}} - a\_{n\_m}\rvert < 2^{-4m}$ for every $m$ (for each $m$, search for the first admissible index beyond $n\_{m-1}$; this is a decidable test on dyadic rationals and terminates by convergence). The sequence $(w^{\prime}\_{i\_{n\_m}})\_{m\in\mathbb{N}}$ is still strictly increasing, and the sequences $(a\_{n\_m})\_{m\in\mathbb{N}}$ and $(w^{\prime}\_{i\_{n\_m}})\_{m\in\mathbb{N}}$ fulfil a somewhat weaker version of (36):
+
+$$\lvert \alpha - a_{n_m}\rvert \le \lvert \alpha - a'_{i_{n_m}}\rvert + \lvert a_{n_m} - a'_{i_{n_m}}\rvert < 2c\big(\Omega - w'_{i_{n_m}} + 2^{-4m}\big).$$
+
+Note that $(w^{\prime}\_{i\_{n\_m}})\_{m\in\mathbb{N}}$ is a left-c.e. approximation of $\Omega$, being a computable subsequence of a left-c.e. approximation, and that $w^{\prime}\_{i\_{n\_m}} \ge w^{\prime}\_{i\_m} \ge w\_m$ for all $m$.
+
+**Fixing the scales.** Fix an $N$ — existing by Lemma 10.10 — such that
+
+$$\frac{\Omega - w_{n+1}}{\Omega - w_n} > \frac{3}{4} \qquad \text{for every } n \ge N. \tag{37}$$
+
+Fix $k > N$ such that
+
+$$\Omega(4k+3)\,\Omega(4k+4) = 11. \tag{38}$$
+
+Note that there are infinitely many such $k$; otherwise we would easily construct a Martin-Löf test failed by $\Omega$, which is impossible due to its Martin-Löf randomness.
+
+We consider the first index $m$ such that $\Omega \upharpoonright (4k+4) = w\_m \upharpoonright (4k+4)$. In particular, it holds that $\Omega - w\_m < 2^{-4k-4}$. Note that $m > k \ge N$, hence we obtain by (37) that $\Omega - w\_{m-1} < \tfrac43 \cdot 2^{-(4k+4)} < 2^{-(4k+3)}$. By the choice of $m$, the latter fact implies that
+
+$$w_{m-1} \upharpoonright (4k+3) = w_m \upharpoonright (4k+3) = \Omega \upharpoonright (4k+3),$$
+
+and then
+
+$$w_{m-1}(4k+3)\,w_{m-1}(4k+4) = 01, \qquad w_m(4k+3)\,w_m(4k+4) = 10, \qquad \Omega(4k+3)\,\Omega(4k+4) = 11.$$
+
+By $w\_{m-1} < w\_m < w^{\prime}\_{i\_{n\_m}}$, we obtain for every $\ell > m$ that
+
+$$\lvert \alpha - a'_{i_{n_\ell}}\rvert < 2c\big(\Omega - w'_{i_{n_\ell}} + 2^{-4\ell}\big) \le 2c\big(\Omega - w'_{i_{n_m}} + 2^{-4m}\big) \le 2c\big(\Omega - w_m\big) + 2^{-4k} \le 3c \cdot 2^{-4k},$$
+
+which also implies that $\lvert \alpha - a\_{i\_{n\_\ell}}\rvert \le 3c\,2^{-4k} + 2^{-i\_{n\_\ell}} \le 2^{-(2k+4)}$. By construction of the sequence $(a\_n)\_{n\in\mathbb{N}}$, it means that
+
+$$a_{i_{n_\ell}}(2k+2) = \alpha(2k+2) \qquad \text{for every } \ell > m,$$
+
+i.e. **the bit $2k+2$ of $\alpha$'s approximation is frozen from stage $m$ on**. Since $w\_m(4k+4) = 0 < 1 = \Omega(4k+4)$, the approximation of $\Omega$ must still change inside the block $\lbrace 4k+4, \dots, 4k+7\rbrace$ after stage $m$ — and each such change would flip the frozen bit. At least one of the following two statements is therefore true.
+
+**Case 1.** There exist infinitely many $k > N$ fulfilling (38) such that
+
+$$w_{i_{n_m}}(4k+4)\,w_{i_{n_m}}(4k+5)\,w_{i_{n_m}}(4k+6)\,w_{i_{n_m}}(4k+7) = \Omega(4k+4)\,\Omega(4k+5)\,\Omega(4k+6)\,\Omega(4k+7).$$
+
+Then, for every such $k$, we obtain that
+
+$$\frac{\Omega - w_{i_{n_m}}}{\Omega - w_{m-1}} < \frac12,$$
+
+so the left-c.e. approximations $(w\_{i\_{n\_m}})\_{m \ge 1}$ and $(w\_m)\_{m \ge 0}$ contradict Lemma 10.10.
+
+**Case 2.** There exist infinitely many $k > N$ fulfilling (38) such that
+
+$$w_{i_{n_m}}(4k+4)\,w_{i_{n_m}}(4k+5)\,w_{i_{n_m}}(4k+6)\,w_{i_{n_m}}(4k+7) \ne \Omega(4k+4)\,\Omega(4k+5)\,\Omega(4k+6)\,\Omega(4k+7).$$
+
+For every such $k$, fix the first index $\bar m$ such that
+
+$$w_{i_{n_{\bar m}}}(4k+4)\,w_{i_{n_{\bar m}}}(4k+5)\,w_{i_{n_{\bar m}}}(4k+6)\,w_{i_{n_{\bar m}}}(4k+7) = \Omega(4k+4)\,\Omega(4k+5)\,\Omega(4k+6)\,\Omega(4k+7).$$
+
+Such an $\bar m$ exists, since $\Omega = \lim\_{m\to\infty} w\_{i\_{n\_m}}$ is not a dyadic rational. Since we have
+
+$$a_{i_{n_{\bar m}}}(2k+2) = a_{i_{n_{\bar m + 1}}}(2k+2) = a_{i_{n_{\bar m + 2}}}(2k+2) = \dots = \alpha(2k+2),$$
+
+the choice of $\bar m$ implies — due to the construction of the sequence $(a\_n)\_{n\in\mathbb{N}}$, in which every change inside the block flips the bit $2k+2$ — that there are at least **two** bit changes at positions $\lbrace 4k+4, 4k+5, 4k+6, 4k+7\rbrace$ between the elements $w\_{i\_{n\_{\bar m - 1}}}$ and $w\_{i\_{n\_{\bar m}}}$: an odd number of flips would have destroyed the frozen bit. Thus
+
+$$\frac{\Omega - w_{i_{n_{\bar m}}}}{\Omega - w_{i_{n_{\bar m - 1}}}} \le \frac{2^{-(4k+7)}}{2^{-(4k+6)}} = \frac12.$$
+
+Since there are infinitely many such $k$, the left-c.e. approximations $(w\_{i\_{n\_m}})\_{m \ge 1}$ and $(w\_{i\_{n\_m}})\_{m \ge 0}$ contradict Lemma 10.10. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading the construction of Proposition 10.9 (2), and a source correction)</span></p>
+
+**The idea in one sentence.** The real $\alpha$ is a *lossy, four-to-one recording* of the change history of $\Omega$'s standard approximation: whenever $\Omega$'s approximation is corrected somewhere in a block of four positions, $\alpha$ records that event by toggling one bit. The recording is coarse enough that $\alpha$'s prefixes are only half as hard to describe as $\Omega$'s (all odd bits are $0$), which gives $\alpha \ll\_K \Omega$; but it is faithful enough that *knowing $\alpha$ to high precision means knowing when $\Omega$'s approximation stopped moving in a given block*, and by Lemma 10.10 no left-c.e. approximation of $\Omega$ can afford that knowledge. Any $S2a$-reduction would supply it, hence there is none.
+
+**Source correction.** The lecture notes define the update step as $a\_s(2k) := 1$ rather than as a flip. That reading cannot be the intended one: setting bits to $1$ and never back would make $(a\_s)\_{s\in\mathbb{N}}$ nondecreasing, hence $\alpha$ **left-c.e.**, and then Theorem 8.3 ($\ll\_K \Rightarrow \ll\_S \Rightarrow \le\_S$ on the left-c.e. reals) together with Theorem 10.2 would give $\alpha \le^{2a}\_S \Omega$ — exactly what the proposition denies. Moreover, the final counting argument in Case 2 ("at least two bit changes") is only meaningful for a toggle, where the parity of the number of changes is what the frozen bit of $\alpha$ records. The version above therefore uses the flip.
+
+**Terseness of the last step.** The final scale-fixing computation is reproduced here in the form in which the notes give it; several of its estimates (the passage from $\Omega - w\_{m-1} < 2^{-(4k+3)}$ to the displayed bit patterns, and the constants in the chain leading to $2^{-(2k+4)}$) are stated there without derivation, and are worth re-deriving on a first careful reading.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A 2026 strengthening)</span></p>
+
+In 2026 the second part of Proposition 10.9 was essentially strengthened: there exist even two **d.c.e.** reals $\alpha$ and $\beta$ such that $\alpha \ll\_K \beta$ but $\alpha \not\le^{2a}\_S \beta$.
+
+This sharpens the failure considerably. The $\alpha$ built above is an arbitrary computably approximable real; the strengthened version places the counterexample inside the much smaller class of differences of left-c.e. reals — the class that, by Theorem 10.7, is exactly the $S2a$-lower cone of $\Omega$. So the decoupling of complexity from approximation speed already happens one step above the left-c.e. reals, not merely somewhere in $\Delta^0\_2$.
+
+</div>
+
+## Martingales
+
+We now return to the second of the three intuitions of nonrandomness from Section 1 — *nonrandom means predictable* — and give it the effective formalization that was promised there. The notion of martingale formalizes the intuitive understanding of a **betting strategy** on a (finite or infinite) sequence of bits.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(11.1 — Supermartingale, martingale, success)</span></p>
+
+A **supermartingale** is a function $d : \lbrace 0,1\rbrace^{\ast} \to [0,\infty)$ that fulfills
+
+$$d(\sigma) \ge \frac{d(\sigma 0) + d(\sigma 1)}{2} \qquad \text{for all } \sigma \in \lbrace 0,1\rbrace^{\ast}. \tag{39}$$
+
+A **martingale** is a function $d : \lbrace 0,1\rbrace^{\ast} \to [0,\infty)$ that fulfills
+
+$$d(\sigma) = \frac{d(\sigma 0) + d(\sigma 1)}{2} \qquad \text{for all } \sigma \in \lbrace 0,1\rbrace^{\ast}. \tag{40}$$
+
+We say that a (super)martingale **succeeds** on an infinite binary sequence $X \in \lbrace 0,1\rbrace^{\mathbb{N}}$ if
+
+$$\limsup_{n \to \infty} d(X \upharpoonright n) = \infty.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reading a martingale as a gambler)</span></p>
+
+Think of $d(\sigma)$ as the capital a gambler holds after the bits $\sigma$ have been revealed. Before seeing the next bit, the gambler splits the current capital into a stake on $0$ and a stake on $1$; the winning side is paid double. Condition (40) is exactly the statement that the game is **fair**: the expected capital after the next bit, under the uniform measure, equals the current capital. A supermartingale (39) is a gambler who is allowed to *throw money away* — the game may be unfair in the casino's favour, which costs nothing in the theory and buys convenience in the constructions.
+
+Succeeding on $X$ means becoming arbitrarily rich along $X$, i.e. beating the sequence. Note that only the $\limsup$ is required: the capital is allowed to collapse infinitely often in between. Theorem 11.5 shows that this apparent weakness can always be traded for a genuine $\lim$, at the price of moving from martingales to supermartingales.
+
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="A martingale splitting capital fairly across a binary tree">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">A fair bet: the capital averages back to where it was</text>
+
+      <!-- root -->
+      <circle cx="330" cy="70" r="22" fill="#e3f2fd" stroke="#1d4ed8" stroke-width="1.4" />
+      <text x="330" y="74" text-anchor="middle" font-size="12" fill="#1d4ed8">d(σ)</text>
+      <text x="330" y="44" text-anchor="middle" font-size="11" fill="#5b6270">capital after σ</text>
+
+      <!-- edges -->
+      <line x1="313" y1="86" x2="200" y2="140" stroke="#5b6270" stroke-width="1.1" />
+      <line x1="347" y1="86" x2="460" y2="140" stroke="#5b6270" stroke-width="1.1" />
+      <text x="240" y="112" text-anchor="middle" font-size="11" fill="#5b6270">next bit 0</text>
+      <text x="424" y="112" text-anchor="middle" font-size="11" fill="#5b6270">next bit 1</text>
+
+      <!-- children -->
+      <circle cx="185" cy="160" r="24" fill="#ecfdf5" stroke="#3d7a26" stroke-width="1.4" />
+      <text x="185" y="164" text-anchor="middle" font-size="12" fill="#3d7a26">d(σ0)</text>
+      <circle cx="475" cy="160" r="24" fill="#fef2f2" stroke="#b91c1c" stroke-width="1.4" />
+      <text x="475" y="164" text-anchor="middle" font-size="12" fill="#b91c1c">d(σ1)</text>
+
+      <!-- balance bar -->
+      <line x1="185" y1="206" x2="475" y2="206" stroke="#cbd2e0" stroke-width="1.2" />
+      <line x1="185" y1="200" x2="185" y2="212" stroke="#cbd2e0" stroke-width="1.2" />
+      <line x1="475" y1="200" x2="475" y2="212" stroke="#cbd2e0" stroke-width="1.2" />
+      <circle cx="330" cy="206" r="4" fill="#a86f00" />
+      <text x="330" y="230" text-anchor="middle" font-size="12" fill="#a86f00">midpoint = (d(σ0) + d(σ1)) / 2</text>
+
+      <text x="330" y="262" text-anchor="middle" font-size="12" fill="#1d4ed8">martingale: d(σ) = midpoint</text>
+      <text x="330" y="282" text-anchor="middle" font-size="12" fill="#7b1fa2">supermartingale: d(σ) ≥ midpoint (money may be discarded)</text>
+    </g>
+  </svg>
+  <figcaption>Definition 11.1. A martingale distributes its capital $d(\sigma)$ over the two continuations so that the average is preserved — the defining equation (40) is precisely the fairness of the game under the uniform measure on $\lbrace 0,1 \rbrace^{\mathbb{N}}$. A supermartingale only requires (39), so capital may leak away; every martingale is in particular a supermartingale, which is the trivial direction of Theorem 11.6.</figcaption>
+</figure>
+
+The next theorem formalizes the observation that the larger the required winning, the smaller the set of sequences on which a given betting strategy achieves this winning.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.2 — Kolmogorov's Inequality)</span></p>
+
+Let $d$ be a supermartingale. For $k > 0$ let
+
+$$R_k := \lbrace \sigma \in \lbrace 0,1\rbrace^{\ast} \,:\, d(\sigma) \ge k \rbrace$$
+
+be the set of words on which the capital reaches $k$, and let $\bar R\_k$ be the corresponding open set. Then
+
+$$\lambda(\bar R_k) \le \frac{d(\lambda)}{k}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Sheet 9, Exercise 4. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Notation and a source correction in Theorem 11.2)</span></p>
+
+Here $d(\lambda)$ is the value of the (super)martingale at the **empty word** $\lambda$ — the gambler's starting capital — in accordance with the length-lexicographical enumeration $w\_0 := \lambda$ fixed in the Notation section. The same symbol denotes Lebesgue measure throughout these notes; the two never occur in a position where they could be confused, since $\lambda$ as a word only ever appears as an argument of a function on words.
+
+The lecture notes define $R\_k$ by the condition $d(\sigma) \le k$, which cannot be intended: the set of words on which the capital stays *small* has no reason to be small, and the bound $d(\lambda)/k$ becomes vacuous. The inequality is the classical maximal inequality — the measure of the sequences along which a nonnegative supermartingale ever reaches $k$ is at most $d(\lambda)/k$ — and $R\_k$ must be the *reaching* set, as stated above.
+
+</div>
+
+Since the values of a (super)martingale are real numbers, which cannot be encoded finitely in general, we first need to clarify the notion of computable and computably enumerable real-valued functions before formally defining *effective* betting strategies.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(11.3 — Computable and c.e. real-valued functions on words)</span></p>
+
+A function $f : \lbrace 0,1\rbrace^{\ast} \to \mathbb{R}$ is **computable** if the family of the left cuts of all its values,
+
+$$\big(L(f(\lambda)),\; L(f(0)),\; L(f(1)),\; L(f(00)),\; \dots\big), \tag{41}$$
+
+listed along the length-lexicographical enumeration of words, is uniformly computable.
+
+A function $f : \lbrace 0,1\rbrace^{\ast} \to \mathbb{R}$ is **c.e.** if (41) is uniformly c.e.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What "c.e. martingale" means concretely)</span></p>
+
+Definition 11.3 simply applies the characterizations of Section 5 pointwise and uniformly: by Proposition 5.6, $f(\sigma)$ is a computable real iff its left cut $L(f(\sigma))$ is computable, and by Proposition 5.9 it is left-c.e. iff $L(f(\sigma))$ is c.e. So
+
+* a **computable** martingale is one whose values can be approximated to any prescribed precision, uniformly in $\sigma$;
+* a **c.e.** martingale is one whose values can only be approximated *from below*, uniformly in $\sigma$ — the gambler's capital is a left-c.e. real, and we may find out over time that we are richer than we thought, but never that we are poorer.
+
+The one-sided version is the right one for Theorem 11.6, because the martingale built there out of a Martin-Löf test grows as more and more words are enumerated into the test's layers, and there is no way to know in advance how much will still arrive. The lecture notes write the first entry of (41) as $L(f(\sigma))$; it is of course $L(f(\lambda))$, the value at the empty word, which heads the length-lexicographical list.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(11.4 — Summing a c.e. family of (super)martingales)</span></p>
+
+Let $I$ be a c.e. index set and, for every $i \in I$, let $d\_i$ be a (super)martingale, uniformly c.e. in $i$. If
+
+$$\sum_{i \in I} d_i(\lambda) < \infty,$$
+
+then the function $d : \lbrace 0,1\rbrace^{\ast} \to [0,\infty)$ defined by $d(\sigma) := \sum\_{i \in I} d\_i(\sigma)$ is a c.e. (super)martingale.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Exercise. The (super)martingale inequality is preserved under sums term by term, and finiteness of $d(\sigma)$ for every $\sigma$ follows from the assumption on $d(\lambda)$: by (39), $d\_i(\sigma) \le 2^{l(\sigma)} d\_i(\lambda)$ for every $i$ and $\sigma$, so $d(\sigma) \le 2^{l(\sigma)}\sum\_{i\in I} d\_i(\lambda) < \infty$. Enumerability is inherited: a left-c.e. approximation of $d(\sigma)$ is obtained by dovetailing the enumeration of $I$ with the left-c.e. approximations of the individual $d\_i(\sigma)$ and taking finite partial sums, which only ever increase. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.5 — Replacing $\limsup$ by $\lim$)</span></p>
+
+For every (super)martingale $d$ there exists a supermartingale $\tilde d$ such that
+
+$$\Big\lbrace X \,:\, \limsup_{n\to\infty} d(X \upharpoonright n) = \infty \Big\rbrace = \Big\lbrace X \,:\, \lim_{n\to\infty} \tilde d(X \upharpoonright n) = \infty \Big\rbrace.$$
+
+Moreover, if $d$ is c.e. or computable, then so is $\tilde d$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Given $d$, we define $\tilde d$ iteratively: starting with $\tilde d(\lambda)$ (the "initialization stage"), at stage $\sigma \in \lbrace 0,1\rbrace^{\ast}$ we have $\tilde d(\sigma)$ defined and we set $\tilde d(\sigma 0)$ and $\tilde d(\sigma 1)$. The construction idea is the usage of a **container function** $s : \lbrace 0,1\rbrace^{\ast} \to [0,\infty)$ — the *savings account* — that can only increase and tends to infinity on $X \upharpoonright n$ for $n \to \infty$ exactly when $d$ succeeds on $X$.
+
+**Initialization.** We set
+
+$$\tilde d(\lambda) := d(\lambda) \qquad\text{and}\qquad s(\lambda) := 0.$$
+
+**The betting stage.** At stage $\sigma$, having $\tilde d(\sigma)$ and $s(\sigma)$ defined, we set
+
+$$\tilde d(\sigma 0) := s(\sigma) + \big(\tilde d(\sigma) - s(\sigma)\big)\frac{d(\sigma 0)}{d(\sigma)} \qquad\text{and}\qquad \tilde d(\sigma 1) := s(\sigma) + \big(\tilde d(\sigma) - s(\sigma)\big)\frac{d(\sigma 1)}{d(\sigma)}$$
+
+(if $d(\sigma) = 0$, then $d$ vanishes on all extensions of $\sigma$ and we simply put $\tilde d(\sigma i) := \tilde d(\sigma)$). In words: only the **active capital** $e(\sigma) := \tilde d(\sigma) - s(\sigma)$ is put at stake, and it is bet in exactly the proportions that $d$ uses; the saved part $s(\sigma)$ is carried along untouched. It is easy to see that
+
+$$\frac{\tilde d(\sigma 0) + \tilde d(\sigma 1)}{2} = s(\sigma) + e(\sigma)\,\frac{d(\sigma 0) + d(\sigma 1)}{2\,d(\sigma)} \;\le\; s(\sigma) + e(\sigma) \;=\; \tilde d(\sigma)$$
+
+if $d$ is a supermartingale, with equality in case $d$ is a martingale; so $\tilde d$ is a supermartingale in either case, and $e \ge 0$ is maintained throughout.
+
+**The saving stage.** In order to define $s(\sigma 0)$ and $s(\sigma 1)$, we compare the values of $\tilde d(\sigma 0)$ and $\tilde d(\sigma 1)$ with the already saved capital $s(\sigma)$. For both bits $i \in \lbrace 0, 1 \rbrace$: if
+
+$$\tilde d(\sigma i) - s(\sigma) > \frac34,$$
+
+then we call $\sigma i$ a **saving stage** and set
+
+$$s(\sigma i) := s(\sigma) + r - \frac14,$$
+
+where $r$ is an approximate value of $\tilde d(\sigma i) - s(\sigma)$ with a precision better than $\tfrac14$. Otherwise we set $s(\sigma i) := s(\sigma)$. Since $\tilde d$ is a computable (super)martingale whenever $d$ is, $s$ is computable as well; and $s$ is monotone nondecreasing in the sense that $s(\sigma) \le s(\sigma\tau)$ for all $\sigma, \tau \in \lbrace 0,1\rbrace^{\ast}$.
+
+Two bookkeeping facts follow immediately from the choice of the threshold $\tfrac34$ and the precision $\tfrac14$:
+
+* at a saving stage the account grows by $s(\sigma i) - s(\sigma) = r - \tfrac14 \ge \tfrac14$;
+* after a saving stage the active capital satisfies $0 < e(\sigma i) < \tfrac12$, and between saving stages it never exceeds $\tfrac34$.
+
+In particular a new saving stage requires the active capital, and hence $d$ itself, to grow by a factor of at least $\tfrac{3/4}{1/2} = \tfrac32$ since the previous one.
+
+**Success is preserved.** Let $d$ succeed on a sequence $X$, and suppose towards a contradiction that only finitely many saving stages occur along $X$, the last one at $X \upharpoonright n\_0$. Then $s$ is constant beyond $n\_0$ and
+
+$$e(X \upharpoonright n) = e(X \upharpoonright n_0)\,\frac{d(X \upharpoonright n)}{d(X \upharpoonright n_0)} \le \frac34 \qquad \text{for all } n > n_0,$$
+
+which bounds $d(X \upharpoonright n)$ — contradicting $\limsup\_{n\to\infty} d(X \upharpoonright n) = \infty$. So there exist infinitely many saving stages along $X$, each contributing at least $\tfrac14$, and therefore
+
+$$\lim_{n\to\infty} s(X \upharpoonright n) = \infty, \qquad\text{and thus also}\qquad \lim_{n\to\infty} \tilde d(X \upharpoonright n) = \infty,$$
+
+since $\tilde d \ge s$.
+
+**Nothing else is created.** Conversely, suppose $d$ does not succeed on $X$, so $d(X\upharpoonright n) \le B$ for all $n$. Each saving stage along $X$ requires $d$ to have grown by a factor $\ge \tfrac32$ since the previous one, so there are only finitely many of them; beyond the last one $s$ is constant and $e \le \tfrac34$, hence $\tilde d = s + e$ stays bounded along $X$ and $\lim\_{n\to\infty}\tilde d(X\upharpoonright n) \ne \infty$. $\square$
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="The savings construction turning an oscillating martingale into a monotonically diverging supermartingale">
+    <g font-family="serif" font-size="12" fill="#1f2430">
+      <text x="350" y="22" text-anchor="middle" font-weight="600">Ratcheting a limsup into a lim</text>
+
+      <!-- axes -->
+      <line x1="70" y1="60" x2="70" y2="270" stroke="#444" stroke-width="1.1" />
+      <line x1="70" y1="270" x2="660" y2="270" stroke="#444" stroke-width="1.1" />
+      <text x="70" y="292" text-anchor="middle" font-size="11" fill="#5b6270">λ</text>
+      <text x="660" y="292" text-anchor="middle" font-size="11" fill="#5b6270">prefix length n</text>
+      <text x="52" y="66" text-anchor="end" font-size="11" fill="#5b6270">capital</text>
+
+      <!-- original d: oscillating with growing peaks and deep crashes -->
+      <path d="M70 250 C110 180 130 262 165 200 C195 148 215 264 255 175 C290 100 310 262 350 150 C385 60 405 264 445 120 C480 40 500 266 545 100 C580 30 600 266 650 90"
+            fill="none" stroke="#b91c1c" stroke-width="1.8" />
+      <text x="616" y="72" text-anchor="middle" font-size="11" fill="#b91c1c">d: limsup = ∞</text>
+
+      <!-- savings staircase -->
+      <path d="M70 264 L150 264 L150 246 L245 246 L245 224 L340 224 L340 196 L436 196 L436 162 L535 162 L535 122 L645 122"
+            fill="none" stroke="#3d7a26" stroke-width="2.2" />
+      <text x="600" y="140" text-anchor="middle" font-size="11" fill="#3d7a26">s: savings, only rises</text>
+
+      <!-- saving stage markers -->
+      <g fill="#a86f00">
+        <circle cx="150" cy="264" r="3.4" />
+        <circle cx="245" cy="246" r="3.4" />
+        <circle cx="340" cy="224" r="3.4" />
+        <circle cx="436" cy="196" r="3.4" />
+        <circle cx="535" cy="162" r="3.4" />
+      </g>
+      <text x="240" y="306" text-anchor="middle" font-size="11" fill="#a86f00">● saving stages: active capital passed 3/4, at least 1/4 is banked</text>
+
+      <!-- d-tilde: savings plus a small active band -->
+      <path d="M70 258 C110 236 130 258 150 240 C190 230 215 244 245 222 C290 214 310 224 340 192 C385 182 405 200 436 158 C480 148 500 168 535 118 C580 106 600 116 645 96"
+            fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-dasharray="5 3" />
+      <text x="596" y="176" text-anchor="middle" font-size="11" fill="#1d4ed8">d̃ = s + active ≤ s + 3/4</text>
+    </g>
+  </svg>
+  <figcaption>Theorem 11.5. The original strategy $d$ (red) gets arbitrarily rich along $X$ but keeps crashing back, so only its $\limsup$ diverges. The new strategy stakes just the active capital $e = \tilde d - s$ and, whenever $e$ exceeds $\tfrac34$, banks all but a residue below $\tfrac12$ into the savings account $s$ (green staircase). Since $\tilde d = s + e$ with $e \le \tfrac34$, the transformed strategy $\tilde d$ (blue) is squeezed against the staircase and diverges monotonically — and conversely a bounded $d$ can trigger only finitely many saving stages, since each one demands a further factor $\tfrac32$ of growth.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.6 — Ville–Schnorr characterization of Martin-Löf randomness)</span></p>
+
+For every infinite binary sequence $A \in \lbrace 0,1\rbrace^{\mathbb{N}}$, the following statements are equivalent:
+
+* **(i)** $A$ is Martin-Löf random.
+* **(ii)** No c.e. martingale succeeds on $A$.
+* **(iii)** No c.e. supermartingale succeeds on $A$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We close the cycle (i) $\Longrightarrow$ (iii) $\Longrightarrow$ (ii) $\Longrightarrow$ (i). The middle implication is trivial, since every martingale is in particular a supermartingale; the two others are proved in contrapositive form.
+
+**$\neg$(iii) $\Longrightarrow$ $\neg$(i).** Let $A$ be a binary sequence and let $d$ be a c.e. supermartingale that succeeds on $A$. Fix $k \in \mathbb{N}$ such that $k - 1 < d(\lambda) \le k$. We define a Martin-Löf test $\bar L = (\bar L\_1, \bar L\_2, \dots)$ by defining, for every $n$, the corresponding set of words
+
+$$L_n := \lbrace \sigma \,:\, d(\sigma) \ge 2^n k \rbrace.$$
+
+Since $d$ is c.e., its values are approximable from below, so the sets of words $L\_1, L\_2, \dots$ are uniformly c.e.; and thus $\bar L = (\bar L\_1, \bar L\_2, \dots)$ is a uniformly c.e. sequence of open sets. Further, for every $n$ it holds by Kolmogorov's Inequality (Theorem 11.2) that
+
+$$\lambda(\bar L_n) \le \frac{d(\lambda)}{2^n k} \le \frac{k}{2^n k} = 2^{-n};$$
+
+so $\bar L$ is a Martin-Löf test. By $\limsup\_{n\to\infty} d(A \upharpoonright n) = \infty$ there exists, for every $n$, a prefix $A \upharpoonright k\_n$ of $A$ such that $d(A \upharpoonright k\_n) \ge k 2^n$; hence $A \in [[A \upharpoonright k\_n]] \subseteq \bar L\_n$. Therefore $A$ fails the Martin-Löf test $\bar L$, i.e. $A$ is Martin-Löf **non**random.
+
+**$\neg$(i) $\Longrightarrow$ $\neg$(ii).** Let $A$ be a binary sequence that fails a Martin-Löf test $\bar L = (\bar L\_1, \bar L\_2, \dots)$. We consider the corresponding uniformly c.e. sequence of sets of words $L\_1, L\_2, \dots$, which we may again take prefix-free, so that $\sum\_{\sigma \in L\_i} 2^{-l(\sigma)} = \lambda(\bar L\_i) \le 2^{-i}$. We construct a c.e. martingale $d$ as follows: every time we enumerate some word $\sigma$ into $L\_i$, we define the martingale $d^i\_\sigma$ by setting
+
+$$d^i_\sigma(\sigma\tau) = 1 \qquad \text{for all } \tau \in \lbrace 0,1\rbrace^{\ast},$$
+
+$$d^i_\sigma(\nu) = 2^{-(l(\sigma) - l(\nu))} \qquad \text{for all } \nu \sqsubseteq \sigma,$$
+
+$$d^i_\sigma(\tau) = 0 \qquad \text{for all other binary words } \tau.$$
+
+It is easy to check that $d^i\_\sigma$ is a rational-valued computable martingale — it is the strategy that bets everything on the bits of $\sigma$ being played, and stops betting once $\sigma$ has been reached — and that it fulfills $d^i\_\sigma(\lambda) = 2^{-l(\sigma)}$, since $\lambda \sqsubseteq \sigma$.
+
+The index set of the pairs $(i, \sigma)$ with $\sigma$ enumerated into $L\_i$ is c.e., and the starting capitals sum up:
+
+$$\sum_{i \ge 1} \; \sum_{\sigma \in L_i} d^i_\sigma(\lambda) \;=\; \sum_{i \ge 1} \; \sum_{\sigma \in L_i} 2^{-l(\sigma)} \;=\; \sum_{i \ge 1} \lambda(\bar L_i) \;\le\; \sum_{i \ge 1} 2^{-i} \;=\; 1 \;<\; \infty.$$
+
+By Proposition 11.4, the function
+
+$$d(\cdot) := \sum_{d^i_\sigma \text{ is defined}} d^i_\sigma(\cdot)$$
+
+is therefore a c.e. martingale.
+
+It remains to check that $d$ succeeds on $A$. Since $A$ fails $\bar L$, there exists for every $i$ a prefix $A \upharpoonright k\_i$ of $A$ with $A \upharpoonright k\_i \in L\_i$. Put $n\_i := \max\lbrace k\_1, \dots, k\_i\rbrace$, so that $A \upharpoonright n\_i$ extends each of $A \upharpoonright k\_1, \dots, A \upharpoonright k\_i$ and hence $d^j\_{A \upharpoonright k\_j}(A \upharpoonright n\_i) = 1$ for every $j \le i$. Therefore
+
+$$d(A \upharpoonright n_i) \;\ge\; \sum_{j = 1}^{i} d^j_{A \upharpoonright k_j}(A \upharpoonright n_i) \;=\; i.$$
+
+Thus $d$ succeeds on $A$, since
+
+$$\limsup_{n \to \infty} d(A \upharpoonright n) \;\ge\; \lim_{i \to \infty} d(A \upharpoonright n_i) \;=\; \infty. \qquad \square$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The three intuitions, closed)</span></p>
+
+Section 1 opened with three informal readings of "nonrandom": **compressible**, **predictable**, and **untypical**. Each has now received an effective formalization, and all three have been proved to single out the same sequences:
+
+| intuition | formalization | equivalence |
+|---|---|---|
+| compressible | $K(A \upharpoonright n) \le n - O(1)$ infinitely often, i.e. $A$ is not $1$-random | Theorem 4.1 |
+| untypical | $A$ fails some Martin-Löf test, equivalently some Solovay test | Definition 1.5, Theorem 9.4 |
+| predictable | some c.e. (super)martingale succeeds on $A$ | Theorem 11.6 |
+
+The martingale characterization is the one that makes the betting picture of Section 1.2 precise, and the proof of Theorem 11.6 shows exactly how the currencies are exchanged: a layer of a Martin-Löf test of measure $2^{-i}$ finances a family of simple strategies of total starting capital $2^{-i}$, each of which multiplies its stake by $2^{l(\sigma)}$ on the cylinder it bets on; conversely, Kolmogorov's Inequality converts "the capital reaches $2^n k$" into "a set of measure at most $2^{-n}$". Capital and measure are reciprocal, and that reciprocity is the whole content of the equivalence.
+
+</div>
