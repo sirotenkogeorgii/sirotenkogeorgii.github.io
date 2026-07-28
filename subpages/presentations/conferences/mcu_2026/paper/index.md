@@ -4,6 +4,9 @@
 
 ## Abstract
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Abstract</span><span class="math-callout__name"></span></p>
+
 Solovay reducibility is studied intensively as a tool to compare the approximability and the degree of randomness of left-c.e. reals. By definition, a real is left-c.e. if it has a left-c.e. approximation, that is, it is the limit of an effective nondecreasing sequence of rationals. If reals $\alpha$ and $\beta$ have left-c.e. approximations $a_0,a_1,\ldots$ and $b_0,b_1,\ldots$, respectively, such that the approximation ratios
 
 $$\frac{\alpha-a_n}{\beta-b_n}$$
@@ -12,12 +15,53 @@ are bounded from above by a constant, the real $\alpha$ is Solovay reducible to 
 
 In this work, we refute this conjecture by proving that the analogue of the Barmpalias-Lewis-Pye Limit Theorem does not hold for S2a-reducibility.
 
+</div>
+
 ## Introduction and background
 
 * The main objects of interest of computable analysis are computable real numbers and computable real functions, 
   * i.e., real numbers and real-valued functions of a real argument that can be computed (in an appropriate way) by a Turing functional. 
   
-#TODO: what is a turing functional? how does turing functional differ from turing machine
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Turing machine vs. Turing functional</summary>
+
+A **Turing machine** takes a finite input and produces a finite or infinite output.
+
+A **Turing functional** is essentially a Turing machine equipped with an **oracle tape**. It can query an infinite object during computation—here, a Cauchy name
+
+$$(q_0,q_1,\dots)$$
+
+representing a real number $x$.
+
+In the paper, a real function $f$ is computable when one fixed Turing functional transforms any Cauchy name of $x$ into a Cauchy name of $f(x)$. 
+
+So:
+
+$$\text{ordinary Turing machine: finite input}$$
+
+$$\text{Turing functional: computation relative to an infinite oracle}$$
+
+It reads only finitely many oracle values to produce each finite-precision output. For example, to compute $f(x)$ within error $2^{-n}$, it may inspect only $q_0,\dots,q_m$ for some finite $m$.
+
+> Is the content of the oracle tape built-in to the turing machine or it is an input? Or input is a real and oracle tape content is defined based on the input real?
+
+The oracle tape is **input**, not built into the Turing functional.
+
+The Turing functional $M$ is fixed. To compute $f(x)$, we place on its oracle tape a Cauchy name
+
+$$(q_0,q_1,\ldots)$$
+
+representing the input real $x$. Then $M$ reads this sequence as needed and outputs a Cauchy name of $f(x)$. 
+
+So:
+
+$$\text{input real }x \longrightarrow \text{choose a Cauchy name of }x \longrightarrow \text{put that name on the oracle tape}.$$
+
+Importantly, one real may have many Cauchy names, and the same functional must produce the correct $f(x)$ for **every** valid Cauchy name of $x$.
+
+</details>
+</div>
 
 ### Representation of reals and computable approximations
 
@@ -82,17 +126,17 @@ $$\sum_{i=1}^n |f(x_i)-f(x_{i-1})|\le C.$$
 <details markdown="1">
 <summary>Can the definition use countable ordered subsets instead?</summary>
 
-Yes, if “countable” includes finite sets and a countably infinite ordered subset is given by an increasing sequence
+Yes — **if by “countable ordered subset” you mean an increasing sequence**
 
-$$x_0<x_1<x_2<\cdots.$$
+$$x_0<x_1<x_2<\cdots,$$
 
-Then one may require
+then the definition is equivalent to requiring
 
 $$\sum_{i=1}^{\infty}|f(x_i)-f(x_{i-1})|\le C.$$
 
-This is equivalent to the finite-subset definition. If the finite condition holds, every partial sum is at most $C$, so the infinite sum is at most $C$. Conversely, every finite ordered subset is itself a finite sequence, so the countable-sequence condition includes the original condition.
+Indeed, every partial sum is bounded by $C$ using the paper’s finite definition, and since the terms are nonnegative, the infinite series is the limit of those partial sums. Conversely, the countable version immediately implies the finite one. 
 
-For an arbitrary countable linearly ordered subset, consecutive elements need not exist. The standard formulation using all finite ordered subsets avoids this issue; equivalently, the variation is the supremum of the corresponding finite sums.
+The finite formulation is preferred because an arbitrary countable subset of $\mathbb R$ may not admit an increasing enumeration indexed by $\mathbb N$; for example, $\mathbb Z$ has no first element when ordered as a subset extending in both directions. Variation is therefore naturally defined as the supremum over finite ordered subsets.
 
 </details>
 </div>
@@ -166,7 +210,7 @@ That depends on the underlying space.
 
 * In **Cantor space** $2^{\mathbb N}$, yes: effectively open sets are c.e. unions of cylinders
   
-  $$[\sigma]=\lbrace \in2^{\mathbb N}:\sigma\prec X\rbrace,$$
+  $$[\sigma]=\lbrace \in 2^{\mathbb N}:\sigma\prec X\rbrace,$$
   
   where $\sigma$ is a finite binary string.
 
@@ -235,7 +279,136 @@ Every computable function of bounded variation $f$ on the reals is differentiabl
 
 </div>
 
-#TODO: are the function at ML random points somehow special?
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>What is the significance of Demuth's theorem for us</summary>
+
+Demuth’s theorem supplies the **analytic principle behind the whole paper**:
+
+$$\boxed{\text{Martin-Löf random points cannot be effective points of nondifferentiability.}}$$
+
+More precisely, although a bounded-variation function may fail to be differentiable on a classical measure-zero set, if the function is computable, that exceptional set is effectively null. Hence every Martin-Löf random real avoids it. 
+
+**Why this connects to Solovay reducibility**
+
+Suppose a real translation function $f$ from $\beta$ to $\alpha$ is also defined at $\beta$, so that
+
+$$f(\beta)=\alpha.$$
+
+Then the Solovay ratio is exactly a difference quotient:
+
+$$\frac{\alpha-f(x)}{\beta-x} = \frac{f(\beta)-f(x)}{\beta-x}.$$
+
+Therefore,
+
+$$\lim_{x\to\beta} \frac{\alpha-f(x)}{\beta-x} =f'(\beta).$$
+
+So if $f$ is computable and of bounded variation and $\beta$ is Martin-Löf random, Demuth immediately says that this limit exists. The paper explicitly notes that Theorem 14 reduces to Demuth’s theorem when the translation function is defined at $\beta$. 
+
+Thus Demuth translates the approximation-speed question into ordinary analysis:
+
+$$\text{Does the relative-error ratio converge?} \quad\Longleftrightarrow\quad \text{Is the translation function differentiable at }\beta?$$
+
+**Why Demuth is not already enough**
+
+In ordinary Solovay reducibility, the translation function is defined only for $x<\beta$, not necessarily at $\beta$. Moreover, $\alpha$ and $\beta$ may themselves be noncomputable, so one cannot simply extend $f$ computably by setting
+
+$$f(\beta)=\alpha.$$
+
+Demuth requires a computable function at the point in question. This is why Titov’s extension matters: it shows that if $f$ is computable at every $x<\beta$, has bounded variation, and converges to $\alpha$ as $x\uparrow\beta$, then the left derivative still exists at a Martin-Löf random $\beta$. The same randomness-test mechanism excludes unbounded or infinitely oscillating difference quotients. 
+
+**Its role in this paper’s storyline**
+
+The progression is:
+
+$$
+\begin{array}{c}
+\text{Demuth}\\
+\text{one computable BV function defined at }\beta
+\\
+\Downarrow
+\\
+\text{Titov}\\
+\text{one computable BV translation function defined only below }\beta
+\\
+\Downarrow\quad\text{conjectured}
+\\
+\text{(S^{2a})}\\
+\text{two semicomputable BV bounds }(f,h).
+\end{array}
+$$
+
+Demuth and Titov made it plausible that Martin-Löf randomness should force the endpoints $f,h$ of a translation interval to be differentiable at $\beta$, with the same derivative.
+
+The paper shows that this last step fails. The difference is not bounded variation—it is present in all cases. The difference is **computability**:
+
+* Demuth: one function computable from both sides;
+* Titov: one function still computable at every point below $\beta$;
+* $S^{2a}$: one endpoint is only lower semicomputable and the other only upper semicomputable.
+
+That loss of two-sided effective information prevents the usual construction of a Martin-Löf test from bad slope behaviour.
+
+So Demuth’s theorem is significant not because the paper applies it directly to its counterexample, but because it establishes the guiding paradigm:
+
+$$\text{effective regular function} + \text{random input} \Longrightarrow \text{differentiability}.$$
+
+The paper determines that translation function intervals lie just beyond the boundary where this paradigm remains valid.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>If the function is computable, that exceptional set is effectively null.</summary>
+
+Not merely because $f$ is computable. My previous sentence compressed the actual content of Demuth’s theorem too much.
+
+A computable function can have a measure-zero set associated with it that is not automatically effectively null. What Demuth proved is that, for **computable functions of bounded variation**, the classical proof of differentiability almost everywhere can be made effective.
+
+**The key idea:** failure of differentiability can be witnessed by rational inequalities between difference quotients.
+
+For instance, nondifferentiability at $x$ means that the difference quotients
+
+$$\frac{f(y)-f(x)}{y-x}$$
+
+do not converge as $y\to x$. One possible failure is that there are rationals $p<q$ such that arbitrarily close to $x$, some difference quotients are below $p$ and others are above $q$.
+
+Because $f$ is computable, a strict rational inequality such as
+
+$$\frac{f(y)-f(x)}{y-x}>q$$
+
+can be detected effectively once enough precision has been computed. Hence one can effectively enumerate open intervals containing points where such incompatible slope behaviour is witnessed.
+
+**Bounded variation controls the measure of these intervals.**
+
+If the slope repeatedly rises from below $p$ to above $q$, then the function must spend a definite amount of variation each time. Since the total variation is finite, there cannot be too many disjoint regions exhibiting such behaviour. A covering argument therefore bounds the total length of the bad intervals.
+
+This is the effective analogue of the classical argument:
+
+$$\text{many slope oscillations} \quad\Longrightarrow\quad \text{large total variation}.$$
+
+By choosing increasingly stringent witnesses, one obtains uniformly effectively open sets $U_n$ such that
+
+$$\mu(U_n)\le 2^{-n}$$
+
+and every point where $f$ is not differentiable belongs to all the $U_n$. Thus
+
+$$\lbrace x:f'(x)\text{ does not exist}\rbrace \subseteq \bigcap_n U_n.$$
+
+The sequence $(U_n)$ is a Martin-Löf test. Therefore a Martin-Löf random real cannot be a point of nondifferentiability.
+
+So the logic is not simply
+
+$$f\text{ computable} \implies \text{exceptional set effectively null}.$$
+
+It is
+
+$$\boxed{ \text{computability makes bad slopes effectively detectable} + \text{bounded variation gives effective measure control}. }$$
+
+Together these allow the classical null-set proof to be converted into a Martin-Löf test. The paper states Demuth’s resulting theorem but does not provide this proof. 
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Titov extended Demuth)</span></p>
@@ -246,7 +419,58 @@ Every computable function of bounded variation $f$ on the reals is differentiabl
 
 </div>
 
-#TODO: did not get the last point of the remark
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>On the last point of the remark</summary>
+
+The point is that a **Solovay translation function** is naturally computable only to the left of $\beta$:
+
+$$f(q)\to \alpha \qquad (q\uparrow\beta),$$
+
+but it may not be defined or computable at $\beta$ itself. 
+
+Demuth’s theorem cannot directly handle this, because it assumes the function is computable at the random point. Titov’s extension is tailored exactly to this situation: if $f$ has finite variation and is computable for every $x<\beta$, then at ML-random $\beta$ the left derivative exists:
+
+$$\lim_{x\uparrow\beta} \frac{f(\beta)-f(x)}{\beta-x}.$$
+
+For a translation function, we interpret $f(\beta)=\alpha$, so this becomes
+
+$$\lim_{x\uparrow\beta} \frac{\alpha-f(x)}{\beta-x}.$$
+
+Thus Titov turns a statement about **randomness of $\beta$** into a convergence theorem for the error ratio defining Solovay reducibility. This is why it is relevant to **relative randomness**: the derivative measures how the approximation of $\alpha$ compares with the approximation of $\beta$. 
+
+In other words, it is the functional analogue of the Barmpalias–Lewis-Pye limit
+
+$$\frac{\alpha-a_n}{\beta-b_n}\to d.$$
+
+> But saying that we interpret $f(\beta)=\alpha$ later you compute the function at the random point, do not you?
+
+No. **Assigning the mathematical value**
+
+$$\bar f(\beta):=\alpha$$
+
+does not mean that $\bar f(\beta)$ is computable from $\beta$.
+
+The original translation function is defined only for $x<\beta$, with
+
+$$\lim_{x\uparrow\beta}f(x)=\alpha.$$
+
+We may extend it set-theoretically by setting $\bar f(\beta)=\alpha$, so that the quotient can be written as
+
+$$\frac{\bar f(\beta)-\bar f(x)}{\beta-x} = \frac{\alpha-f(x)}{\beta-x}.$$
+
+But no algorithm is being used to evaluate $\bar f$ at $\beta$. The numerator already contains the independently specified real $\alpha$.
+
+“$f$ is computable at $\beta$” would mean that one uniform algorithm, given a Cauchy name of $\beta$, produces arbitrarily accurate approximations to $f(\beta)=\alpha$. The theorem does **not** assume or prove this.
+
+So my earlier phrase “interpret $f(\beta)=\alpha$” was potentially misleading. More precisely, Titov studies the **boundary difference quotient**
+
+$$\frac{\alpha-f(x)}{\beta-x}, \qquad x\uparrow\beta,$$
+
+without requiring $f$ to be defined or computable at $\beta$. 
+
+</details>
+</div>
 
 ## Solovay reducibility and its versions
 
@@ -281,7 +505,7 @@ On the set of left-c.e. reals, Solovay reducibility was characterized by Calude,
 
 A left-c.e. real $\alpha$ is Solovay reducible to a left-c.e. real $\beta$ iff there exist two left-c.e. approximations
 
-$$a_0,a_1,\ldots\nearrow\alpha,\qquadb_0,b_1,\ldots\nearrow\beta,$$
+$$a_0,a_1,\ldots\nearrow\alpha,\qquad b_0,b_1,\ldots\nearrow\beta,$$
 
 and a constant $c$ such that
 
@@ -302,7 +526,7 @@ $$\alpha-a_n<c(\beta-b_n)\qquad\text{for all }n. \tag{1}$$
 
 Let $\alpha$ be a left-c.e. real and $\beta$ be a Martin-Löf random left-c.e. real. Then there exists a real $d$ such that, for any two left-c.e. approximations
 
-$$a_0,a_1,\ldots\nearrow\alpha,\qquadb_0,b_1,\ldots\nearrow\beta,$$
+$$a_0,a_1,\ldots\nearrow\alpha,\qquad b_0,b_1,\ldots\nearrow\beta,$$
 
 $$d=\lim_{n\to\infty}\frac{\alpha-a_n}{\beta-b_n}. \tag{2}$$
 
@@ -318,6 +542,22 @@ The proof of the latter result can be split into two logically independent claus
 
 1. The unboundedness of the ratio $(\alpha-a_n)/(\beta-b_n)$ as $n\to\infty$ would imply the existence of a Martin-Löf test that $\beta$ fails, contradicting its Martin-Löf randomness.
 2. The existence of two constants $c<d$ such that $(\alpha-a_n)/(\beta-b_n)<c$ for infinitely many $n$ and $(\alpha-a_n)/(\beta-b_n)>d$ for infinitely many $n$ would also imply the existence of a Martin-Löf test that $\beta$ fails, again contradicting its Martin-Löf randomness.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Detailed proof of unbounded case</summary>
+
+
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Detailed proof of oscillation case</summary>
 
 </details>
 </div>
@@ -351,7 +591,7 @@ Rettinger and Zheng also showed that, on the set of d.c.e. reals, Martin-Löf ra
 
 Let $\alpha$ be a d.c.e. real and $\beta$ be a Martin-Löf random d.c.e. real. Then there exists a real $d$ such that, for any two d.c.e. approximations
 
-$$a_0,a_1,\ldots\to\alpha,\qquadb_0,b_1,\ldots\to\beta,$$
+$$a_0,a_1,\ldots\to\alpha,\qquad b_0,b_1,\ldots\to\beta,$$
 
 $$d=\lim_{n\to\infty}\frac{|\alpha-a_n|}{|\beta-b_n|}. \tag{4}$$
 
@@ -422,8 +662,42 @@ Let $I$ be an open interval and $f$ a real function defined on $I$.
 </div>
 
 #TODO: prove it
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (iii)</summary>
+
+The key point is: **to compute $f(x)$ to finite precision, a Turing functional can inspect only finitely much of a Cauchy name of $x$.**
+
+Why a computable real function is continuous
+
+The whole content is in what the machine is allowed to see.
+
+A real has no finite code. The oracle tape holds a Cauchy name q₀, q₁, q₂, … of x — an infinite object. The functional M must output a Cauchy name p₀, p₁, … of f(x), meaning |f(x) − pₙ| ≤ 2⁻ⁿ.
+
+Now fix x and a precision n, and run M until it writes pₙ. That is a finite computation: it halts at some step t. In t steps M can only have scanned finitely many cells of the oracle tape — say it read q₀, …, q_k.
+
+Here is the move. Take any other real y that has some Cauchy name beginning with those same q₀, …, q_k. Run M on it. M cannot tell the difference — it read only those k+1 cells, and they're identical. So it writes the same pₙ. But that output has to be correct for y too, so:
+
+|f(x) − pₙ| ≤ 2⁻ⁿ   and   |f(y) − pₙ| ≤ 2⁻ⁿ   ⟹   |f(x) − f(y)| ≤ 2⁻ⁿ⁺¹
+
+Which y are these? A Cauchy name obeys |q_m − q_k| ≤ 2⁻ᵏ, so anything within about 2⁻ᵏ of q_k can have its name continued from that prefix. So: for every ε = 2⁻ⁿ⁺¹ there is a δ ≈ 2⁻ᵏ with |x − y| < δ ⟹ |f(x) − f(y)| ≤ ε. That is continuity at x, and nothing else was used.
+
+Slogan: the machine must commit to f(x) to within 2⁻ⁿ after reading only finitely much of x, so every real that looks the same under that finite read must get almost the same value.
+
+**The contrast with $ℚ$, concretely.** Take
+
+$$f(q) = 0 if q < ½,$$
+
+$$f(q) = 1 if q ≥ ½$$
+
+On $ℚ$ this is perfectly computable: a rational arrives as a finite code, you read all of it, compare to ½, answer. On ℝ it is not computable: if the oracle reads 0.5, 0.5, 0.5, … you can never know whether x < ½ or x ≥ ½, so you can never even write p₀. The exact input is what licenses branching, and on ℝ you never have it.
+
+</details>
+</div>
 
 A **functional characterization of S2a-reducibility** via a function interval consisting of two Lipschitz continuous functions was found by Kumabe, Miyabe, and Suzuki.
+
+#TODO: what does the phrase "functional characterization" mean?
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Translation function interval)</span></p>
@@ -543,13 +817,13 @@ where $\widetilde f(b'_n)$ is the value of $f(b'_n)$ approximated from below wit
 Kumabe, Miyabe, and Suzuki demonstrated in 2025 that S2a-reducibility can be equivalently characterized via the existence of a translation function interval consisting of two Lipschitz continuous functions.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Kumabe et al.)</span></p>
 
 A c.a. real $\alpha$ is S2a-reducible to a c.a. real $\beta$ iff there exists a translation function interval $(f,h)$ from $\beta$ to $\alpha$ such that $f$ and $h$ are Lipschitz continuous.
 
 </div>
 
-#TODO: prove it
+#TODO: The result of the Theorem 23 (Kumabe et al.) is not fully intuitive to me, could you explain it? Do not see 
 
 In the context of randomness, by Remark 15, it makes sense to consider only translation function intervals $(f,h)$ where both $f$ and $h$ have bounded variation. In particular, by Proposition 4, nondecreasing or Lipschitz continuous functions automatically have bounded variation.
 
