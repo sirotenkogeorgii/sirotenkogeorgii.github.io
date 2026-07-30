@@ -3,8 +3,14 @@
   {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-07-26",
+   "date": "2026-07-30",
    "added": false
+  },
+  {
+   "title": "Cheatsheet — Part 1: Foundations & Plain Kolmogorov Complexity",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part1-plain-complexity/",
+   "date": "2026-07-30",
+   "added": true
   },
   {
    "title": "MCU 2026: S2a-reducibility and differentiation in Martin-Löf random reals",
@@ -173,12 +179,6 @@
    "url": "/notes/stuff_i_found_interesting/",
    "date": "2026-06-30",
    "added": false
-  },
-  {
-   "title": "The Gramian in Infinite Dimensions",
-   "url": "/subpages/stuff_i_found_interesting/gramian_in_infinite_dim/",
-   "date": "2026-06-27",
-   "added": true
   }
  ]
 }

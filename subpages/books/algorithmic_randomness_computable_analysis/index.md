@@ -21,7 +21,7 @@ tags:
   - solovay-reducibility
 ---
 
-# Algorithmic Randomness and Computable Analysis
+<!-- # Algorithmic Randomness and Computable Analysis -->
 
 *Lecture notes by Ivan Titov, Summer 2026.*
 
@@ -29,7 +29,9 @@ tags:
 - TOC
 {:toc}
 
-## Notation
+## Cheatsheets
+
+* [Part 1: Foundations & Plain Kolmogorov Complexity (up to §2.3)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part1-plain-complexity/)
 
 Before we can talk about randomness in any precise sense, we need a vocabulary for the objects on which the theory operates: finite binary words, infinite binary sequences, and the basic open sets of Cantor space that allow us to attach Lebesgue measure to subsets of these sequences.
 
@@ -239,9 +241,9 @@ $$S = ([\![\sigma_0]\!], [\![\sigma_1]\!], \dots), \qquad \lambda(S) = \sum_i \l
   <figcaption>Basic open sets of Cantor space identified with dyadic intervals of $[0, 1]$. A finite word $\sigma$ of length $k$ corresponds to the set $[\![\sigma]\!]$ of all infinite binary sequences extending $\sigma$, which in turn corresponds to the dyadic interval $[0.\sigma,\ 0.\sigma + 2^{-k}]$ of length $2^{-k}$. Each level halves the measure of its parent.</figcaption>
 </figure>
 
-## Introduction
+# Introduction
 
-### Three Intuitions of Nonrandomness
+## Three Intuitions of Nonrandomness
 
 Before formalizing anything, it is useful to look at concrete sequences that *feel* nonrandom and ask: what, exactly, is wrong with them? Three intuitions emerge — compressibility, predictability, and untypicality — and each will lead to a different formal definition of randomness in the rest of the course.
 
@@ -380,7 +382,7 @@ Before formalizing anything, it is useful to look at concrete sequences that *fe
 
 </div>
 
-### 1.1 Nonrandomness as Compressibility
+## 1.1 Nonrandomness as Compressibility
 
 **Intuition.** A finite sequence of bits is *nonrandom* if it possesses an essentially shorter description, i.e., it can be restored from a shorter source sequence. Formalizing "description" via Turing machines leads to **Kolmogorov complexity**.
 
@@ -460,7 +462,7 @@ $$C(\sigma) \le C_M(\sigma) + c_M \qquad \text{for every word } \sigma. \tag{1}$
 
 TODO: is there a tension between having a description of turing machine for a specific class of sequences and more general turing machine that gets the description of what to do.
 
-#### From finite strings to infinite sequences
+### From finite strings to infinite sequences
 
 **Intuition.** An infinite string is *nonrandom* if its arbitrarily long initial segments have essentially shorter descriptions.
 
@@ -530,7 +532,7 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 
 </div>
 
-### 1.2 Nonrandomness as Predictability
+## 1.2 Nonrandomness as Predictability
 
 **Intuition.** A sequence of bits is *nonrandom* if it is possible to predict some of its bits with sufficiently high probability — equivalently, if a gambler can beat the sequence by betting on its bits.
 
@@ -543,7 +545,7 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 
 </div>
 
-### 1.3 Nonrandomness as Untypicality
+## 1.3 Nonrandomness as Untypicality
 
 **Intuition.** A finite sequence with some *rare* property — one that is easy to describe and easy to check — is nonrandom.
 
@@ -560,7 +562,7 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 
 </div>
 
-#### From finite strings to infinite sequences
+### From finite strings to infinite sequences
 
 **Intuition.** An infinite sequence is *nonrandom* if we can construct a family of sets of arbitrarily small measure ("layers of untypicality") all containing the sequence. Formalizing "we can construct" via uniform enumeration leads to **Martin-Löf tests**.
 
@@ -751,7 +753,7 @@ Construct a Martin-Löf test $\mathcal{M}$ that covers every sequence $X$ which 
 
 </div>
 
-## Kolmogorov complexity
+# Kolmogorov complexity
 
 In this section we examine the Kolmogorov complexity as a function on binary words, starting from the trivial upper bound and a few straightforward properties.
 
@@ -1283,7 +1285,7 @@ But this raises an effective question: *can we check incompressibility for a fix
 
 </div>
 
-### 2.1 Kolmogorov Complexity as an Upper-Semicomputable Function
+## 2.1 Kolmogorov Complexity as an Upper-Semicomputable Function
 
 Within this paragraph we deal with functions mapping words to natural numbers. Since every natural number $n$ admits a computable bijection with a binary word (e.g., $\mathrm{bin}(n)$ or the $n$-th word $w_n$ in the length-lexicographic ordering), and vice versa, all notions defined here transfer to functions from naturals to naturals or from binary words to binary words.
 
@@ -1466,7 +1468,7 @@ Kolmogorov complexity is **not** computable.
 
 </div>
 
-### 2.2 Properties of Kolmogorov Complexity
+## 2.2 Properties of Kolmogorov Complexity
 
 We now collect a few stability properties of $C$ under small textual edits, and contrast them with the dramatic *instability* one sometimes encounters: a single-bit edit can, in the worst case, raise complexity arbitrarily.
 
@@ -1759,7 +1761,7 @@ but this expression actually tends to $0$. The surrounding argument clearly aims
 
 </div>
 
-### 2.3 Prefix-Free Turing Machines
+## 2.3 Prefix-Free Turing Machines
 
 Plain Kolmogorov complexity has an awkward concatenation behavior because plain programs are not self-delimiting. Prefix-free complexity fixes this by allowing only domains in which no valid program is a proper prefix of another valid program.
 
@@ -2630,7 +2632,7 @@ Deferred to Sheet 2, Exercise 4.1.
 </details>
 </div>
 
-## Information Content Measures
+# Information Content Measures
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Prefix-free complexity is the "smallest" function behaving as complexity measure)</span></p>
@@ -3431,7 +3433,7 @@ and **1-nonrandom** otherwise.
 
 </div>
 
-## Incompressibility and Typicality
+# Incompressibility and Typicality
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Typicality implies incompressibility)</span></p>
@@ -3621,11 +3623,11 @@ As $i$ was arbitrary, the deficit $K(X \upharpoonright n) - n$ can be pushed bel
 
 This closes the loop opened by the exercise above: **prefix-free incompressibility ($1$-randomness) and Martin-Löf typicality single out exactly the same sequences.** We will lean on this equivalence repeatedly, switching freely between the compression viewpoint and the measure-theoretic viewpoint of randomness.
 
-## Computable Approximations of Real Numbers
+# Computable Approximations of Real Numbers
 
 As we will see later, a "natural" example of a random sequence is the binary representation of the limit of the *slowest* nondecreasing computable Cauchy sequence. Before we can make that statement precise, we need a vocabulary for the limits of computable Cauchy sequences and for their convergence speed. We therefore begin by transferring the notion of computability from words and sequences to the real line.
 
-### Computability on the Reals
+## Computability on the Reals
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(5.1 — Computable real)</span></p>
@@ -3844,7 +3846,7 @@ Hence $L(\alpha) \in \Sigma^0\_2 \cap \Pi^0\_2 = \Delta^0\_2$, i.e. $L(\alpha)$ 
 </details>
 </div>
 
-### Halting Probability and the Class of Left-c.e. Reals
+## Halting Probability and the Class of Left-c.e. Reals
 
 Left-c.e. reals admit a strikingly concrete description: each of them is the halting probability of some prefix-free machine, and conversely. We first attach a real to every prefix-free machine.
 
@@ -4708,7 +4710,7 @@ In short, finite witnesses often give c.e. information, while absence, uniquenes
 
 </div>
 
-### Basics of Computability Theory and Prefix-Free Machines
+# Basics of Computability Theory and Prefix-Free Machines
 
 The randomness proof for $\Omega$ rests on a small toolkit of classical computability results — the $s$-$m$-$n$ theorem, the fixed-point theorem, and two forms of Kleene's recursion theorem. We collect them here, the last one in the prefix-free form that the proof actually uses.
 
@@ -4796,7 +4798,7 @@ Apply the recursion theorem (Theorem 5.14) to $h$, read as $g(e, y) := h(y, e)$:
 </details>
 </div>
 
-## Randomness of Reals
+# Randomness of Reals
 
 In algorithmic randomness a real in $[0,1]$ is studied through its binary expansion. For a non-dyadic real this expansion is unique. For a dyadic rational there are two binary names, such as
 
@@ -5085,7 +5087,7 @@ Hence $K(\Omega \upharpoonright n) \ge n - e$ for all $n$; $\Omega$ is incompres
 </details>
 </div>
 
-## Solovay Reducibility
+# Solovay Reducibility
 
 The fact that $\Omega$ is random is not an isolated accident: any left-c.e. real whose approximation converges "at least as fast" as that of $\Omega$ inherits its randomness. The right notion of "at least as fast" is *Solovay reducibility*.
 
@@ -5291,31 +5293,70 @@ If $\alpha$ is a Martin-Löf random real and $\alpha \le\_S \beta$, then $\beta$
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $\alpha$ be Martin-Löf random with $\alpha \le\_S \beta$ via a function $g$ and a constant which, without loss of generality, we take to be a power of two, $c = 2^N$:
+* Let $\alpha$ be Martin-Löf random with $\alpha \le\_S \beta$ via a function $g$ and a constant
+  * which,without loss of generality, we take to be a power of two, $c = 2^N$:
 
-$$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta. \tag{$\dagger$}$$
+    $$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta. \tag{$\dagger$}$$
 
-Assume toward a contradiction that $\beta$ is **not** Martin-Löf random, and fix a Martin-Löf test $L = (L\_1, L\_2, \dots)$ that covers $\beta$, so $\beta \in L\_i$ for every $i$. We construct a Martin-Löf test $M = (M\_{N+1}, M\_{N+2}, \dots)$ that covers $\alpha$, contradicting its randomness.
+* Assume toward a contradiction that $\beta$ is **not** Martin-Löf random, 
+* Fix a Martin-Löf test $L = (L\_1, L\_2, \dots)$ that covers $\beta$, so $\beta \in L\_i$ for every $i$. 
+* We construct a Martin-Löf test $M = (M\_{N+1}, M\_{N+2}, \dots)$ that covers $\alpha$, contradicting its randomness.
 
-**Construction.** For every basic interval $[l, r] := [[\sigma]]$ enumerated into $L\_i$ with $i \ge N+1$, try to compute $g(l)$. If $g(l)\downarrow$, enumerate the interval
+**Construction.** 
 
-$$[\,g(l),\; g(l) + 2^N(r - l)\,]$$
+* For every basic interval $[l, r] := [[\sigma]]$ enumerated into $L\_i$ with $i \ge N+1$,
+* Try to compute $g(l)$. 
+  * If $g(l)\downarrow$, enumerate the interval
 
-into $M\_i$ (computably realized as a single dyadic node $[[\tau]]$ or a finite disjoint union $[[\tau\_1]] \cup [[\tau\_2]] \cup \cdots$).
+    $$[\,g(l),\; g(l) + 2^N(r - l)\,]$$
 
-**$M$ is a Martin-Löf test.** Each $M\_i$ is uniformly c.e. open, and for every $i$
+    into $M\_i$ (computably realized as a single dyadic node $[[\tau]]$ or a finite disjoint union $[[\tau\_1]] \cup [[\tau\_2]] \cup \cdots$).
+
+**$M$ is a Martin-Löf test.** 
+
+Each $M\_i$ is uniformly c.e. open, and for every $i$
 
 $$\lambda(M_i) = \sum_{I \in M_i} \lambda(I) \;\le\; \sum_{\substack{[l,r]\in L_i \\ g(l)\downarrow}} \lambda\big([\,g(l),\, g(l) + 2^N(r-l)\,]\big) \;\le\; \sum_{[l,r]\in L_i} 2^N \lambda([l,r]) \;=\; 2^N \lambda(L_i) \;\le\; 2^{N-i}.$$
 
 Thus the $i$-th layer has measure at most $2^{N-i} = 2^{-(i-N)}$, so $M$ (indexed from $i = N+1$) is a legitimate Martin-Löf test.
 
-**$M$ covers $\alpha$.** Since $\beta \in L\_i$ for all $i$, fix for each $i \ge N+1$ an interval $[l, r] \in L\_i$ with $\beta \in [l, r]$. As $\beta$ is irrational, $l < \beta < r$; taking $q = l < \beta$ in $(\dagger)$ gives $g(l)\downarrow$ and
+**$M$ covers $\alpha$.** 
+
+Since $\beta \in L\_i$ for all $i$, fix for each $i \ge N+1$ an interval $[l, r] \in L\_i$ with $\beta \in [l, r]$. As $\beta$ is irrational, $l < \beta < r$; taking $q = l < \beta$ in $(\dagger)$ gives $g(l)\downarrow$ and
 
 $$g(l) < \alpha < g(l) + 2^N(\beta - l) < g(l) + 2^N(r - l).$$
 
 Hence the interval $[\,g(l),\, g(l) + 2^N(r-l)\,]$ enumerated into $M\_i$ contains $\alpha$. So $\alpha \in M\_i$ for every $i \ge N+1$, i.e. $M$ covers $\alpha$.
 
 Then $\alpha$ is not Martin-Löf random — a contradiction. Therefore $\beta$ is Martin-Löf random. $\square$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Recall: Endpoints of intervals in ML test layers are rationals</summary>
+
+In the usual representation on $[0,1]$, each Martin-Löf layer $U_n$ is given as a computably enumerable union
+
+$$U_n=\bigcup_{k} (a_{n,k},b_{n,k}),$$
+
+where $a_{n,k},b_{n,k}\in\mathbb{Q}$, uniformly in $n$.
+
+So the **enumerated basic intervals have rational endpoints**. In the binary/Cantor-space formulation, one uses cylinders $[\sigma]$, corresponding to intervals with **dyadic rational** endpoints.
+
+However, the endpoints of the connected components or the boundary of the whole set $U_n$ need not be rational—or even computable. For example,
+
+$$U=(0,\alpha)$$
+
+can be effectively open when $\alpha$ is a noncomputable left-c.e. real: enumerate rational intervals $(0,q)$ as $q\uparrow\alpha$.
+
+Thus:
+
+* basic intervals used to enumerate the layer: rational endpoints;
+* actual boundary points of the resulting layer: not necessarily rational or computable.
+
+#TODO: visualize the proof
 
 </details>
 </div>
@@ -6279,7 +6320,7 @@ On the left-c.e. reals, the Kučera–Slaman theorem turns Martin-Löf randomnes
   <figcaption>The Solovay degrees of the left-c.e. reals. The computable reals form the least degree, and by the Kučera–Slaman theorem the Martin-Löf random left-c.e. reals form the greatest one — the degree of $\Omega$. Proposition 7.3 gives the vertical direction its meaning: Martin-Löf randomness can only spread upward along $\le_S$, so the random reals sit exactly at the top of the order.</figcaption>
 </figure>
 
-## Relative Randomness and Relative Complexity
+# Relative Randomness and Relative Complexity
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Relative Randomness and Relative Complexity)</span></p>
@@ -6482,7 +6523,7 @@ A weaker version of the last implication — that $\alpha \ll\_K \beta$ implies 
 
 $$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
 
-## Universal Randomness Tests
+# Universal Randomness Tests
 
 Every randomness notion we have met so far is defined by *quantifying over tests*: a sequence is Martin-Löf nonrandom if **some** Martin-Löf test covers it, Schnorr nonrandom if **some** Schnorr test covers it. A natural question is whether that quantifier can be eliminated — whether one single test already detects every nonrandom sequence.
 
@@ -6681,7 +6722,7 @@ By Borel–Cantelli, $\sum\_i \lambda(I\_i) < \infty$ already implies that the s
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(9.4 — Solovay characterization of Martin-Löf randomness)</span></p>
 
-A sequence $A$ is Martin-Löf nonrandom iff it fails some Solovay test.
+A sequence $A$ is Martin-Löf nonrandom $\iff$ it fails some Solovay test.
 
 </div>
 
@@ -6837,7 +6878,7 @@ In every row the pattern is the same: as long as the measure requirement can onl
 
 </div>
 
-## Relative Randomness of Computably Approximable Reals
+# Relative Randomness of Computably Approximable Reals
 
 Solovay reducibility, and with it the whole degree structure of Sections 7 and 8, is tailored to the left-c.e. reals: the witness $g$ maps rational lower bounds of $\beta$ to rational lower bounds of $\alpha$, which presupposes that approaching a real *from below* is the meaningful mode of approximation. For a general computably approximable real there is no such preferred direction — the approximation oscillates around its limit — and $\le\_S$ degenerates.
 
@@ -7292,7 +7333,7 @@ This sharpens the failure considerably. The $\alpha$ built above is an arbitrary
 
 </div>
 
-## Martingales
+# Martingales
 
 We now return to the second of the three intuitions of nonrandomness from Section 1 — *nonrandom means predictable* — and give it the effective formalization that was promised there. The notion of martingale formalizes the intuitive understanding of a **betting strategy** on a (finite or infinite) sequence of bits.
 
