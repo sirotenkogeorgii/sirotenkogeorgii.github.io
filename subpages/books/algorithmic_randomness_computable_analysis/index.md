@@ -245,7 +245,12 @@ $$S = ([\![\sigma_0]\!], [\![\sigma_1]\!], \dots), \qquad \lambda(S) = \sum_i \l
 
 ## Three Intuitions of Nonrandomness
 
-Before formalizing anything, it is useful to look at concrete sequences that *feel* nonrandom and ask: what, exactly, is wrong with them? Three intuitions emerge — compressibility, predictability, and untypicality — and each will lead to a different formal definition of randomness in the rest of the course.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Three Intuitions of Nonrandomness: compressibility, predictability, and untypicality)</span></p>
+
+Before formalizing anything, it is useful to look at concrete sequences that *feel* nonrandom and ask: what, exactly, is wrong with them? Three intuitions emerge — **compressibility**, **predictability**, and **untypicality** — and each will lead to a different formal definition of randomness in the rest of the course.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three intuitively nonrandom finite sequences of length 2000)</span></p>
@@ -384,7 +389,13 @@ Before formalizing anything, it is useful to look at concrete sequences that *fe
 
 ## 1.1 Nonrandomness as Compressibility
 
-**Intuition.** A finite sequence of bits is *nonrandom* if it possesses an essentially shorter description, i.e., it can be restored from a shorter source sequence. Formalizing "description" via Turing machines leads to **Kolmogorov complexity**.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Case 1: Nonrandomness as Compressibility)</span></p>
+
+* A finite sequence of bits is *nonrandom* if it possesses an essentially shorter description, i.e., it can be restored from a shorter source sequence. 
+* Formalizing "description" via Turing machines leads to **Kolmogorov complexity**.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kolmogorov complexity with respect to $M$)</span></p>
@@ -424,7 +435,13 @@ $$C:\lbrace 0,1\rbrace^\ast \to \mathbb{N}$$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(TODO:)</span></p>
+
 The choice of universal machine matters only up to a constant: passing through $U$ adds at most the cost of the encoding $\rho_M$.
+
+</div>
+
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Universality up to a constant, (1))</span></p>
@@ -498,17 +515,18 @@ $$C(A \upharpoonright n) < n - c.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-We enumerate the set $S = (\sigma_0, \sigma_1, \dots)$ in stages: at stage $n$, enumerate into $S$ all words of length $n$ that begin with $w_n$ (recall $(w_0, w_1, w_2, w_3, \dots) = (\lambda, 0, 1, 00, \dots)$ is the length-lexicographic enumeration of all binary words). The first few stages produce
+We enumerate the set $S = (\sigma_0, \sigma_1, \dots)$ in stages: 
+1. at stage $n$, enumerate into $S$ all words of length $n$ that begin with $w_n$
+   * recall $(w_0, w_1, w_2, w_3, \dots) = (\lambda, 0, 1, 00, \dots)$ is the length-lexicographic enumeration of all binary words. 
+2. The first few stages produce
 
-$$
-\underbrace{\lambda}_{\text{stage 0}},\quad
-\underbrace{0}_{\text{stage 1}},\quad
-\underbrace{10, 11}_{\text{stage 2}},\quad
-\underbrace{000, 001}_{\text{stage 3}},\quad
-\underbrace{0100, 0101, 0110, 0111}_{\text{stage 4}}, \dots
-$$
-
-Here $\sigma_n$ denotes a **single word**: the $n$-th word in the flattened enumeration $S$. A stage may enumerate several words, so the stage number and the final enumeration index are different roles. Equivalently, one could write "stage $s$" above and reserve $n$ for the index in $\sigma_n$.
+   $$
+   \underbrace{\lambda}_{\text{stage 0}},\quad
+   \underbrace{0}_{\text{stage 1}},\quad
+   \underbrace{10, 11}_{\text{stage 2}},\quad
+   \underbrace{000, 001}_{\text{stage 3}},\quad
+   \underbrace{0100, 0101, 0110, 0111}_{\text{stage 4}}, \dots
+   $$
 
 For the machine $M$ that, given $\mathrm{bin}(n)$, returns $\sigma_n$, we have
 
@@ -521,20 +539,99 @@ Finally, $l(\sigma_n) - \log(n) \to \infty$ as $n \to \infty$: stage $s$ enumera
 </details>
 </div>
 
-TODO: grasp it intuitively, rn looks pretty technical
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Are there any other ways to produce other sparse list that would help is to compress the prefixes?</summary>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(1.4)</span></p>
+Yes. The lexicographic construction is only one implementation of a more general idea:
 
-Using the construction in the previous proof, show that for every infinite binary sequence $X$, there exist infinitely many $n$ such that
+> Build a computable sparse family $S_n\subseteq 2^n$ such that every infinite $A$ has $A!\upharpoonright n\in S_n$ for infinitely many $n$.
 
-$$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
+Then, if the cumulative size satisfies
 
+$$\left|\bigcup_{m\le n}S_m\right|\le 2^{n-d(n)},$$
+
+every selected prefix has
+
+$$C(A!\upharpoonright n)\le n-d(n)+O(1).$$
+
+**A cleaner alternative construction**
+
+For each length $k$, assign the $2^k$ strings of length $k$ to distinct stages
+
+$$2^k,\ldots,2^{k+1}-1.$$
+
+If $\sigma\in 2^k$ is assigned stage $n$, enumerate at stage $n$ all length-$n$ extensions of $\sigma$.
+
+Then:
+
+* Every $A$ is hit once for every $k$, because its prefix $A!\upharpoonright k$ has an assigned stage.
+* At that stage, only
+  
+  $$2^{n-k}$$
+  
+  strings are generated.
+* Since $n\asymp 2^k$, we have $k\asymp\log n$, so
+  
+  $$2^{n-k}\asymp\frac{2^n}{n}.$$
+
+Thus it gives the same compression:
+
+$$C(A!\upharpoonright n)\le n-\log n+O(1)$$
+
+infinitely often.
+
+So the essential mechanism is not the exact enumeration. It is:
+
+$$\boxed{\text{assign each short prefix its own much later level, then list all its extensions there.}}$$
+
+The original proof is just a compact way of scheduling these assignments.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>is there a point that the family growth is exponential in the length of the family?</summary>
+
+Yes—that is the key numerical mechanism.
+
+There are about
+
+$$2^k$$
+
+binary strings of length at most $k$. Therefore a prefix $A!\upharpoonright k$ appears in the enumeration at some index
+
+$$s\asymp 2^k.$$
+
+Equivalently,
+
+$$k\asymp \log s.$$
+
+The construction then uses this index $s$ as the length of a much longer prefix $A!\upharpoonright s$. Since its first $k\approx\log s$ bits are fixed, only
+
+$$2^{s-k}\approx 2^{s-\log s}=\frac{2^s}{s}$$
+
+possible length-$s$ strings need to be listed.
+
+So yes:
+
+$$\boxed{\text{exponential growth of the number of short strings creates the logarithmic compression saving.}}$$
+
+The exponential relation $s\approx2^k$ becomes the saving $k\approx\log s$.
+
+</details>
 </div>
 
 ## 1.2 Nonrandomness as Predictability
 
-**Intuition.** A sequence of bits is *nonrandom* if it is possible to predict some of its bits with sufficiently high probability — equivalently, if a gambler can beat the sequence by betting on its bits.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Case 2: Nonrandomness as Predictability)</span></p>
+
+* A sequence of bits is *nonrandom* if it is possible to predict some of its bits with sufficiently high probability
+  * equivalently, if a gambler can beat the sequence by betting on its bits.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Predicting $X$, $Y$, $Z$ and their infinite analogues)</span></p>
@@ -547,7 +644,12 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 
 ## 1.3 Nonrandomness as Untypicality
 
-**Intuition.** A finite sequence with some *rare* property — one that is easy to describe and easy to check — is nonrandom.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Case 2: Nonrandomness as Untypicality)</span></p>
+
+A finite sequence with some *rare* property — one that is easy to describe and easy to check — is nonrandom.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Untypical properties of $X$, $Y$, $Z$)</span></p>
@@ -555,16 +657,21 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 * $X = (01)^{1000}$ is one of a kind.
 * $Y$ has at most 200 ones. Among $2^{2000}$ binary words of length 2000, only
 
-   $$\binom{2000}{\le 200} \approx 1.1 \cdot \binom{2000}{200} \approx 2^{938}$$
+  $$\binom{2000}{\le 200} \approx 1.1 \cdot \binom{2000}{200} \approx 2^{938}$$
 
-   have this property — a vanishingly small fraction.
+  have this property — a vanishingly small fraction.
 * Every bit of $Z$ at an even position equals zero. Only $2^{1000}$ of $2^{2000}$ binary words of length 2000 share this property.
 
 </div>
 
 ### From finite strings to infinite sequences
 
-**Intuition.** An infinite sequence is *nonrandom* if we can construct a family of sets of arbitrarily small measure ("layers of untypicality") all containing the sequence. Formalizing "we can construct" via uniform enumeration leads to **Martin-Löf tests**.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(From finite strings to infinite sequences)</span></p>
+
+An infinite sequence is *nonrandom* if we can construct a family of sets of arbitrarily small measure ("layers of untypicality") all containing the sequence. Formalizing "we can construct" via uniform enumeration leads to **Martin-Löf tests**.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(1.5 — Martin-Löf test)</span></p>
@@ -1317,7 +1424,12 @@ $$E_f := \lbrace (w, y) : f(w) < y \rbrace$$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Computable functions are upper- and lower-semicomputable)</span></p>
+
 Computable functions are clearly both upper- and lower-semicomputable. Conversely, given both kinds of enumerations one can compute $f(w)$ by enumerating $H_f$ and $E_f$ in parallel until some $y$ satisfies $(w, y - 1) \in H_f$ and $(w, y + 1) \in E_f$ — which forces $y - 1 < f(w) < y + 1$ — and returning $y$.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.8)</span></p>
@@ -1442,7 +1554,7 @@ There exists no computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \t
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \!\downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
+Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
 
 $$C(M(\mathrm{bin}(n))) \ge f(M(\mathrm{bin}(n))) > n. \tag{3}$$
 
@@ -1871,7 +1983,7 @@ We will prove it by induction.
 
 **Base case:** $V^1 = V_1$ is a prefix-free set.
 
-**Induction step:** Let $V^m$ is a prefix-free set, which is a concatentation of $m$ prefix-freee sets and we are appended a prefix-free set $V_{m+1}$. By contradiction, there are two **different** words $w_1,w_2\in V^{m+1}$ that wlog $w_1 \sqsubset w_2$. Consider their splits $w_1=s^1_1 s^1_2$ and $w_2=s^2_1 s^2_2$, where $s^2_1, s^2_1$ come from the set $V^m$, and $s^1_2, s^2_2$ are newly appended parts. Then the key observation is that is $w_1 \sim w_2$, then $s^1_1 \sim s^2_1$, because if none of them is a prefix of another, then appending new characters cannot resolve this incompetability of prefixes. Thus, $w_1 \sim w_2 \implies s^1_1 \sim s^2_1$, which can only be consistent with the assumption in the case of $s^1_1 = s^2_1$. Then either $s^1_1 = s^2_1$ (contradicts the way we chose the words $w_1\neq w_2$) or $s^1_1, s^2_1$ are not prefix-free, which is a contradiction, because $V_{m+1}$ is a prefix-free set.
+**Induction step:** Let $V^m$ is a prefix-free set, which is a concatentation of $m$ prefix-freee sets and we are appended a prefix-free set $V_{m+1}$. By contradiction, there are two **different** words $w_1,w_2\in V^{m+1}$ that wlog $w_1 \sqsubset w_2$. Consider their splits $w_1=s^1\_1 s^1\_2$ and $w_2=s^2\_1 s^2\_2$, where $s^2\_1, s^2\_1$ come from the set $V^m$, and $s^1\_2, s^2\_2$ are newly appended parts. Then the key observation is that is $w_1 \sim w_2$, then $s^1\_1 \sim s^2\_1$, because if none of them is a prefix of another, then appending new characters cannot resolve this incompetability of prefixes. Thus, $w_1 \sim w_2 \implies s^1\_1 \sim s^2\_1$, which can only be consistent with the assumption in the case of $s^1\_1 = s^2\_1$. Then either $s^1\_1 = s^2\_1$ (contradicts the way we chose the words $w_1\neq w_2$) or $s^1\_1, s^2\_1$ are not prefix-free, which is a contradiction, because $V_{m+1}$ is a prefix-free set.
 
 </details>
 </div>
@@ -2039,14 +2151,16 @@ Show the following upper bounds for the prefix-free Kolmogorov complexity:
    * **Construction:** Let $M$ be a TM that takes the input $\text{input} = \sigma_w \text{bin}(w)$. Then it tries all splits of the input $\text{input} = \tilde{\sigma}\tilde{w}$ and running a prefix-free UTM $\tilde{U}(\tilde{\sigma})$ in a dovetailing manner. When the prefix-free UTM halts with $\tilde{U}(\tilde{\sigma}) = \tilde{l}(w)$, we interpret it as a length of the word $w$. Then $M$ prints $\tilde{w}$ if the length of $\tilde{w}$ the same as $\tilde{l}(w)$, othwerwise enter infinity loop to not halt.
    * **Justification of construction:** The key observation that makes this simple approach work is that the split is unique, i.e. only one prefix of $\text{input}$ is a valid $\tilde{U}$ program, otherwise $\tilde{U}$ is not prefix-free. 
    * **Veirfication of complexity:** For the machine $M$ to induce an upper bound of $K$, we have to show that $M$ is prefix-free. $M$ is prefix-free, because spliting is deterministic, prefix $\tilde{\sigma}$ of the input is unqiue, prefix also determines the number of next chars to be present, so it cannot be a prefix of something that is bigger.
-     
+
      $$
-     \begin{\aligned}
-     K(w) 
+     \begin{aligned}
+     K(w)
      &\leq C_M(w) + O(1) \\
      &\leq l(\sigma_w \text{bin}(w)) + O(1) \\
-     &= \underbrace{l(\sigma_w)}_{K(l(w))} + l(\text{bin}(w)) + O(1) = K(l(w)) + l(\text{bin}(w)) + O(1)$$
-     \end{\aligned}
+     &\leq C_M(w) + O(1) \\
+     &= \underbrace{l(\sigma_w)}_{K(l(w))} + l(\text{bin}(w)) + O(1) = K(l(w)) + l(\text{bin}(w)) + O(1)
+     \end{aligned}
+     $$
 
 2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
 
@@ -2062,7 +2176,11 @@ Both inequalities say the same thing: the *only* reason $K$ can exceed $C$ (or e
 
 $$K(w) \le l(w) + K(l(w)) + O(1) \le l(w) + \log l(w) + 2\log\log l(w) + O(1),$$
 
-matching the logarithmic overhead that Proposition 2.27 shows is unavoidable. Part 2 also yields $K \le C + K(C) + O(1)$ as the prefix-free counterpart of the plain coding theorem: $K$ and $C$ agree up to a term that only logs the description length.
+matching the logarithmic overhead that Proposition 2.27 shows is unavoidable. Part 2 also yields 
+
+$$K \le C + K(C) + O(1)$$
+
+as the prefix-free counterpart of the plain coding theorem: $K$ and $C$ agree up to a term that only logs the description length.
 
 </div>
 
@@ -2228,11 +2346,11 @@ Let $D:=\operatorname{dom}(M)=\lbrace\sigma:M(\sigma)\downarrow\rbrace$; by hypo
  
 **Elementary bound on finite subsets.** Let $F\subseteq D$ be finite and put $L:=\max_{\sigma\in F}l(\sigma)$. To each $\sigma\in F$ associate its set of length-$L$ extensions,
 
-$$E(\sigma):=\lbrace\sigma\rho:\rho\in\lbrace 0,1\rbrace^{\,L-l(\sigma)}\rbrace,\qquad \sharp E(\sigma)=2^{\,L-l(\sigma)}.$$
+$$E(\sigma):=\lbrace\sigma\rho:\rho\in\lbrace 0,1\rbrace^{\,L-l(\sigma)}\rbrace,\qquad \# E(\sigma)=2^{\,L-l(\sigma)}.$$
 
 **The sets $E(\sigma)$ are pairwise disjoint.** A string $u$ of length $L$ has, for each $k\le L$, exactly one prefix of length $k$; so if $u\in E(\sigma)\cap E(\tau)$ then both $\sigma$ and $\tau$ are prefixes of $u$, hence (being prefixes of a common word) prefix-comparable. Prefix-freeness of $D$ then forces $\sigma=\tau$. Since all $E(\sigma)$ live inside the $2^{L}$ strings of length $L$,
 
-$$\sum_{\sigma\in F}2^{\,L-l(\sigma)}=\sum_{\sigma\in F}\sharp E(\sigma)=\sharp\!\!\bigcup_{\sigma\in F}E(\sigma)\;\le\;2^{L}.$$
+$$\sum_{\sigma\in F}2^{\,L-l(\sigma)}=\sum_{\sigma\in F}\# E(\sigma)=\#\!\!\bigcup_{\sigma\in F}E(\sigma)\;\le\;2^{L}.$$
 
 Dividing by $2^L$ gives $\sum_{\sigma\in F}2^{-l(\sigma)}\le 1$.
  
@@ -2585,7 +2703,7 @@ $$K(w) \leq l(\sigma) + c_M = d(w) + c_M = f(w) + \underbrace{\tilde{c} + c_M}_{
 
 since $M$ is prefix-free, $\widetilde U$ simulates it with constant overhead $c_M$, giving $K(w) \le C_M(w) + c_M \le l(\sigma) + c_M$.
 
-*Remark:* $K(w) \le C_M(w) + c_M$ is valid, because $M$ is prefix-free and C_M(w) is *some* prefix-free code for $w$ (I believe it would be better to say $K_M$).
+*Remark:* $K(w) \le C_M(w) + c_M$ is valid, because $M$ is prefix-free and $C_M(w)$ is *some* prefix-free code for $w$ (I believe it would be better to say $K_M$).
 
 </details>
 </div>
@@ -3092,7 +3210,7 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 <details markdown="1">
 <summary>Proof</summary>
 
-1. Show that the function F: \subseteq \lbrace 0,1 \rbrace^\ast \to \mathbb{N} defined by
+1. Show that the function $F: \subseteq \lbrace 0,1 \rbrace^\ast \to \mathbb{N}$ defined by
    
    $$F(bin(n)) := -\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
 
@@ -3341,7 +3459,7 @@ $$S_i = \lbrace \sigma^i_0, \sigma^i_1, \dots\rbrace$$
 
 for all $i$, be a uniformly c.e. sequence of prefix-free sets of words such that the corresponding uniformly c.e. sequence of open sets $\widetilde{S}\_0, \widetilde{S}\_1, \dots$, where
 
-$$\widetilde{S}_i = \lbrace [\sigma^i_0], [\sigma^i_1], \dots\rbrace$$
+$$\widetilde{S}_i = \lbrace [[\sigma^i_0]], [[\sigma^i_1]], \dots\rbrace$$
 
 for all $i$, is a Schnorr test.
 
@@ -3498,7 +3616,7 @@ $$\widetilde L_i := \lbrace X\in{0,1}^{\mathbb N}:\exists n; K(X\upharpoonright 
 
 Equivalently,
 
-$$\widetilde L_i = \bigcup_{\sigma:\ K(\sigma)<l(\sigma)-i}[![\sigma]!].$$
+$$\widetilde L_i = \bigcup_{\sigma:\ K(\sigma)<l(\sigma)-i}[[\sigma]].$$
 
 So each $\widetilde L_i$ is open, because it is a union of basic cylinders.
 
@@ -4527,11 +4645,11 @@ $$K(\sigma)\le K(\operatorname{bin}(n))+c.$$
 
 Chaitin’s counting theorem says that for some constant $d$,
 
-$$\sharp \lbrace \sigma\in \lbrace 0,1\rbrace^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
+$$\# \lbrace \sigma\in \lbrace 0,1\rbrace^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
 
 Put $r=n-c$. Then
 
-$$\sharp\lbrace\sigma:l(\sigma)=n,\ \sigma\in T_c\rbrace \le 2^{c+d}$$
+$$\# \lbrace\sigma:l(\sigma)=n,\ \sigma\in T_c\rbrace \le 2^{c+d}$$
 
 for all sufficiently large $n$. Enlarging the constant to cover the finitely many small $n$, we get a uniform bound $N$.
 
@@ -4543,7 +4661,7 @@ for all sufficiently large $n$. Enlarging the constant to cover the finitely man
 
 In the proof of the level-size bound for $T_c$, we use Chaitin's counting theorem in a uniform form:
 
-$$\exists d\ \forall n\ \forall r:\quad \sharp \lbrace \sigma\in 2^n : K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
+$$\exists d\ \forall n\ \forall r:\quad \# \lbrace \sigma\in 2^n : K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace \le 2^{n-r+d}.$$
 
 Since the estimate holds for every pair $(n,r)$, we are allowed to choose $r$ depending on $n$. For strings $\sigma\in T_c$ of length $n$, we have
 
@@ -4618,7 +4736,7 @@ Show that every isolated path in a computable tree is computable.
 
 Let $A$ be an isolated path in a computable tree $T$. Let $\rho\sqsubset A$ be an isolating prefix. We may hard-code $\rho$.
 
-To compute $A\upharpoonright n$, search for a level $m\ge n$ such that all nodes $\tau\in T$ of length $m$ extending $\rho$ have the same prefix of length $n$. Such an $m$ must exist; otherwise, by König’s lemma, there would be another infinite path extending $\rho$, contradicting isolation. Since $T$ is computable, the finite search at each level is effective. Output the common length-$n$ prefix. Thus $A$ is computable. $\squared$
+To compute $A\upharpoonright n$, search for a level $m\ge n$ such that all nodes $\tau\in T$ of length $m$ extending $\rho$ have the same prefix of length $n$. Such an $m$ must exist; otherwise, by König’s lemma, there would be another infinite path extending $\rho$, contradicting isolation. Since $T$ is computable, the finite search at each level is effective. Output the common length-$n$ prefix. Thus $A$ is computable. $\square$
 
 > In the solution for the exercise 3.5, there is the following phrase "we hardcode the prefix the makes the path isolated". Is it possible? It works for a single isolated pass, but I do not see why is succulent to systematically compute all isolated paths?
 
