@@ -3301,7 +3301,7 @@ $$
 \\
 &\le
 \sum_{\sigma\in{0,1}^n}2^{-K(\sigma)}
-\
+\\
 &=
 W_n
 \\
@@ -4325,32 +4325,6 @@ is a fixed listing of all partial computable functions $\mathbb N \rightharpoonu
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(A watered-down Chaitin’s Omega)</span></p>
-
-Recall the statement of the **Kleene Second Recursion Theorem for prefix-free machines**:
-
-Let
-
-$$h : \subseteq \lbrace 0,1\rbrace^\ast \times \mathbb N \to \lbrace 0,1\rbrace^\ast$$
-
-be a partial computable function such that, for each $i$, the function $h(\cdot,i)$ is prefix-free. Then, from an index for $h$, we can compute an index $e$ such that
-
-$$\widetilde M_e(w) = h(w,e)$$
-
-for all $w$.
-
-For $r \in (0,1)$, define the **watered-down halting probability**
-
-$$\Omega^r = \sum_{\sigma \in \operatorname{dom} \widetilde U} 2^{-l(\sigma)/r}.$$
-
-Show that
-
-$$K(\Omega^{1/2}\!\upharpoonright n) < \frac n2 + O(1).$$
-
-</div>
-
-
-<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Every computable real is K-trivial; every K-trivial real is c.a.(1))</span></p>
 
 A set of words $T \subseteq \lbrace 0,1\rbrace^\ast$ is called a **binary tree** if, for every $w \in T$, all $v \sqsubseteq w$ fulfill $v \in T$.
@@ -5300,7 +5274,7 @@ $$\alpha - f(q) = \alpha - a_n < c(\beta - b_n) < c(\beta - q)$$
 <summary>(iii) $\implies$ (iv)</summary>
 
 > * The sequence $b_n$ has a limit $\beta$ implying the consecutive $b_n - b_{n-1}$ shrinks to zero. 
-> * The consequtive distances $a_n - a_{n-1}$ is bounded by $b_n - b_{n-1}$ up to multiplicative constant, so it shirnks to and thus has a limit. 
+> * The consequtive distances $a_n - a_{n-1}$ is bounded by $b_n - b_{n-1}$ up to multiplicative constant, so it shirnks too and thus has a limit. 
 > * $\alpha = \sum_{i}^\infty a_i - a_{i-1}$
 > * $\beta = \sum_{i}^\infty b_i - b_{i-1}$
 > * $\alpha - d\beta = \sum_{i}^\infty (a_i - db_i) - (a_{i-1} - db_{i-1})$
@@ -5767,165 +5741,6 @@ TODO: have no idea
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(rK-reducibility (1))</span></p>
-
-A real $\alpha$ is called **rK-reducible** to a real $\beta$, written
-
-$$\alpha \leq_{rK} \beta,$$
-
-if there are a constant $k$ and a computable function
-
-$$f : \subseteq \lbrace 0,1\rbrace^\ast \times \mathbb{N} \to \lbrace 0,1\rbrace^\ast$$
-
-such that
-
-$$(\forall n \in \mathbb{N})(\exists j \leq k) \big(f(\beta \upharpoonright n, j) \downarrow = \alpha \upharpoonright n\big).$$
-
-Show that 
-
-$$\alpha \leq_S \beta \implies \alpha \leq_{rK} \beta.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(rK-reducibility (2))</span></p>
-
-Show that $\alpha \leq_{rK} \beta$ implies both $\alpha \leq_K \beta$ and $\alpha \leq_T \beta$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Totality and translation of Schnorr tests)</span></p>
-
-Recall that a Schnorr test
-
-$$L = (L_1, L_2, \dots)$$
-
-is a Martin-Löf test that satisfies
-
-$$\lambda(L_i) = 2^{-i}$$
-
-for every $i$
-
-A real $\alpha$ is called **Schnorr nonrandom** if there exists a Schnorr test
-
-$$L = (L_1, L_2, \dots)$$
-
-such that
-
-$$\alpha \in L_i$$
-
-for all $i$, and **Schnorr random** otherwise.
-
-Show that, if $\alpha$ is a Schnorr random real that satisfies
-
-$$\alpha \leq_S \beta$$
-
-via a total function $f$, then $\beta$ is Schnorr random as well.
-
-*Hint: by contradiction. Use the totality of $f$ to transform a Schnorr test that fails on $\beta$ into a Schnorr test that fails on $\alpha$.*
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (1))</span></p>
-
-Recall that, for a real $r \in (0,1)$, the watered-down halting probability $\Omega^r$ is defined by
-
-$$\Omega^r := \sum_{\sigma \in \operatorname{dom}\widetilde U} 2^{-\ell(\sigma)/r}.$$
-
-For two reals
-
-$$\alpha = 0.a_0a_1\dots$$
-
-and
-
-$$\beta = 0.b_0b_1\dots,$$
-
-we define their join $\alpha \oplus \beta$ by
-
-$$\alpha \oplus \beta := 0.a_0b_0a_1b_1\dots$$
-
-Show that $\Omega \oplus 0$ is a left-c.e. real.  
-Here, the real $0$ is supposed to be binary represented as
-
-$$0.000\dots$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (2))</span></p>
-
-Show that
-
-$$\frac{K((\Omega \oplus 0) \upharpoonright n)}{n} \xrightarrow[n \to \infty]{} \frac{1}{2}$$
-
-and
-
-$$\frac{K(\Omega^{0.5} \upharpoonright n)}{n} \xrightarrow[n \to \infty]{} \frac{1}{2}.$$
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Two ways to obtain the same complexity asymptote (3))</span></p>
-
-Show that
-
-$$\Omega^{0.5} \leq_S \Omega \oplus 0.$$
-
-*Hint: use the characterization (iii) of $\leq_S$ on left-c.e. reals from Sheet 5, Exercise 3.*
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(D.c.e. reals (1))</span></p>
 
 A real $\gamma$ is called **d.c.e.** — the letter “d” is for “difference”, the rest is a secret... — if there exist two left-c.e. reals $\alpha$ and $\beta$ such that
@@ -6128,44 +5943,23 @@ for every natural number $k$.
 <details markdown="1">
 <summary>Solution</summary>
 
-Write the pieces of $g$ as
+Let the pieces be $0=x\_0<\cdots<x\_r=\beta$ with slopes $s\_i \ge 0$. On $(x\_{i-1},x\_i]$ the left difference quotients are eventually taken inside the $i$-th piece, so $g^{(l)} \equiv s\_i$ there, and up to finitely many points
 
-$$0=x_0<\cdots<x_r=\beta$$
+$$E:=\lbrace x\in[0,\beta):g^{(l)}(x)>2^k\rbrace \;=\; \bigcup_{i\in I}(x_{i-1},x_i], \qquad I:=\lbrace i:s_i>2^k\rbrace .$$
 
-with slope $s_i\ge 0$ on $[x_{i-1},x_i]$. For $x\in(x_{i-1},x_i]$, the left difference quotients are eventually computed inside the $i$-th piece, so
-
-$$g^{(l)}(x)=s_i.$$
-
-Hence, with
-
-$$I:=\lbrace i:s_i>2^k\rbrace,$$
-
-the set
-
-$$E:=\lbrace x\in[0,\beta):g^{(l)}(x)>2^k\rbrace$$
-
-agrees with
-
-$$\bigcup_{i\in I}(x_{i-1},x_i]$$
-
-up to finitely many points, and by Markov’s inequality for the Stieltjes measure $dg$,
+Markov against the total rise of $g$ then gives
 
 $$
 \begin{aligned}
 2^k\lambda(E)
-&=\sum_{i\in I}2^k(x_i-x_{i-1}) \
-&\le \sum_{i\in I}s_i(x_i-x_{i-1}) \
-&=\sum_{i\in I}\bigl(g(x_i)-g(x_{i-1})\bigr) \\
-&\le g(\beta)-g(0) \\
-&\le \alpha<1,
+&=\sum_{i\in I}2^k(x_i-x_{i-1})
+\;\le\; \sum_{i\in I}s_i(x_i-x_{i-1})
+\;=\;\sum_{i\in I}\bigl(g(x_i)-g(x_{i-1})\bigr) \\
+&\le\; g(\beta)-g(0) \;\le\; \alpha<1,
 \end{aligned}
 $$
 
-using monotonicity of $g$ for the second-to-last inequality. Thus
-
-$$\lambda(E)\le 2^{-k}\alpha<2^{-k}.$$
-
-The bound $2^{-k}\alpha$ is sharp in the limit, with slopes decreasing to $2^k$ and exhausting the full rise $\alpha$; strictness against $2^{-k}$ comes precisely from $\alpha<1$.
+using monotonicity of $g$ for the last-but-one step. Thus $\lambda(E)\le 2^{-k}\alpha<2^{-k}$. $\square$
 
 </details>
 </div>
@@ -6191,41 +5985,19 @@ is a Martin-Löf test.
 <details markdown="1">
 <summary>Solution</summary>
 
-⚠️ **Two corrections to the statement.** The threshold must carry the layer index, $2^i$ rather than $2^k$. More seriously, the condition needs $b\_m < x$ as well:
+⚠️ **Two fixes to the statement:** the threshold must be $2^i$, and the condition needs $b\_m < x$ as well —
 
 $$x \in L_i \iff \exists m, n\ \Bigl(\max(b_n, b_m) < x \ \text{ and }\ \frac{a_m - a_n}{x - b_n} > 2^i\Bigr).$$
 
-Without it the measure bound is false. Take $\alpha = \tfrac12$ with $a = (0,\ 10^{-4},\ 2\cdot 10^{-4},\ 0.4999,\ \dots)$ and $\beta = 0.9$ with $b = (0,\ 0.4,\ 0.8,\ 0.85,\dots)$: the printed condition puts the three pairwise disjoint intervals $(0,\,0.25)$, $(0.4,\,0.65)$, $(0.8,\,1.05)$ into $L\_1$, of total measure $0.75 > 2^{-1}$. The clause $b\_m < x$ is what forbids using a *future* rise of $\alpha$ at a point $x$ that $\beta$'s approximation has not yet reached.
+Without the second clause the bound is false: for $\alpha = \tfrac12$ with $a = (0,\,10^{-4},\,2\cdot 10^{-4},\,0.4999,\dots)$ and $b = (0,\,0.4,\,0.8,\dots)$ the printed condition already puts the disjoint intervals $(0,\,0.25)$, $(0.4,\,0.65)$, $(0.8,\,1.05)$ into $L\_1$.
 
-**$L\_i$ is c.e. open.** For fixed $m,n$ the condition describes the open interval
+**C.e. open.** Each pair $(m,n)$ contributes the rational interval $\bigl(\max(b\_n,b\_m),\ b\_n + 2^{-i}(a\_m-a\_n)\bigr)$, and $L\_i$ is their union — a computable family of intervals, uniformly in $i$.
 
-$$\bigl(\max(b_n, b_m),\ b_n + 2^{-i}(a_m - a_n)\bigr),$$
+**Measure.** Put $g(x) := \sup\lbrace a\_j : b\_j < x\rbrace$, nondecreasing with $g(0^{+}) = 0$ and $g(1) = \alpha$. A witness $(m,n)$ for $x \in L\_i$ gives $y := b\_n < x$ with $g(x) - g(y) \ge a\_m - a\_n > 2^i(x-y)$, so $L\_i$ lies in the maximal-chord-slope set $E\_t := \lbrace x : \exists y<x,\ g(x)-g(y) > t(x-y)\rbrace$ for $t = 2^i$. By the rising sun lemma applied to $g(x) - tx$, the components $(c\_j,d\_j)$ of $E\_t$ satisfy $g(d\_j)-g(c\_j) \ge t(d\_j-c\_j)$; summing over them and using monotonicity,
 
-whose endpoints are rationals computed from $(a\_n)$ and $(b\_n)$. Hence
+$$t\,\lambda(E_t) \;\le\; \sum_j \bigl(g(d_j)-g(c_j)\bigr) \;\le\; g(1)-g(0^{+}) \;=\; \alpha .$$
 
-$$L_i = \bigcup_{m,n} \bigl(\max(b_n,b_m),\ b_n + 2^{-i}(a_m - a_n)\bigr)$$
-
-is a union of a computable family of rational intervals, uniformly in $i$.
-
-**The measure bound.** Define the nondecreasing $g : (0,1] \to [0,\alpha]$ by
-
-$$g(x) := \sup\lbrace a_j : b_j < x \rbrace,$$
-
-so $g(b\_n) \le a\_n$, while $g(x) \ge a\_m$ whenever $b\_m < x$; and $g(x) = \alpha$ for $x > \beta$, since every $b\_j$ lies below $\beta$. If $x \in L\_i$ with witnesses $m,n$, then $y := b\_n < x$ satisfies
-
-$$g(x) - g(y) \;\ge\; a_m - a_n \;>\; 2^i (x - y),$$
-
-so, writing $E\_t := \lbrace x : \exists y < x,\ g(x)-g(y) > t(x-y)\rbrace$, we have $L\_i \subseteq E\_{2^i}$.
-
-Now apply the rising sun lemma to $h(x) := g(x) - t x$: the open set $E\_t$ decomposes into countably many disjoint components $(c\_j, d\_j)$, and on each of them $g(d\_j) - g(c\_j) \ge t\,(d\_j - c\_j)$. Summing over the components and using monotonicity of $g$,
-
-$$t\,\lambda(E_t) \;\le\; \sum_j \bigl(g(d_j) - g(c_j)\bigr) \;\le\; g(1) - g(0^{+}) \;=\; \alpha .$$
-
-This is the same Markov-against-the-total-rise computation as in part (1), with the local slope $g^{(l)}$ replaced by the maximal chord slope. With $t = 2^i$,
-
-$$\lambda(L_i) \;\le\; \lambda(E_{2^i}) \;\le\; 2^{-i}\alpha \;<\; 2^{-i},$$
-
-since $\alpha < 1$. So $L = (L\_1, L\_2, \dots)$ is a Martin-Löf test. $\square$
+Hence $\lambda(L\_i) \le 2^{-i}\alpha < 2^{-i}$ — part (1)'s bound with the local slope replaced by the maximal chord slope. $\square$
 
 </details>
 </div>
@@ -6243,23 +6015,11 @@ $$\alpha \leq_S \beta.$$
 <details markdown="1">
 <summary>Solution</summary>
 
-Fix left-c.e. approximations $(a\_n) \nearrow \alpha$ and $(b\_n) \nearrow \beta$ with $a\_0 = b\_0 = 0$, and let $L = (L\_1, L\_2, \dots)$ be the Martin-Löf test of part (2). We may assume $\alpha, \beta \in (0,1)$.
+Being random, $\beta$ is irrational, so $b\_n < \beta$ for every $n$. If $\beta$ lay in every $L\_k$ it would fail the Martin-Löf test of part (2), so fix $k$ with $\beta \notin L\_k$. At $x = \beta$ the clause $\max(b\_n,b\_m) < x$ is automatic, so this says $a\_m - a\_n \le 2^k(\beta - b\_n)$ for all $m,n$; letting $m \to \infty$,
 
-**$\beta$ is irrational, so $b\_n < \beta$ for every $n$.** A rational is computable, and computable reals are not Martin-Löf random; so randomness of $\beta$ rules out the approximation ever reaching its limit.
+$$\alpha - a_n \;\le\; 2^k(\beta - b_n) \;<\; 2^{k+1}(\beta - b_n) \qquad \text{for every } n,$$
 
-**Some layer misses $\beta$.** If $\beta \in L\_k$ for every $k$, then $\beta$ lies in every layer of the Martin-Löf test $L$, i.e. $\beta$ fails $L$ and is Martin-Löf nonrandom — contradicting the hypothesis. So fix $k$ with $\beta \notin L\_k$.
-
-**Reading off the Solovay bound.** Since every $b\_m$ satisfies $b\_m < \beta$, at the point $x = \beta$ the extra clause $\max(b\_n,b\_m) < x$ of part (2) is automatic, so $\beta \notin L\_k$ says exactly
-
-$$a_m - a_n \le 2^k(\beta - b_n) \qquad \text{for all } m, n .$$
-
-Letting $m \to \infty$ and using $a\_m \nearrow \alpha$ gives $\alpha - a\_n \le 2^k(\beta - b\_n)$, hence, as $\beta - b\_n > 0$,
-
-$$\alpha - a_n \;<\; 2^{k+1}(\beta - b_n) \qquad \text{for every } n .$$
-
-That is condition **(iv)** of Proposition 7.2 with the constant $c = 2^{k+1}$, and therefore $\alpha \le\_S \beta$. $\square$
-
-Since $\alpha$ was an arbitrary left-c.e. real, a Martin-Löf random left-c.e. $\beta$ is Solovay-complete. Together with Proposition 7.4 ($\Omega$ is Solovay-above every left-c.e. real, and $\Omega$ is random) this gives both directions of the Kučera–Slaman theorem 7.6: for left-c.e. reals, Solovay-completeness and Martin-Löf randomness coincide.
+which is condition (iv) of Proposition 7.2 with $c = 2^{k+1}$. Hence $\alpha \le\_S \beta$. $\square$
 
 </details>
 </div>
@@ -6386,79 +6146,6 @@ $$\lim_{q \nearrow \beta} \frac{\alpha - g(q)}{\beta - q} = 0.$$
 
 </div>
 
-Both definitions strengthen a bounded comparison into a vanishing one. Ordinary Solovay reducibility requires the gap ratio $(\alpha - g(q))/(\beta - q)$ to stay bounded by the constant $c$ from Definition 7.1; strong Solovay reducibility requires that it vanish as the lower bounds $q$ approach $\beta$. Similarly, $\alpha \ll\_K \beta$ strengthens $\alpha \le\_K \beta$: not only do the prefixes of $\alpha$ stay describable within a constant of those of $\beta$, but the complexity gap between them grows without bound.
-
-<figure class="math-figure">
-  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px" aria-label="Bounded gap ratio for Solovay reducibility versus vanishing gap ratio for strong Solovay reducibility">
-    <g font-family="serif" font-size="12" fill="#1f2430">
-      <text x="350" y="24" text-anchor="middle" font-weight="600">The gap ratio (α − g(q)) / (β − q) as q approaches β</text>
-
-      <!-- panel frames -->
-      <g fill="none" stroke="#cbd2e0" stroke-width="1.1">
-        <rect x="45" y="44" width="285" height="200" rx="6" />
-        <rect x="375" y="44" width="285" height="200" rx="6" />
-      </g>
-
-      <!-- left panel: bounded ratio -->
-      <text x="187" y="62" text-anchor="middle" font-weight="600" font-size="12" fill="#5b6270">α ≤ₛ β: ratio bounded by c</text>
-      <text x="76" y="78" font-size="10.5" fill="#5b6270">gap ratio</text>
-      <line x1="70" y1="80" x2="70" y2="228" stroke="#444" />
-      <line x1="70" y1="228" x2="318" y2="228" stroke="#444" marker-end="url(#arrow-ratio)" />
-      <line x1="305" y1="223" x2="305" y2="233" stroke="#d65336" stroke-width="1.5" />
-      <text x="305" y="248" text-anchor="middle" font-size="11" fill="#d65336">β</text>
-      <text x="200" y="246" text-anchor="middle" font-size="11" fill="#5b6270">q ↗</text>
-      <line x1="70" y1="110" x2="318" y2="110" stroke="#a86f00" stroke-dasharray="5 4" />
-      <text x="62" y="114" text-anchor="end" font-size="11" fill="#a86f00">c</text>
-      <path d="M72 200 C95 150 115 215 140 180 C160 152 175 212 195 190 C215 165 235 205 255 145 C270 128 285 200 302 170" fill="none" stroke="#1d4ed8" stroke-width="2" />
-
-      <!-- right panel: vanishing ratio -->
-      <text x="517" y="62" text-anchor="middle" font-weight="600" font-size="12" fill="#5b6270">α ≪ₛ β: ratio vanishes</text>
-      <text x="406" y="78" font-size="10.5" fill="#5b6270">gap ratio</text>
-      <line x1="400" y1="80" x2="400" y2="228" stroke="#444" />
-      <line x1="400" y1="228" x2="648" y2="228" stroke="#444" marker-end="url(#arrow-ratio)" />
-      <line x1="635" y1="223" x2="635" y2="233" stroke="#d65336" stroke-width="1.5" />
-      <text x="635" y="248" text-anchor="middle" font-size="11" fill="#d65336">β</text>
-      <text x="530" y="246" text-anchor="middle" font-size="11" fill="#5b6270">q ↗</text>
-      <path d="M402 120 C425 85 445 175 470 140 C495 108 510 195 535 185 C560 172 585 215 610 212 C622 210 630 220 632 222" fill="none" stroke="#1d4ed8" stroke-width="2" />
-      <text x="612" y="190" text-anchor="middle" font-size="11" fill="#a86f00">→ 0</text>
-
-      <defs>
-        <marker id="arrow-ratio" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-          <path d="M0,0 L10,4 L0,8 Z" fill="#444" />
-        </marker>
-      </defs>
-    </g>
-  </svg>
-  <figcaption>Ordinary versus strong Solovay reducibility. In both cases the computable map $g$ turns rational lower bounds $q < \beta$ into rational lower bounds $g(q) < \alpha$; the difference lies in the behaviour of the gap ratio $(\alpha - g(q))/(\beta - q)$. For $\alpha \le_S \beta$ (Definition 7.1) the ratio merely stays below a fixed constant $c$, however good the lower bound $q$ becomes; for $\alpha \ll_S \beta$ (Definition 8.2) it must vanish as $q \nearrow \beta$.</figcaption>
-</figure>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals)</span></p>
-
-Let $\alpha$ and $\beta$ be two left-c.e. reals such that
-
-$$K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to_{n \to \infty} \infty.$$
-
-Show that
-
-$$\alpha \leq_S \beta.$$
-
-*Hint: fix two left-c.e. approximations $(a_i)\_{i \in \mathbb{N}}$ and $(b_i)\_{i \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Then, given an optimal prefix-free code $\tau$ of $\alpha \upharpoonright n$, we can compute the first index $s$ such that*
-
-$$a_s \upharpoonright n = \alpha \upharpoonright n.$$
-
-*What do we know about $b_s$?*
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-
-</details>
-</div>
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(8.3 — Solovay reducibility sits between the complexity reducibilities)</span></p>
 
@@ -6476,87 +6163,42 @@ $$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-**$\ll\_S$ implies $\le\_S$.** Immediate from Definition 8.2: a function $g$ witnessing $\alpha \ll\_S \beta$ witnesses $\alpha \le\_S \beta$ in particular.
+$\alpha \ll\_S \beta \Rightarrow \alpha \le\_S \beta$ is immediate from Definition 8.2.
 
-**$\le\_S$ implies $\le\_K$.** First we dispose of a degenerate case. If $\beta$ is dyadic, then $\beta$ is computable, hence so is $\alpha$ (see the exercise *Solovay reducibility and computable reals (1)* above); then $K(\mathrm{bin}(n)) \le K(\beta \upharpoonright n) + O(1)$ (the length $n$ is computable from the word $\beta \upharpoonright n$) and $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1)$ (the prefix of a computable real is computable from its length), so $\alpha \le\_K \beta$ holds outright. Hence assume that $\beta$ is not dyadic, so that $\beta \upharpoonright n < \beta$, i.e. $\beta \upharpoonright n \in L(\beta)$, for every $n$.
+**$\le\_S \Rightarrow \le\_K$.** Fix $N$ and $g$ witnessing $\alpha \le\_S \beta$ with constant $2^N$, so $0 < \alpha - g(q) < 2^N(\beta - q)$ for every $q < \beta$. (If $\beta$ is dyadic it is computable, hence so is $\alpha$ and the claim is trivial; otherwise $\beta \upharpoonright n \in L(\beta)$ for every $n$.)
 
-Fix a natural number $N$ and a function $g$ on the rationals such that $\alpha \le\_S \beta$ via $g$ with the constant $c := 2^N$:
+Let $\widetilde M$ read an advice bit $b$ followed by $\tau$, put $w := \widetilde U(\tau)$, $n := l(w)$, and return the length-$(n-N)$ word for $\bigl(\lfloor 2^{\,n-N} g(w)\rfloor + b\bigr)2^{-(n-N)}$; it is prefix-free because $\tau$ ranges over $\operatorname{dom}(\widetilde U)$. For $\tau$ an optimal code of $\beta \upharpoonright n$ we have $g(\beta \upharpoonright n)\downarrow\, < \alpha$ and, since $\beta - \beta \upharpoonright n \le 2^{-n}$,
 
-$$0 < \alpha - g(q) < 2^N(\beta - q) \qquad \text{for every } q < \beta.$$
+$$0 < \alpha - g(\beta \upharpoonright n) < 2^N(\beta - \beta \upharpoonright n) \le 2^{-(n-N)},$$
 
-We define a Turing machine $\widetilde M$ that, given an input of the form $b\tau$ with a single advice bit $b \in \lbrace 0,1 \rbrace$, computes $w := \widetilde U(\tau)$ and $n := l(w)$, evaluates $g(w)$ (identifying the word $w$ with the dyadic rational $0.w$, as usual), and returns the word of length $n - N$ that represents the rational
+so $\alpha$ lies within $2^{-(n-N)}$ of $g(\beta \upharpoonright n)$ and the advice bit selects $\alpha \upharpoonright (n-N)$ from the two candidates. Hence $\widetilde M(b\tau) = \alpha \upharpoonright (n-N)$ and
 
-$$\big(\lfloor g(w) \cdot 2^{\,n-N} \rfloor + b\big) \cdot 2^{-(n-N)},$$
+$$K(\alpha \upharpoonright (n-N)) \le K(\beta \upharpoonright n) + C_1 \qquad \text{for all } n. \tag{30}$$
 
-that is, the truncation of $g(w)$ to $n - N$ binary places, shifted up by the advice bit. The machine $\widetilde M$ is prefix-free: if two inputs $b\tau$ and $b'\tau'$ in its domain were comparable, then $\tau$ and $\tau'$ would be comparable words in $\operatorname{dom}(\widetilde U)$, hence equal.
+Appending the $N$ missing bits costs only a constant (the prefix-free form of Proposition 2.12), so
 
-Now fix $n$ and let $\tau$ be an optimal code of $\beta \upharpoonright n$, i.e. $\widetilde U(\tau) = \beta \upharpoonright n$ and $l(\tau) = K(\beta \upharpoonright n)$. Since $\beta \upharpoonright n \in L(\beta)$, the value $g(\beta \upharpoonright n)$ is defined, and taking $q = \beta \upharpoonright n$ in the displayed inequality, together with $\beta - \beta \upharpoonright n \le 2^{-n}$, gives
+$$K(\alpha \upharpoonright n) \le K(\alpha \upharpoonright (n-N)) + C_2 \qquad \text{for all } n, \tag{31}$$
 
-$$0 < \alpha - g(\beta \upharpoonright n) < 2^N(\beta - \beta \upharpoonright n) \le 2^N 2^{-n} = 2^{-(n-N)}.$$
+and (30) together with (31) gives $\alpha \le\_K \beta$.
 
-Writing $m := n - N$ and $k := \lfloor g(\beta \upharpoonright n) \cdot 2^m \rfloor$, the real $\alpha$ therefore lies in the interval $(k 2^{-m}, (k+2) 2^{-m})$, so its prefix satisfies
+**$\ll\_K \Rightarrow \ll\_S$ on the left-c.e. reals.** Let $K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to \infty$ and fix left-c.e. approximations $(a\_s) \nearrow \alpha$ and $(b\_s) \nearrow \beta$.
 
-$$\alpha \upharpoonright m \in \lbrace k \cdot 2^{-m},\; (k+1) \cdot 2^{-m} \rbrace,$$
-
-and one advice bit $b$ decides which of the two candidates is correct. Hence $\widetilde M(b\tau) = \alpha \upharpoonright (n-N)$ for the right choice of $b$. Since $\widetilde M$ is prefix-free, $\widetilde U$ simulates it with constant overhead, so there exists a constant $C\_1$ such that
-
-$$K(\alpha \upharpoonright (n-N)) \le C_{\widetilde M}(\alpha \upharpoonright (n-N)) + c_{\widetilde M} \le \big(l(\tau) + 1\big) + c_{\widetilde M} = K(\beta \upharpoonright n) + C_1 \qquad \text{for all } n, \tag{30}$$
-
-where $c\_{\widetilde M}$ is the simulation constant of $\widetilde M$ and $C\_1 := c\_{\widetilde M} + 1$.
-
-Finally, $\alpha \upharpoonright n$ can be recovered from $\alpha \upharpoonright (n-N)$ together with the $N$ missing bits: a prefix-free machine first reads $N$ designated bits and then runs $\widetilde U$ on the rest — this is the prefix-free analogue of the last-bit stability from Proposition 2.12, iterated $N$ times. Since $N$ is a fixed constant, there exists a constant $C\_2$ such that
-
-$$K(\alpha \upharpoonright n) \le K(\alpha \upharpoonright (n-N)) + C_2 \qquad \text{for all } n. \tag{31}$$
-
-Together, (30) and (31) give $K(\alpha \upharpoonright n) \le K(\beta \upharpoonright n) + C\_1 + C\_2$ for all $n$, i.e. $\alpha \le\_K \beta$.
-
-**$\ll\_K$ implies $\ll\_S$ on the left-c.e. reals.** Let $\alpha$ and $\beta$ be left-c.e. reals that fulfill $K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to\_{n \to \infty} \infty$, and fix two left-c.e. approximations $(a\_n)\_{n \in \mathbb{N}}$ and $(b\_n)\_{n \in \mathbb{N}}$ of $\alpha$ and $\beta$, respectively. Replacing $a\_s$ by $a\_s - 2^{-s}$ and $b\_s$ by $b\_s - 2^{-s}$ if necessary, we may assume that both approximations are strictly increasing, so in particular $a\_s < \alpha$ and $b\_s < \beta$ for every $s$. To avoid trivial representation issues we also assume that $\alpha$ is not dyadic; for dyadic $\alpha$ the same argument runs with the non-terminating binary expansion of $\alpha$, whose prefixes have the same complexity as those of the terminating one up to an additive constant.
-
-We define a Turing machine $\widetilde M$ that, given a word $\sigma$, computes $n := l(\widetilde U(\sigma))$, then searches for the first index $s\_n$ (if it exists) such that
-
-$$a_{s_n} \upharpoonright n = \widetilde U(\sigma),$$
-
-and returns $b\_{s\_n} \upharpoonright n$. Then $\widetilde M$ is prefix-free since $\operatorname{dom}(\widetilde M) \subseteq \operatorname{dom}(\widetilde U)$, so $\widetilde U$ simulates it with constant overhead: there exists a constant $C$ such that
-
-$$K(w) \le C_{\widetilde M}(w) + C \qquad \text{for every word } w.$$
-
-For each $n$, let $\tau\_n$ be an optimal code of $\alpha \upharpoonright n$; that is, $\widetilde U(\tau\_n) = \alpha \upharpoonright n$ and $l(\tau\_n) = K(\alpha \upharpoonright n)$. Since $\alpha$ is not dyadic, we have $\alpha \upharpoonright n < \alpha < \alpha \upharpoonright n + 2^{-n}$, and since $a\_s \nearrow \alpha$, the index $s\_n$ exists; note also that $s\_n \le s\_{n+1}$ (agreement on $n+1$ bits implies agreement on $n$ bits) and $s\_n \to\_{n \to \infty} \infty$ (no single $a\_s < \alpha$ agrees with $\alpha$ on all prefixes). By construction, $\widetilde M(\tau\_n) \downarrow = b\_{s\_n} \upharpoonright n$, so
-
-$$K(b_{s_n} \upharpoonright n) \le C_{\widetilde M}(b_{s_n} \upharpoonright n) + C \le l(\tau_n) + C = K(\alpha \upharpoonright n) + C.$$
-
-Since $K(\beta \upharpoonright n) - K(\alpha \upharpoonright n) \to\_{n \to \infty} \infty$, the latter inequality implies that
-
-$$K(\beta \upharpoonright n) - K(b_{s_n} \upharpoonright n) \xrightarrow[n \to \infty]{} \infty,$$
-
-which in turn implies that
+Let $\widetilde M$, on input $\sigma$, compute $n := l(\widetilde U(\sigma))$, search for the first $s\_n$ with $a\_{s\_n} \upharpoonright n = \widetilde U(\sigma)$, and return $b\_{s\_n} \upharpoonright n$; it is prefix-free since $\operatorname{dom}(\widetilde M) \subseteq \operatorname{dom}(\widetilde U)$. Feeding it an optimal code of $\alpha \upharpoonright n$ gives $K(b\_{s\_n} \upharpoonright n) \le K(\alpha \upharpoonright n) + C$, hence $K(\beta \upharpoonright n) - K(b\_{s\_n} \upharpoonright n) \to \infty$ and therefore
 
 $$2^n(\beta - b_{s_n}) \xrightarrow[n \to \infty]{} \infty. \tag{32}$$
 
-Indeed, suppose that $2^n(\beta - b\_{s\_n}) \le k$ held for some fixed $k$ and infinitely many $n$. For each such $n$, the words $\beta \upharpoonright n$ and $b\_{s\_n} \upharpoonright n$, read as multiples of $2^{-n}$, differ by an integer $d$ with $0 \le d \le k+1$; a machine that reads a self-delimiting code for $d$ followed by an optimal code for $b\_{s\_n} \upharpoonright n$ computes $\beta \upharpoonright n$, so $K(\beta \upharpoonright n) \le K(b\_{s\_n} \upharpoonright n) + 2 l(\mathrm{bin}(k+1)) + O(1)$ along that infinite set — contradicting the divergence just established.
+Otherwise $2^n(\beta - b\_{s\_n}) \le k$ for some $k$ and infinitely many $n$; then $\beta \upharpoonright n$ and $b\_{s\_n} \upharpoonright n$ differ by at most $k+1$ multiples of $2^{-n}$, so $K(\beta \upharpoonright n) \le K(b\_{s\_n} \upharpoonright n) + O(1)$ along those $n$.
 
-**Constructing the witness $g$.** It remains to define a function $g$ witnessing $\alpha \ll\_S \beta$: given a rational $q$, the function $g$ searches for the first index $m$ such that $b\_m > q$ (which exists iff $q < \beta$) and returns $g(q) := a\_m$. Then, for every $q < \beta$, we obtain $g(q) \downarrow = a\_m < \alpha$, hence $\alpha - g(q) > 0$.
+Now let $g(q) := a\_m$ for the first $m$ with $b\_m > q$, which converges exactly for $q < \beta$ and satisfies $g(q) < \alpha$. Fix (noncomputably) $n$ with $s\_n \le m < s\_{n+1}$; then $a\_{s\_n} \upharpoonright n = \alpha \upharpoonright n$ gives $\alpha - g(q) \le \alpha - a\_{s\_n} \le 2^{-n}$, while $q < b\_m \le b\_{s\_{n+1}}$, so
 
-Now fix $q < \beta$ close enough to $\beta$ that the corresponding first index $m$ with $b\_m > q$ satisfies $m \ge s\_0$ (only the limit $q \nearrow \beta$ matters, so this is no restriction), and (noncomputably) fix the index $n$ such that $s\_n \le m < s\_{n+1}$. Since both approximations are increasing:
+$$\frac{\alpha - g(q)}{\beta - q} \;\le\; \frac{\alpha - a_{s_n}}{\beta - b_{s_{n+1}}} \;\le\; \frac{1}{2^{n}(\beta - b_{s_{n+1}})} \;\xrightarrow[q \nearrow \beta]{}\; 0$$
 
-- $g(q) = a\_m \ge a\_{s\_n}$, and $a\_{s\_n} \upharpoonright n = \alpha \upharpoonright n$ gives $a\_{s\_n} \ge \alpha \upharpoonright n > \alpha - 2^{-n}$, hence $\alpha - g(q) \le \alpha - a\_{s\_n} \le 2^{-n}$;
-- $q < b\_m \le b\_{s\_{n+1}}$, hence $\beta - q > \beta - b\_{s\_{n+1}}$.
-
-Combining the two estimates,
-
-$$\frac{\alpha - g(q)}{\beta - q} \;\le\; \frac{\alpha - a_{s_n}}{\beta - b_{s_{n+1}}} \;\le\; \frac{2^{-n}}{\beta - b_{s_{n+1}}} \;=\; \frac{2}{2^{\,n+1}(\beta - b_{s_{n+1}})} \;\xrightarrow[n \to \infty]{}\; 0,$$
-
-where the convergence holds by (32). As $q \nearrow \beta$, the corresponding index $m$ tends to infinity, hence so does $n$; therefore the gap ratio tends to $0$. Finally, the ratio also stays bounded for $q$ bounded away from $\beta$ (for $q \le \beta - \delta$ we have $(\alpha - g(q))/(\beta - q) \le (\alpha - a\_0)/\delta$), so $g$ witnesses $\alpha \le\_S \beta$ and, with the vanishing limit, $\alpha \ll\_S \beta$. $\square$
+by (32). So $g$ witnesses $\alpha \ll\_S \beta$. $\square$
 
 </details>
 </div>
 
-A weaker version of the last implication — that $\alpha \ll\_K \beta$ implies plain $\alpha \le\_S \beta$ on the left-c.e. reals — was the content of the exercise *Strong Kolmogorov reducibility implies Solovay reducibility on left-c.e. reals* above; the proof just given refines that construction so as to control the gap ratio in the limit. Taken together, Theorem 8.3 yields the following chain on the left-c.e. reals:
-
-$$\alpha \ll_K \beta \;\Longrightarrow\; \alpha \ll_S \beta \;\Longrightarrow\; \alpha \le_S \beta \;\Longrightarrow\; \alpha \le_K \beta.$$
-
 # Universal Randomness Tests
-
-Every randomness notion we have met so far is defined by *quantifying over tests*: a sequence is Martin-Löf nonrandom if **some** Martin-Löf test covers it, Schnorr nonrandom if **some** Schnorr test covers it. A natural question is whether that quantifier can be eliminated — whether one single test already detects every nonrandom sequence.
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Why universal tests matter)</span></p>
@@ -6738,17 +6380,11 @@ $$A \upharpoonright n \subseteq U.$$
 <details markdown="1">
 <summary>Solution</summary>
 
-*(Read the conclusion as $[[A \upharpoonright n]] \subseteq U$: the object $A \upharpoonright n$ is a word, and it is its cylinder that sits inside $U$.)*
-
-By definition a c.e. open set is a union of basic open sets indexed by a c.e. set of words,
-
-$$U = \bigcup_j [\![\sigma_j]\!].$$
-
-If $A \in U$ then $A \in [[\sigma\_j]]$ for some $j$, which by definition of the cylinder means $\sigma\_j \sqsubseteq A$. Put $n := l(\sigma\_j)$. Then $\sigma\_j = A \upharpoonright n$, hence
+A c.e. open set is a union $U = \bigcup\_j [[\sigma\_j]]$ of basic open sets, and the conclusion is to be read as $[[A \upharpoonright n]] \subseteq U$. If $A \in U$ then $\sigma\_j \sqsubseteq A$ for some $j$; with $n := l(\sigma\_j)$ this gives $\sigma\_j = A \upharpoonright n$ and
 
 $$[\![A \upharpoonright n]\!] = [\![\sigma_j]\!] \subseteq U. \qquad \square$$
 
-The contrapositive is what gets used later: if $[[A \upharpoonright n]] \not\subseteq U$ for **every** $n$, then $A \notin U$.
+Contrapositive, used in part (3): if $[[A \upharpoonright n]] \not\subseteq U$ for every $n$, then $A \notin U$.
 
 </details>
 </div>
@@ -6772,25 +6408,15 @@ $$\lambda(U \cap [[b]]) \leq (1+\varepsilon)\frac{c}{2}.$$
 <details markdown="1">
 <summary>Solution</summary>
 
-**Key lemma.** *If $U$ is c.e. open and $\lambda(U) = c$ is computable, then $\lambda(U \cap [[\sigma]])$ is a **computable** real, uniformly in $\sigma$.*
+Since $U \cap [[\sigma]]$ is c.e. open, $\lambda(U \cap [[\sigma]])$ is left-c.e.; and as the cylinders of length $n = l(\sigma)$ partition the space,
 
-Indeed, $U \cap [[\sigma]]$ is c.e. open, so $\lambda(U \cap [[\sigma]])$ is left-c.e.: enumerate the cylinders of $U$, intersect with $[[\sigma]]$, and sum the disjointified pieces from below. This holds for every word, and for a fixed length $n = l(\sigma)$ the cylinders $[[\tau]]$, $l(\tau) = n$, partition the space, so
+$$\lambda(U \cap [\![\sigma]\!]) = c - \sum_{l(\tau) = n,\ \tau \neq \sigma} \lambda(U \cap [\![\tau]\!])$$
 
-$$\lambda(U \cap [\![\sigma]\!]) = c - \sum_{l(\tau) = n,\ \tau \neq \sigma} \lambda(U \cap [\![\tau]\!]).$$
+is a computable real minus finitely many left-c.e. ones, hence right-c.e. So $\lambda(U \cap [[\sigma]])$ is computable, uniformly in $\sigma$ (Proposition 2.8).
 
-The right-hand side is a computable real minus a **finite** sum of left-c.e. reals, hence right-c.e. Being both left- and right-c.e., $\lambda(U \cap [[\sigma]])$ is computable (Proposition 2.8).
+Write $\lambda\_b := \lambda(U \cap [[b]])$; then $\lambda\_0 + \lambda\_1 = c$, so $\min(\lambda\_0,\lambda\_1) \le c/2$. For $c = 0$ output $b := 0$. Otherwise, on input $\varepsilon$ compute a positive rational $\delta \le \varepsilon c/4$, then rationals $q\_b$ with $\lvert q\_b - \lambda\_b\rvert \le \delta$, and output the $b$ with $q\_b$ minimal. Then $\lambda\_b \le q\_b + \delta \le q\_{1-b} + \delta \le \lambda\_{1-b} + 2\delta$, so
 
-**The machine.** Write $\lambda\_b := \lambda(U \cap [[b]])$, so $\lambda\_0 + \lambda\_1 = c$ and therefore $\min(\lambda\_0,\lambda\_1) \le c/2$. If $c = 0$ output $b := 0$. Otherwise, on input a rational $\varepsilon > 0$:
-
-1. compute a positive rational $\delta \le \varepsilon c/4$ (possible since $c$ is a computable real and $c > 0$);
-2. by the key lemma compute rationals $q\_0, q\_1$ with $\lvert q\_b - \lambda\_b \rvert \le \delta$;
-3. output the $b$ with $q\_b$ minimal.
-
-For that $b$ we get $\lambda\_b \le q\_b + \delta \le q\_{1-b} + \delta \le \lambda\_{1-b} + 2\delta$, so $\lambda\_b \le \min(\lambda\_0,\lambda\_1) + 2\delta$ and hence
-
-$$\lambda(U \cap [\![b]\!]) \;\le\; \frac{c}{2} + 2\delta \;\le\; \frac{c}{2} + \frac{\varepsilon c}{2} \;=\; (1+\varepsilon)\frac{c}{2}. \qquad \square$$
-
-Note that exact comparison of $\lambda\_0$ and $\lambda\_1$ is *not* decidable — the slack $\varepsilon$ is exactly what lets us avoid it.
+$$\lambda(U \cap [\![b]\!]) \;\le\; \frac{c}{2} + 2\delta \;\le\; (1+\varepsilon)\frac{c}{2}. \qquad \square$$
 
 </details>
 </div>
@@ -6814,39 +6440,15 @@ for all $n$.
 <details markdown="1">
 <summary>Solution</summary>
 
-*(The quantity being bounded is the measure of $U$ **relative to** the cylinder reached so far, i.e. $m\_n := 2^n\,\lambda(U \cap [[A \upharpoonright n]])$; the bare $\lambda(A \upharpoonright n)$ of the statement is shorthand for it.)*
+The quantity bounded is the measure of $U$ relative to the cylinder reached so far, $m\_n := 2^n\lambda(U \cap [[A \upharpoonright n]])$.
 
-**Construction.** Set $A \upharpoonright 0 := \lambda$. Given $\sigma := A \upharpoonright n$, let
+Set $A \upharpoonright 0 := \lambda$. Given $\sigma := A \upharpoonright n$, the set $U\_\sigma := \lbrace X : \sigma X \in U\rbrace$ is c.e. open uniformly in $\sigma$ with $\lambda(U\_\sigma) = 2^n\lambda(U \cap [[\sigma]])$, computable by part (2). Run the machine of part (2) on $U\_\sigma$ with $\varepsilon\_n := 3^{-2^n}$ and let $A(n)$ be its output $b$; each bit comes from a terminating computation, so $A$ is computable. Since $\lambda(U \cap [[\sigma b]]) = 2^{-n}\lambda(U\_\sigma \cap [[b]])$,
 
-$$U_\sigma := \lbrace X : \sigma X \in U \rbrace,$$
+$$m_{n+1} = 2\,\lambda(U_\sigma \cap [\![b]\!]) \le (1+\varepsilon_n)\,\lambda(U_\sigma) = (1+\varepsilon_n)\,m_n,$$
 
-which is c.e. open uniformly in $\sigma$ and satisfies $\lambda(U\_\sigma) = 2^n \lambda(U \cap [[\sigma]])$ — a computable real by the key lemma of part (2). Run the machine of part (2) on $U\_\sigma$ with
+and $m\_0 = \lambda(U) = \tfrac12$, giving $m\_n \le \tfrac12\prod\_{k<n}(1+3^{-2^k})$.
 
-$$\varepsilon_n := 3^{-2^n}$$
-
-and let $b$ be its output; set $A(n) := b$. Every bit is produced by a terminating computation, so $A$ is computable.
-
-**The recursion.** Since $\lambda(U \cap [[\sigma b]]) = 2^{-n}\lambda(U\_\sigma \cap [[b]])$, part (2) gives
-
-$$m_{n+1} = 2^{n+1}\lambda(U \cap [\![\sigma b]\!]) = 2\,\lambda(U_\sigma \cap [\![b]\!]) \le (1+\varepsilon_n)\,\lambda(U_\sigma) = (1+\varepsilon_n)\,m_n,$$
-
-and $m\_0 = \lambda(U) = \tfrac12$. Hence
-
-$$m_n \;\le\; \frac{1}{2}\prod_{k=0}^{n-1}\bigl(1 + 3^{-2^k}\bigr),$$
-
-which is the asserted bound.
-
-**Why it stays below $1$.** Telescoping gives
-
-$$(1-x)\prod_{k=0}^{n}\bigl(1+x^{2^k}\bigr) = 1 - x^{2^{n+1}}, \qquad\text{hence}\qquad \prod_{k \ge 0}\bigl(1+x^{2^k}\bigr) = \frac{1}{1-x} \quad (\lvert x \rvert < 1),$$
-
-so at $x = \tfrac13$ the product equals $\tfrac32$ and
-
-$$m_n \;\le\; \frac{1}{2}\cdot\frac{3}{2} \;=\; \frac{3}{4} \;<\; 1 \qquad \text{for every } n.$$
-
-**Consequence** (this is what part (4) needs): $[[A \upharpoonright n]] \subseteq U$ would force $m\_n = 1$, so no cylinder along $A$ is contained in $U$, and part (1) yields $A \notin U$. $\square$
-
-The doubly-exponential exponents are chosen precisely so that the errors $\varepsilon\_n$ telescope into a closed-form product bounded away from $2$.
+Telescoping $(1-x)\prod\_{k=0}^{n}(1+x^{2^k}) = 1-x^{2^{n+1}}$ gives $\prod\_{k\ge0}(1+x^{2^k}) = \tfrac{1}{1-x}$, so at $x=\tfrac13$ the product is $\tfrac32$ and $m\_n \le \tfrac34 < 1$ for every $n$. Hence $[[A \upharpoonright n]] \subseteq U$ never holds, as that would force $m\_n = 1$, and part (1) gives $A \notin U$. $\square$
 
 </details>
 </div>
@@ -6866,13 +6468,11 @@ be a Schnorr test. Show that there exists a computable infinite sequence that fa
 <details markdown="1">
 <summary>Solution</summary>
 
-⚠️ **The statement is inverted as printed.** With "$A$ fails $L$" meaning $A \in L\_i$ for all $i$, the claim is false: the layers of a Schnorr test need not be nested, so $\bigcap\_i L\_i$ can be empty and then *no* sequence at all fails $L$. What the proof of Theorem 9.2 needs — and what parts (1)–(3) were built for — is the opposite direction:
+⚠️ As printed the claim is false: the layers of a Schnorr test need not be nested, so $\bigcap\_i L\_i$ can be empty and then nothing fails $L$. What is needed below is the opposite direction — every Schnorr test is *passed* by some computable sequence.
 
-> **every Schnorr test is *passed* by some computable sequence**, i.e. there is a computable $A$ that does **not** fail $L$.
+Take $U := L\_1$: c.e. open with $\lambda(L\_1) = \tfrac12$ exactly, a rational and hence a computable real, so part (3) gives a computable $A \notin L\_1$. Then $A \notin \bigcap\_i L\_i$, i.e. $A$ does not fail $L$. $\square$
 
-**Proof.** Take $U := L\_1$. It is c.e. open, and by the definition of a Schnorr test $\lambda(L\_1) = 2^{-1} = \tfrac12$ **exactly** — a rational, hence a computable real. So part (3) applies and produces a computable $A \notin L\_1$. Since $A$ escapes the first layer, $A \notin \bigcap\_i L\_i$, i.e. $A$ does not fail $L$. $\square$
-
-**Where "Schnorr" is used.** Part (2) needs $\lambda(U)$ to be *computable*, not merely left-c.e. For a Martin-Löf test one only knows $\lambda(L\_1) \le \tfrac12$ with a left-c.e. measure, the key lemma collapses, and the construction breaks — as it must, since Theorem 9.1 does provide a universal Martin-Löf test.
+The Schnorr condition is what part (2) needs: for a Martin-Löf test one only has $\lambda(L\_1) \le \tfrac12$ with left-c.e. measure and the construction breaks — as it must, by Theorem 9.1.
 
 </details>
 </div>
@@ -6888,13 +6488,7 @@ Show that there exists no universal Schnorr test.
 <details markdown="1">
 <summary>Solution</summary>
 
-**Every computable sequence is Schnorr nonrandom.** For computable $A$ put $L^A := ([[A \upharpoonright 1]], [[A \upharpoonright 2]], \dots)$. These are uniformly c.e. open (indeed computable) and $\lambda([[A \upharpoonright i]]) = 2^{-i}$ exactly, so $L^A$ is a Schnorr test; and $A \in [[A \upharpoonright i]]$ for every $i$, so $A$ fails $L^A$.
-
-**Conclusion.** Suppose $L$ were a universal Schnorr test. Every computable $A$ is Schnorr nonrandom, so by universality every computable $A$ fails $L$; in particular
-
-$$A \in L_1 \qquad \text{for every computable } A.$$
-
-But part (4) produces a computable $A \notin L\_1$ — a contradiction. Hence no universal Schnorr test exists. $\square$
+For computable $A$ the family $([[A \upharpoonright i]])\_{i \ge 1}$ is uniformly c.e. open with $\lambda([[A \upharpoonright i]]) = 2^{-i}$ exactly, hence a Schnorr test, and $A$ fails it; so every computable sequence is Schnorr nonrandom. If $L$ were universal, every computable $A$ would therefore fail $L$, in particular $A \in L\_1$ — contradicting the computable $A \notin L\_1$ of part (4). $\square$
 
 </details>
 </div>
@@ -7175,6 +6769,47 @@ Note also the perfect parallel between the two theorems and the two universality
 
 In every row the pattern is the same: as long as the measure requirement can only be *violated* effectively, the tests can be enumerated and diagonalized into a universal one; as soon as the requirement demands an exactly computable value, that enumeration disappears and universality fails with it.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Totality and translation of Schnorr tests)</span></p>
+
+Recall that a Schnorr test
+
+$$L = (L_1, L_2, \dots)$$
+
+is a Martin-Löf test that satisfies
+
+$$\lambda(L_i) = 2^{-i}$$
+
+for every $i$
+
+A real $\alpha$ is called **Schnorr nonrandom** if there exists a Schnorr test
+
+$$L = (L_1, L_2, \dots)$$
+
+such that
+
+$$\alpha \in L_i$$
+
+for all $i$, and **Schnorr random** otherwise.
+
+Show that, if $\alpha$ is a Schnorr random real that satisfies
+
+$$\alpha \leq_S \beta$$
+
+via a total function $f$, then $\beta$ is Schnorr random as well.
+
+*Hint: by contradiction. Use the totality of $f$ to transform a Schnorr test that fails on $\beta$ into a Schnorr test that fails on $\alpha$.*
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+</details>
 </div>
 
 # Relative Randomness of Computably Approximable Reals
