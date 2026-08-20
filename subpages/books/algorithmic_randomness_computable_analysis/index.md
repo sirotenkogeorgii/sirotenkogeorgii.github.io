@@ -1555,7 +1555,11 @@ There exists no computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \t
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
+Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs 
+
+$$f(\lambda), f(0), f(1), f(00), \dots$$
+
+in parallel and returns the first word $\sigma$ for which $f(\sigma) \downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
 
 $$C(M(\mathrm{bin}(n))) \ge f(M(\mathrm{bin}(n))) > n. \tag{3}$$
 
@@ -1572,13 +1576,20 @@ which is false for all sufficiently large $n$ (e.g., $n > 2^{c_M + 1}$).
 </details>
 </div>
 
-Applying the previous theorem with $f(w) := C(w) - 1$ — which would be computable and unbounded if $C$ were — yields:
-
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(2.11.1 — Noncomputability of $C$)</span></p>
 
 Kolmogorov complexity is **not** computable.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Applying the previous theorem with $f(w) := C(w) - 1$ — which would be computable and unbounded if $C$ were — yields that KC is **not** computable. 
+
+</details>
 </div>
 
 ## 2.2 Properties of Kolmogorov Complexity
@@ -1590,6 +1601,29 @@ We now collect a few stability properties of $C$ under small textual edits, and 
 
 There exists a constant $c$ such that, for every binary word, *adding*, *changing*, or *deleting* the last bit changes its Kolmogorov complexity by at most $\pm c$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For a computable last-bit operation $f$,
+
+$$C(f(w))\le C(w)+O(1),$$
+
+because a machine can run the optimal program for $w$, then apply $f$.
+
+For the reverse direction:
+
+* changing the last bit is its own inverse;
+* deleting is reversed by appending the deleted bit;
+* adding is reversed by deleting.
+
+Appending $0$ and appending $1$ are two fixed machines, so take the maximum of their constants. Hence
+
+$$|C(f(w))-C(w)|\le c.$$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1617,6 +1651,8 @@ hence
 
 $$C(w_n) \le \log(n) + c_M$$
 
+---
+
 For (i), define
 
 $$W_n^{+} := \lbrace (01)^k 1 (01)^{2^n - k} : 0 \le k \le 2^n \rbrace,$$
@@ -1625,7 +1661,11 @@ a set of $2^n + 1$ distinct words, each obtained from $w_n$ by inserting one bit
 
 $$C(w_n^{+}) - C(w_n) \ge n - (\log(n) + c_M) \xrightarrow[n \to \infty]{} \infty,$$
 
-establishing (i). The proofs of (ii) and (iii) are analogous, using
+establishing (i). 
+
+---
+
+The proofs of (ii) and (iii) are analogous, using
 
 $$W_n^{c} = \lbrace (01)^{k-1} 11 (01)^{2^n - k} : 1 \le k \le 2^n \rbrace, \qquad W_n^{-} = \lbrace (01)^{k-1} 1 (01)^{2^n - k} : 1 \le k \le 2^n \rbrace,$$
 
@@ -3474,7 +3514,7 @@ $$S_i = \lbrace \sigma^i_0, \sigma^i_1, \dots\rbrace$$
 
 for all $i$, be a uniformly c.e. sequence of prefix-free sets of words such that the corresponding uniformly c.e. sequence of open sets $\widetilde{S}\_0, \widetilde{S}\_1, \dots$, where
 
-$$\widetilde{S}_i = \lbrace [[\sigma^i_0]], [[\sigma^i_1]], \dots\rbrace$$
+$$\widetilde{S}_i = \lbrace [\![\sigma^i_0]\!], [\![\sigma^i_1]\!], \dots\rbrace$$
 
 for all $i$, is a Schnorr test.
 
@@ -4143,8 +4183,6 @@ In particular $\Omega$ is noncomputable, so it is a left-c.e. real that is not c
 <details markdown="1">
 <summary>Proof</summary>
 
-This is Sheet 5, Exercise 1, both directions of which are spelled out in the exercises on Chaitin's $\Omega$ below.
-
 For $\Omega \le\_T \emptyset'$: the approximation $(w\_s)$ is computable, and $\emptyset'$ can decide, for each $n$, the (c.e.) question of whether the first $n$ bits of $w\_s$ have stabilized, so $\emptyset'$ computes $\Omega \upharpoonright n$ for every $n$.
 
 For $\emptyset' \le\_T \Omega$: this is the dovetailing argument recorded in the remark below — knowing $\Omega \upharpoonright N$ lets one run all programs until enough halting weight accumulates to match these $N$ bits, after which no further program of length $\le N$ can halt, deciding the halting problem for all such programs.
@@ -4164,6 +4202,15 @@ $$\Omega = \sum_{\sigma \in \operatorname{dom} \widetilde U} 2^{-l(\sigma)}.$$
 
 $$\widetilde M(0^e1)\downarrow \quad \Longleftrightarrow \quad \Phi_e(e)\downarrow.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Simpler Solution</summary>
+
+In the solution of *Exercise (The halting problem is Turing reducible to Chaitin’s)*, we use an auxiliary variable $u$, but cannot be the proof simplified that for the code $\rho_e$ we know the increment we will make if the code halts, we also know how close the current sum to the Chaitin's Omega, because we have running sum $w_s$ from diagonalization and we have access to the bits of Chaitin's Omega, so we can compute the upper bound on the distance between the current $w_s$ and Chaitin's Omega. If this distance is less than the potential increment by the program $\rho_e$, then $\Phi_e(e)$ never halts, otherwise we overshoot the Chaitin's Omega, if $\rho_e$ has already halted, then we say $\Phi_e(e)$ halts. it is simpler and still valid.
+
+</details>
 </div>
 
 <div class="accordion" markdown="1">
@@ -4190,20 +4237,12 @@ So replace “once the sum is equal to the first $n$ bits” by a **gap argument
 
 **We still need to connect this to $\emptyset'$.**
 
-I use the sheet’s three exercise statements and the lecture notes’ conventions for prefix-free machines, Chaitin’s $\Omega$, left-c.e. approximations, and Solovay reducibility.  
-
 **Key idea.**
 The first $N$ bits of $\Omega$ decide halting of all $\widetilde U$-programs of length $\le N$. So we only need to encode the question “does $\Phi_e(e)$ halt?” as halting of one computable $\widetilde U$-program.
 
 Let $\widetilde M$ be the prefix-free machine defined by
 
 $$\widetilde M(0^e1)\downarrow \quad\Longleftrightarrow\quad \Phi_e(e)\downarrow.$$
-
-The set
-
-$$\lbrace 0^e1:e\in\mathbb N\rbrace$$
-
-is prefix-free: if $e<f$, then $0^e1$ and $0^f1$ first differ at the $(e+1)$-st symbol, where the first has $1$ and the second has $0$. Hence $\widetilde M$ is a prefix-free machine.
 
 By universality of $\widetilde U$, there is a fixed code $\rho$ such that
 
@@ -4241,19 +4280,6 @@ $$\emptyset'\le_T\Omega.$$
 </div>
 
 </details>
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the halting problem)</span></p>
-
-Knowing the first $N$ bits of $\Omega$ allows one to decide the halting problem for every $\widetilde U$-program of length at most $N$. Indeed, dovetail all computations of $\widetilde U$, and let
-
-$$\Omega_s=\sum_{\sigma\in \operatorname{dom}(\widetilde U[s])}2^{-l(\sigma)}$$
-
-be the halting probability already observed by stage $s$. Since the first $N$ bits of $\Omega$ determine an interval of length $2^{-N}$ containing $\Omega$, we can wait until the remaining gap between $\Omega$ and $\Omega_s$ is smaller than $2^{-N}$. At that point, no unseen program of length at most $N$ can still halt, because such a program would contribute at least $2^{-N}$ to $\Omega$. Therefore, if a given program $p$ of length at most $N$ has not halted by then, it never halts.
-
-Because many outstanding problems in **number theory**, such as **Goldbach's conjecture**, are equivalent to solving the halting problem for special programs (which would basically search for counter-examples and halt if one is found), knowing enough bits of Chaitin's constant would also imply knowing the answer to these problems. But as the halting problem is not generally solvable, calculating any but the first few bits of Chaitin's constant is not possible for a universal language. This reduces hard problems to impossible ones, much like trying to build an **oracle machine for the halting problem** would be.
-
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -4300,28 +4326,6 @@ $$a_{n+1}-a_n \le 2^d(w_{n+1}-w_n).$$
 So the required constant is $c=2^d$.
 
 </details>
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing-reducibility)</span></p>
-
-A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
-
-$$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is $\Phi$?)</span></p>
-
-Here $\Phi$ is standard computability-theory notation for an **effective enumeration of partial computable functions**.
-
-More precisely,
-
-$$\Phi_0,\Phi_1,\Phi_2,\dots$$
-
-is a fixed listing of all partial computable functions $\mathbb N \rightharpoonup \mathbb N$, or equivalently all Turing machines/programs under some Gödel numbering.
-
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5985,19 +5989,41 @@ is a Martin-Löf test.
 <details markdown="1">
 <summary>Solution</summary>
 
-⚠️ **Two fixes to the statement:** the threshold must be $2^i$, and the condition needs $b\_m < x$ as well —
+The formula for $L_i$ in the sheet is incorrect as written. The following corrected construction proves the required theorem.
 
-$$x \in L_i \iff \exists m, n\ \Bigl(\max(b_n, b_m) < x \ \text{ and }\ \frac{a_m - a_n}{x - b_n} > 2^i\Bigr).$$
+Fix $i$. Define integers
 
-Without the second clause the bound is false: for $\alpha = \tfrac12$ with $a = (0,\,10^{-4},\,2\cdot 10^{-4},\,0.4999,\dots)$ and $b = (0,\,0.4,\,0.8,\dots)$ the printed condition already puts the disjoint intervals $(0,\,0.25)$, $(0.4,\,0.65)$, $(0.8,\,1.05)$ into $L\_1$.
+$$n_0<n_1<n_2<\cdots$$
 
-**C.e. open.** Each pair $(m,n)$ contributes the rational interval $\bigl(\max(b\_n,b\_m),\ b\_n + 2^{-i}(a\_m-a\_n)\bigr)$, and $L\_i$ is their union — a computable family of intervals, uniformly in $i$.
+recursively.
 
-**Measure.** Put $g(x) := \sup\lbrace a\_j : b\_j < x\rbrace$, nondecreasing with $g(0^{+}) = 0$ and $g(1) = \alpha$. A witness $(m,n)$ for $x \in L\_i$ gives $y := b\_n < x$ with $g(x) - g(y) \ge a\_m - a\_n > 2^i(x-y)$, so $L\_i$ lies in the maximal-chord-slope set $E\_t := \lbrace x : \exists y<x,\ g(x)-g(y) > t(x-y)\rbrace$ for $t = 2^i$. By the rising sun lemma applied to $g(x) - tx$, the components $(c\_j,d\_j)$ of $E\_t$ satisfy $g(d\_j)-g(c\_j) \ge t(d\_j-c\_j)$; summing over them and using monotonicity,
+Start with $n_0=0$. Once $n_k$ is known, enumerate the interval
 
-$$t\,\lambda(E_t) \;\le\; \sum_j \bigl(g(d_j)-g(c_j)\bigr) \;\le\; g(1)-g(0^{+}) \;=\; \alpha .$$
+$$I_{i,k} = \left( b_{n_k}, b_{n_k}+2^{-i}(a_{k+1}-a_k) \right).$$
 
-Hence $\lambda(L\_i) \le 2^{-i}\alpha < 2^{-i}$ — part (1)'s bound with the local slope replaced by the maximal chord slope. $\square$
+Then search for the least $n_{k+1}>n_k$ such that
+
+$$b_{n_{k+1}}> b_{n_k}+2^{-i}(a_{k+1}-a_k).$$
+
+If no such number exists, stop the construction. Define
+
+$$U_i=\bigcup_k I_{i,k},$$
+
+where the union contains the intervals actually enumerated.
+
+The sets $U_i$ are uniformly c.e. open. Also,
+
+$$
+\begin{aligned}
+\lambda(U_i)
+&\le \sum_k |I_{i,k}|\\
+&=\sum_k2^{-i}(a_{k+1}-a_k)\\
+&\le 2^{-i}\alpha\\
+&<2^{-i}.
+\end{aligned}
+$$
+
+Thus $(U_i)\_{i\ge1}$ is a Martin-Löf test.
 
 </details>
 </div>
@@ -6015,11 +6041,19 @@ $$\alpha \leq_S \beta.$$
 <details markdown="1">
 <summary>Solution</summary>
 
-Being random, $\beta$ is irrational, so $b\_n < \beta$ for every $n$. If $\beta$ lay in every $L\_k$ it would fail the Martin-Löf test of part (2), so fix $k$ with $\beta \notin L\_k$. At $x = \beta$ the clause $\max(b\_n,b\_m) < x$ is automatic, so this says $a\_m - a\_n \le 2^k(\beta - b\_n)$ for all $m,n$; letting $m \to \infty$,
+Since $\beta$ is Martin-Löf random, for some $k$,
 
-$$\alpha - a_n \;\le\; 2^k(\beta - b_n) \;<\; 2^{k+1}(\beta - b_n) \qquad \text{for every } n,$$
+$$\beta\notin L_k.$$
 
-which is condition (iv) of Proposition 7.2 with $c = 2^{k+1}$. Hence $\alpha \le\_S \beta$. $\square$
+Therefore, for every $m,n$,
+
+$$\frac{a_m-a_n}{\beta-b_n}\le 2^k.$$
+
+Letting $m\to\infty$,
+
+$$\alpha-a_n\le 2^k(\beta-b_n) \qquad\text{for every }n.$$
+
+By the speed-of-convergence characterization of Solovay reducibility, $\alpha\le_S\beta$.
 
 </details>
 </div>
