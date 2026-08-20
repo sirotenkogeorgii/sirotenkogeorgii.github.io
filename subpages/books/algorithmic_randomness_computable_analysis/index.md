@@ -5956,14 +5956,18 @@ Markov against the total rise of $g$ then gives
 $$
 \begin{aligned}
 2^k\lambda(E)
-&=\sum_{i\in I}2^k(x_i-x_{i-1})
-\;\le\; \sum_{i\in I}s_i(x_i-x_{i-1})
-\;=\;\sum_{i\in I}\bigl(g(x_i)-g(x_{i-1})\bigr) \\
-&\le\; g(\beta)-g(0) \;\le\; \alpha<1,
+&=\sum_{i\in I}2^k(x_i-x_{i-1}) \\
+&\le \sum_{i\in I}s_i(x_i-x_{i-1}) \\
+&= \sum_{i\in I}\bigl(g(x_i)-g(x_{i-1})\bigr) \\
+&\le g(\beta)-g(0) \\
+&\le \alpha \\
+&< 1,
 \end{aligned}
 $$
 
-using monotonicity of $g$ for the last-but-one step. Thus $\lambda(E)\le 2^{-k}\alpha<2^{-k}$. $\square$
+using monotonicity of $g$ for the last-but-one step. Thus 
+
+$$\lambda(E)\le 2^{-k}\alpha<2^{-k}.$$
 
 </details>
 </div>
@@ -5979,7 +5983,7 @@ $$L = (L_1, L_2, \dots)$$
 
 defined by
 
-$$x \in L_i \iff \exists m,n \left( b_n < x \text{ and } \frac{a_m - a_n}{x - b_n} > 2^k \right)$$
+$$x \in L_i \iff \exists n<m \left( b_m < x \text{ and } \frac{a_m - a_n}{x - b_n} > 2^i \right)$$
 
 is a Martin-Löf test.
 
