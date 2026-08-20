@@ -502,56 +502,57 @@ The sequence $\left\lbrace \frac{1}{j} \right\rbrace_{j=1}^{\infty}$ is in $\ell
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Don't confuse $\ell^p$ and $L^p$)</span></p>
 
 The primary difference is that $\ell^p$ is a sequence space (discrete) while $L^p$ is a function space (continuous). Both are generalized vector spaces equipped with p-norms, but they operate on fundamentally different underlying measure spaces.
+
 Mathematically, $\ell^p$ is actually a specific, special case of $L^p$ where the domain is the set of natural numbers $\mathbb{N}$ equipped with the discrete counting measure.
 
-## Direct Comparison Overview
+**Direct Comparison Overview**
 
 | Feature | $\ell^p$ Space (Sequences) | $L^p$ Space (Functions) |
 |---|---|---|
-| Element Type | Infinite sequences of numbers, $x = (x_1, x_2, x_3, \dots)$ | Functions over a domain, f(x) |
+| Element Type | Infinite sequences of numbers, $x = (x_1, x_2, x_3, \dots)$ | Functions over a domain, $f(x)$ |
 | Domain Type | Discrete index set (e.g., $\mathbb{N}$ or $\mathbb{Z}$) | Continuous domain (e.g., an interval $[a, b]$ or $\mathbb{R}^n$) |
 | Summation Tool | Infinite series ($\sum$) | Lebesgue integral ($\int$) |
-| Inclusions (p < q) | $\ell^p \subset \ell^q$ (Smaller p is more restrictive) | $L^q \subset L^p$ (On finite measure spaces like $[0,1]$) |
+| Inclusions $p < q$ | $\ell^p \subset \ell^q$ (Smaller p is more restrictive) | $L^q \subset L^p$ (On finite measure spaces like $[0,1]$) |
 
-## 1. The $\ell^p$ Spaces (Discrete)
+**1. The $\ell^p$ Spaces (Discrete)**
 
-The space $\ell^p$ (often spoken as "little L-p") consists of all infinite sequences of real or complex numbers whose absolute values raised to the p-th power have a finite sum.
+The space $\ell^p$ (often spoken as "little $L-p$") consists of all infinite sequences of real or complex numbers whose absolute values raised to the $p$-th power have a finite sum.
 
-* Condition: A sequence $x = (x_n)_{n=1}^\infty$ belongs to $\ell^p$ if:
+* Condition: A sequence $x = (x_n)\_{n=1}^\infty$ belongs to $\ell^p$ if:
 
-$$\Vert{}x\Vert{}_p = \left( \sum_{n=1}^\infty \vert{}x_n\vert{}^p \right)^{1/p} < \infty$$ 
+  $$\Vert{}x\Vert{}_p = \left( \sum_{n=1}^\infty \vert{}x_n\vert{}^p \right)^{1/p} < \infty$$ 
 
 * Intuition: For the sum to remain finite, the terms $x_n$ must decay to 0 as n → ∞.
 
-## 2. The $L^p$ Spaces (Continuous)
+**2. The $L^p$ Spaces (Continuous)**
 
-The space $L^p$ (often spoken as "big L-p") consists of equivalence classes of measurable functions whose absolute values raised to the p-th power have a finite Lebesgue integral over a measure space $(X, \mu)$.
+The space $L^p$ (often spoken as "big $L-p$") consists of equivalence classes of measurable functions whose absolute values raised to the $p$-th power have a finite Lebesgue integral over a measure space $(X, \mu)$.
 
 * Condition: A function $f: X \to \mathbb{C}$ belongs to $L^p(X)$ if:
 
-$$\Vert{}f\Vert{}_p = \left( \int_X \vert{}f(x)\vert{}^p \, d\mu \right)^{1/p} < \infty$$ 
+  $$\Vert{}f\Vert{}_p = \left( \int_X \vert{}f(x)\vert{}^p \, d\mu \right)^{1/p} < \infty$$ 
 
 * Intuition: For the integral to remain finite, the function cannot blow up too severely, and if the domain is infinite (like $\mathbb{R}$), it generally must decay toward 0 at infinity. 
 
-## 3. Understanding the Reversed Inclusion Properties
+**3. Understanding the Reversed Inclusion Properties**
 
 One of the most confusing aspects when learning functional analysis at MIT or similar institutions is how their inclusion behaviors flip completely.
 
-## Why $\ell^p \subset \ell^q$ when $p < q$
+**Why $\ell^p \subset \ell^q$ when $p < q$**
 
-If a sequence converges for a smaller power p, its terms must eventually drop below 1. When you raise numbers smaller than 1 to a higher power q, they get smaller ($\vert{}x_n\vert{}^q \le \vert{}x_n\vert{}^p$). Therefore, the sum stays finite.
+If a sequence converges for a smaller power $p$, its terms must eventually drop below 1. When you raise numbers smaller than 1 to a higher power $q$, they get smaller ($\vert{}x_n\vert{}^q \le \vert{}x_n\vert{}^p$). Therefore, the sum stays finite.
 
 * Example: The sequence $x_n = \frac{1}{n}$ is not in $\ell^1$ (harmonic series diverges), but it is in $\ell^2$ because $\sum \frac{1}{n^2} < \infty$.
 
-## Why $L^q \subset L^p$ on finite domains when $p < q$
+**Why $L^q \subset L^p$ on finite domains when $p < q$**
 
 For functions on a bounded domain (like $[0,1]$), the primary threat to a finite integral is a vertical asymptote (the function blowing up to infinity at a point). Higher powers q make singularities blow up much faster, making it harder for the function to integrate cleanly.
 
 * Example: On the domain $(0,1]$, the function $f(x) = \frac{1}{\sqrt{x}}$ is in $L^1$ because $\int_0^1 x^{-1/2} dx = 2$. However, it is not in $L^2$ because $\int_0^1 x^{-1} dx$ blows up logarithmically to infinity.
 
-## Summary of Identity
+**Summary of Identity**
 
-Both spaces share the elegant property of being complete normed vector spaces (Banach spaces) for all 1 ≤ p ≤ ∞, and they form a Hilbert space exclusively when p=2. 
+Both spaces share the elegant property of being complete normed vector spaces (Banach spaces) for all $1 \leq p \leq \infty$, and they form a Hilbert space exclusively when $p=2$. 
 
 </div>
 
@@ -2394,7 +2395,7 @@ m\left(\bigcap_{k=1}^\infty E_k\right) = m\left(E_1 \setminus \bigcup_{i=2}^\inf
 
 In the initial draft of the solution, writing the equality 
 
-$$m\left(E_1 \setminus \bigcup_{i=1}^\infty F_i\right) = \lim_{n \to \inffty} m\left(E_1 \setminus \bigcup_{i=1}^n F_i\right)$$
+$$m\left(E_1 \setminus \bigcup_{i=1}^\infty F_i\right) = \lim_{n \to \infty} m\left(E_1 \setminus \bigcup_{i=1}^n F_i\right)$$
 
 in one step was a logical leap because it inherently assumed the very property you were trying to prove: **continuity from above**. You cannot pass a limit through the measure of a decreasing sequence of sets without first proving that the measure operation permits it.
 
@@ -3654,80 +3655,6 @@ $$\boxed{\text{Every measurable function is nearly continuous.}}$$
 
 ## The Lebesgue Integral
 
-### Density of Nice Functions in $L^1([a,b])$
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Bounded Measurable Functions / Truncation of $L^1$ Functions)</span></p>
-
-Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is Lebesgue integrable.
-
----
-
-(a) Let $\varepsilon > 0$. Prove that there exists a bounded measurable function $h : [a,b] \to \mathbb{R}$ such that
-   
-$$\int_a^b |f(x)-h(x)|\,dx < \varepsilon.$$
-
-*Hint:* Let $E_n = f^{-1}([-n,n])$ and $h_n = f\chi_{E_n}$. Prove that
-
-$$\lim_{n\to\infty}\int_a^b |f(x)-h_n(x)|\,dx = 0.$$
-
-</div>
-
-<figure class="math-figure">
-  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_truncation.png' | relative_url }}" alt="An integrable function with two tall spikes; a bold blue truncated version follows it but drops to zero where the function exceeds the dashed level n, and the spike areas above the cut are shaded red as the error mass" loading="lazy">
-  <figcaption>Truncation $h_n=f\chi_{E_n}$ with $E_n=f^{-1}([-n,n])$: $h_n$ agrees with $f$ wherever $|f|\le n$ and vanishes on the spikes. The $L^1$-error $\int_a^b|f-h_n|$ is exactly the shaded mass sitting over $E_n^c=\{|f|>n\}$, and it shrinks to $0$ as $n\to\infty$ because $f$ is integrable.</figcaption>
-</figure>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Step Functions / Density of Step Functions in $L^1([a,b])$)</span></p>
-
-(b) Let $\varepsilon > 0$. Prove that there exists a step function $\psi : [a,b] \to \mathbb{R}$ such that
-
-$$\int_a^b |f(x)-\psi(x)|\,dx < \varepsilon.$$
-
-</div>
-
-<figure class="math-figure">
-  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_step_approximation.png' | relative_url }}" alt="A smooth bounded curve overlaid by a blue step function on ten intervals; the thin region between the two graphs is shaded orange" loading="lazy">
-  <figcaption>Density of step functions in $L^1([a,b])$: the $L^1$-distance $\int_a^b|f-\psi|$ is the shaded area between the graphs. Refining the partition (after truncating $f$ to a bounded $h$ as in part (a)) makes this area smaller than any $\varepsilon$.</figcaption>
-</figure>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Continuous Functions Vanishing at the Endpoints / Density of $C_0([a,b])$ in $L^1([a,b])$)</span></p>
-
-(c) Let $\varepsilon > 0$. Prove that there exists a continuous function $g : [a,b] \to \mathbb{R}$ such that $g(a)=g(b)=0$ and
-
-$$\int_a^b |f(x)-g(x)|\,dx < \varepsilon.$$
-
-</div>
-
-<figure class="math-figure">
-  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_continuous_approximation.png' | relative_url }}" alt="A dashed step function and a green continuous function that follows it exactly except in narrow red vertical bands around each jump and at both endpoints, where the green curve ramps linearly and vanishes at the interval ends" loading="lazy">
-  <figcaption>From a step function $\psi$ (dashed) to a continuous $g$ (green) with $g(a)=g(b)=0$: they differ only inside narrow bands $E$ around the jumps and endpoints, where $|\psi-g|\le 2B$. Hence $\int_a^b|\psi-g|\le 2B\,m(E)<\varepsilon$, and combining with parts (a) and (b) gives density of $C_0([a,b])$ in $L^1$.</figcaption>
-</figure>
-
-### Riemann–Lebesgue Lemma for $L^1$ Functions
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Vanishing of Fourier Coefficients for Integrable Functions)</span></p>
-
-Suppose that $f : [-\pi,\pi] \to \mathbb{C}$ is Lebesgue integrable. The **Fourier coefficients** $\lbrace \hat f(n)\rbrace\_{n\in\mathbb{Z}}$ of $f$ are defined via
-
-$$\hat f(n) := \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)e^{-inx}\,dx, \qquad n\in\mathbb{Z}.$$
-
-Prove the Riemann-Lebesgue lemma:
-
-$$\lim_{|n|\to\infty} |\hat f(n)| = 0. \tag{\(\dagger\)}$$
-
-*Hint:* Prove $(\dagger)$ for step functions first. Then use problem 3 and an approximation argument.
-
-</div>
-
-<figure class="math-figure">
-  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_riemann_lebesgue.png' | relative_url }}" alt="Left panel: a three-step function multiplied by a fast cosine, with positive lobes shaded green and negative lobes shaded red showing cancellation on each step. Right panel: a stem plot of Fourier coefficient magnitudes decaying to zero as n grows" loading="lazy">
-  <figcaption>Riemann–Lebesgue mechanism: on each constant step of $\psi$ the oscillation $e^{-inx}$ produces adjacent lobes of opposite sign that cancel, leaving only boundary contributions of size $O(1/n)$ (left). Approximating $f\in L^1$ by step functions transfers the decay to $\hat f$: $|\hat f(n)|\to 0$ (right).</figcaption>
-</figure>
-
 ### Integral of Nonnegative Functions
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -4186,11 +4113,6 @@ $$\lim_{n \to \infty} \int_E f_n = \int_E f.$$
 
 </div>
 
-<figure class="math-figure">
-  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_dct_theorem.png' | relative_url }}" alt="A green dashed envelope curve and its mirror image below zero bound a shaded tube; several blue curves wiggle inside the tube and settle onto a bold black limit curve" loading="lazy">
-  <figcaption>Dominated convergence: the integrable envelope $g$ pins the whole sequence inside the tube $\pm g$ (green), so no mass can escape to infinity as in Fatou's sliding-bump example — pointwise convergence $f_n\to f$ a.e. already forces $\int_E f_n\to\int_E f$.</figcaption>
-</figure>
-
 This is much stronger than anything available for Riemann integration — we only need pointwise convergence and a dominating integrable function.
 
 <div class="accordion">
@@ -4205,6 +4127,294 @@ This is much stronger than anything available for Riemann integration — we onl
     <p>Rearranging: $\int_E f \le \liminf \int_E f_n$. Combining: $\int_E f \le \liminf \int_E f_n \le \limsup \int_E f_n \le \int_E f$, so $\lim \int_E f_n = \int_E f$. $\square$</p>
   </details>
 </div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_dct_theorem.png' | relative_url }}" alt="A green dashed envelope curve and its mirror image below zero bound a shaded tube; several blue curves wiggle inside the tube and settle onto a bold black limit curve" loading="lazy">
+  <figcaption>Dominated convergence: the integrable envelope $g$ pins the whole sequence inside the tube $\pm g$ (green), so no mass can escape to infinity as in Fatou's sliding-bump example — pointwise convergence $f_n\to f$ a.e. already forces $\int_E f_n\to\int_E f$.</figcaption>
+</figure>
+
+### Density of Nice Functions in $L^1([a,b])$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Bounded Measurable Functions / Truncation of $L^1$ Functions)</span></p>
+
+Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is Lebesgue integrable.
+
+Let $\varepsilon > 0$. Prove that there exists a bounded measurable function $h : [a,b] \to \mathbb{R}$ such that
+   
+$$\int_a^b |f(x)-h(x)|\,dx < \varepsilon.$$
+
+*Hint:* Let $E_n = f^{-1}([-n,n])$ and $h_n = f\chi_{E_n}$. Prove that
+
+$$\lim_{n\to\infty}\int_a^b |f(x)-h_n(x)|\,dx = 0.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution: DCT perspective</summary>
+
+Let
+
+$$E_n=f^{-1}([-n,n]), \qquad h_n=f\chi_{E_n}.$$
+
+Each $E_n$ is measurable, hence $h_n$ is measurable, and
+
+$$|h_n|\le n,$$
+
+so $h_n$ is bounded.
+
+Define exactly the function we discussed:
+
+$$g_n:=|f-h_n|.$$
+
+For every fixed $x\in[a,b]$, since $f(x)$ is finite, there exists $N$ such that
+
+$$|f(x)|\le N.$$
+
+Hence $x\in E_n$ for every $n\ge N$, and therefore
+
+$$g_n(x)=|f(x)-h_n(x)|=0$$
+
+for every sufficiently large $n$. Thus
+
+$$g_n(x)\to 0$$
+
+pointwise.
+
+Also,
+
+$$g_n(x)\le |f(x)|.$$
+
+Indeed, on $E_n$,
+
+$$g_n=0,$$
+
+while on $E_n^c$,
+
+$$g_n=|f-0|=|f|.$$
+
+Since $f$ is Lebesgue integrable,
+
+$$|f|\in L^1.$$
+
+Therefore DCT gives
+
+$$\lim_{n\to\infty}\int_a^b g_n(x),dx = \int_a^b0,dx = 0.$$
+
+That is,
+
+$$\boxed{\lim_{n\to\infty}\int_a^b|f-h_n|=0}.$$
+
+Hence, for every $\varepsilon>0$, some $h_n$ satisfies
+
+$$\int_a^b|f-h_n|<\varepsilon.$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution: MCT perspective</summary>
+
+Let
+
+$$E_n=f^{-1}([-n,n]), \qquad h_n=f\chi_{E_n}.$$
+
+Each $E_n$ is measurable, hence $h_n$ is measurable, and
+
+$$|h_n|\le n,$$
+
+so $h_n$ is bounded.
+
+Instead of looking at the decreasing error $g_n$, consider the retained part:
+
+$$|h_n|=|f|\chi_{E_n}.$$
+
+Since
+
+$$E_n\subseteq E_{n+1},$$
+
+we have
+
+$$0\le |h_n|\le |h_{n+1}|$$
+
+and
+
+$$|h_n|\to|f|$$
+
+pointwise. Hence MCT gives
+
+$$\lim_{n\to\infty}\int_a^b|h_n| = \int_a^b|f|.$$
+
+For this particular construction we also showed
+
+$$|f-h_n|=|f|-|h_n|.$$
+
+Therefore
+
+$$
+\begin{aligned}
+\lim_{n\to\infty}\int_a^b|f-h_n|
+&= \lim_{n\to\infty} \left( \int_a^b|f|-\int_a^b|h_n| \right)\\
+&= \int_a^b|f|-\int_a^b|f|\\
+&=0.
+\end{aligned}
+$$
+
+So DCT studies the **discarded part tending to zero**, while MCT studies the **retained part increasing to the whole function**.
+
+</details>
+</div>
+
+<!-- <figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_truncation.png' | relative_url }}" alt="An integrable function with two tall spikes; a bold blue truncated version follows it but drops to zero where the function exceeds the dashed level n, and the spike areas above the cut are shaded red as the error mass" loading="lazy">
+  <figcaption>Truncation $h_n=f\chi_{E_n}$ with $E_n=f^{-1}([-n,n])$: $h_n$ agrees with $f$ wherever $|f|\le n$ and vanishes on the spikes. The $L^1$-error $\int_a^b|f-h_n|$ is exactly the shaded mass sitting over $E_n^c=\{|f|>n\}$, and it shrinks to $0$ as $n\to\infty$ because $f$ is integrable.</figcaption>
+</figure> -->
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Step Functions / Density of Step Functions in $L^1([a,b])$)</span></p>
+
+Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is Lebesgue integrable.
+
+Let $\varepsilon > 0$. Prove that there exists a step function $\psi : [a,b] \to \mathbb{R}$ such that
+
+$$\int_a^b |f(x)-\psi(x)|\,dx < \varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+This is the accumulated-error argument we discussed.
+
+From the previous part, $f$ can be approximated arbitrarily closely in $L^1$ by a bounded measurable $h_n$.
+
+From the previous approximation results, a bounded measurable $h_n$ can in turn be approximated arbitrarily closely by step functions, through the chain
+
+$$h_n \longrightarrow \text{simple function} \longrightarrow \text{step function}.$$
+
+So let $\varepsilon>0$ and split it as
+
+$$\varepsilon=\varepsilon_1+\varepsilon_2, \qquad \varepsilon_1,\varepsilon_2>0.$$
+
+First choose $n$ sufficiently large that
+
+$$\int_a^b|f-h_n|<\varepsilon_1.$$
+
+Then, keeping this $h_n$ fixed, choose a step function $\phi$ sufficiently close to $h_n$ that
+
+$$\int_a^b|h_n-\phi|<\varepsilon_2.$$
+
+Now use precisely the triangle inequality we discussed:
+
+$$|f-\phi| \le |f-h_n|+|h_n-\phi|.$$
+
+Integrating,
+
+$$
+\begin{aligned}
+\int_a^b|f-\phi|
+&\le
+\int_a^b|f-h_n|
++
+\int_a^b|h_n-\phi|\
+&<
+\varepsilon_1+\varepsilon_2\
+&=\varepsilon.
+\end{aligned}
+$$
+
+Thus there exists a step function (\phi) such that
+
+$$\boxed{\int_a^b|f-\phi|<\varepsilon}.$$
+
+The essential point is exactly what we said earlier: **the approximation errors accumulate, so choose each approximation far enough along that their total is below (\varepsilon).**
+
+If we expand the hidden middle chain, it is simply
+
+$$f\to h_n\to\varphi_m\to\phi_k$$
+
+and
+
+$$|f-\phi_k| \le |f-h_n|+|h_n-\varphi_m|+|\varphi_m-\phi_k|.$$
+
+Nothing deeper is happening.
+
+</details>
+</div>
+
+<!-- <figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_step_approximation.png' | relative_url }}" alt="A smooth bounded curve overlaid by a blue step function on ten intervals; the thin region between the two graphs is shaded orange" loading="lazy">
+  <figcaption>Density of step functions in $L^1([a,b])$: the $L^1$-distance $\int_a^b|f-\psi|$ is the shaded area between the graphs. Refining the partition (after truncating $f$ to a bounded $h$ as in part (a)) makes this area smaller than any $\varepsilon$.</figcaption>
+</figure> -->
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">($L^1$-Approximation by Continuous Functions Vanishing at the Endpoints / Density of $C_0([a,b])$ in $L^1([a,b])$)</span></p>
+
+Let $a < b$. Suppose that $f : [a,b] \to \mathbb{R}$ is Lebesgue integrable.
+
+Let $\varepsilon > 0$. Prove that there exists a continuous function $g : [a,b] \to \mathbb{R}$ such that $g(a)=g(b)=0$ and
+
+$$\int_a^b |f(x)-g(x)|\,dx < \varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+We do not separately work through the construction of $g$; the same accumulated-error argument applies using the previous step-to-continuous approximation result.
+
+Let
+
+$$\varepsilon=\varepsilon_1+\varepsilon_2.$$
+
+By part step the function case, choose a step function $\phi$ such that
+
+$$\int_a^b|f-\phi|<\varepsilon_1.$$
+
+By the previous exercise, choose a continuous $g$ with
+
+$$g(a)=g(b)=0$$
+
+and
+
+$$\int_a^b|\phi-g|<\varepsilon_2.$$
+
+Then
+
+$$|f-g|\le |f-\phi|+|\phi-g|,$$
+
+so
+
+$$
+\begin{aligned}
+\int_a^b|f-g|
+&\le \int_a^b|f-\phi| + \int_a^b|\phi-g|\\
+&< \varepsilon_1+\varepsilon_2\\
+&=\varepsilon.
+\end{aligned}
+$$
+
+Hence
+
+$$\boxed{\int_a^b|f-g|<\varepsilon}.$$
+
+So the whole Exercise has the structure we kept coming back to:
+
+$$\boxed{ f \longrightarrow \text{bounded measurable} \longrightarrow \text{step} \longrightarrow\text{continuous}, }$$
+
+with the $L^1$-errors combined using the triangle inequality.
+
+</details>
+</div>
+
+<!-- <figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_l1_continuous_approximation.png' | relative_url }}" alt="A dashed step function and a green continuous function that follows it exactly except in narrow red vertical bands around each jump and at both endpoints, where the green curve ramps linearly and vanishes at the interval ends" loading="lazy">
+  <figcaption>From a step function $\psi$ (dashed) to a continuous $g$ (green) with $g(a)=g(b)=0$: they differ only inside narrow bands $E$ around the jumps and endpoints, where $|\psi-g|\le 2B$. Hence $\int_a^b|\psi-g|\le 2B\,m(E)<\varepsilon$, and combining with parts (a) and (b) gives density of $C_0([a,b])$ in $L^1$.</figcaption>
+</figure> -->
 
 ### Riemann and Lebesgue Integrals Agree
 
@@ -4265,6 +4475,103 @@ $$f : E \to \mathbb{C} \quad\text{is integrable} \implies \left\lvert \int_E f \
     <p>using $\operatorname{Re}(z) \le \lvert z \rvert$ and $\lvert \alpha \rvert = 1$. $\square$</p>
   </details>
 </div>
+
+### Riemann–Lebesgue Lemma for $L^1$ Functions
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Vanishing of Fourier Coefficients for Integrable Functions)</span></p>
+
+Suppose that $f : [-\pi,\pi] \to \mathbb{C}$ is Lebesgue integrable. The **Fourier coefficients** $\lbrace \hat f(n)\rbrace\_{n\in\mathbb{Z}}$ of $f$ are defined via
+
+$$\hat f(n) := \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)e^{-inx}\,dx, \qquad n\in\mathbb{Z}.$$
+
+Prove the Riemann-Lebesgue lemma:
+
+$$\lim_{|n|\to\infty} |\hat f(n)| = 0. \tag{\(\dagger\)}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+*Hint:* Prove $(\dagger)$ for step functions first. Then use problem 3 and an approximation argument.
+
+**The proof for step functions first.**
+
+According to the hint, we consider the step function $\phi$. The function $\phi$ attains finite number of values from a bounded set $\lvert k_1, \cdots, k_m\rvert$, then let
+
+$$\phi(x) = \sum_j^m k_j [x \in I_j],$$
+
+where $I_j = \phi^{-1}(k_j)$. Then we can write the Fourier coefficients as
+
+$$
+\begin{aligned}
+\hat \phi(n) 
+&= \frac{1}{2\pi}\int_{-\pi}^{\pi} \phi(x)e^{-inx}\,dx \\
+&= \frac{1}{2\pi}\int_{-\pi}^{\pi} \sum_j^m k_j [x \in I_j] e^{-inx}\,dx \\
+&= \frac{1}{2\pi} \sum_j^m k_j \int_{I_j} e^{-inx}\,dx.
+\end{aligned}
+$$
+
+To compute the integral in the sum, let $I = [a, b]$. Then 
+
+$$\int_{I} e^{-inx}\,dx = \int_{a}^{b} e^{-inx}\,dx = \dfrac{e^{-ibn} - e^{-ian}}{-in}.$$
+
+Then
+
+$$\left|\int_a^b e^{-inx},dx\right| \le \frac{|e^{-inb}|+|e^{-ina}|}{|n|} = \frac{2}{|n|}.$$
+
+This is the crucial $1/\lvert n\rvert$ decay. Note $\lvert e^{-inx}\rvert = \sqrt{\cos(nx)^2 + \sin(nx)^2} = 1$.
+
+**The proof for general Lebesgue integrable functions.**
+
+We know from previous exercises that for every Lebesgue integrable function $f$ there exists a step function $\phi$ on the same domain (let it be $[a,b]$) such that for any $\varepsilon \gt 0$ we have
+
+$$\int_a^b |f(x)-\phi(x)| \lt \varepsilon.$$
+
+Then 
+
+$$
+\begin{aligned}
+|\hat f(n)|
+&= \left|\frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)e^{-inx}\,dx\right| \\
+&= \left|\frac{1}{2\pi}\int_{-\pi}^{\pi} (f(x)-\phi(x)+\phi(x)) e^{-inx}\,dx\right| \\
+&= \left|\frac{1}{2\pi}\int_{-\pi}^{\pi} (f(x)-\phi(x)) e^{-inx}\,dx + \frac{1}{2\pi}\int_{-\pi}^{\pi} \phi(x) e^{-inx}\,dx\right| \\
+&\leq \left|\frac{1}{2\pi}\int_{-\pi}^{\pi} (f(x)-\phi(x)) e^{-inx}\,dx\right| + |\hat \phi(n)|.
+\end{aligned}
+$$
+
+*Note that these integrals are complex numbers, so there is no order relation $\leq$ here. This is probably the most important correction compared to the previous one.*
+
+We have already proven in the first part that the second term goes to zero. For the first term, we use Hölder inequality, specifically the $L^1$-$L^\infty$ version of it:
+
+$$\left|\int_{-\pi}^{\pi}(f-\phi)e^{-inx},dx\right| \le |f-\phi|_{L^1}, |e^{-inx}|_{L^\infty} = |f-\phi|_{L^1}.$$
+
+And
+
+$$|e^{-inx}|_\infty=1.$$
+
+The norm $\lvert f-\phi\rvert\_{L^1}$ is any close by the $L^1$ approximation.
+
+We still need the final **$\varepsilon$-argument**. Saying that the first term “is arbitrarily close” and the second “goes to zero” expresses the idea, but to prove the limit we should make the order explicit:
+
+Given $\varepsilon>0$,
+
+* first choose a fixed step function $\phi$ so that its $L^1$-approximation error makes the first term $<\varepsilon/2$;
+* then, with this $\phi$ fixed, choose $N$ such that for $\lvert n\rvert\ge N$,
+  
+  $$|\hat\phi(n)|<\varepsilon/2.$$
+  
+Then the sum is $<\varepsilon$.
+
+</details>
+</div>
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/functional_analysis/mit_rogriguez/fa_riemann_lebesgue.png' | relative_url }}" alt="Left panel: a three-step function multiplied by a fast cosine, with positive lobes shaded green and negative lobes shaded red showing cancellation on each step. Right panel: a stem plot of Fourier coefficient magnitudes decaying to zero as n grows" loading="lazy">
+  <figcaption>Riemann–Lebesgue mechanism: on each constant step of $\psi$ the oscillation $e^{-inx}$ produces adjacent lobes of opposite sign that cancel, leaving only boundary contributions of size $O(1/n)$ (left). Approximating $f\in L^1$ by step functions transfers the decay to $\hat f$: $|\hat f(n)|\to 0$ (right).</figcaption>
+</figure>
 
 ## $L^p$ Spaces
 
@@ -4607,7 +4914,11 @@ Let $\underline{e}\_n$ be the sequence which is $1$ in the $n$th entry and $0$ e
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 154</span><span class="math-callout__name">(Fourier Basis in $L^2$)</span></p>
 
-The functions $f_n(x) = \frac{1}{\sqrt{2\pi}} e^{inx}$ (as elements of $L^2([-\pi, \pi])$) form an orthonormal subset of $L^2([-\pi, \pi])$. This is because $\int_{-\pi}^{\pi} e^{imx} \overline{e^{inx}}\,dx = \int_{-\pi}^{\pi} e^{i(m-n)x}\,dx$ is zero unless $m = n$.
+The functions $f_n(x) = \frac{1}{\sqrt{2\pi}} e^{inx}$ (as elements of $L^2([-\pi, \pi])$) form an orthonormal subset of $L^2([-\pi, \pi])$. This is because 
+
+$$\int_{-\pi}^{\pi} e^{imx} \overline{e^{inx}}\,dx = \int_{-\pi}^{\pi} e^{i(m-n)x}\,dx$$
+
+is zero unless $m = n$.
 
 </div>
 
@@ -4649,7 +4960,7 @@ The $n$ standard basis vectors in $\mathbb{C}^n$ form a maximal orthonormal subs
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 158</span></p>
 
-The example $\lbrace \underline{e}_n \rbrace$ of sequences from above is a maximal orthonormal subset of $\ell^2$.
+The example $\lbrace \underline{e}\_n \rbrace$ of sequences from above is a maximal orthonormal subset of $\ell^2$.
 
 </div>
 

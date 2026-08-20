@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-08-20",
+   "added": false
+  },
+  {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
    "date": "2026-08-05",
@@ -112,12 +118,6 @@
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-07-12",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
-   "date": "2026-07-11",
    "added": false
   },
   {
