@@ -6719,6 +6719,11 @@ since $\mu\_N\to\mu$ as measures (4.8). (Two glossed details: including the diag
 
 </details>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/bdl_prop50_fixed_scale.png' | relative_url }}" alt="Three panels. Left: rescaled degrees scattered against theta for N equal 200, 2000 and 20000 at fixed epsilon one, the clouds tightening onto a solid red curve labelled eta-epsilon convolved with rho, which is visibly flatter than the blue dashed density rho, especially at the minimum near theta equals pi. Middle: the discrete scalar product against N on a log axis, a teal line with a shaded plus-or-minus one standard deviation band that narrows as N grows, settling onto a red dashed limit line at 0.1699. Right: five nonlocal limit curves for epsilon from 1.6 down to 0.1, progressively deeper in the middle, converging onto the red dashed density rho" loading="lazy">
+  <figcaption>What Proposition 50 does and does not say. The proposition sends $N\to\infty$ with $\varepsilon$ held <em>fixed</em>, and its proof is one line — rewrite the empirical sums as integrals against $\mu_N$ and use $\mu_N\to\mu$ — but the object it lands on is still <strong>nonlocal</strong>. <strong>(a)</strong> The degrees do converge, and not to $\rho$: at $\varepsilon=1$ the $N=20000$ cloud sits on the mollified density $\eta_\varepsilon\star\rho$, which on the circle is exactly $\frac{1}{2\pi\varepsilon}(\Delta+\beta\cos\theta\,\sin\Delta)$ with $\Delta=2\arcsin(\varepsilon/2)$ — a flattened copy of $\rho$, since averaging over a ball of radius $\varepsilon$ costs contrast. <strong>(b)</strong> The scalar product (4.15) with $r=1$, where the degree genuinely enters (at $r=0$ it drops out and the statement is just the law of large numbers). The spread across $12$ independent samples narrows at the measured rate $N^{-0.53}$, against the $N^{-1/2}$ the central limit theorem predicts. <strong>(c)</strong> Every $\varepsilon$ has its own limit, and they form a family collapsing onto $\rho$ only as $\varepsilon\to0$. That last collapse is a separate statement, and it is exactly Proposition 51 — which is why the chapter needs two propositions rather than one.</figcaption>
+</figure>
+
 Now we take the nonlocal-to-local limit $\varepsilon\to0$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
