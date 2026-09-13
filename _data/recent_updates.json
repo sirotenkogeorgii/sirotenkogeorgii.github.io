@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Discrete and Continuous Optimization",
+   "url": "/subpages/books/dso/",
+   "date": "2026-09-13",
+   "added": false
+  },
+  {
    "title": "Partial Differential Equations in Data Science",
    "url": "/subpages/books/pdeds/",
    "date": "2026-09-13",
@@ -171,12 +177,6 @@
   {
    "title": "Books",
    "url": "/notes/books/",
-   "date": "2026-07-07",
-   "added": false
-  },
-  {
-   "title": "Computability and Complexity",
-   "url": "/notes/computability-and-complexity/",
    "date": "2026-07-07",
    "added": false
   }

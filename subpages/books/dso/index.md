@@ -19,7 +19,7 @@ tags:
   }
 </style>
 
-**Table of Contents**
+\ast\astTable of Contents\ast\ast
 - TOC
 {:toc}
 
@@ -29,17 +29,17 @@ An optimization problem (or a mathematical programming problem) reads
 
 $$\min f(x) \quad \text{subject to} \quad x \in M,$$
 
-where $f \colon \mathbb{R}^n \to \mathbb{R}$ is the **objective function** and $M \subseteq \mathbb{R}^n$ is the **feasible set**. In general, this problem is undecidable (there is provably no algorithm that can solve it); another well-known undecidable problem is the *halting problem*. On the other hand, there are effectively solvable sub-classes of problems.
+where $f \colon \mathbb{R}^n \to \mathbb{R}$ is the \ast\astobjective function\ast\ast and $M \subseteq \mathbb{R}^n$ is the \ast\astfeasible set\ast\ast. In general, this problem is undecidable (there is provably no algorithm that can solve it); another well-known undecidable problem is the \asthalting problem\ast. On the other hand, there are effectively solvable sub-classes of problems.
 
 Depending on the character of the feasible set $M$, we distinguish two types:
 
-- **Discrete optimization.** The set $M$ is (typically) finite, but usually large enough to inspect and process all feasible solutions. Usually $\lvert M \rvert \ge 2^n$. Examples include the shortest path problem, the minimum spanning tree problem or the minimum matching problem in a graph. These problems are effectively solvable. In contrast, some problems in discrete optimization are NP-hard: integer linear programming, the travelling salesman problem, the knapsack problem or finding the max cut in a graph.
+- \ast\astDiscrete optimization.\ast\ast The set $M$ is (typically) finite, but usually large enough to inspect and process all feasible solutions. Usually $\lvert M \rvert \ge 2^n$. Examples include the shortest path problem, the minimum spanning tree problem or the minimum matching problem in a graph. These problems are effectively solvable. In contrast, some problems in discrete optimization are NP-hard: integer linear programming, the travelling salesman problem, the knapsack problem or finding the max cut in a graph.
 
-- **Continuous optimization.** Here, the feasible set $M$ is uncountably infinite. Surprisingly, this may pay off: linear programming is polynomially solvable, but the additional integrality requirement makes it NP-hard. The typical problems are linear programming (LP) and diverse kinds of nonlinear programming (such as convex programming, quadratic programming or semidefinite programming).
+- \ast\astContinuous optimization.\ast\ast Here, the feasible set $M$ is uncountably infinite. Surprisingly, this may pay off: linear programming is polynomially solvable, but the additional integrality requirement makes it NP-hard. The typical problems are linear programming (LP) and diverse kinds of nonlinear programming (such as convex programming, quadratic programming or semidefinite programming).
 
 ### Relation Discrete vs. Continuous Optimization
 
-Discrete and continuous optimization are not disjoint. They are closely related and techniques from one area are used in the other. Consider *integer programming*: most of the methods are based on a relaxation to a continuous problem and an iterative improvement. Conversely, an integer condition can easily be reduced to a continuous one. For example, the condition $x \in \lbrace 0, 1 \rbrace$ is equivalent to $x = x^2$ (in reality, however, this is not used).
+Discrete and continuous optimization are not disjoint. They are closely related and techniques from one area are used in the other. Consider \astinteger programming\ast: most of the methods are based on a relaxation to a continuous problem and an iterative improvement. Conversely, an integer condition can easily be reduced to a continuous one. For example, the condition $x \in \lbrace 0, 1 \rbrace$ is equivalent to $x = x^2$ (in reality, however, this is not used).
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Flows in Networks)</span></p>
@@ -56,7 +56,7 @@ $$\max \; x_{t,s} \quad \text{subject to} \quad Ax = 0, \; 0 \le x \le u.$$
 
 The best known algorithms utilize the discrete nature of the problem. On the other hand, the LP formulation is beneficial, too. Since matrix $A$ is totally unimodular, the resulting optimal solution is automatically integral, provided the capacities are integral. Hence the problem is efficiently solvable by means of linear programming, despite integer conditions.
 
-Another advantage of the LP formulation is that we can easily modify it to different variants of the problem. Consider for example the problem of finding a *minimum-cost flow*. Denote by $c_{ij}$ the cost of sending a unit of flow along the edge $(i,j) \in E$ and by $d > 0$ the minimum required flow. Then the problem reads as an LP problem
+Another advantage of the LP formulation is that we can easily modify it to different variants of the problem. Consider for example the problem of finding a \astminimum-cost flow\ast. Denote by $c_{ij}$ the cost of sending a unit of flow along the edge $(i,j) \in E$ and by $d > 0$ the minimum required flow. Then the problem reads as an LP problem
 
 $$\min \sum_{(i,j)\in E} c_{ij} x_{ij} \quad \text{subject to} \quad Ax = 0, \; 0 \le x \le u, \; x_{ts} \ge d.$$
 
@@ -71,13 +71,13 @@ Let $A \in \mathbb{R}^{n \times n}$ be a symmetric matrix and $\lambda_1 \ge \cd
 
 $$\lambda_1 = \max_{x:\lVert x\rVert_2 \le 1} x^T A x, \quad \lambda_n = \min_{x:\lVert x\rVert_2 \le 1} x^T A x.$$
 
-This is a statement of the *Rayleigh–Ritz theorem*. Let us prove it for $\lambda_1$:
+This is a statement of the \astRayleigh–Ritz theorem\ast. Let us prove it for $\lambda_1$:
 
-**Inequality "$\le$":** Let $x_1$ be an eigenvector corresponding to $\lambda_1$ and normalized such that $\lVert x_1 \rVert_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^T$ from the left yields
+\ast\astInequality "$\le$":\ast\ast Let $x_1$ be an eigenvector corresponding to $\lambda_1$ and normalized such that $\lVert x_1 \rVert_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^T$ from the left yields
 
 $$\lambda_1 = \lambda_1 x_1^T x_1 = x_1^T A x_1 \le \max_{x:\lVert x\rVert_2 = 1} x^T A x.$$
 
-**Inequality "$\ge$":** Let $x \in \mathbb{R}^n$ be an arbitrary vector such that $\lVert x \rVert_2 = 1$. Let $A = Q\Lambda Q^T$ be a spectral decomposition of matrix $A$. Denoting $y := Q^T x$, we have $\lVert y \rVert_2 = 1$ and
+\ast\astInequality "$\ge$":\ast\ast Let $x \in \mathbb{R}^n$ be an arbitrary vector such that $\lVert x \rVert_2 = 1$. Let $A = Q\Lambda Q^T$ be a spectral decomposition of matrix $A$. Denoting $y := Q^T x$, we have $\lVert y \rVert_2 = 1$ and
 
 $$x^T A x = x^T Q \Lambda Q^T x = y^T \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \le \sum_{i=1}^n \lambda_1 y_i^2 = \lambda_1 \lVert y \rVert_2^2 = \lambda_1.$$
 
@@ -88,7 +88,7 @@ $$x^T A x = x^T Q \Lambda Q^T x = y^T \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \
 
 In principle, the number of variables need not be finite. In a functional problem, we want to find a function satisfying certain constraints and minimizing a specified criterion. For illustration, imagine computing the best trajectory for a spacecraft traveling from Earth to Mercury; the variable is the curve of the trajectory described by a function, and the objective is to minimize travel time. Certain simple functional problems can be solved analytically, but in general they are solved by discretization of the unknown function and then application of classical optimization methods.
 
-Isoperimetric problems belong to this area, too. It is well-known that the ball has the smallest surface area of all surfaces that enclose a given volume. But how is it when two volumes are given and we wish to minimize the surface area (including the separating surface)? This problem is known as the *double bubble problem*. The minimum area shape consists of two spherical surfaces meeting at angles $120° = \frac{2}{3}\pi$. The separating area is also a spherical surface; it is a disc in case of two equally sized volumes.
+Isoperimetric problems belong to this area, too. It is well-known that the ball has the smallest surface area of all surfaces that enclose a given volume. But how is it when two volumes are given and we wish to minimize the surface area (including the separating surface)? This problem is known as the \astdouble bubble problem\ast. The minimum area shape consists of two spherical surfaces meeting at angles $120° = \frac{2}{3}\pi$. The separating area is also a spherical surface; it is a disc in case of two equally sized volumes.
 
 </div>
 
@@ -103,12 +103,12 @@ Snell's law quantifies the bending of light as it passes through a boundary betw
 
 ### Local and Global Minima
 
-A point $x^* \in M$ is called
+A point $x^\ast \in M$ is called
 
-- a *(global) minimum* if $f(x^*) \le f(x)$ for every $x \in M$,
-- a *strict (global) minimum* if $f(x^*) < f(x)$ for every $x^* \ne x \in M$,
-- *local minimum* if $f(x^*) \le f(x)$ for every $x \in M \cap \mathcal{O}_\varepsilon(x^*)$,
-- a *strict local minimum* if $f(x^*) < f(x)$ for every $x^* \ne x \in M \cap \mathcal{O}_\varepsilon(x^*)$.
+- a \ast(global) minimum\ast if $f(x^\ast) \le f(x)$ for every $x \in M$,
+- a \aststrict (global) minimum\ast if $f(x^\ast) < f(x)$ for every $x^\ast \ne x \in M$,
+- \astlocal minimum\ast if $f(x^\ast) \le f(x)$ for every $x \in M \cap \mathcal{O}_\varepsilon(x^\ast)$,
+- a \aststrict local minimum\ast if $f(x^\ast) < f(x)$ for every $x^\ast \ne x \in M \cap \mathcal{O}\_\varepsilon(x^\ast)$.
 
 Naturally, to solve a problem $\min_{x \in M} f(x)$ means to find its minimum, called the optimal solution. However, sometimes the problem is so hard that we are contented with an approximate solution instead. Be aware that the minimal value of function $f(x)$ on set $M$ need not be attained. Consider for example the problem $\min_{x \in \mathbb{R}} x$, which is unbounded from below, or the problem $\min_{x \in \mathbb{R}} e^x$, which is bounded from below. A sufficient condition for existence of a minimum is given by the Weierstrass theorem.
 
@@ -133,9 +133,9 @@ $$g(x) \le 0, \quad h(x) = 0,$$
 
 where $g \colon \mathbb{R}^n \to \mathbb{R}^J$ and $h \colon \mathbb{R}^n \to \mathbb{R}^L$. Depending on the type of the objective function and the feasible set, we classify the optimization problems as follows:
 
-- *Linear programming.* Functions $f(x)$, $g_j(x)$, $h_\ell(x)$ are linear.
-- *Unconstrained optimization.* Here $M = \mathbb{R}^n$.
-- *Convex optimization.* Functions $f(x)$, $g_j(x)$ are convex and $h_\ell(x)$ are linear.
+- \astLinear programming.\ast Functions $f(x)$, $g_j(x)$, $h_\ell(x)$ are linear.
+- \astUnconstrained optimization.\ast Here $M = \mathbb{R}^n$.
+- \astConvex optimization.\ast Functions $f(x)$, $g_j(x)$ are convex and $h_\ell(x)$ are linear.
 
 ### Basic Transformations
 
@@ -145,7 +145,7 @@ $$\max_{x \in M} f(x) = -\min_{x \in M} -f(x).$$
 
 An equation constraint can be reduced to inequalities since $h(x) = 0$ is equivalent to $h(x) \le 0$, $h(x) \ge 0$, but this is not recommended in view of numerical issues.
 
-**Transformations of functions.** The optimization problem
+\ast\astTransformations of functions.\ast\ast The optimization problem
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0, \; h(x) = 0$$
 
@@ -178,7 +178,7 @@ $$\min \; 2x' + y' \quad \text{subject to} \quad \log(5) + x' + 3y' \le 0, \; \l
 
 </div>
 
-**Moving the objective function to the constraints.** The frequently used transformation is to move the objective function to the constraints, that is, the problem $\min_{x \in M} f(x)$ is transformed to
+\ast\astMoving the objective function to the constraints.\ast\ast The frequently used transformation is to move the objective function to the constraints, that is, the problem $\min_{x \in M} f(x)$ is transformed to
 
 $$\min \; z \quad \text{subject to} \quad f(x) \le z, \; x \in M.$$
 
@@ -199,7 +199,7 @@ In the original formulation, the outer objective function $\max_{i=1,\ldots,s} f
 
 </div>
 
-**Elimination of equations and variables.** Consider the problem
+\ast\astElimination of equations and variables.\ast\ast Consider the problem
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0, \; Ax = b,$$
 
@@ -221,15 +221,15 @@ $$\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert.$$
 
 The geometric interpretation of this problem is to find the projection of vector $b \in \mathbb{R}^m$ to the column space $\mathcal{S}(A)$ of matrix $A$. The typical choices are the following norms:
 
-- **Euclidean norm.** The problem then reads $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_2^2 = \min_{x \in \mathbb{R}^n} \sum_{i=1}^m (A_{i*}x - b_i)^2$, that is, it is the ordinary least squares problem. If matrix $A$ has full column rank, then the solution is unique and has the form $x^* = (A^T A)^{-1} A^T b$. This approach is also justified by statistics: suppose that the dependence is really linear and the entries of the right-hand side vector $b$ are affected by independent and normally distributed errors. Then $x^*$ is the best linear unbiased estimator and also the maximum likelihood estimator.
+- \ast\astEuclidean norm.\ast\ast The problem then reads $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_2^2 = \min_{x \in \mathbb{R}^n} \sum_{i=1}^m (A_{i\ast}x - b_i)^2$, that is, it is the ordinary least squares problem. If matrix $A$ has full column rank, then the solution is unique and has the form $x^\ast = (A^T A)^{-1} A^T b$. This approach is also justified by statistics: suppose that the dependence is really linear and the entries of the right-hand side vector $b$ are affected by independent and normally distributed errors. Then $x^\ast$ is the best linear unbiased estimator and also the maximum likelihood estimator.
 
-- **Manhattan norm.** The problem $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_1$ can be expressed as the linear program
+- \ast\astManhattan norm.\ast\ast The problem $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_1$ can be expressed as the linear program
 
   $$\min \; e^T z \quad \text{subject to} \quad -z \le Ax - b \le z, \; z \in \mathbb{R}^m, \; x \in \mathbb{R}^n.$$
 
   This case has also a statistical interpretation. The optimal solution produces the maximum likelihood estimator as long as the noise follows the Laplace distribution.
 
-- **Maximum norm.** The problem $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_\infty$ is also equivalent to an LP problem
+- \ast\astMaximum norm.\ast\ast The problem $\min_{x \in \mathbb{R}^n} \lVert Ax - b \rVert_\infty$ is also equivalent to an LP problem
 
   $$\min \; z \quad \text{subject to} \quad -ze \le Ax - b \le ze, \; z \in \mathbb{R}, \; x \in \mathbb{R}^n.$$
 
@@ -286,7 +286,7 @@ This can again be viewed as an approximation of a cardinality problem
 
 $$\min_{x \in \mathbb{R}^n} \; \lVert x - y \rVert_2 + \gamma \lVert Dx \rVert_0,$$
 
-in which we aim to find a signal approximation in the form of a piecewise constant function. This approach is called *total variation reconstruction*, and it is used when processing digital signals.
+in which we aim to find a signal approximation in the form of a piecewise constant function. This approach is called \asttotal variation reconstruction\ast, and it is used when processing digital signals.
 
 </div>
 
@@ -301,7 +301,7 @@ The objective function $f \colon \mathbb{R}^n \to \mathbb{R}$ is either general 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.1</span><span class="math-callout__name">(First Order Necessary Optimality Condition)</span></p>
 
-Let $f(x)$ be differentiable and let $x^* \in \mathbb{R}^n$ be a local extremal point. Then $\nabla f(x^*) = o$.
+Let $f(x)$ be differentiable and let $x^\ast \in \mathbb{R}^n$ be a local extremal point. Then $\nabla f(x^\ast) = o$.
 
 </div>
 
@@ -309,27 +309,27 @@ Let $f(x)$ be differentiable and let $x^* \in \mathbb{R}^n$ be a local extremal 
 <details markdown="1">
 <summary>Proof</summary>
 
-Without loss of generality assume that $x^*$ is a local minimum. Recall that for any $i = 1, \ldots, n$
+Without loss of generality assume that $x^\ast$ is a local minimum. Recall that for any $i = 1, \ldots, n$
 
-$$\nabla_i f(x) = \frac{\partial f(x^*)}{\partial x_i} = \lim_{h \to 0} \frac{f(x_1^*, \ldots, x_{i-1}^*, x_i^* + h, x_{i+1}^*, \ldots, x_n^*) - f(x^*)}{h}.$$
+$$\nabla_i f(x) = \frac{\partial f(x^\ast)}{\partial x_i} = \lim_{h \to 0} \frac{f(x_1^\ast, \ldots, x_{i-1}^\ast, x_i^\ast + h, x_{i+1}^\ast, \ldots, x_n^\ast) - f(x^\ast)}{h}.$$
 
 The limit must be the same if we consider the limit from the left or from the right. In the first case,
 
-$$\nabla_i f(x) = \lim_{h \to 0^+} \frac{f(x_1^*, \ldots, x_{i-1}^*, x_i^* + h, x_{i+1}^*, \ldots, x_n^*) - f(x^*)}{h} \ge 0,$$
+$$\nabla_i f(x) = \lim_{h \to 0^+} \frac{f(x_1^\ast, \ldots, x_{i-1}^\ast, x_i^\ast + h, x_{i+1}^\ast, \ldots, x_n^\ast) - f(x^\ast)}{h} \ge 0,$$
 
 and in the second case analogously $\nabla_i f(x) \le 0$. Therefore $\nabla_i f(x) = 0$.
 
 </details>
 </div>
 
-Obviously, the above condition is only a necessary condition for optimality since it cannot distinguish between minima, maxima and inflection points. The point with zero gradient is called a **stationary point**.
+Obviously, the above condition is only a necessary condition for optimality since it cannot distinguish between minima, maxima and inflection points. The point with zero gradient is called a \ast\aststationary point\ast\ast.
 
 We mention two second order optimality conditions, one is a necessary condition and one is a sufficient condition.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2</span><span class="math-callout__name">(Second Order Necessary Optimality Condition)</span></p>
 
-Let $f(x)$ be twice continuously differentiable and let $x^* \in M$ be a local minimum. Then the Hessian matrix $\nabla^2 f(x^*)$ is positive semidefinite.
+Let $f(x)$ be twice continuously differentiable and let $x^\ast \in M$ be a local minimum. Then the Hessian matrix $\nabla^2 f(x^\ast)$ is positive semidefinite.
 
 </div>
 
@@ -339,13 +339,13 @@ Let $f(x)$ be twice continuously differentiable and let $x^* \in M$ be a local m
 
 The continuity of second partial derivatives implies that for every $\lambda \in \mathbb{R}$ and $y \in \mathbb{R}^n$ there is $\theta \in (0,1)$ such that
 
-$$f(x^* + \lambda y) = f(x^*) + \lambda \nabla f(x^*)^T y + \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^* + \theta \lambda y) y. \tag{2.1}$$
+$$f(x^\ast + \lambda y) = f(x^\ast) + \lambda \nabla f(x^\ast)^T y + \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^\ast + \theta \lambda y) y. \tag{2.1}$$
 
-In other words, this is Taylor's expansion with Lagrange remainder. Due to minimality of $x^*$ we have $f(x^* + \lambda y) \ge f(x^*)$, and from Theorem 2.1 we have $\nabla f(x^*) = o$. Hence
+In other words, this is Taylor's expansion with Lagrange remainder. Due to minimality of $x^\ast$ we have $f(x^\ast + \lambda y) \ge f(x^\ast)$, and from Theorem 2.1 we have $\nabla f(x^\ast) = o$. Hence
 
-$$\lambda^2 y^T \nabla^2 f(x^* + \theta \lambda y) y \ge 0.$$
+$$\lambda^2 y^T \nabla^2 f(x^\ast + \theta \lambda y) y \ge 0.$$
 
-By the limit transition $\lambda \to 0$ we get $y^T \nabla^2 f(x^*) y \ge 0$.
+By the limit transition $\lambda \to 0$ we get $y^T \nabla^2 f(x^\ast) y \ge 0$.
 
 </details>
 </div>
@@ -353,7 +353,7 @@ By the limit transition $\lambda \to 0$ we get $y^T \nabla^2 f(x^*) y \ge 0$.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.3</span><span class="math-callout__name">(Second Order Sufficient Optimality Condition)</span></p>
 
-Let $f(x)$ be twice continuously differentiable. If $\nabla f(x^*) = o$ and $\nabla^2 f(x^*)$ is positive definite for a certain $x^* \in M$, then $x^*$ is a strict local minimum.
+Let $f(x)$ be twice continuously differentiable. If $\nabla f(x^\ast) = o$ and $\nabla^2 f(x^\ast)$ is positive definite for a certain $x^\ast \in M$, then $x^\ast$ is a strict local minimum.
 
 </div>
 
@@ -363,9 +363,9 @@ Let $f(x)$ be twice continuously differentiable. If $\nabla f(x^*) = o$ and $\na
 
 We proceed similarly as in the proof of Theorem 2.2. In equation (2.1) we have for $\lambda \ne 0$, $y \ne o$ and sufficiently small $\lambda$
 
-$$\lambda \nabla f(x^*)^T y = 0, \quad \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^* + \theta \lambda y) y > 0.$$
+$$\lambda \nabla f(x^\ast)^T y = 0, \quad \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^\ast + \theta \lambda y) y > 0.$$
 
-Therefore $f(x^* + \lambda y) > f(x^*)$.
+Therefore $f(x^\ast + \lambda y) > f(x^\ast)$.
 
 </details>
 </div>
@@ -398,7 +398,7 @@ Convex sets and convex functions appeared more than 100 years ago and the topic 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.1</span><span class="math-callout__name">(Convex Set)</span></p>
 
-A set $M \subseteq \mathbb{R}^n$ is *convex* if for every $x_1, x_2 \in M$ and every $\lambda_1, \lambda_2 \ge 0$, $\lambda_1 + \lambda_2 = 1$, the convex combination satisfies $\lambda_1 x_1 + \lambda_2 x_2 \in M$.
+A set $M \subseteq \mathbb{R}^n$ is \astconvex\ast if for every $x_1, x_2 \in M$ and every $\lambda_1, \lambda_2 \ge 0$, $\lambda_1 + \lambda_2 = 1$, the convex combination satisfies $\lambda_1 x_1 + \lambda_2 x_2 \in M$.
 
 </div>
 
@@ -438,7 +438,7 @@ This property justifies introduction of the concept of the convex hull of a set 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.4</span><span class="math-callout__name">(Convex Hull)</span></p>
 
-The *convex hull* of a set $M \subseteq \mathbb{R}^n$ is the intersection of all convex sets in $\mathbb{R}^n$ including $M$. We denote it by $\text{conv}(M)$.
+The \astconvex hull\ast of a set $M \subseteq \mathbb{R}^n$ is the intersection of all convex sets in $\mathbb{R}^n$ including $M$. We denote it by $\text{conv}(M)$.
 
 </div>
 
@@ -460,7 +460,7 @@ A set $M \subseteq \mathbb{R}^n$ is convex if and only if $M = \text{conv}(M)$.
 </details>
 </div>
 
-Recall that the **relative interior** of a set $M \subseteq \mathbb{R}^n$ is the interior of $M$ when restricted to the smallest affine subspace containing $M$. We denote it by $\text{ri}(M)$.
+Recall that the \ast\astrelative interior\ast\ast of a set $M \subseteq \mathbb{R}^n$ is the interior of $M$ when restricted to the smallest affine subspace containing $M$. We denote it by $\text{ri}(M)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.6</span></p>
@@ -474,7 +474,7 @@ An important property of disjoint convex sets is their linear separability.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.7</span><span class="math-callout__name">(Separable Sets)</span></p>
 
-Two nonempty sets $M, N \subseteq \mathbb{R}^n$ are *separable* if there exists a vector $o \ne a \in \mathbb{R}^n$ and a number $b \in \mathbb{R}$ such that
+Two nonempty sets $M, N \subseteq \mathbb{R}^n$ are \astseparable\ast if there exists a vector $o \ne a \in \mathbb{R}^n$ and a number $b \in \mathbb{R}$ such that
 
 $$a^T x \le b \quad \forall x \in M, \qquad a^T x \ge b \quad \forall x \in N,$$
 
@@ -489,7 +489,7 @@ Let $M, N \subseteq \mathbb{R}^n$ be nonempty and convex. Then they are separabl
 
 </div>
 
-Let $M \subseteq \mathbb{R}^n$ be convex and closed. Using the separation property we can separate a boundary point $x^* \in M$ and the set $M$ by a hyperplane $a^T x = b$; we call this hyperplane a **supporting hyperplane** of $M$. We then have $a^T x^* = b$ (i.e., the hyperplane contains the point $x^*$) and set $M$ lies in the positive halfspace defined by the hyperplane, that is, $a^T x \le b$ for every $x \in M$.
+Let $M \subseteq \mathbb{R}^n$ be convex and closed. Using the separation property we can separate a boundary point $x^\ast \in M$ and the set $M$ by a hyperplane $a^T x = b$; we call this hyperplane a \ast\astsupporting hyperplane\ast\ast of $M$. We then have $a^T x^\ast = b$ (i.e., the hyperplane contains the point $x^\ast$) and set $M$ lies in the positive halfspace defined by the hyperplane, that is, $a^T x \le b$ for every $x \in M$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.9</span></p>
@@ -502,7 +502,7 @@ Let $M \subseteq \mathbb{R}^n$ be convex and closed. Then $M$ is equal to the in
 <details markdown="1">
 <summary>Proof</summary>
 
-From property $a^T x \le b \;\forall x \in M$ we get that $M$ lies in the intersection of the halfspaces. We prove the converse inclusion by contradiction: If there is $x^* \notin M$ lying in the intersection of the halfspaces, then we can separate it (or more precisely, its neighbourhood) from $M$ by a supporting hyperplane. Thus we found a halfspace not containing $x^*$; a contradiction.
+From property $a^T x \le b \;\forall x \in M$ we get that $M$ lies in the intersection of the halfspaces. We prove the converse inclusion by contradiction: If there is $x^\ast \notin M$ lying in the intersection of the halfspaces, then we can separate it (or more precisely, its neighbourhood) from $M$ by a supporting hyperplane. Thus we found a halfspace not containing $x^\ast$; a contradiction.
 
 </details>
 </div>
@@ -516,15 +516,15 @@ Convexity regards not only sets, but also functions.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.10</span><span class="math-callout__name">(Convex Function)</span></p>
 
-Let $M \subseteq \mathbb{R}^n$ be a convex set. Then a function $f \colon \mathbb{R}^n \to \mathbb{R}$ is *convex* on $M$ if for every $x_1, x_2 \in M$ and every $\lambda_1, \lambda_2 \ge 0$, $\lambda_1 + \lambda_2 = 1$, one has
+Let $M \subseteq \mathbb{R}^n$ be a convex set. Then a function $f \colon \mathbb{R}^n \to \mathbb{R}$ is \astconvex\ast on $M$ if for every $x_1, x_2 \in M$ and every $\lambda_1, \lambda_2 \ge 0$, $\lambda_1 + \lambda_2 = 1$, one has
 
 $$f(\lambda_1 x_1 + \lambda_2 x_2) \le \lambda_1 f(x_1) + \lambda_2 f(x_2).$$
 
-If we have $f(\lambda_1 x_1 + \lambda_2 x_2) < \lambda_1 f(x_1) + \lambda_2 f(x_2)$ for every convex combination with $x_1 \ne x_2$ and $\lambda_1, \lambda_2 > 0$, then $f$ is **strictly convex** on $M$.
+If we have $f(\lambda_1 x_1 + \lambda_2 x_2) < \lambda_1 f(x_1) + \lambda_2 f(x_2)$ for every convex combination with $x_1 \ne x_2$ and $\lambda_1, \lambda_2 > 0$, then $f$ is \ast\aststrictly convex\ast\ast on $M$.
 
 </div>
 
-Analogously we define a *concave* function: $f(x)$ is concave if $-f(x)$ is convex. A function is linear (or, more precisely, affine) if and only if it is both convex and concave.
+Analogously we define a \astconcave\ast function: $f(x)$ is concave if $-f(x)$ is convex. A function is linear (or, more precisely, affine) if and only if it is both convex and concave.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.11</span></p>
@@ -573,7 +573,7 @@ Another characterization of convex functions is by means of epigraphs.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.14</span><span class="math-callout__name">(Epigraph)</span></p>
 
-The *epigraph* of a function $f \colon \mathbb{R}^n \to \mathbb{R}$ on a set $M \subseteq \mathbb{R}^n$ is the set
+The \astepigraph\ast of a function $f \colon \mathbb{R}^n \to \mathbb{R}$ on a set $M \subseteq \mathbb{R}^n$ is the set
 
 $$\lbrace (x, z) \in \mathbb{R}^{n+1};\; x \in M, \; z \ge f(x) \rbrace.$$
 
@@ -685,19 +685,19 @@ Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be an open convex set of dimension 
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $x^* \in M$ be arbitrary. Due to continuity of the second partial derivatives we have that for every $\lambda \in \mathbb{R}$ and $y \in \mathbb{R}^n$, $x^* + \lambda y \in M$, there is $\theta \in (0,1)$ such that
+Let $x^\ast \in M$ be arbitrary. Due to continuity of the second partial derivatives we have that for every $\lambda \in \mathbb{R}$ and $y \in \mathbb{R}^n$, $x^\ast + \lambda y \in M$, there is $\theta \in (0,1)$ such that
 
-$$f(x^* + \lambda y) = f(x^*) + \lambda \nabla f(x^*)^T y + \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^* + \theta \lambda y) y. \tag{3.3}$$
+$$f(x^\ast + \lambda y) = f(x^\ast) + \lambda \nabla f(x^\ast)^T y + \frac{1}{2} \lambda^2 y^T \nabla^2 f(x^\ast + \theta \lambda y) y. \tag{3.3}$$
 
 "$\Rightarrow$" From Theorem 3.18 we get
 
-$$f(x^* + \lambda y) \ge f(x^*) + \lambda \nabla f(x^*)^T y,$$
+$$f(x^\ast + \lambda y) \ge f(x^\ast) + \lambda \nabla f(x^\ast)^T y,$$
 
-so that (3.3) implies $y^T \nabla^2 f(x^* + \theta \lambda y) y \ge 0$. By the limit transition $\lambda \to 0$ we have $y^T \nabla^2 f(x^*) y \ge 0$.
+so that (3.3) implies $y^T \nabla^2 f(x^\ast + \theta \lambda y) y \ge 0$. By the limit transition $\lambda \to 0$ we have $y^T \nabla^2 f(x^\ast) y \ge 0$.
 
-"$\Leftarrow$" Due to positive semidefiniteness of the Hessian we have $y^T \nabla^2 f(x^* + \theta \lambda y) y \ge 0$ in the expression (3.3). Hence
+"$\Leftarrow$" Due to positive semidefiniteness of the Hessian we have $y^T \nabla^2 f(x^\ast + \theta \lambda y) y \ge 0$ in the expression (3.3). Hence
 
-$$f(x^* + \lambda y) \ge f(x^*) + \lambda \nabla f(x^*)^T y,$$
+$$f(x^\ast + \lambda y) \ge f(x^\ast) + \lambda \nabla f(x^\ast)^T y,$$
 
 which shows convexity of $f(x)$ in view of Theorem 3.18.
 
@@ -720,7 +720,7 @@ In the first item, we cannot claim positive definiteness everywhere on $M$. Usin
   <p class="math-callout__title"><span class="math-callout__label">Example 3.22</span></p>
 
 1. Function $f(x) = x^4$ is strictly convex on $\mathbb{R}$, but its Hessian $f(x)'' = 12x^2$ vanishes at $x = 0$.
-2. Consider function $f(x_1, x_2) = -x_1^2$ on the set $M = \lbrace (0,t)^T;\; t \in [0,1] \rbrace$, which is the line segment between the origin and the point $(0,1)^T$. On the set $M$, function $f$ is constant, so also convex. Nevertheless, the Hessian matrix $\nabla^2 f(x) = \begin{pmatrix} -1 & 0 \\ 0 & 0 \end{pmatrix}$ is not positive semidefinite at no point. This justifies why the set $M$ has to be fully-dimensional in Theorem 3.20.
+2. Consider function $f(x_1, x_2) = -x_1^2$ on the set $M = \lbrace (0,t)^T;\; t \in [0,1] \rbrace$, which is the line segment between the origin and the point $(0,1)^T$. On the set $M$, function $f$ is constant, so also convex. Nevertheless, the Hessian matrix $\nabla^2 f(x) = \begin{pmatrix} -1 & 0 \\\ 0 & 0 \end{pmatrix}$ is not positive semidefinite at no point. This justifies why the set $M$ has to be fully-dimensional in Theorem 3.20.
 3. Function $f(x) = x^{-2}$ has the second derivatives positive everywhere on $\mathbb{R} \setminus \lbrace 0 \rbrace$, but it is not convex there. The reason is that $\mathbb{R} \setminus \lbrace 0 \rbrace$ is not a convex set, and also the definition of a convex function is not satisfied even when zero avoids the convex combinations. Therefore it is necessary that the domain is a convex set. Hence $f(x)$ is convex separately on $(0, \infty)$ and on $(-\infty, 0)$.
 
 </div>
@@ -840,7 +840,7 @@ It is not a positive semidefinite matrix for every $x \in \mathbb{R}^2$ since $\
 
 # Chapter 4: Convex Optimization
 
-The problem of *convex optimization* reads
+The problem of \astconvex optimization\ast reads
 
 $$\min \; f(x) \quad \text{subject to} \quad x \in M,$$
 
@@ -880,19 +880,19 @@ For a convex optimization problem we have:
 <details markdown="1">
 <summary>Proof</summary>
 
-**(1)** Let $x^0 \in M$ be a local minimum and suppose to the contrary that there is $x^* \in M$ such that $f(x^*) < f(x^0)$. Consider the convex combination $x = \lambda x^* + (1-\lambda)x^0 \in M$, $\lambda \in (0,1)$. Then
+\ast\ast(1)\ast\ast Let $x^0 \in M$ be a local minimum and suppose to the contrary that there is $x^\ast \in M$ such that $f(x^\ast) < f(x^0)$. Consider the convex combination $x = \lambda x^\ast + (1-\lambda)x^0 \in M$, $\lambda \in (0,1)$. Then
 
-$$f(x) \le \lambda f(x^*) + (1-\lambda) f(x^0) < \lambda f(x^0) + (1-\lambda)f(x^0) = f(x^0).$$
+$$f(x) \le \lambda f(x^\ast) + (1-\lambda) f(x^0) < \lambda f(x^0) + (1-\lambda)f(x^0) = f(x^0).$$
 
 This is in contradiction with local minimality of $x^0$ since for arbitrarily small $\lambda > 0$ we have $f(x) < f(x^0)$.
 
-**(2)** Let $x_1, x_2 \in M$ be two optimal solutions and denote by $z = f(x_1) = f(x_2)$ the optimal value. The convex combination $x = \lambda_1 x_1 + \lambda_2 x_2 \in M$ then satisfies
+\ast\ast(2)\ast\ast Let $x_1, x_2 \in M$ be two optimal solutions and denote by $z = f(x_1) = f(x_2)$ the optimal value. The convex combination $x = \lambda_1 x_1 + \lambda_2 x_2 \in M$ then satisfies
 
 $$f(x) \le \lambda_1 f(x_1) + \lambda_2 f(x_2) = \lambda_1 z + \lambda_2 z = z,$$
 
 that is, $x$ is also an optimal solution.
 
-**(3)** Suppose to the contrary that $x_1, x_2 \in M$, $x_1 \ne x_2$, are two optimal solutions. Denote by $z = f(x_1) = f(x_2)$ the optimal value. The convex combination $x = \lambda_1 x_1 + \lambda_2 x_2 \in M$, $\lambda_1, \lambda_2 > 0$, then satisfies
+\ast\ast(3)\ast\ast Suppose to the contrary that $x_1, x_2 \in M$, $x_1 \ne x_2$, are two optimal solutions. Denote by $z = f(x_1) = f(x_2)$ the optimal value. The convex combination $x = \lambda_1 x_1 + \lambda_2 x_2 \in M$, $\lambda_1, \lambda_2 > 0$, then satisfies
 
 $$f(x) < \lambda_1 f(x_1) + \lambda_2 f(x_2) = \lambda_1 z + \lambda_2 z = z,$$
 
@@ -917,7 +917,7 @@ This function is convex, but not continuous, and the minimum on $[1,2]$ is not a
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.4</span></p>
 
-Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be an open convex set and $f \colon M \to \mathbb{R}$ a convex differentiable function on $M$. Then $x^* \in M$ is an optimal solution if and only if $\nabla f(x^*) = o$.
+Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be an open convex set and $f \colon M \to \mathbb{R}$ a convex differentiable function on $M$. Then $x^\ast \in M$ is an optimal solution if and only if $\nabla f(x^\ast) = o$.
 
 </div>
 
@@ -925,21 +925,21 @@ Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be an open convex set and $f \colon
 <details markdown="1">
 <summary>Proof</summary>
 
-"$\Rightarrow$" Let $x^*$ be an optimal solution. Then it is a local minimum, too, and according to Theorem 2.1 we have $\nabla f(x^*) = o$.
+"$\Rightarrow$" Let $x^\ast$ be an optimal solution. Then it is a local minimum, too, and according to Theorem 2.1 we have $\nabla f(x^\ast) = o$.
 
-"$\Leftarrow$" Let $\nabla f(x^*) = o$. By Theorem 3.18 we have $f(x) - f(x^*) \ge \nabla f(x^*)^T(x - x^*) = 0$ for any $x \in M$. Therefore $f(x) \ge f(x^*)$ and $x^*$ is an optimal solution.
+"$\Leftarrow$" Let $\nabla f(x^\ast) = o$. By Theorem 3.18 we have $f(x) - f(x^\ast) \ge \nabla f(x^\ast)^T(x - x^\ast) = 0$ for any $x \in M$. Therefore $f(x) \ge f(x^\ast)$ and $x^\ast$ is an optimal solution.
 
 </details>
 </div>
 
-We cannot remove the assumption that $M$ is open. For instance, for the problem $\min_{x \in [1,2]} x$ we have $M = [1,2]$ convex and the objective function $f(x) = x$ is differentiable on $\mathbb{R}$, but its derivative at the optimal point $x^* = 1$ is $f'(1) = 1$.
+We cannot remove the assumption that $M$ is open. For instance, for the problem $\min_{x \in [1,2]} x$ we have $M = [1,2]$ convex and the objective function $f(x) = x$ is differentiable on $\mathbb{R}$, but its derivative at the optimal point $x^\ast = 1$ is $f'(1) = 1$.
 
 We can generalize the theorem as follows.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.5</span></p>
 
-Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be a convex set and $f \colon M' \to \mathbb{R}$ a convex function differentiable on an open set $M' \supseteq M$. Then $x^* \in M$ is an optimal solution if and only if $\nabla f(x^*)^T(y - x^*) \ge 0$ for every $y \in M$.
+Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be a convex set and $f \colon M' \to \mathbb{R}$ a convex function differentiable on an open set $M' \supseteq M$. Then $x^\ast \in M$ is an optimal solution if and only if $\nabla f(x^\ast)^T(y - x^\ast) \ge 0$ for every $y \in M$.
 
 </div>
 
@@ -947,18 +947,18 @@ Let $\emptyset \ne M \subseteq \mathbb{R}^n$ be a convex set and $f \colon M' \t
 <details markdown="1">
 <summary>Proof</summary>
 
-"$\Rightarrow$" Suppose to the contrary that there is $y \in M$ such that $\nabla f(x^*)^T(y - x^*) < 0$. Consider the convex combination $x_\lambda = \lambda y + (1-\lambda)x^* = x^* + \lambda(y - x^*) \in M$. Then
+"$\Rightarrow$" Suppose to the contrary that there is $y \in M$ such that $\nabla f(x^\ast)^T(y - x^\ast) < 0$. Consider the convex combination $x_\lambda = \lambda y + (1-\lambda)x^\ast = x^\ast + \lambda(y - x^\ast) \in M$. Then
 
-$$0 > \nabla f(x^*)^T(y - x^*) = \lim_{\lambda \to 0^+} \frac{f(x^* + \lambda(y-x^*)) - f(x^*)}{\lambda} = \lim_{\lambda \to 0^+} \frac{f(x_\lambda) - f(x^*)}{\lambda}.$$
+$$0 > \nabla f(x^\ast)^T(y - x^\ast) = \lim_{\lambda \to 0^+} \frac{f(x^\ast + \lambda(y-x^\ast)) - f(x^\ast)}{\lambda} = \lim_{\lambda \to 0^+} \frac{f(x_\lambda) - f(x^\ast)}{\lambda}.$$
 
-Hence $f(x_\lambda) < f(x^*)$ for a sufficiently small $\lambda > 0$; a contradiction.
+Hence $f(x_\lambda) < f(x^\ast)$ for a sufficiently small $\lambda > 0$; a contradiction.
 
-"$\Leftarrow$" By Theorem 3.18, for every $y \in M$ we have $f(y) - f(x^*) \ge \nabla f(x^*)^T(y - x^*) \ge 0$. Therefore $f(y) \ge f(x^*)$, and $x^*$ is an optimal solution.
+"$\Leftarrow$" By Theorem 3.18, for every $y \in M$ we have $f(y) - f(x^\ast) \ge \nabla f(x^\ast)^T(y - x^\ast) \ge 0$. Therefore $f(y) \ge f(x^\ast)$, and $x^\ast$ is an optimal solution.
 
 </details>
 </div>
 
-The condition from Theorem 4.5 is particularly satisfied if $\nabla f(x^*) = o$. This means that each stationary point is a global minimum.
+The condition from Theorem 4.5 is particularly satisfied if $\nabla f(x^\ast) = o$. This means that each stationary point is a global minimum.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.6</span></p>
@@ -967,9 +967,9 @@ The first problem in Example 4.1 reads
 
 $$\min \; x_1 + x_2 \quad \text{subject to} \quad x_1^2 + x_2^2 \le 2.$$
 
-Obviously, the optimum is $x^* = (-1,-1)^T$. We can verify it by means of Theorem 4.5. First, compute $\nabla f(x^*) = (1,1)^T$. Now, we have to show that for each feasible $y$ we have
+Obviously, the optimum is $x^\ast = (-1,-1)^T$. We can verify it by means of Theorem 4.5. First, compute $\nabla f(x^\ast) = (1,1)^T$. Now, we have to show that for each feasible $y$ we have
 
-$$\nabla f(x^*)^T(y - x^*) = (1,1) \begin{pmatrix} y_1 + 1 \\ y_2 + 1 \end{pmatrix} \ge 0,$$
+$$\nabla f(x^\ast)^T(y - x^\ast) = (1,1) \begin{pmatrix} y_1 + 1 \\ y_2 + 1 \end{pmatrix} \ge 0,$$
 
 or $y_1 + y_2 \ge -2$. This is clearly true.
 
@@ -977,7 +977,7 @@ The second problem in Example 4.1 reads
 
 $$\min \; x_1^2 + x_2^2 + 2x_2 \quad \text{subject to} \quad x_1^2 + x_2^2 \le 2.$$
 
-We compute $\nabla f(x^*) = (2x_1, 2x_2 + 2)^T$, and this gradient is zero at point $x^\star = (0, -1)$. Since this point satisfies the constraint, it is the optimum.
+We compute $\nabla f(x^\ast) = (2x_1, 2x_2 + 2)^T$, and this gradient is zero at point $x^\star = (0, -1)$. Since this point satisfies the constraint, it is the optimum.
 
 </div>
 
@@ -1013,24 +1013,24 @@ $$C = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}, \quad d = \begin{pmatrix} 2 
 
 If an optimal solution exists, then it lies in the interior or on the border of the feasible set. Thus we analyse particular cases:
 
-1. **Case $x^* > o$:** By Theorem 4.5, it must hold $\nabla f(x^*) = o$. In our case it takes the form of $2Cx^* + d = 0$, and this system has the unique solution $x^0 = (-2,3)^T$. Nevertheless, it contradicts the condition $x^* > o$.
-2. **Case $x_1^* > 0$, $x_2^* = 0$:** Here we have $0 = \nabla f(x^*)_1$, which leads to $0 = 4x_1^* + 2x_2^* + 2 = 4x_1^* + 2$. It has no solution such that $x_1^* > 0$.
-3. **Case $x_1^* = 0$, $x_2^* > 0$:** Here we have $0 = \nabla f(x^*)_2$, which leads to $0 = 2x_1^* + 4x_2^* - 8 = 4x_2^* - 8$. In this case $x^* = (0,2)^T$.
-4. **Case $x^* = o$:** Here we have $o \le \nabla f(x^*) = 2Cx^* + d = d$, which is not satisfied.
+1. \ast\astCase $x^\ast > o$:\ast\ast By Theorem 4.5, it must hold $\nabla f(x^\ast) = o$. In our case it takes the form of $2Cx^\ast + d = 0$, and this system has the unique solution $x^0 = (-2,3)^T$. Nevertheless, it contradicts the condition $x^\ast > o$.
+2. \ast\astCase $x_1^\ast > 0$, $x_2^\ast = 0$:\ast\ast Here we have $0 = \nabla f(x^\ast)_1$, which leads to $0 = 4x_1^\ast + 2x_2^\ast + 2 = 4x_1^\ast + 2$. It has no solution such that $x_1^\ast > 0$.
+3. \ast\astCase $x_1^\ast = 0$, $x_2^\ast > 0$:\ast\ast Here we have $0 = \nabla f(x^\ast)_2$, which leads to $0 = 2x_1^\ast + 4x_2^\ast - 8 = 4x_2^\ast - 8$. In this case $x^\ast = (0,2)^T$.
+4. \ast\astCase $x^\ast = o$:\ast\ast Here we have $o \le \nabla f(x^\ast) = 2Cx^\ast + d = d$, which is not satisfied.
 
-Therefore, the optimal solution is unique, the point $x^* = (0,2)^T$, and the optimal value is $-8$.
+Therefore, the optimal solution is unique, the point $x^\ast = (0,2)^T$, and the optimal value is $-8$.
 
-Let us have a look on a more general convex optimization problem $\min_{x \ge o} f(x)$. By Theorem 4.5, an optimal solution $x^*$ has to satisfy $\nabla f(x^*)^T(y - x^*) \ge 0$ for every $y \ge o$. To avoid unboundedness of the problem from below, we must have $\nabla f(x^*) \ge o$. The function $\nabla f(x^*)^T(y - x^*)$ has the minimal value for $y = o$, which leads to the constraint $\nabla f(x^*)^T(-x^*) \ge 0$. Since $\nabla f(x^*) \ge o$ and $x^* \ge o$, we have $\nabla f(x^*)^T x^* = 0$. This condition is called a **complementarity condition** since for every $i$ we have $\nabla f(x^*)_i = 0$ or $x_i^* = 0$. In total, we obtain the following optimality conditions: $x^* \ge o$, $\nabla f(x^*) \ge o$, $\nabla f(x^*)^T x^* = 0$ (cf. Chapter 5).
+Let us have a look on a more general convex optimization problem $\min_{x \ge o} f(x)$. By Theorem 4.5, an optimal solution $x^\ast$ has to satisfy $\nabla f(x^\ast)^T(y - x^\ast) \ge 0$ for every $y \ge o$. To avoid unboundedness of the problem from below, we must have $\nabla f(x^\ast) \ge o$. The function $\nabla f(x^\ast)^T(y - x^\ast)$ has the minimal value for $y = o$, which leads to the constraint $\nabla f(x^\ast)^T(-x^\ast) \ge 0$. Since $\nabla f(x^\ast) \ge o$ and $x^\ast \ge o$, we have $\nabla f(x^\ast)^T x^\ast = 0$. This condition is called a \ast\astcomplementarity condition\ast\ast since for every $i$ we have $\nabla f(x^\ast)_i = 0$ or $x_i^\ast = 0$. In total, we obtain the following optimality conditions: $x^\ast \ge o$, $\nabla f(x^\ast) \ge o$, $\nabla f(x^\ast)^T x^\ast = 0$ (cf. Chapter 5).
 
 </div>
 
 ## 4.2 Quadratic Programming
 
-A *quadratic programming* problem reads
+A \astquadratic programming\ast problem reads
 
 $$\min \; x^T Cx + d^T x \quad \text{subject to} \quad x \in M,$$
 
-where $C \in \mathbb{R}^{n \times n}$ is symmetric, $d \in \mathbb{R}^n$ and $M \subseteq \mathbb{R}^n$ is a convex polyhedral set. If matrix $C$ is positive semidefinite, then it is a convex problem, called a *convex quadratic program*.
+where $C \in \mathbb{R}^{n \times n}$ is symmetric, $d \in \mathbb{R}^n$ and $M \subseteq \mathbb{R}^n$ is a convex polyhedral set. If matrix $C$ is positive semidefinite, then it is a convex problem, called a \astconvex quadratic program\ast.
 
 Convex quadratic programs are effectively solvable in polynomial time. If $C$ is not positive semidefinite, then the problem is NP-hard, even finding a local minimum is NP-hard. It is interesting that NP-hardness remains valid even for the subclass of problems defined by matrix $C$ having exactly one eigenvalue negative.
 
@@ -1093,7 +1093,7 @@ The objective function is given by the sum of norms of accelerations in particul
 
 ## 4.3 Geometric Programming
 
-A *geometric programming* problem reads
+A \astgeometric programming\ast problem reads
 
 $$\min \sum_{j=1}^k c_j x_1^{\gamma_{j1}} \cdots x_n^{\gamma_{jn}}$$
 
@@ -1144,12 +1144,12 @@ can be generalized in several ways. In Section 4.2 we replaced linear functions 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4.12</span><span class="math-callout__name">(Convex Cone)</span></p>
 
-A set $\emptyset \ne \mathcal{K} \subseteq \mathbb{R}^n$ is a *convex cone* if two conditions are satisfied:
+A set $\emptyset \ne \mathcal{K} \subseteq \mathbb{R}^n$ is a \astconvex cone\ast if two conditions are satisfied:
 
 1. for every $\alpha \ge 0$ and $x \in \mathcal{K}$ we have $\alpha x \in \mathcal{K}$,
 2. for every $x, y \in \mathcal{K}$ we have $x + y \in \mathcal{K}$.
 
-A cone is called *pointed* if it contains no complete line.
+A cone is called \astpointed\ast if it contains no complete line.
 
 </div>
 
@@ -1170,15 +1170,15 @@ From now on we consider only a pointed convex closed cone $\mathcal{K}$ with non
 
 The frequently used cones are:
 
-- *The nonnegative orthant* $\mathbb{R}_+^n = \lbrace x \in \mathbb{R}^n;\; x \ge 0 \rbrace$. The corresponding partial order is the standard entrywise inequality $\ge$ for vectors.
-- *Lorentz cone (ice cream cone)* $\mathcal{L} = \lbrace x \in \mathbb{R}^n;\; x_n \ge \sqrt{\sum_{i=1}^{n-1} x_i^2} \rbrace = \lbrace x \in \mathbb{R}^n;\; x_n \ge \lVert (x_1, \ldots, x_{n-1}) \rVert_2 \rbrace$.
-- *Generalized Lorentz cone* $\mathcal{L} = \lbrace x \in \mathbb{R}^n;\; x_n \ge \lVert (x_1, \ldots, x_{n-1}) \rVert \rbrace$, where $\lVert \cdot \rVert$ is an arbitrary norm.
-- *Convex polyhedral cone* is characterized by the system $Ax \le 0$. This category involves, for example, the nonnegative orthant or the generalized Lorentz cone with the Manhattan or maximum norm.
-- *The cone of positive semidefinite matrices.*
+- \astThe nonnegative orthant\ast $\mathbb{R}_+^n = \lbrace x \in \mathbb{R}^n;\; x \ge 0 \rbrace$. The corresponding partial order is the standard entrywise inequality $\ge$ for vectors.
+- \astLorentz cone (ice cream cone)\ast $\mathcal{L} = \lbrace x \in \mathbb{R}^n;\; x_n \ge \sqrt{\sum_{i=1}^{n-1} x_i^2} \rbrace = \lbrace x \in \mathbb{R}^n;\; x_n \ge \lVert (x_1, \ldots, x_{n-1}) \rVert_2 \rbrace$.
+- \astGeneralized Lorentz cone\ast $\mathcal{L} = \lbrace x \in \mathbb{R}^n;\; x_n \ge \lVert (x_1, \ldots, x_{n-1}) \rVert \rbrace$, where $\lVert \cdot \rVert$ is an arbitrary norm.
+- \astConvex polyhedral cone\ast is characterized by the system $Ax \le 0$. This category involves, for example, the nonnegative orthant or the generalized Lorentz cone with the Manhattan or maximum norm.
+- \astThe cone of positive semidefinite matrices.\ast
 
 </div>
 
-Now we are ready to introduce cone programming. The **cone programming problem** reads
+Now we are ready to introduce cone programming. The \ast\astcone programming problem\ast\ast reads
 
 $$\min \; c^T x \quad \text{subject to} \quad Ax \ge_\mathcal{K} b. \tag{4.1}$$
 
@@ -1208,7 +1208,7 @@ $$\min \; c^T x \quad \text{subject to} \quad Ax \ge_\mathcal{K} b. \tag{4.1}$$
 
 ### 4.4.1 Duality in Convex Cone Programming
 
-**Motivation.** Recall the derivation of duality of a linear program $\min\lbrace c^T x;\; Ax \ge b \rbrace$: Let $x$ be a feasible solution. Then for every $y \ge 0$ we have $y^T Ax \ge y^T b$. If $y$ in addition satisfies $y^T A = c^T$, then we get $c^T x = y^T Ax \ge y^T b$. In other words, $y^T b$ is a lower bound on the optimal value for every $y \ge 0$ such that $A^T y = c$. This leads to the dual problem formulation and weak duality
+\ast\astMotivation.\ast\ast Recall the derivation of duality of a linear program $\min\lbrace c^T x;\; Ax \ge b \rbrace$: Let $x$ be a feasible solution. Then for every $y \ge 0$ we have $y^T Ax \ge y^T b$. If $y$ in addition satisfies $y^T A = c^T$, then we get $c^T x = y^T Ax \ge y^T b$. In other words, $y^T b$ is a lower bound on the optimal value for every $y \ge 0$ such that $A^T y = c$. This leads to the dual problem formulation and weak duality
 
 $$\min\lbrace c^T x;\; Ax \ge b \rbrace \ge \max\lbrace b^T y;\; A^T y = c, \; y \ge 0 \rbrace.$$
 
@@ -1217,20 +1217,20 @@ Now the question is, in the case of convex cone programming (4.1), which relatio
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4.16</span><span class="math-callout__name">(Dual Cone)</span></p>
 
-Let $\mathcal{K} \subseteq \mathbb{R}^n$ be a cone. Then its *dual cone* is the cone
+Let $\mathcal{K} \subseteq \mathbb{R}^n$ be a cone. Then its \astdual cone\ast is the cone
 
-$$\mathcal{K}^* = \lbrace y \in \mathbb{R}^n;\; y^T a \ge 0 \;\forall a \in \mathcal{K} \rbrace.$$
+$$\mathcal{K}^\ast = \lbrace y \in \mathbb{R}^n;\; y^T a \ge 0 \;\forall a \in \mathcal{K} \rbrace.$$
 
 </div>
 
 By using the dual cone, we formulate the dual problem to (4.1) as follows
 
-$$\max \; b^T y \quad \text{subject to} \quad A^T y = c, \; y \ge_{\mathcal{K}^*} 0. \tag{4.3}$$
+$$\max \; b^T y \quad \text{subject to} \quad A^T y = c, \; y \ge_{\mathcal{K}^\ast} 0. \tag{4.3}$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.17</span><span class="math-callout__name">(Weak Duality)</span></p>
 
-We have: $\min\lbrace c^T x;\; Ax \ge_\mathcal{K} b \rbrace \ge \max\lbrace b^T y;\; A^T y = c, \; y \ge_{\mathcal{K}^*} 0 \rbrace$.
+We have: $\min\lbrace c^T x;\; Ax \ge_\mathcal{K} b \rbrace \ge \max\lbrace b^T y;\; A^T y = c, \; y \ge_{\mathcal{K}^\ast} 0 \rbrace$.
 
 </div>
 
@@ -1238,7 +1238,7 @@ We have: $\min\lbrace c^T x;\; Ax \ge_\mathcal{K} b \rbrace \ge \max\lbrace b^T 
 <details markdown="1">
 <summary>Proof</summary>
 
-For every $y \ge_{\mathcal{K}^*} 0$ such that $A^T y = c$ and for every $x$ such that $Ax \ge_\mathcal{K} b$ we have
+For every $y \ge_{\mathcal{K}^\ast} 0$ such that $A^T y = c$ and for every $x$ such that $Ax \ge_\mathcal{K} b$ we have
 
 $$c^T x = y^T Ax \ge y^T b.$$
 
@@ -1250,8 +1250,8 @@ In other words, the objective value of each feasible solution is an upper bound 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.18</span></p>
 
-- Nonnegative orthant is self-dual, that is, $(\mathbb{R}_+^n)^* = \mathbb{R}_+^n$.
-- The Lorentz cone is self-dual as well, $\mathcal{L}^* = \mathcal{L}$.
+- Nonnegative orthant is self-dual, that is, $(\mathbb{R}_+^n)^\ast = \mathbb{R}_+^n$.
+- The Lorentz cone is self-dual as well, $\mathcal{L}^\ast = \mathcal{L}$.
 - The cone of positive semidefinite matrices is also self-dual; herein, the scalar product of positive semidefinite matrices $A, B$ is defined by $\langle A, B \rangle := \text{tr}(AB) = \sum_{i,j} a_{ij} b_{ij}$.
 
 </div>
@@ -1261,10 +1261,10 @@ In other words, the objective value of each feasible solution is an upper bound 
 
 We have:
 
-1. $\mathcal{K}^*$ is a closed convex cone.
-2. If $\mathcal{K}$ is a closed convex cone, then $(\mathcal{K}^*)^* = \mathcal{K}$.
-3. If $\mathcal{K}_1, \mathcal{K}_2$ are cones, then $\mathcal{K}_1 \times \mathcal{K}_2$ is a cone and $(\mathcal{K}_1 \times \mathcal{K}_2)^* = \mathcal{K}_1^* \times \mathcal{K}_2^*$.
-4. If $\mathcal{K}_1 \subseteq \mathcal{K}_2$ are cones, then $\mathcal{K}_1^* \supseteq \mathcal{K}_2^*$.
+1. $\mathcal{K}^\ast$ is a closed convex cone.
+2. If $\mathcal{K}$ is a closed convex cone, then $(\mathcal{K}^\ast)^\ast = \mathcal{K}$.
+3. If $\mathcal{K}_1, \mathcal{K}_2$ are cones, then $\mathcal{K}_1 \times \mathcal{K}_2$ is a cone and $(\mathcal{K}_1 \times \mathcal{K}_2)^\ast = \mathcal{K}_1^\ast \times \mathcal{K}_2^\ast$.
+4. If $\mathcal{K}_1 \subseteq \mathcal{K}_2$ are cones, then $\mathcal{K}_1^\ast \supseteq \mathcal{K}_2^\ast$.
 
 </div>
 
@@ -1274,7 +1274,7 @@ $$\min \; c^T x \quad \text{subject to} \quad Ax \ge b, \; Bx \ge_\mathcal{K} d,
 
 the dual problem of which is
 
-$$\max \; b^T y + d^T z \quad \text{subject to} \quad A^T y + B^T z = c, \; y \ge 0, \; z \ge_{\mathcal{K}^*} 0.$$
+$$\max \; b^T y + d^T z \quad \text{subject to} \quad A^T y + B^T z = c, \; y \ge 0, \; z \ge_{\mathcal{K}^\ast} 0.$$
 
 Can we state strong duality in convex cone programming? In general not, but under mild assumptions the strong duality holds.
 
@@ -1284,7 +1284,7 @@ Can we state strong duality in convex cone programming? In general not, but unde
 The primal and dual optimal values are the same provided at least one of the following conditions holds
 
 1. the primal problem is strictly feasible, that is, there is $x$ such that $Ax >_\mathcal{K} b$,
-2. the dual problem is strictly feasible, that is, there is $y >_{\mathcal{K}^*} 0$ such that $A^T y = c$.
+2. the dual problem is strictly feasible, that is, there is $y >_{\mathcal{K}^\ast} 0$ such that $A^T y = c$.
 
 </div>
 
@@ -1349,14 +1349,14 @@ A lot of functions and nonlinear conditions can be expressed in the form of (4.5
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.23</span><span class="math-callout__name">(Examples of Second Order Cone Programs)</span></p>
 
-- *Quadratic constraints.* For example, the condition $x^T x \le z$ can be expressed as $x^T x + \frac{1}{4}(z-1)^2 \le \frac{1}{4}(z+1)^2$, the square root of which gives $\lVert (x^T, \frac{1}{2}(z-1)) \rVert_2 \le \frac{1}{4}(z+1)$.
-- *Hyperbola.* The condition $x \cdot y \ge 1$ on $y \ge 0$ can be expressed as $\frac{1}{4}(x+y)^2 \ge 1 + \frac{1}{4}(x-y)^2$, the square root of which (notice $y \ge 0$) gives $\lVert (1, \frac{1}{2}(x-y)) \rVert_2 \le \frac{1}{2}(x+y)$.
+- \astQuadratic constraints.\ast For example, the condition $x^T x \le z$ can be expressed as $x^T x + \frac{1}{4}(z-1)^2 \le \frac{1}{4}(z+1)^2$, the square root of which gives $\lVert (x^T, \frac{1}{2}(z-1)) \rVert_2 \le \frac{1}{4}(z+1)$.
+- \astHyperbola.\ast The condition $x \cdot y \ge 1$ on $y \ge 0$ can be expressed as $\frac{1}{4}(x+y)^2 \ge 1 + \frac{1}{4}(x-y)^2$, the square root of which (notice $y \ge 0$) gives $\lVert (1, \frac{1}{2}(x-y)) \rVert_2 \le \frac{1}{2}(x+y)$.
 
 On the other hand, condition $e^x \le z$ is not a second order cone constraint.
 
 The dual problem is
 
-$$\max \; b^T y + d^T z \quad \text{subject to} \quad A^T y + B^T z = c, \; y \ge 0, \; z \ge_{\mathcal{L}^*} 0.$$
+$$\max \; b^T y + d^T z \quad \text{subject to} \quad A^T y + B^T z = c, \; y \ge 0, \; z \ge_{\mathcal{L}^\ast} 0.$$
 
 Letting $z = (u^T, v)^T$ we get
 
@@ -1368,28 +1368,28 @@ The dual is thus also a second order cone program.
 
 ### 4.4.3 Semidefinite Programming
 
-Employing the cone of positive semidefinite matrices in the convex cone programming problem (4.1), we obtain the class of **semidefinite programming** problems
+Employing the cone of positive semidefinite matrices in the convex cone programming problem (4.1), we obtain the class of \ast\astsemidefinite programming\ast\ast problems
 
 $$\min \; c^T x \quad \text{subject to} \quad \sum_{k=1}^n x_k A^{(k)} \succeq B, \tag{4.6}$$
 
 where $c \in \mathbb{R}^n$, matrices $A^{(1)}, \ldots, A^{(n)}, B \in \mathbb{R}^{m \times m}$ are symmetric and the relation $A \succeq B$ means that $A - B$ is positive semidefinite. Semidefinite programming is a large class of efficiently solvable optimization problems. It is often used to approximate NP-hard problems; indeed, it provides one of the best known approximation factors.
 
-How to construct the dual problem? According to (4.3), the dual problem has $m^2$ variables, so that they constitute a matrix of variables $Y \in \mathbb{R}^{m \times m}$. The dual objective function is $\sum_{i,j} b_{ij} y_{ij}$, the equations have the form of $\sum_{i,j} a_{ij}^{(k)} y_{ij} = c_k$, and the condition $Y \ge_{\mathcal{K}^*} 0$ takes the form $Y \succeq 0$. In total, the dual problem reads
+How to construct the dual problem? According to (4.3), the dual problem has $m^2$ variables, so that they constitute a matrix of variables $Y \in \mathbb{R}^{m \times m}$. The dual objective function is $\sum_{i,j} b_{ij} y_{ij}$, the equations have the form of $\sum_{i,j} a_{ij}^{(k)} y_{ij} = c_k$, and the condition $Y \ge_{\mathcal{K}^\ast} 0$ takes the form $Y \succeq 0$. In total, the dual problem reads
 
 $$\max \; \text{tr}(BY) \quad \text{subject to} \quad \text{tr}(A^{(k)} Y) = c_k, \; k = 1, \ldots, n, \; Y \succeq 0. \tag{4.7}$$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.24</span><span class="math-callout__name">(Examples of Semidefinite Programs)</span></p>
 
-- *Linear constraints.* Linear inequalities $Ax \le b$ are expressed as semidefinite conditions as follows:
+- \astLinear constraints.\ast Linear inequalities $Ax \le b$ are expressed as semidefinite conditions as follows:
 
-  $$\begin{pmatrix} b_1 - A_{1*}x & 0 & \cdots & 0 \\ 0 & b_2 - A_{2*}x & \ddots & \vdots \\ \vdots & \ddots & \ddots & 0 \\ 0 & \cdots & 0 & b_m - A_{m*}x \end{pmatrix} \succeq 0.$$
+  $$\begin{pmatrix} b_1 - A_{1\ast}x & 0 & \cdots & 0 \\ 0 & b_2 - A_{2\ast}x & \ddots & \vdots \\ \vdots & \ddots & \ddots & 0 \\ 0 & \cdots & 0 & b_m - A_{m\ast}x \end{pmatrix} \succeq 0.$$
 
-- *Second order cone constraints.* They can be expressed as semidefinite constraints. Basically, it is sufficient to show it for the condition $\lVert x \rVert_2 \le z$; the others can be handled by a linear transformation. We have
+- \astSecond order cone constraints.\ast They can be expressed as semidefinite constraints. Basically, it is sufficient to show it for the condition $\lVert x \rVert_2 \le z$; the others can be handled by a linear transformation. We have
 
   $$\lVert x \rVert_2 \le z \quad \Leftrightarrow \quad \begin{pmatrix} z \cdot I_n & x \\ x^T & z \end{pmatrix} \succeq 0. \tag{4.8}$$
 
-- *Eigenvalues.* Many conditions on eigenvalues can be expressed as semidefinite programs. For instance, the largest eigenvalue $\lambda_{\max}$ of a symmetric matrix $A \in \mathbb{R}^{n \times n}$:
+- \astEigenvalues.\ast Many conditions on eigenvalues can be expressed as semidefinite programs. For instance, the largest eigenvalue $\lambda_{\max}$ of a symmetric matrix $A \in \mathbb{R}^{n \times n}$:
 
   $$\lambda_{\max} = \min \; z \quad \text{subject to} \quad z \cdot I_n \succeq A.$$
 
@@ -1423,7 +1423,7 @@ The ellipsoid method is designed to find a feasible solution, but the same idea 
 In order that the above algorithm is correct and runs in polynomial time, we need to ensure certain conditions:
 
 - The feasible set $M$ shouldn't be too flat or too large. There must exist "reasonably" large numbers $r, R > 0$ such that $M$ contains a ball of radius $r$ and also $M$ lies in the ball $\lbrace x;\; \lVert x \rVert_2 \le R \rbrace$.
-- **Separation oracle.** For every $x^* \in \mathbb{R}^n$ we need to check for $x^* \in M$ in polynomial time. If $x^* \notin M$, then we need to find a vector $a \ne o$ such that $a^T x^* \ge \sup_{x \in M} a^T x$. This gives us a hyperplane $a^T x = a^T x^*$ satisfying $a^T x \le a^T x^*$ for every $x \in M$.
+- \ast\astSeparation oracle.\ast\ast For every $x^\ast \in \mathbb{R}^n$ we need to check for $x^\ast \in M$ in polynomial time. If $x^\ast \notin M$, then we need to find a vector $a \ne o$ such that $a^T x^\ast \ge \sup_{x \in M} a^T x$. This gives us a hyperplane $a^T x = a^T x^\ast$ satisfying $a^T x \le a^T x^\ast$ for every $x \in M$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.26</span></p>
@@ -1432,7 +1432,7 @@ In some cases, the ellipsoid method provides a polynomial algorithm for problems
 
 $$M = \lbrace x \in \mathbb{R}^n;\; a^T x \le 1, \; \forall a : \lVert a \rVert_2 = 1 \rbrace.$$
 
-To check if a given point $x^* \in \mathbb{R}^n$ belongs to the set $M$, we do not need to process all the infinitely many inequalities. It is sufficient to check the possibly violated constraint, which is the case of $a = \frac{1}{\lVert x^* \rVert_2} x^*$.
+To check if a given point $x^\ast \in \mathbb{R}^n$ belongs to the set $M$, we do not need to process all the infinitely many inequalities. It is sufficient to check the possibly violated constraint, which is the case of $a = \frac{1}{\lVert x^\ast \rVert_2} x^\ast$.
 
 </div>
 
@@ -1442,13 +1442,13 @@ Not every convex optimization problem is tractable. Here we present a convex pro
 
 $$\mathcal{C} := \lbrace A \in \mathbb{R}^{n \times n};\; A = A^T, \; x^T Ax \ge 0 \;\forall x \ge 0 \rbrace$$
 
-the convex cone of **copositive matrices** and by
+the convex cone of \ast\astcopositive matrices\ast\ast and by
 
-$$\mathcal{C}^* := \text{conv}\lbrace xx^T;\; x \ge 0 \rbrace$$
+$$\mathcal{C}^\ast := \text{conv}\lbrace xx^T;\; x \ge 0 \rbrace$$
 
-its dual cone of **completely positive matrices**. The set $\mathcal{C}$ covers both nonnegative symmetric matrices and positive semidefinite matrices, but it contains other matrices, too. Similarly the matrices in $\mathcal{C}^*$ are nonnegative positive semidefinite, but not each such matrix belongs to $\mathcal{C}^*$. Notice that even to decide if a given matrix is copositive is a co-NP-complete problem. Checking complete positivity of a matrix is NP-hard, but if the problem is in NP is not known yet.
+its dual cone of \ast\astcompletely positive matrices\ast\ast. The set $\mathcal{C}$ covers both nonnegative symmetric matrices and positive semidefinite matrices, but it contains other matrices, too. Similarly the matrices in $\mathcal{C}^\ast$ are nonnegative positive semidefinite, but not each such matrix belongs to $\mathcal{C}^\ast$. Notice that even to decide if a given matrix is copositive is a co-NP-complete problem. Checking complete positivity of a matrix is NP-hard, but if the problem is in NP is not known yet.
 
-A *copositive program* is an optimization problem, in which one of the constraints is the condition that a variable matrix is copositive; the other objective and constraint functions are linear.
+A \astcopositive program\ast is an optimization problem, in which one of the constraints is the condition that a variable matrix is copositive; the other objective and constraint functions are linear.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.27</span><span class="math-callout__name">(de Klerk and Pasechnik, 2002)</span></p>
@@ -1467,7 +1467,7 @@ Without loss of generality suppose that the maximum independent set consists of 
 
 $$\beta x^T(I_n + A)x \ge \lVert x \rVert_1^2 \quad \forall x \ge 0. \tag{4.10}$$
 
-"$\le$" It is sufficient to show that matrix $\alpha(I_n + A) - ee^T$ is copositive. If $\alpha = n$, then the copositivity condition takes the form $n\lVert x \rVert_2^2 \ge \lVert x \rVert_1^2$; however, this is a well-known vector norm inequality. If $\alpha < n$, then without loss of generality we can assume (by a permutation of vertices) that $a_{12} = 1$. Consider the worst-case scenario with $A_{*1} = A_{*2} = e_1 + e_2$. For $\varepsilon > 0$ put $y = x - \varepsilon e_1 + \varepsilon e_2$. Then $\lVert x \rVert_1 = \lVert y \rVert_1$, so that the right-hand side of inequality (4.10) does not change when substituting $y$. The left-hand side takes for $\beta = \alpha$ the form
+"$\le$" It is sufficient to show that matrix $\alpha(I_n + A) - ee^T$ is copositive. If $\alpha = n$, then the copositivity condition takes the form $n\lVert x \rVert_2^2 \ge \lVert x \rVert_1^2$; however, this is a well-known vector norm inequality. If $\alpha < n$, then without loss of generality we can assume (by a permutation of vertices) that $a_{12} = 1$. Consider the worst-case scenario with $A_{\ast1} = A_{\ast2} = e_1 + e_2$. For $\varepsilon > 0$ put $y = x - \varepsilon e_1 + \varepsilon e_2$. Then $\lVert x \rVert_1 = \lVert y \rVert_1$, so that the right-hand side of inequality (4.10) does not change when substituting $y$. The left-hand side takes for $\beta = \alpha$ the form
 
 $$\alpha y^T(I_n + A)y = \alpha x^T(I_n + A)x.$$
 
@@ -1494,15 +1494,15 @@ $\to$ Decompose $A = L + S$ such that $L$ has low rank and $S$ is sparse.
 
 Then $L$ represents the fundamental information in the data and $S$ can be interpreted as a noise. This problem is rather vaguely defined and that is why we consider the (approximate) optimization problem formulation
 
-$$\min \; \lVert L \rVert_* + \lVert S \rVert_{\ell_1} \quad \text{subject to} \quad A = L + S, \tag{4.11}$$
+$$\min \; \lVert L \rVert_\ast + \lVert S \rVert_{\ell_1} \quad \text{subject to} \quad A = L + S, \tag{4.11}$$
 
-where $\lVert S \rVert_{\ell_1} := \sum_{i,j} \lvert s_{ij} \rvert$ is the entrywise sum norm and $\lVert L \rVert_* := \sum_i \sigma_i(L)$ is the nuclear norm defined as the sum of the singular values.
+where $\lVert S \rVert_{\ell_1} := \sum_{i,j} \lvert s_{ij} \rvert$ is the entrywise sum norm and $\lVert L \rVert_\ast := \sum_i \sigma_i(L)$ is the nuclear norm defined as the sum of the singular values.
 
 Notice that the nuclear norm is a good approximation of the matrix rank since it is the best convex underestimator of the rank on a unit ball. Similarly, the entrywise sum norm is a good approximation of matrix sparsity.
 
 Problem (4.11) is a convex optimization problem since a norm is always convex. Hence the problem is effectively solvable.
 
-**Foreground and background detection in a video.** The Robust PCA technique can effectively be used to recognize foreground and background in a video or a sequence of pictures. The columns of matrix $A$ represent the particular video frames. Then we can expect that matrix $L$ corresponds to the background since it is static and the matrix has low rank. In contrast, matrix $S$ captures the foreground then.
+\ast\astForeground and background detection in a video.\ast\ast The Robust PCA technique can effectively be used to recognize foreground and background in a video or a sequence of pictures. The columns of matrix $A$ represent the particular video frames. Then we can expect that matrix $L$ corresponds to the background since it is static and the matrix has low rank. In contrast, matrix $S$ captures the foreground then.
 
 ### 4.6.2 Minimum Volume Enclosing Ellipsoid
 
@@ -1538,16 +1538,16 @@ Consider for a while an equality constrained problem
 
 $$\min \; f(x) \quad \text{subject to} \quad h(x) = 0. \tag{5.1}$$
 
-Let $x^*$ be a feasible point. When is $x^*$ optimal? First we discuss the case when the constraints are linear.
+Let $x^\ast$ be a feasible point. When is $x^\ast$ optimal? First we discuss the case when the constraints are linear.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.1</span></p>
 
-If $x^* \in \mathbb{R}^n$ is a local optimum of
+If $x^\ast \in \mathbb{R}^n$ is a local optimum of
 
 $$\min \; f(x) \quad \text{subject to} \quad Ax = b,$$
 
-then $\nabla f(x^*) \in \mathcal{R}(A)$.
+then $\nabla f(x^\ast) \in \mathcal{R}(A)$.
 
 </div>
 
@@ -1555,57 +1555,57 @@ then $\nabla f(x^*) \in \mathcal{R}(A)$.
 <details markdown="1">
 <summary>Proof</summary>
 
-The feasible set is the solution set of the system $Ax = b$, so it is an affine subspace $x^* + \text{Ker}(A)$. Let $B$ be a matrix such that its columns form a basis of $\text{Ker}(A)$. Then the feasible set can be expressed as $x = x^* + Bv$, $v \in \mathbb{R}^k$. Substituting for $x$ we obtain an unconstrained optimization problem
+The feasible set is the solution set of the system $Ax = b$, so it is an affine subspace $x^\ast + \text{Ker}(A)$. Let $B$ be a matrix such that its columns form a basis of $\text{Ker}(A)$. Then the feasible set can be expressed as $x = x^\ast + Bv$, $v \in \mathbb{R}^k$. Substituting for $x$ we obtain an unconstrained optimization problem
 
-$$\min \; f(x^* + Bv) \quad \text{subject to} \quad v \in \mathbb{R}^k.$$
+$$\min \; f(x^\ast + Bv) \quad \text{subject to} \quad v \in \mathbb{R}^k.$$
 
-By Theorem 2.1, the necessary condition for local optimality of $v = 0$ is zero gradient, that is, $\nabla f(x^*)^T B = 0^T$. In other words, $\nabla f(x^*) \in \text{Ker}(A)^\perp = \mathcal{R}(A)$.
+By Theorem 2.1, the necessary condition for local optimality of $v = 0$ is zero gradient, that is, $\nabla f(x^\ast)^T B = 0^T$. In other words, $\nabla f(x^\ast) \in \text{Ker}(A)^\perp = \mathcal{R}(A)$.
 
 </details>
 </div>
 
-Now, the idea is based on linearization of possibly nonlinear functions $h_\ell$. The equation $h_\ell(x) = 0$ will be replaced by the tangent hyperplane of the corresponding manifold at point $x^*$:
+Now, the idea is based on linearization of possibly nonlinear functions $h_\ell$. The equation $h_\ell(x) = 0$ will be replaced by the tangent hyperplane of the corresponding manifold at point $x^\ast$:
 
-$$\nabla h_\ell(x^*)^T(x - x^*) = 0,$$
+$$\nabla h_\ell(x^\ast)^T(x - x^\ast) = 0,$$
 
-so that the linearized constraints can be expressed as $A(x - x^*) = 0$. In order that $x^*$ is optimal, the objective function gradient $\nabla f(x^*)$ must be perpendicular to the intersection of the tangent hyperplanes; in other words, $\nabla f(x^*)$ must be a linear combination of the gradients $\nabla h_\ell(x^*)$ of the tangent hyperplanes. According to Proposition 5.1 we have $\nabla f(x^*) \in \mathcal{R}(A)$. This leads to the condition
+so that the linearized constraints can be expressed as $A(x - x^\ast) = 0$. In order that $x^\ast$ is optimal, the objective function gradient $\nabla f(x^\ast)$ must be perpendicular to the intersection of the tangent hyperplanes; in other words, $\nabla f(x^\ast)$ must be a linear combination of the gradients $\nabla h_\ell(x^\ast)$ of the tangent hyperplanes. According to Proposition 5.1 we have $\nabla f(x^\ast) \in \mathcal{R}(A)$. This leads to the condition
 
-$$\nabla f(x^*) + \sum_{\ell=1}^L \nabla h_\ell(x^*) \mu_\ell = 0.$$
+$$\nabla f(x^\ast) + \sum_{\ell=1}^L \nabla h_\ell(x^\ast) \mu_\ell = 0.$$
 
-As illustrated by a degenerate case where the intersection of the curves is a point but the intersection of the tangent lines is a line, this idea can be *wrong* since a degenerate situation may appear. Thus we need to avoid such a degenerate case. This can be achieved by the assumption on linear independence of gradients $\nabla h_\ell(x^*)$.
+As illustrated by a degenerate case where the intersection of the curves is a point but the intersection of the tangent lines is a line, this idea can be \astwrong\ast since a degenerate situation may appear. Thus we need to avoid such a degenerate case. This can be achieved by the assumption on linear independence of gradients $\nabla h_\ell(x^\ast)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.2</span></p>
 
-Let $\nabla h_\ell(x^*)$, $\ell = 1, \ldots, L$, be linearly independent. If $x^*$ is a local optimum, then there is $\mu \in \mathbb{R}^L$ such that
+Let $\nabla h_\ell(x^\ast)$, $\ell = 1, \ldots, L$, be linearly independent. If $x^\ast$ is a local optimum, then there is $\mu \in \mathbb{R}^L$ such that
 
-$$\nabla f(x^*) + \nabla h(x^*) \mu = 0.$$
+$$\nabla f(x^\ast) + \nabla h(x^\ast) \mu = 0.$$
 
 </div>
 
-Coefficients $\mu_1, \ldots, \mu_L$ are called **Lagrange multipliers**. The condition stated in the theorem is a necessary condition. This is convenient for us since we can restrict the feasible set to a much smaller set of candidates for optima — ideally the candidate is unique.
+Coefficients $\mu_1, \ldots, \mu_L$ are called \ast\astLagrange multipliers\ast\ast. The condition stated in the theorem is a necessary condition. This is convenient for us since we can restrict the feasible set to a much smaller set of candidates for optima — ideally the candidate is unique.
 
 ## Equality and Inequality Constraints
 
-Now we consider the general case with both equality and inequality constraints. The **active set** of a feasible point $x$ is the set of those inequalities that are satisfied as equations:
+Now we consider the general case with both equality and inequality constraints. The \ast\astactive set\ast\ast of a feasible point $x$ is the set of those inequalities that are satisfied as equations:
 
 $$I(x) = \lbrace j;\; g_j(x) = 0 \rbrace.$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.3</span><span class="math-callout__name">(KKT Conditions)</span></p>
 
-Let $\nabla h_\ell(x^*)$, $\ell = 1, \ldots, L$, $\nabla g_j(x^*)$, $j \in I(x^*)$, be linearly independent. If $x^*$ is a local optimum, then there exist $\lambda \in \mathbb{R}^J$, $\lambda \ge 0$, and $\mu \in \mathbb{R}^L$ such that
+Let $\nabla h_\ell(x^\ast)$, $\ell = 1, \ldots, L$, $\nabla g_j(x^\ast)$, $j \in I(x^\ast)$, be linearly independent. If $x^\ast$ is a local optimum, then there exist $\lambda \in \mathbb{R}^J$, $\lambda \ge 0$, and $\mu \in \mathbb{R}^L$ such that
 
-$$\nabla f(x^*) + \nabla h(x^*)\mu + \nabla g(x^*)\lambda = 0, \tag{5.2}$$
+$$\nabla f(x^\ast) + \nabla h(x^\ast)\mu + \nabla g(x^\ast)\lambda = 0, \tag{5.2}$$
 
-$$\lambda^T g(x^*) = 0. \tag{5.3}$$
+$$\lambda^T g(x^\ast) = 0. \tag{5.3}$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-Condition (5.3) is called **complementarity condition** since it says that for every $j = 1, \ldots, J$ we have $\lambda_j = 0$ or $g_j(x^*) = 0$. If $g_j(x^*) < 0$, then $\lambda_j = 0$ and hence variable $\lambda_j$ does not act in the KKT conditions; this corresponds to the situation that $x^*$ does not lie on the border of the set described by this constraint. Conversely, if $g_j(x^*) = 0$, then the complementarity makes no restriction on $\lambda_j$. In summary, the complementarity condition enforces to consider the Lagrange multipliers $\lambda_j$ for the active constraints only.
+Condition (5.3) is called \ast\astcomplementarity condition\ast\ast since it says that for every $j = 1, \ldots, J$ we have $\lambda_j = 0$ or $g_j(x^\ast) = 0$. If $g_j(x^\ast) < 0$, then $\lambda_j = 0$ and hence variable $\lambda_j$ does not act in the KKT conditions; this corresponds to the situation that $x^\ast$ does not lie on the border of the set described by this constraint. Conversely, if $g_j(x^\ast) = 0$, then the complementarity makes no restriction on $\lambda_j$. In summary, the complementarity condition enforces to consider the Lagrange multipliers $\lambda_j$ for the active constraints only.
 
 </div>
 
@@ -1613,24 +1613,24 @@ Condition (5.3) is called **complementarity condition** since it says that for e
 <details markdown="1">
 <summary>Proof of Theorem 5.3 (Main idea)</summary>
 
-We linearize the problem such that the objective function and the constraint functions are replaced by their tangent hyperplanes at point $x^*$. This results in a linear programming problem
+We linearize the problem such that the objective function and the constraint functions are replaced by their tangent hyperplanes at point $x^\ast$. This results in a linear programming problem
 
-$$\min \; \nabla f(x^*)^T x \quad \text{subject to} \quad \nabla g_j(x^*)^T(x - x^*) \le 0, \; j \in I(x^*), \quad \nabla h_\ell(x^*)^T(x - x^*) = 0, \; \ell = 1, \ldots, L.$$
+$$\min \; \nabla f(x^\ast)^T x \quad \text{subject to} \quad \nabla g_j(x^\ast)^T(x - x^\ast) \le 0, \; j \in I(x^\ast), \quad \nabla h_\ell(x^\ast)^T(x - x^\ast) = 0, \; \ell = 1, \ldots, L.$$
 
-Due to the linear independence assumption, the solution $x^*$ remains optimal. The dual problem to the linear program is
+Due to the linear independence assumption, the solution $x^\ast$ remains optimal. The dual problem to the linear program is
 
-$$\max \sum_{\ell=1}^L (\nabla h_\ell(x^*)^T x^*)\mu_\ell + \sum_{j \in I(x^*)} (\nabla g_j(x^*)^T x^*)\lambda_j \quad \text{subject to}$$
+$$\max \sum_{\ell=1}^L (\nabla h_\ell(x^\ast)^T x^\ast)\mu_\ell + \sum_{j \in I(x^\ast)} (\nabla g_j(x^\ast)^T x^\ast)\lambda_j \quad \text{subject to}$$
 
-$$\nabla f(x^*) + \sum_{\ell=1}^L \nabla h_\ell(x^*)\mu_\ell + \sum_{j \in I(x^*)} \nabla g_j(x^*)\lambda_j = 0, \quad \lambda_j \ge 0, \; j \in I(x^*).$$
+$$\nabla f(x^\ast) + \sum_{\ell=1}^L \nabla h_\ell(x^\ast)\mu_\ell + \sum_{j \in I(x^\ast)} \nabla g_j(x^\ast)\lambda_j = 0, \quad \lambda_j \ge 0, \; j \in I(x^\ast).$$
 
-Since the primal problem has an optimum, the dual problem must be feasible. Hence there exist $\lambda \ge 0, \mu$ satisfying (5.2). Condition (5.3) is fulfilled since for $j \in I(x^*)$ we have $g_j(x^*) = 0$ by definition, and for $j \notin I(x^*)$ we can put $\lambda_j = 0$.
+Since the primal problem has an optimum, the dual problem must be feasible. Hence there exist $\lambda \ge 0, \mu$ satisfying (5.2). Condition (5.3) is fulfilled since for $j \in I(x^\ast)$ we have $g_j(x^\ast) = 0$ by definition, and for $j \notin I(x^\ast)$ we can put $\lambda_j = 0$.
 
 </details>
 </div>
 
-Conditions (5.2)–(5.3) are called **Karush–Kuhn–Tucker conditions** (Karush, 1939; Kuhn and Tucker, 1951), or KKT conditions in short.
+Conditions (5.2)–(5.3) are called \ast\astKarush–Kuhn–Tucker conditions\ast\ast (Karush, 1939; Kuhn and Tucker, 1951), or KKT conditions in short.
 
-Since the linear independence assumption is hard to check in general (notice that $x^*$ is unknown), alternative assumptions were derived, too. Usually, they are more easy to verify but on account of stronger assumptions. One commonly used assumption is **Slater's condition**
+Since the linear independence assumption is hard to check in general (notice that $x^\ast$ is unknown), alternative assumptions were derived, too. Usually, they are more easy to verify but on account of stronger assumptions. One commonly used assumption is \ast\astSlater's condition\ast\ast
 
 $$\exists x^0 \in M : g(x^0) < 0.$$
 
@@ -1641,11 +1641,11 @@ Consider the optimization problem
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0, \; x \in M,$$
 
-where $f(x), g_j(x)$ are convex functions and $M$ is a convex set. Suppose that Slater's condition is satisfied. If $x^*$ is an optimum of the above problem, then there exists $\lambda \ge 0$ such that $x^*$ is an optimum of the problem
+where $f(x), g_j(x)$ are convex functions and $M$ is a convex set. Suppose that Slater's condition is satisfied. If $x^\ast$ is an optimum of the above problem, then there exists $\lambda \ge 0$ such that $x^\ast$ is an optimum of the problem
 
 $$\min \; f(x) + \lambda^T g(x) \quad \text{subject to} \quad x \in M, \tag{5.4}$$
 
-and, moreover, $\lambda^T g(x^*) = 0$.
+and, moreover, $\lambda^T g(x^\ast) = 0$.
 
 </div>
 
@@ -1657,27 +1657,27 @@ Define the sets
 
 $$\mathcal{A} := \lbrace (r,s) \in \mathbb{R}^J \times \mathbb{R};\; r \ge g(x), \; s \ge f(x), \; x \in M \rbrace,$$
 
-$$\mathcal{B} := \lbrace (r,s) \in \mathbb{R}^J \times \mathbb{R};\; r \le 0, \; s \le f(x^*) \rbrace.$$
+$$\mathcal{B} := \lbrace (r,s) \in \mathbb{R}^J \times \mathbb{R};\; r \le 0, \; s \le f(x^\ast) \rbrace.$$
 
-Both sets are convex, and their interiors are disjoint since otherwise there is a point $x \in M$ such that $g(x) < 0$ and $f(x) < f(x^*)$. Therefore a separating hyperplane exists having the form of $\lambda^T r + \lambda_0 s = c$, where $(\lambda, \lambda_0) \ne 0$. The separability implies:
+Both sets are convex, and their interiors are disjoint since otherwise there is a point $x \in M$ such that $g(x) < 0$ and $f(x) < f(x^\ast)$. Therefore a separating hyperplane exists having the form of $\lambda^T r + \lambda_0 s = c$, where $(\lambda, \lambda_0) \ne 0$. The separability implies:
 
 $$\forall (r,s) \in \mathcal{A} : \lambda^T r + \lambda_0 s \ge c, \qquad \forall (r,s) \in \mathcal{B} : \lambda^T r + \lambda_0 s \le c.$$
 
-Since $(0, f(x^*)) \in \mathcal{A} \cap \mathcal{B}$, this point lies on the hyperplane, and thus $c = \lambda_0 f(x^*)$. Analogously $(g(x^*), f(x^*)) \in \mathcal{A} \cap \mathcal{B}$, so this point also lies on the hyperplane, yielding
+Since $(0, f(x^\ast)) \in \mathcal{A} \cap \mathcal{B}$, this point lies on the hyperplane, and thus $c = \lambda_0 f(x^\ast)$. Analogously $(g(x^\ast), f(x^\ast)) \in \mathcal{A} \cap \mathcal{B}$, so this point also lies on the hyperplane, yielding
 
-$$\lambda^T g(x^*) + \lambda_0 f(x^*) = c = \lambda_0 f(x^*),$$
+$$\lambda^T g(x^\ast) + \lambda_0 f(x^\ast) = c = \lambda_0 f(x^\ast),$$
 
-which gives the complementarity constraint $\lambda^T g(x^*) = 0$.
+which gives the complementarity constraint $\lambda^T g(x^\ast) = 0$.
 
-For every $i$ we have $(-e_i, f(x^*)) \in \mathcal{B}$, so this point lies in the negative halfspace. This means that $-\lambda^T e_i + \lambda_0 f(x^*) \le c$, from which $\lambda_i \ge 0$. Therefore $\lambda \ge 0$. Analogously we deduce $\lambda_0 \ge 0$. Since $(o, f(x^*) - 1) \in \mathcal{B}$, so $\lambda^T o + \lambda_0(f(x^*) - 1) \le c$, and hence $\lambda_0 \ge 0$.
+For every $i$ we have $(-e_i, f(x^\ast)) \in \mathcal{B}$, so this point lies in the negative halfspace. This means that $-\lambda^T e_i + \lambda_0 f(x^\ast) \le c$, from which $\lambda_i \ge 0$. Therefore $\lambda \ge 0$. Analogously we deduce $\lambda_0 \ge 0$. Since $(o, f(x^\ast) - 1) \in \mathcal{B}$, so $\lambda^T o + \lambda_0(f(x^\ast) - 1) \le c$, and hence $\lambda_0 \ge 0$.
 
 Since $g(x^0) < 0$, we have $(r, f(x^0)) \in \mathcal{A}$ for every $r$ in the neighbourhood of $0$. Hence the separating hyperplane cannot be vertical, which means $\lambda_0 \ne 0$. Without loss of generality we normalize it such that $\lambda_0 = 1$.
 
 For every $x \in M$ we have $(g(x), f(x)) \in \mathcal{A}$, which fulfills
 
-$$\lambda^T g(x) + f(x) \ge c = \lambda^T g(x^*) + f(x^*) = f(x^*).$$
+$$\lambda^T g(x) + f(x) \ge c = \lambda^T g(x^\ast) + f(x^\ast) = f(x^\ast).$$
 
-This proves that $x^*$ is the optimum of (5.4).
+This proves that $x^\ast$ is the optimum of (5.4).
 
 </details>
 </div>
@@ -1691,11 +1691,11 @@ Suppose that Slater's condition is satisfied for the convex optimization problem
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0.$$
 
-If $x^*$ is an optimum, then there exists $\lambda \ge 0$ such that the KKT conditions are satisfied, i.e.,
+If $x^\ast$ is an optimum, then there exists $\lambda \ge 0$ such that the KKT conditions are satisfied, i.e.,
 
-$$\nabla f(x^*) + \nabla g(x^*)\lambda = 0, \tag{5.5a}$$
+$$\nabla f(x^\ast) + \nabla g(x^\ast)\lambda = 0, \tag{5.5a}$$
 
-$$\lambda^T g(x^*) = 0. \tag{5.5b}$$
+$$\lambda^T g(x^\ast) = 0. \tag{5.5b}$$
 
 </div>
 
@@ -1708,18 +1708,18 @@ Suppose that Slater's condition is satisfied for the convex optimization problem
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0, \; Ax = b.$$
 
-If $x^*$ is an optimum, then there exist $\lambda \ge 0$ and $\mu$ such that the KKT conditions are satisfied, i.e.,
+If $x^\ast$ is an optimum, then there exist $\lambda \ge 0$ and $\mu$ such that the KKT conditions are satisfied, i.e.,
 
-$$\nabla f(x^*) + \nabla g(x^*)\lambda + A^T \mu = 0,$$
+$$\nabla f(x^\ast) + \nabla g(x^\ast)\lambda + A^T \mu = 0,$$
 
-$$\lambda^T g(x^*) = 0.$$
+$$\lambda^T g(x^\ast) = 0.$$
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.7</span></p>
 
-If Slater's condition is not satisfied, then the KKT conditions property (Corollary 5.5) can fail. Consider an optimization problem $\min_{x \in M} x_1$. Two constraints describe the feasible set having the form of a half-line starting from point $x^*$. Point $x^*$ is optimal. The KKT conditions read $-\nabla f(x^*) = \nabla g(x^*)\lambda$, but the point $x^*$ does not fulfill them since the gradients $\nabla g_1(x^*) = (0,-1)^T$ and $\nabla g_2(x^*) = (0,1)^T$ span a vertical line, not containing the opposite of the objective function gradient $-\nabla f(x^*) = (-1,0)^T$.
+If Slater's condition is not satisfied, then the KKT conditions property (Corollary 5.5) can fail. Consider an optimization problem $\min_{x \in M} x_1$. Two constraints describe the feasible set having the form of a half-line starting from point $x^\ast$. Point $x^\ast$ is optimal. The KKT conditions read $-\nabla f(x^\ast) = \nabla g(x^\ast)\lambda$, but the point $x^\ast$ does not fulfill them since the gradients $\nabla g_1(x^\ast) = (0,-1)^T$ and $\nabla g_2(x^\ast) = (0,1)^T$ span a vertical line, not containing the opposite of the objective function gradient $-\nabla f(x^\ast) = (-1,0)^T$.
 
 </div>
 
@@ -1728,11 +1728,11 @@ In optimization, necessary optimality conditions are usually preferred to suffic
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.8</span><span class="math-callout__name">(Sufficient KKT Conditions)</span></p>
 
-Let $x^* \in \mathbb{R}^n$ be a feasible solution of
+Let $x^\ast \in \mathbb{R}^n$ be a feasible solution of
 
 $$\min \; f(x) \quad \text{subject to} \quad g(x) \le 0,$$
 
-let $f(x)$ be a convex function, and let $g_j(x)$, $j \in I(x^*)$, be convex functions, too. If KKT conditions (5.5) are satisfied for $x^*$ with certain $\lambda \ge 0$, then $x^*$ is an optimal solution.
+let $f(x)$ be a convex function, and let $g_j(x)$, $j \in I(x^\ast)$, be convex functions, too. If KKT conditions (5.5) are satisfied for $x^\ast$ with certain $\lambda \ge 0$, then $x^\ast$ is an optimal solution.
 
 </div>
 
@@ -1740,15 +1740,15 @@ let $f(x)$ be a convex function, and let $g_j(x)$, $j \in I(x^*)$, be convex fun
 <details markdown="1">
 <summary>Proof</summary>
 
-Convexity of function $f(x)$ implies $f(x) - f(x^*) \ge \nabla f(x^*)^T(x - x^*)$ due to Theorem 3.18. Analogously, for functions $g_j(x)$, $j \in I(x^*)$, we have $g_j(x) - g_j(x^*) \ge \nabla g_j(x^*)^T(x - x^*)$. KKT conditions give $\nabla f(x^*) = -\nabla g(x^*)\lambda$, from which premultiplying by $(x - x^*)$ we get
+Convexity of function $f(x)$ implies $f(x) - f(x^\ast) \ge \nabla f(x^\ast)^T(x - x^\ast)$ due to Theorem 3.18. Analogously, for functions $g_j(x)$, $j \in I(x^\ast)$, we have $g_j(x) - g_j(x^\ast) \ge \nabla g_j(x^\ast)^T(x - x^\ast)$. KKT conditions give $\nabla f(x^\ast) = -\nabla g(x^\ast)\lambda$, from which premultiplying by $(x - x^\ast)$ we get
 
-$$f(x) - f(x^*) \ge \nabla f(x^*)^T(x - x^*) = -\lambda^T \nabla g(x^*)^T(x - x^*)$$
+$$f(x) - f(x^\ast) \ge \nabla f(x^\ast)^T(x - x^\ast) = -\lambda^T \nabla g(x^\ast)^T(x - x^\ast)$$
 
-$$= -\sum_{j \in I(x^*)} \lambda_j \nabla g_j(x^*)^T(x - x^*) \ge -\sum_{j \in I(x^*)} \lambda_j (g_j(x) - g_j(x^*))$$
+$$= -\sum_{j \in I(x^\ast)} \lambda_j \nabla g_j(x^\ast)^T(x - x^\ast) \ge -\sum_{j \in I(x^\ast)} \lambda_j (g_j(x) - g_j(x^\ast))$$
 
-$$= -\sum_{j \in I(x^*)} \lambda_j g_j(x) \ge 0.$$
+$$= -\sum_{j \in I(x^\ast)} \lambda_j g_j(x) \ge 0.$$
 
-Therefore $f(x^*)$ is the optimal value and $x^*$ is an optimal solution.
+Therefore $f(x^\ast)$ is the optimal value and $x^\ast$ is an optimal solution.
 
 </details>
 </div>
@@ -1829,12 +1829,12 @@ A basic approach is an iterative method, generating a sequence of points $x_0, x
 
 In $k$th iteration, the current point is $x_k$. We determine a direction $d_k$ in which the objective function locally decreases, that is, $\nabla f(x_k)^T d_k < 0$. Now we call a line search method applied to the function $\varphi(\alpha) := f(x_k + \alpha d_k)$. Denote by $\alpha_k$ the output. Then the next point is set as $x_{k+1} := x_k + \alpha_k d_k$.
 
-How to choose $d_k$? The simplest way is the **steepest descent method**, which takes $d_k := -\nabla f(x_k)$, that is, the direction in which the objective function locally decreases the most rapidly. This choice need no be the best one. There are advanced methods that take into account also the Hessian $\nabla^2 f(x_k)$ or its approximation and they combine the steepest descent direction and the directions of the previous iteration(s); see also the conjugate gradient methods in Section 6.4.
+How to choose $d_k$? The simplest way is the \ast\aststeepest descent method\ast\ast, which takes $d_k := -\nabla f(x_k)$, that is, the direction in which the objective function locally decreases the most rapidly. This choice need no be the best one. There are advanced methods that take into account also the Hessian $\nabla^2 f(x_k)$ or its approximation and they combine the steepest descent direction and the directions of the previous iteration(s); see also the conjugate gradient methods in Section 6.4.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.1</span><span class="math-callout__name">(Learning of Neural Networks)</span></p>
 
-Basically, the steepest descent method is used in learning of artificial neural networks. The goal of the learning is to set up weights of inputs of particular neurons such that the neural network performs best on the training data. Mathematically speaking, the variables are the weights of inputs of the neurons. The objective function that we minimize is the distance between the actual output vector and the ideal output vector. It is hard to find the optimal solution since this optimization problem is nonlinear, nonconvex and high-dimensional. That is why the problem is solved iteratively and at each step the weights are refined by means of the steepest descent. To compute the gradient of the objective function is also computationally demanding since there are usually large training data, so we simplify further and we approximate the gradient by its partial value based on the gradient of a randomly chosen training sample point. This approach is called *stochastic gradient descent*.
+Basically, the steepest descent method is used in learning of artificial neural networks. The goal of the learning is to set up weights of inputs of particular neurons such that the neural network performs best on the training data. Mathematically speaking, the variables are the weights of inputs of the neurons. The objective function that we minimize is the distance between the actual output vector and the ideal output vector. It is hard to find the optimal solution since this optimization problem is nonlinear, nonconvex and high-dimensional. That is why the problem is solved iteratively and at each step the weights are refined by means of the steepest descent. To compute the gradient of the objective function is also computationally demanding since there are usually large training data, so we simplify further and we approximate the gradient by its partial value based on the gradient of a randomly chosen training sample point. This approach is called \aststochastic gradient descent\ast.
 
 </div>
 
@@ -1867,9 +1867,9 @@ $$x = x_k - (\nabla^2 f(x_k))^{-1} \nabla f(x_k).$$
 
 This point is set as the current point $x_{k+1}$ of the next iteration.
 
-*Comment.* The expression $y := (\nabla^2 f(x_k))^{-1} \nabla f(x_k)$ is evaluated by solving the system of linear equations $\nabla^2 f(x_k) y = \nabla f(x_k)$, not by inverting the matrix.
+\astComment.\ast The expression $y := (\nabla^2 f(x_k))^{-1} \nabla f(x_k)$ is evaluated by solving the system of linear equations $\nabla^2 f(x_k) y = \nabla f(x_k)$, not by inverting the matrix.
 
-The advantage of this method is a rapid convergence (if we are close to the minimum). The drawback is that the Hessian $\nabla^2 f(x_k)$ need not be positive definite. Another drawback is that the evaluation of the Hessian might be computationally demanding. Therefore, diverse variants of this method exist (quasi-Newton methods) that approximate the Hessian matrix or regularize it. *Quasi-Newton* methods utilize an approximation of the Hessian matrix, so that we replace it with a certain positive definite matrix $P$. If we take $P := I_n$, it reduces to the steepest descent method (albeit with no perfect step length).
+The advantage of this method is a rapid convergence (if we are close to the minimum). The drawback is that the Hessian $\nabla^2 f(x_k)$ need not be positive definite. Another drawback is that the evaluation of the Hessian might be computationally demanding. Therefore, diverse variants of this method exist (quasi-Newton methods) that approximate the Hessian matrix or regularize it. \astQuasi-Newton\ast methods utilize an approximation of the Hessian matrix, so that we replace it with a certain positive definite matrix $P$. If we take $P := I_n$, it reduces to the steepest descent method (albeit with no perfect step length).
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 6.3</span><span class="math-callout__name">(Scaling)</span></p>
@@ -1902,13 +1902,13 @@ These methods naturally the generalize gradient methods from unconstrained optim
 
 These methods are particularly convenient when $M$ is a convex polyhedron. So in this section we assume that $M = \lbrace x \in \mathbb{R}^n;\; Ax \le b \rbrace$.
 
-**Method by Frank and Wolfe (1956).** Let $x_k$ be the current feasible point in $k$th iteration. A feasible descent direction $d_k$ is computed by an auxiliary linear program
+\ast\astMethod by Frank and Wolfe (1956).\ast\ast Let $x_k$ be the current feasible point in $k$th iteration. A feasible descent direction $d_k$ is computed by an auxiliary linear program
 
 $$\min \; \nabla f(x_k)^T x \quad \text{subject to} \quad Ax \le b.$$
 
-Denote by $x_k^*$ its optimal solution. Then we take $d_k := x_k^* - x_k$. This direction is feasible since $x_k^* \in M$. Moreover, $d_k$ corresponds to a steep descent since the objective function $\nabla f(x_k)^T(x - x_k)$ yields the derivative of function $f$ at point $x_k$ in the direction of $x - x_k$ (the term $\nabla f(x_k)^T x_k$ is negligible since it is constant).
+Denote by $x_k^\ast$ its optimal solution. Then we take $d_k := x_k^\ast - x_k$. This direction is feasible since $x_k^\ast \in M$. Moreover, $d_k$ corresponds to a steep descent since the objective function $\nabla f(x_k)^T(x - x_k)$ yields the derivative of function $f$ at point $x_k$ in the direction of $x - x_k$ (the term $\nabla f(x_k)^T x_k$ is negligible since it is constant).
 
-**Method by Zoutendijk (1960).** This method is similar to the previous one, but the auxiliary problem has the form
+\ast\astMethod by Zoutendijk (1960).\ast\ast This method is similar to the previous one, but the auxiliary problem has the form
 
 $$\min \; \nabla f(x_k)^T x \quad \text{subject to} \quad Ax \le b, \; \lVert x - x_k \rVert \le 1.$$
 
@@ -1928,9 +1928,9 @@ be the active set. Then we solve an auxiliary problem
 
 $$\min \; f(x) \quad \text{subject to} \quad h(x) = 0, \; g_j(x) = 0, \; j \in W.$$
 
-If we move to the boundary of $M$ during the computation and another constraint becomes active, then we include it to $W$. If we achieve a local minimum $x^*$ during the computation of this auxiliary problem, then we assume that KKT conditions are satisfied. That is, there exists $\lambda$ such that
+If we move to the boundary of $M$ during the computation and another constraint becomes active, then we include it to $W$. If we achieve a local minimum $x^\ast$ during the computation of this auxiliary problem, then we assume that KKT conditions are satisfied. That is, there exists $\lambda$ such that
 
-$$\nabla f(x^*) + \nabla h(x^*)\mu + \sum_{j \in W} \lambda_j \nabla g_j(x^*) = 0.$$
+$$\nabla f(x^\ast) + \nabla h(x^\ast)\mu + \sum_{j \in W} \lambda_j \nabla g_j(x^\ast) = 0.$$
 
 Now, if $\lambda_j \ge 0$, then $j$ remains in $W$; otherwise the index $j$ is removed from $W$. This treatment is based on the interpretation of Lagrange multipliers as the negative derivatives of the objective function with respect to the right-hand side of the constraints. Hence, $\lambda_j < 0$ implies that locally a decrease of $g_j(x)$ makes a decrease of $f(x)$.
 
@@ -1946,7 +1946,7 @@ Consider the problem
 
 $$\min \; f(x) \quad \text{subject to} \quad x \in M,$$
 
-where $f(x)$ is a continuous function and $M \ne \emptyset$ is a closed set. A **penalty function** is any continuous nonnegative function $q \colon \mathbb{R}^n \to \mathbb{R}$ satisfying the conditions:
+where $f(x)$ is a continuous function and $M \ne \emptyset$ is a closed set. A \ast\astpenalty function\ast\ast is any continuous nonnegative function $q \colon \mathbb{R}^n \to \mathbb{R}$ satisfying the conditions:
 
 - $q(x) = 0$ for every $x \in M$,
 - $q(x) > 0$ for every $x \notin M$.
@@ -1966,7 +1966,7 @@ Let $x_k$ be an optimal solution of problem
 
 $$\min \; f(x) + c_k \cdot q(x) \quad \text{subject to} \quad x \in \mathbb{R}^n.$$
 
-If $x_k \to_{k \to \infty} x^*$, then $x^*$ is an optimal solution of the original problem $\min_{x \in M} f(x)$.
+If $x_k \to_{k \to \infty} x^\ast$, then $x^\ast$ is an optimal solution of the original problem $\min_{x \in M} f(x)$.
 
 </div>
 
@@ -1974,11 +1974,11 @@ If $x_k \to_{k \to \infty} x^*$, then $x^*$ is an optimal solution of the origin
 <details markdown="1">
 <summary>Proof</summary>
 
-If $x^* \notin M$, then for $k^*$ large enough we have $x_k \notin M$ $\forall k \ge k^*$, and thus the objective function grows without bound. Hence $f(x^*) + c_k \cdot q(x^*) \to_{k \to \infty} \infty$ and also $f(x_k) + c_k \cdot q(x_k) \to_{k \to \infty} \infty$, which contradicts optimality of $x_k$.
+If $x^\ast \notin M$, then for $k^\ast$ large enough we have $x_k \notin M$ $\forall k \ge k^\ast$, and thus the objective function grows without bound. Hence $f(x^\ast) + c_k \cdot q(x^\ast) \to_{k \to \infty} \infty$ and also $f(x_k) + c_k \cdot q(x_k) \to_{k \to \infty} \infty$, which contradicts optimality of $x_k$.
 
-Consider now the case of $x^* \in M$ and suppose to the contrary that $x^*$ is not optimal. Then there is a point $x' \in M$ such that $f(x') < f(x^*)$. Since the penalization is zero within the feasible set $M$, we get
+Consider now the case of $x^\ast \in M$ and suppose to the contrary that $x^\ast$ is not optimal. Then there is a point $x' \in M$ such that $f(x') < f(x^\ast)$. Since the penalization is zero within the feasible set $M$, we get
 
-$$f(x') + c_k \cdot q(x') < f(x^*) + c_k \cdot q(x^*)$$
+$$f(x') + c_k \cdot q(x') < f(x^\ast) + c_k \cdot q(x^\ast)$$
 
 for every $k \in \mathbb{N}$. Due to continuity we have for sufficiently large $k$
 
@@ -2008,7 +2008,7 @@ Consider again the problem
 
 $$\min \; f(x) \quad \text{subject to} \quad x \in M,$$
 
-where $f(x)$ is a continuous function. Suppose that $M$ is a connected set satisfying $M = \text{cl}(\text{int}\,M)$, that is, it is equal to the closure if its interior. A **barrier function** is any continuous nonnegative function $q \colon \text{int}\,M \to \mathbb{R}$ such that $q(x) \to \infty$ for every $x \to \partial M$. This means that when $x$ approaches the boundary of $M$, then the barrier function grows to infinity.
+where $f(x)$ is a continuous function. Suppose that $M$ is a connected set satisfying $M = \text{cl}(\text{int}\,M)$, that is, it is equal to the closure if its interior. A \ast\astbarrier function\ast\ast is any continuous nonnegative function $q \colon \text{int}\,M \to \mathbb{R}$ such that $q(x) \to \infty$ for every $x \to \partial M$. This means that when $x$ approaches the boundary of $M$, then the barrier function grows to infinity.
 
 The original problem is then transformed to an unconstrained problem
 
@@ -2035,7 +2035,7 @@ $$\min \; c^T x \quad \text{subject to} \quad Ax \le b$$
 
 is transformed to the problem
 
-$$\min \; c^T x - \frac{1}{c_k} \sum_{i=1}^m \log(b_i - A_{i*}x).$$
+$$\min \; c^T x - \frac{1}{c_k} \sum_{i=1}^m \log(b_i - A_{i\ast}x).$$
 
 For semidefinite condition $X \succeq 0$ we can use the barrier function
 
@@ -2063,7 +2063,7 @@ Let $c_k > 0$ be a sequence of numbers such that $c_k \to_{k \to \infty} \infty$
 
 $$\min \; f(x) + \frac{1}{c_k} q(x) \quad \text{subject to} \quad x \in \mathbb{R}^n.$$
 
-If $x_k \to_{k \to \infty} x^*$, then $x^*$ is an optimal solution of the original problem $\min_{x \in M} f(x)$.
+If $x_k \to_{k \to \infty} x^\ast$, then $x^\ast$ is an optimal solution of the original problem $\min_{x \in M} f(x)$.
 
 </div>
 
@@ -2071,9 +2071,9 @@ If $x_k \to_{k \to \infty} x^*$, then $x^*$ is an optimal solution of the origin
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose to the contrary that $x^*$ is not optimal, that is, there is $x' \in M$ such that $f(x') < f(x^*)$. Due to continuity of $f(x)$ there is $x'' \in \text{int}\,M$ such that $f(x'') < f(x^*)$. Then for $k$ large enough we have
+Suppose to the contrary that $x^\ast$ is not optimal, that is, there is $x' \in M$ such that $f(x') < f(x^\ast)$. Due to continuity of $f(x)$ there is $x'' \in \text{int}\,M$ such that $f(x'') < f(x^\ast)$. Then for $k$ large enough we have
 
-$$f(x'') + \frac{1}{c_k} q(x'') < f(x^*) + \frac{1}{c_k} q(x^*).$$
+$$f(x'') + \frac{1}{c_k} q(x'') < f(x^\ast) + \frac{1}{c_k} q(x^\ast).$$
 
 For $k$ large enough we also have
 
@@ -2084,7 +2084,7 @@ which is a contradiction to the optimality of $x_k$ in step $k$.
 </details>
 </div>
 
-For convex optimization problems under general assumptions (e.g., strictly convex barrier function and $M$ bounded) the optimal solution $x(c)$ of (6.2) is unique and the points $x(c)$, $c > 0$, draw a smooth curve, called the **central path**, whose limit as $c \to \infty$ is the optimal solution of the original problem.
+For convex optimization problems under general assumptions (e.g., strictly convex barrier function and $M$ bounded) the optimal solution $x(c)$ of (6.2) is unique and the points $x(c)$, $c > 0$, draw a smooth curve, called the \ast\astcentral path\ast\ast, whose limit as $c \to \infty$ is the optimal solution of the original problem.
 
 Certain algorithms use the same principle: For the increasing values of $c$ they find (approximation of) the optimal solutions $x(c)$. With a small change of $c$ the point $x(c)$ moves continuously, so it is easy and fast to reoptimize and find the new optimum. For theoretical analysis of polynomiality of certain convex optimization problems short steps are used, but in practice larger steps are convenient. Typically, we increase $c$ with a factor of 1.1.
 
@@ -2102,11 +2102,11 @@ $$f(x) = \frac{1}{2}x^T Ax - b^T x.$$
 
 Since $A$ is positive definite, the function is strictly convex and attains the unique minimum. The minimum is the point, in which the gradient $\nabla f(x) = Ax - b$ is zero. Hence the minimum of function $f(x)$ is the same as the solution of $Ax = b$. In this way we reduced the problem of solving linear equations to an optimization problem.
 
-We will describe the method in a simplified way. First, instead of the standard basis of $\mathbb{R}^n$ we consider an orthonormal basis $d_1, \ldots, d_n$ and the inner product $\langle x, y \rangle := x^T Ay$ instead of the standard one; to avoid confusion, the corresponding orthogonality is called A-orthogonality and the orthonormal basis is called A-orthonormal. We will show later on how to choose the basis. Denote by $x^* := A^{-1}b$ the solution we are seeking for, and denote by $x_k$ an approximate solution obtained in $k$th iteration. At the beginning, the initial point $x_1$ is chosen arbitrarily.
+We will describe the method in a simplified way. First, instead of the standard basis of $\mathbb{R}^n$ we consider an orthonormal basis $d_1, \ldots, d_n$ and the inner product $\langle x, y \rangle := x^T Ay$ instead of the standard one; to avoid confusion, the corresponding orthogonality is called A-orthogonality and the orthonormal basis is called A-orthonormal. We will show later on how to choose the basis. Denote by $x^\ast := A^{-1}b$ the solution we are seeking for, and denote by $x_k$ an approximate solution obtained in $k$th iteration. At the beginning, the initial point $x_1$ is chosen arbitrarily.
 
-**Basic scheme.** We express vector $x^* - x_1$ as a linear combination of the basis vectors
+\ast\astBasic scheme.\ast\ast We express vector $x^\ast - x_1$ as a linear combination of the basis vectors
 
-$$x^* - x_1 = \sum_{k=1}^n \alpha_k d_k.$$
+$$x^\ast - x_1 = \sum_{k=1}^n \alpha_k d_k.$$
 
 The basic scheme of the method is simple — imagine we move from a vertex of a box to the opposite vertex by using the (mutually perpendicular) edges:
 
@@ -2116,11 +2116,11 @@ To implement the method we need to determine the basis $d_1, \ldots, d_n$ and sh
 
 $$x_{k+1} = x_k + \alpha_k d_k = x_{k-1} + \alpha_k d_k + \alpha_{k-1} d_{k-1} = \ldots = x_j + \sum_{i=j}^k \alpha_i d_i.$$
 
-**Computation of $\alpha_k$.** Since $d_1, \ldots, d_n$ is an A-orthonormal basis, the coordinates $\alpha_k$ are the Fourier coefficients and we compute them easily as $\alpha_k = \langle d_k, x^* - x_1 \rangle$. The problem is that $x^*$ is unknown. Since $x_k - x_1 = \sum_{i=1}^{k-1} \alpha_i d_i$, vector $x_k - x_1$ is A-orthogonal to $d_k$, that is, $\langle d_k, x_k - x_1 \rangle = 0$. We derive
+\ast\astComputation of $\alpha_k$.\ast\ast Since $d_1, \ldots, d_n$ is an A-orthonormal basis, the coordinates $\alpha_k$ are the Fourier coefficients and we compute them easily as $\alpha_k = \langle d_k, x^\ast - x_1 \rangle$. The problem is that $x^\ast$ is unknown. Since $x_k - x_1 = \sum_{i=1}^{k-1} \alpha_i d_i$, vector $x_k - x_1$ is A-orthogonal to $d_k$, that is, $\langle d_k, x_k - x_1 \rangle = 0$. We derive
 
-$$\alpha_k = \langle d_k, x^* - x_1 \rangle = \langle d_k, x^* - x_k + x_k - x_1 \rangle = \langle d_k, x^* - x_k \rangle + \langle d_k, x_k - x_1 \rangle$$
+$$\alpha_k = \langle d_k, x^\ast - x_1 \rangle = \langle d_k, x^\ast - x_k + x_k - x_1 \rangle = \langle d_k, x^\ast - x_k \rangle + \langle d_k, x_k - x_1 \rangle$$
 
-$$= \langle d_k, x^* - x_k \rangle = d_k^T A(x^* - x_k) = d_k^T(b - Ax_k) = -d_k^T g_k.$$
+$$= \langle d_k, x^\ast - x_k \rangle = d_k^T A(x^\ast - x_k) = d_k^T(b - Ax_k) = -d_k^T g_k.$$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 6.9</span></p>
@@ -2129,7 +2129,7 @@ Vector $x_{k+1}$ is the minimum of $f(x)$ on the affine subspace $x_1 + \text{sp
 
 </div>
 
-**The choice of basis $d_1, \ldots, d_n$.** We choose the basis such that $\text{span}\lbrace d_1, \ldots, d_k \rbrace = \text{span}\lbrace g_1, \ldots, g_k \rbrace$ for every $k = 1, \ldots, n$. At the beginning we naturally put $d_1 := -g_1 / \sqrt{\langle g_1, g_1 \rangle}$. In $(k+1)$st iteration we construct vector $d_{k+1}$ from vector $-g_{k+1}$ by making it orthogonal to subspace $\text{span}\lbrace d_1, \ldots, d_k \rbrace$.
+\ast\astThe choice of basis $d_1, \ldots, d_n$.\ast\ast We choose the basis such that $\text{span}\lbrace d_1, \ldots, d_k \rbrace = \text{span}\lbrace g_1, \ldots, g_k \rbrace$ for every $k = 1, \ldots, n$. At the beginning we naturally put $d_1 := -g_1 / \sqrt{\langle g_1, g_1 \rangle}$. In $(k+1)$st iteration we construct vector $d_{k+1}$ from vector $-g_{k+1}$ by making it orthogonal to subspace $\text{span}\lbrace d_1, \ldots, d_k \rbrace$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 6.10</span></p>
@@ -2183,7 +2183,7 @@ There are also methods employing Krylov subspaces for solving systems $Ax = b$, 
 
 ## 7.1 Robust Optimization
 
-In practice, data are often inexact or subject to various uncertainties. This motivates us to seek for solutions that are *robust*. There is no precise definition, but basically it means that a robust solution is feasible and optimal even for specific data perturbations. We present two approaches to robustness, the interval one and the ellipsoidal one.
+In practice, data are often inexact or subject to various uncertainties. This motivates us to seek for solutions that are \astrobust\ast. There is no precise definition, but basically it means that a robust solution is feasible and optimal even for specific data perturbations. We present two approaches to robustness, the interval one and the ellipsoidal one.
 
 ### Interval Uncertainty (I)
 
@@ -2320,13 +2320,13 @@ Consider again the portfolio selection problem (Example 4.10)
 
 $$\max \; c^T x \quad \text{subject to} \quad e^T x = K, \; x \ge o, \tag{7.2}$$
 
-where $c$ is a random Gaussian vector, its expected value is $\tilde{c} := \text{E}\,c$ and the covariance matrix is $\Sigma := \text{cov}\,c = \text{E}\,(c - \tilde{c})(c - \tilde{c})^T$. The level sets of the density function represent ellipsoids, so it is natural to work with them. For a random vector $c$ we have that the probability $P(c - \tilde{c} \in \mathcal{E}_\eta) = \eta$, where $\mathcal{E}_\eta$ is a certain ellipsoid (concretely, $\mathcal{E}_\eta = \lbrace d \in \mathbb{R}^n;\; d = F^{-1}(\eta)\sqrt{\Sigma}u, \; \lVert u \rVert_2 \le 1 \rbrace$, where $F^{-1}(\eta)$ is the quantile function of the normal distribution and $\sqrt{\Sigma}$ is the positive semidefinite square root of matrix $\Sigma$, i.e., $(\sqrt{\Sigma})^2 = \Sigma$).
+where $c$ is a random Gaussian vector, its expected value is $\tilde{c} := \text{E}\,c$ and the covariance matrix is $\Sigma := \text{cov}\,c = \text{E}\,(c - \tilde{c})(c - \tilde{c})^T$. The level sets of the density function represent ellipsoids, so it is natural to work with them. For a random vector $c$ we have that the probability $P(c - \tilde{c} \in \mathcal{E}\_\eta) = \eta$, where $\mathcal{E}\_\eta$ is a certain ellipsoid (concretely, $\mathcal{E}\_\eta = \lbrace d \in \mathbb{R}^n;\; d = F^{-1}(\eta)\sqrt{\Sigma}u, \; \lVert u \rVert_2 \le 1 \rbrace$, where $F^{-1}(\eta)$ is the quantile function of the normal distribution and $\sqrt{\Sigma}$ is the positive semidefinite square root of matrix $\Sigma$, i.e., $(\sqrt{\Sigma})^2 = \Sigma$).
 
 One of the possible ways to solve (7.2) is to consider the deterministic counterpart
 
 $$\max \; z \quad \text{subject to} \quad P(c^T x \ge z) \ge \eta, \; e^T x = K, \; x \ge o,$$
 
-where $\eta \in [\frac{1}{2}, 1]$ is a fixed value, e.g., $\eta = 0.95$. Obviously, condition $P(c^T x \ge z) \ge \eta$ is fulfilled if $d^T x \ge z$ holds for every $d \in \mathcal{E}_\eta + \tilde{c}$. Hence we can approximate the problem as
+where $\eta \in [\frac{1}{2}, 1]$ is a fixed value, e.g., $\eta = 0.95$. Obviously, condition $P(c^T x \ge z) \ge \eta$ is fulfilled if $d^T x \ge z$ holds for every $d \in \mathcal{E}\_\eta + \tilde{c}$. Hence we can approximate the problem as
 
 $$\max \; z \quad \text{subject to} \quad d^T x \ge z \; \forall d \in \mathcal{E}_\eta + \tilde{c}, \; e^T x = K, \; x \ge o.$$
 
@@ -2366,15 +2366,15 @@ Therefore $v_1$ is an optimum.
 </details>
 </div>
 
-*Remark.* The theorem can be extended as follows: Any continuous convex function on a compact set $M$ attains its maximum in an extreme point of $M$. This property holds even more generally, when function $f(x)$ is so called quasiconvex.
+\astRemark.\ast The theorem can be extended as follows: Any continuous convex function on a compact set $M$ attains its maximum in an extreme point of $M$. This property holds even more generally, when function $f(x)$ is so called quasiconvex.
 
 This property holds in linear programming, too. For computing an optimal solution, however, it is not very convenient since polyhedron $M$ may contain many vertices, and we do not know which one is optimal. By Theorem 4.9, concave programming is NP-hard.
 
 Typical problems resulting in concave programming comprise
 
-- *Fixed charged problems.* The objective function has the form $f(x) = \sum_{i=1}^k f_i(x_i)$, where $f_i(x_i) = 0$ for $x_i = 0$ and $f_i(x_i) = c_i + g_i(x_i)$ for $x_i > 0$. Herein, $f_i(x_i)$ represents a price (e.g., the price for the transport of goods of size $x_i$). Hence the price is naturally zero when $x_i = 0$. When $x_i > 0$, we pay a fixed charge $c_i$ plus the price $g_i(x_i)$ depending on the size. We can assume that $g_i(x_i)$ is concave since the larger $x_i$, the smaller relative price for the unit of goods (e.g., due to discounts).
+- \astFixed charged problems.\ast The objective function has the form $f(x) = \sum_{i=1}^k f_i(x_i)$, where $f_i(x_i) = 0$ for $x_i = 0$ and $f_i(x_i) = c_i + g_i(x_i)$ for $x_i > 0$. Herein, $f_i(x_i)$ represents a price (e.g., the price for the transport of goods of size $x_i$). Hence the price is naturally zero when $x_i = 0$. When $x_i > 0$, we pay a fixed charge $c_i$ plus the price $g_i(x_i)$ depending on the size. We can assume that $g_i(x_i)$ is concave since the larger $x_i$, the smaller relative price for the unit of goods (e.g., due to discounts).
 
-- *Multiplicative programming.* The objective function has the form $f(x) = \prod_{i=1}^k x_i$. This is not a concave function in general, but its logarithm gives a concave function $\log(f(x)) = \sum_{i=1}^k \log(x_i)$. Such problems appear in geometry, where, for example, we minimize the volume of a body (e.g., a cuboid) subject to some constraints (e.g., the cuboid contains specified points).
+- \astMultiplicative programming.\ast The objective function has the form $f(x) = \prod_{i=1}^k x_i$. This is not a concave function in general, but its logarithm gives a concave function $\log(f(x)) = \sum_{i=1}^k \log(x_i)$. Such problems appear in geometry, where, for example, we minimize the volume of a body (e.g., a cuboid) subject to some constraints (e.g., the cuboid contains specified points).
 
 # Appendix
 
