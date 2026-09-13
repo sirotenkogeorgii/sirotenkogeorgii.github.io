@@ -713,7 +713,7 @@ Let $\lbrace v_n \rbrace_{n=1}^{\infty}$ be a sequence of points in a normed spa
 
 $$\sum_n v_n \quad \text{ is summable} \iff \left\lbrace \sum_{m=1}^{n} v_m \right\rbrace_{n=1}^{\infty} \text{ converges in }V.$$
 
-$$\sum_n v_n \quad \text{ is absolutely summable} \iff \left\lbrace \sum_{m=1}^{n} \lVert v_m \rVert \right\rbrace_{n=1}^{\infty} \text{ converges in}\mathbb{R}.$$
+$$\sum_n v_n \quad \text{ is absolutely summable} \iff \left\lbrace \sum_{m=1}^{n} \lVert v_m \rVert \right\rbrace_{n=1}^{\infty} \text{ converges in }\mathbb{R}.$$
 
 </div>
 
@@ -5991,6 +5991,178 @@ $$\sum_n \lvert \langle u, e_n \rangle \rvert^2 \le \lVert u \rVert^2.$$
   </details>
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Closed Span of an Orthonormal Set and Orthogonal Projection)</span></p>
+
+Let $H$ be a Hilbert space, let $\lbrace e_n\rbrace_{n=1}^\infty$ be a countable orthonormal subset of $H$, and let
+
+$$W=\operatorname{span}\lbrace e_n:n\in\mathbb N\rbrace.$$
+
+Then
+
+$$\overline W = \left\lbrace \sum_{n=1}^{\infty} c_n e_n: (c_n)_{n=1}^{\infty}\in\ell^2 \right\rbrace.$$
+
+Moreover, for every $u\in H$,
+
+$$P_{\overline W}u= \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n$$
+
+is the orthogonal projection of $u$ onto $\overline W$.
+
+Equivalently, for every $w\in\overline W$,
+
+$$\left\| u- \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n \right\| \le \|u-w\|,$$
+
+with equality if and only if $w= \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the first statement</summary>
+
+Let
+
+$$W=\operatorname{span}\lbrace e_n:n\ge1\rbrace,$$
+
+where $(e_n)$ is an orthonormal subset of the Hilbert space $H$. We prove that
+
+$$w\in\overline W \iff \exists (c_n)\in\ell^2 \text{ such that } w=\sum_{n=1}^\infty c_ne_n.$$
+
+**Forward direction.** Suppose $w\in\overline W$. Define
+
+$$c_n:=\langle w,e_n\rangle, \qquad s_N:=\sum_{n=1}^N c_ne_n.$$
+
+By Bessel's inequality,
+
+$$\sum_{n=1}^\infty |c_n|^2 = \sum_{n=1}^\infty |\langle w,e_n\rangle|^2 \le \|w\|^2,$$
+
+so $(c_n)\in\ell^2$.
+
+It remains to show $s_N\to w$. Let $\varepsilon>0$. Since $w\in\overline W$, choose
+
+$$v=\sum_{n=1}^M a_ne_n\in W$$
+
+such that
+
+$$\|w-v\|<\varepsilon.$$
+
+For $N\ge M$,
+
+$$w-v=(w-s_N)+(s_N-v).$$
+
+Moreover,
+
+$$w-s_N\perp \operatorname{span}\lbrace e_1,\dots,e_N\rbrace,$$
+
+while $s_N-v\in \operatorname{span}\lbrace e_1,\dots,e_N\rbrace$. Hence, by Pythagoras,
+
+$$\|w-v\|^2 = \|w-s_N\|^2+\|s_N-v\|^2 \ge \|w-s_N\|^2.$$
+
+Therefore
+
+$$\|w-s_N\|\le \|w-v\|<\varepsilon$$
+
+for every $N\ge M$. Thus $s_N\to w$, so
+
+$$w=\sum_{n=1}^\infty c_ne_n.$$
+
+**Reverse direction.** Suppose $(c_n)\in\ell^2$, and let
+
+$$s_N:=\sum_{n=1}^N c_ne_n\in W.$$
+
+For $N>M$, orthonormality gives
+
+$$\|s_N-s_M\|^2=\left\|\sum_{n=M+1}^N c_n e_n\right\|^2=\sum_{n=M+1}^N |c_n|^2.$$
+
+Since $(c_n)\in\ell^2$, the right-hand side tends to $0$, so $(s_N)$ is Cauchy. Because $H$ is complete, $s_N\to w$ for some $w\in H$.
+
+Since every $s_N\in W$, the limit belongs to $\overline W$. Hence
+
+$$w=\sum_{n=1}^\infty c_ne_n\in\overline W.$$
+
+Thus the two conditions are equivalent.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the second statement</summary>
+
+TODO:
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The value of the propositon above)</span></p>
+
+That proposition is valuable because it unifies three ideas:
+
+$$\ell^2 \longleftrightarrow \overline{\operatorname{span}\lbrace e_n\rbrace} \longleftrightarrow \text{orthogonal projection}.$$
+
+And it clarifies the distinction between a merely orthonormal set and a full orthonormal basis. If $\lbrace e_n\rbrace$ is a basis of all $H$, then
+
+$$\overline W=H$$
+
+and the projection becomes the identity:
+
+$$u= \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n.$$
+
+That is exactly the special case already appearing in Fourier–Bessel theorem.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Orthogonality of the truncation error)</span></p>
+
+At first sight it may seem surprising that
+
+$$w-s_N \perp \operatorname{span}\lbrace e_1,\dots,e_N\rbrace,$$
+
+because $w\in\overline W$ and one might think that $\overline W$ differs only negligibly from $W$. The point is that the orthogonality is only with respect to the **finite-dimensional truncation space**
+
+$$W_N:=\operatorname{span}\lbrace e_1,\dots,e_N\rbrace,$$
+
+not with respect to the whole space $W$.
+
+The remainder $w-s_N$ may still contain components in the later directions
+
+$$e_{N+1},e_{N+2},\dots,$$
+
+all of which belong to $W$. Thus the error does not represent a component of $w$ lying “outside” $W$; it is simply the part not yet captured by the first $N$ basis directions.
+
+Indeed, if $w-s_N$ were orthogonal to all of $W$, then by continuity it would also be orthogonal to $\overline W$. Since $w-s_N\in\overline W$, this would force $w-s_N=0$.
+
+So the geometric picture is: as $N$ increases, the subspace $W_N$ grows, the error is orthogonal to an increasingly large collection of directions, and its norm is forced to tend to zero.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Best approximation property of Fourier coefficients)</span></p>
+
+For
+
+$$W_N:=\operatorname{span}\lbrace e_1,\dots,e_N\rbrace, \qquad s_N:=\sum_{n=1}^N \langle w,e_n\rangle e_n,$$
+
+the vector $s_N$ is the unique best approximation to $w$ from $W_N$.
+
+Indeed, for any $v\in W_N$,
+
+$$w-v=(w-s_N)+(s_N-v),$$
+
+and the two terms are orthogonal. Hence
+
+$$\|w-v\|^2 = \|w-s_N\|^2+\|s_N-v\|^2 \ge \|w-s_N\|^2.$$
+
+Therefore
+
+$$\|w-s_N\| = \min_{v\in W_N}\|w-v\|.$$
+
+So the Fourier coefficients are not merely convenient coordinates: they are exactly the coefficients that produce the orthogonal projection of $w$ onto $W_N$, hence the best possible approximation using the first $N$ directions.
+
+</div>
+
 ### Maximal Orthonormal Subsets
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -6842,19 +7014,13 @@ In this language, the generalized theorem can be viewed as a compactness criteri
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Local version of Arzelà--Ascoli: Locally Uniform Convergence)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Local version of Arzelà-Ascoli: Locally Uniform Convergence)</span></p>
 
 Consider the function $f_n(x)=\tanh(x/n)$,  $x\in\mathbb R$. For any fixed compact interval $[-R,R]$,
 
-$$
-\sup_{|x|\le R}|\tanh(x/n)|
-\le
-\tanh(R/n)\to0,
-$$
+$$\sup_{|x|\le R}|\tanh(x/n)| \le \tanh(R/n)\to0,$$
 
-so $f_n\to0$ uniformly on every compact subset of $\mathbb R$.
-
-But globally,
+so $f_n\to0$ uniformly on every compact subset of $\mathbb R$. But globally,
 
 $$\sup_{x\in\mathbb R}|\tanh(x/n)|=1$$
 
@@ -7055,26 +7221,32 @@ for some continuous function $K : [0, 1] \times [0, 1] \to \mathbb{R}$.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Importance of integral operators)</p>
 
-The **integral operator** is particularly important because it comes up in solutions to differential equations: for instance, if we take $K(x, y) = (x-1)y$ for $0 \le y \le x \le 1$ and $K(x, y) = x(y-1)$ for $0 \le x \le y \le 1$, then $u(x) = \int_0^1 K(x, y) f(y)\,dy$ satisfies $u'' = f$, $u(0) = u(1) = 0$.
+The **integral operator** is particularly important because it comes up in solutions to differential equations: for instance, if we take 
+
+1. $K(x, y) = (x-1)y$ for $0 \le y \le x \le 1$
+2. $K(x, y) = x(y-1)$ for $0 \le x \le y \le 1$
+   
+then
+
+$$u(x) = \int_0^1 K(x, y) f(y)\,dy$$
+
+satisfies 
+
+* $u'' = f$, 
+* $u(0) = u(1) = 0$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Integral Operators with Continuous Kernels are Compact)</span></p>
 
-Let
-
-$$K \in C([a,b]\times[a,b]),$$
+Let $K \in C([a,b]\times[a,b]),$
 
 and define the integral operator
 
 $$Tf(x) = \int_a^b K(x,y)f(y)\,dy, \qquad f\in L^2([a,b]).$$
 
-Then
-
-$$T\in\mathcal B(L^2([a,b])),$$
-
-and $T$ is compact.
+Then $T\in\mathcal B(L^2([a,b])),$ and $T$ is compact.
 
 Equivalently, for every bounded sequence $\lbrace f_n\rbrace_n$ in $L^2([a,b])$, the sequence $\lbrace Tf_n\rbrace_n$ has a subsequence converging in $L^2([a,b])$.
 
@@ -7528,7 +7700,11 @@ We've shown previously that one of $\pm \lVert A \rVert$ must be in the spectrum
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 230</span></p>
 
-Let $A = A^*$ be a nontrivial compact self-adjoint operator. Then $A$ has a nontrivial eigenvalue $\lambda_1$ with $\lvert \lambda_1 \rvert = \sup_{\lVert u \rVert = 1} \lvert \langle Au, u \rangle \rvert = \lvert \langle Au_1, u_1 \rangle \rvert$, where $u_1$ is a normalized eigenvector (with $\lVert u_1 \rVert = 1$) satisfying $Au_1 = \lambda_1 u_1$.
+Let $A = A^*$ be a nontrivial compact self-adjoint operator. Then $A$ has a nontrivial eigenvalue $\lambda_1$ with 
+
+$$\lvert \lambda_1 \rvert = \sup_{\lVert u \rVert = 1} \lvert \langle Au, u \rangle \rvert = \lvert \langle Au_1, u_1 \rangle \rvert,$$
+
+where $u_1$ is a normalized eigenvector (with $\lVert u_1 \rVert = 1$) satisfying $Au_1 = \lambda_1 u_1$.
 
 </div>
 
