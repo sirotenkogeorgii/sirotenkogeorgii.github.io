@@ -2050,6 +2050,11 @@ Finally, $\mathcal H(t)\le\mathcal H(0)$ is just (1.20). $\square$
 </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/theorem5_quantities.png' | relative_url }}" alt="Three log-scale panels showing the excess energy, the dissipation and the squared distance to the minimiser against time, for p equal 4 and 10, each with its dashed red bound from equation 1.22: the minimum of E(0) and H(0)/t, four H(0) over t squared, and the constant H(0)" loading="lazy">
+  <figcaption>Theorem 5 asserts three inequalities (1.22) at once; here they are, checked on $E=|x|^p/p$. All three hold, and with a good deal of room — which is the honest reading of the theorem: the bounds are an <em>envelope</em> valid for every convex $E$, not a prediction for any particular one. The flatter the minimum (larger $p$), the closer the true decay creeps to the stated worst case, so the gap in panel (a) narrows from $p=4$ to $p=10$ without ever closing. Note also that $\mathcal H$ is merely non-increasing, not convergent to $0$ at any rate — Theorem 5 controls the energy and the dissipation quantitatively, and the distance to the minimiser only qualitatively.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the rates worsen from $\lambda$ to $1/t$)</span></p>
 
@@ -2061,6 +2066,11 @@ Compare the two regimes:
 The shift is the same as the one between the gradient flow of $E(x)=\tfrac12\lambda x^2$ (linear ODE, exponential decay) and that of $E(x)=\tfrac14 x^4$ (nonlinear ODE, $\dot x = -x^3$, algebraic decay). Without the quadratic margin of uniform convexity, the energy can become "flat" near the minimizer, the gradient becomes too small to produce a fixed exponential rate, and we lose the cleanest version of Gronwall.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/asymptotic_rates.png' | relative_url }}" alt="Three panels for the energies |x|^p/p with p equal 2, 4 and 10. Left, semi-log: only the p equals 2 curve is a straight line, lying exactly on the dashed Theorem 3 bound. Middle, log-log: the p greater than 2 curves are straight lines while p equals 2 plunges, and all three stay below the dashed 1/t bound. Right, log-log of dissipation against energy: three straight lines of slopes 1, 1.5 and 1.8, with dotted slope-1 and dashed slope-2 reference lines" loading="lazy">
+  <figcaption>The remark after Theorem 5, made quantitative on the family $E=|x|^p/p$, where uniform convexity is exactly $p=2$ and the Hessian degenerates at the minimum for every $p>2$. <strong>(a)</strong> On a semi-log axis only $p=2$ is straight — and it lies <em>on</em> Theorem 3's bound $e^{-2\lambda t}\mathcal E(0)$, since for the quadratic the differential inequality is an equality. <strong>(b)</strong> On a log-log axis the roles reverse: $p>2$ are straight, $p=2$ plunges, and all three sit under Theorem 5's $\mathcal H(0)/t$. <strong>(c)</strong> The cause, rather than the effect. Plotting the dissipation $\mathcal D=-\dot{\mathcal E}$ against $\mathcal E$ turns each differential inequality into a slope: $2-2/p$, measured at $1.00$, $1.50$ and $1.80$. Uniform convexity is the slope-1 end, $\dot{\mathcal E}=-2\lambda\mathcal E$, which integrates to an exponential; Theorem 5's worst case is the slope-2 end, $\dot{\mathcal E}\leq-\mathcal E^2/\mathcal H(0)$, which integrates only to $1/t$. No power law attains that worst case — the bound is an envelope over all convex energies, and the family creeps toward it as $p\to\infty$.</figcaption>
+</figure>
 
 #### Long-term asymptotics via the Łojasiewicz inequality
 
@@ -2168,6 +2178,11 @@ A continuous, non-negative function on $[0,\infty)$ whose integral is finite mus
 </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/lojasiewicz_length.png' | relative_url }}" alt="Three panels. Left: a non-convex two-dimensional landscape with two wells, six trajectories from white starting dots flowing to red end points in one well or the other. Middle: the cumulative arc length of each trajectory against time, every curve rising and then flattening to a finite value. Right: the Lojasiewicz length bound on a logarithmic axis against the exponent theta, rising steeply as theta approaches one, with markers at p equal 2, 4 and 10 and a dashed green line marking the true length" loading="lazy">
+  <figcaption>What the Łojasiewicz inequality delivers, and what it does not. <strong>(a)</strong> No convexity is assumed anywhere: this landscape has two wells and a saddle, and which limit a trajectory reaches depends on where it starts. What the theorem guarantees is nevertheless strong — each trajectory converges to a <em>single point</em>, which Theorem 5 could not give even for strictly convex $E$. <strong>(b)</strong> The mechanism is finite length. Each cumulative arc length $\int_0^t|\dot x|$ rises and then flattens, and a curve of finite length in $\mathbb R^N$ must converge. <strong>(c)</strong> The price. The proof bounds the length by $\frac{C}{1-\theta}\mathcal E(0)^{1-\theta}$, and for $E=|x|^p/p$ the Łojasiewicz exponent is $\theta=1-\frac1p$, so $p=2,4,10$ give bounds $3.6$, $14.4$ and $113.6$ against a true length of $1.8$. As $\theta\to1$ the bound blows up while the truth does not move at all — which is exactly why the theorem yields convergence but, as the following remark says, no rate.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What Łojasiewicz buys us, beyond convexity)</span></p>
 
@@ -2177,6 +2192,11 @@ A continuous, non-negative function on $[0,\infty)$ whose integral is finite mus
 * **The role of $\mathcal E^{1-\theta}$.** Why does the proof differentiate $\mathcal E^{1-\theta}$ rather than $\mathcal E$ itself? Because the Łojasiewicz inequality controls $\mathcal E^\theta$ by $\|\nabla E\|$, so the natural scalar quantity whose decay rate is dimensionally homogeneous to $\|\dot x\|$ — and therefore integrates to the *length* of the trajectory rather than to its squared $L^2$ norm — is $\mathcal E^{1-\theta}$. This concave reparametrization is the heart of the trick, and a special case of a recurring template called the **Kurdyka–Łojasiewicz desingularization**. See [Appendix A](#appendix-a) for the general principle and a list of other places where the same idea reappears.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/convexity_ladder.png' | relative_url }}" alt="A four-column, two-row figure. The top row shows four energies: a parabola, a quartic, a flat-bottomed piecewise-linear well, and a double well, with minimisers marked in purple. The bottom row shows six gradient-flow trajectories under each energy: collapsing fast to zero, crawling slowly to zero, halting at different points across the shaded flat interval, and splitting to plus or minus one" loading="lazy">
+  <figcaption>The whole of §1.6 on one page. Each column is the gradient flow of one energy from the same six initial conditions, and moving right weakens the hypothesis by exactly one rung. <strong>Uniformly convex:</strong> a unique minimiser, reached exponentially fast (Theorem 3). <strong>Strictly but not uniformly convex:</strong> still a unique minimiser and still Theorem 5's rate, but the exponential is gone — compare how much more slowly the second column crawls in. <strong>Convex with a flat interval:</strong> the rate survives, but the minimiser does not; trajectories halt at different points of $[-1,1]$ depending on where they began, which is the content of the Exercise above. <strong>Not convex:</strong> no convexity theorem applies at all, and yet each trajectory still converges to a single point — that is precisely what Łojasiewicz buys, and it is bought with finite length rather than with convexity.</figcaption>
+</figure>
 
 ### 1.7 Convergence rates for minimizing movements
 
@@ -2275,6 +2295,11 @@ Substituting $e(0)=0,\ e(h)=\tfrac12\|\chi_1-x(h)\|^2$, multiplying by $2$ and r
 Inspect the proof above and state the corresponding result when the initial conditions of the discrete and continuous schemes differ: $\chi_h^{(0)}\ne x(0)$. How does the resulting estimate relate to Theorem 2 (uniqueness/stability)?
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/minimizing_movements_rate.png' | relative_url }}" alt="Two panels. Left: the exact flow as a blue curve with three sets of minimizing-movement iterates for step sizes 0.6, 0.2 and 0.05 tracking it more and more closely. Right: a log-log plot of the supremum error against h, a blue line of measured order 0.97 lying below the dashed red bound h over root two times the gradient at the initial point" loading="lazy">
+  <figcaption>Theorem 6 on $E=\frac14x^4$, where the implicit step $\chi_\ell+h\nabla E(\chi_\ell)=\chi_{\ell-1}$ is solved exactly by Newton's method. <strong>(a)</strong> The scheme (1.10) is backward Euler in disguise, and the iterates approach the flow as $h$ shrinks. <strong>(b)</strong> The error is first order, measured at $0.97$, and it stays under the bound (1.23) throughout. The feature worth emphasising is the one the accompanying remark singles out: the supremum is taken over <em>all</em> $\ell$, so the estimate is uniform in time rather than on a finite window — the discrete trajectory never drifts away, however long it is run. The order is fitted on the small-$h$ half, since for coarse steps the error saturates: it can never exceed the scale of the trajectory itself.</figcaption>
+</figure>
 
 ### 1.8 Existence via minimizing movements
 
@@ -2446,6 +2471,11 @@ The smooth case (a) is similar but easier — pass to the limit directly in the 
 </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/two_interpolations.png' | relative_url }}" alt="Three panels. Left: the same iterates drawn twice, as an orange staircase and as a blue piecewise-linear path, against the dotted exact flow. Middle: the slope of the piecewise-linear interpolant and minus the gradient evaluated at the piecewise-constant interpolant, two sets of markers lying exactly on top of each other. Right: a log-log plot of the sup distance between the two interpolations against h, a straight line of slope one" loading="lazy">
+  <figcaption>Why §1.8 carries the apparently redundant pair $(x_h,\tilde x_h)$. <strong>(a)</strong> One set of iterates, interpolated two ways. <strong>(b)</strong> The discrete Euler–Lagrange equation (1.12) is a statement about <em>both</em> at once: its left-hand side is the slope of the piecewise-linear $\tilde x_h$, its right-hand side is $-\nabla E$ evaluated at the piecewise-constant $x_h$, that is at the <em>right</em> endpoint of each subinterval. The two agree here to $4\times10^{-16}$, which is the identity holding exactly rather than approximately. So $\tilde x_h$ is what one differentiates and puts into an energy estimate, while $x_h$ is what makes the scheme's own equation literally true. <strong>(c)</strong> They differ by $O(h)$ and therefore share a limit — the distinction costs nothing at the end, and is indispensable on the way.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Convergence of the piecewise-constant interpolation)</span></p>
 
@@ -2556,6 +2586,11 @@ By continuity of both sides, the equation holds for every $t$. $\square$
 
 </details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/edi_equality.png' | relative_url }}" alt="Three panels. Left: a straight line and an upward parabola touching at exactly one point marked in red, with the gap between them shaded. Middle: three accumulating curves along the gradient flow whose total meets a dashed red line at the initial energy. Right: a convex curve of the defect against a perturbation amplitude, touching zero exactly at the gradient flow, marked in red" loading="lazy">
+  <figcaption>The energy-dissipation inequality and Lemma 9. <strong>(a)</strong> The whole content is one application of Young's inequality: $-\langle\nabla E,v\rangle\leq\frac12|v|^2+\frac12|\nabla E|^2$, with a gap of exactly $\frac12|v+\nabla E|^2$. A line lies under a parabola and touches it at a single point, and that point is $v=-\nabla E$. <strong>(b)</strong> Along the true flow the three terms of (1.40) accumulate to exactly $E(x_0)$ — the budget closes to $9\times10^{-6}$, which is quadrature error — so the EDI is an equality, not a strict inequality. <strong>(c)</strong> Perturb the curve to $x_s=x+s\varphi$ and the defect $\frac12\int_0^T|\dot x+\nabla E(x)|^2$ becomes strictly positive, vanishing only at $s=0$. This is why the EDI can serve as a <em>definition</em> of gradient flow rather than merely a consequence of one: it holds if and only if $\dot x=-\nabla E$, and it asks only for an energy, a metric and a derivative — which is exactly what survives the passage to Wasserstein space in Chapter 3.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(EDI as a robust definition of "gradient flow")</span></p>
