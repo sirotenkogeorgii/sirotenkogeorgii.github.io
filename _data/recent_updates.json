@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-09-17",
+   "added": false
+  },
+  {
    "title": "Partial Differential Equations in Data Science",
    "url": "/subpages/books/pdeds/",
    "date": "2026-09-15",
@@ -40,12 +46,6 @@
    "title": "Pravděpodobnost a statistika 1",
    "url": "/subpages/books/pas/",
    "date": "2026-08-31",
-   "added": false
-  },
-  {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-08-29",
    "added": false
   },
   {

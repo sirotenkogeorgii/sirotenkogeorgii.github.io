@@ -365,6 +365,11 @@ On the positive side, the above expansion shows clearly that errors in the low f
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/cond_sharp_bound.png' | relative_url }}" alt="Left: the ball of radius delta of admissible data perturbations around y, with the perturbation delta u_n drawn along the u_n axis. Middle: its image under A inverse, an ellipse with semi-axes delta over lambda_1 along u_1 and delta over lambda_n along u_n, inscribed in the dashed circle of radius kappa delta which it touches only at plus and minus u_n. Right: the same ellipse for kappa = 2, 5 and 10; the u_n semi-axis grows in proportion to kappa while the u_1 semi-axis stays equal to delta." loading="lazy">
+  <figcaption>Why the bound $\lVert x^\delta - x \rVert \le \kappa \lambda_1^{-1} \delta$ is sharp, drawn in the eigenbasis of $A$ for $n = 2$ (so $A = \mathrm{diag}(\lambda_1, \lambda_n)$ with $\lambda_1 = 1$, $\lambda_n = 1/\kappa$, $\delta = 1$). <em>Left:</em> the admissible data lives in the ball $\lVert y^\delta - y \rVert \le \delta$ around $y$. <em>Middle:</em> $A^{-1}$ maps that ball onto an ellipse whose semi-axes are $\delta/\lambda_1 = \mathcal{O}(\delta)$ along $u_1$ and $\delta/\lambda_n = \kappa \lambda_1^{-1} \delta$ along $u_n$. The bound is the radius of the smallest ball containing that ellipse (dashed), and the ellipse reaches it <em>only</em> at $\pm u_n$ — the choice $y^\delta - y = \delta u_n$ turns the inequality into an equality, whereas a generic perturbation of the same length $\delta$ lands strictly inside. <em>Right:</em> increasing $\kappa$ stretches the error set along $u_n$ alone, in exact proportion to $\kappa$, while the $u_1$ direction is untouched: growth of the condition number <em>is</em> amplification of the data noise in the solution.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why low-frequency components are not amplified as much)</span></p>
 
@@ -382,6 +387,11 @@ Concretely: if $\lambda_1 = 1$ and $\lambda_n = 10^{-6}$, then noise in the $u_1
 The "low frequency $\leftrightarrow$ large $\lambda_i$" convention comes from smoothing forward operators (e.g. compact integral operators): slowly varying eigenvectors are the ones that survive the forward map best and therefore carry the largest eigenvalues / singular values. This is why the heat-equation example in Section 1.1 loses high-frequency information first.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/cond_low_frequency.png' | relative_url }}" alt="Left: a three-dimensional error ellipsoid with semi-axes delta over lambda_i; it is nearly a round disc in the plane spanned by u_1 and u_2 and a long cigar along u_n. Middle: the amplification factors 1 over lambda_i for lambda_i = i to the minus 2 with n = 20 on a logarithmic scale; the first modes sit at order one while the last modes reach kappa = 400. Right: the solution error produced by the data perturbation delta u_20 oscillates with amplitude 400 delta, while the error produced by the same-size perturbation delta u_1 is a single smooth bump of amplitude delta, visible only in the zoomed inset." loading="lazy">
+  <figcaption>The same geometry read mode by mode. <em>Left:</em> in three dimensions the error set $A^{-1}\{\lVert y^\delta - y \rVert \le \delta\}$ is an ellipsoid whose $i$-th semi-axis is $\delta/\lambda_i$ ($\lambda = (1, 0.8, 0.2)$ here): it is almost the original ball in the plane $\mathrm{span}\{u_1, u_2\}$ of the large eigenvalues (green cross-section), and a cigar only along $u_n$. Noise confined to the top of the spectrum therefore stays inside an $\mathcal{O}(\delta)$ region. <em>Middle:</em> those semi-axes for a decaying spectrum $\lambda_i = i^{-2}$, $n = 20$: the amplification $1/\lambda_i$ is $\mathcal{O}(1)$ for $i \ll n$ and only climbs to $\kappa = \lambda_1/\lambda_n = 400$ at the bottom. <em>Right:</em> the same picture for a smoothing operator with eigenvectors $u_i(s) = \sqrt{2} \sin(i \pi s)$ on $[0, 1]$ and $\lambda_i = i^{-2}$: the smooth perturbation $y^\delta - y = \delta u_1$ produces an error of amplitude $\delta$ (inset), while the oscillatory $y^\delta - y = \delta u_{20}$ of exactly the same norm produces an error of amplitude $400\delta$. "Low frequency" is harmless; the catastrophe lives at the high-frequency end.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Linear System: Singular Case)</span></p>
@@ -1635,6 +1645,80 @@ $$\frac{\mathrm{d}T_\sharp \mu}{\mathrm{d}\lambda} = \frac{\mathrm{d}\mu}{\mathr
 
 where $\mathrm{d}T^{-1} : \mathbb{R}^d \to \mathbb{R}^{d \times d}$ denotes the Jacobian matrix of $T^{-1}$.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Random ODE)</span></p>
+
+Let $\alpha \sim \mathcal{N}(0,1)$ be a normally distributed random variable. For each realization of $\alpha$ consider the ODE with initial condition $X(0) = 1$:
+
+$$\frac{dX}{dt}= \alpha X$$
+
+Determine the probability distribution of $X(1)$ (write down the density function).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Failed Attempt</summary>
+
+* **Idea:** Consider the distribution of $x(t)$ as a transformed distribution of $\alpha$ by a function $\exp(\alpha \cdot t)$
+* **Step:** Get $e^{\frac{1}{\sqrt{2\pi t^2}}e^{-0.5 x^2 / t^2}}$
+* **Problem:** The key issue is that transforming the random variable by $g(a)=e^{ta}$ does **not** mean applying $e^{(\cdot)}$ to the Gaussian density. We exponentiated the Gaussian density itself, but $X(t)=e^{t\alpha}$ means we transform the random variable $\alpha$, not its density directly.
+* **Question:** Why if we have $X\sim\mathcal{N}(0,1)$, then for $Y=2X$ we obtain $Y\sim\mathcal{N}(0,2^2)$, but for other functions the logic is not correct?
+* Answer: What is special about $Y=2X$ is that the Gaussian family happens to be preserved by linear transformations.
+
+**The distribution is always transformed by the function.** If
+
+$$Y=g(X),$$
+
+then for any set $A$,
+
+$$\mathbb P(Y\in A) = \mathbb P(g(X)\in A) = \mathbb P(X\in g^{-1}(A)).$$
+
+This is the general rule: the law of $Y$ is the pushforward of the law of $X$ by $g$.
+
+**Why does $g(x)=2x$ look exceptionally simple?** Suppose
+
+$$X\sim N(0,1),\qquad Y=2X.$$
+
+Then
+
+$$\mathbb P(Y\le y) = \mathbb P(2X\le y) = \mathbb P\left(X\le \frac y2\right).$$
+
+This turns out to be exactly the CDF of a Gaussian with standard deviation $2$:
+
+$$Y\sim N(0,2^2).$$
+
+So it is not that we somehow "plug $2X$" into the distribution. Rather,
+
+$$\boxed{\text{linear transformations of Gaussian variables are again Gaussian.}}$$
+
+That is a special closure property of the Gaussian family.
+
+**For a nonlinear $g$, the same pushforward rule applies, but the shape usually changes.** For example, if
+
+$$Y=g(X)=e^{tX},$$
+
+there is no reason for the resulting distribution to still have a Gaussian shape. The transformation stretches different parts of the real line by very different amounts: $e^{tx}$ is not a uniform rescaling like $2x$.
+
+A useful geometric picture is:
+
+* $x\mapsto 2x$: every interval is stretched by the same factor $2$;
+* $x\mapsto e^{tx}$: the stretching factor depends on $x$.
+
+That variable stretching is precisely why, for nonlinear transformations, one cannot simply transform the parameters of the original density in the way $N(0,1)\mapsto N(0,4)$ works.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+
+
+</details>
 </div>
 
 ### 3.2 Banach-valued Random Variables
@@ -7924,7 +8008,134 @@ Let $(\Omega, \mathcal{A})$ be a measurable space and let $f_n : \Omega \to \mat
 
 </div>
 
-The proof is left as an exercise (Hint: use that $\mathcal{E} = \lbrace (a, \infty) : a \in \mathbb{R} \rbrace$ generates $\mathcal{B}(\mathbb{R})$ and write $\lim_n f_n = \sup_{n \in \mathbb{N}} \inf_{m \ge n} f_m$).
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof​​</summary>
+
+The key fact is that measurability can be checked only on the generating family
+
+$$\mathcal E=\lbrace (a,\infty):a\in\mathbb R\rbrace.$$
+
+So for each construction, it suffices to express
+
+$$f^{-1}((a,\infty))=\lbrace\omega:f(\omega)>a\rbrace$$
+
+using countable unions/intersections of corresponding sets for the $f_n$.
+
+Assume throughout that the indicated supremum, infimum, or limit is finite-valued, as in the proposition.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>The pointwise supremum is measurable.</summary>
+
+Let
+
+$$f(\omega)=\sup_{n\in\mathbb N}f_n(\omega).$$
+
+For $a\in\mathbb R$,
+
+$$\begin{aligned} \lbrace\omega:f(\omega)>a\rbrace &=\left\{\omega:\sup_n f_n(\omega)>a\right\}\\ &=\bigcup_{n\in\mathbb N}\{\omega:f_n(\omega)>a\}. \end{aligned}$$
+
+Indeed, $\sup_n f_n(\omega)>a$ iff at least one $f_n(\omega)>a$.
+
+Since every $f_n$ is measurable,
+
+$$\lbrace\omega:f_n(\omega)>a\rbrace=f_n^{-1}((a,\infty))\in\mathcal A.$$
+
+Because $\mathcal A$ is closed under countable unions,
+
+$$f^{-1}((a,\infty))\in\mathcal A.$$
+
+Hence $f$ is measurable.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>The pointwise infimum is measurable.</summary>
+
+Let
+
+$$f(\omega)=\inf_{n\in\mathbb N}f_n(\omega).$$
+
+Here one has to be slightly careful: in general,
+
+$$\lbrace\inf_n f_n>a\rbrace\neq \bigcap_n\lbrace f_n>a\rbrace,$$
+
+since, for example, $f_n=a+1/n$.
+
+Instead,
+
+$$\boxed{ \lbrace\inf_n f_n>a\rbrace = \bigcup_{k=1}^{\infty} \bigcap_{n=1}^{\infty} \lbrace f_n>a+1/k\rbrace.}$$
+
+To see this, if
+
+$$\inf_n f_n(\omega)>a,$$
+
+choose $k$ sufficiently large that
+
+$$a+\frac1k<\inf_n f_n(\omega).$$
+
+Then $f_n(\omega)>a+1/k$ for every $n$.
+
+Conversely, if for some $k$,
+
+$$f_n(\omega)>a+\frac1k \qquad\text{for every }n,$$
+
+then
+
+$$\inf_n f_n(\omega)\ge a+\frac1k>a.$$
+
+Thus
+
+$$f^{-1}((a,\infty)) = \bigcup_k\bigcap_n f_n^{-1}\big((a+1/k,\infty)\big)\in\mathcal A,$$
+
+so $f$ is measurable.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>The pointwise limit is measurable.</summary>
+
+Suppose
+
+$$f(\omega)=\lim_{n\to\infty}f_n(\omega)$$
+
+exists in $\mathbb R$ for every $\omega$.
+
+The driving identity is
+
+$$\lim_{n\to\infty}f_n = \liminf_{n\to\infty}f_n = \sup_{n\in\mathbb N}\inf_{m\ge n}f_m.$$
+
+Define
+
+$$g_n(\omega):=\inf_{m\ge n}f_m(\omega).$$
+
+By part 2, every $g_n$ is measurable. Therefore, by part 1,
+
+$$\sup_n g_n$$
+
+is measurable. But pointwise,
+
+$$\sup_n g_n(\omega) = \sup_n\inf_{m\ge n}f_m(\omega) = \liminf_n f_n(\omega) = f(\omega).$$
+
+Hence $f$ is measurable.
+
+</details>
+</div>
+
+A useful way to remember the proposition is:
+
+$$\boxed{\text{countable order operations interact perfectly with }\sigma\text{-algebras}.}$$
+
+The word **countable** is essential: $\sigma$-algebras are closed under countable unions/intersections, not arbitrary ones.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.3.7</span><span class="math-callout__name">(Pettis Measurability Theorem, First Version)</span></p>
@@ -7950,7 +8161,13 @@ To this end let $(v_n)\_{n \in \mathbb{N}}$ be a dense sequence in $V_0$. By the
 
 $$\langle v, v_n' \rangle \ge \langle v_n, v_n' \rangle - \lvert \langle v_n - v, v_n' \rangle \rvert \ge \lVert v_n \rVert - \varepsilon \ge \lVert v \rVert - \lVert v - v_n \rVert - \varepsilon \ge \lVert v \rVert - 2\varepsilon.$$
 
-Also note that for any $n \in \mathbb{N}$, $\lvert \langle v, v_n' \rangle \rvert \le \lVert v \rVert \lVert v_n' \rVert = \lVert v \rVert$. Since $\varepsilon > 0$ was arbitrary, the claim (B.4) follows. By the $\mathcal{A}$-measurability of $\omega \mapsto \langle f(\omega), v_n' \rangle$, for each $v_0 \in V_0$
+Also note that for any $n \in \mathbb{N}$, $\lvert \langle v, v_n' \rangle \rvert \le \lVert v \rVert \lVert v_n' \rVert = \lVert v \rVert$: 
+
+$$\lVert v \rVert \ge \lvert \langle v, v_n' \rangle \rvert \ge \lVert v \rVert - 2\varepsilon.$$
+
+Since $\varepsilon > 0$ was arbitrary, the claim (B.4) follows.
+
+By the $\mathcal{A}$-measurability of $\omega \mapsto \langle f(\omega), v_n' \rangle$, for each $v_0 \in V_0$
 
 $$\omega \mapsto \lVert f(\omega) - v_0 \rVert = \sup_{n \in \mathbb{N}} \langle f(\omega) - v_0, v_n' \rangle \quad \text{is } \mathcal{A}\text{-measurable.} \tag{B.5}$$
 
@@ -8059,7 +8276,7 @@ For $f : \Omega \to V$ the following are equivalent:
 
 **(i) $\Rightarrow$ (ii):** With $(f_n)\_{n \in \mathbb{N}}$ as in Def. B.3.12 let $N \subseteq \Omega$ be such that $\mu(N) = 0$ and $\lim_{n \to \infty} f_n = f$ pointwise on $\Omega \setminus N$. Then $\mathbb{1}\_{N^c} f_n \to \mathbb{1}\_{N^c} f$ pointwise on $\Omega$. Since $\mathbb{1}\_{N^c} f_n$ are $\mathcal{A}$-simple functions, this shows that $\tilde{f} := \mathbb{1}\_{N^c} f$ is strongly $\mathcal{A}$-measurable, and this function coincides with $f$ $\mu$-a.e.
 
-**(ii) $\Rightarrow$ (i):** Let $\tilde{f}$ be a strongly $\mathcal{A}$-measurable $\mu$-version of $f$ and let $N$ be a $\mu$-null set such that $f = \tilde{f}$ on $N^c$. If $(\tilde{f}_n)\_{n \in \mathbb{N}}$ is a sequence of $\mathcal{A}$-simple functions converging pointwise to $\tilde{f}$, then $\lim_{n \to \infty} \tilde{f}\_n = f$ $\mu$-a.e. Let $\Omega = \bigcup_{n \in \mathbb{N}} A_n$ with $\mu(A_n) < \infty$ for all $n$. Then $f_n := \mathbb{1}\_{A_n} \tilde{f}\_n$ are $\mu$-simple functions and $\lim_{n \to \infty} f_n = f$ $\mu$-a.e.
+**(ii) $\Rightarrow$ (i):** Let $\tilde{f}$ be a strongly $\mathcal{A}$-measurable $\mu$-version of $f$ and let $N$ be a $\mu$-null set such that $f = \tilde{f}$ on $N^c$. If $(\tilde{f}\_n)\_{n \in \mathbb{N}}$ is a sequence of $\mathcal{A}$-simple functions converging pointwise to $\tilde{f}$, then $\lim_{n \to \infty} \tilde{f}\_n = f$ $\mu$-a.e. Let $\Omega = \bigcup_{n \in \mathbb{N}} A_n$ with $\mu(A_n) < \infty$ for all $n$. Then $f_n := \mathbb{1}\_{A_n} \tilde{f}\_n$ are $\mu$-simple functions and $\lim_{n \to \infty} f_n = f$ $\mu$-a.e.
 
 </details>
 </div>
