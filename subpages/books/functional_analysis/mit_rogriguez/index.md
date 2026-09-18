@@ -1351,6 +1351,38 @@ The Open Mapping Theorem implies the Closed Graph Theorem, and we can also show 
 
 </div>
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Closed Graph Theorem: Alternative form)</span></p>
+
+Let $X, Y$ be Banach spaces. A map $F : X \to Y$ is continuous iff $F$ is closed.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+TODO:
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Bounded Inverse Theorem)</span></p>
+
+Let $X, Y$ be Banach spaces and $A \in \mathcal{L}(X, Y)$ bijective. Then $A^{-1} : Y \to X$ is continuous.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+TODO:
+
+</details>
+</div>
+
 ## The Hahn-Banach Theorem
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -5636,6 +5668,32 @@ The space $L^p(E)$ with pointwise addition and natural scalar multiplication ope
     <summary>proof sketch</summary>
     <p>The $L^p$ norm $\lVert \cdot \rVert_p$ is well-defined on equivalence classes: if $f = g$ a.e., then $\lvert f \rvert^p = \lvert g \rvert^p$ a.e., so $\int_E \lvert f \rvert^p = \int_E \lvert g \rvert^p$ and $\lVert f \rVert_p = \lVert g \rVert_p$.</p>
     <p>Scalar multiplication and pointwise addition are well-defined on equivalence classes. For the norm properties: if $\int_E \lvert f \rvert^p = 0$, then $\lvert f \rvert^p = 0$ a.e., so $f = 0$ a.e. (the equivalence class $[0]$). This proves definiteness. Homogeneity and the triangle inequality follow from the definition and Minkowski's inequality, respectively. $\square$</p>
+  </details>
+</div>
+
+### Multiplication Operators on $L^p$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Multiplication Operators on $L^p$)</span></p>
+
+Let $a<b$, $1\le p\le\infty$, and let $g$ be measurable on $[a,b]$. Define
+
+$$M_gf := gf.$$
+
+Then
+
+$$M_g\in\mathcal B(L^p([a,b])) \quad\Longleftrightarrow\quad g\in L^\infty([a,b]).$$
+
+In this case,
+
+$$\|M_g\|_{\mathcal B(L^p([a,b]))} = \|g\|_{L^\infty([a,b])}.$$
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>TODO:</p>
   </details>
 </div>
 
