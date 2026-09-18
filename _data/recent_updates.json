@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "Numerical Methods for Bayesian Inverse Problems",
+   "url": "/subpages/books/numerical_methods_for_bip/",
+   "date": "2026-09-18",
+   "added": false
+  },
+  {
    "title": "Problems from the NMBIP course",
    "url": "/subpages/books/numerical_methods_for_bip/problems/",
    "date": "2026-09-18",
@@ -23,12 +29,6 @@
    "url": "/subpages/books/numerical_methods_for_bip/problems/sheet06/",
    "date": "2026-09-18",
    "added": true
-  },
-  {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-09-17",
-   "added": false
   },
   {
    "title": "Partial Differential Equations in Data Science",
