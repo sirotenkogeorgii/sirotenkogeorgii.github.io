@@ -29,8 +29,13 @@ tags:
 
 ---
 
+* [Exercise Sheet 0](/subpages/books/numerical_methods_for_bip/problems/sheet00/)
+* [Exercise Sheet 1](/subpages/books/numerical_methods_for_bip/problems/sheet01/)
+* [Exercise Sheet 2](/subpages/books/numerical_methods_for_bip/problems/sheet02/)
+* [Exercise Sheet 3](/subpages/books/numerical_methods_for_bip/problems/sheet03/)
 * [Exercise Sheet 4](/subpages/books/numerical_methods_for_bip/problems/sheet04/)
 * [Exercise Sheet 5](/subpages/books/numerical_methods_for_bip/problems/sheet05/)
+* [Exercise Sheet 6](/subpages/books/numerical_methods_for_bip/problems/sheet06/)
 
 ## Exercise Sheet 0 — Warm-up Quiz
 

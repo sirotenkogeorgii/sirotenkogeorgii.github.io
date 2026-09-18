@@ -1,6 +1,24 @@
 {
  "entries": [
   {
+   "title": "Problems from the NMBIP course",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/",
+   "date": "2026-09-18",
+   "added": false
+  },
+  {
+   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 05",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet05/",
+   "date": "2026-09-18",
+   "added": false
+  },
+  {
+   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 06",
+   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet06/",
+   "date": "2026-09-18",
+   "added": true
+  },
+  {
    "title": "Numerical Methods for Bayesian Inverse Problems",
    "url": "/subpages/books/numerical_methods_for_bip/",
    "date": "2026-09-17",
@@ -160,24 +178,6 @@
    "title": "SDEs & Diffusion Models",
    "url": "/subpages/books/sde_hd/",
    "date": "2026-07-11",
-   "added": false
-  },
-  {
-   "title": "Graph Algorithms",
-   "url": "/subpages/books/graph_algorithms/",
-   "date": "2026-07-10",
-   "added": false
-  },
-  {
-   "title": "Problems from the SDEs & Diffusion Models course",
-   "url": "/subpages/books/sde_hd/problems/sheet04/",
-   "date": "2026-07-10",
-   "added": true
-  },
-  {
-   "title": "Books",
-   "url": "/notes/books/",
-   "date": "2026-07-07",
    "added": false
   }
  ]

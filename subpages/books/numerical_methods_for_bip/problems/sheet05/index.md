@@ -121,14 +121,6 @@ $$\operatorname{Var}[u]_h=\operatorname{Var}[u_h].$$
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Solution</summary>
-</details>
-</div>
-
-<!-- We interpret variance pointwise in $x$, i.e.
-
-$$\operatorname{Var}[u_h](x) = \mathbb E\left[(u_h(x)-\mathbb E[u_h](x))^2\right].$$
-
-### 5.4a
 
 Fix $x\in D$, and write
 
@@ -160,7 +152,8 @@ $$\mathbb E[\widehat S_{h,N}^2] = \operatorname{Var}[u_h].$$
 
 So $\widehat S_{h,N}^2$ is an unbiased estimator of the FE variance.
 
---- -->
+</details>
+</div>
 
 
 
@@ -260,6 +253,86 @@ holds for some constant $c=c(p)>0$ and all $1 \le p < \infty$.
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Solution</summary>
+
+By part 5.4a,
+
+$$\mathbb E\left[\operatorname{Var}[u]-\widehat S_{h,N}^2\right] = \operatorname{Var}[u]-\operatorname{Var}[u_h].$$
+
+So the bias comes only from the finite element discretization, not from Monte Carlo sampling.
+
+Let
+
+$$e:=u-u_h, \qquad m:=\mathbb E[u], \qquad m_h:=\mathbb E[u_h].$$
+
+Then
+
+$$\operatorname{Var}[u]-\operatorname{Var}[u_h] = \mathbb E[u^2-u_h^2]-(m^2-m_h^2).$$
+
+Since $u^2-u_h^2=e(u+u_h)$ and $m^2-m_h^2=(m-m_h)(m+m_h)$, we have
+
+$$\operatorname{Var}[u]-\operatorname{Var}[u_h] = \mathbb E[e(u+u_h)] = \mathbb E[e],(m+m_h).$$
+
+We use the product estimate
+
+$$|vw|_{H^1(D)} \le C|v|_{H^1(D)}|w|_{W^{1,\infty}(D)}.$$
+
+The assumptions
+
+$$u,u_h,\nabla u,\nabla u_h \in L^4(\Omega;L^\infty(D))$$
+
+imply in particular that
+
+$$u+u_h \in L^2(\Omega;W^{1,\infty}(D)).$$
+
+Therefore, by Cauchy–Schwarz in $\Omega$,
+
+$$
+\begin{aligned}
+\left|\mathbb E[e(u+u_h)]\right|_{H^1(D)}
+&\le
+\mathbb E\left[|e(u+u_h)|_{H^1(D)}\right] \
+&\le
+C\mathbb E\left[
+|e|_{H^1(D)}
+|u+u_h|_{W^{1,\infty}(D)}
+\right] \
+&\le
+C
+|e|_{L^2(\Omega;H^1(D))}
+|u+u_h|_{L^2(\Omega;W^{1,\infty}(D))}.
+\end{aligned}
+$$
+
+Using the assumed FE estimate with $p=2$,
+
+$$|u-u_h|_{L^2(\Omega;H^1_0(D))} \le ch|f|_{L^2(D)}.$$
+
+Hence
+
+$$\left|\mathbb E[e(u+u_h)]\right|_{H^1(D)} \le Ch.$$
+
+For the second term, note that
+
+$$|\mathbb E[e]|_{H^1(D)} \le \mathbb E|e|_{H^1(D)} \le Ch,$$
+
+and
+
+$$m+m_h=\mathbb E[u+u_h]\in W^{1,\infty}(D)$$
+
+with bounded norm by the assumed $L^4(\Omega;L^\infty(D))$ bounds. Thus
+
+$$\left|\mathbb E[e],(m+m_h)\right|_{H^1(D)} \le C|\mathbb E[e]|_{H^1(D)} \le Ch.$$
+
+Combining the two bounds gives
+
+$$\left| \mathbb E\left[\operatorname{Var}[u]-\widehat S_{h,N}^2\right] \right|_{H^1_0(D)} = |\operatorname{Var}[u]-\operatorname{Var}[u_h]|_{H^1_0(D)} \le Ch.$$
+
+Thus the required estimate holds with
+
+$$\alpha=1.$$
+
+More generally, if the FE error estimate had order $h^\alpha$, the same argument would give the same order for the variance bias.
+
 </details>
 </div>
 
@@ -273,7 +346,7 @@ Let $Q$ be a random variable and let $\lbrace Q_\ell\rbrace_{\ell\in\mathbb{N}}$
 
 $$\hat{Q}_L^{ML} = \sum_{\ell=1}^L \hat{Y}_\ell,$$
 
-where $\lbrace \hat{Y}_\ell\rbrace_{\ell\in\mathbb{N}}$ is a sequence of independent Monte Carlo estimators given by
+where $\lbrace \hat{Y}\_\ell\rbrace_{\ell\in\mathbb{N}}$ is a sequence of independent Monte Carlo estimators given by
 
 $$\hat{Y}_0 := \frac{1}{N_0} \sum_{k=0}^{N_0} Q_0^{(k)}, \quad\text{and}\quad \hat{Y}_\ell := \frac{1}{N_\ell} \sum_{k=0}^{N_\ell} (Q_{\ell}^{(k)} - Q_{\ell - 1}^{(k)})$$
 
@@ -282,7 +355,7 @@ $$\hat{Y}_0 := \frac{1}{N_0} \sum_{k=0}^{N_0} Q_0^{(k)}, \quad\text{and}\quad \h
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 5.5a</span><span class="math-callout__name"></span></p>
 
-Show that $\hat{Q}^{ML}_L$ is an unbiased estimate of $\mathbb{E}[Q_L]$. You may use the fact that $\lbrace Q^{(k)}_\ell \rbrace^{N_\ell}_{k=1}$ are i.i.d. samples of $Q_\ell$ for all $\ell= 0,1,2,\dots,L$.
+Show that $\hat{Q}^{ML}\_L$ is an unbiased estimate of $\mathbb{E}[Q_L]$. You may use the fact that $\lbrace Q^{(k)}\_\ell \rbrace^{N_\ell}\_{k=1}$ are i.i.d. samples of $Q_\ell$ for all $\ell= 0,1,2,\dots,L$.
 
 </div>
 
@@ -323,7 +396,7 @@ So $\widehat Q_L^{ML}$ is an unbiased estimator of $\mathbb E[Q_L]$.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 5.5b</span><span class="math-callout__name"></span></p>
 
-Show that the variance of the MLMC estimator is given by $\text{Var}[\hat{Q}^{ML}_L] = \sum_{\ell=0}^L \text{Var}[\hat{Y}_\ell]$.
+Show that the variance of the MLMC estimator is given by $\text{Var}[\hat{Q}^{ML}\_L] = \sum_{\ell=0}^L \text{Var}[\hat{Y}\_\ell]$.
 
 </div>
 
