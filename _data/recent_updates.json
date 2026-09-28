@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Stochastic Differential Equations",
+   "url": "/notes/stochastic-differential-equations/",
+   "date": "2026-09-28",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-09-18",
@@ -172,12 +178,6 @@
    "title": "Metropolis-Hastings Algorithm",
    "url": "/subpages/monte-carlo-methods/mcmc/metropolis%E2%80%93hastings-algorithm/",
    "date": "2026-07-12",
-   "added": false
-  },
-  {
-   "title": "SDEs & Diffusion Models",
-   "url": "/subpages/books/sde_hd/",
-   "date": "2026-07-11",
    "added": false
   }
  ]
