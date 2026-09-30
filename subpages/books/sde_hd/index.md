@@ -3858,7 +3858,7 @@ Kolmogorov's seminal paper *"Über die analytischen Methoden der Wahrscheinlichk
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">3.4 (Kolmogorov 1933)</span></p>
 
-Let $(X_t)\_{t \ge 0}$ with $X_t = (X_t^1, \dots, X_t^d)^{\!\top}$ be a Feller process taking values in $\mathbb{R}^d$. Assume that for all $\delta > 0$ and $i, j = 1, \dots, d$, the following limits hold uniformly in $x \in \mathbb{R}^d$:
+Let $(X_t)\_{t \ge 0}$ with $X_t = (X_t^1, \dots, X_t^d)^{\top}$ be a Feller process taking values in $\mathbb{R}^d$. Assume that for all $\delta > 0$ and $i, j = 1, \dots, d$, the following limits hold uniformly in $x \in \mathbb{R}^d$:
 
 $$
 \lim_{t \to 0} \frac{1}{t} \sup_{x \in \mathbb{R}^d} \mathbb{P}_x(\lvert X_t - x \rvert > \delta) = 0, \tag{3.2}
@@ -3904,7 +3904,7 @@ $$
 \max_{1 \le i, j \le d} \sup_{\lvert x - y \rvert \le \delta} \lvert \partial_i \partial_j u(x) - \partial_i \partial_j u(y) \rvert \le \varepsilon.
 $$
 
-Fix $\varepsilon > 0$, choose $\delta > 0$ accordingly, and define the transition semigroup $T_t u(x) := \mathbb{E}_x[u(X_t)]$ along with the local neighbourhood event $\Omega_\delta := \lbrace \lvert X_t - x \rvert \le \delta \rbrace$. Decompose the difference quotient:
+Fix $\varepsilon > 0$, choose $\delta > 0$ accordingly, and define the transition semigroup $T_t u(x) := \mathbb{E}\_x[u(X_t)]$ along with the local neighbourhood event $\Omega_\delta := \lbrace \lvert X_t - x \rvert \le \delta \rbrace$. Decompose the difference quotient:
 
 $$
 \frac{T_t u(x) - u(x)}{t} = \frac{1}{t} \mathbb{E}_x\!\left[(u(X_t) - u(x))\, \mathbf{1}_{\Omega_\delta}\right] + \frac{1}{t} \mathbb{E}_x\!\left[(u(X_t) - u(x))\, \mathbf{1}_{\Omega_\delta^c}\right] := J + J'.
