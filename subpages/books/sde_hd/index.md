@@ -3754,6 +3754,11 @@ Therefore $T_t u = P_t u$ for $u \in \mathcal{D}(A)$. Since $\mathcal{D}(A)$ is 
 
 ## 3 Diffusions
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/diffusion_micro_macro.gif' | relative_url }}" alt="Diffusion from the microscopic and macroscopic viewpoints: a single random walker, many particles spreading out, and the resulting concentration profile" loading="lazy">
+  <figcaption>Diffusion seen microscopically (top: one particle; middle: many particles) and macroscopically (bottom: the concentration smoothing out).</figcaption>
+</figure>
+
 *Diffusion* is a physical phenomenon describing the tendency of two (or more) substances — e.g. gases or liquids — to reach equilibrium. When particles of one type ($B$) move into another substance ($S$), their movement is influenced by various temporal and spatial inhomogeneities. Since the particles are physical objects, it is reasonable to assume their trajectories are continuous (in fact, differentiable). Diffusion phenomena are governed by **Fick's law**. Let $p = p(t, x)$ denote the concentration of the $B$-particles at $(t, x)$, and $J = J(t, x)$ the particle flux:
 
 $$
@@ -3771,6 +3776,11 @@ The diffusion coefficient $D = \frac{R T}{N \cdot 6 \pi k P}$ depends on physica
 $$
 \frac{\partial p(t,x)}{\partial t} = D(t, x)\, \frac{\partial^2 p(t, x)}{\partial x^2} + \frac{\partial D(t, x)}{\partial x}\, \frac{\partial p(t, x)}{\partial x}.
 $$
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/fick_micro_macro.png' | relative_url }}" alt="Two panels. Left: about forty Brownian particle paths released from a narrow orange drop of ink at time zero fan out over time; at t equals 2 a sideways histogram of 6000 particle positions is overlaid with a red Gaussian curve that matches it. Right: bell-shaped concentration profiles for four times flattening out; for t equals 0.3 the centre is shaded red (losing mass) and the flanks green (gaining mass), and orange arrows show the flux pointing away from the peak." loading="lazy">
+  <figcaption>The two faces of diffusion. <strong>(a) Microscopic.</strong> Each ink particle performs its own random walk $\mathrm{d}X_t = \sqrt{2D}\,\mathrm{d}B_t$ (here $D = \frac12$); no single path is predictable. <strong>(b) Macroscopic.</strong> The <em>concentration</em> is perfectly deterministic: Fick's flux $J = -D\,\partial_x p$ (orange arrows) always points downhill, so the peak loses mass (red) and the flanks gain it (green) — exactly $\partial_t p = -\partial_x J = D\,\partial_x^2 p$. The histogram of $6000$ particles at $t = 2$ in (a) lands on Einstein's Gaussian: the law of one random particle <em>is</em> the concentration profile. The entire chapter is about this bridge — Kolmogorov describes the right panel, Itô the left.</figcaption>
+</figure>
 
 In a *mathematical model* of diffusion we adopt a microscopic point of view and describe the random position of particles by a stochastic process $(X_t)\_{t \ge 0}$. In view of the physical discussion, it is reasonable to require this stochastic process to:
 
@@ -3806,6 +3816,11 @@ $$
 The symmetric, positive semidefinite matrix $a(x) = (a_{ij}(x))\_{i,j=1}^d \in \mathbb{R}^{d \times d}$ is called the **diffusion matrix**, and $b(x) = (b_1(x), \dots, b_d(x))^{\!\top} \in \mathbb{R}^d$ is called the **drift vector**.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/diffusion_local_bm.png' | relative_url }}" alt="Two panels. Left: a two-dimensional grid; at every grid point a red arrow shows a drift that spirals inward and a pale blue ellipse shows the local noise, small and round near the origin and large and elongated radially further out; a black sample path spirals inward from a green starting dot. A dashed orange square marks a zoom region. Right: the zoom region, showing a cloud of endpoints after a short time h started from a black dot, a red arrow for the mean shift, and blue ellipses of one and two standard deviations that fit the cloud." loading="lazy">
+  <figcaption>Definition 3.1 as a picture: a diffusion is specified by <em>two fields</em>. <strong>(a)</strong> At every point $x$ sits a velocity $b(x)$ (red arrows, here an inward spiral) and a noise shape $a(x)$ (blue ellipses, the level sets of the quadratic form $a(x)$ — small and round near the origin, large and radially stretched further out). A sample path (black) obeys both: it spirals inwards but jitters more strongly, and preferentially radially, far from the centre. <strong>(b)</strong> Zooming in on the orange square and running the process for a short time $h$: the endpoints form a Gaussian cloud centred at $x + b(x)h$ with covariance $a(x)h$. Locally, every diffusion is Brownian motion with drift whose coefficients are <em>frozen</em> at the current position — the generator (3.1) is exactly the generator of that frozen process, evaluated point by point.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">3.2 (Continuity of Coefficients)</span></p>
@@ -3870,6 +3885,12 @@ Then $(X_t)\_{t \ge 0}$ is a diffusion process in the sense of Definition 3.1.
 * Together, these three conditions show that the *first two moments of small increments* completely determine the local generator of a continuous-path Feller process.
 
 </div>
+
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/kolmogorov_conditions.png' | relative_url }}" alt="Four panels. Top left: densities of the increment of an Ornstein-Uhlenbeck process started at 1.5 for four shrinking times, collapsing into a green shaded window from minus 0.5 to 0.5. Top right: three curves against decreasing time on a log axis converging to dotted levels: the truncated first moment over t to minus 1.5, the truncated second moment over t to 1, and the escape probability over t to 0. Bottom left: two paths driven by the same noise, a continuous blue diffusion and an orange jump-diffusion with visible jumps of size one at dotted times. Bottom right: the escape probability over t goes to zero for the diffusion but levels off at one for the jump-diffusion." loading="lazy">
+  <figcaption>Theorem 3.4 read off numerically (all curves are exact, no simulation). <strong>(a)</strong> For the OU process $\mathrm{d}X_t = -X_t\,\mathrm{d}t + \mathrm{d}B_t$ started at $x = 1.5$, the law of the increment $X_t - x$ collapses into the $\delta$-window as $t \to 0$; its width shrinks like $\sqrt{a t}$ while its centre moves only like $b t$. <strong>(b)</strong> The three ratios of (3.2)–(3.4): dividing the truncated mean and second moment by $t$ recovers $b(1.5) = -1.5$ and $a = 1$, and the escape probability divided by $t$ vanishes. <strong>(c)</strong> A jump-diffusion ($+\,\mathrm{d}N_t$, jumps $\pm 1$ at rate $\lambda = 1$) driven by the same Brownian noise — also a Feller process, but with discontinuous paths. <strong>(d)</strong> Condition (3.2) is what tells them apart: for the jump process $\frac1t\mathbb{P}_x(\lvert X_t - x\rvert > \delta) \to \lambda \neq 0$ (a jump in $[0,t]$ has probability $\approx \lambda t$). The truncated moments (3.3)–(3.4) are blind to jumps by design; it is (3.2) that forces continuous paths.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -4048,6 +4069,12 @@ $$
 
 </div>
 
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/fokker_planck_flux.png' | relative_url }}" alt="Two rows by three columns. Top row: a probability density on the real line at three moments — a narrow bump near 0.3, then a skewed bump spreading into both wells, then the symmetric two-peaked stationary density with peaks at plus and minus one; green and red shading shows where the density is about to grow or shrink, and small orange arrows along the axis show the drift pointing towards plus and minus one. Bottom row: the orange drift flux, the purple diffusion flux and their dashed black sum; in the last column the two fluxes are exact mirror images and the net flux is zero everywhere." loading="lazy">
+  <figcaption>The forward equation as <em>bookkeeping of probability flow</em>, for the double-well diffusion $b(y) = y - y^3$, $a = \frac12$ (finite-volume solution of (3.5)). Writing $L^{\ast}p = -\partial_y J$ with flux $J = b\,p - \frac12\partial_y(a\,p)$ shows that mass is never created or destroyed — it only moves. The <strong>drift flux</strong> $b\,p$ (orange) carries mass along the arrows of $b$ into the wells at $\pm 1$; the <strong>diffusion flux</strong> $-\frac12\partial_y(a p)$ (purple) always pushes mass <em>down</em> the density gradient. <strong>(a)</strong> Just released: diffusion dominates and the narrow bump spreads. <strong>(b)</strong> The net flux (dashed) carries mass into both wells, more into the nearer one. <strong>(c)</strong> At equilibrium the two fluxes are exact mirror images, $J \equiv 0$, which gives the stationary density $p_\infty \propto \exp\bigl(\frac2a\int b\bigr)$ in closed form.</figcaption>
+</figure>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
 <summary>Proof of Proposition 3.6</summary>
@@ -4102,6 +4129,12 @@ $$
 
 </div>
 
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/marginal_superposition.png' | relative_url }}" alt="Two rows by three columns for times 0.03, 0.35 and 1.5. Top row: six black tick marks show data points; each spawns a thin orange Gaussian bump, and their average is a thick blue density that has six sharp peaks at first, then a lumpy two-humped shape, and finally almost coincides with a dotted standard normal curve. Bottom row: the red score function, first a steep saw-tooth crossing zero downward at each data point, then smoother, and finally almost equal to the dotted line minus y." loading="lazy">
+  <figcaption>The remark on random initial conditions in pictures, for the OU process $\mathrm{d}X_t = -X_t\,\mathrm{d}t + \sqrt2\,\mathrm{d}B_t$ started from a six-point \"data set\" $\mu$. <strong>Top.</strong> Every data point $x_i$ spawns its own transition kernel $p(t, x_i, \cdot) = \mathcal{N}(x_i e^{-t}, 1 - e^{-2t})$ (orange); the marginal $p^\mu(t,\cdot)$ is simply their average (blue). By linearity of $L^{\ast}$ it satisfies the same Fokker–Planck equation, and it forgets the data as it relaxes to $\mathcal{N}(0,1)$. <strong>Bottom.</strong> The score $\partial_y \log p^\mu(t,y)$ — the one ingredient of Theorem 3.8 not chosen by the modeller. At small $t$ it is a steep saw-tooth that points towards the nearest data point (it crosses zero downwards at each data point or tight cluster of them). At large $t$ it is almost the straight line $-y$, the score of pure noise. Learning this family of functions across all $t$ is exactly the task of score matching.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Stochastic Reading: Perturbing the Start or the End)</span></p>
 
@@ -4137,6 +4170,11 @@ Using probability theory and the Markov property, we can derive a geometric intu
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/backward_forward_kolmogorov.png' | relative_url }}" alt="Four panels. Top left: a heat map of the OU transition density over start x (horizontal) and target y (vertical) — a tilted blue band along the line y equals x times e to the minus t — crossed by a vertical green line (forward slice) and a horizontal orange line (backward slice). Top right: green densities in the target y for a fixed start 1.8 at four times, moving toward zero and spreading. Bottom left: orange curves of the probability of landing in a target set C as a function of the start x, starting as an indicator of C and then smoothing and widening. Bottom right: many Brownian paths from a point x over the unit time interval; those ending in the red target set C are blue, the rest grey; the first time strip is shaded orange and the last one green." loading="lazy">
+  <figcaption>Propositions 3.5 and 3.6 — one kernel, two variables. <strong>(a)</strong> The OU kernel $p(t,x,y)$ ($\mathrm{d}X = -X\,\mathrm{d}t + \mathrm{d}B$, $t = 0.5$) as a function of <em>both</em> the start $x$ and the target $y$. A vertical cut (green) is a probability density in $y$; a horizontal cut (orange) is a function of the start. <strong>(b)</strong> Forward equation: fix the start $x = 1.8$ and watch the density in the <em>target</em> drift to $0$ and spread, $\partial_t p = L^{\ast}(y, D_y)p$. <strong>(c)</strong> Backward equation: fix a target set $C$ and ask <em>from where</em> it is reached, $u(t,x) = \mathbb{P}_x(X_t \in C)$, which solves $\partial_t u = L(x, D_x)u$ with $u(0,\cdot) = \mathbf{1}_C$. This profile is not a density in $x$: it smooths and widens, because the mean-reverting drift can carry even distant starting points into $C$. <strong>(d)</strong> The stochastic reading (here for Brownian paths): the backward equation comes from perturbing the <em>first</em> step $[0,h]$ (orange), so the generator acts on the start. The forward equation comes from perturbing the <em>last</em> step $[t-h,t]$ (green), so the adjoint acts on the landing point.</figcaption>
+</figure>
+
 ### 3.2 Outlook: Itô's Theory of Diffusion Processes
 
 While Kolmogorov's framework is fundamentally *analytical* — characterising diffusions via transition semigroups, generators, and PDEs — Kiyosi Itô developed a parallel, *path-wise* approach. Instead of tracking the evolution of probability distributions globally, Itô's theory models the trajectories of individual particles explicitly in continuous time.
@@ -4162,6 +4200,11 @@ L(x, D)\, u(x) = \frac{1}{2} \sum_{i,j=1}^d a_{ij}(x)\, \frac{\partial^2 u(x)}{\
 $$
 
 Intuitively, (3.6) implies that over an infinitesimal time interval $\mathrm{d}t$, the process behaves locally like a Brownian motion with a mean displacement of $b(x)\, \mathrm{d}t$ and a local covariance structure given by $a(x)\, \mathrm{d}t$. To guarantee that the path-wise formulation (3.6) is well-defined and indeed yields a valid Feller process matching our analytical definition, certain regularity conditions must be imposed on the coefficients.
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/sigma_only_through_a.png' | relative_url }}" alt="Three scatter panels of two-dimensional noise increments coloured by the direction of the underlying Brownian increment. Left and middle: two different dispersion matrices, the second a rotation of the first; the colours are arranged differently in each, and three marked samples land in different places, but both clouds fill the same tilted ellipse, and the printed diffusion matrix is identical. Right: a two-by-one dispersion matrix; all samples lie on a single line." loading="lazy">
+  <figcaption>The dictionary (3.7) $a = \sigma\sigma^{\top}$ loses information — on purpose. Each panel shows one Euler step of noise $\sigma\,\Delta B$ for the same $2500$ Brownian increments $\Delta B(\omega)$, coloured by the direction of $\Delta B(\omega)$. <strong>(a)–(b)</strong> $\sigma_2 = \sigma_1 R$ with a rotation $R$: every individual $\omega$ (square, circle, diamond) lands somewhere else, yet the two clouds are the same Gaussian, since $\sigma_2\sigma_2^{\top} = \sigma_1 R R^{\top}\sigma_1^{\top} = \sigma_1\sigma_1^{\top}$. The generator (3.8), and hence the law of the process, only sees $a$; $\sigma$ is a pathwise <em>recipe</em>, and any square root of $a$ gives the same diffusion in distribution. <strong>(c)</strong> With a single noise source ($m = 1$) the matrix $a$ has rank one: positive <em>semi</em>definite, and the process receives no noise across the line. This is why Definition 3.1 only asks for $a \succeq 0$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">3.7 (Existence and Uniqueness of Strong Solutions)</span></p>
@@ -4193,6 +4236,12 @@ Then, for any initial condition $X_0 = x_0$ independent of the Brownian motion, 
 
 </div>
 
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/existence_conditions.png' | relative_url }}" alt="Three panels. Left: the curve one over one minus t shooting to infinity at the dashed line t equals one, thin red noisy paths also blowing up at various times, and a blue exponential curve that stays finite. Middle: the zero solution in black and several orange parabolas leaving zero at different times c, all solving the same equation from the same initial value. Right: successive green Picard iterates, from a flat line through increasingly accurate paths, collapsing onto a dashed black solution path; an inset shows the maximal error decreasing geometrically on a log scale." loading="lazy">
+  <figcaption>What the hypotheses of Theorem 3.7 buy. <strong>(a) Linear growth</strong> prevents explosion: $\dot x = x^2$ reaches $\infty$ at $t = 1$, and adding noise only makes the blow-up time random (thin red paths), whereas the linearly growing $\dot x = x$ lives forever. <strong>(b) Lipschitz continuity</strong> prevents branching: $\dot x = 2\sqrt{\lvert x\rvert}$ is not Lipschitz at $0$, and from $x(0) = 0$ a solution may sit at $0$ for any time $c$ and then leave along $(t-c)^2$. There are infinitely many solutions, so there is no well-defined dynamics. <strong>(c)</strong> With Lipschitz coefficients the Picard map $X \mapsto x_0 + \int_0^{\cdot} b(X_s)\,\mathrm{d}s + \int_0^{\cdot}\sigma(X_s)\,\mathrm{d}B_s$ contracts. For one fixed (discretised) Brownian path, the iterates $X^{(0)} \equiv x_0, X^{(1)}, X^{(2)}, \dots$ (light to dark green) collapse onto the solution, and the error (inset) decays faster than geometrically, like $(Kt)^k/k!$ — the mechanism behind the existence and uniqueness proof.</figcaption>
+</figure>
+
 Before moving on to the mechanics of reversing these processes in time, we can summarise the complete symmetry between the two mathematical approaches established so far.
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -4204,6 +4253,12 @@ Before moving on to the mechanics of reversing these processes in time, we can s
 The algebraic link $a(x) = \sigma(x)\, \sigma(x)^{\!\top}$ ensures that these two perspectives are completely equivalent characterisations of the same physical phenomenon.
 
 </div>
+
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/kolmogorov_ito_dictionary.png' | relative_url }}" alt="Two panels. Left: a blue heat map over time and space showing a density that starts concentrated near 0.3 and splits into two bands near plus and minus one, with orange simulated paths running through it and hopping between the bands. Right: four blue density curves at times 0.1, 0.5, 1.5 and 4 with orange dots from histograms of twenty thousand simulated paths lying exactly on each curve." loading="lazy">
+  <figcaption>The Kolmogorov–Itô dictionary, checked numerically for the double-well diffusion $\mathrm{d}X_t = (X_t - X_t^3)\,\mathrm{d}t + \sqrt{a}\,\mathrm{d}B_t$, $a = \frac12$, with $X_0 \sim \mathcal{N}(0.3, 0.15^2)$. <strong>(a)</strong> Background: the density $p(t,y)$ computed by solving the Fokker–Planck PDE — Kolmogorov's view, deterministic. Orange: individual Euler–Maruyama paths — Itô's view, random; each path eventually settles in one well, occasionally hopping across. <strong>(b)</strong> Histograms of $20\,000$ Itô paths (dots) sit on the PDE solution (curves) at every time. The PDE describes the whole population, the SDE describes one member of it; with $a = \sigma\sigma^{\top}$ they are the same object.</figcaption>
+</figure>
 
 ### 3.3 The Time-Reversed Process
 
@@ -4261,6 +4316,12 @@ The reversed process is *the same* OU process — as it must be: a stationary, r
 <figure>
   <img src="{{ 'assets/images/notes/sdes_diffusion_models/time_reversal_ou.png' | relative_url }}" alt="Two panels of stochastic paths. Left: forward Ornstein-Uhlenbeck paths starting from two sharp clusters at plus and minus two that merge into a single Gaussian cloud; the bimodal initial density and the Gaussian terminal density are drawn sideways at the edges. Right: paths of the time-reversed diffusion starting from the Gaussian cloud and re-condensing onto the two original clusters, with the same densities mirrored." loading="lazy">
   <figcaption>Theorem 3.8 in action for the OU process $\mathrm{d}X_t = -X_t\,\mathrm{d}t + \sqrt{2}\,\mathrm{d}B_t$ started from the bimodal mixture $\mu = \frac12\mathcal{N}(-2, 0.15^2) + \frac12\mathcal{N}(2, 0.15^2)$, for which the marginal $p^\mu(t,\cdot)$ — and hence the exact score — is available in closed form. <strong>Left.</strong> The forward process transports "data" into (near-)Gaussian noise. <strong>Right.</strong> The reversed diffusion with drift $\widetilde b(\tau, y) = y + 2\,\partial_y \log p^\mu(T-\tau, y)$ transports the noise back onto the two data modes, reproducing the forward marginals in reverse — no learning involved, since the score is exact here.</figcaption>
+</figure>
+
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/time_reversal_bayes.png' | relative_url }}" alt="Three panels. Left: a grey two-humped prior density, a blue likelihood bump near the current point y, and a green posterior that is the likelihood tilted toward the right-hand hump; arrows above show the likelihood's shift and the larger posterior shift, with printed values 0.95 and 0.90. Middle: a heat map over reversed time and y of the reversed drift, red where it pushes down and blue where it pushes up, with small black arrows; a single zero line at y equals 0 splits into a curved attracting branch reaching plus and minus two near the end, and dashed green lines mark the mode centres. Right: three straight lines through the origin — orange slope plus one, blue slope minus two, and their green sum with slope minus one." loading="lazy">
+  <figcaption>Why the reversed drift contains the score. <strong>(a)</strong> One reversed step is Bayes' rule (3.10). Given the current state $Y_t = y$, the earlier state $x$ has posterior $\propto$ prior $p^\mu(T-t-h, x)$ $\times$ likelihood $p(h, x, y)$. The likelihood alone would move $y$ back along the flipped drift $-b$; the prior <em>tilts</em> it towards the region of higher density, and a tilt of a Gaussian by $e^{\log p^\mu}$ shifts its mean by (covariance) $\times\,\nabla\log p^\mu$ — this is the term $a\,\nabla\log p^\mu$ of Theorem 3.8. Even for the sizeable step $h = 0.25$ the posterior mean shift ($0.95\,h$) is close to the formula ($0.90\,h$). <strong>(b)</strong> The exact reversed drift $\widetilde b(\tau, y)$ for the bimodal OU example above. Early in reversed time it simply pulls towards $0$; around $\tau \approx 1.5$ the zero set (black) bifurcates. The line $y = 0$ turns into a repeller, and two attracting branches funnel the mass onto the data modes $\pm 2$ (their centres $\pm 2e^{-(T-\tau)}$ dashed). <strong>(c)</strong> The stationary-OU sanity check: the flipped drift $+y$ is explosive, the score term $-2y$ overcompensates, and the sum returns exactly $b(y) = -y$.</figcaption>
 </figure>
 
 <div class="accordion" markdown="1">
@@ -4795,7 +4856,7 @@ $$
 and the sequence $\int X^n \mathrm{d}M$ is Cauchy in $L^2$ precisely by the Itô isometry applied to the differences $X^n - X^m$. Up to $\mathbb{P}$-null sets, $I_t(X)$ does not depend on the choice of the approximating sequence $X^n$ (exercise). Below, we will use one particular choice of $I_t(X)$ as *the* definition of the stochastic integral $\int_0^t X_s\, \mathrm{d}M_s$ for $X \in \mathcal{L}^{\ast}$; for this choice, we make use of the following two theorems.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.8 (Completeness of $\mathcal{M}\_2^C$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.8 (Completeness of $\mathcal{M}_2^C$)</span></p>
 
 For $M \in \mathcal{M}\_2^C$, define
 

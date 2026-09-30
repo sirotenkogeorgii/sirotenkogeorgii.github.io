@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "SDEs & Diffusion Models",
+   "url": "/subpages/books/sde_hd/",
+   "date": "2026-09-30",
+   "added": false
+  },
+  {
    "title": "Stochastic Differential Equations",
    "url": "/notes/stochastic-differential-equations/",
    "date": "2026-09-28",
@@ -173,12 +179,6 @@
    "url": "/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/",
    "date": "2026-07-15",
    "added": true
-  },
-  {
-   "title": "Metropolis-Hastings Algorithm",
-   "url": "/subpages/monte-carlo-methods/mcmc/metropolis%E2%80%93hastings-algorithm/",
-   "date": "2026-07-12",
-   "added": false
   }
  ]
 }
