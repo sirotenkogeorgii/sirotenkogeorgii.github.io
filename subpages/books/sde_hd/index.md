@@ -4455,6 +4455,11 @@ $$
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/bm_variation_scaling.png' | relative_url }}" alt="Five panels. Top row: a Brownian path on the unit interval and two successive zooms, each sixteen times narrower in time and four times narrower in space; every zoom looks equally rough, and the ratio of box height to width grows from 5 to 18 to 74. Bottom left: on log-log axes, for the Brownian path the sum of absolute increments grows like the square root of n, the sum of squared increments stays at 1, the sum of cubes goes to zero. Bottom right: for a smooth path the sum of absolute increments levels off at a finite value while the squares and cubes decay to zero." loading="lazy">
+  <figcaption>Why Riemann–Stieltjes integration fails, in one picture. <strong>(a)–(c)</strong> Zooming into a Brownian path by a factor $16$ in time and $4 = \sqrt{16}$ in space produces a picture of the same roughness, because Brownian motion is self-similar under diffusive scaling, $W_{ct} \overset{d}{=} \sqrt{c}\,W_t$. A differentiable curve would look straighter and straighter under zoom. Here the secant slopes (box height / width) grow by a factor $4$ at every zoom, so $\mathrm{d}W/\mathrm{d}t$ cannot exist. <strong>(d)</strong> The sums $\sum_i \lvert W_{t_{i+1}} - W_{t_i}\rvert^p$ over finer and finer partitions behave differently for each power. The total variation ($p = 1$) diverges like $\sqrt{2n/\pi}$, the quadratic sum ($p = 2$) settles at $t = 1$, and higher powers vanish. Exactly one power, $p = 2$, carries finite non-zero information, and the whole chapter is built on that quantity. <strong>(e)</strong> For a smooth path everything shifts by one power: the total variation is finite (so Stieltjes integration works) and the squares vanish like $1/n$. This is also Lemma 4.5 in action: $\sum \Delta^2 \le \max\lvert\Delta\rvert \cdot \sum\lvert\Delta\rvert$, so a finite variation budget forces zero quadratic variation.</figcaption>
+</figure>
+
 Therefore, to rigorously define diffusion trajectories — and to establish the foundational mechanics of reverse-time sampling in generative AI — we must first develop a completely new mathematical framework.
 
 ### 4.1 Stochastic Integration
@@ -4526,6 +4531,16 @@ Think of $M$ as the fluctuating value of a fair game and of $\xi_i$ as the *stak
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/simple_integral_gambling.png' | relative_url }}" alt="Four panels. Left, stacked: a Brownian game path with dots at eight equally spaced round boundaries; below it a step function of stakes between minus one and one with open circles on the left and filled circles on the right of each step, coloured green when positive and red when negative; below that the running winnings path. Right: two histograms of final winnings over forty thousand games, a blue one centred at zero for the honest strategy and a red one centred near 2.26 for the clairvoyant strategy." loading="lazy">
+  <figcaption>Definition 4.2 as a betting game. <strong>(a)</strong> The fair game $M$ (a Brownian path), observed at the round boundaries $t_i = i/8$ (black dots). <strong>(b)</strong> The stake $X_t = \xi_i$ on $(t_i, t_{i+1}]$, drawn with an open circle at $t_i$ and a filled one at $t_{i+1}$ to match the left-open intervals of (4.5). Here $\xi_i = \mathrm{clip}(-2M_{t_i}, -1, 1)$ bets on a return to $0$ and uses only what is known at $t_i$ (green shading = long, red = short, darker = larger stake). <strong>(c)</strong> The integral is the running profit: inside round $i$ it moves like $\xi_i\,(M_t - M_{t_i})$, the stake times the increment so far. <strong>(d)</strong> Over $40\,000$ games this strategy has mean profit $0$, like every non-anticipating strategy: choosing stakes from the past cannot beat a martingale. A clairvoyant who sets $\xi_i = \mathrm{sign}(M_{t_{i+1}} - M_{t_i})$ earns $\mathbb{E}\sum_i \lvert \Delta M_i\rvert = 8\sqrt{1/8}\sqrt{2/\pi} \approx 2.26$ per game. The measurability requirement in Definition 4.1 is exactly what rules this out.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/evaluation_point.png' | relative_url }}" alt="Three panels. Left: three running Riemann sums along one Brownian path, using the left point, midpoint and right point, separating into three bands that follow dotted curves W squared minus t over two, W squared over two, and W squared plus t over two. Middle: for a smooth integrator the three sums lie almost on top of each other. Right: histograms over thirty thousand paths of the three sums at time one, with means 0, 0.5 and 1." loading="lazy">
+  <figcaption>Why the stake is frozen at the <em>left</em> endpoint. <strong>(a)</strong> For one Brownian path, the Riemann sums $\sum_i W_{\tau_i}(W_{t_{i+1}} - W_{t_i})$ with $\tau_i$ at the left point, the midpoint or the right point of each interval ($n = 512$) converge to three <em>different</em> limits (dotted): $\frac12(W_t^2 - t)$, $\frac12 W_t^2$ and $\frac12(W_t^2 + t)$. Right minus left equals $\sum_i (\Delta W_i)^2 \to t$, the quadratic variation, which does not vanish because $W$ is too rough. <strong>(b)</strong> For a smooth integrator the gap $\sum(\Delta g)^2 = O(1/n)$ vanishes and all three sums agree in the limit, which is why classical calculus never has to choose an evaluation point. <strong>(c)</strong> Across $30\,000$ paths only the left-point sum has mean $0$, so only it produces a martingale (the fair-game property of Definition 4.2). The midpoint rule gives the Stratonovich integral, which obeys the classical chain rule ($\frac12 W_t^2$) but is not a martingale. Itô's choice keeps the martingale property and pays for it with the correction term in Itô's rule (Theorem 4.15).</figcaption>
+</figure>
+
 We will subsequently extend the definition to vastly larger classes of processes $X$ and $M$. For the next generalisation, we must formalise the concept of *variance accumulation over time*.
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -4571,6 +4586,11 @@ The following statements hold:
 * $\langle M \rangle\_t$ will play the role of the *clock* of the integration theory: integrands are measured in the norm $\mathbb{E}\int_0^t X_s^2\, \mathrm{d}\langle M \rangle\_s$ (Itô isometry, Theorem 4.6).
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/qv_clock_compensator.png' | relative_url }}" alt="Three panels. Left: a small strip showing the noise rate sigma squared, flat with a bump near t equals 0.6; below, martingale paths inside a band plus or minus two root quadratic variation that widens slowly then abruptly during the bump, with the bump stretches of three paths in orange. Middle: grey paths of M squared minus the quadratic variation, the Monte-Carlo mean of M squared in blue lying on the orange dashed quadratic variation curve, and the mean of the difference flat at zero in green. Right: the same paths plotted against their quadratic variation instead of time, filling a parabolic band like Brownian motion, with the orange stretches now long." loading="lazy">
+  <figcaption>Theorem 4.4 for $M_t = \int_0^t \sigma(s)\,\mathrm{d}W_s$ with a noise level $\sigma$ that bursts around $t \approx 0.6$, so that $\langle M\rangle_t = \int_0^t \sigma(s)^2\,\mathrm{d}s$. <strong>(a)</strong> Top: the rate $\sigma^2$ at which the clock $\langle M\rangle$ ticks. Bottom: paths of $M$ and the band $\pm 2\sqrt{\langle M\rangle_t}$, which widens slowly in calm periods and abruptly during the burst (orange stretches). <strong>(b)</strong> $M_t^2$ is a submartingale: on average it drifts upwards, and it does so exactly along $\langle M\rangle_t$ (blue = Monte-Carlo mean of $M_t^2$, orange dashed = $\langle M\rangle_t$). Subtracting this compensator leaves $M^2 - \langle M\rangle$ (grey paths) with constant mean $0$ (green), which is part 2 of the theorem. <strong>(c)</strong> The same paths re-plotted against their own clock $u = \langle M\rangle_t$ instead of real time. The burst is stretched out, the calm periods are compressed, and every path now spreads like $\pm 2\sqrt{u}$, just like plain Brownian motion. (That every continuous martingale is a time-changed Brownian motion is the Dambis–Dubins–Schwarz theorem, beyond these notes.) Quadratic variation is the intrinsic time of a martingale.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -4766,6 +4786,11 @@ where the middle equality uses that $M^2 - \langle M \rangle$ is a martingale (T
 </details>
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/ito_isometry_pythagoras.png' | relative_url }}" alt="Three panels. Left: a twelve by twelve heat map that is zero off the diagonal and has growing positive entries on the diagonal. Middle: the same heat map for the insider stake W one, with dark diagonal entries and a uniform faint positive tint everywhere off the diagonal. Right: a scatter of expected integrated squared integrand against expected squared stochastic integral; blue circles for adapted integrands lie on the dashed diagonal, red crosses for anticipating integrands lie well above it." loading="lazy">
+  <figcaption>The Itô isometry is Pythagoras' theorem. Write the simple integral as a sum of round-by-round winnings $Z_i = \xi_i\,\Delta W_i$ ($12$ rounds on $[0,1]$, $2\cdot 10^5$ Monte-Carlo paths), so that $\mathbb{E}[(\sum_i Z_i)^2] = \sum_{i,j}\mathbb{E}[Z_i Z_j]$. <strong>(a)</strong> For adapted stakes ($\xi_i = W_{t_i}$) the Gram matrix $\mathbb{E}[Z_iZ_j]$ is <em>diagonal</em>. The later increment $\Delta W_j$ is independent of everything before it, so the winnings of different rounds are orthogonal. The squared length of the sum is then the sum of the squared lengths, $\sum_i \mathbb{E}[\xi_i^2]\,\Delta t = \mathbb{E}\int X^2\,\mathrm{d}s$. <strong>(b)</strong> An insider who stakes $\xi_i = W_1$ breaks the orthogonality. Each off-diagonal entry is small ($2\Delta t^2$), but there are $n(n-1)$ of them, and together they contribute $1.85$. The result is $\mathbb{E}[(\int W_1\,\mathrm{d}W)^2] = \mathbb{E}[W_1^4] = 3$ instead of the isometry's prediction $1$. <strong>(c)</strong> The same test for many integrands: adapted ones (blue) land on the diagonal $\mathbb{E}[(\int_0^1 X\,\mathrm{d}W)^2] = \mathbb{E}\int_0^1 X^2\,\mathrm{d}s$, anticipating ones (red) do not.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(What the Isometry Buys)</span></p>
 
@@ -4923,6 +4948,11 @@ as the unique element of $\mathcal{M}\_2^C$ such that $\vert\kern-0.25ex\vert\ke
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/density_extension.png' | relative_url }}" alt="Three panels. Left: a rough integrand path and three staircase approximations with 4, 16 and 64 steps that hug it increasingly closely. Middle: the corresponding stochastic integral paths, the coarse one far off and the finest almost on top of the black limit path. Right: on log-log axes the mean squared error of the integrands and of the integrals against the number of steps; the two curves lie exactly on top of each other with slope minus one." loading="lazy">
+  <figcaption>Definition 4.10 carried out numerically for $X_s = \sin 4W_s + W_s$, which is continuous and adapted, so Case 1 of the proof of Theorem 4.7 applies. <strong>(a)</strong> The simple approximations $X^n$ freeze $X$ at the left endpoint of each of $n$ intervals and are therefore non-anticipating by construction. <strong>(b)</strong> Their elementary integrals $\int_0^t X^n\,\mathrm{d}W$ (explicit sums, Definition 4.2) settle onto one limiting path. <strong>(c)</strong> Why the limit exists and is unique: over $3000$ paths, the mean-square error of the <em>integrals</em> (orange) equals the $L^2$ error of the <em>integrands</em> (blue) for every $n$. The isometry transfers the approximation error of Theorem 4.7 unchanged to the integrals. A Cauchy sequence of integrands therefore gives a Cauchy sequence of integrals, and completeness (Theorem 4.8) supplies the limit.</figcaption>
+</figure>
+
 **Extension to local martingales.** We now generalise stochastic integration to broader classes of integrators and integrands. Let $\mathcal{M}^{c,\mathrm{loc}}$ denote the class of continuous **local martingales** — processes $M$ for which there exists a localising sequence of stopping times $T_n \uparrow \infty$ such that each stopped process $M_{\cdot \wedge T_n}$ is a martingale — and define
 
 $$
@@ -4967,6 +4997,11 @@ $$
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/localisation.png' | relative_url }}" alt="Three panels. Left: on a log scale, the expected squared integrand shoots to infinity at s equals one quarter, with the region beyond shaded red, while individual squared integrand paths stay finite throughout. Middle: the accumulated variance of one path, rising slowly and then steeply, with horizontal dashed levels 2, 8 and 16 and vertical lines at the stopping times where it first reaches them. Right: the full stochastic integral in grey and three localised integrals in green that follow it exactly and then become flat after their stopping times." loading="lazy">
+  <figcaption>Localisation for an integrand that is in $\mathcal{P}^{\ast}$ but not in $\mathcal{L}^{\ast}$ (here $M = W$, so the stopping times $S_n$ play no role). <strong>(a)</strong> For $X_s = e^{W_s^2}$, $\mathbb{E}[X_s^2] = \mathbb{E}[e^{2W_s^2}] = (1-4s)^{-1/2}$ blows up at $s = \frac14$. The expected accumulated variance is infinite, so Definition 4.10 does not apply. Yet every single path $X_s^2$ (blue) is continuous and has finite $\int_0^t X_s^2\,\mathrm{d}s$. <strong>(b)</strong> For one path, the stopping times $R_n$ are the moments at which the accumulated variance first reaches level $n$ (a few levels shown). Up to $R_n$ the integrand is tame. <strong>(c)</strong> The localised integrals use $X^{(n)} = X\,\mathbf{1}_{\lbrace s \le R_n\rbrace}$ (the $X^n$ of the text) and are ordinary $\mathcal{L}^{\ast}$-integrals. Each follows the same path until its stopping time and then freezes (Lemma 4.11), so gluing them defines $\int_0^t X\,\mathrm{d}W$ (grey) without ambiguity. Since $R_n \uparrow \infty$, every time $t$ is eventually covered.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">4.13 (Multivariate Integrals)</span></p>
 
@@ -5006,6 +5041,11 @@ where the second integral is a path-wise Lebesgue–Stieltjes integral against t
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/semimartingale_decomposition.png' | relative_url }}" alt="Three panels. Left: a rough path that climbs from 0.2 and fluctuates around the level one. Middle: the path split into a smooth orange drift part, rising then falling below zero, and a rough blue martingale part that rises; their sum is dotted. Right: running sums of squared increments, with the curves for the path and for the martingale part lying on top of each other and on a dashed green quadratic variation curve, while the curve for the drift part stays at zero; a text box lists a total variation of 2.3 for the drift part and 32 for the martingale part." loading="lazy">
+  <figcaption>Definition 4.14 for the solution of $\mathrm{d}X = (X - X^3)\,\mathrm{d}t + \sigma(X)\,\mathrm{d}W$ with $\sigma(x) = \frac14(1 + x^2)$. <strong>(a)</strong> The path is attracted to the well at $+1$ while being shaken by noise. <strong>(b)</strong> Its decomposition $X_t = X_0 + B_t + M_t$. The drift part $B_t = \int_0^t b(X_s)\,\mathrm{d}s$ (orange) is smooth and of bounded variation; the martingale part $M_t = \int_0^t \sigma(X_s)\,\mathrm{d}W_s$ (blue) is rough. The two work against each other: whenever the noise pushes $X$ above the well, the drift pulls it back. <strong>(c)</strong> Running sums of squared increments: those of $B$ vanish, while those of $X$ and $M$ coincide and follow $\langle M\rangle_t = \int_0^t \sigma(X_s)^2\,\mathrm{d}s$. Quadratic variation is blind to the bounded-variation part. This is why Definition 4.17 sets $\langle X^1, X^2\rangle := \langle M^1, M^2\rangle$, and why only the martingale part needs the stochastic integral; the drift part is integrated path-wise.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(The Construction Ladder)</span></p>
 
@@ -5019,6 +5059,11 @@ The stochastic integral was built in four rungs, each trading explicitness for g
 Quadratic variation is the fuel gauge of the whole construction: it decides which integrands are admissible and what the integral's variance is.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/construction_ladder.png' | relative_url }}" alt="A staircase of four boxes rising to the right: simple integrands; the space L star with finite expected accumulated variance; P star with almost surely finite accumulated variance against local martingales; and semimartingales. Curved arrows between boxes are labelled isometry plus density plus completeness, localisation with stopping times, and path-wise Stieltjes integration of the bounded-variation part. A red box notes that the accumulated variance decides admissibility on every rung." loading="lazy">
+  <figcaption>The construction ladder of the summary as a diagram. Each arrow names the tool that climbs one rung. The quantity $\int X^2\,\mathrm{d}\langle M\rangle$ appears on every rung: in expectation on rung 2, almost surely on rung 3.</figcaption>
+</figure>
 
 ### 4.2 The Itô Rule
 
@@ -5045,9 +5090,14 @@ $$
 which has no counterpart in the classical chain rule. The heuristic: over a short interval, $(\mathrm{d}X)^2 \approx (\mathrm{d}M)^2 \approx \mathrm{d}\langle M \rangle$ is of order $\mathrm{d}t$ — *not* negligible — so the second-order Taylor term survives the limit. The classical chain rule is recovered exactly when $\langle M \rangle \equiv 0$, i.e., for bounded-variation paths (Lemma 4.5 territory). Two consequences worth internalising:
 
 * **This is where the generator's $\frac{1}{2}$ comes from.** For an SDE solution ($\mathrm{d}\langle M \rangle\_s = a(X_s)\, \mathrm{d}s$), taking expectations in Itô's rule yields $\frac{\mathrm{d}}{\mathrm{d}t} \mathbb{E}[f(X_t)] = \mathbb{E}\bigl[\frac{1}{2} a f'' + b f'\bigr] (X_t)$ — precisely the differential operator $L(x, D)$ of Definition 3.1 and the Brownian generator $\frac{1}{2}\Delta$ of Example 2.14. Itô's rule is the path-wise engine behind the entire semigroup calculus of Chapters 2–3.
-* The right panel of the figure above shows the correction path-wise for $f(x) = x^2$: $W_t^2 - 2\int_0^t W\, \mathrm{d}W = \langle W \rangle\_t = t$.
+* The right panel of the quadratic-variation figure in §4.1 (after the Example on Brownian quadratic variation) shows the correction path-wise for $f(x) = x^2$: $W_t^2 - 2\int_0^t W\, \mathrm{d}W = \langle W \rangle\_t = t$.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/ito_rule_taylor.png' | relative_url }}" alt="Three panels. Left: the exponential curve, its tangent at zero, and two points at plus and minus 0.6; red vertical gaps show both points lie above the tangent, and a red diamond marks their average 1.185 above the tangent value 1. Middle: along one Brownian path, the exponential of W in grey, the naive chain-rule integral in orange falling below it, a rising green correction term, and their dashed sum exactly on the grey curve. Right: log-log plot of four second-order sums against the number of steps; only the sum of squared Brownian increments stays near one, the others decay, with a box listing dt times dt equals zero, dt times dW equals zero, dW times dW equals dt." loading="lazy">
+  <figcaption>Where the $\frac12 f''$ comes from. <strong>(a)</strong> One step of a symmetric walk $\Delta W = \pm h$ from $x = 0$, under the convex function $f = \exp$. The first-order (tangent) contributions $\pm f'(0)h$ cancel on average, but both outcomes lie <em>above</em> the tangent by about $\frac12 f''(0)h^2$ (red). On average $f$ therefore increases by $\frac12 f''h^2 = \frac12 f''\,\Delta t$. For smooth paths $h \sim \Delta t$, so these gaps are $O(\Delta t^2)$ and disappear in the limit. For Brownian paths $h \sim \sqrt{\Delta t}$, and the $n \sim 1/\Delta t$ gaps add up to a finite amount. <strong>(b)</strong> Theorem 4.15 for $f = \exp$ along one path. The naive chain rule $1 + \int_0^t e^{W_s}\,\mathrm{d}W_s$ (orange) falls short of $e^{W_t}$ (grey), and the difference is exactly the Itô correction $\frac12\int_0^t e^{W_s}\,\mathrm{d}s$ (green). <strong>(c)</strong> The error terms of the proof in numbers. $J_3$ and $J_4$ behave like $\sum(\Delta t)^2$ and $\sum \Delta t\,\Delta W$ and vanish, as do the higher Taylor terms ($\sum\lvert\Delta W\rvert^3$). Only $\sum(\Delta W)^2 \to t$ survives (Definition 4.3). This is the multiplication table of stochastic calculus: $\mathrm{d}t\,\mathrm{d}t = \mathrm{d}t\,\mathrm{d}W = 0$, $(\mathrm{d}W)^2 = \mathrm{d}t$.</figcaption>
+</figure>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -5181,6 +5231,11 @@ Quadratic covariation is to quadratic variation what an inner product is to a no
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/quadratic_covariation.png' | relative_url }}" alt="Three panels. Left: a tilted elliptical cloud of normalised increment pairs with one- and two-sigma ellipses, a long green arrow along the diagonal labelled sum and a short purple arrow across it labelled difference. Middle: running sums of products of increments for correlations 0.8, 0 and minus 0.6, each following a dashed straight line rho times t. Right: one quarter of the quadratic variation of the sum and of the difference, and their difference, which follows the line 0.7 t." loading="lazy">
+  <figcaption>Quadratic covariation for correlated Brownian motions $W^2 = \rho W^1 + \sqrt{1-\rho^2}\,W^{\perp}$. <strong>(a)</strong> The normalised increments $(\Delta W^1, \Delta W^2)/\sqrt{\Delta t}$ form an elliptical cloud. Along the diagonal (sum) the variance is $2(1+\rho)$, across it (difference) $2(1-\rho)$; the quadratic variations of $W^1 \pm W^2$ are these numbers times $t$. <strong>(b)</strong> The products of increments add up to the deterministic line $\rho t$, i.e. $\langle W^1, W^2\rangle_t = \rho t$, which is $0$ for independent motions. <strong>(c)</strong> Polarisation in action: $\frac14\langle W^1 + W^2\rangle_t - \frac14\langle W^1 - W^2\rangle_t = \frac14\bigl(2(1+\rho) - 2(1-\rho)\bigr)t = \rho t$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">4.18 (Partial Integration)</span></p>
 
@@ -5198,10 +5253,15 @@ $$
 
 Apply the multivariate Itô rule (Theorem 4.16) with $X^{(1)} = X$, $X^{(2)} = Y$, and $f(t, x_1, x_2) = x_1 x_2$: the mixed second derivative equals $1$, all others vanish. $\square$
 
-*(For $X = Y = W$ this is exactly the right panel of the earlier figure: $W_t^2 = 2\int_0^t W\, \mathrm{d}W + t$.)*
+*(For $X = Y = W$ this is exactly the right panel of the quadratic-variation figure in §4.1: $W_t^2 = 2\int_0^t W\, \mathrm{d}W + t$.)*
 
 </details>
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/partial_integration_rectangle.png' | relative_url }}" alt="Three panels. Left: a grey rectangle labelled X Y, a blue strip on its right labelled Y delta X, an orange strip on top labelled X delta Y and a red corner square labelled delta X delta Y. Middle: along one path, the product X Y in grey, the sum of strip integrals in orange drifting below it, the strips plus accumulated corners dashed and exactly on the grey curve, and the corner sum in red rising along the line 0.6 t. Right: on log-log axes the total corner area against the number of steps; it decays like one over n for a smooth pair and stays at 0.6 for the Brownian pair." loading="lazy">
+  <figcaption>Corollary 4.18 as area bookkeeping. <strong>(a)</strong> Over one step, the rectangle $X_tY_t$ grows by two strips, $Y\,\Delta X$ and $X\,\Delta Y$ (the discrete left-point integrals $\int Y\,\mathrm{d}X + \int X\,\mathrm{d}Y$), plus a corner $\Delta X\,\Delta Y$. This identity holds exactly at every step. <strong>(b)</strong> For two correlated Brownian motions ($\rho = 0.6$) the strips alone (orange) miss $X_tY_t$ (grey). Adding the accumulated corners closes the gap, and the corners themselves (red) add up to $\langle X, Y\rangle_t = \rho t$. <strong>(c)</strong> The total corner area at $t = 1$ as the partition is refined. For smooth paths it decays like $1/n$, which gives the classical product rule. For the Brownian pair it converges to $\rho$: the extra term $\langle X, Y\rangle$ in the corollary is the sum of these corners.</figcaption>
+</figure>
 
 We now consider an exemplary class of semimartingales.
 
@@ -5328,11 +5388,16 @@ Thus $\widetilde{Y}(t)\, \bar{Y}(t)$ is constant a.s., and since $\widetilde{Y}(
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Geometric Brownian Motion and the $-\frac{1}{2}\lVert H\rVert^2$ Correction)</span></p>
 
-* For constant scalar coefficients $K \equiv \mu$, $H \equiv \sigma$, the theorem gives **geometric Brownian motion** $Y(t) = \exp\bigl((\mu - \tfrac{\sigma^2}{2}) t + \sigma W_t\bigr)$ — the Black–Scholes asset model, and the left panel of the figure below.
+* For constant scalar coefficients $K \equiv \mu$, $H \equiv \sigma$, the theorem gives **geometric Brownian motion** $Y(t) = \exp\bigl((\mu - \tfrac{\sigma^2}{2}) t + \sigma W_t\bigr)$ — the Black–Scholes asset model, the subject of the figure after this callout, and the test case of the Euler–Maruyama convergence figure in §4.3.
 * The $-\frac{1}{2} \sigma^2$ is the Itô correction in action: the *mean* grows like $\mathbb{E}[Y(t)] = e^{\mu t}$, but the *typical path* grows only at rate $\mu - \frac{\sigma^2}{2}$ — multiplicative noise drags the median below the mean (the gap is the variance of the log).
 * In the general form, $Y$ is known as the **stochastic (Doléans-Dade) exponential** of the Itô process $\int K\, \mathrm{d}s + \int H\, \mathrm{d}W$; for $K \equiv 0$ it is the prototypical *positive local martingale*, the object underlying changes of measure (Girsanov's theorem) later in the theory.
 
 </div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/gbm_mean_vs_median.png' | relative_url }}" alt="Three panels. Left: on a log scale, 150 geometric Brownian motion paths fanning out, a shaded five to ninety-five percent band drifting downward, a red mean line rising and a blue median line falling. Middle: the Gaussian density of the log of Y at time 8, with the eighty percent of mass below zero shaded red, a blue median line at minus 2.4 and a red mean line at plus 1.6 in the right tail. Right: three running sample means of Y at time 8 against the number of paths on a log axis, jumping wildly and only slowly settling near the dashed true mean 4.95." loading="lazy">
+  <figcaption>The $-\frac12\sigma^2$ correction made visible: geometric Brownian motion with $\mu = 0.2 > 0$ but $\mu - \frac12\sigma^2 = -0.3 < 0$. Itô's rule turns $\mathrm{d}Y = Y(\mu\,\mathrm{d}t + \sigma\,\mathrm{d}W)$ into $\mathrm{d}\log Y = (\mu - \frac12\sigma^2)\,\mathrm{d}t + \sigma\,\mathrm{d}W$. <strong>(a)</strong> On a log scale the paths are Brownian motion with drift $\mu - \frac12\sigma^2$. The median path (blue) and the 5–95 % band decay, while the mean $\mathbb{E}[Y_t] = e^{\mu t}$ (red) grows. <strong>(b)</strong> At $T = 8$, $80\,\%$ of all paths end below their starting value although the mean is $e^{1.6} \approx 4.95$; the mean lies far in the right tail of the log-normal law. <strong>(c)</strong> Running sample means of $Y_T$ in three independent runs of $2\cdot 10^5$ paths. They jump whenever a rare huge outcome arrives and converge only slowly, because the expectation is carried by a vanishing fraction of paths.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">4.23 (Inhomogeneous Linear SDE — Variation of Constants)</span></p>
@@ -5400,6 +5465,11 @@ Theorem 4.23 is the reason the forward half of a diffusion model is *analyticall
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/ou_variation_of_constants.png' | relative_url }}" alt="Three panels. Left: an Ornstein-Uhlenbeck path starting at 2.5, decomposed into an orange dashed decaying exponential and a blue noise path; their black sum lies exactly on a grey Euler-Maruyama path. Middle: grey bars of random kicks over time zero to four, and blue bars of the same kicks multiplied by an orange exponential envelope, tiny for early kicks and full size for recent ones. Right: histograms of simulated values at times 0.25, 1 and 4 with exact Gaussian density curves lying on top of them." loading="lazy">
+  <figcaption>Theorem 4.23 for the Ornstein–Uhlenbeck process $\mathrm{d}X = -X\,\mathrm{d}t + \sigma\,\mathrm{d}W$ with $\sigma = 0.8$ and $x = 2.5$. <strong>(a)</strong> The variation-of-constants formula splits the path into a deterministic part $e^{-t}x$ (orange, the forgotten start) and a noise part $\sigma\int_0^t e^{-(t-s)}\,\mathrm{d}W_s$ (blue). Their sum (black) coincides with an Euler–Maruyama solution driven by the same noise (grey). <strong>(b)</strong> The noise part is a weighted sum of all past kicks $\sigma\,\Delta W_s$ (grey) with weights $e^{-(t-s)}$. Kicks from long ago are damped away (blue), so the process has a fading memory of length about $1$. <strong>(c)</strong> A weighted sum of independent Gaussian kicks with deterministic weights is Gaussian, so $X_t \sim \mathcal{N}\bigl(x e^{-t}, \frac{\sigma^2}{2}(1 - e^{-2t})\bigr)$ exactly. Histograms of $20\,000$ paths simulated over $400$ Euler steps (bars) match these densities (curves), which can be sampled in a single draw. This is why the forward process of a diffusion model is analytically free: a training pair $(X_0, X_t)$ costs one Gaussian sample, not a simulation.</figcaption>
+</figure>
+
 ### 4.3 Simulation of Diffusion Processes
 
 Given a diffusion process $(X_t)\_{t \ge 0}$ characterised by its infinitesimal generator $(A, \mathcal{D}(A))$ as in Definition 3.1, a natural question arises: how can one simulate sample paths of $(X_t)\_{t \ge 0}$ when only the generator is known? Recall that, for any $u \in C_c^\infty(\mathbb{R}^d)$, the generator acts as
@@ -5433,11 +5503,16 @@ where $\Sigma(x)$ is a matrix square root of $a(x)$, i.e., $\Sigma(x)\, \Sigma(x
 
 </div>
 
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/euler_maruyama_mechanics.png' | relative_url }}" alt="Two panels. Left: eight Euler-Maruyama steps for a double-well drift, each shown as an orange arrow for the drift shift, a sideways blue Gaussian bump at the next time, and a red vertical segment from the bump centre to the sampled next point; the black points are joined by a dotted line. Right: on a symmetric-log scale, green paths with a fine step stay near zero, while red paths with a coarse step oscillate with growing amplitude and explode to plus or minus ten to the twelve; a green shaded band marks the stability region." loading="lazy">
+  <figcaption><strong>(a)</strong> The Euler–Maruyama recipe for the double-well drift $b(x) = x - x^3$ with $\sigma = 0.6$ and a deliberately coarse step $\Delta t = 0.35$. Each step first moves deterministically by $b(x)\,\Delta t$ (orange arrow, pointing towards the nearer well at $\pm 1$). It then draws the next state from the Gaussian $\mathcal{N}(x + b(x)\Delta t,\ a\,\Delta t)$ (blue, drawn sideways), i.e. adds the kick $\sigma\sqrt{\Delta t}\,Z$ (red). This is Kolmogorov's local description of a diffusion (Theorem 3.4 and the zoom panel of the Definition 3.1 figure), used as a sampling rule. <strong>(b)</strong> Why the step size matters when the coefficients vary rapidly. Take $b(x) = -x^3$, which is strongly mean-reverting but not globally Lipschitz, so it lies outside Theorem 3.7. One Euler step maps $x \mapsto x - x^3\Delta t$, and once $\lvert x\rvert > \sqrt{2/\Delta t}$ it overshoots the origin and lands farther out than it started. The iteration then explodes (red, $\Delta t = 0.3$, symmetric-log scale), while the fine scheme ($\Delta t = 0.01$, green) stays bounded like the true process. Starting from $X_0 = 2.5$, just below the threshold, the noise decides whether a coarse path explodes.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical Considerations)</span></p>
 
 * **Matrix square root.** Computing $\Sigma(x)$ requires $a(x)$ to be positive semidefinite. Common methods for obtaining such a square root include the Cholesky decomposition or the spectral decomposition.
-* **Step size.** The time step $\Delta t$ must be chosen sufficiently small to maintain accuracy, particularly when the coefficients $a(x)$ or $b(x)$ vary rapidly. For SDE coefficients as in Theorem 3.7, the scheme converges *strongly* with order $\frac{1}{2}$ in general ($\mathbb{E}\lvert X_T - X_T^{\Delta t} \rvert = O(\sqrt{\Delta t})$; see the figure below), and with order $1$ for additive noise.
+* **Step size.** The time step $\Delta t$ must be chosen sufficiently small to maintain accuracy, particularly when the coefficients $a(x)$ or $b(x)$ vary rapidly (panel (b) of the figure above shows what goes wrong otherwise). For SDE coefficients as in Theorem 3.7, the scheme converges *strongly* with order $\frac{1}{2}$ in general ($\mathbb{E}\lvert X_T - X_T^{\Delta t} \rvert = O(\sqrt{\Delta t})$; see the figure below), and with order $1$ for additive noise.
 * **Domains and boundaries.** If the diffusion is constrained to a domain with boundary conditions, appropriate modifications (such as reflection or absorption) are required in order to respect these constraints.
 
 </div>
