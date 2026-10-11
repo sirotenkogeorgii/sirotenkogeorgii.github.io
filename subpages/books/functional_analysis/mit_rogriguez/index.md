@@ -6028,6 +6028,33 @@ In addition, if $H$ is a normed vector space satisfying this equality, then $H$ 
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Polarization Identity)</span></p>
+
+Let $H$ be a complex pre-Hilbert space, with inner product linear in the first argument. Then, for all $u,v\in H$,
+
+$$\langle u,v\rangle =\frac14\left[ \|u+v\|^2-\|u-v\|^2 +i\|u+iv\|^2-i\|u-iv\|^2 \right].$$
+
+In particular, **the inner product is uniquely determined by its induced norm**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jordan–von Neumann Theorem: Characterization of Inner-Product Norms)</span></p>
+
+Let $H$ be a complex normed vector space. The following are equivalent:
+
+1. The norm on $H$ is induced by a Hermitian inner product.
+2. The norm satisfies the **parallelogram identity**: for all $u,v\in H$,
+
+   $$\|u+v\|^2+\|u-v\|^2 =2\left(\|u\|^2+\|v\|^2\right).$$
+
+Moreover, when these conditions hold, the inducing inner product is **unique** and is given by the polarization identity:
+
+$$\langle u,v\rangle =\frac14\left[ \|u+v\|^2-\|u-v\|^2 +i\|u+iv\|^2-i\|u-iv\|^2 \right].$$
+
+</div>
+
 <figure class="math-figure">
   <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" width="380" aria-label="Parallelogram law: sum of squared diagonals equals twice sum of squared sides">
     <g stroke="#444" stroke-width="0.8" fill="none">
