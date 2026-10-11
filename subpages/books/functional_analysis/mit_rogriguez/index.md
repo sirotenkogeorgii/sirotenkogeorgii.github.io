@@ -888,6 +888,30 @@ $$\frac{\lVert Tv \rVert_W}{\lVert v\rVert_V} = \frac{\lVert T(\frac{\lVert v\rV
   </details>
 </div> -->
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Nullspace of a Bounded Linear Operator is Closed)</span></p>
+
+Let $V,W$ be normed vector spaces and let $T\in\mathcal B(V,W)$. Then the nullspace
+
+$$\mathcal N(T)=\lbrace v\in V:Tv=0\rbrace$$
+
+is a closed linear subspace of $V$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Linearity of $T$ implies that $\mathcal N(T)$ is a linear subspace. Since $T$ is bounded, it is continuous. Therefore
+
+$$\mathcal N(T)=T^{-1}(\lbrace 0\rbrace)$$
+
+is closed, because $\lbrace 0\rbrace\subset W$ is closed and the preimage of a closed set under a continuous map is closed. $\square$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Boundedness in Big-O notation)</span></p>
 
@@ -5671,30 +5695,67 @@ The space $L^p(E)$ with pointwise addition and natural scalar multiplication ope
   </details>
 </div>
 
-### Multiplication Operators on $L^p$
+### Multiplication Operators on $L^p$ Spaces
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Multiplication Operators on $L^p$)</span></p>
 
 Let $a<b$, $1\le p\le\infty$, and let $g$ be measurable on $[a,b]$. Define
 
-$$M_gf := gf.$$
+$$Tf = M_gf := gf.$$
 
 Then
 
-$$M_g\in\mathcal B(L^p([a,b])) \quad\Longleftrightarrow\quad g\in L^\infty([a,b]).$$
+$$Tf = M_g\in\mathcal B(L^p([a,b])) \quad\Longleftrightarrow\quad g\in L^\infty([a,b]).$$
 
 In this case,
 
-$$\|M_g\|_{\mathcal B(L^p([a,b]))} = \|g\|_{L^\infty([a,b])}.$$
+$$\|T\|_{L^p([a,b])} = \|M_g\|_{L^p([a,b])} = \|g\|_{L^\infty([a,b])}.$$
 
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof</summary>
-    <p>TODO:</p>
-  </details>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+1. $\lVert T \rVert_{L^p([a,b])} = \lVert g\rVert_{L^\infty([a,b])}$.
+   1. **Upper bound**
+
+      1. p \lt \infty.
+      We know that 
+
+      $$\lVert Tf \rVert_{L^p([a,b])} = (\int_a^b \lvert f(x)g(x)\rvert^p dx)^{1/p} \leq (\int_a^b \lvert f(x)\lVert g\rVert_{L^\infty([a,b])} \rvert^p dx)^{1/p} = \Lvert g\rVert_{L^\infty([a,b])}(\int_a^b \lvertf(x)\rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}.$$
+
+      Thus, $\lVert Tf \rVert_{L^p([a,b])} \leq \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}$.
+
+      For $\lVert T \rVert_{L^p([a,b])}$ we use $\lVert f\rVert_{L^p([a,b])} = 1$, thus 
+
+      $$\lVert T \rVert_{L^p([a,b])} \leq \lVert g\rVert_{L^\infty([a,b])}.$$
+      2. p = \infty.
+
+         For $p=\infty$, we use essential supremum directly:
+        
+         $$\|fg\|_\infty\le\|f\|_\infty\|g\|_\infty.$$
+        
+   2. **Lower bound**
+      To obtain the lower bound on $T$, we construct a specific function $\hat{f}$ with a unit norm. This $\hat{f}$ takes a constant value whenever $g$ attains value $\gt \lVert g \rVert_{L^\infty}-\varepsilon$ for some fixed $\varepsilon$, which could be any value greater than zero, and zero elsewhere. To have norm one, the constant value one $E_\varepsilon := \lbrace x\in [a,b]: \lvert g(x)\rvert \gt \lVert g\rVert_{L^\infty} - \varepsilon \rbrace$ is $m(E_\varepsilon)^{-1/p}$, where $m$ is a Lebesgue measure. This gives the upper bound:
+
+      $$\lVert T \rVert_{L^p([a,b])} \geq \lVert T\hat{f} \rVert_{L^p([a,b])} \gt \lVert g\rVert_{L^\infty} - \varepsilon.$$
+
+      Since $\varepsilon$ is arbitrarily small, the bound $\lVert T \rVert_{L^p([a,b])} \gt \lVert g\rVert_{L^\infty} - \varepsilon$ yields $\lVert T \rVert_{L^p([a,b])} \geq \lVert g\rVert_{L^\infty}$.
+
+      Combining two bounds we establish $\lVert T \rVert_{L^p([a,b])} = \lVert g\rVert_{L^\infty}$.
+  
+      For $p$ infinite, the above constructed function $\hat{f}$ still works, since the exponent becomes zero and the constant becomes exactly $1$ on the set $E_\varepsilon$, which satisfies the requirement on a unit norm for a test function.
+
+2. $T \in \mathcal{B}(L^p([a,b]), L^p([a,b]))$. 
+   1. $T$ is a bounded linear operator.
+      1. $T$ is obviously linear.
+      2. $T$ is bounded since $\lVert T \rVert_{L^p([a,b])} = \lVert g\rVert_{L^\infty([a,b])} \lt \infty$.
+   2. $Tf \in L^p([a,b])$.
+      1. $\forall f\in L^p([a,b]): \quad \lVert Tf \rVert_{L^p([a,b])} \leq \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])} \lt \infty$.
+
+</details>
 </div>
 
 ### Properties of $L^p$ Spaces
@@ -6911,6 +6972,17 @@ where $\operatorname{Ran}(A)$ is the range of $A$ and $\operatorname{Null}(A^\as
 </div>
 
 In particular, if $\operatorname{Ran}(A)$ is a closed subspace, then surjectivity of $A$ is equivalent to injectivity of $A^\ast$ (an infinite-dimensional version of rank-nullity).
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Generalization of theorem 189)</p>
+
+The Theorem 189 for $A:H\to H$, whereas it is also true for $A:X\to Y$. The identical proof works for $A:X\to Y$, with $A^\ast:Y\to X$. Also 
+
+$$(\bar{\operatorname{Ran}(A)})^\perp = \operatorname{Null}(A^*),$$
+
+because for **any** subset $S$ of a Hilbert space, $S^\perp=\bar{S}^\perp$.
+
+</div>
 
 ## Compactness in Hilbert Spaces
 

@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-10-11",
+   "added": false
+  },
+  {
    "title": "Introduction to Topology",
    "url": "/notes/introduction-to-topology/",
    "date": "2026-10-11",
@@ -16,12 +22,6 @@
    "title": "Stochastic Differential Equations",
    "url": "/notes/stochastic-differential-equations/",
    "date": "2026-09-28",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
-   "date": "2026-09-18",
    "added": false
   },
   {
