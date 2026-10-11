@@ -17,6 +17,10 @@ tags:
 
 # Introduction to Topology
 
+**Table of Contents**
+- TOC
+{:toc}
+
 ## 1. Theory of Sets
 
 ### 1.1 Introduction
@@ -447,7 +451,14 @@ The $r$-neighborhoods form a basis of any metric space $M$.
 
 </div>
 
-*Proof.* Given an open set $U$, for every point $p$ inside $U$, draw an $r_p$-neighborhood $U_p$ contained entirely inside $U$. Then $\bigcup_p U_p$ is contained in $U$ and covers every point inside it. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Given an open set $U$, for every point $p$ inside $U$, draw an $r_p$-neighborhood $U_p$ contained entirely inside $U$. Then $\bigcup_p U_p$ is contained in $U$ and covers every point inside it. $\square$
+
+</details>
+</div>
 
 ## 4. Compactness
 
@@ -516,7 +527,14 @@ $[0, 1]$ is compact.
 
 </div>
 
-*Proof sketch.* Split $[0, 1]$ into $[0, \frac{1}{2}] \cup [\frac{1}{2}, 1]$. By Pigeonhole, infinitely many terms of the sequence lie in the left half (say); let $x_1$ be the first one and then keep only the terms in the left half after $x_1$. Now split $[0, \frac{1}{2}]$ into $[0, \frac{1}{4}] \cup [\frac{1}{4}, \frac{1}{2}]$. Again, by Pigeonhole, infinitely many terms fall in some half; pick one of them, call it $x_2$. Rinse and repeat. In this way we generate a sequence $x_1, x_2, \dots$ which is Cauchy, implying that it converges since $[0, 1]$ is complete. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Split $[0, 1]$ into $[0, \frac{1}{2}] \cup [\frac{1}{2}, 1]$. By Pigeonhole, infinitely many terms of the sequence lie in the left half (say); let $x_1$ be the first one and then keep only the terms in the left half after $x_1$. Now split $[0, \frac{1}{2}]$ into $[0, \frac{1}{4}] \cup [\frac{1}{4}, \frac{1}{2}]$. Again, by Pigeonhole, infinitely many terms fall in some half; pick one of them, call it $x_2$. Rinse and repeat. In this way we generate a sequence $x_1, x_2, \dots$ which is Cauchy, implying that it converges since $[0, 1]$ is complete. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bolzano-Weierstraß)</span></p>
@@ -525,7 +543,14 @@ A subset of $\mathbb{R}^n$ is compact if and only if it is closed and bounded.
 
 </div>
 
-*Proof.* Look at a closed and bounded $S \subseteq \mathbb{R}^n$. Since it's bounded, it lives inside some box $[a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n]$. By Tychonoff's theorem, since each $[a_i, b_i]$ is compact the entire box is. Since $S$ is a closed subset of this compact box, we're done. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Look at a closed and bounded $S \subseteq \mathbb{R}^n$. Since it's bounded, it lives inside some box $[a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n]$. By Tychonoff's theorem, since each $[a_i, b_i]$ is compact the entire box is. Since $S$ is a closed subset of this compact box, we're done. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Closed and bounded but not compact)</span></p>
@@ -599,7 +624,14 @@ Let $M$ be compact. Then $M$ is totally bounded.
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof using covers.* For every point $p \in M$, take an $\varepsilon$-neighborhood of $p$, say $U_p$. These cover $M$ for the horrendously stupid reason that each point $p$ is at the very least covered by its open neighborhood $U_p$. Compactness then lets us take a finite subcover. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Images of compacts are compact)</span></p>
@@ -608,7 +640,14 @@ Let $f\colon X \to Y$ be a continuous function, where $X$ is compact. Then the i
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof using covers.* Take any open cover $\lbrace V_\alpha \rbrace$ in $Y$ of $f^{\text{img}}(X)$. By continuity of $f$, it pulls back to an open cover $\lbrace U_\alpha \rbrace$ of $X$. Thus some finite subcover of this covers $X$. The corresponding $V$'s cover $f^{\text{img}}(X)$. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Extreme value theorem)</span></p>
@@ -661,7 +700,14 @@ If $M$ is compact and $f\colon M \to N$ is continuous, then $f$ is uniformly con
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof using sequences.* Fix $\varepsilon > 0$, and assume for contradiction that for every $\delta = 1/k$ there exists points $x_k$ and $y_k$ within $\delta$ of each other but with images $\varepsilon$ apart. By compactness, take a convergent subsequence $x_{i_k} \to p$. Then $y_{i_k} \to p$ as well, since the $x_k$'s and $y_k$'s are close to each other. So both sequences $f(x_{i_k})$ and $f(y_{i_k})$ should converge to $f(p)$ by sequential continuity, but this can't be true since the two sequences are always $\varepsilon$ apart. $\square$
+
+</details>
+</div>
 
 ### 4.5 (Optional) Equivalence of Formulations of Compactness
 
@@ -683,4 +729,11 @@ Let $M$ be a compact metric space and $\lbrace U_\alpha \rbrace$ an open cover. 
 
 </div>
 
-*Proof.* Assume for contradiction that for every $\delta = 1/k$ there is a point $x_k \in M$ such that its $1/k$-neighborhood isn't contained in any $U_\alpha$. We construct a sequence $x_1, x_2, \dots$; thus we're allowed to take a subsequence which converges to some $x$. Then for every $\varepsilon > 0$ we can find an integer $n$ such that $d(x_n, x) + 1/n < \varepsilon$; thus the $\varepsilon$-neighborhood at $x$ isn't contained in any $U_\alpha$ for every $\varepsilon > 0$. This is impossible, because we assumed $x$ was covered by some open set. $\square$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Assume for contradiction that for every $\delta = 1/k$ there is a point $x_k \in M$ such that its $1/k$-neighborhood isn't contained in any $U_\alpha$. We construct a sequence $x_1, x_2, \dots$; thus we're allowed to take a subsequence which converges to some $x$. Then for every $\varepsilon > 0$ we can find an integer $n$ such that $d(x_n, x) + 1/n < \varepsilon$; thus the $\varepsilon$-neighborhood at $x$ isn't contained in any $U_\alpha$ for every $\varepsilon > 0$. This is impossible, because we assumed $x$ was covered by some open set. $\square$
+
+</details>
+</div>

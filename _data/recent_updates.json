@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Introduction to Topology",
+   "url": "/notes/introduction-to-topology/",
+   "date": "2026-10-11",
+   "added": false
+  },
+  {
    "title": "SDEs & Diffusion Models",
    "url": "/subpages/books/sde_hd/",
    "date": "2026-10-01",
@@ -172,12 +178,6 @@
    "title": "Cheatsheet — Lecture 4: Dynamic Programming",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/",
    "date": "2026-07-22",
-   "added": true
-  },
-  {
-   "title": "Non-Stationary Processes and Recency-Weighted Estimation",
-   "url": "/subpages/reinforcement_learning_hd/subpages/non-stationary-processes/",
-   "date": "2026-07-15",
    "added": true
   }
  ]
