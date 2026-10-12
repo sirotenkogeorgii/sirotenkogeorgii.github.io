@@ -1302,6 +1302,60 @@ $$\forall b\in B: \ \sup_n \lVert T_n b \rVert < \infty \quad \implies \quad \su
   </details>
 </div>
 
+### Strong Convergence of Operators
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Operator Convergence)</span></p>
+
+Let $X, Y$ be normed spaces. A sequence $A\_n \in \mathcal{B}(X, Y)$ **converges strongly** if $A\_n x$ converges in $Y$ for every $x \in X$; its strong limit is $Ax := \lim\_n A\_n x$.
+
+</div>
+
+Norm convergence $\lVert A\_n - A \rVert \to 0$ means $A\_n x \to Ax$ **uniformly** on the unit ball; strong convergence only asks for it pointwise.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Strong but Not Norm Convergence)</span></p>
+
+On $\ell^2$ let $P\_N$ keep the first $N$ coordinates: $P\_N(a\_1, a\_2, \dots) = (a\_1, \dots, a\_N, 0, \dots)$. For each $a \in \ell^2$, $\lVert a - P\_N a \rVert^2 = \sum\_{k > N}\lvert a\_k \rvert^2 \to 0$, so $P\_N \to I$ strongly. But $(I - P\_N)e\_{N+1} = e\_{N+1}$, so $\lVert I - P\_N \rVert = 1$ for all $N$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Strong Limits Are Bounded)</span></p>
+
+Let $X$ be a Banach space, $Y$ a normed space, and $A\_n \in \mathcal{B}(X, Y)$ strongly convergent with limit $A$. Then $\sup\_n \lVert A\_n \rVert < \infty$, and $A \in \mathcal{B}(X, Y)$ with $\lVert A \rVert \le \liminf\_n \lVert A\_n \rVert$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+For each $x$, the convergent sequence $A\_n x$ is bounded, so the Uniform Boundedness Principle gives $\lVert A\_n \rVert \le C$. The limit $A$ is clearly linear, and $\lVert Ax \rVert = \lim\_n \lVert A\_n x \rVert \le \liminf\_n \lVert A\_n \rVert \lVert x \rVert$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Products Are Strongly Continuous)</span></p>
+
+Let $X$ be a Banach space and $A\_n \to A$, $B\_n \to B$ strongly in $\mathcal{B}(X)$. Then $A\_n B\_n \to AB$ strongly.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+For $x \in X$,
+
+$$A_n B_n x - ABx = A_n(B_n x - Bx) + (A_n - A)Bx.$$
+
+The second term tends to $0$ by strong convergence of $A\_n$ (applied to the fixed vector $Bx$). For the first, the previous proposition gives $\lVert A\_n \rVert \le C$, so $\lVert A\_n(B\_n x - Bx) \rVert \le C\lVert B\_n x - Bx \rVert \to 0$. The uniform bound is essential here: without it, $A\_n$ could amplify the small vectors $B\_n x - Bx$. $\square$
+
+</details>
+</div>
+
 ## The Open Mapping Theorem
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1386,7 +1440,15 @@ Let $X, Y$ be Banach spaces. A map $F : X \to Y$ is continuous iff $F$ is closed
 <details markdown="1">
 <summary>proof</summary>
 
-TODO:
+Here $F$ is linear and "closed" means its graph $\Gamma(F) = \lbrace (x, Fx) : x \in X \rbrace$ is closed in $X \times Y$, so this is the Closed Graph Theorem above; we recall the argument as a commutative diagram. The projections $\pi\_1(x, y) = x$ and $\pi\_2(x, y) = y$ are continuous, and on $\Gamma(F)$ we have
+
+$$F \circ \pi_1 = \pi_2 \quad \text{on } \Gamma(F),$$
+
+since both send $(x, Fx)$ to $Fx$.
+
+$(\Rightarrow)$ If $F$ is continuous and $(x\_n, Fx\_n) \to (x, y)$, then $Fx\_n \to Fx$, so $y = Fx$ and the limit lies in $\Gamma(F)$.
+
+$(\Leftarrow)$ $\Gamma(F)$ is a closed subspace of the Banach space $X \times Y$, hence a Banach space, and $\pi\_1 : \Gamma(F) \to X$ is a continuous linear bijection (each $x$ is the first entry of exactly one pair $(x, Fx)$). By the Bounded Inverse Theorem, $S = \pi\_1^{-1} : X \to \Gamma(F)$ is continuous, hence so is $F = \pi\_2 \circ S$. $\square$
 
 </details>
 </div>
@@ -1402,7 +1464,7 @@ Let $X, Y$ be Banach spaces and $A \in \mathcal{L}(X, Y)$ bijective. Then $A^{-1
 <details markdown="1">
 <summary>proof</summary>
 
-TODO:
+The inverse map $S = A^{-1} : Y \to X$ is linear. Careful with notation: for $O \subset X$, the preimage of $O$ under $S$ is $S^{-1}(O) = A(O)$. If $O$ is open, then $A(O)$ is open by the Open Mapping Theorem ($A$ is bounded and surjective). So preimages of open sets under $S$ are open, i.e. $S$ is continuous — equivalently bounded. $\square$
 
 </details>
 </div>
@@ -5724,7 +5786,7 @@ $$\|T\|_{L^p([a,b])} = \|M_g\|_{L^p([a,b])} = \|g\|_{L^\infty([a,b])}.$$
       1. p \lt \infty.
       We know that 
 
-      $$\lVert Tf \rVert_{L^p([a,b])} = (\int_a^b \lvert f(x)g(x)\rvert^p dx)^{1/p} \leq (\int_a^b \lvert f(x)\lVert g\rVert_{L^\infty([a,b])} \rvert^p dx)^{1/p} = \Lvert g\rVert_{L^\infty([a,b])}(\int_a^b \lvertf(x)\rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}.$$
+      $$\lVert Tf \rVert_{L^p([a,b])} = (\int_a^b \lvert f(x)g(x)\rvert^p dx)^{1/p} \leq (\int_a^b \lvert f(x)\lVert g\rVert_{L^\infty([a,b])} \rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])}(\int_a^b \lvert f(x)\rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}.$$
 
       Thus, $\lVert Tf \rVert_{L^p([a,b])} \leq \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}$.
 
@@ -6765,6 +6827,76 @@ For all $f \in L^2$, $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$. T
 
 This shows that the normalized exponentials $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \right\rbrace_{n \in \mathbb{Z}}$ form a maximal orthonormal subset, so the partial Fourier sums of $f$ converge to $f$ in $L^2$. As a deep result, **Carleson's theorem** tells us that in fact $S_N f(x) \to f(x)$ **almost everywhere** for all $f \in L^2$. It is also known that for all $1 < p < \infty$, $\lVert S_N f - f \rVert_p \to 0$, though this is false for $p = 1, \infty$.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Density Step)</span></p>
+
+The proof of Theorem 177 used that continuous $2\pi$-periodic functions are dense in $L^2([-\pi, \pi])$. One way to see it: by dominated convergence,
+
+$$\lim_{\delta \to 0}\Big(\int_{-\pi}^{-\pi+\delta} \lvert f \rvert^2 + \int_{\pi-\delta}^{\pi} \lvert f \rvert^2\Big) = 0,$$
+
+so functions vanishing near the endpoints are dense; these are approximated by step functions vanishing near the endpoints, and each such step function is an $L^2$-limit of continuous functions vanishing near the endpoints — which are automatically periodic.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Completeness of the Fourier Basis Computes $\zeta(2)$ and $\zeta(4)$)</span></p>
+
+Fourier series on $[0, 2\pi]$ work the same way (translate by $\pi$). For $t \in (0, 2\pi)$ let $f\_t = \mathbf{1}\_{[0, t)}$. Its Fourier coefficients are $\hat f\_t(0) = \frac{t}{2\pi}$ and, for $n \ne 0$,
+
+$$\hat f_t(n) = \frac{1}{2\pi}\int_0^t e^{-inx}\,dx = \frac{1 - e^{-int}}{2\pi i n}, \qquad \lvert \hat f_t(n) \rvert^2 = \frac{2 - 2\cos(nt)}{4\pi^2 n^2}.$$
+
+Completeness of the Fourier basis means Parseval holds, $\lVert f\_t \rVert\_2^2 = 2\pi\sum\_n \lvert \hat f\_t(n) \rvert^2$, i.e. $t = \frac{t^2}{2\pi} + \frac{2}{\pi}\sum\_{n \ge 1}\frac{1 - \cos(nt)}{n^2}$:
+
+$$\sum_{n=1}^\infty \frac{1 - \cos(nt)}{n^2} = \frac{\pi t}{2} - \frac{t^2}{4}, \qquad t \in [0, 2\pi].$$
+
+* At $t = \pi$: $\sum\_{n \text{ odd}} \frac{2}{n^2} = \frac{\pi^2}{4}$, so $\sum\_{n \text{ odd}} \frac{1}{n^2} = \frac{\pi^2}{8}$ and hence $\displaystyle\sum\_{n \ge 1} \frac{1}{n^2} = \frac{4}{3}\cdot\frac{\pi^2}{8} = \frac{\pi^2}{6}$.
+* So $g(t) := \sum\_{n \ge 1} \frac{\cos(nt)}{n^2} = \frac{\pi^2}{6} - \frac{\pi t}{2} + \frac{t^2}{4}$ on $[0, 2\pi]$. This is itself a Fourier series with coefficients $\frac{1}{2n^2}$ at $\pm n$; applying Parseval once more,
+
+  $$\int_0^{2\pi}\Big(\frac{\pi^2}{6} - \frac{\pi t}{2} + \frac{t^2}{4}\Big)^2 dt = 2\pi \sum_{n \ne 0} \frac{1}{4n^4} = \pi \sum_{n \ge 1}\frac{1}{n^4}.$$
+
+  The left side equals $\frac{\pi^5}{90}$, giving $\displaystyle\sum\_{n \ge 1}\frac{1}{n^4} = \frac{\pi^4}{90}$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Sine Basis by Odd Extension)</span></p>
+
+The functions $\frac{1}{\sqrt{\pi}}\sin\big(\frac{kx}{2}\big)$, $k \in \mathbb{N}$, form an orthonormal basis of $L^2(0, 2\pi)$.
+
+*Why:* rescaling Theorem 177 from $[-\pi, \pi]$ to $[-2\pi, 2\pi]$ shows that $\frac{1}{\sqrt{4\pi}}e^{ikx/2}$, $k \in \mathbb{Z}$, is an orthonormal basis of $L^2(-2\pi, 2\pi)$. Extend $f \in L^2(0, 2\pi)$ to an **odd** function $\tilde f$ on $(-2\pi, 2\pi)$. Its expansion only involves $e^{ikx/2} - e^{-ikx/2} = 2i\sin(kx/2)$, so $\tilde f$ is an $L^2$-limit of finite combinations of $\sin(kx/2)$; restricting to $(0, 2\pi)$ gives completeness. Orthonormality: $\int_0^{2\pi}\sin\big(\frac{kx}{2}\big)\sin\big(\frac{jx}{2}\big)\,dx = \pi\,\delta\_{kj}$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">($L^1$ Functions with Square-Summable Fourier Coefficients Are in $L^2$)</span></p>
+
+Let $f \in L^1([-\pi, \pi])$ have Fourier coefficients $\hat f(n) = \frac{1}{2\pi}\int\_{-\pi}^{\pi} f(x)e^{-inx}\,dx$ with $\sum\_{n \in \mathbb{Z}} \lvert \hat f(n) \rvert^2 < \infty$. Then $f \in L^2([-\pi, \pi])$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+The coefficients exist since $f e^{-inx} \in L^1$. By square-summability and completeness of $L^2$, $g := \sum\_n \hat f(n) e^{inx}$ converges in $L^2$, and $\hat g(n) = \hat f(n)$ by continuity of the inner product. Since $L^2([-\pi, \pi]) \subset L^1([-\pi, \pi])$ (Cauchy–Schwarz on a finite interval), $h := f - g \in L^1$ has **all Fourier coefficients zero**. It remains to show that this forces $h = 0$ a.e. — the $L^1$ version of completeness.
+
+**Step 1: $\int h\varphi = 0$ for every continuous $2\pi$-periodic $\varphi$.** This holds for trigonometric polynomials, hence for the Fejér means $\sigma\_N \varphi$, and $\lvert \int h(\varphi - \sigma\_N \varphi) \rvert \le \lVert h \rVert\_1 \lVert \varphi - \sigma\_N \varphi \rVert\_\infty \to 0$ by Fejér's theorem.
+
+**Step 2: $\int h s = 0$ for every step function $s$.** The indicator of an interval is a pointwise a.e. limit of continuous periodic functions $\varphi\_n$ with $\lvert \varphi\_n \rvert \le 1$ (piecewise linear ramps), and $h\varphi\_n \to h\mathbf{1}\_I$ by dominated convergence (dominated by $\lvert h \rvert$). Take linear combinations.
+
+**Step 3: $\int \lvert h \rvert = 0$.** Choose step functions $h\_n \to h$ in $L^1$, and let $s\_n = \overline{h\_n}/\lvert h\_n \rvert$ where $h\_n \ne 0$ and $s\_n = 0$ elsewhere — again step functions, with $\lvert s\_n \rvert \le 1$ and $s\_n h\_n = \lvert h\_n \rvert$. From the identity
+
+$$\lvert h \rvert = \big(\lvert h \rvert - \lvert h_n \rvert\big) + s_n(h_n - h) + s_n h$$
+
+and Step 2 (the last term integrates to $0$),
+
+$$\int \lvert h \rvert \le \int \big\lvert \lvert h \rvert - \lvert h_n \rvert \big\rvert + \int \lvert h_n - h \rvert \le 2\lVert h - h_n \rVert_1 \to 0.$$
+
+So $h = 0$ a.e., i.e. $f = g \in L^2$. $\square$
+
+</details>
+</div>
+
 ## Minimizers, Orthogonal Decomposition, and the Riesz Representation Theorem
 
 From here on, the course returns to general Hilbert space theory and concrete applications.
@@ -6920,6 +7052,44 @@ In other words, every element of the dual can be realized as an inner product wi
     <p>We can check that $C = \lbrace v_0 + w : w \in N \rbrace$ and that $v_0 \in N^\perp$ (by the minimization argument from Theorem 180). Set $v = v_0 / \lVert v_0 \rVert^2$. For any $u \in H$, $u = (u - f(u)v_0) + f(u)v_0$ where $u - f(u)v_0 \in N$ and $v_0 \in N^\perp$, so</p>
     $$\langle u, v \rangle = \frac{1}{\lVert v_0 \rVert^2} \left[ \langle u - f(u)v_0, v_0 \rangle + f(u)\langle v_0, v_0 \rangle \right] = f(u). \quad \square$$
   </details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>alternative proof (separable case, via an orthonormal basis)</summary>
+
+Let $\lbrace e\_i \rbrace$ be an orthonormal basis, $\lvert f(u) \rvert \le C\lVert u \rVert$, and set $w\_i = \overline{f(e\_i)}$.
+
+**The $w\_i$ are square-summable.** Put $w\_N = \sum\_{i \le N} w\_i e\_i$, so $\lVert w\_N \rVert^2 = \sum\_{i \le N}\lvert w\_i \rvert^2$. Then
+
+$$f(w_N) = \sum_{i \le N} w_i f(e_i) = \sum_{i \le N} \lvert w_i \rvert^2 = \lVert w_N \rVert^2,$$
+
+and $\lvert f(w\_N) \rvert \le C\lVert w\_N \rVert$ gives $\lVert w\_N \rVert \le C$ for every $N$. Hence $\sum\_i \lvert w\_i \rvert^2 \le C^2$ and $w = \sum\_i w\_i e\_i \in H$.
+
+**$w$ represents $f$.** For $u \in H$, $u\_N = \sum\_{i \le N} \langle u, e\_i \rangle e\_i \to u$, so by continuity of $f$ and of the inner product
+
+$$f(u) = \lim_{N \to \infty} \sum_{i \le N} \langle u, e_i \rangle f(e_i) = \lim_{N \to \infty} \Big\langle u, \sum_{i \le N} w_i e_i \Big\rangle = \langle u, w \rangle.$$
+
+Finally $\lVert f \rVert \le \lVert w \rVert$ by Cauchy–Schwarz, and $f(w) = \lVert w \rVert^2$ gives equality. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Weighted Sequence Spaces and Their Duals)</span></p>
+
+For $s \in \mathbb{R}$ let
+
+$$h^{s} = \Big\lbrace c : \mathbb{N} \to \mathbb{C} \ :\ \sum_{j=1}^\infty j^{2s}\lvert c_j \rvert^2 < \infty \Big\rbrace, \qquad \langle c, d \rangle_{h^s} = \sum_{j} j^{2s} c_j \overline{d_j}.$$
+
+* $h^s$ is a Hilbert space: the map $(T\_s c)\_j = j^{s}c\_j$ is a linear bijection $h^s \to \ell^2$ with $\lVert c \rVert\_{h^s} = \lVert T\_s c \rVert\_{\ell^2}$, so $h^s$ inherits completeness from $\ell^2$ (no need to redo the $\ell^2$ proof).
+* For $s > 0$, $h^s \subset \ell^2 \subset h^{-s}$ with $\lVert c \rVert\_{\ell^2} \le \lVert c \rVert\_{h^s}$: decay of $c\_j$ is a discrete analogue of smoothness (compare $\hat f(n)$ for $f \in H^1$).
+* **Duality.** If $T : h^{2} \to \mathbb{C}$ is bounded, Riesz gives $d^{\prime} \in h^{2}$ with $T c = \sum\_j j^4 c\_j \overline{d^{\prime}\_j}$. Setting $d\_j = j^4 \overline{d^{\prime}\_j}$, we get $\sum\_j j^{-4}\lvert d\_j \rvert^2 = \sum\_j j^4 \lvert d^{\prime}\_j \rvert^2 < \infty$, i.e. $d \in h^{-2}$, and
+
+  $$Tc = \sum_{j=1}^\infty c_j d_j.$$
+
+  So, with respect to the **$\ell^2$ pairing** (rather than the $h^2$ inner product), the dual of $h^2$ is $h^{-2}$ — the model for the duality $(H^s)^{\prime} = H^{-s}$ of Sobolev spaces.
+
 </div>
 
 ## Adjoint Operators
@@ -7278,6 +7448,203 @@ This is a one-dimensional instance of the Sobolev--Morrey embedding together wit
 
 </div>
 
+## Weak Convergence in Hilbert Spaces
+
+The proof of Theorem 197 extracted a subsequence along which **every Fourier coefficient** $\langle u\_n, e\_k \rangle$ converges, and then needed equi-small tails to upgrade this to norm convergence. Without the tail condition we still get something useful: a weaker notion of convergence for which bounded sets **are** (sequentially) compact — an infinite-dimensional substitute for Heine–Borel.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak Convergence)</span></p>
+
+A sequence $\lbrace u\_n \rbrace$ in a Hilbert space $H$ **converges weakly** to $u \in H$, written
+
+$$u_n \rightharpoonup u,$$
+
+if $\langle u\_n, v \rangle \to \langle u, v \rangle$ for every $v \in H$. To distinguish it, ordinary norm convergence $\lVert u\_n - u \rVert \to 0$ is called **strong** convergence.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Uniqueness of Weak Limits)</span></p>
+
+If $u\_n \rightharpoonup u$ and $u\_n \rightharpoonup u^{\prime}$, then $\langle u - u^{\prime}, v \rangle = 0$ for all $v$; taking $v = u - u^{\prime}$ gives $u = u^{\prime}$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Strong $\Rightarrow$ Weak)</span></p>
+
+If $u\_n \to u$ in norm, then $u\_n \rightharpoonup u$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+By Cauchy–Schwarz, $\lvert \langle u\_n, v \rangle - \langle u, v \rangle \rvert \le \lVert u\_n - u \rVert \lVert v \rVert \to 0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Orthonormal Sequences Converge Weakly to $0$)</span></p>
+
+If $\lbrace e\_n \rbrace$ is an orthonormal sequence, then $e\_n \rightharpoonup 0$: by Bessel's inequality $\sum\_n \lvert \langle e\_n, v \rangle \rvert^2 \le \lVert v \rVert^2 < \infty$, so $\langle e\_n, v \rangle \to 0$ for each $v$. But $\lVert e\_n - e\_m \rVert = \sqrt{2}$ for $n \ne m$, so $e\_n$ does **not** converge strongly. In $L^2([-\pi, \pi])$, this says that the oscillating functions $e^{inx}/\sqrt{2\pi}$ converge weakly to $0$ — a form of the Riemann–Lebesgue lemma. Weak convergence allows "mass" to escape to ever higher frequencies (or to infinity).
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Weakly Cauchy Sequences Are Bounded and Weakly Convergent)</span></p>
+
+Let $\lbrace u\_n \rbrace$ be a sequence in a Hilbert space $H$ such that $\langle u\_n, v \rangle$ converges in $\mathbb{C}$ (equivalently, is Cauchy) for every $v \in H$. Then
+
+1. $\sup\_n \lVert u\_n \rVert < \infty$, and
+2. there is $u \in H$ with $u\_n \rightharpoonup u$.
+
+In particular, every weakly convergent sequence is bounded.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Consider the bounded linear functionals $T\_n(v) = \langle v, u\_n \rangle$ (the order is reversed to make them linear rather than conjugate-linear). By Cauchy–Schwarz and $T\_n(u\_n) = \lVert u\_n \rVert^2$, we have $\lVert T\_n \rVert = \lVert u\_n \rVert$.
+
+**(1)** For each fixed $v$, the sequence $T\_n(v)$ converges, hence is bounded. By the Uniform Boundedness Principle, $\lVert u\_n \rVert = \lVert T\_n \rVert \le C$ for all $n$.
+
+**(2)** Define $T(v) = \lim\_{n \to \infty} \langle v, u\_n \rangle$. This is linear, and $\lvert T(v) \rvert \le C\lVert v \rVert$, so $T \in H^{\prime}$. By the Riesz Representation Theorem there is $u \in H$ with $T(v) = \langle v, u \rangle$ for all $v$. Conjugating, $\langle u\_n, v \rangle \to \langle u, v \rangle$ for all $v$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coefficient Convergence Is Not Enough)</span></p>
+
+Let $\lbrace e\_j \rbrace$ be an orthonormal basis and $u\_n = n e\_n$. For each fixed $j$, $\langle u\_n, e\_j \rangle = 0$ as soon as $n > j$, so every coefficient converges (to $0$). But $\lVert u\_n \rVert = n$ is unbounded, so by the theorem above $u\_n$ is **not** weakly convergent. (Concretely, for $v = \sum\_j j^{-1} e\_j$ we get $\langle u\_n, v \rangle = 1$, while $\langle 0, v \rangle = 0$; and for $v = \sum\_j j^{-3/4} e\_j \in H$, $\langle u\_n, v \rangle = n^{1/4} \to \infty$.)
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Weak Convergence = Bounded + Coefficientwise Convergence)</span></p>
+
+Let $H$ be a separable Hilbert space with orthonormal basis $\lbrace e\_k \rbrace$. A sequence $\lbrace u\_n \rbrace$ converges weakly if and only if it is bounded and $\langle u\_n, e\_k \rangle$ converges for each $k$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$(\Rightarrow)$ Boundedness is the theorem above, and coefficient convergence is the definition with $v = e\_k$.
+
+$(\Leftarrow)$ Let $\lVert u\_n \rVert \le C$ and $\langle u\_n, e\_k \rangle \to c\_k$. For each $p$, by Bessel,
+
+$$\sum_{k \le p} \lvert c_k \rvert^2 = \lim_{n \to \infty} \sum_{k \le p} \lvert \langle u_n, e_k \rangle \rvert^2 \le C^2,$$
+
+so $\lbrace c\_k \rbrace \in \ell^2$ and $u := \sum\_k c\_k e\_k \in H$ is well defined, with $\langle u\_n, e\_k \rangle \to \langle u, e\_k \rangle$ for each $k$. By linearity, $\langle u\_n, w \rangle \to \langle u, w \rangle$ for every finite linear combination $w$ of the $e\_k$. For general $v$, let $v\_p = \sum\_{k \le p} \langle v, e\_k \rangle e\_k$; then
+
+$$\lvert \langle u_n, v \rangle - \langle u, v \rangle \rvert \le \lvert \langle u_n - u, v_p \rangle \rvert + \lvert \langle u_n - u, v - v_p \rangle \rvert \le \lvert \langle u_n - u, v_p \rangle \rvert + 2C \lVert v - v_p \rVert.$$
+
+Choose $p$ to make the last term small (independently of $n$), then $n$ large to make the first term small. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Weak Sequential Compactness of Bounded Sets)</span></p>
+
+In a separable Hilbert space, every bounded sequence has a weakly convergent subsequence.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Let $\lVert u\_n \rVert \le C$ and fix an orthonormal basis $\lbrace e\_k \rbrace$. Each coefficient sequence satisfies $\lvert \langle u\_n, e\_k \rangle \rvert \le C$. As in the proof of Theorem 197, use Bolzano–Weierstrass to pass to a subsequence along which $\langle u\_n, e\_1 \rangle$ converges, then to a further subsequence along which $\langle u\_n, e\_2 \rangle$ converges, and so on; the **diagonal** subsequence is eventually a subsequence of each of these, so all of its coefficients converge. It is bounded, so by the previous proposition it converges weakly. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">("Heine–Borel" for the Weak Topology)</span></p>
+
+One can read this as: *the closed unit ball of a separable Hilbert space is weakly (sequentially) compact*, even though it is never norm-compact in infinite dimensions (Example 193). This is the Hilbert-space case of the Banach–Alaoglu theorem. It is the basic tool for producing solutions of variational problems: take a minimizing sequence, extract a weakly convergent subsequence, and then show that the weak limit is a minimizer — for which the next fact is essential.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Weak Lower Semicontinuity of the Norm)</span></p>
+
+If $u\_n \rightharpoonup u$, then
+
+$$\lVert u \rVert \le \liminf_{n \to \infty} \lVert u_n \rVert.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Taking $v = u$ in the definition, $\lVert u \rVert^2 = \lim\_n \langle u\_n, u \rangle \le \liminf\_n \lVert u\_n \rVert \lVert u \rVert$ by Cauchy–Schwarz. If $u \ne 0$, divide by $\lVert u \rVert$. (Alternatively, in the separable case: $\sum\_{k \le p} \lvert \langle u, e\_k \rangle \rvert^2 = \lim\_n \sum\_{k \le p} \lvert \langle u\_n, e\_k \rangle \rvert^2 \le \liminf\_n \lVert u\_n \rVert^2$ for each $p$, and let $p \to \infty$.) $\square$
+
+</details>
+</div>
+
+The inequality can be strict — for an orthonormal sequence, $\lVert 0 \rVert = 0 < 1 = \lVert e\_n \rVert$. The norm can only **drop** in a weak limit, and the next result says that this drop is exactly the obstruction to strong convergence.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Weak Convergence + Convergence of Norms = Strong Convergence)</span></p>
+
+Let $v\_n \rightharpoonup v$. Then $v\_n \to v$ strongly if and only if $\lVert v\_n \rVert \to \lVert v \rVert$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$(\Rightarrow)$ is continuity of the norm. $(\Leftarrow)$ Expand
+
+$$\lVert v_n - v \rVert^2 = \lVert v_n \rVert^2 - 2\operatorname{Re}\langle v_n, v \rangle + \lVert v \rVert^2 \longrightarrow \lVert v \rVert^2 - 2\lVert v \rVert^2 + \lVert v \rVert^2 = 0,$$
+
+using $\langle v\_n, v \rangle \to \langle v, v \rangle$ by weak convergence. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Compactness via Weak Convergence)</span></p>
+
+Let $H$ be a separable Hilbert space. A subset $K \subset H$ is compact if and only if $K$ is closed, bounded, and every sequence in $K$ which converges weakly in $H$ converges strongly.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$(\Rightarrow)$ Compact sets are closed and bounded. Let $u\_n \in K$ with $u\_n \rightharpoonup u$. Every subsequence has, by compactness, a further subsequence converging strongly to some $w \in K$; strong limits are weak limits, so $w = u$. Since every subsequence has a sub-subsequence converging to the same $u$, the whole sequence converges strongly to $u$.
+
+$(\Leftarrow)$ Given a sequence in $K$, it is bounded, so it has a weakly convergent subsequence; by hypothesis this subsequence converges strongly, and its limit lies in $K$ because $K$ is closed. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Three Characterizations of Compact Sets)</span></p>
+
+For $K \subset H$ closed and bounded in a separable Hilbert space, the following are equivalent to compactness:
+
+* equi-small tails with respect to one (equivalently every) orthonormal basis (Theorem 197);
+* finite-dimensional approximability (Theorem 199);
+* weakly convergent sequences in $K$ converge strongly (the theorem above).
+
+The same trichotomy reappears for operators: $K$ is compact iff it is a norm limit of finite rank operators iff it maps weakly convergent sequences to strongly convergent ones (Section "Compact Operators").
+
+</div>
+
 ## Classes of Operators
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -7340,6 +7707,32 @@ In other words, $\mathcal{R}(H)$ is a "star-closed, two-sided ideal in the space
     <summary>proof sketch</summary>
     <p>If $Tu = \sum_{i,j} c_{ij} \langle u, e_j \rangle e_i$, then $T^* v = \sum_{i,j} \overline{c_{ji}} \langle v, e_i \rangle e_j$ — the coefficients are the conjugate transpose. For $ATB$: the range of $T$ is finite-dimensional, so the range of $ATB$ is at most that dimension. $\square$</p>
   </details>
+</div>
+
+A more economical normal form: if $\lbrace f\_1, \dots, f\_N \rbrace$ is an orthonormal basis of $\operatorname{Range}(T)$, then $Tu = \sum\_i \langle Tu, f\_i \rangle f\_i = \sum\_i \langle u, T^\ast f\_i \rangle f\_i$, i.e.
+
+$$Tu = \sum_{i=1}^N \langle u, e_i \rangle f_i, \qquad e_i = T^\ast f_i, \qquad\text{and then}\qquad T^\ast v = \sum_{i=1}^N \langle v, f_i \rangle e_i.$$
+
+The roles of the $e\_i$ and the $f\_i$ are simply interchanged when passing to the adjoint.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Row Rank = Column Rank)</span></p>
+
+For every finite rank operator $T$ on a Hilbert space, $\dim \operatorname{Range}(T) = \dim \operatorname{Range}(T^\ast)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Write $Tu = \sum\_{i=1}^N \langle u, e\_i \rangle f\_i$ with $\lbrace f\_i \rbrace$ an orthonormal basis of $\operatorname{Range}(T)$, $N = \dim \operatorname{Range}(T)$. The $e\_i$ are linearly independent: if, say, $e\_N = \sum\_{j < N} c\_j e\_j$, then
+
+$$Tu = \sum_{j < N} \langle u, e_j \rangle (f_j + \overline{c_j} f_N),$$
+
+so $\operatorname{Range}(T)$ would have dimension at most $N - 1$. Since $T^\ast v = \sum\_i \langle v, f\_i \rangle e\_i$ and $v = f\_j$ gives $T^\ast f\_j = e\_j$, the range of $T^\ast$ is $\operatorname{Span}\lbrace e\_i \rbrace$, of dimension $N$. $\square$
+
+</details>
 </div>
 
 ### Compact Operators
@@ -7523,6 +7916,44 @@ Let $H$ be a separable Hilbert space. Then a bounded linear operator $T \in \mat
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Compact = Weakly Convergent $\mapsto$ Strongly Convergent)</span></p>
+
+Let $H$ be a separable Hilbert space. An operator $K \in \mathcal{B}(H)$ is compact if and only if for every weakly convergent sequence $u\_n \rightharpoonup u$ in $H$, the image sequence converges in norm: $Ku\_n \to Ku$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Any bounded operator preserves weak convergence: $\langle Ku\_n, v \rangle = \langle u\_n, K^\ast v \rangle \to \langle u, K^\ast v \rangle = \langle Ku, v \rangle$.
+
+$(\Rightarrow)$ Let $u\_n \rightharpoonup u$. Weakly convergent sequences are bounded, $\lVert u\_n \rVert \le C$, so $Ku\_n \in C \cdot \overline{K(\lbrace \lVert u \rVert \le 1 \rbrace)}$, a compact set. Hence every subsequence of $Ku\_n$ has a further subsequence converging in norm to some $w$; norm convergence implies weak convergence, and $Ku\_n \rightharpoonup Ku$, so $w = Ku$ by uniqueness of weak limits. A sequence in a metric space all of whose subsequences have sub-subsequences converging to the **same** limit $Ku$ converges to $Ku$ (otherwise some subsequence stays $\varepsilon$-far from $Ku$).
+
+$(\Leftarrow)$ Let $Ku\_n$ be a sequence in $K(\lbrace \lVert u \rVert \le 1 \rbrace)$. The bounded sequence $u\_n$ has a weakly convergent subsequence $u\_{n\_j} \rightharpoonup u$, and then $Ku\_{n\_j} \to Ku$ in norm. So the image of the unit ball has compact closure. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Finite Rank Operators Upgrade Weak to Strong Convergence)</span></p>
+
+In particular, if $A$ has finite-dimensional range and $v\_n \rightharpoonup v$, then $Av\_n \to Av$. This is also easy to see directly: with an orthonormal basis $f\_1, \dots, f\_N$ of $\operatorname{Range}(A)$, $Av\_n = \sum\_i \langle v\_n, A^\ast f\_i \rangle f\_i$, and each of the finitely many coefficients converges. This is the mechanism behind the backward direction of Theorem 210.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Integral Operators via Finite Rank Approximation)</span></p>
+
+Theorem 210 gives a second proof that an integral operator $Tf(x) = \int\_a^b K(x, y) f(y)\,dy$ with $K \in C([a, b]^2)$ is compact, without Arzelà–Ascoli:
+
+* $x \mapsto K(x, \cdot)$ is continuous $[a, b] \to L^2([a, b])$ (uniform continuity of $K$), so its image is a compact subset of $L^2$ and hence has **equi-small tails** with respect to any orthonormal basis $\lbrace \varphi\_k \rbrace$ (Theorem 197).
+* Truncating the expansion of $K(x, \cdot)$ at $k \le n$ gives kernels $K\_n(x, y) = \sum\_{k \le n} a\_k(x) \varphi\_k(y)$ with $\sup\_x \lVert K(x, \cdot) - K\_n(x, \cdot) \rVert\_2 \to 0$, i.e. the Fourier series converges **uniformly in $x$**.
+* The corresponding operators $T\_n$ have range in $\operatorname{Span}\lbrace a\_1, \dots, a\_n \rbrace$, so they have finite rank, and by Cauchy–Schwarz $\lVert T - T\_n \rVert \le \sqrt{b - a}\,\sup\_x \lVert K(x, \cdot) - K\_n(x, \cdot) \rVert\_2 \to 0$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 211</span></p>
 
 Let $H$ be a separable Hilbert space, and let $K(H)$ be the set of compact operators on $H$. Then:
@@ -7542,6 +7973,13 @@ In other words, the set of compact operators is also a star-closed, two-sided id
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Ideals and the Calkin Algebra)</span></p>
+
+The ideal property is the analogue of normality of a subgroup: it is exactly what makes the quotient $\mathcal{B}(H)/K(H)$ again an algebra (products of cosets are well defined). Because $K(H)$ is closed, the quotient is also a Banach space; it is called the **Calkin algebra**. Compact operators are "small" in the sense that they become zero there — which is why $I - K$ behaves like the identity (see the Fredholm theory below).
+
+</div>
+
 ## Eigenvalues and the Spectrum
 
 ### Invertible Operators
@@ -7553,6 +7991,19 @@ Let $T \in \mathcal{B}(H)$ be a bounded linear operator. If $\lVert T \rVert < 1
 
 $$(I - T)^{-1} = \sum_{n=0}^{\infty} T^n.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof (Neumann series)</summary>
+
+Since $\lVert T^n \rVert \le \lVert T \rVert^n$ and $\lVert T \rVert < 1$, the series $\sum\_{n \ge 0} T^n$ is absolutely summable in the Banach space $\mathcal{B}(H)$, hence converges to some $B \in \mathcal{B}(H)$. By continuity of composition in operator norm,
+
+$$TB = \lim_{N \to \infty} \sum_{n=0}^{N} T^{n+1} = B - I, \qquad BT = B - I,$$
+
+so $(I - T)B = B(I - T) = I$, and $B$ is a two-sided (hence the) inverse of $I - T$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -7567,6 +8018,73 @@ The space of invertible linear operators $GL(H) = \lbrace T \in \mathcal{B}(H) :
     <summary>proof</summary>
     <p>Let $T_0 \in GL(H)$. Any $T$ with $\lVert T - T_0 \rVert < \lVert T_0^{-1} \rVert^{-1}$ is invertible, because $\lVert T_0^{-1}(T - T_0) \rVert \le \lVert T_0^{-1} \rVert \cdot \lVert T - T_0 \rVert < 1$, so $I - T_0^{-1}(T - T_0)$ is invertible by Proposition 212, and thus $T = T_0(I - T_0^{-1}(T_0 - T))$ is invertible. $\square$</p>
   </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($GL(H)$ Is a Group; Invertible = Bijective)</span></p>
+
+$GL(H)$ is a group under composition: $(G\_1 G\_2)^{-1} = G\_2^{-1} G\_1^{-1}$. By the Bounded Inverse Theorem, an operator $A \in \mathcal{B}(H)$ lies in $GL(H)$ as soon as it is **bijective** — boundedness of the inverse is automatic. The proof above gives the explicit radius: the ball of radius $\lVert G^{-1} \rVert^{-1}$ around $G \in GL(H)$ consists of invertible operators.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Shift Operator)</span></p>
+
+Let $\lbrace e\_j \rbrace\_{j \ge 1}$ be an orthonormal basis of $H$ (e.g. $H = \ell^2$). The **(right) shift**
+
+$$S\Big(\sum_{j=1}^\infty c_j e_j\Big) = \sum_{j=1}^\infty c_j e_{j+1}$$
+
+is an isometry ($\lVert Su \rVert = \lVert u \rVert$, so $\lVert S \rVert = 1$), hence injective, but it is **not surjective**: its range is exactly the closed subspace
+
+$$H_1 = \lbrace u \in H : \langle u, e_1 \rangle = 0 \rbrace = \lbrace e_1 \rbrace^\perp.$$
+
+So $S$ is invertible as a map $H \to H\_1$, but not as a map $H \to H$. In finite dimensions an injective linear map from a space to itself is automatically surjective; the shift shows this fails in infinite dimensions. Its adjoint is the left shift $S^\ast e\_1 = 0$, $S^\ast e\_{j+1} = e\_j$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">($GL(H)$ Is Not Dense)</span></p>
+
+Let $S$ be the shift and $B \in \mathcal{B}(H)$ with $\lVert B \rVert < 1$. Then $S + B$ is not invertible; in fact $e\_1 \notin \operatorname{Range}(S + B)$. Consequently, when $\dim H = \infty$, the open ball of radius $1$ around $S$ contains no invertible operator, so $GL(H)$ is open but **not dense** in $\mathcal{B}(H)$ — in sharp contrast with matrices, where invertible matrices are dense.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Let $\Pi\_1$ be the orthogonal projection onto $H\_1 = \lbrace e\_1 \rbrace^\perp$ and $B^{\prime} = \Pi\_1 B$, i.e. $B^{\prime}u = Bu - \langle Bu, e\_1 \rangle e\_1$, a bounded operator $H \to H\_1$ with $\lVert B^{\prime} \rVert \le \lVert B \rVert < 1$.
+
+Regard $S : H \to H\_1$ as a bijective isometry, with inverse $S^{-1} : H\_1 \to H$ of norm $1$. Then
+
+$$S + B^{\prime} = S\,(I + S^{-1}B^{\prime}) : H \to H_1,$$
+
+and $\lVert S^{-1}B^{\prime} \rVert < 1$, so by the Neumann series $S + B^{\prime}$ is a bijection $H \to H\_1$; in particular it is injective.
+
+Now suppose $(S + B)u = e\_1$. Since $\operatorname{Range}(S) \subset H\_1$, applying $\Pi\_1$ gives $(S + B^{\prime})u = \Pi\_1 e\_1 = 0$, so $u = 0$ by injectivity — but then $(S + B)u = 0 \ne e\_1$. Contradiction. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unitary Group)</span></p>
+
+The **unitary group** of $H$ is the subgroup
+
+$$\mathcal{U}(H) = \lbrace U \in GL(H) : U^{-1} = U^\ast \rbrace \subset GL(H).$$
+
+Its elements are exactly the isometric isomorphisms of $H$ onto itself:
+
+$$\langle Uu, Uv \rangle = \langle u, v \rangle, \qquad \lVert Uu \rVert = \lVert u \rVert \qquad \forall u, v \in H.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($\mathcal{U}(H)$ vs. $U(n)$)</span></p>
+
+* An isometry need not be unitary: the shift $S$ preserves inner products but is not surjective, so $S \notin \mathcal{U}(H)$ ($S^\ast S = I$ but $SS^\ast \ne I$).
+* For a separable infinite-dimensional $H$, $\mathcal{U}(H)$ (with the norm topology) is **contractible** — it has no interesting topology at all (Kuiper's theorem; stated without proof). The finite unitary groups $U(n)$ have very rich topology, so $\mathcal{U}(H)$ does not look like a "limit" of the $U(n)$.
+
 </div>
 
 ### The Spectrum
@@ -7850,6 +8368,118 @@ We did not actually use the fact that $A$ is a self-adjoint operator in the abov
 
 </div>
 
+### Fredholm Operators and $I - K$ for Non-Self-Adjoint Compact $K$
+
+The remark above can be pushed much further: for **any** compact $K$ (self-adjoint or not), $I - K$ behaves like a square matrix. Since $\lambda$ is an eigenvalue of $K$ iff $(I - \lambda^{-1}K)u = 0$ has a nontrivial solution, and $\lambda^{-1}K$ is again compact, this is the right object for the spectral theory of compact operators.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fredholm Operator and Index)</span></p>
+
+A bounded operator $F \in \mathcal{B}(H)$ is **Fredholm** if
+
+1. $\operatorname{Null}(F)$ is finite-dimensional,
+2. $\operatorname{Range}(F)$ is closed, and
+3. $\operatorname{Range}(F)^\perp$ is finite-dimensional.
+
+Its **index** is the integer
+
+$$\operatorname{ind}(F) = \dim \operatorname{Null}(F) - \dim \operatorname{Range}(F)^\perp.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conditions 2 and 3 Are Independent)</span></p>
+
+Since $W^\perp = \overline{W}^\perp$, condition 3 says nothing about closedness. Multiplication by $x$ on $L^2([0,1])$ (Example 218) is injective and has **dense** range (every $L^2$ function vanishing on some $[0, \varepsilon)$ is in the range, and these are dense), so $\operatorname{Range}^\perp = \lbrace 0 \rbrace$ — yet the range is not closed, since the operator is not invertible.
+
+By Theorem 189, $\operatorname{Range}(F)^\perp = \operatorname{Null}(F^\ast)$, so condition 3 is the same as finite-dimensionality of $\operatorname{Null}(F^\ast)$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Shift Has Index $-1$)</span></p>
+
+The right shift $S$ on $\ell^2$ (see Section "Invertible Operators") is injective with closed range $\lbrace e_1 \rbrace^\perp$. So $S$ is Fredholm with $\operatorname{ind}(S) = 0 - 1 = -1$. The theorem below shows this can never happen for $I - K$ with $K$ compact.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Subspaces Containing a Closed Finite-Codimensional Subspace)</span></p>
+
+Let $V \subset H$ be a linear subspace containing a closed subspace $W$ of finite codimension, i.e. there are $e_1, \dots, e_N \in H$ with $H = W + \operatorname{Span}\lbrace e_1, \dots, e_N \rbrace$. Then $V$ is closed.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Projecting $H = W + \operatorname{Span}\lbrace e\_i \rbrace$ onto $W^\perp$ shows $W^\perp = \operatorname{Span}\lbrace \Pi\_{W^\perp} e\_i \rbrace$ is finite-dimensional. For $v \in V$ write $v = w + w^\perp$ with $w \in W \subset V$; then $w^\perp = v - w \in V$. Hence
+
+$$V = W \oplus E, \qquad E := V \cap W^\perp,$$
+
+with $E$ finite-dimensional, hence closed. If $v\_n = w\_n + e\_n \to v$ with $w\_n \in W$, $e\_n \in E$, then by continuity of the orthogonal projections $w\_n = \Pi\_W v\_n \to \Pi\_W v \in W$ and $e\_n = \Pi\_{W^\perp} v\_n \to \Pi\_{W^\perp} v \in E$. So $v \in W \oplus E = V$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($I - K$ Is Fredholm of Index $0$)</span></p>
+
+Let $K \in \mathcal{B}(H)$ be compact on a separable Hilbert space. Then $I - K$ is Fredholm:
+
+$$\dim \operatorname{Null}(I - K) < \infty, \qquad \operatorname{Range}(I - K) \text{ is closed}, \qquad \dim \operatorname{Range}(I - K)^\perp < \infty,$$
+
+and moreover
+
+$$\dim \operatorname{Null}(I - K) = \dim \operatorname{Range}(I - K)^\perp = \dim \operatorname{Null}(I - K^\ast),$$
+
+i.e. $\operatorname{ind}(I - K) = 0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**Step 1: finite rank $K = T$.** Write $Tu = \sum\_{i=1}^N \langle u, e\_i \rangle f\_i$ with $\lbrace f\_i \rbrace$ a basis of $\operatorname{Range}(T)$ (Lemma "Row Rank = Column Rank" below shows the $e\_i$ are then linearly independent).
+
+* $\operatorname{Null}(I - T) = \lbrace u : u = Tu \rbrace \subset \operatorname{Range}(T)$ is finite-dimensional.
+* If $Tu = 0$ then $(I - T)u = u$, so $\operatorname{Range}(I - T) \supset \operatorname{Null}(T) = \lbrace e\_1, \dots, e\_N \rbrace^\perp$, a closed subspace of finite codimension. By the Lemma, $\operatorname{Range}(I - T)$ is closed.
+* $\operatorname{Range}(I - T)^\perp = \operatorname{Null}(I - T^\ast)$ is finite-dimensional by the first bullet applied to the finite rank operator $T^\ast$.
+
+**Step 2: general compact $K$.** By Theorem 210, choose a finite rank $T$ with $\lVert K - T \rVert < \frac{1}{2}$ and set $B = K - T$. Then $I - B$ is invertible (Proposition 212), and
+
+$$I - K = (I - B) - T = (I - B)(I - T^{\prime}) = (I - T^{\prime\prime})(I - B),$$
+
+$$T^{\prime} = (I - B)^{-1}T, \qquad T^{\prime\prime} = T(I - B)^{-1},$$
+
+both of finite rank by the ideal property. Since $I - B$ is a bijection,
+
+* $\operatorname{Null}(I - K) = \operatorname{Null}(I - T^{\prime})$ is finite-dimensional,
+* $\operatorname{Range}(I - K) = \operatorname{Range}(I - T^{\prime\prime})$ is closed,
+* $\operatorname{Range}(I - K)^\perp = \operatorname{Null}(I - K^\ast)$ is finite-dimensional because $K^\ast$ is compact (Theorem 211).
+
+**Step 3: index zero.** Taking adjoints in $I - K = (I - B)(I - T^{\prime})$ gives $I - K^\ast = (I - T^{\prime\ast})(I - B)^\ast$ with $(I - B)^\ast$ invertible, so
+
+$$\dim \operatorname{Null}(I - K) = \dim \operatorname{Null}(I - T^{\prime}), \qquad \dim \operatorname{Null}(I - K^\ast) = \dim \operatorname{Null}(I - T^{\prime\ast}).$$
+
+So it suffices to treat finite rank $T u = \sum\_{i} \langle u, e\_i \rangle f\_i$, for which $T^\ast v = \sum\_i \langle v, f\_i \rangle e\_i$. Let $W = \operatorname{Span}\lbrace e\_i, f\_i \rbrace$, a finite-dimensional space. Both $T$ and $T^\ast$ map $H$ into $W$, so any solution of $u = Tu$ or $u = T^\ast u$ lies in $W$. Let $R = (I - T)\vert\_W : W \to W$; for $w, w^{\prime} \in W$ we have $\langle Rw, w^{\prime} \rangle = \langle w, (I - T^\ast)w^{\prime} \rangle$, so $R^\ast = (I - T^\ast)\vert\_W$. Therefore
+
+$$\dim \operatorname{Null}(I - T) = \dim \operatorname{Null}(R) = \dim W - \operatorname{rank}(R) = \dim W - \operatorname{rank}(R^\ast) = \dim \operatorname{Null}(R^\ast) = \dim \operatorname{Null}(I - T^\ast),$$
+
+using rank-nullity and row rank $=$ column rank for the square matrix of $R$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Fredholm Alternative for Compact Operators)</span></p>
+
+Let $K$ be compact. Then $I - K$ is injective if and only if it is surjective (in which case it is invertible). In general, $(I - K)u = f$ is solvable iff $f \perp \operatorname{Null}(I - K^\ast)$, a finite-dimensional space with the same dimension as the space of solutions of $(I - K)u = 0$. If $K = K^\ast$, this is exactly Theorem 228 with $\lambda = 1$.
+
+</div>
+
 ### Eigenvalue Existence and the Maximum Principle
 
 We've shown previously that one of $\pm \lVert A \rVert$ must be in the spectrum, and that gives us:
@@ -7870,6 +8500,45 @@ where $u_1$ is a normalized eigenvector (with $\lVert u_1 \rVert = 1$) satisfyin
     <summary>proof</summary>
     <p>Since at least one of $\pm \lVert A \rVert$ is in $\operatorname{Spec}(A)$ (and $\lVert A \rVert \ne 0$ because we have a nontrivial operator), at least one of them will be an eigenvalue by the Fredholm alternative, and we call this $\lambda_1$. The equation for $\lambda_1$ follows from $\lVert A \rVert = \sup_{\lVert u \rVert = 1} \lvert \langle Au, u \rangle \rvert$, and $\lvert \langle Au_1, u_1 \rangle \rvert$ equals this because being an eigenvalue implies we have an eigenvector. $\square$</p>
   </details>
+</div>
+
+There is a second, more hands-on route to Theorem 230 that avoids the spectrum altogether and mirrors the finite-dimensional proof via maximizing the Rayleigh quotient. Compactness of $A$ replaces compactness of the unit sphere.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Extrema of the Quadratic Form Are Attained at Eigenvectors)</span></p>
+
+Let $A = A^\ast$ be compact on a separable Hilbert space, and let
+
+$$F(u) = \langle Au, u \rangle, \qquad F : \lbrace u \in H : \lVert u \rVert = 1 \rbrace \to \mathbb{R}.$$
+
+If $\Lambda_+ = \sup F > 0$, then the supremum is attained at some unit vector $u_+$, and $Au_+ = \Lambda_+ u_+$. Similarly, if $\Lambda_- = \inf F < 0$, it is attained at an eigenvector with eigenvalue $\Lambda_-$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$F$ is real (Theorem 221) and bounded by $\lVert A \rVert$. Take unit vectors $u\_n$ with $F(u\_n) \to \Lambda\_+$. By weak sequential compactness of the unit ball (Section "Weak Convergence in Hilbert Spaces"), pass to a subsequence with $u\_n \rightharpoonup u\_+$, so $\lVert u\_+ \rVert \le 1$. Since $A$ is compact it maps weakly convergent sequences to strongly convergent ones, so $Au\_n \to Au\_+$, and
+
+$$\lvert F(u_n) - \langle Au_+, u_+ \rangle \rvert \le \lvert \langle Au_n - Au_+, u_n \rangle \rvert + \lvert \langle Au_+, u_n - u_+ \rangle \rvert \le \lVert Au_n - Au_+ \rVert + \lvert \langle u_n - u_+, Au_+ \rangle \rvert \to 0.$$
+
+So $\langle Au\_+, u\_+ \rangle = \Lambda\_+ > 0$; in particular $u\_+ \ne 0$, and if $\lVert u\_+ \rVert < 1$ then $F(u\_+/\lVert u\_+ \rVert) = \Lambda\_+/\lVert u\_+ \rVert^2 > \Lambda\_+$, impossible. Hence $\lVert u\_+ \rVert = 1$ and the sup is a max.
+
+For the eigenvector property, let $v \perp u\_+$ with $\lVert v \rVert = 1$. The curve $\theta \mapsto \cos\theta\,u\_+ + \sin\theta\,v$ stays on the unit sphere, and
+
+$$F(\cos\theta\,u_+ + \sin\theta\,v) = \cos^2\theta\,\Lambda_+ + \sin(2\theta)\operatorname{Re}\langle Au_+, v \rangle + \sin^2\theta\,F(v)$$
+
+is maximized at $\theta = 0$, so its derivative there, $2\operatorname{Re}\langle Au\_+, v \rangle$, vanishes. Replacing $v$ by $iv$ kills the imaginary part too: $\langle Au\_+, v \rangle = 0$ for all $v \perp u\_+$. Thus $Au\_+ \in (u\_+^\perp)^\perp = \operatorname{Span}\lbrace u\_+ \rbrace$, say $Au\_+ = c\,u\_+$, and $c = \langle Au\_+, u\_+ \rangle = \Lambda\_+$. The infimum case follows by applying this to $-A$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Variational Proof of the Spectral Theorem)</span></p>
+
+If $F \equiv 0$ then $A = 0$ (Theorem 221: $\lVert A \rVert = \sup \lvert F \rvert$; alternatively, recover $\langle Au, v \rangle$ from $F$ by polarization). So a nonzero compact self-adjoint $A$ always has an eigenvector from the Lemma, with $\lvert \lambda \rvert = \max(\Lambda_+, -\Lambda_-) = \lVert A \rVert$. Iterating on $H_N = \operatorname{Null}(A)^\perp \cap \lbrace u_1, \dots, u_N \rbrace^\perp$, which $A$ maps into itself because $\langle Au, u_j \rangle = \lambda_j \langle u, u_j \rangle = 0$, produces the eigenvalues $\lvert \lambda_1 \rvert \ge \lvert \lambda_2 \rvert \ge \cdots$ of the Maximum Principle below. The process only stops if $A \equiv 0$ on some $H_N$, which forces $H_N = \lbrace 0 \rbrace$ (as $H_N \perp \operatorname{Null}(A)$). If it never stops, then $\lvert \lambda_j \rvert \to 0$ (an eigenvalue $\lambda \ne 0$ has a finite-dimensional eigenspace), and the $u_j$ have dense span in $\operatorname{Null}(A)^\perp$: otherwise $A$ would be nonzero on the orthocomplement $H^{\prime}$ of their span inside $\operatorname{Null}(A)^\perp$, and the Lemma would give an eigenvector in $H^{\prime} \subset H_N$ with eigenvalue $\lambda \ne 0$; once $\lvert \lambda_{N+1} \rvert < \lvert \lambda \rvert$, this contradicts the maximality used to choose $\lambda_{N+1}$.
+
 </div>
 
 It turns out we can keep building up eigenvalues in this way, because eigenvectors of different eigenvalues are orthogonal. This leads us to constructing an orthonormal basis.
@@ -8107,4 +8776,127 @@ $$\begin{cases} -u'' + Vu = f & \forall x \in [0, 1], \\ u(0) = u(1) = 0. \end{c
     <p>We know $A^{1/2}m_V A^{1/2}$ is a self-adjoint compact operator, so by the Fredholm alternative, $I + A^{1/2}m_V A^{1/2}$ has an inverse if and only if the nullspace is trivial. Suppose $(I + A^{1/2}m_V A^{1/2})g = 0$ for some $g \in L^2$. Then $0 = \langle (I + A^{1/2}m_V A^{1/2})g, g \rangle = \lVert g \rVert_2^2 + \langle m_V A^{1/2}g, A^{1/2}g \rangle = \lVert g \rVert_2^2 + \int_0^1 V\lvert A^{1/2}g \rvert^2\,dx$. Since $V \ge 0$, both terms are nonnegative, so $\lVert g \rVert_2^2 \ge 0$ can only be zero if $g = 0$. Thus $I + A^{1/2}m_V A^{1/2}$ is indeed invertible.</p>
     <p>To finish, define $v = (I + A^{1/2}m_V A^{1/2})^{-1}A^{1/2}f$ and $u = A^{1/2}v$. Then $u + A(Vu) = A^{1/2}v + A^{1/2}(A^{1/2}m_V A^{1/2})v = A^{1/2}(I + (A^{1/2}m_V A^{1/2}))v$, and plugging in $v$ gives $u + AVu = A^{1/2}A^{1/2}f = Af$. Taking two derivatives: $u'' - Vu = -f$, i.e., $-u'' + Vu = f$. By Theorem 241, $u = A^{1/2}v$ satisfies the Dirichlet boundary conditions, and thus we've solved the Dirichlet problem. $\square$</p>
   </details>
+</div>
+
+## Application: The Periodic Schrödinger Operator
+
+The Dirichlet problem used the Green operator $A$ of $-\frac{d^2}{dx^2}$ with zero boundary values. The same machinery handles **periodic** boundary conditions, where $-\frac{d^2}{dx^2}$ itself is not invertible (constants are killed), so we shift it by $1$ first. This is the content of a problem set in the 2009 version of the course.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Functions on the Circle)</span></p>
+
+Let $\mathbb{S} = \lbrace z \in \mathbb{C} : \lvert z \rvert = 1 \rbrace$. Via $x \mapsto e^{ix}$, continuous functions on $\mathbb{S}$ are the same as continuous $2\pi$-periodic functions on $\mathbb{R}$:
+
+$$C^0(\mathbb{S}) \cong \lbrace u \in C(\mathbb{R}) : u(x + 2\pi) = u(x) \ \forall x \rbrace,$$
+
+and $L^2(\mathbb{S})$ is identified with $L^2(0, 2\pi)$ (a $2\pi$-periodic, locally integrable function modulo periodic null functions is determined by its restriction to $(0, 2\pi)$). The inclusion $C^0(\mathbb{S}) \hookrightarrow L^2(\mathbb{S})$ is dense, and the functions $e^{ikx}/\sqrt{2\pi}$, $k \in \mathbb{Z}$, form an orthonormal basis of $L^2(\mathbb{S})$ by Theorem 177.
+
+</div>
+
+We want to solve, for a real-valued $V \in C^0(\mathbb{S})$ and $f \in C^0(\mathbb{S})$,
+
+$$-u''(x) + V(x)u(x) = f(x), \qquad x \in \mathbb{R}, \quad u \in C^2 \text{ and } 2\pi\text{-periodic}.$$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Green Operator of $-\frac{d^2}{dx^2} + 1$ on the Circle)</span></p>
+
+Let $G$ be the $2\pi$-periodic function with
+
+$$G(s) = \frac{\cosh(\pi - s)}{2\sinh \pi}, \qquad s \in [0, 2\pi],$$
+
+and define $Sf(x) = \int_0^{2\pi} G(x - y) f(y)\,dy$. Then:
+
+1. For every $f \in C^0(\mathbb{S})$, $u = Sf$ is the **unique** $2\pi$-periodic $C^2$ solution of $-u'' + u = f$.
+2. $S$ extends to a compact self-adjoint operator on $L^2(\mathbb{S})$, and
+   $$S(e^{ikx}) = \frac{1}{1 + k^2}\,e^{ikx}, \qquad k \in \mathbb{Z}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**Uniqueness.** If $-w'' + w = 0$ with $w$ periodic and $C^2$, multiply by $\overline{w}$ and integrate over a period. Integrating by parts, the boundary terms cancel by periodicity, leaving $\int_0^{2\pi} (\lvert w^{\prime} \rvert^2 + \lvert w \rvert^2) = 0$, so $w = 0$.
+
+**Existence.** $G$ is smooth on $(0, 2\pi)$ with $G'' = G$ there, $G$ is continuous and periodic (since $G(0) = G(2\pi)$), and its derivative jumps by $-1$ at $s = 0$:
+
+$$G^{\prime}(0^+) - G^{\prime}(2\pi^-) = -\tfrac{1}{2} - \tfrac{1}{2} = -1.$$
+
+Splitting $\int_0^{2\pi} G(x-y)f(y)\,dy$ at $y = x$ and differentiating twice under the integral sign, the jump produces exactly $-u'' + u = f$; periodicity of $u$ is inherited from $G$. (This is what one gets by factorizing $-\frac{d^2}{dx^2} + 1 = -(\frac{d}{dx} + 1)(\frac{d}{dx} - 1)$, solving the two first-order equations with integrating factors $e^{\mp x}$, and then adding $c_1 e^x + c_2 e^{-x}$ to enforce periodicity.)
+
+**Compact self-adjoint.** The kernel $(x, y) \mapsto G(x - y)$ is continuous, real, and symmetric (because $G(s) = G(2\pi - s)$), so $S$ is a compact self-adjoint operator on $L^2$ (Theorem on integral operators with continuous kernels, and Example 188).
+
+**Eigenvalues.** $e^{ikx}/(1+k^2)$ is a periodic $C^2$ solution of $-u'' + u = e^{ikx}$, so by uniqueness it equals $S(e^{ikx})$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Square Root $F = S^{1/2}$)</span></p>
+
+Define $F$ on $L^2(\mathbb{S})$ diagonally in the Fourier basis:
+
+$$F\Big(\sum_{k \in \mathbb{Z}} c_k e^{ikx}\Big) = \sum_{k \in \mathbb{Z}} \frac{c_k}{\sqrt{1 + k^2}}\,e^{ikx}.$$
+
+Then $F$ is compact, self-adjoint, injective, $F^2 = S$, and $F$ maps $L^2(\mathbb{S})$ boundedly into $C^0(\mathbb{S})$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Compactness: the truncations to $\lvert k \rvert \le n$ are finite rank and converge to $F$ in norm (the error has norm $(1 + n^2)^{-1/2}$), so Theorem 210 applies. Self-adjointness and injectivity are clear from the real, nonzero diagonal entries, and $F^2 = S$ because both are diagonal in the same basis with entries $(1+k^2)^{-1}$. Finally, by Cauchy–Schwarz,
+
+$$\sum_k \frac{\lvert c_k \rvert}{\sqrt{1 + k^2}} \le \Big(\sum_k \frac{1}{1 + k^2}\Big)^{1/2}\Big(\sum_k \lvert c_k \rvert^2\Big)^{1/2},$$
+
+so the series for $Fv$ converges uniformly (Weierstrass M-test) and $\lVert Fv \rVert\_\infty \le C\lVert v \rVert\_2$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fredholm Alternative for the Periodic Schrödinger Operator)</span></p>
+
+Let $V$ be real-valued, continuous, and $2\pi$-periodic. Then exactly one of the following holds:
+
+1. For every $f \in C^0(\mathbb{S})$, the equation $-u'' + Vu = f$ has a **unique** $2\pi$-periodic $C^2$ solution.
+2. The space $N$ of $2\pi$-periodic $C^2$ solutions of the homogeneous equation $-w'' + Vw = 0$ is **finite-dimensional and nonzero**, and $-u'' + Vu = f$ has a periodic $C^2$ solution if and only if
+   $$\int_0^{2\pi} f\,\overline{w}\,dx = 0 \qquad \text{for all } w \in N.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Let $m$ be multiplication by $V - 1$ (bounded, self-adjoint since $V$ is real), and set
+
+$$T = F\,m\,F,$$
+
+a compact (compact $\circ$ bounded $\circ$ bounded) self-adjoint operator on $L^2(\mathbb{S})$.
+
+**Step 1 (ODE $\Rightarrow$ integral equation).** If $u$ is a periodic $C^2$ solution, then $-u'' + u = f - (V-1)u$, so by uniqueness in the Proposition, $u = S(f - (V-1)u) = F\big(Ff - F(V-1)u\big)$. Thus $u = Fv$ with $v := Ff - F m u$, and substituting $u = Fv$ gives
+
+$$v + Tv = Ff.$$
+
+**Step 2 (integral equation $\Rightarrow$ ODE).** Conversely, let $v \in L^2$ solve $v + Tv = Ff$ and put $u = Fv$, which is continuous since $F : L^2 \to C^0$. Applying $F$ gives $u + S((V-1)u) = Sf$, i.e. $u = S\big(f - (V-1)u\big)$. The argument $f - (V-1)u$ is continuous, so by the Proposition $u$ is periodic, $C^2$, and $-u'' + u = f - (V-1)u$, i.e. $-u'' + Vu = f$.
+
+**Step 3 (the homogeneous equation).** Taking $f = 0$ in Steps 1–2, $v \mapsto Fv$ is a bijection $\operatorname{Null}(I + T) \to N$ (injective because $F$ is). By Theorem 227 applied to the eigenvalue $-1$ of $T$, $\dim N = \dim \operatorname{Null}(I + T) < \infty$.
+
+**Step 4 (Fredholm alternative).** By Theorem 228 (with $\lambda = -1$), $\operatorname{Range}(I + T) = \operatorname{Null}(I + T)^\perp$.
+
+* If $N = \lbrace 0 \rbrace$, then $I + T$ is bijective, so $v + Tv = Ff$ is solvable for every $f$ and Step 2 gives a solution $u$; two solutions differ by an element of $N = \lbrace 0 \rbrace$.
+* Otherwise, by Steps 1–2 the ODE is solvable iff $Ff \in \operatorname{Range}(I + T)$, iff $\langle Ff, v \rangle = 0$ for all $v \in \operatorname{Null}(I + T)$. Since $F$ is self-adjoint, $\langle Ff, v \rangle = \langle f, Fv \rangle$, and $Fv$ runs over all of $N$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Shift by $1$, and Eigenfunctions)</span></p>
+
+* There is nothing special about adding $1$: any positive constant works. Adding $0$ fails because constants solve $-u'' = 0$, so $-\frac{d^2}{dx^2}$ has no inverse on periodic functions.
+* Unlike the Dirichlet case with $V \ge 0$, here $V$ is an arbitrary real potential, so alternative 2 genuinely occurs (e.g. $V = 0$, where $N$ = constants and the condition is $\int_0^{2\pi} f = 0$).
+* When $N = \lbrace 0 \rbrace$, the operator $R = F(I + T)^{-1}F$ is a compact self-adjoint inverse of $Q = -\frac{d^2}{dx^2} + V$, and the $C^2$ periodic eigenfunctions $Qu = \tau u$ are exactly the solutions of $Ru = \tau^{-1}u$. The spectral theorem for $R$ then yields an orthonormal basis of $L^2(\mathbb{S})$ consisting of eigenfunctions of the Schrödinger operator.
+
 </div>
