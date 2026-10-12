@@ -215,6 +215,26 @@ defines a metric on $V$, called the **metric induced by the norm**.
 </details>
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Norm Is Lipschitz Continuous)</span></p>
+
+For all $u, v$ in a normed space,
+
+$$\big\lvert \lVert u \rVert - \lVert v \rVert \big\rvert \le \lVert u - v \rVert.$$
+
+In particular $\lVert \cdot \rVert : V \to [0, \infty)$ is continuous: $u\_n \to u$ implies $\lVert u\_n \rVert \to \lVert u \rVert$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+By the triangle inequality, $\lVert u \rVert \le \lVert u - v \rVert + \lVert v \rVert$ and $\lVert v \rVert \le \lVert u - v \rVert + \lVert u \rVert$. $\square$
+
+</details>
+</div>
+
 ### Examples of Norms
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -684,9 +704,35 @@ For $1 \leq p \le \infty$, the space $\ell^p$ is a Banach space (normed and comp
 <details markdown="1">
 <summary>Proof</summary>
 
+**Normed space.** Closure under scalars is $\lVert ta \rVert\_p = \lvert t \rvert \lVert a \rVert\_p$, and closure under addition follows from the triangle inequality (Minkowski). A useful shortcut for Minkowski: it suffices to know it on $\mathbb{C}^N$ for every $N$. Indeed, then
 
+$$\Big(\sum_{j=1}^N \lvert a_j + b_j \rvert^p\Big)^{1/p} \le \Big(\sum_{j=1}^N \lvert a_j \rvert^p\Big)^{1/p} + \Big(\sum_{j=1}^N \lvert b_j \rvert^p\Big)^{1/p} \le \lVert a \rVert_p + \lVert b \rVert_p,$$
+
+and the left side is nondecreasing in $N$ and bounded, so we may let $N \to \infty$.
+
+**Completeness ($1 \le p < \infty$).** Let $a^{(n)}$ be Cauchy in $\ell^p$. Since the norm is continuous, $\lVert a^{(n)} \rVert\_p$ is Cauchy in $\mathbb{R}$, so $\lVert a^{(n)} \rVert\_p \le A$ for all $n$.
+
+* *Candidate limit.* For each $i$, $\lvert a\_i^{(n)} - a\_i^{(m)} \rvert \le \lVert a^{(n)} - a^{(m)} \rVert\_p$, so $a\_i^{(n)}$ is Cauchy in $\mathbb{C}$; let $a\_i = \lim\_n a\_i^{(n)}$.
+* *$a \in \ell^p$.* For each finite $N$, $\sum\_{i \le N} \lvert a\_i^{(n)} \rvert^p \le A^p$; letting $n \to \infty$ (finitely many terms) gives $\sum\_{i \le N} \lvert a\_i \rvert^p \le A^p$, and then $N \to \infty$ gives $\lVert a \rVert\_p \le A$.
+* *Convergence.* Given $\varepsilon > 0$ choose $M$ with $\lVert a^{(n)} - a^{(m)} \rVert\_p < \varepsilon/2$ for $n, m > M$. For each finite $N$, $\big(\sum\_{i \le N} \lvert a\_i^{(n)} - a\_i^{(m)} \rvert^p\big)^{1/p} < \varepsilon/2$; let $m \to \infty$ and then $N \to \infty$ to get $\lVert a^{(n)} - a \rVert\_p \le \varepsilon/2 < \varepsilon$ for $n > M$.
+
+The trick throughout is to **back off to finite sums**, where limits can be exchanged freely.
+
+**Completeness ($p = \infty$).** The same argument with $\sup\_{i \le N}$ in place of $\sum\_{i \le N}$ works verbatim (this is also a special case of the completeness of $C\_\infty(X)$ with $X = \mathbb{N}$). $\square$
 
 </details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Unit Sphere of $\ell^p$ Is Closed but Not Compact)</span></p>
+
+Let $1 \le p < \infty$ and $S = \lbrace a \in \ell^p : \lVert a \rVert\_p = 1 \rbrace$.
+
+* $S$ is **closed**: it is the preimage of the closed set $\lbrace 1 \rbrace$ under the continuous map $\lVert \cdot \rVert\_p$.
+* $S$ is **not compact**: the standard vectors $e^{(n)}$ (a $1$ in slot $n$, zeros elsewhere) lie in $S$ and satisfy $\lVert e^{(n)} - e^{(m)} \rVert\_p = 2^{1/p}$ for $n \ne m$, so no subsequence is Cauchy, let alone convergent.
+
+This is a fundamental difference from finite dimensions, where the unit sphere is always compact (Heine–Borel). Being closed and bounded is no longer enough.
+
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -799,6 +845,71 @@ converges with $n\to\infty$. It shows the subsequence of the Cauchy sequence has
     $$\sum_{k=1}^{m} (v_{n_{k+1}} - v_{n_k}) = v_{n_{m+1}} - v_{n_1}$$
     <p>converge. Thus $\lbrace v_{n_k} \rbrace$ converges. Since a Cauchy sequence with a convergent subsequence must itself converge, $V$ is Banach. $\square$</p>
   </details>
+</div>
+
+### Completion of a Normed Space
+
+Not every natural normed space is complete. The motivating example of the course:
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($C([0,1])$ with the $L^1$ Norm Is Not Complete)</span></p>
+
+On $C([0, 1])$ consider $\lVert u \rVert\_{L^1} = \int\_0^1 \lvert u(x) \rvert\,dx$ (a Riemann integral). Let $u\_n$ be $0$ on $[0, \frac12]$, $1$ on $[\frac12 + \frac1n, 1]$, and linear in between. For $m > n$, $u\_n$ and $u\_m$ differ only on $[\frac12, \frac12 + \frac1n]$, where both lie in $[0,1]$, so $\lVert u\_n - u\_m \rVert\_{L^1} \le \frac1n$: the sequence is Cauchy. Its only candidate limit is the jump function $\mathbf{1}\_{(1/2, 1]}$, which is not continuous: if $u \in C([0,1])$ had $\lVert u\_n - u \rVert\_{L^1} \to 0$, then $u = 0$ on $[0, \frac12]$ and $u = 1$ on $(\frac12, 1]$, contradicting continuity at $\frac12$.
+
+Completing this space is essentially what the Lebesgue integral does. (Riemann integrable functions do not fix this: $\int \lvert u \rvert$ is only a seminorm on them, and even after quotienting the result is still not complete.)
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Completion)</span></p>
+
+A **completion** of a normed space $V$ is a Banach space $B$ together with a linear map $I : V \to B$ such that
+
+1. $\lVert I(v) \rVert\_B = \lVert v \rVert\_V$ for all $v \in V$ (so $I$ is injective), and
+2. $I(V)$ is dense in $B$.
+
+If $V$ is already Banach, $B = V$ with $I = \operatorname{Id}$ works.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Every Normed Space Has a Completion)</span></p>
+
+Let $\tilde V$ be the linear space of absolutely summable series $\lbrace u\_k \rbrace$ in $V$ (i.e. $\sum\_k \lVert u\_k \rVert < \infty$), and $S \subset \tilde V$ the subspace of those whose partial sums tend to $0$ in $V$. Then
+
+$$B = \tilde V / S, \qquad \big\lVert \lbrace u_k \rbrace + S \big\rVert_B = \lim_{n \to \infty} \Big\lVert \sum_{k=1}^n u_k \Big\rVert_V, \qquad I(v) = \lbrace v, 0, 0, \dots \rbrace + S$$
+
+is a completion of $V$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**Norm.** Partial sums of an absolutely summable series are Cauchy, so their norms are Cauchy in $\mathbb{R}$ and the limit exists. Adding an element of $S$ changes the partial sums by something tending to $0$, so $\lVert \cdot \rVert\_B$ is well defined. $\lVert b \rVert\_B = 0$ means the partial sums tend to $0$, i.e. the representative is in $S$, i.e. $b = 0$. Homogeneity is clear, and the triangle inequality passes to the limit from $\lVert \sum\_{k \le n}(u\_k + u\_k^{\prime}) \rVert \le \lVert \sum\_{k \le n} u\_k \rVert + \lVert \sum\_{k \le n} u\_k^{\prime} \rVert$. Clearly $\lVert I(v) \rVert\_B = \lVert v \rVert\_V$. Note also $\lVert \lbrace u\_k \rbrace + S \rVert\_B \le \sum\_k \lVert u\_k \rVert$.
+
+**Density.** Let $b$ be represented by $\lbrace u\_k \rbrace$ and $v\_N = \sum\_{k \le N} u\_k$. The class $I(v\_N) - b$ is represented by $\lbrace v\_N - u\_1, -u\_2, -u\_3, \dots \rbrace$, whose $p$-th partial sum is $-\sum\_{N < k \le p} u\_k$. Hence $\lVert I(v\_N) - b \rVert\_B \le \sum\_{k > N} \lVert u\_k \rVert \to 0$.
+
+**Completeness.** By the summability criterion, it suffices to show that an absolutely summable series $\sum\_n b\_n$ in $B$ converges.
+
+* *Good representatives.* If $\lbrace u\_k \rbrace$ represents $b\_n$, choose $M$ with $\sum\_{k > M} \lVert u\_k \rVert \le 2^{-n-1}$ and regroup the head: $v\_1^{(n)} = \sum\_{k \le M} u\_k$, $v\_k^{(n)} = u\_{M+k-1}$ for $k \ge 2$. The partial sums of the two series differ by $\sum\_{N < k \le N+M-1} u\_k \to 0$, so $\lbrace v\_k^{(n)} \rbrace$ still represents $b\_n$. Moreover, for every $p \ge M$, writing $\sum\_{k \le M} u\_k = \sum\_{k \le p} u\_k - \sum\_{M < k \le p} u\_k$,
+
+  $$\sum_k \lVert v_k^{(n)} \rVert \le \Big\lVert \sum_{k \le p} u_k \Big\rVert + 2\sum_{k > M} \lVert u_k \rVert,$$
+
+  and letting $p \to \infty$ gives $\sum\_k \lVert v\_k^{(n)} \rVert \le \lVert b\_n \rVert\_B + 2^{-n}$.
+* *The limit.* Hence $\sum\_{n, k} \lVert v\_k^{(n)} \rVert \le \sum\_n (\lVert b\_n \rVert\_B + 2^{-n}) < \infty$: the **double** series is absolutely summable. Let $\lbrace w\_j \rbrace$ be its enumeration along anti-diagonals $n + k = \text{const}$; it lies in $\tilde V$, so $b := \lbrace w\_j \rbrace + S \in B$.
+* *Convergence.* $b - \sum\_{n \le N} b\_n$ is represented by $\lbrace w\_j - \sum\_{n \le N} v\_j^{(n)} \rbrace\_j$. Its partial sums are (sum over a triangle of the array) minus (sum over an $N \times p$ rectangle), so their norms are bounded by the sum of $\lVert v\_k^{(n)} \rVert$ over the symmetric difference: all terms with $n > N$, plus terms with $n \le N$ and $k$ beyond roughly $p - N$. Letting $p \to \infty$, the second part disappears, so
+  $$\Big\lVert b - \sum_{n \le N} b_n \Big\rVert_B \le \sum_{n > N} \big(\lVert b_n \rVert_B + 2^{-n}\big) \xrightarrow{N \to \infty} 0. \quad \square$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Absolutely Summable Series)</span></p>
+
+The completion could equally be built from Cauchy sequences modulo null sequences (as $\mathbb{R}$ is built from $\mathbb{Q}$). The absolutely summable series version is used because the very same arguments — regrouping heads of series to make them converge faster, and enumerating double series diagonally — reappear verbatim when the Lebesgue integral is constructed as the completion of the step functions in the $L^1$ norm (Section "The Lebesgue Integral via Step Functions").
+
 </div>
 
 ## Linear Operators
@@ -5662,6 +5773,325 @@ Then the sum is $<\varepsilon$.
   <figcaption>Riemann–Lebesgue mechanism: on each constant step of $\psi$ the oscillation $e^{-inx}$ produces adjacent lobes of opposite sign that cancel, leaving only boundary contributions of size $O(1/n)$ (left). Approximating $f\in L^1$ by step functions transfers the decay to $\hat f$: $|\hat f(n)|\to 0$ (right).</figcaption>
 </figure>
 
+### Integrals over Subintervals and Improper Integrals
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Indefinite Integral Is Continuous)</span></p>
+
+Let $f$ be integrable on $[a, b)$. Then $F(x) = \int\_{[x, b)} f$ is continuous on $[a, b]$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+For $x < y$, $\lvert F(x) - F(y) \rvert = \lvert \int f\chi\_{[x, y)} \rvert \le \int \lvert f \rvert \chi\_{[x, y)}$. As $y - x \to 0$ the integrand tends to $0$ pointwise and is dominated by $\lvert f \rvert$, so the right side tends to $0$ by dominated convergence. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Improperly Riemann Integrable but Not Lebesgue Integrable)</span></p>
+
+Let $f(x) = x^{-1}\cos(1/x)$ on $(0, 1]$. The improper Riemann integral exists: substituting $u = 1/x$,
+
+$$\lim_{t \downarrow 0}\int_t^1 \frac{\cos(1/x)}{x}\,dx = \lim_{R \to \infty}\int_1^R \frac{\cos u}{u}\,du,$$
+
+which converges (integrate by parts, or by the alternating series test on the intervals between zeros of $\cos$). But $f$ is **not** Lebesgue integrable: otherwise $\lvert f \rvert$ would be integrable, so $\int\_{[t, 1]} \lvert f \rvert \le \int\_{(0,1]} \lvert f \rvert < \infty$ for all $t$. Yet (by Theorem 126 on each $[t, 1]$)
+
+$$\int_t^1 \frac{\lvert\cos(1/x)\rvert}{x}\,dx = \int_1^{1/t} \frac{\lvert \cos u \rvert}{u}\,du \ge \sum_{1 \le k < \frac{1}{\pi t} - 1} \frac{2}{(k+1)\pi} \xrightarrow{t \to 0} \infty,$$
+
+since $\int\_{k\pi}^{(k+1)\pi}\lvert \cos u \rvert\,du = 2$. The Lebesgue integral is **absolutely** convergent by design: it cannot exploit cancellation the way conditionally convergent improper integrals do.
+
+</div>
+
+### Continuity of Translation in $L^1$
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Continuity in the Mean)</span></p>
+
+For $f \in L^1(\mathbb{R})$ and $t \in \mathbb{R}$, let $f\_t(x) = f(x - t)$. Then $f\_t \in L^1(\mathbb{R})$ with $\lVert f\_t \rVert\_1 = \lVert f \rVert\_1$, and
+
+$$\lim_{t \to 0}\int_{\mathbb{R}} \lvert f(x - t) - f(x) \rvert\,dx = 0.$$
+
+Consequently, $t \mapsto f\_t$ is a continuous curve $\mathbb{R} \to L^1(\mathbb{R})$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+Translation invariance of Lebesgue measure gives $\int \chi\_{E + t} = \int \chi\_E$, hence $\int \varphi\_t = \int \varphi$ for simple $\varphi$, and by monotone convergence $\int \lvert f\_t \rvert = \int \lvert f \rvert$.
+
+**Step functions first.** For $\varphi = \chi\_{[a, b)}$, $\varphi\_t - \varphi$ is $\pm 1$ on two intervals of length at most $\lvert t \rvert$, so $\lVert \varphi\_t - \varphi \rVert\_1 \le 2\lvert t \rvert$. By the triangle inequality, $\lVert \varphi\_t - \varphi \rVert\_1 \le 2\lvert t \rvert \sum\_i \lvert c\_i \rvert$ for a step function $\varphi = \sum\_i c\_i \chi\_{[a\_i, b\_i)}$.
+
+**Approximation.** Given $\varepsilon > 0$, first truncate: $f\chi\_{[-L, L]} \to f$ in $L^1$ by dominated convergence. Then approximate $f\chi\_{[-L, L]}$ in $L^1([-L, L])$ by a step function (Section "Density of Nice Functions"). This gives a step function $\varphi$ with $\lVert f - \varphi \rVert\_1 < \varepsilon$. Then
+
+$$\lVert f_t - f \rVert_1 \le \lVert (f - \varphi)_t \rVert_1 + \lVert \varphi_t - \varphi \rVert_1 + \lVert \varphi - f \rVert_1 \le 2\varepsilon + \lVert \varphi_t - \varphi \rVert_1 < 3\varepsilon$$
+
+for $\lvert t \rvert$ small. Continuity at any $s$ follows from $\lVert f\_t - f\_s \rVert\_1 = \lVert f\_{t-s} - f \rVert\_1$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($C\_c(\mathbb{R})$ Is Dense in $L^1(\mathbb{R})$)</span></p>
+
+The same two-step approximation (truncate to $[-L, L]$, then approximate on $[-L, L]$ by a continuous $g$ with $g(-L) = g(L) = 0$ as in Section "Density of Nice Functions", extended by $0$) shows that continuous functions vanishing outside a compact set are dense in $L^1(\mathbb{R})$. For a single indicator this is explicit: the trapezoid $g\_n$ equal to $1$ on $[a, b]$, $0$ outside $[a - \frac1n, b + \frac1n]$ and linear in between has $\lVert g\_n - \chi\_{[a, b)} \rVert\_1 \le \frac{1}{n}$.
+
+</div>
+
+### Integral Operators from $L^1$ into $C$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Continuous Kernels Smooth Out $L^1$ Functions)</span></p>
+
+Let $G \in C([0,1] \times [0,1])$. For $f \in L^1([0,1])$ define $(Tf)(x) = \int\_{[0,1]} G(x, y) f(y)\,dy$. Then $Tf \in C([0, 1])$, and $T : L^1([0,1]) \to C([0,1])$ is a bounded linear operator with
+
+$$\lVert Tf \rVert_\infty \le \lVert G \rVert_\infty \lVert f \rVert_{L^1}.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+For fixed $x$, $y \mapsto G(x, y)f(y)$ is measurable and bounded by $\lVert G \rVert\_\infty \lvert f(y) \rvert$, so $Tf(x)$ is well defined (and unchanged if $f$ is changed on a null set), with $\lvert Tf(x) \rvert \le \lVert G \rVert\_\infty \lVert f \rVert\_1$. By uniform continuity of $G$ on the compact square, for $\delta > 0$ there is $\eta > 0$ with $\sup\_y \lvert G(x, y) - G(x^{\prime}, y) \rvert < \delta$ whenever $\lvert x - x^{\prime} \rvert < \eta$, and then
+
+$$\lvert Tf(x) - Tf(x') \rvert \le \int \lvert G(x, y) - G(x', y) \rvert \lvert f(y) \rvert\,dy \le \delta \lVert f \rVert_1. \quad \square$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Integral as a Functional)</span></p>
+
+$f \mapsto \int f$ is a bounded linear functional on $L^1$ (Proposition 127 gives $\lvert \int f \rvert \le \lVert f \rVert\_1$), and its norm is exactly $1$: equality holds for every $f \ge 0$.
+
+</div>
+
+## The Lebesgue Integral via Step Functions (Melrose's Approach)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Integral First, Measure Later)</span></p>
+
+The chapters above follow the classical route: outer measure $\to$ measurable sets $\to$ measurable functions $\to$ integral. The 2009 version of MIT 18.102 (R. Melrose) goes the other way, following an idea of Mikusiński: **the Lebesgue integral is the completion of the step functions in the $L^1$ norm**, and Lebesgue measure is derived from the integral afterwards. The construction is self-contained and uses only the covering lemma for intervals plus the series tricks from the completion of a normed space. Both routes produce the same space $L^1(\mathbb{R})$.
+
+</div>
+
+Throughout this section an **interval** means $[a, b)$ — then length $b - a = 0$ only for the empty interval, and $[a, b) = [a, t) \cup [t, b)$ for $a < t < b$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Step Functions and Their Integral)</span></p>
+
+A **step function** is $f = \sum\_{i=1}^N c\_i \chi\_{[a\_i, b\_i)}$, $c\_i \in \mathbb{C}$, and its integral is $\int f = \sum\_i c\_i (b\_i - a\_i)$. This does not depend on the presentation (refine to a common disjoint family of intervals). Step functions form a linear space, closed under $\lvert \cdot \rvert$, $\max$, $\min$, and $\lVert f \rVert\_{L^1} = \int \lvert f \rvert$ is a **norm** on it.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Covering Lemma)</span></p>
+
+Let $C\_i = [a\_i, b\_i)$, $i \in \mathbb{N}$, be intervals.
+
+1. If the $C\_i$ are pairwise disjoint and all contained in $[a, b)$, then $\sum\_{i} (b\_i - a\_i) \le b - a$.
+2. If $[a, b) \subset \bigcup\_{i} C\_i$, then $\sum\_{i} (b\_i - a\_i) \ge b - a$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+For finitely many intervals both statements follow by inserting all endpoints as division points. (1) then holds for every finite subfamily, hence for the whole series.
+
+(2) needs compactness. Fix $\delta > 0$ and enlarge $C\_i$ to the open interval $(a\_i - 2^{-i}\delta, b\_i)$. These open intervals cover the compact set $[a, b - \delta]$, so finitely many do (Heine–Borel); then the corresponding half-open intervals $[a\_i - 2^{-i}\delta, b\_i)$, $i \le N$, cover $[a, b - \delta)$, and the finite case gives
+
+$$\sum_{i \le N}\big(b_i - a_i + 2^{-i}\delta\big) \ge b - a - \delta \quad\Longrightarrow\quad \sum_i (b_i - a_i) \ge b - a - 2\delta.$$
+
+Let $\delta \to 0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Monotonicity Lemma)</span></p>
+
+If $f\_n$ are step functions with $f\_n(x) \downarrow 0$ for every $x \in \mathbb{R}$, then $\int f\_n \to 0$.
+
+More generally, if $g\_n$ are real step functions, nondecreasing in $n$, with $\lim\_n g\_n(x) \in [0, \infty]$ for every $x$, then $\lim\_n \int g\_n \in [0, \infty]$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+The point is that we get convergence of integrals **without uniform convergence**. All $f\_n$ vanish outside the interval $[a, b)$ where $f\_1$ lives, and $f\_n \le A := \max f\_1$. Fix $\varepsilon > 0$ and let $S\_j = \lbrace x \in [a, b) : f\_j(x) \le \varepsilon \rbrace$, a finite union of intervals. The $S\_j$ increase, and $\bigcup\_j S\_j = [a, b)$ because $f\_j(x) \to 0$. So $B\_1 = S\_1$, $B\_j = S\_j \setminus S\_{j-1}$ are disjoint finite unions of intervals with union $[a, b)$, and **both** halves of the covering lemma give $\sum\_j \ell(B\_j) = b - a$. Choose $N$ with $\sum\_{j > N} \ell(B\_j) < \varepsilon$, i.e. $\ell([a, b) \setminus S\_N) < \varepsilon$. For $k \ge N$, $f\_k \le f\_N \le \varepsilon$ on $S\_N$ and $f\_k \le A$ on the rest, so
+
+$$\int f_k \le \varepsilon(b - a) + A\varepsilon.$$
+
+For the general statement, $f\_n = \max(0, -g\_n)$ are step functions decreasing to $0$ pointwise, and $\int g\_n \ge -\int f\_n \to 0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lebesgue Integrable Function, Null Set)</span></p>
+
+A function $f : \mathbb{R} \to \mathbb{C}$ is **Lebesgue integrable**, written $f \in \mathcal{L}^1(\mathbb{R})$, if there is a sequence of step functions $f\_n$ with
+
+$$\sum_n \int \lvert f_n \rvert < \infty \qquad\text{and}\qquad f(x) = \sum_n f_n(x) \quad \text{whenever } \sum_n \lvert f_n(x) \rvert < \infty.$$
+
+(At points where the series does not converge absolutely, $f$ is unconstrained.) A set $E \subset \mathbb{R}$ has **measure zero** if there is a sequence of step functions $f\_n$ with $\sum\_n \int \lvert f\_n \rvert < \infty$ and $\sum\_n \lvert f\_n(x) \rvert = \infty$ for all $x \in E$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Interlacing Trick)</span></p>
+
+Almost every proof in this approach uses one device. Interlacing two absolutely summable series $(f\_1, g\_1, f\_2, g\_2, \dots)$ gives an absolutely summable series that converges absolutely at $x$ iff **both** do. In particular, inserting pairs $(h\_k, -h\_k)$ does not change the sum where it converges, but **shrinks the convergence set** to the points where $\sum\_k \lvert h\_k(x) \rvert < \infty$. So we can always discard a null set from the convergence set at no cost.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Basic Properties of $\mathcal{L}^1$)</span></p>
+
+1. $\mathcal{L}^1(\mathbb{R})$ is a linear space, and if $f \in \mathcal{L}^1$ and $g = f$ off a set of measure zero, then $g \in \mathcal{L}^1$.
+2. A countable union of sets of measure zero has measure zero.
+3. **The integral is well defined:** $\int f := \sum\_n \int f\_n$ does not depend on the approximating series, and agrees with the step-function integral on step functions.
+4. If $f \in \mathcal{L}^1$ then $\lvert f \rvert \in \mathcal{L}^1$, and $\int \lvert f \rvert = \lim\_N \int \lvert \sum\_{n \le N} f\_n \rvert \le \sum\_n \int \lvert f\_n \rvert$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**(1)** For $f + f^{\prime}$, interlace the two series: the result converges absolutely exactly where both do, and there its sum is $f(x) + f^{\prime}(x)$ (absolutely convergent series can be rearranged). (Simply adding the series termwise would be a mistake: the sum could converge absolutely at points where neither series does.) For $g = f$ off a null set $E$ with witness series $h\_k$, interlace $(f\_k, h\_k, -h\_k)$: it converges absolutely only off $E$, and there to $f = g$.
+
+**(2)** Let $E\_j$ be null with witness series $f^{(j)}\_n$. Dropping finitely many terms keeps divergence on $E\_j$, so we may assume $\sum\_n \int \lvert f\_n^{(j)} \rvert < 2^{-j}$. Any enumeration of the double array is then absolutely summable and diverges absolutely on every $E\_j$.
+
+**(3)** If $f\_n$ and $f^{\prime}\_n$ both represent $f$, interlace $(f\_k, -f^{\prime}\_k)$: it represents the zero function, and $\sum \int$ of it equals $\sum \int f\_k - \sum \int f\_k^{\prime}$. So it suffices to show: **if $h\_n$ represents $0$, then $\sum\_n \int h\_n = 0$.** Fix $N$ and consider the step-function series $g\_1 = \sum\_{j \le N} h\_j$, $g\_k = \lvert h\_{N+k-1} \rvert$ for $k > 1$. Its partial sums $G\_p$ are nondecreasing. Where $\sum \lvert h\_n(x) \rvert = \infty$, $G\_p(x) \to +\infty$; elsewhere $G\_p(x) \ge \sum\_{j \le N+p-1} h\_j(x) \to 0$. By the monotonicity lemma $\lim\_p \int G\_p \ge 0$, i.e.
+
+$$\sum_{j \le N}\int h_j + \sum_{k > N}\int \lvert h_k \rvert \ge 0 \qquad \text{for every } N.$$
+
+Letting $N \to \infty$, the tail vanishes and $\sum\_j \int h\_j \ge 0$; applying this to $-h\_n$ gives equality.
+
+**(4)** Put $g\_1 = \lvert f\_1 \rvert$, $g\_k = \lvert \sum\_{j \le k} f\_j \rvert - \lvert \sum\_{j < k} f\_j \rvert$. Then $\lvert g\_k \rvert \le \lvert f\_k \rvert$, so $\lbrace g\_k \rbrace$ is absolutely summable with partial sums $\lvert \sum\_{j \le N} f\_j \rvert \to \lvert f \rvert$ where $\sum \lvert f\_j \rvert < \infty$. Interlacing with $(f\_k, -f\_k)$ restricts the convergence set to exactly that set, so $\lvert f \rvert \in \mathcal{L}^1$ with the stated integral. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Series of Integrable Functions; $L^1$ Is Complete)</span></p>
+
+Let $f\_n \in \mathcal{L}^1(\mathbb{R})$ with $\sum\_n \int \lvert f\_n \rvert < \infty$. Then $E = \lbrace x : \sum\_n \lvert f\_n(x) \rvert = \infty \rbrace$ has measure zero, any $f$ with $f(x) = \sum\_n f\_n(x)$ off $E$ is integrable, and
+
+$$\int f = \sum_n \int f_n, \qquad \int \Big\lvert f - \sum_{n < N} f_n \Big\rvert \le \sum_{n \ge N}\int \lvert f_n \rvert \to 0.$$
+
+Consequences:
+
+* $\int \lvert f \rvert = 0 \iff f = 0$ off a set of measure zero (**null function**).
+* $L^1(\mathbb{R}) = \mathcal{L}^1(\mathbb{R})/\mathcal{N}$, with $\mathcal{N}$ the null functions, is a normed space with $\lVert [f] \rVert = \int \lvert f \rvert$, and it is a **Banach space**.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+This is the completeness argument from the completion of a normed space, made concrete. Represent each $f\_n$ by step functions $f\_{n,j}$ and regroup heads so that $\sum\_j \int \lvert f\_{n,j} \rvert \le \int \lvert f\_n \rvert + 2^{-n+1}$. The double array is then absolutely summable, so enumerating it (say along anti-diagonals) as a single sequence $h\_1, h\_2, \dots$ gives an absolutely summable series of step functions. Let $E^{\prime} = \lbrace x : \sum\_{n,j} \lvert f\_{n,j}(x) \rvert = \infty \rbrace$, a null set by definition (with witness $h\_k$). Off $E^{\prime}$, each $\sum\_j f\_{n,j}(x)$ converges absolutely, hence equals $f\_n(x)$; so $\sum\_n \lvert f\_n(x) \rvert < \infty$ (thus $E \subset E^{\prime}$ is null), and by rearrangement $\sum\_k h\_k(x) = \sum\_n f\_n(x) = f(x)$. So $h\_k$ represents $f$, whence $f \in \mathcal{L}^1$ and $\int f = \sum\_{n,j}\int f\_{n,j} = \sum\_n \int f\_n$. Applying part (4) of the previous theorem to the tail series $\sum\_{n \ge N} f\_n$ gives the estimate.
+
+*Null functions.* If $f$ vanishes off a null set $E$ with witness $h\_k$, the series $(h\_k, -h\_k)$ represents $f$ and has integral $0$. Conversely, if $\int \lvert f \rvert = 0$, apply the theorem to the series with every term equal to $\lvert f \rvert$: it is absolutely summable (all integrals are $0$), so it converges pointwise off a null set — but it diverges wherever $f(x) \ne 0$.
+
+*Completeness.* An absolutely summable series of classes $[f\_n]$ in $L^1$ has, by the estimate, $\lVert [f] - \sum\_{n < N}[f\_n] \rVert \to 0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Monotone Convergence, Fatou, Dominated Convergence)</span></p>
+
+* **Monotonicity.** If $f\_j \in \mathcal{L}^1$ is monotone (increasing or decreasing in $j$) and $\int f\_j$ is **bounded**, then $f = \lim\_j f\_j$ exists and is finite off a null set, $f \in \mathcal{L}^1$, and $\int \lvert f - f\_j \rvert \to 0$.
+* **Fatou.** If $f\_j \ge 0$ are integrable with $\int f\_j$ bounded, then $\liminf\_j f\_j$ is integrable and $\int \liminf\_j f\_j \le \liminf\_j \int f\_j$.
+* **Dominated convergence.** If $\lvert f\_j \rvert \le h \in \mathcal{L}^1$ a.e. and $f\_j \to f$ a.e., then $f \in \mathcal{L}^1$ and $\int f\_j \to \int f$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**Monotonicity.** Say $f\_j$ increases. The integrals increase and are bounded, so they converge, and we can pick a subsequence $g\_i = f\_{n\_i}$ with $\int \lvert g\_i - g\_{i-1} \rvert = \int (g\_i - g\_{i-1}) < 2^{-i}$. The series $g\_1, g\_2 - g\_1, \dots$ is absolutely summable, so by the previous theorem it converges a.e. to an integrable $f$ with $\int f = \lim \int f\_j$. By monotonicity the whole sequence converges wherever the subsequence does, and $\int \lvert f - f\_j \rvert = \int f - \int f\_j \to 0$.
+
+**Fatou.** For fixed $k$, $\min\_{k \le p \le k+n} f\_p$ decreases in $n$ with integrals bounded below by $0$, so by monotonicity $g\_k = \inf\_{p \ge k} f\_p$ is integrable with $\int g\_k \le \inf\_{p \ge k}\int f\_p$. Then $g\_k$ increases in $k$ with $\int g\_k \le \liminf\_j \int f\_j$ bounded, so monotonicity again gives $\int \liminf\_j f\_j = \lim\_k \int g\_k \le \liminf\_j \int f\_j$.
+
+**Dominated convergence.** Apply Fatou to $h - f\_j \ge 0$ and $h + f\_j \ge 0$ (real parts first), exactly as in the measure-theoretic proof: $\limsup \int f\_j \le \int f \le \liminf \int f\_j$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bounded Integrals Replace Positivity)</span></p>
+
+In the measure-theoretic approach, monotone convergence needs $f\_j \ge 0$ but allows $\int f = \infty$. Here there is no notion of a nonnegative function with "infinite integral", so the hypothesis is instead that the integrals are **bounded**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lebesgue Measure from the Integral)</span></p>
+
+$f : \mathbb{R} \to \mathbb{C}$ is **locally integrable** if $f\chi\_{[-N, N]} \in \mathcal{L}^1(\mathbb{R})$ for every $N$ (e.g. every continuous function). A set $A \subset \mathbb{R}$ is **measurable** if $\chi\_A$ is locally integrable, and then
+
+$$\mu(A) = \int \chi_A \quad\text{if } \chi_A \in \mathcal{L}^1(\mathbb{R}), \qquad \mu(A) = \infty \text{ otherwise}.$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Measurable Sets Form a $\sigma$-Algebra)</span></p>
+
+The measurable sets contain $\varnothing$ and $\mathbb{R}$, are closed under complements, countable unions and countable intersections, and $\mu$ is countably additive on disjoint families (with values in $[0, \infty]$).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$\chi\_{\mathbb{R} \setminus A} = 1 - \chi\_A$, and $1$ is locally integrable. For unions, $B\_n = \bigcup\_{k \le n} A\_k$ has $\chi\_{B\_n} = \max\_{k \le n} \chi\_{A\_k}$, and $\chi\_{[-N,N]}\chi\_{B\_n} \uparrow \chi\_{[-N,N]}\chi\_{B}$ with integrals bounded by $2N$, so $\chi\_B$ is locally integrable by monotonicity. Intersections follow by complements. For disjoint $A\_n$, $\chi\_{[-N,N]}\sum\_{n \le m}\chi\_{A\_n}$ increases to $\chi\_{[-N,N]}\chi\_{\bigcup A\_n}$, so $\mu(\bigcup\_n A\_n \cap [-N, N]) = \sum\_n \mu(A\_n \cap [-N, N])$; let $N \to \infty$ (both sides increase). $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An Unbounded Integrable Function from a Cantor Construction)</span></p>
+
+Remove the middle third $[\frac13, \frac23)$ from $[0, 1)$ to get $C\_1$, remove the middle thirds of the two remaining intervals to get $C\_2$, and so on; $C\_k$ is a union of $2^k$ half-open intervals of total length $(2/3)^k$. Let $f\_k = \chi\_{C\_k}$.
+
+* $\sum\_k \int \lvert f\_k \rvert = \sum\_{k \ge 1} (2/3)^k = 2$: the series is absolutely summable.
+* Since $C\_k \supset C\_{k+1}$, $\sum\_k f\_k(x)$ diverges exactly on $E = \bigcap\_k C\_k$ — so this Cantor-type set has **measure zero** by definition.
+* The function $f = \sum\_k f\_k$ (set $f = 0$ on $E$) equals $k$ on $C\_k \setminus C\_{k+1}$, so it is integrable with $\int f = 2$ but **unbounded**, hence not Riemann integrable.
+* The indicator $g$ of the union of all removed intervals is integrable with $\int g = \sum\_{k \ge 1} \frac13 (\frac23)^{k-1} = 1$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Continuous Functions Are Integrable; Riemann = Lebesgue)</span></p>
+
+Let $f \in C([0, 1])$ be real. By uniform continuity choose $N\_n$ (nondecreasing) such that $f$ varies by at most $2^{-n}$ on intervals of length $2^{-N\_n}$, and let $F\_n$ be the step function equal to $\min f$ on each of the $2^{N\_n}$ dyadic subintervals of $[0, 1)$. Then $\lvert f - F\_n \rvert \le 2^{-n}$ on $[0, 1)$, and the telescoping series $F\_1, F\_2 - F\_1, F\_3 - F\_2, \dots$ satisfies $\lvert F\_{n+1} - F\_n \rvert \le 2^{-n}$, so it is absolutely summable and converges (everywhere on $[0,1)$) to $f$. Hence $f\chi\_{[0,1)} \in \mathcal{L}^1$, and $\int f = \lim\_n \int F\_n$ is squeezed between the lower and upper Riemann sums, so it equals the Riemann integral.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Both Constructions Agree; Higher Dimensions)</span></p>
+
+* The two approaches produce the same space $L^1(\mathbb{R})$, the same null sets and the same integral: in both, step functions are dense in $L^1$ and the integral is continuous in the $L^1$ norm, so both are "the" completion of the step functions.
+* Replacing intervals by rectangles $[a\_1, b\_1) \times [a\_2, b\_2)$, the covering lemma (proved by subdividing rectangles along all endpoints, and by Heine–Borel for countable covers) and therefore the whole construction extend verbatim to $\mathbb{R}^2$ and $\mathbb{R}^n$.
+
+</div>
+
 ## $L^p$ Spaces
 
 We now find the "complete space of integrable functions" that contains the space of continuous functions.
@@ -6059,6 +6489,36 @@ The space of $n$-tuples of complex numbers $\mathbb{C}^n$ with inner product $\l
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite-Dimensional Pre-Hilbert Spaces Are $\mathbb{C}^n$)</span></p>
+
+Let $H$ be a pre-Hilbert space of finite dimension $n$. Then $H$ has an orthonormal basis $\lbrace e\_1, \dots, e\_n \rbrace$, every $v \in H$ satisfies $v = \sum\_i \langle v, e\_i \rangle e\_i$, and
+
+$$T : H \to \mathbb{C}^n, \qquad Tv = \big(\langle v, e_1 \rangle, \dots, \langle v, e_n \rangle\big)$$
+
+is a linear isomorphism with $\langle u, v \rangle = \sum\_i (Tu)\_i \overline{(Tv)\_i}$ and $\lVert u \rVert\_H = \lVert Tu \rVert\_{\mathbb{C}^n}$. In particular, **every finite-dimensional pre-Hilbert space is complete**, i.e. a Hilbert space.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+**Gram–Schmidt.** Start from a basis $v\_1, \dots, v\_n$. Put $e\_1 = v\_1/\lVert v\_1 \rVert$ ($v\_1 \ne 0$ by independence) and, inductively,
+
+$$w_{k+1} = v_{k+1} - \sum_{i=1}^{k} \langle v_{k+1}, e_i \rangle e_i, \qquad e_{k+1} = \frac{w_{k+1}}{\lVert w_{k+1} \rVert}.$$
+
+Taking inner products shows $w\_{k+1} \perp e\_1, \dots, e\_k$, and $w\_{k+1} \ne 0$ because $v\_{k+1} \notin \operatorname{Span}\lbrace v\_1, \dots, v\_k \rbrace = \operatorname{Span}\lbrace e\_1, \dots, e\_k \rbrace$.
+
+**Expansion.** $U = v - \sum\_i \langle v, e\_i \rangle e\_i$ is orthogonal to every $e\_j$; writing $U = \sum\_i d\_i e\_i$ gives $d\_j = \langle U, e\_j \rangle = 0$, so $U = 0$.
+
+**Isometric isomorphism.** $T$ is linear, injective by the expansion, and surjective since $u = \sum\_i c\_i e\_i$ has $Tu = (c\_i)$. Then $\langle u, v \rangle = \langle u, \sum\_i \langle v, e\_i \rangle e\_i \rangle = \sum\_i \langle u, e\_i \rangle \overline{\langle v, e\_i \rangle}$; set $u = v$ for the norms.
+
+**Completeness.** $T$ is an isometry onto the complete space $\mathbb{C}^n$, so it maps Cauchy sequences to Cauchy (hence convergent) sequences, and $T^{-1}$ maps convergent sequences back to convergent sequences. $\square$
+
+</details>
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 147</span><span class="math-callout__name">($\ell^2$)</span></p>
 
@@ -6115,6 +6575,29 @@ Moreover, when these conditions hold, the inducing inner product is **unique** a
 
 $$\langle u,v\rangle =\frac14\left[ \|u+v\|^2-\|u-v\|^2 +i\|u+iv\|^2-i\|u-iv\|^2 \right].$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+$(1 \Rightarrow 2)$ Expand $\lVert u \pm v \rVert^2 = \lVert u \rVert^2 \pm 2\operatorname{Re}\langle u, v \rangle + \lVert v \rVert^2$ and add. Expanding all four terms of the polarization identity in the same way shows that any inducing inner product must be given by it, which proves uniqueness.
+
+$(2 \Rightarrow 1)$ Define $\langle u, v \rangle$ by the polarization identity. Write
+
+$$R(u, v) = \tfrac14\big(\lVert u + v \rVert^2 - \lVert u - v \rVert^2\big), \qquad \text{so} \qquad \langle u, v \rangle = R(u, v) + iR(u, iv).$$
+
+* **Norm.** $\langle u, u \rangle = \frac14\big(4\lVert u \rVert^2 + i\lvert 1+i \rvert^2\lVert u \rVert^2 - i\lvert 1-i \rvert^2\lVert u \rVert^2\big) = \lVert u \rVert^2$. This needs no parallelogram law; positivity and definiteness follow.
+* **Additivity of $R$ in the first slot.** Apply the parallelogram law to $a = u + v$, $b = u^{\prime} + v$, and to $a = u - v$, $b = u^{\prime} - v$:
+
+  $$\lVert u+v \rVert^2 + \lVert u^{\prime}+v \rVert^2 = \tfrac12\big(\lVert u+u^{\prime}+2v \rVert^2 + \lVert u-u^{\prime} \rVert^2\big), \qquad \lVert u-v \rVert^2 + \lVert u^{\prime}-v \rVert^2 = \tfrac12\big(\lVert u+u^{\prime}-2v \rVert^2 + \lVert u-u^{\prime} \rVert^2\big).$$
+
+  Subtracting gives $R(u, v) + R(u^{\prime}, v) = \frac12 R(u + u^{\prime}, 2v)$. Taking $u^{\prime} = 0$ (note $R(0, v) = 0$) gives $R(u, v) = \frac12 R(u, 2v)$, hence $R(u + u^{\prime}, v) = R(u, v) + R(u^{\prime}, v)$.
+* **Real homogeneity.** Additivity gives $R(ku, v) = kR(u, v)$ for $k \in \mathbb{N}$, then for $k \in \mathbb{Z}$ (as $R(-u, v) = -R(u, v)$), then for $r \in \mathbb{Q}$ (write $u = n u^{\prime}$). Since $R$ is continuous in $u$ (the norm is continuous), $R(tu, v) = tR(u, v)$ for all $t \in \mathbb{R}$.
+* **Complex homogeneity.** From the definition, $R(iu, v) = \frac14(\lVert u - iv \rVert^2 - \lVert u + iv \rVert^2) = -R(u, iv)$ and $R(iu, iv) = R(u, v)$, so $\langle iu, v \rangle = -R(u, iv) + iR(u, v) = i\langle u, v \rangle$. Together with additivity and real homogeneity, $\langle \cdot, v \rangle$ is complex linear.
+* **Hermitian symmetry.** $R(v, u) = R(u, v)$ and $R(v, iu) = -R(u, iv)$, so $\langle v, u \rangle = \overline{\langle u, v \rangle}$. $\square$
+
+</details>
 </div>
 
 <figure class="math-figure">
