@@ -118,7 +118,7 @@ Two functions in $\mathscr{C}$ are "close" if their values are uniformly close o
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}\_1(a, b)$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}_1(a, b)$)</span></p>
 
 The space $\mathscr{D}\_1 = \mathscr{D}\_1(a, b)$ consists of all functions $y(x)$ defined on $[a, b]$ which are continuous and have continuous first derivatives. The norm is
 
@@ -129,7 +129,7 @@ Two functions in $\mathscr{D}\_1$ are close if both the functions themselves and
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}\_n(a, b)$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Space $\mathscr{D}_n(a, b)$)</span></p>
 
 The space $\mathscr{D}\_n = \mathscr{D}\_n(a, b)$ consists of all functions $y(x)$ on $[a, b]$ which are continuous and have continuous derivatives up to order $n$ inclusive. The norm is
 
@@ -215,11 +215,11 @@ for every function $h(x) \in \mathscr{C}(a, b)$ such that $h(a) = h(b) = 0$, the
 <details>
 <summary>Proof</summary>
 
-Suppose $\alpha(x)$ is nonzero, say positive, at some point in $[a, b]$. Then $\alpha(x)$ is also positive in some interval $[x\_1, x\_2] \subset [a, b]$. Set $h(x) = (x - x\_1)(x\_2 - x)$ for $x \in [x\_1, x\_2]$ and $h(x) = 0$ otherwise. Then $h(x)$ satisfies the conditions of the lemma. However,
+Suppose $\alpha(x)$ is nonzero, say positive, at some point in $[a, b]$. Then $\alpha(x)$ is also positive in some interval $[x_1, x_2] \subset [a, b]$. Set $h(x) = (x - x_1)(x_2 - x)$ for $x \in [x_1, x_2]$ and $h(x) = 0$ otherwise. Then $h(x)$ satisfies the conditions of the lemma. However,
 
 $$\int_a^b \alpha(x)h(x)\,dx = \int_{x_1}^{x_2} \alpha(x)(x - x_1)(x_2 - x)\,dx > 0,$$
 
-since the integrand is positive (except at $x\_1$ and $x\_2$). This contradiction proves the lemma.
+since the integrand is positive (except at $x_1$ and $x_2$). This contradiction proves the lemma.
 
 </details>
 </div>
@@ -239,11 +239,11 @@ for every function $h(x) \in \mathscr{D}\_1(a, b)$ such that $h(a) = h(b) = 0$, 
 <details>
 <summary>Proof</summary>
 
-Let $c$ be the constant defined by the condition $\int\_a^b [\alpha(x) - c]\,dx = 0$, and let
+Let $c$ be the constant defined by the condition $\int_a^b [\alpha(x) - c]\,dx = 0$, and let
 
 $$h(x) = \int_a^x [\alpha(\xi) - c]\,d\xi,$$
 
-so that $h(x)$ automatically belongs to $\mathscr{D}\_1(a, b)$ and satisfies $h(a) = h(b) = 0$. Then on one hand,
+so that $h(x)$ automatically belongs to $\mathscr{D}_1(a, b)$ and satisfies $h(a) = h(b) = 0$. Then on one hand,
 
 $$\int_a^b [\alpha(x) - c] h'(x)\,dx = \int_a^b \alpha(x) h'(x)\,dx - c[h(b) - h(a)] = 0,$$
 
@@ -282,7 +282,7 @@ for every function $h(x) \in \mathscr{D}\_1(a, b)$ such that $h(a) = h(b) = 0$, 
 <details>
 <summary>Proof of Lemma 4</summary>
 
-Setting $A(x) = \int\_a^x \alpha(\xi)\,d\xi$ and integrating by parts, we find that
+Setting $A(x) = \int_a^x \alpha(\xi)\,d\xi$ and integrating by parts, we find that
 
 $$\int_a^b \alpha(x)h(x)\,dx = -\int_a^b A(x)h'(x)\,dx,$$
 
@@ -323,11 +323,11 @@ The differential of a differentiable functional is unique.
 <details>
 <summary>Proof</summary>
 
-If $\varphi[h]$ is a linear functional and $\varphi[h]/\lVert h \rVert \to 0$ as $\lVert h \rVert \to 0$, then $\varphi[h] \equiv 0$. In fact, suppose $\varphi[h\_0] \neq 0$ for some $h\_0 \neq 0$. Setting $h\_n = h\_0/n$ and $\lambda = \varphi[h\_0]/\lVert h\_0 \rVert$, we have $\lVert h\_n \rVert \to 0$ as $n \to \infty$, but
+If $\varphi[h]$ is a linear functional and $\varphi[h]/\lVert h \rVert \to 0$ as $\lVert h \rVert \to 0$, then $\varphi[h] \equiv 0$. In fact, suppose $\varphi[h_0] \neq 0$ for some $h_0 \neq 0$. Setting $h_n = h_0/n$ and $\lambda = \varphi[h_0]/\lVert h_0 \rVert$, we have $\lVert h_n \rVert \to 0$ as $n \to \infty$, but
 
 $$\lim_{n \to \infty} \frac{\varphi[h_n]}{\lVert h_n \rVert} = \lim_{n \to \infty} \frac{n \varphi[h_0]}{n \lVert h_0 \rVert} = \lambda \neq 0,$$
 
-a contradiction. Now, if $\Delta J[h] = \varphi\_1[h] + \varepsilon\_1 \lVert h \rVert = \varphi\_2[h] + \varepsilon\_2 \lVert h \rVert$, then $\varphi\_1[h] - \varphi\_2[h] = \varepsilon\_2 \lVert h \rVert$, and since $\varphi\_1 - \varphi\_2$ is linear with $(\varphi\_1[h] - \varphi\_2[h])/\lVert h \rVert \to 0$, by the above it follows that $\varphi\_1[h] - \varphi\_2[h] \equiv 0$.
+a contradiction. Now, if $\Delta J[h] = \varphi_1[h] + \varepsilon_1 \lVert h \rVert = \varphi_2[h] + \varepsilon_2 \lVert h \rVert$, then $\varphi_1[h] - \varphi_2[h] = \varepsilon_2 \lVert h \rVert$, and since $\varphi_1 - \varphi_2$ is linear with $(\varphi_1[h] - \varphi_2[h])/\lVert h \rVert \to 0$, by the above it follows that $\varphi_1[h] - \varphi_2[h] \equiv 0$.
 
 </details>
 </div>
@@ -360,7 +360,7 @@ for all admissible $h$.
 <details>
 <summary>Proof</summary>
 
-Suppose $J[y]$ has a minimum for $y = \hat{y}$. By definition of the variation $\delta J[h]$, we have $\Delta J[h] = \delta J[h] + \varepsilon \lVert h \rVert$, where $\varepsilon \to 0$ as $\lVert h \rVert \to 0$. Thus, for sufficiently small $\lVert h \rVert$, $\Delta J[h]$ has the same sign as $\delta J[h]$. If $\delta J[h\_0] \neq 0$ for some admissible $h\_0$, then $\delta J[-\alpha h\_0] = -\delta J[\alpha h\_0]$, so $\Delta J$ can be made to have either sign for arbitrarily small $\lVert h \rVert$. This contradicts the assumption that $J[y]$ has a minimum for $y = \hat{y}$.
+Suppose $J[y]$ has a minimum for $y = \hat{y}$. By definition of the variation $\delta J[h]$, we have $\Delta J[h] = \delta J[h] + \varepsilon \lVert h \rVert$, where $\varepsilon \to 0$ as $\lVert h \rVert \to 0$. Thus, for sufficiently small $\lVert h \rVert$, $\Delta J[h]$ has the same sign as $\delta J[h]$. If $\delta J[h_0] \neq 0$ for some admissible $h_0$, then $\delta J[-\alpha h_0] = -\delta J[\alpha h_0]$, so $\Delta J$ can be made to have either sign for arbitrarily small $\lVert h \rVert$. This contradicts the assumption that $J[y]$ has a minimum for $y = \hat{y}$.
 
 </details>
 </div>
@@ -757,7 +757,7 @@ corresponding to the new functional $J\_1[v]$. In other words, whether or not a 
 <details>
 <summary>Proof (sketch)</summary>
 
-Let $\Delta\sigma$ denote the area bounded by the curves $y = y(x)$ and $y = y(x) + h(x)$, and let $\Delta\sigma\_1$ denote the area bounded by the corresponding curves $v = v(u)$ and $v = v(u) + \eta(u)$ in the $uv$-plane. By the standard formula for the transformation of areas, in the limit as $\Delta\sigma, \Delta\sigma\_1 \to 0$ the ratio $\Delta\sigma/\Delta\sigma\_1$ approaches the Jacobian
+Let $\Delta\sigma$ denote the area bounded by the curves $y = y(x)$ and $y = y(x) + h(x)$, and let $\Delta\sigma_1$ denote the area bounded by the corresponding curves $v = v(u)$ and $v = v(u) + \eta(u)$ in the $uv$-plane. By the standard formula for the transformation of areas, in the limit as $\Delta\sigma, \Delta\sigma_1 \to 0$ the ratio $\Delta\sigma/\Delta\sigma_1$ approaches the Jacobian
 
 $$\begin{vmatrix} x_u & x_v \\ y_u & y_v \end{vmatrix},$$
 
@@ -769,7 +769,7 @@ then
 
 $$\lim_{\Delta\sigma_1 \to 0} \frac{J_1[v + \eta] - J_1[v]}{\Delta\sigma_1} = 0$$
 
-as well. It follows that $v(u)$ satisfies Euler's equation for $J\_1[v]$ whenever $y(x)$ satisfies Euler's equation for $J[y]$.
+as well. It follows that $v(u)$ satisfies Euler's equation for $J_1[v]$ whenever $y(x)$ satisfies Euler's equation for $J[y]$.
 
 </details>
 </div>
@@ -1298,7 +1298,7 @@ $$P_0^* = (x_0 + \delta x_0, y_1^0 + \delta y_1^0, \ldots, y_n^0 + \delta y_n^0)
 The corresponding variation $\delta J$ of the functional $J[y\_1, \ldots, y\_n]$ is defined as the expression which is linear in $\delta x\_0$, $\delta x\_1$ and all $h\_i$, $h\_i'$, $\delta y\_i^0$, $\delta y\_i^1$ $(i = 1, \ldots, n)$, and which differs from the increment $\Delta J = J[y\_1 + h\_1, \ldots, y\_n + h\_n] - J[y\_1, \ldots, y\_n]$ by a quantity of order higher than 1. After computations similar to the single-function case (integrating by parts the terms containing $h\_i'$ and using the approximations $h\_i(x\_0) \sim \delta y\_i^0 - y\_i'(x\_0)\,\delta x\_0$ and $h\_i(x\_1) \sim \delta y\_i^1 - y\_i'(x\_1)\,\delta x\_1$), we obtain
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Variation of $J[y\_1, \ldots, y\_n]$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Variation of $J[y_1, \ldots, y_n]$)</span></p>
 
 The general variation of the functional $J[y\_1, \ldots, y\_n] = \int\_{x\_0}^{x\_1} F(x, y\_1, \ldots, y\_n, y\_1', \ldots, y\_n')\,dx$ is
 
@@ -3090,7 +3090,7 @@ If the boundary conditions (30) are self-adjoint, then (31) holds, and hence
 
 $$\frac{\partial p_i[x, y, \psi(y)]}{\partial y_k} = \frac{\partial^2 g(x, y)}{\partial y_i\,\partial y_k} = \frac{\partial p_k[x, y, \psi(y)]}{\partial y_i},$$
 
-which is just (32). Conversely, if the boundary conditions (30) are such that the functions $p\_i[x, y, \psi(y)]$ satisfy (32), then, for $x = a$, the $p\_i$ are the partial derivatives with respect to $y\_i$ of some function $g(y)$, so that the boundary conditions (30) are self-adjoint in the sense of Definition 1.
+which is just (32). Conversely, if the boundary conditions (30) are such that the functions $p_i[x, y, \psi(y)]$ satisfy (32), then, for $x = a$, the $p_i$ are the partial derivatives with respect to $y_i$ of some function $g(y)$, so that the boundary conditions (30) are self-adjoint in the sense of Definition 1.
 
 </details>
 </div>
@@ -3172,17 +3172,17 @@ $$H(x, y, y') = -F(x, y, y') + \sum_{i=1}^{n} p_i(x, y, y')\,y_i'. \tag{41}$$
 <details>
 <summary>Proof</summary>
 
-We have already shown in Theorem 1 that the conditions (38) are necessary and sufficient for the boundary conditions (42) given by $y\_i' = \psi\_i(x, y)$ to be self-adjoint at every point $x$ in $[a, b]$. Therefore, it only remains to show that if (38) holds at every point in $[a, b]$, then the conditions (39) are necessary and sufficient for the boundary conditions (42) to be consistent for $a \leqslant x \leqslant b$.
+We have already shown in Theorem 1 that the conditions (38) are necessary and sufficient for the boundary conditions (42) given by $y_i' = \psi_i(x, y)$ to be self-adjoint at every point $x$ in $[a, b]$. Therefore, it only remains to show that if (38) holds at every point in $[a, b]$, then the conditions (39) are necessary and sufficient for the boundary conditions (42) to be consistent for $a \leqslant x \leqslant b$.
 
-To prove this, we set $y\_i' = \psi\_i(x, y)$, $y'' = \psi(x, y)$ in (40) and (41), and substitute the right-hand sides of the resulting equations into (39). Performing the indicated differentiations and dropping arguments (to keep the notation concise), we obtain
+To prove this, we set $y_i' = \psi_i(x, y)$, $y'' = \psi(x, y)$ in (40) and (41), and substitute the right-hand sides of the resulting equations into (39). Performing the indicated differentiations and dropping arguments (to keep the notation concise), we obtain
 
 $$F_{y_ix} + \sum_{k=1}^{n} F_{y_iy_k}\frac{\partial \psi_k}{\partial x} = F_{y_i} + \sum_{k=1}^{n} F_{y_k}\frac{\partial \psi_k}{\partial y_i} - \sum_{k=1}^{n}\psi_k\frac{\partial F_{y_k}}{\partial y_i} - \sum_{k=1}^{n} F_{y_k}\frac{\partial \psi_k}{\partial y_i}. \tag{43}$$
 
-Using the self-adjointness conditions $\frac{\partial F\_{y\_i'}}{\partial y\_k} = \frac{\partial F\_{y\_k'}}{\partial y\_i}$, we can write (43) in the form
+Using the self-adjointness conditions $\frac{\partial F_{y_i'}}{\partial y_k} = \frac{\partial F_{y_k'}}{\partial y_i}$, we can write (43) in the form
 
 $$F_{y_i} = F_{y_ix} + \sum_{k=1}^{n} F_{y_iy_k}\frac{\partial \psi_k}{\partial x} + \sum_{k=1}^{n} F_{y_iy_k'}\!\left(\frac{\partial \psi_k}{\partial x} + \sum_{j=1}^{n}\frac{\partial \psi_k}{\partial y_j}\,\psi_j\right). \tag{45}$$
 
-Along the trajectories of the field, we have $\frac{dy\_k}{dx} = \psi\_k$ and $\frac{d^2 y\_k}{dx^2} = \frac{\partial \psi\_k}{\partial x} + \sum\_j \frac{\partial \psi\_k}{\partial y\_j}\psi\_j$. Therefore, (45) reduces to
+Along the trajectories of the field, we have $\frac{dy_k}{dx} = \psi_k$ and $\frac{d^2 y_k}{dx^2} = \frac{\partial \psi_k}{\partial x} + \sum_j \frac{\partial \psi_k}{\partial y_j}\psi_j$. Therefore, (45) reduces to
 
 $$F_{y_i} - \frac{d}{dx}F_{y_i'} = 0, \tag{46}$$
 
@@ -3216,11 +3216,11 @@ $$\frac{d}{dx}\!\left(\frac{\partial p_i}{\partial y_k}\right) = \frac{\partial 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Extremals as Field Trajectories)</span></p>
 
-Suppose the boundary conditions $y\_i' = \psi\_i(x, y)$ $(a \leqslant x \leqslant b;\; 1 \leqslant i \leqslant n)$ are consistent, i.e., suppose the solutions of the system (49) are extremals of the functional (47). Then, to prove that the conditions (49) define a field of the functional (47), it is only necessary to verify that they are self-adjoint at a single (arbitrary) point in $[a, b]$.
+Suppose the boundary conditions $y_i' = \psi_i(x, y)$ $(a \leqslant x \leqslant b;\; 1 \leqslant i \leqslant n)$ are consistent, i.e., suppose the solutions of the system (49) are extremals of the functional (47). Then, to prove that the conditions (49) define a field of the functional (47), it is only necessary to verify that they are self-adjoint at a single (arbitrary) point in $[a, b]$.
 
 </div>
 
-According to Definition 1, the boundary conditions are self-adjoint if there exists a function $g(x, y)$ such that $p\_i[x, y, \psi(x, y)] = g\_{y\_i}(x, y)$ for $a \leqslant x \leqslant b$. It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form
+According to Definition 1, the boundary conditions are self-adjoint if there exists a function $g(x, y)$ such that $p_i[x, y, \psi(x, y)] = g_{y_i}(x, y)$ for $a \leqslant x \leqslant b$. It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form
 
 $$\frac{\partial g}{\partial x} + H\!\left(x, y_1, \ldots, y_n, \frac{\partial g}{\partial y_1}, \ldots, \frac{\partial g}{\partial y_n}\right) = 0. \tag{51}$$
 
@@ -3235,7 +3235,7 @@ $$\frac{\partial g}{\partial x} + H\!\left(x, y_1, \ldots, y_n, \frac{\partial g
 <details>
 <summary>Proof</summary>
 
-It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form $\frac{\partial g}{\partial x} = -H(x, y\_1, \ldots, y\_n, p\_1, \ldots, p\_n)$. Differentiating (52) with respect to $y\_i$, we obtain
+It follows from (50) that the Hamilton-Jacobi equation (51) can be written in the form $\frac{\partial g}{\partial x} = -H(x, y_1, \ldots, y_n, p_1, \ldots, p_n)$. Differentiating (52) with respect to $y_i$, we obtain
 
 $$\frac{\partial^2 g}{\partial x\,\partial y_i} = -\frac{\partial H[x, y_1, \ldots, y_n, \psi_1(x, y), \ldots, \psi_n(x, y)]}{\partial y_i},$$
 
@@ -3251,7 +3251,7 @@ which is just the set of consistency conditions (39).
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection between the Two Hamilton-Jacobi Systems)</span></p>
 
-The connection between the Hamilton-Jacobi system introduced in Sec. 31 and the Hamilton-Jacobi equation introduced in Sec. 23 is now apparent. As we saw in Sec. 31, in the case of an arbitrary system of $n$ second-order differential equations, a field is a system of $n$ first-order differential equations of the form (49), where the functions $\psi\_i(x, y)$ satisfy the Hamilton-Jacobi system (8). When we deal with the field of a functional, and in this case, we impose the additional requirement that the boundary conditions defining the field be self-adjoint at every point. This means that the field of a functional is not really determined by $n$ functions $\psi\_i(x, y)$, but rather by a single function $g(x, y)$ from which the functions $\psi\_i(x, y)$ are derived by using the relations (50). In other words, the function $g(x, y)$ is a kind of *potential* for the field of a functional. Since the field of a functional is determined by a single function, instead of $n$ consistency conditions, the set of $n$ consistency conditions for such a field should reduce to a single equation, i.e., that the Hamilton-Jacobi system should be replaced by the Hamilton-Jacobi equation.
+The connection between the Hamilton-Jacobi system introduced in Sec. 31 and the Hamilton-Jacobi equation introduced in Sec. 23 is now apparent. As we saw in Sec. 31, in the case of an arbitrary system of $n$ second-order differential equations, a field is a system of $n$ first-order differential equations of the form (49), where the functions $\psi_i(x, y)$ satisfy the Hamilton-Jacobi system (8). When we deal with the field of a functional, and in this case, we impose the additional requirement that the boundary conditions defining the field be self-adjoint at every point. This means that the field of a functional is not really determined by $n$ functions $\psi_i(x, y)$, but rather by a single function $g(x, y)$ from which the functions $\psi_i(x, y)$ are derived by using the relations (50). In other words, the function $g(x, y)$ is a kind of *potential* for the field of a functional. Since the field of a functional is determined by a single function, instead of $n$ consistency conditions, the set of $n$ consistency conditions for such a field should reduce to a single equation, i.e., that the Hamilton-Jacobi system should be replaced by the Hamilton-Jacobi equation.
 
 </div>
 

@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Calculus of Variations — Gelfand & Fomin",
+   "url": "/subpages/books/calculus_of_variations_fomin/",
+   "date": "2026-10-14",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-10-12",
@@ -58,12 +64,6 @@
    "title": "Discrete and Continuous Optimization",
    "url": "/subpages/books/dso/",
    "date": "2026-09-13",
-   "added": false
-  },
-  {
-   "title": "Calculus of Variations — Gelfand & Fomin",
-   "url": "/subpages/books/calculus_of_variations_fomin/",
-   "date": "2026-09-06",
    "added": false
   },
   {
