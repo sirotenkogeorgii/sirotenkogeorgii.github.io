@@ -1044,25 +1044,25 @@ $$F_y - \frac{d}{dx}F_{y'} + \lambda\!\left(G_y - \frac{d}{dx}G_{y'}\right) = 0.
 <details>
 <summary>Proof</summary>
 
-Let $J[y]$ have an extremum for the curve $y = y(x)$, subject to the conditions. We choose two points $x\_1$ and $x\_2$ in the interval $[a, b]$, where $x\_1$ is arbitrary and $x\_2$ satisfies a condition to be stated below. Then we give $y(x)$ an increment $\delta\_1 y(x) + \delta\_2 y(x)$, where $\delta\_1 y(x)$ is nonzero only in a neighborhood of $x\_1$, and $\delta\_2 y(x)$ is nonzero only in a neighborhood of $x\_2$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J$ in the form
+Let $J[y]$ have an extremum for the curve $y = y(x)$, subject to the conditions. We choose two points $x_1$ and $x_2$ in the interval $[a, b]$, where $x_1$ is arbitrary and $x_2$ satisfies a condition to be stated below. Then we give $y(x)$ an increment $\delta_1 y(x) + \delta_2 y(x)$, where $\delta_1 y(x)$ is nonzero only in a neighborhood of $x_1$, and $\delta_2 y(x)$ is nonzero only in a neighborhood of $x_2$. Using variational derivatives, we can write the corresponding increment $\Delta J$ of the functional $J$ in the form
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} + \varepsilon_1\right\rbrace\!\Delta\sigma_1 + \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_2} + \varepsilon_2\right\rbrace\!\Delta\sigma_2,$$
 
-where $\varepsilon\_1, \varepsilon\_2 \to 0$ as $\Delta\sigma\_1, \Delta\sigma\_2 \to 0$.
+where $\varepsilon_1, \varepsilon_2 \to 0$ as $\Delta\sigma_1, \Delta\sigma_2 \to 0$.
 
-We now require that the "varied" curve $y^\ast(x) = y(x) + \delta\_1 y(x) + \delta\_2 y(x)$ satisfy the condition $K[y^\ast] = K[y]$. Writing $\Delta K$ in a form similar to the above, we obtain
+We now require that the "varied" curve $y^\ast(x) = y(x) + \delta_1 y(x) + \delta_2 y(x)$ satisfy the condition $K[y^\ast] = K[y]$. Writing $\Delta K$ in a form similar to the above, we obtain
 
 $$\Delta K = \left\lbrace\frac{\delta G}{\delta y}\bigg\vert_{x=x_1} + \varepsilon_1'\right\rbrace\!\Delta\sigma_1 + \left\lbrace\frac{\delta G}{\delta y}\bigg\vert_{x=x_2} + \varepsilon_2'\right\rbrace\!\Delta\sigma_2 = 0.$$
 
-Next, we choose $x\_2$ to be a point for which $\frac{\delta G}{\delta y}\big\vert\_{x=x\_2} \neq 0$. Such a point exists, since by hypothesis $y = y(x)$ is not an extremal of the functional $K$. With this choice of $x\_2$, we can write the condition in the form
+Next, we choose $x_2$ to be a point for which $\frac{\delta G}{\delta y}\big\vert\_{x=x_2} \neq 0$. Such a point exists, since by hypothesis $y = y(x)$ is not an extremal of the functional $K$. With this choice of $x_2$, we can write the condition in the form
 
 $$\Delta\sigma_2 = -\left\lbrace\frac{\frac{\delta G}{\delta y}\big\vert_{x=x_1}}{\frac{\delta G}{\delta y}\big\vert_{x=x_2}} + \varepsilon'\right\rbrace\!\Delta\sigma_1,$$
 
-where $\varepsilon' \to 0$ as $\Delta\sigma\_1 \to 0$. Setting $\lambda = -\frac{\frac{\delta F}{\delta y}\big\vert\_{x=x\_2}}{\frac{\delta G}{\delta y}\big\vert\_{x=x\_2}}$ and substituting into the formula for $\Delta J$, we obtain
+where $\varepsilon' \to 0$ as $\Delta\sigma_1 \to 0$. Setting $\lambda = -\frac{\frac{\delta F}{\delta y}\big\vert\_{x=x_2}}{\frac{\delta G}{\delta y}\big\vert\_{x=x_2}}$ and substituting into the formula for $\Delta J$, we obtain
 
 $$\Delta J = \left\lbrace\frac{\delta F}{\delta y}\bigg\vert_{x=x_1} + \lambda\frac{\delta G}{\delta y}\bigg\vert_{x=x_1}\right\rbrace\!\Delta\sigma_1 + \varepsilon\,\Delta\sigma_1,$$
 
-where $\varepsilon \to 0$ as $\Delta\sigma\_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma\_1$ is nonzero while $x\_1$ is arbitrary, we finally have
+where $\varepsilon \to 0$ as $\Delta\sigma_1 \to 0$. Since a necessary condition for an extremum is that $\delta J = 0$, and since $\Delta\sigma_1$ is nonzero while $x_1$ is arbitrary, we finally have
 
 $$\frac{\delta F}{\delta y} + \lambda\frac{\delta G}{\delta y} = F_y - \frac{d}{dx}F_{y'} + \lambda\!\left(G_y - \frac{d}{dx}G_{y'}\right) = 0,$$
 

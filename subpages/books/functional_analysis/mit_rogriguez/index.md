@@ -5382,7 +5382,7 @@ $$E_n=f^{-1}([-n,n]), \qquad h_n=f\chi_{E_n}.$$
 
 Each $E_n$ is measurable, hence $h_n$ is measurable, and $\lvert h_n\rvert\le n$, so $h_n$ is bounded.
 
-Define exactly the function we discussed:
+Define the function:
 
 $$g_n:=|f-h_n|.$$
 
@@ -5394,11 +5394,7 @@ Hence $x\in E_n$ for every $n\ge N$, and therefore
 
 $$g_n(x)=|f(x)-h_n(x)|=0$$
 
-for every sufficiently large $n$. Thus $g_n(x)\to 0$ pointwise. Also, $g_n(x)\le \lvert f(x)\rvert$.
-
-Since $f$ is Lebesgue integrable, $\lvert f\rvert\in L^1$.
-
-Therefore DCT gives
+for every sufficiently large $n$. Thus $g_n(x)\to 0$ pointwise. Also, $g_n(x)\le \lvert f(x)\rvert$. Since $f$ is Lebesgue integrable, then $\lvert f\rvert\in L^1$. Therefore DCT gives
 
 $$\lim_{n\to\infty}\int_a^b g_n(x)dx = \int_a^b0dx = 0.$$
 
@@ -5526,11 +5522,11 @@ $$
 \end{aligned}
 $$
 
-Thus there exists a step function (\phi) such that
+Thus there exists a step function $\phi$ such that
 
 $$\boxed{\int_a^b|f-\phi|<\varepsilon}.$$
 
-The essential point is exactly what we said earlier: **the approximation errors accumulate, so choose each approximation far enough along that their total is below (\varepsilon).**
+The essential point is exactly what we said earlier: **the approximation errors accumulate, so choose each approximation far enough along that their total is below $\varepsilon$.**
 
 If we expand the hidden middle chain, it is simply
 
@@ -5837,7 +5833,7 @@ for $\lvert t \rvert$ small. Continuity at any $s$ follows from $\lVert f\_t - f
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($C\_c(\mathbb{R})$ Is Dense in $L^1(\mathbb{R})$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($C_c(\mathbb{R})$ Is Dense in $L^1(\mathbb{R})$)</span></p>
 
 The same two-step approximation (truncate to $[-L, L]$, then approximate on $[-L, L]$ by a continuous $g$ with $g(-L) = g(L) = 0$ as in Section "Density of Nice Functions", extended by $0$) shows that continuous functions vanishing outside a compact set are dense in $L^1(\mathbb{R})$. For a single indicator this is explicit: the trapezoid $g\_n$ equal to $1$ on $[a, b]$, $0$ outside $[a - \frac1n, b + \frac1n]$ and linear in between has $\lVert g\_n - \chi\_{[a, b)} \rVert\_1 \le \frac{1}{n}$.
 
@@ -6213,7 +6209,7 @@ $$\|T\|_{L^p([a,b])} = \|M_g\|_{L^p([a,b])} = \|g\|_{L^\infty([a,b])}.$$
 1. $\lVert T \rVert_{L^p([a,b])} = \lVert g\rVert_{L^\infty([a,b])}$.
    1. **Upper bound**
 
-      1. p \lt \infty.
+      1. $p \lt \infty$.
       We know that 
 
       $$\lVert Tf \rVert_{L^p([a,b])} = (\int_a^b \lvert f(x)g(x)\rvert^p dx)^{1/p} \leq (\int_a^b \lvert f(x)\lVert g\rVert_{L^\infty([a,b])} \rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])}(\int_a^b \lvert f(x)\rvert^p dx)^{1/p} = \lVert g\rVert_{L^\infty([a,b])} \lVert f\rVert_{L^p([a,b])}.$$
@@ -6223,18 +6219,26 @@ $$\|T\|_{L^p([a,b])} = \|M_g\|_{L^p([a,b])} = \|g\|_{L^\infty([a,b])}.$$
       For $\lVert T \rVert_{L^p([a,b])}$ we use $\lVert f\rVert_{L^p([a,b])} = 1$, thus 
 
       $$\lVert T \rVert_{L^p([a,b])} \leq \lVert g\rVert_{L^\infty([a,b])}.$$
-      2. p = \infty.
+      2. $p = \infty$.
 
          For $p=\infty$, we use essential supremum directly:
         
          $$\|fg\|_\infty\le\|f\|_\infty\|g\|_\infty.$$
         
    2. **Lower bound**
-      To obtain the lower bound on $T$, we construct a specific function $\hat{f}$ with a unit norm. This $\hat{f}$ takes a constant value whenever $g$ attains value $\gt \lVert g \rVert_{L^\infty}-\varepsilon$ for some fixed $\varepsilon$, which could be any value greater than zero, and zero elsewhere. To have norm one, the constant value one $E_\varepsilon := \lbrace x\in [a,b]: \lvert g(x)\rvert \gt \lVert g\rVert_{L^\infty} - \varepsilon \rbrace$ is $m(E_\varepsilon)^{-1/p}$, where $m$ is a Lebesgue measure. This gives the upper bound:
+      To obtain the lower bound on $T$, we construct a specific function $\hat{f}$ with a unit norm. This $\hat{f}$ takes a constant value whenever $g$ attains value $\gt \lVert g \rVert_{L^\infty}-\varepsilon$ for some fixed $\varepsilon$, which could be any value greater than zero, and zero elsewhere. To have norm one, the constant value one 
+      
+      $$E_\varepsilon := \lbrace x\in [a,b]: \lvert g(x)\rvert \gt \lVert g\rVert_{L^\infty} - \varepsilon \rbrace$$
+      
+      is $m(E_\varepsilon)^{-1/p}$, where $m$ is a Lebesgue measure. This gives the upper bound:
 
       $$\lVert T \rVert_{L^p([a,b])} \geq \lVert T\hat{f} \rVert_{L^p([a,b])} \gt \lVert g\rVert_{L^\infty} - \varepsilon.$$
 
-      Since $\varepsilon$ is arbitrarily small, the bound $\lVert T \rVert_{L^p([a,b])} \gt \lVert g\rVert_{L^\infty} - \varepsilon$ yields $\lVert T \rVert_{L^p([a,b])} \geq \lVert g\rVert_{L^\infty}$.
+      Since $\varepsilon$ is arbitrarily small, the bound
+      
+      $$\lVert T \rVert_{L^p([a,b])} \gt \lVert g\rVert_{L^\infty} - \varepsilon$$
+      
+      yields $\lVert T \rVert_{L^p([a,b])} \geq \lVert g\rVert_{L^\infty}$.
 
       Combining two bounds we establish $\lVert T \rVert_{L^p([a,b])} = \lVert g\rVert_{L^\infty}$.
   
@@ -6253,6 +6257,46 @@ $$\|T\|_{L^p([a,b])} = \|M_g\|_{L^p([a,b])} = \|g\|_{L^\infty([a,b])}.$$
 ### Properties of $L^p$ Spaces
 
 <div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Continuous Embedding of $L^p$ into $L^q$ on Finite Measure Spaces)</span></p>
+
+Let $(X,\mu)$ be a measure space with $0<\mu(X)<\infty$, and let $1\le q\le p\le\infty$. Then
+
+$$L^p(X)\subseteq L^q(X),$$
+
+<!-- and the inclusion is continuous, with -->
+<!-- $$\|f\|_{L^q(X)} \le \mu(X)^{1/q-1/p}\|f\|_{L^p(X)}.$$ -->
+<!-- Here $1/\infty:=0$. The constant $\mu(X)^{1/q-1/p}$ is **optimal**, with equality attained by nonzero constant functions. -->
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The case $p=q$ is trivial. Suppose $q<p$.
+
+By Hölder's inequality with conjugate exponents $\frac pq$ and $\frac{p}{p-q}$,
+
+$$
+\begin{aligned}
+\|f\|_{L^q([a,b])}^q
+&=\int_a^b |f(x)|^q\,dx\\
+&=\int_a^b |f(x)|^q\cdot 1\,dx\\
+&\le \||f|^q\|_{L^{p/q}}\|1\|_{L^{p/(p-q)}}\\
+&=\|f\|_{L^p}^q(b-a)^{(p-q)/p}<\infty.
+\end{aligned}
+$$
+
+The first factor is finite because $f\in L^p([a,b])$, and the second is finite because the interval has finite measure.
+Consequently,
+
+$$\boxed{\|f\|_{L^q}\le (b-a)^{1/q-1/p}\|f\|_{L^p}.}$$
+
+Thus $L^p([a,b])\subseteq L^q([a,b])$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 136</span></p>
 
 Let $E \subset \mathbb{R}$ be measurable.
@@ -6266,6 +6310,246 @@ $$f \in L^p(E) \quad \iff \quad \lim_{n \to \infty} \int_{[-n,n] \cap E} \lvert 
     <summary>proof</summary>
     <p>The sequence $\lbrace \chi_{[-n,n]} \lvert f \rvert^p \rbrace$ is a pointwise increasing sequence of measurable functions, and for all $x \in E$, $\lim_{n \to \infty} \chi_{[-n,n]}(x) \lvert f(x) \rvert^p = \lvert f(x) \rvert^p$. By the Monotone Convergence Theorem, $\int_E \lvert f \rvert^p = \lim_{n \to \infty} \int_{[-n,n] \cap E} \lvert f \rvert^p$, and thus the two quantities are finite for exactly the same set of $f$s. $\square$</p>
   </details>
+</div>
+
+### Approximation and Separability
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Density of Compactly Supported Continuous Functions in $L^p$)</span></p>
+
+Let $1\le p<\infty$. Then the space $C_c(\mathbb R)$ of continuous functions with compact support is **dense** in $L^p(\mathbb R)$:
+
+$$\overline{C_c(\mathbb R)}^{\,L^p(\mathbb R)} =L^p(\mathbb R).$$
+
+Equivalently, for every $f\in L^p(\mathbb R)$ and every $\varepsilon>0$, there exists $g\in C_c(\mathbb R)$ such that
+
+$$\|f-g\|_{L^p(\mathbb R)}<\varepsilon.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof Part 1: $L^p([a,b])$ is separable</summary>
+
+**Key idea:** Construct a countable dense family by successive approximations:
+
+$$
+L^p([a,b])
+\xrightarrow{\text{density theorem}}
+C([a,b])
+\xrightarrow{\text{Weierstrass}}
+\mathbb K[x]
+\xrightarrow{\text{rational coefficients}}
+\mathbb K_{\mathbb Q}[x],
+$$
+
+where $\mathbb K=\mathbb R$ or $\mathbb C$, and $\mathbb K_{\mathbb Q}=\mathbb Q$ or $\mathbb Q+i\mathbb Q$, respectively.
+
+1. **Continuous functions are dense in $L^p([a,b])$.**
+
+   By the approximation theorem stated at the beginning of the assignment, for every $f\in L^p([a,b])$ and $\varepsilon>0$, there exists $g\in C([a,b])$ such that 
+
+   $$\|f-g\|_p<\varepsilon.$$
+
+2. **Polynomials are dense in $C([a,b])$ in the $L^p$-norm.**
+
+   By the Weierstrass Approximation Theorem, for any $g\in C([a,b])$ and $\delta>0$, there exists a polynomial $P$ such that
+
+   $$\|g-P\|_\infty<\delta.$$
+
+   Since $[a,b]$ has finite measure,
+
+   $$\|g-P\|_p \le(b-a)^{1/p}\|g-P\|_\infty.$$
+
+   Thus uniform approximation implies $L^p$-approximation.
+
+3. **Polynomials with rational coefficients are dense among all polynomials.**
+
+   Let
+
+   $$P(x)=\sum_{k=0}^m c_kx^k.$$
+
+   Because $\mathbb K_{\mathbb Q}$ is dense in $\mathbb K$, each coefficient $c_k$ can be approximated arbitrarily closely by some $r_k\in\mathbb K_{\mathbb Q}$. Writing $Q(x)=\sum_{k=0}^m r_kx^k$, we have
+
+   $$\|P-Q\|_\infty \le \sum_{k=0}^m |c_k-r_k| \max(1,|a|,|b|)^k.$$
+
+   Since this is a finite sum, it can be made arbitrarily small.
+
+4. **Countability.**
+ 
+   The family
+
+   $$D=\mathbb K_{\mathbb Q}[x] =\bigcup_{m=0}^{\infty} \left\lbrace\sum_{k=0}^m r_kx^k:r_k\in\mathbb K_{\mathbb Q}\right\rbrace$$
+
+   is countable, because it is a countable union of countable sets. Combining steps 1–3 with the triangle inequality shows that $D$ is dense in $L^p([a,b])$. Therefore,
+
+$$\boxed{L^p([a,b])\text{ is separable}.}$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof Part 2: Continuous compactly supported functions are dense in $L^p(\mathbb R)$</summary>
+
+Key idea: First truncate the domain, controlling the $L^p$-mass in the tails. Then approximate on the bounded interval and extend by zero.
+
+Fix $f\in L^p(\mathbb R)$ and $\varepsilon>0$.
+
+1. By the lemma, choose $R>0$ sufficiently large that
+
+   $$\|f\|_{L^p(\mathbb R\setminus[-R,R])}<\frac{\varepsilon}{2}.$$
+
+2. By the approximation theorem at the beginning of the assignment, there exists $h\in C([-R,R])$ with
+
+   $$h(-R)=h(R)=0, \qquad \|f-h\|_{L^p([-R,R])}<\frac{\varepsilon}{2}.$$
+
+3. Extend $h$ by zero to $\mathbb R$:
+
+   $$
+   g(x)=
+   \begin{cases}
+   h(x),&x\in[-R,R],\\
+   0,&x\notin[-R,R].
+   \end{cases}
+   $$
+
+   The endpoint conditions ensure $g\in C(\mathbb R)$, and its support is compact. Now,
+
+   $$
+   \begin{aligned}
+   \|f-g\|_{L^p(\mathbb R)}
+   &\le
+   \|f\|_{L^p(\mathbb R\setminus[-R,R])}
+   +\|f-h\|_{L^p([-R,R])}\\
+   &<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}
+   =\varepsilon.
+   \end{aligned}
+   $$
+
+Thus continuous compactly supported functions are dense in $L^p(\mathbb R)$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why inequality in error decomposition and not equality)</span></p>
+
+The inequality follows because the $p$-th power of the $L^p$-norm is additive over disjoint measurable sets, whereas the norm itself is generally not additive when $p>1$.
+
+</div>
+
+</details>
+</div>
+
+In the proof above we used the following lemma:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Vanishing $L^p$-tails)</span></p>
+
+Let $f\in L^p(\mathbb R)$, and define $f_n=f\mathbf 1_{[-n,n]}$. Then
+
+$$\|f-f_n\|_p\longrightarrow 0.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Since
+
+$$|f|^p\mathbf 1_{[-n,n]}\uparrow |f|^p$$
+
+almost everywhere, the Monotone Convergence Theorem gives
+
+$$\lim_{n\to\infty}\int_{-n}^n|f(x)|^p\,dx =\int_{\mathbb R}|f(x)|^p\,dx<\infty.$$
+
+Consequently,
+
+$$
+\begin{aligned}
+\|f-f_n\|_p^p
+&=\int_{\mathbb R\setminus[-n,n]}|f(x)|^p\,dx\\
+&=\|f\|_p^p-\int_{-n}^n|f(x)|^p\,dx\\
+&\longrightarrow0.
+\end{aligned}
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Separability of $L^p$ Spaces)</span></p>
+
+Let $E\subseteq\mathbb R$ be Lebesgue-measurable and $1\le p<\infty$. Then
+
+$$L^p(E)\text{ is separable}.$$
+
+Equivalently, there exists a **countable dense subset** $D\subseteq L^p(E)$ such that
+
+$$\forall f\in L^p(E),\ \forall\varepsilon>0,\ \exists g\in D: \quad \|f-g\|_{L^p(E)}<\varepsilon.$$
+
+In particular, both $L^p([a,b])$ and $L^p(\mathbb R)$ are separable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(d) \(L^p(\mathbb R)\) is separable
+Key idea: Construct a countable dense set by combining countable dense subsets of \(L^p([-n,n])\).
+1. Construct a countable candidate.
+By (b), each \(L^p([-n,n])\) is separable. Therefore, for every \(n\in\mathbb N\), choose a countable dense subset
+\[
+D_n\subset L^p([-n,n]).
+\]
+
+Identify its elements with their zero extensions to \(\mathbb R\), and define
+\[
+D:=\bigcup_{n=1}^{\infty}D_n.
+\]
+
+Since a countable union of countable sets is countable, \(D\) is countable.
+2. Prove density.
+Let \(f\in L^p(\mathbb R)\) and \(\varepsilon>0\).
+By the lemma from (c), choose \(n\) sufficiently large that
+\[
+\|f-f\mathbf 1_{[-n,n]}\|_p<\frac{\varepsilon}{2}.
+\]
+
+Since \(D_n\) is dense in \(L^p([-n,n])\), there exists \(h\in D_n\) such that
+\[
+\|f\mathbf 1_{[-n,n]}-h\|_p<\frac{\varepsilon}{2}.
+\]
+
+By the triangle inequality,
+\[
+\begin{aligned}
+\|f-h\|_p
+&\le
+\|f-f\mathbf 1_{[-n,n]}\|_p
++\|f\mathbf 1_{[-n,n]}-h\|_p\\
+&<\varepsilon.
+\end{aligned}
+\]
+
+Thus \(D\) is dense in \(L^p(\mathbb R)\).
+Since \(D\) is countable,
+\[
+\boxed{L^p(\mathbb R)\text{ is separable}.}
+\]
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Important proof techniques: (local) dense approximation and tail control)</span></p>
+
+The two reusable proof patterns here:
+1. Successive approximation through dense classes,
+2. Local approximation plus tail control.
+   
+They are worth preserving beyond the specific separability result.
+
 </div>
 
 ### Convergence in $L^p$ and Almost Everywhere Convergence
@@ -6951,7 +7235,7 @@ One subtle point: not every separable Banach space has a Schauder basis. Separab
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span>(Separable Space)</p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Separable Space)</span></p>
 
 A topological space $X$ is called **separable** if it contains a **countable dense subset**.
 
