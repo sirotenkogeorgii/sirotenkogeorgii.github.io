@@ -7,6 +7,12 @@
    "added": false
   },
   {
+   "title": "Statistical Learning Theory",
+   "url": "/subpages/books/statistical-learning-theory-hd/",
+   "date": "2026-10-18",
+   "added": true
+  },
+  {
    "title": "Calculus of Variations — Gelfand & Fomin",
    "url": "/subpages/books/calculus_of_variations_fomin/",
    "date": "2026-10-16",
@@ -171,12 +177,6 @@
   {
    "title": "Cheatsheet — Lecture 3: Finite MDPs",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/",
-   "date": "2026-07-22",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 4: Dynamic Programming",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture4-dp/",
    "date": "2026-07-22",
    "added": true
   }
