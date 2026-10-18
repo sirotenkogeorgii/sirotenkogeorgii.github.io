@@ -4400,29 +4400,13 @@ Thus $g(a)=0$ and $g(a+\delta)=c_1$.
 
 For each internal boundary $t_j$, $j=1,\ldots,r-1$, define
 
-$$
-g(x)
-=
-\left(
-1-\left(\frac{x-(t_j-\delta)}{\delta}\right)^N
-\right)c_j
-+
-\left(\frac{x-(t_j-\delta)}{\delta}\right)^N c_{j+1},
-$$
+$$g(x) = \left( 1-\left(\frac{x-(t_j-\delta)}{\delta}\right)^N \right)c_j + \left(\frac{x-(t_j-\delta)}{\delta}\right)^N c_{j+1},$$
 
 for $x\in[t_j-\delta,t_j]$. This polynomial transition joins the level $c_j$ to the next level $c_{j+1}$.
 
 Finally, on the right endpoint transition, define
 
-$$
-g(x)
-=
-\left(
-1-\left(\frac{x-(b-\delta)}{\delta}\right)^N
-\right)c_r,
-\qquad
-x\in[b-\delta,b].
-$$
+$$g(x) = \left( 1-\left(\frac{x-(b-\delta)}{\delta}\right)^N \right)c_r, \qquad x\in[b-\delta,b].$$
 
 Thus $g(b-\delta)=c_r$ and $g(b)=0$.
 
@@ -6969,11 +6953,7 @@ $$\sum_n \lvert \langle u, e_n \rangle \rvert^2 \le \lVert u \rVert^2.$$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Closed Span of an Orthonormal Set and Orthogonal Projection)</span></p>
 
-Let $H$ be a Hilbert space, let $\lbrace e_n\rbrace_{n=1}^\infty$ be a countable orthonormal subset of $H$, and let
-
-$$W=\operatorname{span}\lbrace e_n:n\in\mathbb N\rbrace.$$
-
-Then
+Let $H$ be a Hilbert space, let $\lbrace e_n\rbrace_{n=1}^\infty$ be a countable orthonormal subset of $H$, and let $W=\operatorname{span}\lbrace e_n\rbrace_{n=1}^\infty$ be the subspace of all **finite** linear combinations of these vectors. Then
 
 $$\overline W = \left\lbrace \sum_{n=1}^{\infty} c_n e_n: (c_n)_{n=1}^{\infty}\in\ell^2 \right\rbrace.$$
 
@@ -6981,9 +6961,7 @@ Moreover, for every $u\in H$,
 
 $$P_{\overline W}u= \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n$$
 
-is the orthogonal projection of $u$ onto $\overline W$.
-
-Equivalently, for every $w\in\overline W$,
+is the orthogonal projection of $u$ onto $\overline W$. Equivalently, for every $w\in\overline W$,
 
 $$\left\| u- \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n \right\| \le \|u-w\|,$$
 
@@ -6993,7 +6971,7 @@ with equality if and only if $w= \sum_{n=1}^{\infty} \langle u,e_n\rangle e_n$.
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof of the first statement</summary>
+<summary>Proof of the first statement (using Pythagoras)</summary>
 
 Let
 
@@ -7062,9 +7040,98 @@ Thus the two conditions are equivalent.
 
 <div class="accordion" markdown="1">
 <details markdown="1">
+<summary>Alternative (approximation by projection-contraction on a dense subspace) proof of the second statement</summary>
+
+The key idea is that the finite-dimensional orthogonal projections $P_N$ are contractions:
+
+$$\lVert P_Nx\rVert \leq \lVert x\rVert$$
+
+**Step 1. Establish the contraction property.**
+
+Define
+
+$$P_Nx:=\sum\_{n=1}^N\langle x,e_n\rangle e_n.$$
+
+By orthonormality,
+
+$$\lVert P_Nx\rVert^2 =\langle x,P_Nx\rangle \leq \lVert x\rVert\lVert P_Nx\rVert.$$
+
+Therefore,
+
+$$\lVert P_Nx\rVert \leq\lVert x\rVert.$$
+
+**Step 2. Approximate $w$ by elements of $W$.**
+
+Let $w\in\overline W$. Given $\varepsilon>0$, choose
+
+$$v=\sum\_{n=1}^M a_ne_n\in W$$
+
+such that $\lVert w-v\rVert<\varepsilon/2$.
+
+For every $N\geq M$, we have $P_Nv=v$. Consequently,
+
+$$\begin{aligned} \lVert w-P_Nw\rVert &=\lVert (w-v)-P_N(w-v)\rVert \\\ &\leq\\|w-v\\|+\\|P_N(w-v)\\|\\\ &\leq2\\|w-v\\|\\\ &<\varepsilon. \end{aligned}$$
+
+Hence
+
+$$P_Nw\longrightarrow w.$$
+
+Moreover, the contraction property implies
+
+$$\sum\_{n=1}^N|\langle w,e_n\rangle|^2 =\|P_Nw\|^2\leq\|w\|^2,$$
+
+so the coefficients belong to $\ell^2$.
+
+**Step 3. The reverse implication.**
+
+This is unchanged: if $(c_n)\in\ell^2$, orthonormality gives
+
+$$\left\|\sum\_{n=M+1}^Nc_ne_n\right\|^2 =\sum\_{n=M+1}^N|c_n|^2\longrightarrow0$$
+
+as $M,N\to\infty$. Completeness of $H$ then gives convergence to an element of $\overline W$.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The value of the technique proof of the second proposition)</span></p>
+
+The second proof reveals a useful general principle:
+
+If $P_N$ are uniformly bounded linear operators and $P_Nv\to v$ on a dense subspace, then $P_Nx\to x$ everywhere.
+
+Here $\lVert P_N\rVert \leq1$, and $P_Nv=v$ eventually for every $v\in W$.
+
+Strictly speaking, the reverse implication still uses the norm identity for orthogonal sums, which is itself a form of Pythagoras. But the forward argument avoids the Pythagorean decomposition entirely.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
 <summary>Proof of the second statement</summary>
 
-TODO:
+* We notice that $H = \overline{W} \oplus W^\perp \implies u = u_w + u_\perp$, where $u_w \in \overline{W}$ and $u_\perp \in W^\perp$.
+* We know that for $u_w \in \overline{W}$ we have expansion $\sum_{n=1}^\infty c_n e_n$, with coefficients $c_n := \langle u_w, e_n\rangle$ and $W = span\lbrace e_n\rbrace_{n=1}^\infty$.
+* Then for any $w\in \overline{W}$:
+  
+  $$\lVert u_\perp + u_w - w \rVert = \lVert u_\perp + \sum_{n=1}^\infty \langle u_w - w, e_n\rangle e_n \rVert$$
+
+  * Since $u_\perp$ and $\langle u_w - w, e_n\rangle e_n \rVert$ live in orthogonal spaces, we can apply Pythagoras:
+  
+  $$
+  \begin{aligned}
+  \lVert u_\perp + \sum_{n=1}^\infty \langle u_w - w, e_n\rangle e_n \rVert 
+  &= \sqrt{\lVert u_\perp \rVert^2 + \lVert \sum_{n=1}^\infty \langle u_w - w, e_n\rangle e_n \rVert^2} \\
+  &\geq \lVert u_\perp \rVert = \lVert u_\perp + u_w - \sum_{n=1}^\infty \langle u_w, e_n\rangle e_n \rVert \\
+  &= \lVert u - \sum_{n=1}^\infty \langle u, e_n\rangle e_n \rVert,
+  \end{aligned}
+  $$
+
+  where we used that $u_w = \sum_{n=1}^\infty \langle u_w, e_n\rangle e_n \rVert$ and $\langle u_\perp, e_n\rangle = 0$ for all $e_n$.
+
+The "if and only if" statement come trivially: 
+
+$$\|u-w\|^2=\|u_\perp\|^2 \iff \|u_w-w\|^2=0 \iff w=u_w,$$
 
 </details>
 </div>
