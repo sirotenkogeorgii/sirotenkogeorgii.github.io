@@ -1510,9 +1510,13 @@ It holds that
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 18</span><span class="math-callout__name">(The Number $\mathrm{e}$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 18</span><span class="math-callout__name">(Euler number)</span></p>
 
-We define $\mathrm{e} := \exp(1) = 1 + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \cdots = 2.71828\dots$ It is called the **Euler number**.
+We define 
+
+$$\mathrm{e} := \exp(1) = 1 + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \cdots = 2.71828\dots$$
+
+It is called the **Euler number**.
 
 </div>
 
@@ -2907,26 +2911,30 @@ $$\exists\, c \in (a, b)\colon\; f'(c) = 0.$$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+* **If $f$ is constant**, that is $f(x) = f(a) = f(b)$ for every $x \in [a, b]$, then $f'(x) = 0$ for every $x \in (a, b)$. 
+* **If $f$ not be constant** and $f(x) > f(a) = f(b)$ for some $x \in (a, b)$, the case with $f(x) < f(a) = f(b)$ is treated similarly. 
+  * According to the principle of minimum and maximum, the function $f$ attains its greatest value in some $c \in [a, b]$. 
+  * Clearly, $c \in (a, b)$. 
+  * At the extremum the derivative $f'(c) = 0$.
+
+</details>
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/mathematical_analysis_matfyz/semester1/ma_s1_l08_rolle_theorem.png' | relative_url }}" alt="Rolle's theorem plot with equal endpoint values and a horizontal tangent at an interior point" loading="lazy">
   <figcaption>Rolle's theorem. If the endpoints have the same value, then a non-constant continuous differentiable curve must turn around somewhere inside the interval; at that interior point $c$, the tangent is horizontal and $f'(c)=0$.</figcaption>
 </figure>
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-If $f$ is constant, that is $f(x) = f(a) = f(b)$ for every $x \in [a, b]$, then $f'(x) = 0$ for every $x \in (a, b)$. Let $f$ not be constant and $f(x) > f(a) = f(b)$ for some $x \in (a, b)$, the case with $f(x) < f(a) = f(b)$ is treated similarly. According to the principle of minimum and maximum (in Lecture 6), the function $f$ attains its greatest value in some $c \in [a, b]$. Clearly, $c \in (a, b)$. By the assumption about derivatives and Theorem 4 in Lecture 7, $f'(c) = 0$. $\square$
-
-</details>
-</div>
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2</span><span class="math-callout__name">(Lagrange's Theorem)</span></p>
 
-Let $a < b$ be real numbers and $f\colon [a, b] \to \mathbb{R}$ be a continuous function that has finite or infinite derivative at each point of the interval $(a, b)$. Then
+Let $a < b$ be real numbers and $f\colon [a, b] \to \mathbb{R}$ be a continuous function that has finite or infinite derivative at each point of the interval $(a, b)$. Then $\exists\, c \in (a, b)$:
 
-$$\exists\, c \in (a, b)\colon\; f'(c) = \frac{f(b) - f(a)}{b - a}.$$
+$$f'(c) = \frac{f(b) - f(a)}{b - a}.$$
 
 </div>
 
@@ -2934,15 +2942,28 @@ $$\exists\, c \in (a, b)\colon\; f'(c) = \frac{f(b) - f(a)}{b - a}.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-Consider the function
+**Idea:** Substract the linear function from $f(x)$ that would rotate $f(x)$ around $f(a)$ in a way that $f(b)=f(a)$, then apply Rolle's theorem.
 
-$$g(x) := f(x) - (x - a) \cdot \frac{f(b) - f(a)}{b - a}\colon [a, b] \to \mathbb{R}.$$
+**Construction:**
+1. Thus function must subtract nothing from $f(a)$ and the difference $f(b)-f(a)$ from $f(b)$. The tanget of the our linear function is obviously $\alpha := f(b)-f(a) / (b-a)$
+  
+   $$
+   \begin{cases}
+   0 = \alpha a + c \\
+   f(b-a) = \alpha b + c
+   \end{cases} 
+   \implies c = -\alpha a \implies y = \alpha x - \alpha a = (x-a) \cdot \alpha = (x-a) \frac{f(b)-f(a)}{b-a}
+   $$
 
-It satisfies the assumptions of Rolle's theorem, especially $g(a) = g(b) = f(a)$, therefore
+2. Consider the function
 
-$$0 = g'(c) = f'(c) - (f(b) - f(a))/(b - a)$$
+   $$g(x) := f(x) - (x - a) \cdot \frac{f(b) - f(a)}{b - a}\colon [a, b] \to \mathbb{R}.$$
 
-for some $c \in (a, b)$ and we are done. $\square$
+   It satisfies the assumptions of Rolle's theorem, especially $g(a) = g(b) = f(a)$, therefore
+
+   $$0 = g'(c) = f'(c) - (f(b) - f(a))/(b - a)$$
+
+   for some $c \in (a, b)$ and we are done.
 
 </details>
 </div>
@@ -3118,7 +3139,11 @@ where the first equality holds due to the theorem on limits of composite functio
 
 $$\lim_{x \to 0} \sqrt{x} \log x = \lim_{x \to 0} \frac{(\log x)'}{(1/\sqrt{x})'} = \lim_{x \to 0} \frac{1/x}{(-1/2)x^{-3/2}} = -2 \lim_{x \to 0} x^{1/2} = 0,$$
 
-and more generally $\lim\_{x \to 0} x^c \log x = 0$ for every $c > 0$. Or
+and more generally 
+
+$$\lim_{x \to 0} x^c \log x = 0 \quad \forall c > 0$$
+
+Or
 
 $$\lim_{x \to 0} \frac{x^2}{\cos x - 1} = \lim_{x \to 0} \frac{(x^2)'}{(\cos x - 1)'} = \lim_{x \to 0} \frac{2x}{-\sin x} = -2 \lim_{x \to 0} \frac{(x)'}{(\sin x)'} = -2 \lim_{x \to 0} \frac{1}{\cos x} = -2.$$
 
@@ -3684,7 +3709,7 @@ Given $\varepsilon > 0$, one can choose $n\_0 > 1/\varepsilon$, and this single 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Uniform is stronger than pointwise)</span></p>
 
-$$f\_n \rightrightarrows f \implies f\_n \to f,$$
+$$f_n \rightrightarrows f \implies f_n \to f,$$
 
 but the converse in general **does not hold**.
 
@@ -3804,15 +3829,86 @@ So one $\delta$ works for all points $a \in M$.
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 15</span><span class="math-callout__name">(Continuity and Compactness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 15</span><span class="math-callout__name">(Continuous Functions on a Compact are Uniformly Continuous)</span></p>
 
-Let $M \subset \mathbb{R}$ be a compact set. If a function $f\colon M \to \mathbb{R}$ is continuous then it is uniformly continuous.
+Let $M \subset \mathbb{R}$ be a compact set.
+
+$$f\colon M \to \mathbb{R} \quad\text{is continuous} \implies f \quad\text{is uniformly continuous.}$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Hint</summary>
+
+**Tiny hint:** Try a proof by contradiction.
+
+Suppose $f$ is not uniformly continuous. Then there exists some fixed $\varepsilon_0>0$ and sequences $x_n,y_n\in K$ such that
+
+$$|x_n-y_n|<\frac1n, \qquad |f(x_n)-f(y_n)|\geq\varepsilon_0.$$
+
+Now use **compactness** to extract a convergent subsequence of $(x_n)$. What must happen to the corresponding subsequence of $(y_n)$?
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>From from the hint</summary>
+
+The limit $y \lim_{n\to\infty} y_n$ the continuity property of $f$ fails.
+
+The key detail is that if $x_{n_k}\to x$, then because
+
+$$\lvert x_{n_k}-y_{n_k}\rvert<\frac1{n_k}\to 0,$$
+
+we also have $y_{n_k}\to x$.
+
+By continuity, both $f(x_{n_k})$ and $f(y_{n_k})$ must converge to $f(x)$.
+
+But their difference is always at least $\varepsilon_0>0$, a contradiction.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Another proof using finite cover of a compact property</summary>
+
+1. Fix $\varepsilon>0$. For every $x\in K$, continuity gives you some $\delta_x>0$ such that
+
+   $$\lvert y-x\rvert<\delta_x \implies \lvert f(y)-f(x)\rvert<\varepsilon/2.$$
+
+2. Consider the open balls $B(x,\delta_x/2)$. They cover $K$.
+3. By compactness, you can choose finitely many of these balls that still cover $K$.
+Now consider
+
+$$\delta=\frac12\min_{1\le i\le N}\delta_{x_i}>0.$$
+
+Now we should show that this bound $\delta$ works for any pair $x,y\in K$.
+
+Compactness allows us to reduce infinitely many local choices of $\delta_x$ to finitely many.
+
+The important distinction is that we're not testing continuity at only finitely many points. Instead, we choose finitely many neighborhoods that cover all of $K$.
+
+Then we take
+
+$$\delta=\frac12\min\lbrace\delta_{x_1},\ldots,\delta_{x_N}\rbrace>0.$$
+
+For any $x,y\in K$ with $\lvert x-y\rvert <\delta$, choose a neighborhood $B(x_i,\delta_{x_i}/2)$ containing $x$. Both $x$ and $y$ are then within $\delta_{x_i}$ of $x_i$.
+
+So the triangle inequality gives
+
+$$\lvert f(x)-f(y)\rvert \leq \lvert f(x)-f(x_i)\rvert +\lvert f(x_i)-f(y)\rvert <\varepsilon.$$
+
+That's the central insight: compactness turns local control into uniform control.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof from Klazar</summary>
 
 $$\text{Suppose } f \text{ is not uniformly continuous.}$$
 

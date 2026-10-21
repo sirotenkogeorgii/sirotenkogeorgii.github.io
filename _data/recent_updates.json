@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Mathematical Analysis (Klazar) — Semester 1",
+   "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
+   "date": "2026-10-21",
+   "added": false
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-10-20",
@@ -172,12 +178,6 @@
    "title": "Reinforcement Learning (HD): Problem Sheet 6",
    "url": "/subpages/reinforcement_learning_hd/problems/sheet06/",
    "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 3: Finite MDPs",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture3-mdps/",
-   "date": "2026-07-22",
    "added": true
   }
  ]
