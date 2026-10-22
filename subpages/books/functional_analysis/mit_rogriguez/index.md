@@ -7586,8 +7586,14 @@ The **Fourier series** of $f$ is the formal series $\sum_{n \in \mathbb{Z}} \hat
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation of Fourier Series)</span></p>
+
+The motivating question for Fourier when first studying these objects was **whether or not all continuous functions could be expanded in this Fourier series manner**. Trying to study things on a pointwise convergence level is diﬃcult, but the space we should really be viewing this setup within is the $L^2$ space, and there we’ll be able to get some results. The problem we’re trying to resolve is as follows:
+
+</div>
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Problem 169</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Problem 169: Is the Fourier Basis Complete in $L^2$</span></p>
 
 Does the convergence (in $L^2$ norm) $\sum_{n=1}^{\infty} \hat{f} e^{inx} \to f$ hold for all $f \in L^2([-\pi, \pi])$? In other words, does
 
@@ -7597,18 +7603,22 @@ converge to $0$ as $N \to \infty$?
 
 </div>
 
-This is equivalent to asking whether $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \right\rbrace$ is a **maximal** orthonormal subset in $L^2([-\pi, \pi])$, i.e., whether $\hat{f}(n) = 0$ for all $n \in \mathbb{Z}$ implies $f = 0$. The answer turns out to be **yes**, but it takes some work to prove.
+This is equivalent to asking whether $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \right\rbrace$ is a **maximal** orthonormal subset in $L^2([-\pi, \pi])$, i.e., whether $\hat{f}(n) = 0$ for all $n \in \mathbb{Z}$ implies $f = 0$. We already know that if we have an orthonormal basis, then we can indeed make this infinite expansion for any element of the space $L^2$. So this rephrasing in terms of the language of Hilbert spaces will help us out here (and we should remember that we require the completeness of $L^2$ to get to this rephrased problem statement). The answer turns out to be **yes**, but it takes some work to prove.
 
-### The Dirichlet Kernel
+### The Dirichlet Kernel: Representing Fourier partial sums as convolution operators
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 170</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 170</span><span class="math-callout__name">(Representing Fourier partial sums as convolution operators: Dirichlet Kernel Representation)</span></p>
 
-For all $f \in L^2([-\pi, \pi])$ and all $N \in \mathbb{Z}\_{\ge 0}$, we have $S_N f(x) = \int_{-\pi}^{\pi} D_N(x - t) f(t)\,dt$, where
+For all $f \in L^2([-\pi, \pi])$ and all $N \in \mathbb{Z}\_{\ge 0}$, we have 
+
+$$S_N f(x) = \int_{-\pi}^{\pi} D_N(x - t) f(t)\,dt,$$
+
+where
 
 $$D_N(x) = \begin{cases} \frac{2N+1}{2\pi} & x = 0, \\[6pt] \frac{\sin\left((N + \frac{1}{2})x\right)}{2\pi \sin \frac{x}{2}} & x \ne 0. \end{cases}$$
 
-The function $D_N$ is called the **Dirichlet kernel**.
+The function $D_N$ is called the **Dirichlet kernel**. We can check that the function $D_N$ is continuous (and in fact smooth).
 
 </div>
 
@@ -7630,7 +7640,14 @@ $$\sigma_N f(x) = \frac{1}{N+1} \sum_{k=0}^{N} S_k f(x).$$
 
 </div>
 
-The strategy is to show $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$, which then implies the desired convergence of Fourier series (because if all Fourier coefficients are zero, then $\sigma_N f = 0$ for all $N$, so $f = 0$).
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reformulating the strategy)</span></p>
+
+We’ve rephrase our convergence of Fourier series to the statement that “if the Fourier coeﬃcients are all zero, then the function is zero.” And the direction we’re going with this definition here is that if we can show the partial sums $S_Nf$ converge to $f$, then $f$ must be a sum of zeros, but trying to do this with SN directly is our original problem statement! So this “averaged” Cesaro-Fourier mean will be an easier thing to work with, and we’ll try to show that $\sigma_N f \to f$ instead.
+
+So, the strategy is to show $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$, which then implies the desired convergence of Fourier series (because if all Fourier coefficients are zero, then $\sigma_N f = 0$ for all $N$, so $f = 0$).
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 172</span></p>
@@ -7708,10 +7725,25 @@ The Fejér kernel grows more and more concentrated at the origin as $N \to \inft
   <figcaption>Both kernels deliver $\sigma_N f$ or $S_N f$ as a convolution against $f$, but with very different behavior. $D_N$ oscillates with sign changes and tail $L^1$-norm $\sim \log N$, so it is <em>not</em> an approximate identity; $K_N$ is nonnegative, integrates to $1$, and concentrates at the origin — exactly the conditions needed for $\sigma_N f \to f$ uniformly on continuous periodic data (Fejér's theorem).</figcaption>
 </figure>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why we believe Cesaro means converge to $f$)</span></p>
+
+The reason we might believe that these Cesaro means converge to $f$ is that
+
+$$\sigma_N f(x) = \int_\pi^{-\pi} K_N(x−t)f(t)dt,$$
+
+and $K_N$ is very sharply peaked around $t=x$, so as $N$ gets larger and larger, the main contribution to the integral comes from $f(x) \approx f(t)$ if $f$ is well-behaved enough. So then we end up with
+
+$$\approx f(x) \int_\pi^{-\pi} K_N(x−t)dt= f(x)\cdot 1,$$
+
+since $k_N$ evaluates to the same over any interval of length $2\pi$ by periodicity. So that’s a heuristic motivation for working with the Cesaro means here! (Some of these properties also applied when we did a similar procedure with our partial sums $S_Nf(x)$, but the Dirichlet kernel is not nonnegative – that diﬀerence actually makes a big diﬀerence in the final proof.)
+
+</div>
+
 ### Fejér's Theorem
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 174</span><span class="math-callout__name">(Fejér)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 174</span><span class="math-callout__name">(Fejér's Uniform Convergence Theorem)</span></p>
 
 Let $f \in C([-\pi, \pi])$ be $2\pi$-periodic (so $f(-\pi) = f(\pi)$). Then $\sigma_N f \to f$ uniformly on $[-\pi, \pi]$.
 
@@ -7721,7 +7753,7 @@ Let $f \in C([-\pi, \pi])$ be $2\pi$-periodic (so $f(-\pi) = f(\pi)$). Then $\si
   <details>
     <summary>proof</summary>
     <p>Extend $f$ to all of $\mathbb{R}$ by periodicity. Since $f$ is $2\pi$-periodic and continuous, it is uniformly continuous and bounded ($\lVert f \rVert_\infty < \infty$).</p>
-    <p>For any $\varepsilon > 0$, by uniform continuity there exists $\delta > 0$ so that $\lvert y - z \rvert < \delta$ implies $\lvert f(y) - f(z) \rvert < \varepsilon / 2$. Choose $M \in \mathbb{N}$ so that $\frac{2 \lVert f \rVert_\infty}{(N+1) \sin^2(\delta/2)} < \varepsilon / 2$ for all $N \ge M$.</p>
+    <p>For any $\varepsilon > 0$, by uniform continuity there exists $\delta > 0$ so that $\lvert y - z \rvert < \delta$ implies $\lvert f(y) - f(z) \rvert < \varepsilon / 2$. Choose $M \in \mathbb{N}$ so that $\frac{2 \lVert f \rVert_\infty}{(N+1) \sin^2(\delta/2)} < \varepsilon / 2$ for all $N \ge M$. If $\sin^2(\delta/2)$ is zero, we take $\sigma$ smaller to make $\sin^2(\delta/2)\gt 0$.</p>
     <p>Using $\int_{-\pi}^{\pi} K_N(t)\,dt = 1$ and $K_N \ge 0$:</p>
     $$\lvert \sigma_N f(x) - f(x) \rvert = \left\lvert \int_{-\pi}^{\pi} K_N(t)(f(x-t) - f(x))\,dt \right\rvert \le \int_{-\pi}^{\pi} K_N(t) \lvert f(x-t) - f(x) \rvert\,dt.$$
     <p>Split into $\lvert t \rvert \le \delta$ (where $\lvert f(x-t) - f(x) \rvert < \varepsilon/2$) and $\delta \le \lvert t \rvert \le \pi$ (where $K_N(t) \le \frac{1}{2\pi(N+1)\sin^2(\delta/2)}$ and $\lvert f(x-t) - f(x) \rvert \le 2\lVert f \rVert_\infty$). Bounding each integral by the total $K_N$-mass gives $< \varepsilon/2 + \varepsilon/2 = \varepsilon$. $\square$</p>
@@ -7729,7 +7761,7 @@ Let $f \in C([-\pi, \pi])$ be $2\pi$-periodic (so $f(-\pi) = f(\pi)$). Then $\si
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 175</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 175</span><span class="math-callout__name">(Why this proof fails for Dirichlet kernel)</span></p>
 
 The same proof works if instead of $K_N(x) \ge 0$ we only know $\sup_N \int_{-\pi}^{\pi} \lvert K_N(x) \rvert\,dx < \infty$. But for the Dirichlet kernel, $\int_{-\pi}^{\pi} \lvert D_N(x) \rvert\,dx \sim \log N$, so this condition is not satisfied — having "almost all" of the properties is not enough.
 
@@ -7738,8 +7770,7 @@ The same proof works if instead of $K_N(x) \ge 0$ we only know $\sup_N \int_{-\p
 ### Convergence of Cesaro Means in $L^2$
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition 176</span></p>
-
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 176</span><span class="math-callout__name">($L^2$-Contractivity of Fejér Means)</span></p>
 For all $f \in L^2([-\pi, \pi])$, we have $\lVert \sigma_N f \rVert_2 \le \lVert f \rVert_2$.
 
 </div>
@@ -7753,10 +7784,21 @@ For all $f \in L^2([-\pi, \pi])$, we have $\lVert \sigma_N f \rVert_2 \le \lVert
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Density Step)</span></p>
+
+The proof of Proposition 176 and Theorem 177 used and will use that continuous $2\pi$-periodic functions are dense in $L^2([-\pi, \pi])$. One way to see it: by dominated convergence,
+
+$$\lim_{\delta \to 0}\Big(\int_{-\pi}^{-\pi+\delta} \lvert f \rvert^2 + \int_{\pi-\delta}^{\pi} \lvert f \rvert^2\Big) = 0,$$
+
+so functions vanishing near the endpoints are dense; these are approximated by step functions vanishing near the endpoints, and each such step function is an $L^2$-limit of continuous functions vanishing near the endpoints — which are automatically periodic.
+
+</div>
+
 ### Convergence of Fourier Series in $L^2$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem 177</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 177</span><span class="math-callout__name">($L^2$-Convergence of Fejér Means)</span></p>
 
 For all $f \in L^2$, $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$. Therefore, if $\hat{f}(n) = 0$ for all $n$, then $f = 0$ (since $\sigma_N f = 0$ for all $N$).
 
@@ -7771,17 +7813,6 @@ For all $f \in L^2$, $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$. T
 </div>
 
 This shows that the normalized exponentials $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \right\rbrace_{n \in \mathbb{Z}}$ form a maximal orthonormal subset, so the partial Fourier sums of $f$ converge to $f$ in $L^2$. As a deep result, **Carleson's theorem** tells us that in fact $S_N f(x) \to f(x)$ **almost everywhere** for all $f \in L^2$. It is also known that for all $1 < p < \infty$, $\lVert S_N f - f \rVert_p \to 0$, though this is false for $p = 1, \infty$.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Density Step)</span></p>
-
-The proof of Theorem 177 used that continuous $2\pi$-periodic functions are dense in $L^2([-\pi, \pi])$. One way to see it: by dominated convergence,
-
-$$\lim_{\delta \to 0}\Big(\int_{-\pi}^{-\pi+\delta} \lvert f \rvert^2 + \int_{\pi-\delta}^{\pi} \lvert f \rvert^2\Big) = 0,$$
-
-so functions vanishing near the endpoints are dense; these are approximated by step functions vanishing near the endpoints, and each such step function is an $L^2$-limit of continuous functions vanishing near the endpoints — which are automatically periodic.
-
-</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Completeness of the Fourier Basis Computes $\zeta(2)$ and $\zeta(4)$)</span></p>
@@ -7844,6 +7875,65 @@ $$\int \lvert h \rvert \le \int \big\lvert \lvert h \rvert - \lvert h_n \rvert \
 So $h = 0$ a.e., i.e. $f = g \in L^2$. $\square$
 
 </details>
+</div>
+
+### Periodic Sobolev Spaces
+
+Below is a **Fourier (or spectral) definition of periodic Sobolev spaces**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sobolev Space of Order $s$ on the Torus)</span></p>
+
+Let $s\ge 0$, and let $\mathbb T=\mathbb R/(2\pi\mathbb Z)$ denote the one-dimensional torus.
+
+The **Sobolev space of order $s$** is defined by
+
+$$H^s(\mathbb T) := \left\lbrace f\in L^2(\mathbb T): \sum_{n\in\mathbb Z}(1+|n|^2)^s |\widehat f(n)|^2<\infty \right\rbrace,$$
+
+where the Fourier coefficients are
+
+$$\widehat f(n) = \frac{1}{2\pi} \int_{-\pi}^{\pi}f(x)e^{-inx}\,dx.$$
+
+The associated **Sobolev norm** is
+
+$$\|f\|_{H^s(\mathbb T)} = \left( \sum_{n\in\mathbb Z} (1+|n|^2)^s|\widehat f(n)|^2 \right)^{1/2}.$$
+
+The corresponding inner product is
+
+$$\langle f,g\rangle_{H^s(\mathbb T)} = \sum_{n\in\mathbb Z} (1+|n|^2)^s \widehat f(n)\overline{\widehat g(n)}.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Useful observation about Fourier (or spectral) definition of periodic Sobolev spaces)</span></p>
+
+With your Fourier normalization, Parseval gives
+
+$$\|f\|_{H^0(\mathbb T)}^2 =\sum_{n\in\mathbb Z}|\widehat f(n)|^2 =\frac{1}{2\pi}\|f\|_{L^2(\mathbb T)}^2.$$
+
+Thus $H^0(\mathbb T)=L^2(\mathbb T)$ as sets, although the norms differ by a constant factor.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to the classical definition of Sobolev Spaces)</span></p>
+
+For an integer $k\ge 0$, the **classical Sobolev** space is defined using **weak derivatives**:
+
+$$H^k(\mathbb T) = \left\lbrace f\in L^2(\mathbb T): D^jf\in L^2(\mathbb T),\quad 0\le j\le k \right\rbrace,$$
+
+where derivatives are understood periodically. The key connection is that differentiation becomes multiplication by $in$ in Fourier space:
+
+$$\widehat{D^jf}(n)=(in)^j\widehat f(n).$$
+
+Consequently, Parseval's identity gives
+
+$$\|D^jf\|_2^2 = 2\pi\sum_{n\in\mathbb Z}n^{2j}|\widehat f(n)|^2,$$
+
+using the conventional normalization $\widehat f(n)=\frac1{2\pi}\int_{-\pi}^{\pi}f(x)e^{-inx}\,dx$.
+
+Thus the Fourier definition and weak-derivative definition are equivalent for integer orders. For noninteger $s$, the Fourier definition provides a natural extension to fractional Sobolev spaces.
+
 </div>
 
 ## Minimizers, Orthogonal Decomposition, and the Riesz Representation Theorem
@@ -7991,8 +8081,6 @@ Let $H$ be a Hilbert space. Then for all $f \in H'$, there exists a unique $v \i
 
 </div>
 
-In other words, every element of the dual can be realized as an inner product with a fixed vector.
-
 <div class="accordion">
   <details>
     <summary>proof</summary>
@@ -8023,6 +8111,8 @@ Finally $\lVert f \rVert \le \lVert w \rVert$ by Cauchy–Schwarz, and $f(w) = \
 
 </details>
 </div>
+
+In other words, every element of the dual can be realized as an inner product with a fixed vector.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Weighted Sequence Spaces and Their Duals)</span></p>
@@ -8120,7 +8210,7 @@ where $\operatorname{Ran}(A)$ is the range of $A$ and $\operatorname{Null}(A^\as
 In particular, if $\operatorname{Ran}(A)$ is a closed subspace, then surjectivity of $A$ is equivalent to injectivity of $A^\ast$ (an infinite-dimensional version of rank-nullity).
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Generalization of theorem 189)</p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Generalization of theorem 189)</span></p>
 
 The Theorem 189 for $A:H\to H$, whereas it is also true for $A:X\to Y$. The identical proof works for $A:X\to Y$, with $A^\ast:Y\to X$. Also 
 
@@ -8358,7 +8448,7 @@ $$\sum_{k > N} \lvert \langle v, e_k \rangle \rvert^2 < \varepsilon^2.$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Small tail for one is trivial, equi-small tail is a group property)</span></p>
 
-By Bessel's inequality, for any fixed $v$ the tail eventually becomes small. The equi-small tails condition requires this to happen **uniformly** for all $v \in K$ simultaneously.
+We know that the sequence for any given $v$ converges by Bessel’s inequality, so that the inequality above will eventually hold for some $N$ for each $v$. But this equi-small tails requirement is a more “uniform” condition on the rate of convergence – we need to be able to pick an $N$ that works for all $v \in K$ at the same time.
 
 </div>
 
@@ -8406,6 +8496,15 @@ Let $H$ be a Hilbert space, and let $\lbrace v_n \rbrace_n$ be a convergent sequ
 </details>
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compact sets on a real line)</span></p>
+
+Examples on the real line included the following examples
+* closed intervals,
+* the set $\lbrace 0\rbrace\cup \lbrace 1 n : n\in\mathbb{N}\rbrace$.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Significance of the Equi-Small Tails of Convergent Sequences in Hilbert Spaces)</span></p>
 
@@ -8436,9 +8535,9 @@ Let $H$ be a separable Hilbert space, and let $\lbrace e_k \rbrace_k$ be an orth
 <div class="accordion">
   <details>
     <summary>proof</summary>
-    <p><strong>Forward direction:</strong> If $K$ is compact, it is closed and bounded. For equi-small tails, suppose not: then there exists $\varepsilon_0 > 0$ and for each $N$ some $u_N \in K$ with $\sum_{k > N} \lvert \langle u_N, e_k \rangle \rvert^2 \ge \varepsilon_0^2$. By compactness, $\lbrace u_N \rbrace$ has a convergent subsequence $v_m \to v \in K$. But then $\lbrace v_n : n \in \mathbb{N} \rbrace \cup \lbrace v \rbrace$ does not have equi-small tails, contradicting Theorem 196.</p>
+    <p><strong>Forward direction:</strong> If $K$ is compact, it is closed and bounded. For equi-small tails, suppose not: then there exists $\varepsilon_0 > 0$ and for each $N$ some $u_N \in K$ with $\sum_{k > N} \lvert \langle u_N, e_k \rangle \rvert^2 \ge \varepsilon_0^2$. By compactness, $\lbrace u_N \rbrace$ (importantly, the whole sequence is formed by such "bad" $u_N$) has a convergent subsequence $v_m \to v \in K$. But then $\lbrace v_n : n \in \mathbb{N} \rbrace \cup \lbrace v \rbrace$ does not have equi-small tails, contradicting Theorem 196.</p>
     <p><strong>Backward direction:</strong> Let $\lbrace u_n \rbrace$ be a sequence in $K$. Since $K$ is bounded, $\lVert u_n \rVert \le C$ for all $n$, so $\lvert \langle u_n, e_k \rangle \rvert \le C$. By Bolzano–Weierstrass (applied to $k = 1$), extract a subsequence where the first coefficient converges. Repeat for $k = 2, 3, \dots$ and use a diagonal argument to get a subsequence $v_\ell = u_{n_\ell}$ where $\langle v_\ell, e_k \rangle$ converges for every $k$.</p>
-    <p>To show $\lbrace v_\ell \rbrace$ is Cauchy: by equi-small tails, choose $N$ with $\sum_{k > N} \lvert \langle v_\ell, e_k \rangle \rvert^2 < \varepsilon^2 / 16$ for all $\ell$. Then choose $M$ so that for $\ell, m \ge M$, $\sum_{k=1}^{N} \lvert \langle v_\ell, e_k \rangle - \langle v_m, e_k \rangle \rvert^2 < \varepsilon^2 / 4$. Using Parseval and the $\ell^2$ triangle inequality on the tail, $\lVert v_\ell - v_m \rVert < \varepsilon$. Since $K$ is closed, the limit is in $K$. $\square$</p>
+    <p>To show $\lbrace v_\ell \rbrace$ is Cauchy: (infinite suffix control) by equi-small tails, choose $N$ with $\sum_{k > N} \lvert \langle v_\ell, e_k \rangle \rvert^2 < \varepsilon^2 / 4$ for all $\ell$. (finite prefix control) Then choose $M$ so that for $\ell, m \ge M$, $\sum_{k=1}^{N} \lvert \langle v_\ell, e_k \rangle - \langle v_m, e_k \rangle \rvert^2 < \varepsilon^2 / 2$. Using Parseval and the $\ell^2$ triangle inequality on the tail, $\lVert v_\ell - v_m \rVert < \varepsilon$. Since $K$ is closed, the limit is in $K$. $\square$</p>
   </details>
 </div>
 
@@ -8746,9 +8845,74 @@ $$\sup_{x\in\mathbb R}|\tanh(x/n)|=1$$
 
 for every $n$, so convergence is **not uniform on $\mathbb R$**.
 
-#TODO: make a plot
-
 </div>
+
+<figure class="math-figure">
+  <div class="math-figure-row">
+    <div>
+      <div class="panel-label">fₙ = tanh(x/n): flat on every window, never on ℝ</div>
+      <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" width="340" aria-label="Graphs of tanh of x over n for n equal 1, 2, 4, 8, 16 drawn from faint to dark; they flatten inside a shaded compact window from minus R to R but each still climbs to the dashed asymptotes at plus and minus one, with red dots marking where each graph reaches three quarters drifting to the right toward infinity">
+        <rect x="120" y="41.8" width="60" height="126.5" fill="#fff7e0" stroke="#a86f00" stroke-width="1" stroke-dasharray="4,3" />
+        <text x="150" y="181.2" font-size="8.5" fill="#a86f00" text-anchor="middle">K = [−R, R]</text>
+        <g stroke="#b91c1c" stroke-width="0.9" stroke-dasharray="3,3"><line x1="30" y1="50" x2="270" y2="50" /><line x1="30" y1="160" x2="270" y2="160" /></g>
+        <g font-size="8.5" fill="#b91c1c"><text x="26" y="53" text-anchor="end">1</text><text x="26" y="163" text-anchor="end">−1</text></g>
+        <text x="268" y="44.0" font-size="8.5" fill="#b91c1c" text-anchor="end">sup over ℝ = 1 for every n</text>
+        <line x1="28.0" y1="105.0" x2="270.0" y2="105.0" stroke="#444" stroke-width="1" /><polygon points="276.0,105.0 270.0,108.0 270.0,102.0" fill="#444" />
+        <line x1="150.0" y1="171.0" x2="150.0" y2="39.5" stroke="#444" stroke-width="1" /><polygon points="150.0,33.5 153.0,39.5 147.0,39.5" fill="#444" />
+        <text x="278" y="109" font-size="10" fill="#666">x</text>
+        <g stroke="#444" stroke-width="1"><line x1="50" y1="102" x2="50" y2="108" /><line x1="100" y1="102" x2="100" y2="108" /><line x1="200" y1="102" x2="200" y2="108" /><line x1="250" y1="102" x2="250" y2="108" /></g>
+        <g font-size="7.5" fill="#666" text-anchor="middle"><text x="50" y="117">-10</text><text x="100" y="117">-5</text><text x="200" y="117">5</text><text x="250" y="117">10</text></g>
+        <polyline points="30.0,160.0 31.0,160.0 32.0,160.0 33.0,160.0 34.0,160.0 35.0,160.0 36.0,160.0 37.0,160.0 38.0,160.0 39.0,160.0 40.0,160.0 41.0,160.0 42.0,160.0 43.0,160.0 44.0,160.0 45.0,160.0 46.0,160.0 47.0,160.0 48.0,160.0 49.0,160.0 50.0,160.0 51.0,160.0 52.0,160.0 53.0,160.0 54.0,160.0 55.0,160.0 56.0,160.0 57.0,160.0 58.0,160.0 59.0,160.0 60.0,160.0 61.0,160.0 62.0,160.0 63.0,160.0 64.0,160.0 65.0,160.0 66.0,160.0 67.0,160.0 68.0,160.0 69.0,160.0 70.0,160.0 71.0,160.0 72.0,160.0 73.0,160.0 74.0,160.0 75.0,160.0 76.0,160.0 77.0,160.0 78.0,160.0 79.0,160.0 80.0,160.0 81.0,160.0 82.0,160.0 83.0,160.0 84.0,160.0 85.0,160.0 86.0,160.0 87.0,160.0 88.0,160.0 89.0,160.0 90.0,160.0 91.0,160.0 92.0,160.0 93.0,160.0 94.0,160.0 95.0,160.0 96.0,160.0 97.0,160.0 98.0,160.0 99.0,160.0 100.0,160.0 101.0,160.0 102.0,160.0 103.0,160.0 104.0,160.0 105.0,160.0 106.0,160.0 107.0,160.0 108.0,160.0 109.0,160.0 110.0,160.0 111.0,160.0 112.0,159.9 113.0,159.9 114.0,159.9 115.0,159.9 116.0,159.9 117.0,159.9 118.0,159.8 119.0,159.8 120.0,159.7 121.0,159.7 122.0,159.6 123.0,159.5 124.0,159.4 125.0,159.3 126.0,159.1 127.0,158.9 128.0,158.7 129.0,158.4 130.0,158.0 131.0,157.6 132.0,157.1 133.0,156.4 134.0,155.7 135.0,154.8 136.0,153.7 137.0,152.4 138.0,150.9 139.0,149.0 140.0,146.9 141.0,144.4 142.0,141.5 143.0,138.2 144.0,134.5 145.0,130.4 146.0,125.9 147.0,121.0 148.0,115.9 149.0,110.5 150.0,105.0 151.0,99.5 152.0,94.1 153.0,89.0 154.0,84.1 155.0,79.6 156.0,75.5 157.0,71.8 158.0,68.5 159.0,65.6 160.0,63.1 161.0,61.0 162.0,59.1 163.0,57.6 164.0,56.3 165.0,55.2 166.0,54.3 167.0,53.6 168.0,52.9 169.0,52.4 170.0,52.0 171.0,51.6 172.0,51.3 173.0,51.1 174.0,50.9 175.0,50.7 176.0,50.6 177.0,50.5 178.0,50.4 179.0,50.3 180.0,50.3 181.0,50.2 182.0,50.2 183.0,50.1 184.0,50.1 185.0,50.1 186.0,50.1 187.0,50.1 188.0,50.1 189.0,50.0 190.0,50.0 191.0,50.0 192.0,50.0 193.0,50.0 194.0,50.0 195.0,50.0 196.0,50.0 197.0,50.0 198.0,50.0 199.0,50.0 200.0,50.0 201.0,50.0 202.0,50.0 203.0,50.0 204.0,50.0 205.0,50.0 206.0,50.0 207.0,50.0 208.0,50.0 209.0,50.0 210.0,50.0 211.0,50.0 212.0,50.0 213.0,50.0 214.0,50.0 215.0,50.0 216.0,50.0 217.0,50.0 218.0,50.0 219.0,50.0 220.0,50.0 221.0,50.0 222.0,50.0 223.0,50.0 224.0,50.0 225.0,50.0 226.0,50.0 227.0,50.0 228.0,50.0 229.0,50.0 230.0,50.0 231.0,50.0 232.0,50.0 233.0,50.0 234.0,50.0 235.0,50.0 236.0,50.0 237.0,50.0 238.0,50.0 239.0,50.0 240.0,50.0 241.0,50.0 242.0,50.0 243.0,50.0 244.0,50.0 245.0,50.0 246.0,50.0 247.0,50.0 248.0,50.0 249.0,50.0 250.0,50.0 251.0,50.0 252.0,50.0 253.0,50.0 254.0,50.0 255.0,50.0 256.0,50.0 257.0,50.0 258.0,50.0 259.0,50.0 260.0,50.0 261.0,50.0 262.0,50.0 263.0,50.0 264.0,50.0 265.0,50.0 266.0,50.0 267.0,50.0 268.0,50.0 269.0,50.0 270.0,50.0" fill="none" stroke="#2c3e94" stroke-width="1.3" opacity="0.25" />
+        <polyline points="30.0,160.0 31.0,160.0 32.0,160.0 33.0,160.0 34.0,160.0 35.0,160.0 36.0,160.0 37.0,160.0 38.0,160.0 39.0,160.0 40.0,160.0 41.0,160.0 42.0,160.0 43.0,160.0 44.0,160.0 45.0,160.0 46.0,160.0 47.0,160.0 48.0,160.0 49.0,160.0 50.0,160.0 51.0,160.0 52.0,160.0 53.0,160.0 54.0,160.0 55.0,160.0 56.0,160.0 57.0,160.0 58.0,160.0 59.0,160.0 60.0,160.0 61.0,160.0 62.0,160.0 63.0,160.0 64.0,160.0 65.0,160.0 66.0,160.0 67.0,160.0 68.0,160.0 69.0,160.0 70.0,160.0 71.0,160.0 72.0,160.0 73.0,160.0 74.0,159.9 75.0,159.9 76.0,159.9 77.0,159.9 78.0,159.9 79.0,159.9 80.0,159.9 81.0,159.9 82.0,159.9 83.0,159.9 84.0,159.9 85.0,159.8 86.0,159.8 87.0,159.8 88.0,159.8 89.0,159.8 90.0,159.7 91.0,159.7 92.0,159.7 93.0,159.6 94.0,159.6 95.0,159.6 96.0,159.5 97.0,159.5 98.0,159.4 99.0,159.3 100.0,159.3 101.0,159.2 102.0,159.1 103.0,159.0 104.0,158.9 105.0,158.8 106.0,158.7 107.0,158.5 108.0,158.4 109.0,158.2 110.0,158.0 111.0,157.8 112.0,157.6 113.0,157.3 114.0,157.1 115.0,156.8 116.0,156.4 117.0,156.1 118.0,155.7 119.0,155.3 120.0,154.8 121.0,154.3 122.0,153.7 123.0,153.1 124.0,152.4 125.0,151.7 126.0,150.9 127.0,150.0 128.0,149.0 129.0,148.0 130.0,146.9 131.0,145.7 132.0,144.4 133.0,143.0 134.0,141.5 135.0,139.9 136.0,138.2 137.0,136.4 138.0,134.5 139.0,132.5 140.0,130.4 141.0,128.2 142.0,125.9 143.0,123.5 144.0,121.0 145.0,118.5 146.0,115.9 147.0,113.2 148.0,110.5 149.0,107.7 150.0,105.0 151.0,102.3 152.0,99.5 153.0,96.8 154.0,94.1 155.0,91.5 156.0,89.0 157.0,86.5 158.0,84.1 159.0,81.8 160.0,79.6 161.0,77.5 162.0,75.5 163.0,73.6 164.0,71.8 165.0,70.1 166.0,68.5 167.0,67.0 168.0,65.6 169.0,64.3 170.0,63.1 171.0,62.0 172.0,61.0 173.0,60.0 174.0,59.1 175.0,58.3 176.0,57.6 177.0,56.9 178.0,56.3 179.0,55.7 180.0,55.2 181.0,54.7 182.0,54.3 183.0,53.9 184.0,53.6 185.0,53.2 186.0,52.9 187.0,52.7 188.0,52.4 189.0,52.2 190.0,52.0 191.0,51.8 192.0,51.6 193.0,51.5 194.0,51.3 195.0,51.2 196.0,51.1 197.0,51.0 198.0,50.9 199.0,50.8 200.0,50.7 201.0,50.7 202.0,50.6 203.0,50.5 204.0,50.5 205.0,50.4 206.0,50.4 207.0,50.4 208.0,50.3 209.0,50.3 210.0,50.3 211.0,50.2 212.0,50.2 213.0,50.2 214.0,50.2 215.0,50.2 216.0,50.1 217.0,50.1 218.0,50.1 219.0,50.1 220.0,50.1 221.0,50.1 222.0,50.1 223.0,50.1 224.0,50.1 225.0,50.1 226.0,50.1 227.0,50.0 228.0,50.0 229.0,50.0 230.0,50.0 231.0,50.0 232.0,50.0 233.0,50.0 234.0,50.0 235.0,50.0 236.0,50.0 237.0,50.0 238.0,50.0 239.0,50.0 240.0,50.0 241.0,50.0 242.0,50.0 243.0,50.0 244.0,50.0 245.0,50.0 246.0,50.0 247.0,50.0 248.0,50.0 249.0,50.0 250.0,50.0 251.0,50.0 252.0,50.0 253.0,50.0 254.0,50.0 255.0,50.0 256.0,50.0 257.0,50.0 258.0,50.0 259.0,50.0 260.0,50.0 261.0,50.0 262.0,50.0 263.0,50.0 264.0,50.0 265.0,50.0 266.0,50.0 267.0,50.0 268.0,50.0 269.0,50.0 270.0,50.0" fill="none" stroke="#2c3e94" stroke-width="1.3" opacity="0.4" />
+        <polyline points="30.0,159.7 31.0,159.7 32.0,159.7 33.0,159.7 34.0,159.7 35.0,159.7 36.0,159.6 37.0,159.6 38.0,159.6 39.0,159.6 40.0,159.6 41.0,159.5 42.0,159.5 43.0,159.5 44.0,159.5 45.0,159.4 46.0,159.4 47.0,159.4 48.0,159.3 49.0,159.3 50.0,159.3 51.0,159.2 52.0,159.2 53.0,159.1 54.0,159.1 55.0,159.1 56.0,159.0 57.0,159.0 58.0,158.9 59.0,158.8 60.0,158.8 61.0,158.7 62.0,158.7 63.0,158.6 64.0,158.5 65.0,158.5 66.0,158.4 67.0,158.3 68.0,158.2 69.0,158.1 70.0,158.0 71.0,157.9 72.0,157.8 73.0,157.7 74.0,157.6 75.0,157.5 76.0,157.3 77.0,157.2 78.0,157.1 79.0,156.9 80.0,156.8 81.0,156.6 82.0,156.4 83.0,156.3 84.0,156.1 85.0,155.9 86.0,155.7 87.0,155.5 88.0,155.3 89.0,155.0 90.0,154.8 91.0,154.5 92.0,154.3 93.0,154.0 94.0,153.7 95.0,153.4 96.0,153.1 97.0,152.7 98.0,152.4 99.0,152.0 100.0,151.7 101.0,151.3 102.0,150.9 103.0,150.4 104.0,150.0 105.0,149.5 106.0,149.0 107.0,148.5 108.0,148.0 109.0,147.5 110.0,146.9 111.0,146.3 112.0,145.7 113.0,145.1 114.0,144.4 115.0,143.7 116.0,143.0 117.0,142.3 118.0,141.5 119.0,140.7 120.0,139.9 121.0,139.1 122.0,138.2 123.0,137.4 124.0,136.4 125.0,135.5 126.0,134.5 127.0,133.5 128.0,132.5 129.0,131.5 130.0,130.4 131.0,129.3 132.0,128.2 133.0,127.1 134.0,125.9 135.0,124.7 136.0,123.5 137.0,122.3 138.0,121.0 139.0,119.8 140.0,118.5 141.0,117.2 142.0,115.9 143.0,114.5 144.0,113.2 145.0,111.8 146.0,110.5 147.0,109.1 148.0,107.7 149.0,106.4 150.0,105.0 151.0,103.6 152.0,102.3 153.0,100.9 154.0,99.5 155.0,98.2 156.0,96.8 157.0,95.5 158.0,94.1 159.0,92.8 160.0,91.5 161.0,90.2 162.0,89.0 163.0,87.7 164.0,86.5 165.0,85.3 166.0,84.1 167.0,82.9 168.0,81.8 169.0,80.7 170.0,79.6 171.0,78.5 172.0,77.5 173.0,76.5 174.0,75.5 175.0,74.5 176.0,73.6 177.0,72.6 178.0,71.8 179.0,70.9 180.0,70.1 181.0,69.3 182.0,68.5 183.0,67.7 184.0,67.0 185.0,66.3 186.0,65.6 187.0,64.9 188.0,64.3 189.0,63.7 190.0,63.1 191.0,62.5 192.0,62.0 193.0,61.5 194.0,61.0 195.0,60.5 196.0,60.0 197.0,59.6 198.0,59.1 199.0,58.7 200.0,58.3 201.0,58.0 202.0,57.6 203.0,57.3 204.0,56.9 205.0,56.6 206.0,56.3 207.0,56.0 208.0,55.7 209.0,55.5 210.0,55.2 211.0,55.0 212.0,54.7 213.0,54.5 214.0,54.3 215.0,54.1 216.0,53.9 217.0,53.7 218.0,53.6 219.0,53.4 220.0,53.2 221.0,53.1 222.0,52.9 223.0,52.8 224.0,52.7 225.0,52.5 226.0,52.4 227.0,52.3 228.0,52.2 229.0,52.1 230.0,52.0 231.0,51.9 232.0,51.8 233.0,51.7 234.0,51.6 235.0,51.5 236.0,51.5 237.0,51.4 238.0,51.3 239.0,51.3 240.0,51.2 241.0,51.2 242.0,51.1 243.0,51.0 244.0,51.0 245.0,50.9 246.0,50.9 247.0,50.9 248.0,50.8 249.0,50.8 250.0,50.7 251.0,50.7 252.0,50.7 253.0,50.6 254.0,50.6 255.0,50.6 256.0,50.5 257.0,50.5 258.0,50.5 259.0,50.5 260.0,50.4 261.0,50.4 262.0,50.4 263.0,50.4 264.0,50.4 265.0,50.3 266.0,50.3 267.0,50.3 268.0,50.3 269.0,50.3 270.0,50.3" fill="none" stroke="#2c3e94" stroke-width="1.3" opacity="0.55" />
+        <polyline points="30.0,154.8 31.0,154.7 32.0,154.5 33.0,154.4 34.0,154.3 35.0,154.1 36.0,154.0 37.0,153.8 38.0,153.7 39.0,153.5 40.0,153.4 41.0,153.2 42.0,153.1 43.0,152.9 44.0,152.7 45.0,152.6 46.0,152.4 47.0,152.2 48.0,152.0 49.0,151.8 50.0,151.7 51.0,151.5 52.0,151.3 53.0,151.1 54.0,150.9 55.0,150.6 56.0,150.4 57.0,150.2 58.0,150.0 59.0,149.7 60.0,149.5 61.0,149.3 62.0,149.0 63.0,148.8 64.0,148.5 65.0,148.3 66.0,148.0 67.0,147.7 68.0,147.5 69.0,147.2 70.0,146.9 71.0,146.6 72.0,146.3 73.0,146.0 74.0,145.7 75.0,145.4 76.0,145.1 77.0,144.7 78.0,144.4 79.0,144.1 80.0,143.7 81.0,143.4 82.0,143.0 83.0,142.6 84.0,142.3 85.0,141.9 86.0,141.5 87.0,141.1 88.0,140.7 89.0,140.3 90.0,139.9 91.0,139.5 92.0,139.1 93.0,138.7 94.0,138.2 95.0,137.8 96.0,137.4 97.0,136.9 98.0,136.4 99.0,136.0 100.0,135.5 101.0,135.0 102.0,134.5 103.0,134.0 104.0,133.5 105.0,133.0 106.0,132.5 107.0,132.0 108.0,131.5 109.0,131.0 110.0,130.4 111.0,129.9 112.0,129.3 113.0,128.8 114.0,128.2 115.0,127.6 116.0,127.1 117.0,126.5 118.0,125.9 119.0,125.3 120.0,124.7 121.0,124.1 122.0,123.5 123.0,122.9 124.0,122.3 125.0,121.6 126.0,121.0 127.0,120.4 128.0,119.8 129.0,119.1 130.0,118.5 131.0,117.8 132.0,117.2 133.0,116.5 134.0,115.9 135.0,115.2 136.0,114.5 137.0,113.9 138.0,113.2 139.0,112.5 140.0,111.8 141.0,111.2 142.0,110.5 143.0,109.8 144.0,109.1 145.0,108.4 146.0,107.7 147.0,107.1 148.0,106.4 149.0,105.7 150.0,105.0 151.0,104.3 152.0,103.6 153.0,102.9 154.0,102.3 155.0,101.6 156.0,100.9 157.0,100.2 158.0,99.5 159.0,98.8 160.0,98.2 161.0,97.5 162.0,96.8 163.0,96.1 164.0,95.5 165.0,94.8 166.0,94.1 167.0,93.5 168.0,92.8 169.0,92.2 170.0,91.5 171.0,90.9 172.0,90.2 173.0,89.6 174.0,89.0 175.0,88.4 176.0,87.7 177.0,87.1 178.0,86.5 179.0,85.9 180.0,85.3 181.0,84.7 182.0,84.1 183.0,83.5 184.0,82.9 185.0,82.4 186.0,81.8 187.0,81.2 188.0,80.7 189.0,80.1 190.0,79.6 191.0,79.0 192.0,78.5 193.0,78.0 194.0,77.5 195.0,77.0 196.0,76.5 197.0,76.0 198.0,75.5 199.0,75.0 200.0,74.5 201.0,74.0 202.0,73.6 203.0,73.1 204.0,72.6 205.0,72.2 206.0,71.8 207.0,71.3 208.0,70.9 209.0,70.5 210.0,70.1 211.0,69.7 212.0,69.3 213.0,68.9 214.0,68.5 215.0,68.1 216.0,67.7 217.0,67.4 218.0,67.0 219.0,66.6 220.0,66.3 221.0,65.9 222.0,65.6 223.0,65.3 224.0,64.9 225.0,64.6 226.0,64.3 227.0,64.0 228.0,63.7 229.0,63.4 230.0,63.1 231.0,62.8 232.0,62.5 233.0,62.3 234.0,62.0 235.0,61.7 236.0,61.5 237.0,61.2 238.0,61.0 239.0,60.7 240.0,60.5 241.0,60.3 242.0,60.0 243.0,59.8 244.0,59.6 245.0,59.4 246.0,59.1 247.0,58.9 248.0,58.7 249.0,58.5 250.0,58.3 251.0,58.2 252.0,58.0 253.0,57.8 254.0,57.6 255.0,57.4 256.0,57.3 257.0,57.1 258.0,56.9 259.0,56.8 260.0,56.6 261.0,56.5 262.0,56.3 263.0,56.2 264.0,56.0 265.0,55.9 266.0,55.7 267.0,55.6 268.0,55.5 269.0,55.3 270.0,55.2" fill="none" stroke="#2c3e94" stroke-width="1.3" opacity="0.75" />
+        <polyline points="30.0,139.9 31.0,139.7 32.0,139.5 33.0,139.3 34.0,139.1 35.0,138.9 36.0,138.7 37.0,138.5 38.0,138.2 39.0,138.0 40.0,137.8 41.0,137.6 42.0,137.4 43.0,137.1 44.0,136.9 45.0,136.7 46.0,136.4 47.0,136.2 48.0,136.0 49.0,135.7 50.0,135.5 51.0,135.3 52.0,135.0 53.0,134.8 54.0,134.5 55.0,134.3 56.0,134.0 57.0,133.8 58.0,133.5 59.0,133.3 60.0,133.0 61.0,132.8 62.0,132.5 63.0,132.3 64.0,132.0 65.0,131.7 66.0,131.5 67.0,131.2 68.0,131.0 69.0,130.7 70.0,130.4 71.0,130.1 72.0,129.9 73.0,129.6 74.0,129.3 75.0,129.0 76.0,128.8 77.0,128.5 78.0,128.2 79.0,127.9 80.0,127.6 81.0,127.4 82.0,127.1 83.0,126.8 84.0,126.5 85.0,126.2 86.0,125.9 87.0,125.6 88.0,125.3 89.0,125.0 90.0,124.7 91.0,124.4 92.0,124.1 93.0,123.8 94.0,123.5 95.0,123.2 96.0,122.9 97.0,122.6 98.0,122.3 99.0,122.0 100.0,121.6 101.0,121.3 102.0,121.0 103.0,120.7 104.0,120.4 105.0,120.1 106.0,119.8 107.0,119.4 108.0,119.1 109.0,118.8 110.0,118.5 111.0,118.1 112.0,117.8 113.0,117.5 114.0,117.2 115.0,116.8 116.0,116.5 117.0,116.2 118.0,115.9 119.0,115.5 120.0,115.2 121.0,114.9 122.0,114.5 123.0,114.2 124.0,113.9 125.0,113.5 126.0,113.2 127.0,112.9 128.0,112.5 129.0,112.2 130.0,111.8 131.0,111.5 132.0,111.2 133.0,110.8 134.0,110.5 135.0,110.1 136.0,109.8 137.0,109.5 138.0,109.1 139.0,108.8 140.0,108.4 141.0,108.1 142.0,107.7 143.0,107.4 144.0,107.1 145.0,106.7 146.0,106.4 147.0,106.0 148.0,105.7 149.0,105.3 150.0,105.0 151.0,104.7 152.0,104.3 153.0,104.0 154.0,103.6 155.0,103.3 156.0,102.9 157.0,102.6 158.0,102.3 159.0,101.9 160.0,101.6 161.0,101.2 162.0,100.9 163.0,100.5 164.0,100.2 165.0,99.9 166.0,99.5 167.0,99.2 168.0,98.8 169.0,98.5 170.0,98.2 171.0,97.8 172.0,97.5 173.0,97.1 174.0,96.8 175.0,96.5 176.0,96.1 177.0,95.8 178.0,95.5 179.0,95.1 180.0,94.8 181.0,94.5 182.0,94.1 183.0,93.8 184.0,93.5 185.0,93.2 186.0,92.8 187.0,92.5 188.0,92.2 189.0,91.9 190.0,91.5 191.0,91.2 192.0,90.9 193.0,90.6 194.0,90.2 195.0,89.9 196.0,89.6 197.0,89.3 198.0,89.0 199.0,88.7 200.0,88.4 201.0,88.0 202.0,87.7 203.0,87.4 204.0,87.1 205.0,86.8 206.0,86.5 207.0,86.2 208.0,85.9 209.0,85.6 210.0,85.3 211.0,85.0 212.0,84.7 213.0,84.4 214.0,84.1 215.0,83.8 216.0,83.5 217.0,83.2 218.0,82.9 219.0,82.6 220.0,82.4 221.0,82.1 222.0,81.8 223.0,81.5 224.0,81.2 225.0,81.0 226.0,80.7 227.0,80.4 228.0,80.1 229.0,79.9 230.0,79.6 231.0,79.3 232.0,79.0 233.0,78.8 234.0,78.5 235.0,78.3 236.0,78.0 237.0,77.7 238.0,77.5 239.0,77.2 240.0,77.0 241.0,76.7 242.0,76.5 243.0,76.2 244.0,76.0 245.0,75.7 246.0,75.5 247.0,75.2 248.0,75.0 249.0,74.7 250.0,74.5 251.0,74.3 252.0,74.0 253.0,73.8 254.0,73.6 255.0,73.3 256.0,73.1 257.0,72.9 258.0,72.6 259.0,72.4 260.0,72.2 261.0,72.0 262.0,71.8 263.0,71.5 264.0,71.3 265.0,71.1 266.0,70.9 267.0,70.7 268.0,70.5 269.0,70.3 270.0,70.1" fill="none" stroke="#2c3e94" stroke-width="1.3" opacity="1.0" />
+        <text x="34" y="94" font-size="8.5" fill="#2c3e94">n = 1, 2, 4, 8, 16 (faint → dark)</text>
+        <g fill="#b91c1c"><circle cx="159.7" cy="63.8" r="2.4" /><circle cx="169.5" cy="63.8" r="2.4" /><circle cx="188.9" cy="63.8" r="2.4" /><circle cx="227.8" cy="63.8" r="2.4" /></g>
+        <line x1="233.8" y1="63.8" x2="267.0" y2="63.8" stroke="#b91c1c" stroke-width="1" /><polygon points="272.0,63.8 267.0,66.2 267.0,61.2" fill="#b91c1c" />
+        <text x="144" y="66.8" font-size="8" fill="#b91c1c" text-anchor="end">level ¾ drifts to ∞</text>
+        <line x1="184" y1="105" x2="184" y2="85.3" stroke="#a86f00" stroke-width="1" />
+        <g stroke="#a86f00" stroke-width="1"><line x1="181" y1="85.3" x2="187" y2="85.3" /></g>
+        <text x="189" y="83.3" font-size="8" fill="#a86f00">sup over K = tanh(R/n)</text>
+        <g font-size="9" fill="#444">
+          <text x="12" y="200">on K = [−R, R]: sup |fₙ| = tanh(R/n) → 0: locally uniform</text>
+          <text x="12" y="213">on ℝ: sup |fₙ| = 1 for every n: not uniform, the step escapes</text>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-label">Window suprema tanh(R/n) against n</div>
+      <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" width="340" aria-label="Chart of the window supremum tanh of R over n against n from 1 to 16 for R equal 1, 3, 10 and 30, each curve decaying to zero later for larger R, and a red constant line at one for the supremum over the whole real line">
+        <line x1="40.0" y1="165.0" x2="264.0" y2="165.0" stroke="#444" stroke-width="1" /><polygon points="270.0,165.0 264.0,168.0 264.0,162.0" fill="#444" />
+        <line x1="40.0" y1="165.0" x2="40.0" y2="46.0" stroke="#444" stroke-width="1" /><polygon points="40.0,40.0 43.0,46.0 37.0,46.0" fill="#444" />
+        <text x="272" y="169" font-size="10" fill="#666">n</text>
+        <text x="40" y="36" font-size="8.5" fill="#666" text-anchor="middle">sup |fₙ|</text>
+        <g font-size="8" fill="#666" text-anchor="middle"><text x="40.0" y="178">1</text><text x="83.5" y="178">4</text><text x="141.5" y="178">8</text><text x="199.5" y="178">12</text><text x="257.5" y="178">16</text></g>
+        <g font-size="8" fill="#666" text-anchor="end"><text x="35" y="168">0</text><text x="35" y="58">1</text></g>
+        <line x1="40" y1="55" x2="258" y2="55" stroke="#b91c1c" stroke-width="1.3" />
+        <g fill="#b91c1c"><circle cx="40.0" cy="55" r="2.2" /><circle cx="54.5" cy="55" r="2.2" /><circle cx="69.0" cy="55" r="2.2" /><circle cx="83.5" cy="55" r="2.2" /><circle cx="98.0" cy="55" r="2.2" /><circle cx="112.5" cy="55" r="2.2" /><circle cx="127.0" cy="55" r="2.2" /><circle cx="141.5" cy="55" r="2.2" /><circle cx="156.0" cy="55" r="2.2" /><circle cx="170.5" cy="55" r="2.2" /><circle cx="185.0" cy="55" r="2.2" /><circle cx="199.5" cy="55" r="2.2" /><circle cx="214.0" cy="55" r="2.2" /><circle cx="228.5" cy="55" r="2.2" /><circle cx="243.0" cy="55" r="2.2" /><circle cx="257.5" cy="55" r="2.2" /></g>
+        <text x="150" y="49" font-size="8.5" fill="#b91c1c" text-anchor="middle">sup over ℝ = 1, every n</text>
+        <polyline points="40.0,81.2 54.5,114.2 69.0,129.6 83.5,138.1 98.0,143.3 112.5,146.8 127.0,149.4 141.5,151.3 156.0,152.8 170.5,154.0 185.0,155.0 199.5,155.9 214.0,156.6 228.5,157.2 243.0,157.7 257.5,158.1" fill="none" stroke="#2c3e94" stroke-width="1.2" opacity="0.4" />
+        <g fill="#2c3e94" opacity="0.4"><circle cx="40.0" cy="81.2" r="2" /><circle cx="54.5" cy="114.2" r="2" /><circle cx="69.0" cy="129.6" r="2" /><circle cx="83.5" cy="138.1" r="2" /><circle cx="98.0" cy="143.3" r="2" /><circle cx="112.5" cy="146.8" r="2" /><circle cx="127.0" cy="149.4" r="2" /><circle cx="141.5" cy="151.3" r="2" /><circle cx="156.0" cy="152.8" r="2" /><circle cx="170.5" cy="154.0" r="2" /><circle cx="185.0" cy="155.0" r="2" /><circle cx="199.5" cy="155.9" r="2" /><circle cx="214.0" cy="156.6" r="2" /><circle cx="228.5" cy="157.2" r="2" /><circle cx="243.0" cy="157.7" r="2" /><circle cx="257.5" cy="158.1" r="2" /></g>
+        <text x="263.5" y="161.1" font-size="8" fill="#2c3e94">R = 1</text>
+        <polyline points="40.0,55.5 54.5,65.4 69.0,81.2 83.5,95.1 98.0,105.9 112.5,114.2 127.0,120.5 141.5,125.6 156.0,129.6 170.5,133.0 185.0,135.7 199.5,138.1 214.0,140.1 228.5,141.8 243.0,143.3 257.5,144.6" fill="none" stroke="#2c3e94" stroke-width="1.2" opacity="0.6" />
+        <g fill="#2c3e94" opacity="0.6"><circle cx="40.0" cy="55.5" r="2" /><circle cx="54.5" cy="65.4" r="2" /><circle cx="69.0" cy="81.2" r="2" /><circle cx="83.5" cy="95.1" r="2" /><circle cx="98.0" cy="105.9" r="2" /><circle cx="112.5" cy="114.2" r="2" /><circle cx="127.0" cy="120.5" r="2" /><circle cx="141.5" cy="125.6" r="2" /><circle cx="156.0" cy="129.6" r="2" /><circle cx="170.5" cy="133.0" r="2" /><circle cx="185.0" cy="135.7" r="2" /><circle cx="199.5" cy="138.1" r="2" /><circle cx="214.0" cy="140.1" r="2" /><circle cx="228.5" cy="141.8" r="2" /><circle cx="243.0" cy="143.3" r="2" /><circle cx="257.5" cy="144.6" r="2" /></g>
+        <text x="263.5" y="147.6" font-size="8" fill="#2c3e94">R = 3</text>
+        <polyline points="40.0,55.0 54.5,55.0 69.0,55.3 83.5,56.5 98.0,59.0 112.5,62.6 127.0,66.9 141.5,71.7 156.0,76.5 170.5,81.2 185.0,85.7 199.5,90.0 214.0,93.9 228.5,97.5 243.0,100.9 257.5,104.0" fill="none" stroke="#2c3e94" stroke-width="1.2" opacity="0.8" />
+        <g fill="#2c3e94" opacity="0.8"><circle cx="40.0" cy="55.0" r="2" /><circle cx="54.5" cy="55.0" r="2" /><circle cx="69.0" cy="55.3" r="2" /><circle cx="83.5" cy="56.5" r="2" /><circle cx="98.0" cy="59.0" r="2" /><circle cx="112.5" cy="62.6" r="2" /><circle cx="127.0" cy="66.9" r="2" /><circle cx="141.5" cy="71.7" r="2" /><circle cx="156.0" cy="76.5" r="2" /><circle cx="170.5" cy="81.2" r="2" /><circle cx="185.0" cy="85.7" r="2" /><circle cx="199.5" cy="90.0" r="2" /><circle cx="214.0" cy="93.9" r="2" /><circle cx="228.5" cy="97.5" r="2" /><circle cx="243.0" cy="100.9" r="2" /><circle cx="257.5" cy="104.0" r="2" /></g>
+        <text x="263.5" y="107.0" font-size="8" fill="#2c3e94">R = 10</text>
+        <polyline points="40.0,55.0 54.5,55.0 69.0,55.0 83.5,55.0 98.0,55.0 112.5,55.0 127.0,55.0 141.5,55.1 156.0,55.3 170.5,55.5 185.0,55.9 199.5,56.5 214.0,57.2 228.5,58.0 243.0,59.0 257.5,60.1" fill="none" stroke="#2c3e94" stroke-width="1.2" opacity="1.0" />
+        <g fill="#2c3e94" opacity="1.0"><circle cx="40.0" cy="55.0" r="2" /><circle cx="54.5" cy="55.0" r="2" /><circle cx="69.0" cy="55.0" r="2" /><circle cx="83.5" cy="55.0" r="2" /><circle cx="98.0" cy="55.0" r="2" /><circle cx="112.5" cy="55.0" r="2" /><circle cx="127.0" cy="55.0" r="2" /><circle cx="141.5" cy="55.1" r="2" /><circle cx="156.0" cy="55.3" r="2" /><circle cx="170.5" cy="55.5" r="2" /><circle cx="185.0" cy="55.9" r="2" /><circle cx="199.5" cy="56.5" r="2" /><circle cx="214.0" cy="57.2" r="2" /><circle cx="228.5" cy="58.0" r="2" /><circle cx="243.0" cy="59.0" r="2" /><circle cx="257.5" cy="60.1" r="2" /></g>
+        <text x="263.5" y="63.1" font-size="8" fill="#2c3e94">R = 30</text>
+        <g font-size="9" fill="#444">
+          <text x="12" y="200">each window sup tanh(R/n) → 0, but slower for larger R</text>
+          <text x="12" y="213">no single N serves every R: locally uniform ≠ uniform on ℝ</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <figcaption>The local example $f_n(x) = \tanh(x/n)$. <strong>Left.</strong> As $n$ grows the graphs flatten, but each one still climbs to $\pm 1$: the step only moves outward, with $f_n$ reaching the level $\tfrac{3}{4}$ at $x \approx 0.97\,n$. Inside any compact window $K = [-R, R]$ the whole graph lies below $\tanh(R/n)$, which tends to $0$, so $f_n \to 0$ uniformly on $K$. On all of $\mathbb{R}$ the supremum stays $1$, so the convergence is not uniform. <strong>Right.</strong> The window suprema $\tanh(R/n)$ against $n$ for several $R$: every curve tends to $0$, but the larger the window the later it starts to drop, and the supremum over $\mathbb{R}$ never drops at all. Uniform convergence on $\mathbb{R}$ would need one $N$ that works for every $R$, and there is none. This is the same escape to infinity as the sliding boxes in the weak-convergence section below: on a non-compact domain, mass can run off to where no fixed window sees it. That is exactly why the local theorem can only promise uniform convergence on each compact $K_m$ of an exhaustion $K_1 \subset K_2 \subset \cdots$ of $\mathbb{R}$, and why on a compact domain the distinction disappears.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Compactness from Uniform $L^2$ Bounds on a Function and its Derivative)</span></p>
@@ -8841,6 +9005,52 @@ This is a one-dimensional instance of the Sobolev--Morrey embedding together wit
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Compactness vs. Sequential compactness: Metric Spaces)</span></p>
+
+**In metric spaces, compactness and sequential compactness are equivalent.** But this equivalence fails in general topological spaces.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(In Metric Space: Compactness $\iff$ Sequential compactness)</span></p>
+
+Let $(X,d)$ be a metric space and $K\subseteq X$. Then
+
+$$K\text{ is compact} \iff K\text{ is sequentially compact}.$$
+
+</div>
+
+Here:
+- **Compactness**: Every open cover of $K$ has a finite subcover.
+- **Sequential compactness**: Every sequence in $K$ admits a subsequence converging to a point in $K$.
+
+Therefore, in normed spaces equipped with their norm topology, you can use these notions interchangeably.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Compactness vs. Sequential compactness: Non-metrizable Space)</span></p>
+
+Because the **weak topology is generally not metrizable** on an infinite-dimensional Banach space.
+
+Consequently, the equivalence between compactness and sequential compactness is no longer automatic.
+
+However, there is a remarkable theorem:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Eberlein–Šmulian Theorem)</span></p>
+
+For a Banach space $X$ and $K\subseteq X$,
+
+$$K\text{ is weakly compact} \iffK\text{ is weakly sequentially compact}.$$
+
+Thus, for weak topologies on Banach spaces, the equivalence is restored despite their possible nonmetrizability.
+
+</div>
+
+**The distinction becomes especially important for weak-$\ast$ topologies:** Banach–Alaoglu guarantees weak-$\ast$ compactness of the dual unit ball, but weak-$\ast$ sequential compactness does not follow in general. Separability of the predual is a standard sufficient condition.
+
+</div>
+
 ## Weak Convergence in Hilbert Spaces
 
 The proof of Theorem 197 extracted a subsequence along which **every Fourier coefficient** $\langle u\_n, e\_k \rangle$ converges, and then needed equi-small tails to upgrade this to norm convergence. Without the tail condition we still get something useful: a weaker notion of convergence for which bounded sets **are** (sequentially) compact — an infinite-dimensional substitute for Heine–Borel.
@@ -8852,7 +9062,7 @@ A sequence $\lbrace u\_n \rbrace$ in a Hilbert space $H$ **converges weakly** to
 
 $$u_n \rightharpoonup u,$$
 
-if $\langle u\_n, v \rangle \to \langle u, v \rangle$ for every $v \in H$. To distinguish it, ordinary norm convergence $\lVert u\_n - u \rVert \to 0$ is called **strong** convergence.
+if $\langle u\_n, v \rangle \to \langle u, v \rangle$ for every $v \in H$. Equivalently,  $\lvert \langle u\_n - u, v \rangle \rvert \to 0$ for every $v \in H$. To distinguish it, ordinary norm convergence $\lVert u\_n - u \rVert \to 0$ is called **strong** convergence.
 
 </div>
 
@@ -9012,13 +9222,23 @@ In particular, every weakly convergent sequence is bounded.
 
 <div class="accordion" markdown="1">
 <details markdown="1">
+<summary>hint</summary>
+
+1. The weakly convergent sequence is bounded, since induces a family of uniformly bounded linear operators $(T_n=\langle \cdot, u_n\rangle)$ with the same norms $\lVert u_n \rVert$, where boundednes comes from the convergence for any input and further application of Uniform Boundedness Principle.
+2. The sequence $(T_n=\langle \cdot, u_n\rangle)$ of linear bounded operators converge to a linear bounded operator $T\in H^\ast$. By the Riesz Representation Theorem there is $u \in H$ with $T(v) = \langle v, u \rangle$ for all $v$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
 <summary>proof</summary>
 
-Consider the bounded linear functionals $T\_n(v) = \langle v, u\_n \rangle$ (the order is reversed to make them linear rather than conjugate-linear). By Cauchy–Schwarz and $T\_n(u\_n) = \lVert u\_n \rVert^2$, we have $\lVert T\_n \rVert = \lVert u\_n \rVert$.
+Consider the bounded linear functionals $T\_n(v) = \langle v, u\_n \rangle$ (the order is reversed to make them linear rather than conjugate-linear). By Cauchy–Schwarz and choosing a unit test vector $v = \frac{u}{\lVert u\_n \rVert}$ for non-zero $u_n$, we have $\lVert T\_n \rVert = \lVert u\_n \rVert$.
 
 **(1)** For each fixed $v$, the sequence $T\_n(v)$ converges, hence is bounded. By the Uniform Boundedness Principle, $\lVert u\_n \rVert = \lVert T\_n \rVert \le C$ for all $n$.
 
-**(2)** Define $T(v) = \lim\_{n \to \infty} \langle v, u\_n \rangle$. This is linear, and $\lvert T(v) \rvert \le C\lVert v \rVert$, so $T \in H^{\prime}$. By the Riesz Representation Theorem there is $u \in H$ with $T(v) = \langle v, u \rangle$ for all $v$. Conjugating, $\langle u\_n, v \rangle \to \langle u, v \rangle$ for all $v$. $\square$
+**(2)** Define $T(v) = \lim\_{n \to \infty} \langle v, u\_n \rangle$. This is linear, and $\lvert T(v) \rvert \le C\lVert v \rVert$, so $T \in H^{\prime}$. Linearity follows from the linearity of each $T_n$ and preservation of linear combinations under limits. Boundedness follows from the uniform operator-norm bound $\lVert T_n\rVert\le C$, established by the Uniform Boundedness Principle, and continuity of the absolute value. By the Riesz Representation Theorem there is $u \in H$ with $T(v) = \langle v, u \rangle$ for all $v$. Conjugating, $\langle u\_n, v \rangle \to \langle u, v \rangle$ for all $v$. $\square$
 
 </details>
 </div>
@@ -9026,7 +9246,92 @@ Consider the bounded linear functionals $T\_n(v) = \langle v, u\_n \rangle$ (the
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coefficient Convergence Is Not Enough)</span></p>
 
-Let $\lbrace e\_j \rbrace$ be an orthonormal basis and $u\_n = n e\_n$. For each fixed $j$, $\langle u\_n, e\_j \rangle = 0$ as soon as $n > j$, so every coefficient converges (to $0$). But $\lVert u\_n \rVert = n$ is unbounded, so by the theorem above $u\_n$ is **not** weakly convergent. (Concretely, for $v = \sum\_j j^{-1} e\_j$ we get $\langle u\_n, v \rangle = 1$, while $\langle 0, v \rangle = 0$; and for $v = \sum\_j j^{-3/4} e\_j \in H$, $\langle u\_n, v \rangle = n^{1/4} \to \infty$.)
+* Let $\lbrace e\_j \rbrace$ be an orthonormal basis and $u\_n = n e\_n$. 
+* For each fixed $j$, $\langle u\_n, e\_j \rangle = 0$ as soon as $n > j$, 
+  * so every coefficient converges (to $0$). 
+* But $\lVert u\_n \rVert = n$ is unbounded,
+  * so by the theorem above $u\_n$ is **not** weakly convergent.
+  
+Concretely, for $v = \sum\_j j^{-1} e\_j$ we get $\langle u\_n, v \rangle = 1$, while $\langle 0, v \rangle = 0$; and for $v = \sum\_j j^{-3/4} e\_j \in H$, $\langle u\_n, v \rangle = n^{1/4} \to \infty$.
+
+</div>
+
+<figure class="math-figure">
+  <div class="math-figure-row">
+    <div>
+      <div class="panel-label">uₙ = n eₙ: every column → 0, yet ⟨uₙ, v⟩ = 1</div>
+      <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" width="380" aria-label="Table of the coefficients of u n against e k: rows are the vectors u n equal n times e n, columns the basis coordinates; the only nonzero entry of each row is the diagonal entry n drawn in a growing box, so every column shaded in cream ends in zeros, the norm readout column grows without bound, and pairing each row with the green test weights one over k gives the constant one in the red readout column">
+        <rect x="95" y="30" width="22" height="170" fill="#fff7e0" />
+        <rect x="47" y="119" width="241" height="22" fill="#edf4ff" />
+        <path d="M 51,50 H 47 V 200 H 51" fill="none" stroke="#888" stroke-width="1.1" />
+        <path d="M 207,50 H 211 V 200 H 207" fill="none" stroke="#888" stroke-width="1.1" />
+        <text x="40" y="40" font-size="8" fill="#888" text-anchor="end">⟨uₙ, eₖ⟩</text>
+        <g font-size="9" fill="#666" text-anchor="middle"><text x="58" y="40">e₁</text><text x="82" y="40">e₂</text><text x="106" y="40">e₃</text><text x="130" y="40">e₄</text><text x="154" y="40">e₅</text><text x="178" y="40">e₆</text><text x="200" y="40">⋯</text></g>
+        <text x="236" y="40" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="600">‖uₙ‖</text>
+        <text x="272" y="40" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="600">⟨uₙ, v⟩</text>
+        <text x="40" y="22" font-size="9" fill="#0f9b6c" text-anchor="end" font-weight="600">v</text>
+        <g font-size="9" fill="#0f9b6c" text-anchor="middle"><text x="58" y="22">1</text><text x="82" y="22">½</text><text x="106" y="22">⅓</text><text x="130" y="22">¼</text><text x="154" y="22">⅕</text><text x="178" y="22">⅙</text><text x="200" y="22">⋯</text></g>
+        <text x="272" y="22" font-size="8" fill="#0f9b6c" text-anchor="middle">vₖ = 1/k</text>
+        <text x="40" y="67" font-size="9" fill="#444" text-anchor="end">u₁</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="82" y="67">0</text><text x="106" y="67">0</text><text x="130" y="67">0</text><text x="154" y="67">0</text><text x="178" y="67">0</text><text x="200" y="67">⋯</text></g>
+        <rect x="52.7" y="58.7" width="10.6" height="10.6" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="58" y="67.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">1</text>
+        <text x="236" y="67" font-size="9" fill="#1565c0" text-anchor="middle">1</text>
+        <text x="272" y="67" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <text x="40" y="89" font-size="9" fill="#444" text-anchor="end">u₂</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="58" y="89">0</text><text x="106" y="89">0</text><text x="130" y="89">0</text><text x="154" y="89">0</text><text x="178" y="89">0</text><text x="200" y="89">⋯</text></g>
+        <rect x="75.9" y="79.9" width="12.2" height="12.2" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="82" y="89.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">2</text>
+        <text x="236" y="89" font-size="9" fill="#1565c0" text-anchor="middle">2</text>
+        <text x="272" y="89" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <text x="40" y="111" font-size="9" fill="#444" text-anchor="end">u₃</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="58" y="111">0</text><text x="82" y="111">0</text><text x="130" y="111">0</text><text x="154" y="111">0</text><text x="178" y="111">0</text><text x="200" y="111">⋯</text></g>
+        <rect x="99.1" y="101.1" width="13.8" height="13.8" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="106" y="111.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">3</text>
+        <text x="236" y="111" font-size="9" fill="#1565c0" text-anchor="middle">3</text>
+        <text x="272" y="111" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <text x="40" y="133" font-size="9" fill="#444" text-anchor="end">u₄</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="58" y="133">0</text><text x="82" y="133">0</text><text x="106" y="133">0</text><text x="154" y="133">0</text><text x="178" y="133">0</text><text x="200" y="133">⋯</text></g>
+        <rect x="122.3" y="122.3" width="15.4" height="15.4" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="130" y="133.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">4</text>
+        <text x="236" y="133" font-size="9" fill="#1565c0" text-anchor="middle">4</text>
+        <text x="272" y="133" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <text x="40" y="155" font-size="9" fill="#444" text-anchor="end">u₅</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="58" y="155">0</text><text x="82" y="155">0</text><text x="106" y="155">0</text><text x="130" y="155">0</text><text x="178" y="155">0</text><text x="200" y="155">⋯</text></g>
+        <rect x="145.5" y="143.5" width="17.0" height="17.0" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="154" y="155.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">5</text>
+        <text x="236" y="155" font-size="9" fill="#1565c0" text-anchor="middle">5</text>
+        <text x="272" y="155" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <text x="40" y="177" font-size="9" fill="#444" text-anchor="end">u₆</text>
+        <g font-size="9" fill="#444" opacity="0.38" text-anchor="middle"><text x="58" y="177">0</text><text x="82" y="177">0</text><text x="106" y="177">0</text><text x="130" y="177">0</text><text x="154" y="177">0</text><text x="200" y="177">⋯</text></g>
+        <rect x="168.7" y="164.7" width="18.6" height="18.6" fill="#edf4ff" stroke="#1565c0" stroke-width="0.9" />
+        <text x="178" y="177.2" font-size="9" fill="#1565c0" text-anchor="middle" font-weight="700">6</text>
+        <text x="236" y="177" font-size="9" fill="#1565c0" text-anchor="middle">6</text>
+        <text x="272" y="177" font-size="9" fill="#b91c1c" text-anchor="middle" font-weight="700">1</text>
+        <g font-size="10" fill="#888" text-anchor="middle"><text x="37" y="195">⋮</text><text x="200" y="195">⋱</text><text x="236" y="195">⋮</text><text x="272" y="195">⋮</text></g>
+        <text x="106" y="214" font-size="8.5" fill="#a86f00" text-anchor="middle">each column → 0</text>
+        <text x="236" y="214" font-size="8.5" fill="#1565c0" text-anchor="middle">→ ∞</text>
+        <text x="272" y="214" font-size="8.5" fill="#b91c1c" text-anchor="middle">n·(1/n) = 1</text>
+      </svg>
+    </div>
+  </div>
+  <figcaption>The coefficient table of $u_n = n e_n$: row $n$ is the vector $u_n$, column $k$ the coordinate $\langle u_n, e_k \rangle$, and the only non-zero entry of a row is the diagonal one. <strong>Down a column</strong> (shaded) one reads the coefficient sequence $\langle u_n, e_k \rangle$ for fixed $k$: a single entry $k$ and then zeros for ever, so every coefficient converges to $0$. This is all that coordinatewise convergence sees. <strong>Along the diagonal</strong> one reads $\lVert u_n \rVert = n$: the boxes grow without bound, so by the theorem above there can be no weak limit. <strong>Across a row</strong> one reads the pairing with a test vector: with the weights $v = \sum_k e_k / k$ (green; in $H$ since $\sum_k k^{-2} < \infty$) the row $n$ meets the weight $1/n$ exactly where it carries its spike, and $\langle u_n, v \rangle = n \cdot \tfrac{1}{n} = 1$ for every $n$. The weights decay as slowly as $\ell^2$ allows, which is slow enough to catch a spike growing like $n$; with $v = \sum_k k^{-3/4} e_k$ one even gets $\langle u_n, v \rangle = n^{1/4} \to \infty$. Compare the orthonormal sequence $e_n$ from the example above: its table has every diagonal entry equal to $1$, the same $v$ gives $\langle e_n, v \rangle = 1/n \to 0$, and indeed $e_n \rightharpoonup 0$. Weak convergence must survive every $v \in H$, not only the coordinates one checks one at a time, and boundedness is exactly what rules out this escape: that is the content of the proposition that follows.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Can we take any test vector $v$?)</span></p>
+
+**The restriction on the admissible test vectors is what makes weak convergence possible.**
+
+* If we allowed arbitrary formal infinite linear combinations as test vectors, the orthonormal sequence might be distinguishable from zero using an inadmissible $v$. But the Hilbert space structure restricts us to square-summable coefficients.
+
+* For example, consider a sequence of orthonormal vectors $(e_n)$ that converges weakly to $0$ by the results before, and take a fixed test vector $v = \sum_i^\infty n\ce_n$. Then $\langle e_n, v\rangle$ does not weak converge to $0$. So, test vectors must have finite norm since the contradicting $v$ blows up in norm. However, in the definition of weak convergence we only require $v \in H$, which implies that Hilbert space contains only finite norm vectors.
+
+* There is also a subtle connection to the dual space: weak convergence tests against **continuous** linear functionals (linear operator is continuous $\iif$ linear operator is bounded). The proposed $v$ would formally define
+
+  $$T(x)=\langle x,v\rangle=\sum_{n=1}^{\infty}n\langle x,e_n\rangle,$$
+
+  wherever this expression makes sense, but it does not define a bounded linear functional on all of $H$ since $\lVert T \rVert = \lVert v \rVert = \infty$.
 
 </div>
 
@@ -9056,10 +9361,57 @@ Choose $p$ to make the last term small (independently of $n$), then $n$ large to
 </details>
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>My proof</summary>
+
+
+$(\Rightarrow)$ If $\lbrace u_n\rbrace$ converges weakly, then it converges not only coordinstewise, but for every $v\in H$. The boundedness follows from the theorem before the proposition.
+
+$(\Leftarrow)$ The idea is to extract a convergent subsequence by boundedness, then to show that the limit holds for the whole sequence by coordinatewise convergence. By boundedness we extract a subsequence $u_{n_l}$ that converges pointwise to some value $v^k = lim_{l\to\infty} \langle u_{n_l}, e_k\rangle$. The we construct a vector $v$ with nth coordinate being $v^k$ and check that it belongs to a Hilbert space, i.e. has finite norm induced by an inner product. We write,
+
+$$\sum_{k=1}^\infty \lvert \langle v, ek \rangle \rvert^2 = \sum_{k=1}^\infty \lvert \lim_{l\to\infty} \langle unl, ek \rangle \leq \lim_{l\to\infty} \sum_{k=1}^\infty \lvert \langle unl, ek \rangle \rvert^2 = \lim_{l\to\infty} \lVert unl \rVert^2 \leq C^2, $$
+
+where $C$ is a uniform bound from assumption and we exchange the limit and sum since $\lvert \langle u_{n_l}, e_k \rangle \rvert^2 \geq 0$ and we apply Fatou's Lemma (or it could be shown by truncation of the sum and MCT) Thus $\lVert v \rVert \leq C and v \in H$. Since the whole sequence converges pointwise, we have $\langle u_n, e_k\rangle \to \langle v, e_k\rangle$.
+
+Now we want to show that it holds for any $f=\sum_{k=1}^\infty \langle f, e_k \rangle e_k \in H$. However, we cannot exchange the limit in the sum since summands might have negative signs and sum is not monotone:
+
+$$\lim_{n\to\infty} \sum_{k=1}^\infty \langle f, ek \rangle \langle un, ek \rangle$$
+
+We truncate the sum up to summand $N$, show it converges there with any error, then $N\to\infty$:
+
+$$\lim_{n\to\infty} \sum_{k=1}^N \langle f, ek \rangle \langle un, ek \rangle = \sum_{k=1}^N \lim_{n\to\infty} \langle f, ek \rangle \langle un, ek \rangle = \sum_{k=1}^N \langle f, ek \rangle \langle v, ek \rangle.$$
+
+The crucial missing idea is to estimate the tail using Cauchy–Schwarz. Let $P_Nf$ be the prefix sum up to the nth summand. Then we can decompose the function $f$ into the prefix and tail
+
+$$f=P_Nf+(f-P_Nf).$$
+
+Then
+
+$$\begin{aligned} |\langle u_n-v,f\rangle| &\le |\langle u_n-v,P_Nf\rangle|\\ &\quad+ |\langle u_n-v,f-P_Nf\rangle|\\ &\le |\langle u_n-v,P_Nf\rangle| +2C\|f-P_Nf\|. \end{aligned}$$
+
+Now the two terms are controlled independently:
+- For fixed $N$, the first term tends to zero as $n\to\infty$, by coordinatewise convergence.
+- The second term tends to zero as $N\to\infty$, uniformly in $n$, because $P_Nf\to f$ in norm.
+Therefore,
+
+$$\limsup_{n\to\infty} |\langle u_n-v,f\rangle| \le 2C\|f-P_Nf\|.$$
+
+Letting $N\to\infty$ gives
+
+$$\langle u_n,f\rangle\to\langle v,f\rangle \qquad\forall f\in H.$$
+
+Thus $u_n\rightharpoonup v$.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Weak Sequential Compactness of Bounded Sets)</span></p>
 
 In a separable Hilbert space, every bounded sequence has a weakly convergent subsequence.
+
+$$\sup_n\|u_n\|<\infty \implies \exists (u_{n_k}),u\in H: u_{n_k}\rightharpoonup u.$$
 
 </div>
 
@@ -9082,9 +9434,7 @@ One can read this as: *the closed unit ball of a separable Hilbert space is weak
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Weak Lower Semicontinuity of the Norm)</span></p>
 
-If $u\_n \rightharpoonup u$, then
-
-$$\lVert u \rVert \le \liminf_{n \to \infty} \lVert u_n \rVert.$$
+$$u_n \rightharpoonup u \implies \lVert u \rVert \le \liminf_{n \to \infty} \lVert u_n \rVert.$$
 
 </div>
 
@@ -9097,12 +9447,19 @@ Taking $v = u$ in the definition, $\lVert u \rVert^2 = \lim\_n \langle u\_n, u \
 </details>
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Drop in norm of a weak limit)</span></p>
+
 The inequality can be strict — for an orthonormal sequence, $\lVert 0 \rVert = 0 < 1 = \lVert e\_n \rVert$. The norm can only **drop** in a weak limit, and the next result says that this drop is exactly the obstruction to strong convergence.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Weak Convergence + Convergence of Norms = Strong Convergence)</span></p>
 
-Let $v\_n \rightharpoonup v$. Then $v\_n \to v$ strongly if and only if $\lVert v\_n \rVert \to \lVert v \rVert$.
+Let $v\_n \rightharpoonup v$. Then
+
+$$v\_n \to v \text{ strongly } \iff \lVert v\_n \rVert \to \lVert v \rVert.$$
 
 </div>
 
@@ -9147,6 +9504,25 @@ For $K \subset H$ closed and bounded in a separable Hilbert space, the following
 * weakly convergent sequences in $K$ converge strongly (the theorem above).
 
 The same trichotomy reappears for operators: $K$ is compact iff it is a norm limit of finite rank operators iff it maps weakly convergent sequences to strongly convergent ones (Section "Compact Operators").
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Weak Convergence via Dual Pairing)</span></p>
+
+The definition of weak convergence via inner products is specific to Hilbert spaces. More generally, for a normed space $X$ with continuous dual $X^\ast$, **weak convergence is defined through the dual pairing**:
+
+$$x_n \rightharpoonup x \iff \forall f\in X^*,\quad \underbrace{\langle x_n,f\rangle_{X,X^*}}_{f(x_n)} \longrightarrow \underbrace{\langle x,f\rangle_{X,X^*}}_{f(x)}.$$
+
+In a Hilbert space $H$, the **Riesz representation theorem** identifies $H^\ast$ with $H$: every continuous linear functional $f\in H^\ast$ has a unique representation
+
+$$f(u)=\langle u,v_f\rangle_H, \qquad v_f\in H,$$
+
+where the inner product is linear in the first argument. Consequently, the general definition reduces to
+
+$$u_n\rightharpoonup u \iff \forall v\in H,\quad \langle u_n,v\rangle_H\to\langle u,v\rangle_H.$$
+
+Thus, **weak convergence via inner products is a special case of weak convergence via dual pairing**. The latter applies to arbitrary normed spaces, even when no inner product exists. **Summary:** The definition of weak convergence in this notes works only for Hilbert space since every continuous linear functional is representable by an inner product via Riesz representation theorem. In more general spaces we define weak convergence using continuous linear functionals $f$ from a dual space.
 
 </div>
 
@@ -9445,6 +9821,26 @@ In particular, if $A$ has finite-dimensional range and $v\_n \rightharpoonup v$,
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Finite-Rank Operators Map Weak Convergence to Strong Convergence)</span></p>
+
+Let $H_1,H_2$ be Hilbert spaces and $A\in\mathcal{B}(H_1,H_2)$ have finite-dimensional range. Then
+
+$$u_n\rightharpoonup u \quad\Longrightarrow\quad \|Au_n-Au\|_{H_2}\longrightarrow 0.$$
+
+In particular, every finite-rank operator is completely continuous.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>proof</summary>
+
+TODO:
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Integral Operators via Finite Rank Approximation)</span></p>
 
@@ -9462,7 +9858,7 @@ Theorem 210 gives a second proof that an integral operator $Tf(x) = \int\_a^b K(
 Let $H$ be a separable Hilbert space, and let $K(H)$ be the set of compact operators on $H$. Then:
 
 1. $K(H)$ is a closed subspace of $\mathcal{B}(H)$.
-2. For any $T \in K(H)$, we also have $T^* \in K(H)$.
+2. For any $T \in K(H)$, we also have $T^\ast \in K(H)$.
 3. For any $T \in K(H)$ and $A, B \in \mathcal{B}(H)$, we have $ATB \in K(H)$.
 
 </div>
