@@ -32,6 +32,7 @@ date: 2024-10-20
 - [Geometric Deep Learning HD](/subpages/books/geometric_deep_learning_hd/)
 - [SDEs and Diffusion Models HD](/subpages/books/sde_hd/)
 - [PDEs in Data Science HD](/subpages/books/pdeds/)
+- [Calculus of Variations HD](/subpages/books/calculus_of_variations_hd/)
 - [Reinforcement Learning HD](/subpages/reinforcement_learning_hd/)
 - [ACO HD](/subpages/books/aco/)
 - [DSO CUNI](/subpages/books/dso/)

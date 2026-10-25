@@ -1,6 +1,18 @@
 {
  "entries": [
   {
+   "title": "Books",
+   "url": "/notes/books/",
+   "date": "2026-10-25",
+   "added": false
+  },
+  {
+   "title": "Calculus of Variations",
+   "url": "/subpages/books/calculus_of_variations_hd/",
+   "date": "2026-10-25",
+   "added": true
+  },
+  {
    "title": "Introduction to Functional Analysis",
    "url": "/subpages/books/functional_analysis/mit_rogriguez/",
    "date": "2026-10-22",
@@ -165,18 +177,6 @@
   {
    "title": "Problems from the Reinforcement Learning course",
    "url": "/subpages/reinforcement_learning_hd/problems/",
-   "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Reinforcement Learning (HD)",
-   "url": "/subpages/reinforcement_learning_hd/",
-   "date": "2026-07-23",
-   "added": false
-  },
-  {
-   "title": "Reinforcement Learning (HD): Problem Sheet 6",
-   "url": "/subpages/reinforcement_learning_hd/problems/sheet06/",
    "date": "2026-07-23",
    "added": true
   }
