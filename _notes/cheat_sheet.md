@@ -762,7 +762,7 @@ In categorical terms, the initial topology is the unique topology on $X$ for whi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__namExample">(Intiial topologies)</span></p>
 
 Here are four worked examples, going from the simplest to the most useful in your current functional-analysis context.
@@ -1032,7 +1032,7 @@ The right class for **minimization**: a l.s.c. function attains its infimum on a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(four canonical plots)</span></p>
 
 <figure>
@@ -1047,7 +1047,7 @@ The right class for **minimization**: a l.s.c. function attains its infimum on a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(epigraph characterization)</span></p>
 
 <figure>
@@ -1260,7 +1260,7 @@ Caveat: $\mathbb{F}^X$ generally does **not** satisfy the usual conditions out o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(natural vs non-natural filtration of the same process)</span></p>
 
 Take i.i.d. fair $\pm 1$ steps $X_1, X_2, \dots$ and the simple symmetric random walk $S_n = X_1 + \cdots + X_n$. Assume the underlying $(\Omega, \mathcal{F}, \mathbb{P})$ is rich enough to also carry an **independent** fair coin $U \in \lbrace 0, 1\rbrace$ with $U \perp (X_k)\_{k \ge 1}$.

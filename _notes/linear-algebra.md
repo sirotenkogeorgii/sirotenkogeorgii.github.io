@@ -55,7 +55,7 @@ Elements of $V$ are called **vectors**, and elements of $\mathbb{T}$ are called 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of vector spaces)</span></p>
 
 ### 1) Arithmetic space $\mathbb{R}^n$ (more generally $\mathbb{T}^n$ over a field $\mathbb{T}$)
@@ -152,7 +152,7 @@ satisfying:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^n$)</span></p>
 
 For vectors
@@ -198,7 +198,7 @@ satisfying:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{C}^n$)</span></p>
 
 For
@@ -308,7 +308,7 @@ Every finite-dimensional inner product space admits an orthonormal basis.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uniqueness of dot product form)</span></p>
 
 If $\lbrace e_i \rbrace$ is orthonormal, then
@@ -403,7 +403,7 @@ there exist norms which do **not** arise from any inner product.
 
 ### Example of a Non–Inner-Product Norm
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^1$-norm on $\mathbb{R}^n$)</span></p>
 
 For $x = (x_1,\dots,x_n) \in \mathbb{R}^n$, define
@@ -481,7 +481,7 @@ All norms on a finite-dimensional vector space are equivalent.
 
 ### Example: A Classic Banach Space
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^2$ space)</span></p>
 
 Let
@@ -1024,7 +1024,7 @@ $$T = \begin{pmatrix} \lambda_1 & 0 & \cdots & 0 \\ 0 & \lambda_2 & \cdots & 0 \
 
 Computing $T^{100}$ with such a matrix is trivial: $e_i \mapsto \lambda_i^{100} e_i$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Getting lucky)</span></p>
 
 Let $V$ be two-dimensional with basis $e_1, e_2$. Consider the map $T: V \to V$ defined by $e_1 \mapsto 2e_1$ and $e_2 \mapsto e_1 + 3e_2$, so
@@ -1063,7 +1063,7 @@ We abbreviate "$v$ is an eigenvector with eigenvalue $\lambda$" to "$v$ is a $\l
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenvectors of a $2 \times 2$ matrix)</span></p>
 
 Consider $T = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
@@ -1083,7 +1083,7 @@ For any $\lambda$, the **$\lambda$-eigenspace** is the set of $\lambda$-eigenvec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenvalues need not exist)</span></p>
 
 Let $V = \mathbb{R}^2$ and let $T$ be the map which rotates a vector by $90°$ around the origin. Then $T(v)$ is not a multiple of $v$ for any nonzero $v \in V$.
@@ -1133,7 +1133,7 @@ $$V = J_1 \oplus J_2 \oplus \cdots \oplus J_m$$
 
 where $T$ acts on each subspace $J_i$ independently. In the simplest case $\dim J_i = 1$, so $J_i$ has a basis element $e$ with $T(e) = \lambda_i e$ (a simple eigenvalue). When $\dim J_i \geq 2$, we get $1$'s above the diagonal ("descending staircases").
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Concrete Jordan form)</span></p>
 
 Let $T: k^6 \to k^6$ be given by
@@ -1157,7 +1157,7 @@ A map $T: V \to V$ is **nilpotent** if $T^m$ is the zero map for some integer $m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The descending staircase)</span></p>
 
 Let $V = k^{\oplus 3}$ with basis $e_1, e_2, e_3$. The map $T$ sending
@@ -1172,7 +1172,7 @@ which is a Jordan block with $\lambda = 0$. The only eigenvalue is $0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double staircase)</span></p>
 
 Let $V = k^{\oplus 5}$ with basis $e_1, \dots, e_5$. The map
@@ -1237,7 +1237,7 @@ Let $T: V \to V$ be a linear map and $\lambda$ a scalar.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenspaces via Jordan form)</span></p>
 
 Consider the matrix in Jordan form
@@ -1304,7 +1304,7 @@ It is a $k$-vector space under $c \cdot (v \otimes w) = (c \cdot v) \otimes w = 
 
 In what follows we abbreviate $\otimes_k$ to $\otimes$ when the field is clear.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two-variable polynomials as a tensor product)</span></p>
 
 The construction works in infinite dimensions too. The cleanest example is
@@ -1341,7 +1341,7 @@ In particular, $\dim(V \otimes W) = \dim V \cdot \dim W$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Explicit computation of $v \otimes w$)</span></p>
 
 Let $V$ have basis $e_1, e_2$ and $W$ have basis $f_1, f_2$. Take $v = 3 e_1 + 4 e_2 \in V$ and $w = 5 f_1 + 6 f_2 \in W$. Then
@@ -1415,7 +1415,7 @@ Equivalently, $e_i^\vee(v)$ extracts the coefficient of $e_i$ in the basis expan
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The row matrix $[3\; 4\; 5]$ in the dual basis)</span></p>
 
 The functional $f$ above is
@@ -1497,7 +1497,7 @@ is an isomorphism of vector spaces. In other words, every linear map $V \to W$ h
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A $2 \times 2$ matrix as a tensor)</span></p>
 
 Let $V = \mathbb{R}^2$ with basis $e_1, e_2$, and let $T \colon V \to V$ be given by
@@ -1557,7 +1557,7 @@ $$\operatorname{Hom}(V, V) \;\xrightarrow{\;\cong\;}\; V^\vee \otimes V \;\xrigh
 
 Both maps in the composition are basis-free, so $\operatorname{Tr} T$ is intrinsically defined — it cannot depend on a choice of basis. It remains to check that this matches the elementary "sum of diagonal entries" formula.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The trace is the sum of the diagonal entries)</span></p>
 
 Continuing the previous example with $T = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$, the corresponding element of $V^\vee \otimes V$ is

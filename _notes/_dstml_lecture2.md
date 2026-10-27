@@ -25,7 +25,7 @@ Now each equation depends only on one variable $y_i$, so the system is decoupled
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
 
 A system is **coupled** if one equation contains several state variables, like
@@ -59,7 +59,7 @@ If $A$ is diagonalizable, this gives independent scalar ODEs.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
 
 Take
@@ -107,7 +107,7 @@ So, in one sentence:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Physical Example)</span></p>
 
 To really understand decoupling, it helps to step away from the abstract matrix $A$ and look at a physical example. 
@@ -378,7 +378,7 @@ In the degenerate case, the solution involves not just exponential terms, but al
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the $2 \times 2$ matrix from the third canonical form, which has a repeated eigenvalue a: 
@@ -797,7 +797,7 @@ We must consider two sub-cases:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Flip Oscillation)</span></p>
 
 Consider the system 
@@ -1401,7 +1401,7 @@ This linear map is equivalent to the continuous-time linear ODE system in a spec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Equivalent Discrete-Time System)</span></p>
 
 <figure>
@@ -1460,7 +1460,7 @@ To find the corresponding offset vector $b$, we can enforce the condition that t
 
 The principles of establishing equivalence between continuous and discrete systems are not merely theoretical exercises. They have profound implications in modern machine learning and computational neuroscience.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Linear Recurrent Neural Networks)</span></p>
 
 An important class of models in machine learning is the **Piecewise Linear Recurrent Neural Network (PL-RNN)**. These networks are often defined using the Rectified Linear Unit (ReLU) activation function, which is a piecewise linear function.
@@ -1490,7 +1490,7 @@ This has a profound consequence: by making subtle changes to the system's parame
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Addition Problem in Machine Learning)</span></p>
 
 A classic benchmark for recurrent neural networks is the addition problem. The network receives two input streams:
@@ -1505,7 +1505,7 @@ A line attractor provides a simple and elegant solution. A two-unit PL-RNN can s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Attractors in Natural Intelligence)</span></p>
 
 This is not merely a machine learning construct. There is evidence for the existence of line attractors, plane attractors, and even torus attractors (shaped like a donut) in biological brains, for example, in the hippocampus, an area critical for memory and navigation.
@@ -1611,7 +1611,7 @@ This is the standard **forward Euler discretisation**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exact discretization vs. Numerical discretization)</span></p>
 
 Take
@@ -1641,7 +1641,7 @@ So:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear DS: Exact Discretization)</span></p>
 
 For a linear continuous system
@@ -1758,7 +1758,7 @@ Having defined the concepts of flows and trajectories, a fundamental question ar
 
 The unfortunate answer is no, unique solutions are not guaranteed for all systems. However, the fortunate reality is that for the vast majority of well-behaved systems, they almost always do. The conditions where uniqueness fails are quite specific.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the following initial value problem:

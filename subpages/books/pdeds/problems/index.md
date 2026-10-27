@@ -63,7 +63,7 @@ Geometrically, $p \in \partial E(x)$ iff the affine function $y \mapsto E(x) + \
 
 </details>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Subdifferential)</span></p>
 
 Show the following statements.
@@ -202,7 +202,7 @@ In particular $E'(x; -v) = \langle p, -v\rangle = -E'(x; v)$, so the *two-sided*
 
 </details>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span><span class="math-callout__name">(Convex functions)</span></p>
 
 Let $E : \mathbb{R}^N \to [0, \infty)$ be convex and finite-valued.
@@ -351,7 +351,7 @@ Sheet 1 set up the subdifferential abstractly and showed that it captures *first
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1</span><span class="math-callout__name">(Subdifferential of common non-smooth energies)</span></p>
 
 **a)** $E(x) := \lvert x\rvert$ for $x \in \mathbb R$. Compute $\partial E(x)$ for all $x \in \mathbb R$.
@@ -533,7 +533,7 @@ contradicting (†). Hence $p \in C$. $\blacksquare$
 
 </details>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.2</span><span class="math-callout__name">(Long-term asymptotics via the Łojasiewicz inequality)</span></p>
 
 Let $E : \mathbb R^N \to [0, \infty)$ be continuously differentiable and assume the **Łojasiewicz inequality**: for every $x \in \mathbb R^N$ there exists a neighbourhood $U$ of $x$, a constant $C > 0$, and an exponent $\theta \in (0, 1)$ such that
@@ -631,7 +631,7 @@ So $x(t) \to x^\ast_\infty$ for some $x^\ast_\infty \in \mathbb R^N$. Since $x^\
 
 </details>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span><span class="math-callout__name">(Convergence rates: convex vs. uniformly convex)</span></p>
 
 Find a convex (but not uniformly convex) energy $E : \mathbb R \to [0, \infty)$ such that the convergence to equilibrium of the gradient flow is only **algebraic** and not exponential. Is the bound from Theorem 5 sharp?
@@ -723,7 +723,7 @@ Exercise 7.2 is about the **gluing lemma**: two transference plans $\pi\_{1,2}\i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.1</span><span class="math-callout__name">(Displacement convexity in Eulerian coordinates)</span></p>
 
 **a)** Show that
@@ -983,7 +983,7 @@ Probabilistically: draw the middle variable $x\_2\sim\mu\_2$; given $x\_2$, draw
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.2</span><span class="math-callout__name">(The triple coupling, explicitly)</span></p>
 
 Write down the formula for the "triple coupling" in the gluing lemma in the case: $\pi\_{1,2}$ and $\pi\_{2,3}$ are probability measures on $\mathbb R^d\times\mathbb R^d$ and

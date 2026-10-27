@@ -117,7 +117,7 @@ By definition, $f_i \colon X \to Y_i$ is continuous iff $f_i^{-1}(U) \subseteq X
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">()</span></p>
 
 Let $X = \lbrace a, b\rbrace$ and $f \colon X \to \mathbb{R}$ with $f(a) = 0$, $f(b) = 1$. Then
@@ -137,7 +137,7 @@ A map $g \colon Z \to X$ is continuous iff $g^{-1}(V) \subseteq Z$ is open in $Z
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">()</span></p>
 
 If $X = \mathbb{R}$ carries the **discrete** topology, then the identity map $\mathrm{id} \colon (\mathbb{R}, \tau\_{\text{usual}}) \to (\mathbb{R}, \tau\_{\text{discrete}})$ is *not* continuous: $\lbrace 0\rbrace$ is open in the target, but $\mathrm{id}^{-1}(\lbrace 0\rbrace) = \lbrace 0\rbrace$ is not open in the standard topology on $\mathbb{R}$. If instead $X$ carries the **indiscrete** topology, *every* map into $X$ is automatically continuous, because the only opens are $\emptyset$ and $X$, whose preimages are trivially open.

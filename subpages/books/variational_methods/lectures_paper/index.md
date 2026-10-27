@@ -185,7 +185,7 @@ and $u^{(j)} \overset{\ast}{\rightharpoonup} u$ in $L^\infty(E)$ if and only if
 
 $$\int_E u^{(j)} \varphi \, dx \to \int_E u \varphi \, dx \quad \text{for all } \varphi \in L^1(E).$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Rademacher Functions)</span></p>
 
 Let $\Omega = (0, 1)$, $0 < \lambda < 1$, $a, b \in \mathbb{R}$ and define $\theta : \mathbb{R} \to \mathbb{R}$ by
@@ -385,7 +385,7 @@ Let $u \in C^m(\Omega)$ with $\|u\|\_{m,p} < \infty$. Then by the integration by
 
 #### 1.7.2 Piecewise Affine Functions
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Affine Function)</span></p>
 
 Let $n = 1$, $\Omega = (0, 1)$, and let $u$ be defined by
@@ -402,7 +402,7 @@ More generally, if $u$ is a piecewise affine function on $(0,1)$ (i.e. $u$ is co
 
 #### 1.7.3 The Heaviside Function
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Heaviside Function)</span></p>
 
 The Heaviside function $H$ is defined by
@@ -433,7 +433,7 @@ so that $\int_{-1}^1 H \frac{d\varphi}{dx} \, dx = \int_0^1 \frac{d\varphi}{dx} 
 
 #### 1.7.4 The Function $\ln|x|$ on $\mathbb{R}^n$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ln|x|$ on the Unit Ball)</span></p>
 
 Let $n > 1$, $B = \lbrace x \in \mathbb{R}^n : \|x\| < 1 \rbrace$. For $x \ne 0$ define $u(x) = \ln r$, $r = \|x\|$. We show that $u \in W^{1,p}(B)$ if and only if $1 \le p < n$.
@@ -472,7 +472,7 @@ Let $1 \le p < \infty$. Then $C^\infty(\Omega)$ is dense in $W^{m,p}(\Omega)$.
 
 Can any $u \in W^{m,p}(\Omega)$ be approximated by functions in $C^\infty(\bar{\Omega})$? In general the answer is no.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span><span class="math-callout__name">(Failure of Approximation across Boundary)</span></p>
 
 Let $\Omega = (-1,0) \cup (0,1)$, $u(x) = H(x)$. Then $u \in C^\infty(\Omega)$, so that $u \in W^{m,p}(\Omega)$ for any $m, p$. Suppose that there were a sequence $u^{(j)} \in C^1(\mathbb{R})$ with $u^{(j)} \to u$ in $W^{1,p}(\Omega)$. Then we may assume that $u^{(j)} \to u$ a.e. in $\Omega$. Choosing $x_- \in (-1,0)$, $x_+ \in (0,1)$ with $u^{(j)}(x_-) \to 0$, $u^{(j)}(x_+) \to 1$ we have that $u^{(j)}(x_+) - u^{(j)}(x_-) \to 1$. But
@@ -561,7 +561,7 @@ Let $\Omega \subset \mathbb{R}^n$ be bounded and open with Lipschitz boundary. T
 
 ### 1.11 Embedding Theorems
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">(1D Sobolev Embedding)</span></p>
 
 Let $n = 1$, $-\infty < a < b < \infty$. Then $W^{1,1}(a,b)$ is continuously embedded in $C([a,b])$, i.e. each equivalence class $v$ of functions in $W^{1,1}(a,b)$ has a representative $\tau v \in C([a,b])$ and there is a constant $K > 0$ such that $\|\tau v\|\_{C([a,b])} \le K \|v\|\_{1,1}$.
@@ -572,7 +572,7 @@ For $p > 1$, the embedding $W^{1,p}(a,b) \to C([a,b])$ is **compact** (bounded s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.4</span><span class="math-callout__name">(Sobolev Embedding in $\mathbb{R}^3$)</span></p>
 
 Let $n = 3$, $m = 1$. Then $H^1(\Omega) = W^{1,2}(\Omega) \subset L^6(\Omega)$ and the embedding $W^{1,2}(\Omega) \subset L^{6-\varepsilon}(\Omega)$ is compact. $W^{1,3}(\Omega) \subset L^q(\Omega)$ for $1 \le q < \infty$ but $W^{1,3}(\Omega) \not\subset L^\infty(\Omega)$. $W^{1,p}(\Omega) \subset C^0(\bar{\Omega})$ compact if $p > 3$.
@@ -646,7 +646,7 @@ $$\text{either } u(a) = \alpha,\, u(b) = \beta, \qquad \text{or } u(a) = \alpha.
 
 We begin with some counterexamples showing that minimizers need not exist.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1</span><span class="math-callout__name">(Bolza)</span></p>
 
 $$I(u) = \int_0^1 [(u_x^2 - 1)^2 + u^2] \, dx, \quad u(0) = u(1) = 0.$$
@@ -681,7 +681,7 @@ Hence $\inf_{W_0^{1,1}} I = 0$. But $I(u) = 0$ implies $u = 0$, hence $u_x = 0$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.2</span></p>
 
 $$I(u) = \int_0^1 x^2 u_x^2 \, dx, \quad u(0) = 0, \, u(1) = 1.$$
@@ -690,7 +690,7 @@ The minimum is not attained. Taking a minimizing sequence $u^{(j)}$ with slope $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span></p>
 
 $$I(u) = \int_0^1 (|u_x| + (u - 1)^2) \, dx, \quad u(0) = 0, \, u(1) = 1.$$
@@ -964,7 +964,7 @@ Expanding the left-hand side and using $f_{pp} > 0$, we get that $u_x$ is differ
 
 But does the global minimizer $u$ given by Theorem 23 belong to $W^{1,\infty}(a,b)$ or satisfy (WEL)?
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4</span><span class="math-callout__name">(Lavrentiev Phenomenon)</span></p>
 
 Let

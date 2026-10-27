@@ -841,7 +841,7 @@ So if the decoder can already generate both 5s and 9s by itself, then the model 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Generating digits 5s and 9s)</span></p>
 
 Suppose your dataset is 50% 5s and 50% 9s.
@@ -973,7 +973,7 @@ In implementation, the decoder of the classic autoencoder often outputs a tensor
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian decoder)</span></p>
 
 Suppose
@@ -996,7 +996,7 @@ $$z \mapsto x$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bernoulli decoder)</span></p>
 
 For binary images, often

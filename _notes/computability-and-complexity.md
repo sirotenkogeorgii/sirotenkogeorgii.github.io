@@ -1598,7 +1598,7 @@ We refer to $\text{NPSPACE}$ as the class of problems decidable in nondeterminis
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Directed Path Problem)</span></p>
 
 A canonical problem in $\text{NLOG}$ is determining **reachability in a directed graph**.
@@ -5069,7 +5069,7 @@ Saying $\alpha$ is partial computable means there is a single algorithm (a unive
   <figcaption>A hopeless attempt to visualize what numbering is</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Numbering)</span></p>
 
 Fix a universal Turing machine $U$. Let $\alpha_e(x)$ be “the output of machine with code $e$ on input $x$” (undefined if it doesn’t halt). Then $(\alpha_e)$ is a numbering because there is a single simulator $U$ computing $\alpha(e,x)$.
@@ -5442,7 +5442,7 @@ A Gödel numbering can be interpreted as an encoding in which a number is assign
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Symbols to unique natural numbers: classic Gödel numbering)</span></p>
 
 **Gödel numbering** is a method for encoding symbols, formulas, and even whole proofs from a formal system (like arithmetic or logic) as **unique natural numbers**.
@@ -5661,7 +5661,7 @@ For an index set $I$ and any partial computable function $\alpha$, either all or
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
 The following sets are index sets: 
@@ -5846,7 +5846,7 @@ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \ph
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
 Let
@@ -6152,7 +6152,7 @@ where the quantifiers alternate, and:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\Sigma_1$, $\Sigma_2$, $\Sigma_3$)</span></p>
 
 * $\Sigma_1$: $\exists y R(x,y)$
@@ -6659,7 +6659,7 @@ In the case of the formula $\phi$ above:
 
 Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula $\exists x(x < y)$ is true for the natural numbers if $y$ is assigned any value other than $0$, but it is false if $y$ is assigned $0$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Axioms of Group Theory)</span></p>
 
 The axioms of group theory can be expressed in first-order logic with a binary function symbol $\cdot$ (multiplication) and a constant symbol $e$ (the identity element).
@@ -6680,7 +6680,7 @@ An inference system is a collection of syntactical rules that allow new sentence
 
 First-order logic is restricted to quantification over members of the domain; it does not allow quantification over sets, functions, or other higher-order objects. While this limits its expressive power compared to formalisms like set theory, it has a significant advantage: first-order logic possesses effective inference systems that are both sound and complete. This implies that if a set of axioms is finite, decidable, or recursively enumerable (r.e.), then the set of all its semantical consequences is also r.e. This is because one can systematically search through all possible derivations from the axioms, and due to completeness, a derivation for any true consequence will eventually be found.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(205)</span></p>
 
 Group theory is r.e. An enumeration can be generated by applying a sound and complete inference system to the axioms of group theory. However, it can be shown that group theory is not decidable. In contrast, the theory of commutative groups (which adds the axiom $\forall x\forall y(x \cdot y = y \cdot x)$) is decidable.

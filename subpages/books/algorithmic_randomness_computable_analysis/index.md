@@ -253,7 +253,7 @@ Before formalizing anything, it is useful to look at concrete sequences that *fe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three intuitively nonrandom finite sequences of length 2000)</span></p>
 
 * $X := (01)^{1000} = \underbrace{0101 \dots 01}_{2000 \text{ digits}}.$
@@ -379,7 +379,7 @@ Before formalizing anything, it is useful to look at concrete sequences that *fe
   <figcaption>Three intuitively nonrandom 2000-bit sequences. $X$ has a perfectly periodic pattern of alternating bits. $Y$ has a heavily skewed bit-density (most positions are zero, only $\le 200$ are one). $Z$ is random on the odd positions but deterministically zero on the even ones — half of the information is "wasted".</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three intuitively nonrandom infinite binary sequences)</span></p>
 
 * $\tilde{X} := (01)^{\omega} = 010101 \dots$
@@ -453,7 +453,7 @@ $$C(\sigma) \le C_M(\sigma) + c_M \qquad \text{for every word } \sigma. \tag{1}$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compressing $X$ and $Z$)</span></p>
 
 * **Sequence $X = (01)^{1000}$.** Intuitive description: *"the string $01$ written 1000 times in a row"* — about 30 symbols. Formally, take the Turing machine $M$ defined by:
@@ -484,7 +484,7 @@ TODO: is there a tension between having a description of turing machine for a sp
 
 **Intuition.** An infinite string is *nonrandom* if its arbitrarily long initial segments have essentially shorter descriptions.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compressing prefixes of $\tilde X$ and $\tilde Z$)</span></p>
 
 For every prefix $\tilde X \upharpoonright 2n = (01)^n$, the same machine $M$ as above gives $M(\mathrm{bin}(n)) = \tilde X \upharpoonright 2n$. Since $l(\mathrm{bin}(n)) = \log(n) + O(1)$,
@@ -634,7 +634,7 @@ The exponential relation $s\approx2^k$ becomes the saving $k\approx\log s$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Predicting $X$, $Y$, $Z$ and their infinite analogues)</span></p>
 
 * For $X$: $X(2i) = 0$ and $X(2i+1) = 1$ for every $i$, so *every* bit of $X$ is predictable. The same holds for $\tilde X$. In particular, betting one dollar that $\tilde X(2i+1) = 0$ (or $= 1$ depending on indexing) yields an unbounded increase of capital.
@@ -652,7 +652,7 @@ A finite sequence with some *rare* property — one that is easy to describe and
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Untypical properties of $X$, $Y$, $Z$)</span></p>
 
 * $X = (01)^{1000}$ is one of a kind.
@@ -687,7 +687,7 @@ An infinite sequence $A$ is called **Martin-Löf nonrandom** iff there exists a 
 
 TODO: what is the intiutive connection between randomness and Martin-Lof?
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.6 — Martin-Löf tests covering $\tilde X$ and $\tilde Z$)</span></p>
 
 A Martin-Löf test $\mathcal{M}^{\tilde X}$ covering $\tilde X$ is
@@ -2843,7 +2843,7 @@ The definition of **information content measure** says nothing about the prefix-
   <figcaption>The definition has a computability side and a measure side, here for a partial $F$ with $\mathrm{dom}(F) = \lbrace 0, 10, 001\rbrace$ and $F(0)=2$, $F(10)=4$, $F(001)=5$. Left: the epigraph is the set of pairs $(\sigma, k)$ lying on or above the graph of $F$ — a shaded column over each domain word whose least element is the value $F(\sigma)$, and an empty column over every word outside the domain. Being c.e., these pairs are discovered one at a time, so a better certificate like $(001, 5)$ may appear after $(001, 7)$; this is exactly upper-semicomputability of $F$. Right: each domain word spends mass $2^{-F(\sigma)}$, and the Kraft bound asks the total to fit inside measure $1$, just as prefix-free code cylinders do. Note $\mathrm{dom}(F)$ is not even prefix-free ($0 \prec 001$) — the definition never asks for that.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three information content measures)</span></p>
 
 * The function $f :\subseteq \lbrace 0,1\rbrace^{\ast} \to \mathbb{N}$ defined by

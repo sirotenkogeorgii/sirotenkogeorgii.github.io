@@ -874,7 +874,7 @@ The convexity, l.s.c., and "$\not\equiv +\infty$" hypotheses are *necessary*: wi
 
 #### Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">($\varphi(x) = \|x\|$)</span></p>
 
 For $\varphi(x) = \|x\|$, one checks easily
@@ -893,7 +893,7 @@ Writing the equality $\varphi^{\star\star} = \varphi$, we obtain again part of C
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Indicator function and supporting function of a set)</span></p>
 
 Given a nonempty set $K \subset E$, define
@@ -992,7 +992,7 @@ so $-\varphi^\star(-f/k) - \psi^\star(f/k) \ge a$. Combined with $-\varphi^\star
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Distance to a convex set)</span></p>
 
 Let $K \subset E$ be a nonempty convex set. For every $x\_0 \in E$,
@@ -1016,7 +1016,7 @@ Relation $(19)$ is informative even when $\inf\_{x \in K} \|x - x\_0\|$ is *not 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4</span><span class="math-callout__name">(Annihilator of a subspace)</span></p>
 
 Let $\varphi : E \to \mathbb{R}$ be convex and continuous and let $M \subset E$ be a linear subspace. Then
@@ -1539,7 +1539,7 @@ We then say $G$ and $L$ are **complementary subspaces** of $E$. If this holds, e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(Subspaces that admit a complement)</span></p>
 
 1. **Finite-dimensional subspaces.** Every finite-dimensional subspace $G$ admits a complement. Let $e\_1, \ldots, e\_n$ be a basis of $G$; every $x \in G$ writes $x = \sum x\_i e\_i$. Set $\varphi\_i(x) = x\_i$ on $G$. By Hahn–Banach (Corollary 1.2), each $\varphi\_i$ extends to $\widetilde{\varphi}\_i \in E^\star$. Then $L = \bigcap\_{i=1}^n \widetilde{\varphi}\_i^{-1}(0)$ is a closed complement of $G$.
@@ -2970,7 +2970,7 @@ $$
 
 This is a *geometric* property of the unit ball: if we slide a stick of length $\varepsilon$ inside the unit ball, its midpoint stays within a ball of radius $(1 - \delta)$. In particular the unit *sphere* must be "round" — it cannot contain any line segment.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Norms on $\mathbb{R}^2$)</span></p>
 
 On $E = \mathbb{R}^2$:
@@ -3015,7 +3015,7 @@ The closed unit ball $\{ x \in \mathbb{R}^2 : \lVert x \rVert\_p \le 1 \}$ for t
 </figure>
 
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">($L^p$ and Hilbert spaces)</span></p>
 
 $L^p$ spaces are uniformly convex for $1 < p < \infty$ (Chapters 4, 5). Hilbert spaces are uniformly convex.
@@ -3501,7 +3501,7 @@ The measure space $\Omega$ is **separable** if there is a countable family $(E\_
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^N$ is separable)</span></p>
 
 $\mathbb{R}^N$ with Lebesgue measure is separable: choose $(E\_n)$ to be a countable basis of open sets. More generally, any separable metric space with the Borel $\sigma$-algebra is a separable measure space.
@@ -4101,7 +4101,7 @@ In what follows, $H$ will always denote a Hilbert space.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic examples)</span></p>
 
 $L^2(\Omega)$ equipped with $(u, v) = \int\_\Omega u(x) v(x)\,d\mu$ is a Hilbert space; in particular $\ell^2$ is a Hilbert space. The Sobolev space $H^1$ studied in Chapters 8 and 9 is "modeled" on $L^2(\Omega)$ and is another fundamental example.
@@ -5912,7 +5912,7 @@ To define $W^{1, p}$ one can use the language of *distributions* (Schwartz, Knap
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">($W^{1, p}$-membership)</span></p>
 
 Let $I = (-1, 1)$.
@@ -6369,7 +6369,7 @@ Apply Lax–Milgram (Corollary 5.8) in $H = H^1\_0(I)$ with $a(u, v) = \int u'v'
 
 #### More Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Inhomogeneous Dirichlet)</span></p>
 
 $-u'' + u = f$ on $I$, $u(0) = \alpha, u(1) = \beta$. Two methods:
@@ -6379,7 +6379,7 @@ $-u'' + u = f$ on $I$, $u(0) = \alpha, u(1) = \beta$. Two methods:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Sturm–Liouville)</span></p>
 
 $-(pu')' + qu = f$ on $I$, $u(0) = u(1) = 0$, with $p \in C^1(\bar I), p \ge \alpha > 0$, $q \in C(\bar I)$. Bilinear form $a(u, v) = \int pu'v' + \int quv$ on $H^1\_0$. Continuous and symmetric; coercive if $q \ge 0$ (by Poincaré). Lax–Milgram gives $u \in H^1\_0$ unique; regularity gives $u \in H^2$, classical if $f \in C$.
@@ -6388,7 +6388,7 @@ For the more general $-(pu')' + ru' + qu = f$, the form is *not* symmetric. It i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Homogeneous Neumann)</span></p>
 
 $-u'' + u = f$, $u'(0) = u'(1) = 0$.
@@ -6410,7 +6410,7 @@ Choosing $v \in H^1\_0$ first gives $-u'' + u = f$ a.e.; the remaining boundary 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 4–7</span><span class="math-callout__name">(Other boundary conditions)</span></p>
 
 * **Inhomogeneous Neumann** $u'(0) = \alpha, u'(1) = \beta$: minimize $\tfrac{1}{2}\int(v'^2 + v^2) - \int fv - \alpha v(0) + \beta v(1)$ on $H^1$.
@@ -6420,7 +6420,7 @@ Choosing $v \in H^1\_0$ first gives $-u'' + u = f$ a.e.; the remaining boundary 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8</span><span class="math-callout__name">(BVP on $\mathbb{R}$)</span></p>
 
 $-u'' + u = f$ on $\mathbb{R}$, $u(x) \to 0$ as $\lvert x\rvert \to \infty$. Work in $H^1(\mathbb{R})$: any classical solution with the decay condition is also in $H^1(\mathbb{R})$ (multiply by a cutoff $\zeta\_n u$ and integrate). Lax–Milgram in $H^1(\mathbb{R})$ with $a(u, v) = \int u'v' + \int uv = (u, v)\_{H^1(\mathbb{R})}$ gives a unique weak solution $u \in H^2(\mathbb{R})$, classical if $f \in C \cap L^2$.
@@ -6518,7 +6518,7 @@ Apply the spectral theorem (Theorem 6.11) to $T$: there is a Hilbert basis $(e\_
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($p = 1, q = 0$: classical Fourier sine basis)</span></p>
 
 For $p \equiv 1, q \equiv 0$:

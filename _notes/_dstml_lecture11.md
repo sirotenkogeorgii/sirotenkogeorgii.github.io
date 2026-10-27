@@ -33,7 +33,7 @@ When evaluating how well an RNN has reconstructed a dynamical system, we look be
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Attractor Localization)</span></p>
 
 In an ideal reconstruction, the RNN can detect features of the underlying system that were not explicitly present in the training trajectories. For instance, a model trained only on trajectories residing on an attractor might still accurately localize the system’s equilibria (fixed points).
@@ -371,7 +371,7 @@ Because the training process is a recursive update, it is subject to all dynamic
 
 To understand how parameter changes affect system behavior, we examine a one-unit RNN with a sigmoid activation function $\phi$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1-Unit Scalar System)</span></p>
 
 Let $W$ and $Z$ be scalars. The system is defined by:
@@ -595,7 +595,7 @@ A **bifurcation graph** represents the location and stability of fixed points $z
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Learning Barrier — Kenji Doya, 1998)</span></p>
 
 In a 1998 paper, Kenji Doya illustrated why certain configurations are unlearnable. If a desired state for a network is located at an unstable node surrounded by a cycle, gradient descent will fail to stabilize the system at that point. Because the target is unstable, the system will naturally drift away, preventing the network from ever reaching the desired output.
@@ -631,7 +631,7 @@ For certain types of bifurcations and dynamical systems, it can be formally prov
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Empirical Loss Landscapes)</span></p>
 
 Research (e.g., Eisman et al.) using algorithms like PyDSTool to locate bifurcation curves has shown that huge jumps in the loss landscape coincide exactly with these curves. When plotting parameter trajectories during training, the loss spikes precisely as the trajectory crosses a bifurcation boundary.
@@ -885,7 +885,7 @@ $$B = \left( \sum_{t=1}^T x_t\, z_t^\top \right) \left( \sum_{t=1}^T z_t\, z_t^\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Practical Application)</span></p>
 
 In practice, training a reservoir computer is "one line of Python code." Once the reservoir is entrained with the training data and the matrix $B$ is calculated, the model can predict complex sequences (like the Lorenz system) with surprising accuracy, provided the reservoir properties (spectral norm, sparsity) are correctly tuned.
@@ -979,7 +979,7 @@ This suggests that $\phi^{-1}$ acts as an approximate inverse of $\phi$, and $z_
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deep Autoencoder: Layer-wise Formulation)</span></p>
 
 Modern Autoencoders are implemented as Deep Neural Networks, alternating affine mappings with nonlinear activation functions. The latent representation $z_t$ for a three-layer encoder can be written as:
@@ -1105,7 +1105,7 @@ where $\lambda_1, \lambda_2, \lambda_3$ are hyper-parameters that weigh the impo
 
 #### Empirical Validation: The Lorenz Attractor
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(High-Dimensional Lorenz Projection)</span></p>
 
 To evaluate the performance of this approach, it is tested on the Lorenz Attractor:

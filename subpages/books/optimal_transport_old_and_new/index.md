@@ -582,7 +582,7 @@ on $M \times [0, T)$, where $\sigma^\ast$ stands for the transpose of $\sigma$;
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.5</span><span class="math-callout__name">(Heat Equation and Brownian Motion)</span></p>
 
 In $\mathbb{R}^n$, the solution of the heat equation with initial datum $\delta\_0$ is the law of $X\_t = \sqrt{2}\, B\_t$ (Brownian motion sped up by a factor $\sqrt{2}$).
@@ -920,7 +920,7 @@ Moreover, if $\pi$ is the *unique* optimal transference plan between $\mu$ and $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.7</span><span class="math-callout__name">(Restriction to a Measurable Set)</span></p>
 
 If $(X, Y)$ is an optimal coupling of $(\mu, \nu)$, and $\mathcal{Z} \subset \mathcal{X} \times \mathcal{Y}$ is such that $\mathbb{P}[(X, Y) \in \mathcal{Z}] > 0$, then the pair $(X, Y)$ conditioned to lie in $\mathcal{Z}$ is an optimal coupling of $(\mu', \nu')$, where $\mu'$ is the law of $X$ conditioned by "$(X, Y) \in \mathcal{Z}$", and $\nu'$ is the law of $Y$ conditioned by the same event.
@@ -960,7 +960,7 @@ Why not apply the same compactness reasoning (as in Theorem 4.1) to prove existe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.9</span><span class="math-callout__name">(Non-existence of Monge Minimizer)</span></p>
 
 Let $\mathcal{X} = \mathcal{Y} = \mathbb{R}^2$, $c(x,y) = \lvert x - y \rvert^2$, let $\mu$ be $\mathcal{H}^1$ restricted to $\lbrace 0 \rbrace \times [-1, 1]$, and let $\nu$ be $(1/2)\, \mathcal{H}^1$ restricted to $\lbrace -1, 1 \rbrace \times [-1, 1]$, where $\mathcal{H}^1$ is the one-dimensional Hausdorff measure. Then there is a unique optimal transport, which for each point $(0, a)$ sends one half of the mass to $(-1, a)$ and the other half to $(1, a)$. This is *not* a Monge transport (mass is split), but it can be approximated by (nonoptimal) deterministic transports.
@@ -1290,7 +1290,7 @@ where $\Phi^\ast$ is the Legendre transform of $\Phi$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.29</span><span class="math-callout__name">(Kullback–Leibler Information)</span></p>
 
 The most famous example occurs when $\mathcal{X} = \mathcal{Y}$ and $F(\mu) = H\_\nu(\mu) = \int \rho \log \rho\, d\nu$ is the Kullback–Leibler information (relative entropy) of $\mu$ with respect to $\nu$, where $\rho = d\mu/d\nu$ (and $F(\mu) = +\infty$ if $\mu$ is not absolutely continuous with respect to $\nu$). Then
@@ -1398,7 +1398,7 @@ The distance $W\_1$ is also commonly called the **Kantorovich–Rubinstein dista
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3</span></p>
 
 $W\_p(\delta\_x, \delta\_y) = d(x,y)$. In this example, the distance does not depend on $p$; but this is not the rule.
@@ -1679,14 +1679,14 @@ More generally, it is absolutely continuous of order $p$ if the formula holds wi
 
 #### Key Examples of Action-Minimizing Curves
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.1</span><span class="math-callout__name">($L(x,v,t) = \lvert v \rvert$, Euclidean Length)</span></p>
 
 In $\mathcal{X} = \mathbb{R}^n$, with $L(x,v,t) = \lvert v \rvert$, the action is the length functional. The cost is $c(x,y) = \lvert x - y \rvert$ (Euclidean distance). Minimizing curves are straight lines, with arbitrary parametrization.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.4</span><span class="math-callout__name">($L(x,v,t) = \lvert v \rvert^p$ on a Riemannian Manifold)</span></p>
 
 Let $\mathcal{X} = M$ be a smooth Riemannian manifold, $TM$ its tangent bundle, and $L(x,v,t) = \lvert v \rvert^p$, $p \ge 1$. Then the cost function is $c(x,y) = d(x,y)^p$, where $d$ is the geodesic distance.
@@ -1696,7 +1696,7 @@ Let $\mathcal{X} = M$ be a smooth Riemannian manifold, $TM$ its tangent bundle, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.5</span><span class="math-callout__name">(General Lagrangian on a Riemannian Manifold)</span></p>
 
 For a general Lagrangian $L(x,v,t)$, strictly convex in $v$, on a smooth Riemannian manifold:
@@ -1762,7 +1762,7 @@ A curve $\gamma : [t\_i, t\_f] \to \mathcal{X}$ is **action-minimizing** if it m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.10</span><span class="math-callout__name">(Power-Law Lagrangians)</span></p>
 
 For $L(x, \lvert v \rvert, t) = \lvert v \rvert^p$, the cost function is $c^{s,t}(x,y) = d(x,y)^p / (t-s)^{p-1}$. The cost depends on $s, t$ only through multiplication by a constant. In particular, minimizing curves are independent of $s$ and $t$, up to reparametrization.
@@ -1978,7 +1978,7 @@ where $H = L^\ast$ is the **Hamiltonian** (Legendre transform of $L$ in the velo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.35</span><span class="math-callout__name">(Quadratic Cost on a Riemannian Manifold)</span></p>
 
 On a Riemannian manifold $M$ with $L(x,v,t) = \lvert v \rvert^2 / 2$, the Hamiltonian is $H(x,p,t) = \lvert p \rvert^2 / 2$. If $S\_0$ is a given Lipschitz function and $S\_+(t, x) := H\_+^{0,t} S\_0$, then
@@ -2220,14 +2220,14 @@ The short version: the distance between $\gamma\_1$ and $\gamma\_2$ is controlle
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.3</span><span class="math-callout__name">($c(x,y) = d(x,y)^2$)</span></p>
 
 The cost function $c(x,y) = d(x,y)^2$ corresponds to the Lagrangian $L(x,v,t) = \lvert v \rvert^2$, which obviously satisfies the assumptions of Corollary 8.2. In that case the exponent $\beta = 1$ is admissible. It is natural to expect that the constant $C\_K$ can be controlled in terms of just a **lower bound on the sectional curvature** of $M$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4</span><span class="math-callout__name">($c(x,y) = d(x,y)^{1+\alpha}$, $0 < \alpha < 1$)</span></p>
 
 The cost function $c(x,y) = d(x,y)^{1+\alpha}$ does not satisfy the assumptions of Corollary 8.2 (the associated Lagrangian $L = \lvert v \rvert^{1+\alpha}$ is not smooth). But Assumption (i) in Theorem 8.1 is still satisfied (minimizing curves are geodesics). By tracking exponents, $\beta = (1+\alpha)/(3-\alpha)$. However, by exploiting the homogeneity of the power function, one can prove that $\beta = 1$ is also admissible for all $\alpha \in (0,1)$ (only the constant deteriorates as $\alpha \downarrow 0$).
@@ -2307,7 +2307,7 @@ Under the assumptions of Corollary 8.2 with $L(x,v,t) = \lvert v \rvert^2$, let 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.9</span><span class="math-callout__name">(Cut Locus and Focal Points on $S^2$)</span></p>
 
 On the sphere $S^2$, the north pole $N$ has only one cut point (the south pole $S$), which is also its only focal point. If one deforms the sphere in a neighborhood of $\gamma[0,1]$ so as to create a shortcut from $N$ to $\gamma(1/2)$, then $S$ will no longer be a cut point along $\gamma$ (though it may still be a cut point along some other geodesic). On the other hand, $S$ will still be the only focal point along $\gamma$.
@@ -2357,7 +2357,7 @@ If $L$ does not depend on $t$, then one can apply Theorem 8.11 for any $T = 2^{-
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.14</span></p>
 
 Let $M$ be a compact Riemannian manifold, and let $L(x,v,t) = \lvert v \rvert^2/2 - V(x)$, where $V$ has a unique maximum $x\_0$. Then Mather's procedure selects the probability measure $\delta\_{x\_0}$ and the stationary curve $\gamma \equiv x\_0$ (which is an unstable equilibrium).
@@ -2382,7 +2382,7 @@ Up to the change of variables $(\gamma\_0, \dot{\gamma}\_0) \to (\gamma\_0, \gam
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.16</span><span class="math-callout__name">(One-Dimensional Pendulum)</span></p>
 
 For a one-dimensional pendulum: for small values of the total energy, the pendulum oscillates with small periodic motions (arcs of circle in physical space). For large values, it describes complete revolutions. At a critical intermediate energy, the trajectory consists in going from the vertical upward position (at time $-\infty$) to the vertical upward position again (at time $+\infty$), exploring all intermediate angles — these are "revolutions of infinite period", and they are globally action-minimizing. When the rotation number $\xi = 0$, the Mather problem selects $\delta\_{x\_0}$ (the unstable equilibrium), and the Mather and Aubry sets are reduced to $\lbrace (x\_0, x\_0) \rbrace$. At a certain critical value of $\xi$, the Mather and Aubry sets differ: the Aubry set (viewed in $(x,v)$ variables) is the union of the two revolutions of infinite period.
@@ -2517,7 +2517,7 @@ For any $c$-convex function $\psi$ and any $x \in M$, the $c$-subdifferential $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.1</span><span class="math-callout__name">($c(x,y) = -x \cdot y$)</span></p>
 
 Consider the cost function $c(x,y) = -x \cdot y$ in $\mathbb{R}^n$. If $y\_0$ and $y\_1$ belong to $\partial\_c \psi(x)$, then $\psi(x) + y\_0 \cdot (z - x) \le \psi(z)$ and $\psi(x) + y\_1 \cdot (z - x) \le \psi(z)$ for all $z$. Setting $y\_t := (1-t)y\_0 + t y\_1$, the same holds for $y\_t$: the entire line segment $(y\_t)\_{0 \le t \le 1}$ lies in $\partial\_c \psi(x)$. The same computation applies to $c(x,y) = \lvert x - y \rvert^2 / 2$, or to any cost function of the form $a(x) - x \cdot y + b(y)$.
@@ -2771,7 +2771,7 @@ It is **locally semiconvex** if for each $x\_0 \in U$ there is a neighborhood $V
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.11</span></p>
 
 In $\mathbb{R}^n$, semiconvexity with modulus $\omega$ means $f\bigl((1-t)x + ty\bigr) \le (1-t)f(x) + tf(y) + t(1-t)\, \omega(\lvert x - y \rvert)$. When $\omega = 0$ this is plain convexity. When $\omega(r) = Cr^2/2$, there is a differential characterization: $f : \mathbb{R}^n \to \mathbb{R}$ is semiconvex with modulus $Cr^2/2$ if and only if $\nabla^2 f \ge -C I\_n$ (in the distributional sense).
@@ -2828,21 +2828,21 @@ On a smooth Riemannian manifold $M$, let $c(x,y)$ be a cost function associated 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.16</span></p>
 
 For $L(x,v,t) = \lvert v \rvert^2$, we have $\nabla\_v L = 2v$; so part (i) says that $-2v\_0$ is a supergradient of $d(\cdot, y)^2$ at $x$, where $v\_0$ is the velocity used to go from $x$ to $y$. In Euclidean space this gives $\nabla\_x(\lvert x - y \rvert^2) = 2(x - y) = -2(y - x)$. Part (ii) says that if $d(x,y)^2$ is differentiable as a function of $x$, then $x$ and $y$ are connected by a unique minimizing geodesic.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.20</span></p>
 
 As a particular case, **(H$\infty$)$\_1$** holds true if $c = c(x-y)$ is radially symmetric and strictly increasing as a function of $\lvert x - y \rvert$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.22</span></p>
 
 If $(M, g)$ is a Riemannian manifold with **nonnegative sectional curvature**, then $\nabla\_x^2 (d(x\_0, x)^2/2) \le g\_x$, and it follows that $c(x,y) = d(x,y)^2$ is semiconcave with a modulus $\omega(r) = r^2$. This condition is quite restrictive, but there does not seem to be any good alternative geometric condition implying the semiconcavity of $d(x,y)^2$ uniformly in $x$ and $y$.
@@ -2924,14 +2924,14 @@ Assumption (iii) can be realized in several ways: if $c$ is Lipschitz on $\mathc
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.34</span></p>
 
 All the assumptions of Theorem 10.28 are satisfied if $\mathcal{X} = M = \mathcal{Y}$ is compact and the Lagrangian $L$ is $C^2$ and satisfies the classical conditions of Definition 7.6.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.35</span></p>
 
 All the assumptions of Theorem 10.28 are satisfied if $\mathcal{X} = M = \mathcal{Y} = \mathbb{R}^n$, $c$ is a $C^1$ strictly convex function with a bounded Hessian and $\mu$ does not charge sets of dimension $n-1$. Indeed, $\nabla\_x c$ will be injective by strict convexity; and $c$ will be uniformly semiconcave with a modulus $Cr^2$, so Theorem 10.26 guarantees that $c$-convex functions are differentiable everywhere apart from a set of dimension at most $n-1$.
@@ -3110,7 +3110,7 @@ where $K$ is any compact subset of $M$. So $x \to d(x,y)^2/2$ is semiconcave wit
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.53</span></p>
 
 The previous results apply to any compact manifold, or any manifold obtained from $\mathbb{R}^n$ by modification on a compact set. But they do *not* apply to the hyperbolic space $\mathbb{H}^n$: if $y$ is any given point in $\mathbb{H}^n$, then $x \to d(y,x)^2$ is not uniformly semiconcave as $x \to \infty$. (In a model of $\mathbb{H}^2$ as the unit disk with distance $d(r, \theta) = \log((1+r)/(1-r))$, the Hessian coefficient is $1 + r\, d(r)$, which diverges logarithmically as $r \to 1$.)
@@ -3187,7 +3187,7 @@ Theorem 11.1 establishes the Jacobian equation as soon as, say, the optimal tran
 
 ### Application: The Quadratic Cost in $\mathbb{R}^n$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.2</span><span class="math-callout__name">(Quadratic Cost in $\mathbb{R}^n$)</span></p>
 
 Consider two probability measures $\mu\_0$ and $\mu\_1$ on $\mathbb{R}^n$, with finite second moments, both absolutely continuous with respective densities $f\_0$ and $f\_1$. The unique optimal transport map takes the form $T(x) = \nabla \Psi(x)$ for some lower semicontinuous convex function $\Psi$. There is a unique displacement interpolation $(\mu\_t)\_{0 \le t \le 1}$, defined by
@@ -3362,7 +3362,7 @@ A set $C \subset \mathcal{Y}$ is said to be **$c$-convex with respect to $\overl
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.12</span></p>
 
 When $\mathcal{X} = \mathcal{Y} = \mathbb{R}^n$ and $c(x,y) = -x \cdot y$ (or $x \cdot y$), $c$-convexity is just plain convexity. If $\mathcal{X} = \mathcal{Y} = S^{n-1}$ and $c(x,y) = d(x,y)^2/2$ then $\mathrm{Dom}(\nabla\_x c(\overline{x}, \cdot)) = S^{n-1} \setminus \lbrace -\overline{x} \rbrace$ (the cut locus is the antipodal point), and $\nabla\_x c(\overline{x}, S^{n-1} \setminus \lbrace -\overline{x} \rbrace) = B(0, \pi) \subset T\_{\overline{x}} M$ is a convex set. So for any point $\overline{x}$, $S^{n-1}$ minus the cut locus of $\overline{x}$ is $c$-convex with respect to $\overline{x}$. An equivalent statement is that $S^{n-1}$ is $d^2/2$-convex with respect to itself.
@@ -3859,7 +3859,7 @@ where $\kappa\_x$ is the Gauss curvature at $x$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant Curvature Spaces)</span></p>
 
 * $S^n(R)$ (sphere of radius $R$): constant sectional curvature $1/R^2$.
@@ -4089,7 +4089,7 @@ Moreover, the corresponding "orthogonal" versions (ii'), (iii'), (iv') hold with
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 14.10</span><span class="math-callout__name">(One-Dimensional $\mathrm{CD}(K, N)$ Model Spaces)</span></p>
 
 * (a) $K > 0$, $1 < N < \infty$: $M = (-\sqrt{(N-1)/K}\, \pi/2,\; \sqrt{(N-1)/K}\, \pi/2)$, $\nu(dx) = \cos^{N-1}(\sqrt{K/(N-1)}\, x)\, dx$.
@@ -4217,7 +4217,7 @@ Associated to $U$ are the **pressure** $p(\rho) = \rho\, U'(\rho) - U(\rho)$ and
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.1</span></p>
 
 * $U(\rho) = U^{(m)}(\rho) = (\rho^m - \rho)/(m-1)$, $m \ne 1$: $p(\rho) = \rho^m$, $p\_2(\rho) = (m-1)\rho^m$.
@@ -4238,7 +4238,7 @@ $$\mathrm{grad}\_\mu\, U_\nu = -\nabla \cdot \bigl(\mu\, \nabla U'(\rho)\bigr) =
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.4</span><span class="math-callout__name">(Boltzmann Entropy)</span></p>
 
 For $H(\mu) = \int \rho \log \rho\, d\mathrm{vol}$ (with $\nu = \mathrm{vol}$): $\mathrm{grad}\_\mu H = -\Delta \mu$. Thus **the gradient of Boltzmann's entropy is the Laplace operator**. More generally, for $H\_\nu(\mu) = \int \rho \log \rho\, d\nu$: $\mathrm{grad}\_\mu H\_\nu = -(L\rho)\, \nu$, i.e. the gradient of the relative entropy is the **distorted Laplace operator** $L$.
@@ -4260,7 +4260,7 @@ $$\mathrm{Hess}\_\mu\, U_\nu(\dot{\mu}) = \int_M \bigl[\lVert \nabla^2 \psi \rVe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.9</span></p>
 
 For $U(\rho) = (\rho^m - \rho)/(m-1)$: $\mathrm{Hess}\_\mu H\_\nu^{(m)}(\dot{\mu}) = \int [\lVert \nabla^2 \psi \rVert\_{\mathrm{HS}}^2 + (\mathrm{Ric} + \nabla^2 V)(\nabla \psi) + (m-1)(\Delta \psi - \nabla V \cdot \nabla \psi)^2]\, \rho^{m-1}\, d\mu$.
@@ -4406,7 +4406,7 @@ If for each $x\_0 \in M$, $H\_{N,\nu}$ is $K \Lambda\_U$-displacement convex whe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.8</span><span class="math-callout__name">($\mathrm{CD}(0, \infty)$ and Boltzmann Entropy)</span></p>
 
 $\mathrm{CD}(0, \infty)$ with $\nu = \mathrm{vol}$ just means $\mathrm{Ric} \ge 0$, and $U \in \mathcal{DC}\_\infty$ means $p\_2 \ge 0$. The typical case is $U(\rho) = \rho \log \rho$, giving $H(\mu) = \int \rho \log \rho\, d\mathrm{vol}$. The Otto calculus suggests the following equivalences:
@@ -4464,7 +4464,7 @@ $\mathcal{DC}\_{N'} \subset \mathcal{DC}\_N$ if $N' \ge N$. So $\mathcal{DC}\_\i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 17.6</span></p>
 
 * (i) $U(r) = r^\alpha$, $\alpha \ge 1$: belongs to all $\mathcal{DC}\_N$.
@@ -5647,7 +5647,7 @@ $$H_\nu \le \frac{I_\nu}{2K}. \tag{21.4}$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 21.3</span><span class="math-callout__name">(Stam–Gross Logarithmic Sobolev Inequality)</span></p>
 
 For the Gaussian measure $\gamma(dx) = (2\pi)^{-n/2} e^{-\lvert x \rvert^2/2}$ in $\mathbb{R}^n$, one has
@@ -5946,7 +5946,7 @@ Like Sobolev inequalities, Poincaré inequalities express the domination of a fu
 
 Poincaré inequalities are implied by logarithmic Sobolev inequalities, but the converse is false.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 21.19</span><span class="math-callout__name">(Exponential Measure)</span></p>
 
 Let $\nu(dx) = e^{-\lvert x \rvert}\, dx$ be the exponential measure on $[0, +\infty)$. Then $\nu$ satisfies a Poincaré inequality (with constant 1). On the other hand, it does not satisfy any logarithmic Sobolev inequality. The same conclusions hold true for the double-sided exponential measure $\nu(dx) = e^{-\lvert x \rvert}\, dx / 2$ on $\mathbb{R}$. More generally, the measure $\nu\_\beta(dx) = e^{-\lvert x \rvert^\beta}\, dx / Z\_\beta$ satisfies a Poincaré inequality if and only if $\beta \ge 1$, and a logarithmic Sobolev inequality if and only if $\beta \ge 2$.
@@ -6325,7 +6325,7 @@ It follows by Theorem 18.12 that $\nu$ lies in $P\_2(M)$; then the inequality $T
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.15</span></p>
 
 The standard Gaussian $\gamma$ on $\mathbb{R}^N$ satisfies $\mathrm{CD}(1, \infty)$, and therefore $T\_2(1)$ too. This is independent of $N$.
@@ -6651,7 +6651,7 @@ and (22.61) follows immediately. Then (22.62) is obtained by arguments similar t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.31</span></p>
 
 The exponential measure $\nu(dx) = (1/2) e^{-\lvert x \rvert}\, dx$ does not admit Gaussian tails, so it fails to satisfy properties of Gaussian concentration expressed in Theorem 22.10. However, it does satisfy a Poincaré inequality. So (22.61), (22.62) hold true for this measure.
@@ -6694,7 +6694,7 @@ The converse direction uses the empirical measure argument as in the proof of Th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.33</span></p>
 
 Let $\nu(dx)$ be the exponential measure $e^{-\lvert x \rvert}\, dx/2$ on $\mathbb{R}$, then $\nu^{\otimes N}(dx) = (1/2^N) e^{-\sum \lvert x\_i \rvert}\, \prod dx\_i$ on $\mathbb{R}^N$. Theorem 22.32 shows that for every Borel set $A \subset \mathbb{R}^N$ with $\nu^{\otimes N}[A] \ge 1/2$ and any $\delta > 0$,
@@ -6723,7 +6723,7 @@ In certain situations, (22.67) provides sharper concentration properties for the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.36</span></p>
 
 Let $A = \lbrace x \in \mathbb{R}^N;\ \max \lvert x\_i \rvert \le m \rbrace$ be the centered cube of side $2m$, where $m = m(N) \to \infty$ is chosen in such a way that $\gamma^{\otimes N}[A] \ge 1/2$. (It is a classical fact that $m = O(\sqrt{\log N})$ will do, but we don't need that information.) If $r \ge 1$ is small with respect to $m$, then the enlargement of the cube is dominated by the behavior of $T$ close to $T^{-1}(m)$. Since $T(x)$ behaves approximately like $\sqrt{x}$ for large values of $x$, $T^{-1}(m)$ is of the order $m^2$; and close to $m^2$ the Lipschitz norm of $T$ is $O(1/m)$. Then the computation before can be sharpened into
@@ -7466,7 +7466,7 @@ The finiteness of $I\_{U,\nu}(\mu\_t) = \int \rho\_t\, \lvert \nabla U'(\rho\_t)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 23.22</span></p>
 
 - If $M$ is compact, any smooth positive solution of $\partial\_t \rho = \Delta \rho$ can be seen as a trajectory of the gradient flow associated with the energy $H(\mu) = \int \rho \log \rho$.
@@ -7664,7 +7664,7 @@ Conventions used throughout:
 
 Having put equation (24.1) in gradient flow form, one may use Otto's calculus to shortcut certain formal computations, and quickly get relevant results, without risks of computational errors. When it comes to rigorous justification, regularity issues should be addressed. For the most important of these gradient flows, such as the heat, Fokker–Planck or porous medium equations, these regularity issues are nowadays under good control.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 24.1</span></p>
 
 Consider a power law nonlinearity $U(r) = r^m$, $m > 0$. For $m > 1$ the resulting equation (24.1) is called a **porous medium equation**, and for $m < 1$ a **fast diffusion equation**. These equations are usually studied under the restriction $m > 1 - (2/n)$, because for $m \le 1 - (2/n)$ the solution might fail to exist (there is in general loss of mass at infinity in finite time, or even in no time, at least if $M = \mathbb{R}^n$).
@@ -7794,7 +7794,7 @@ $$\lambda := \left(\lim_{r \to 0}\, \frac{p(r)}{r^{1 - \frac{1}{N}}}\right)\!\le
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 24.8</span></p>
 
 Smooth solutions of the Fokker–Planck equation $\partial \rho / \partial t = L\, \rho$ converge to equilibrium at least as fast as $O(e^{-Kt})$, in $W\_2$ distance, in the entropy sense (i.e. in the sense of the convergence of $\sqrt{H\_\nu(\mu)}$ to $0$), and in the Fisher information sense.
@@ -8667,7 +8667,7 @@ Let $(\mathcal{X}\_k, \star\_k)$ be a sequence of pointed locally compact geodes
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(27.15 — Blow-Up)</span></p>
 
 Let $M$ be a Riemannian manifold of dimension $n$, and $x$ a point in $M$. For each $k$, consider the pointed metric space $\mathcal{X}\_k = (M, k\, d, x)$, where $kd$ is the original geodesic distance on $M$ dilated by a factor $k$. Then $\mathcal{X}\_k$ converges in the pointed Gromov–Hausdorff topology to the tangent space $T\_x M$, pointed at 0 and equipped with the metric $g\_x$ (a Euclidean space). This is true as soon as $M$ is just differentiable at $x$.
@@ -8683,7 +8683,7 @@ In many cases, the tangent cone coincides with the **metric cone** built on some
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(27.17 — $\ell^p$ Spaces Converge to $\ell^\infty$)</span></p>
 
 For any $p \in [1, \infty)$, define the $\ell^p$ norm on $\mathbb{R}^n$ by $\lVert x \rVert\_{\ell^p} = (\sum \lvert x\_i \rvert^p)^{1/p}$; and let $\mathcal{X}\_p$ be the space $\mathbb{R}^n$ equipped with the $\ell^p$ norm, pointed at 0. Then as $p \to \infty$, $\mathcal{X}\_p$ converges in the pointed Gromov–Hausdorff topology to $\mathcal{X}\_\infty$, which is $\mathbb{R}^n$ equipped with the $\ell^\infty$ norm, $\lVert x \rVert\_{\ell^\infty} = \sup \lvert x\_i \rvert$.
@@ -9282,7 +9282,7 @@ In Definition 29.8, it is equivalent to require that the inequality holds for al
 
 ### Examples of Weak $\mathrm{CD}(K, N)$ Spaces
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(29.13 — Euclidean Space with Log-Concave Measure)</span></p>
 
 Let $V$ be a continuous function $\mathbb{R}^n \to \mathbb{R}$ with $\int e^{-V(x)}\, dx < \infty$, let $\nu(dx) = e^{-V(x)}\, dx$, and let $d\_2$ be the Euclidean distance. Then the space $(\mathbb{R}^n, d\_2, \nu)$ satisfies the usual $\mathrm{CD}(K, \infty)$ condition if $V$ is $C^2$ and $\nabla^2 V \ge K\, I\_n$. It satisfies the **weak $\mathrm{CD}(K, \infty)$ condition** *without any regularity assumption on $V$*, as soon as $\nabla^2 V \ge K\, I\_n$ in the sense of distributions, which means that $V$ is $K$-convex. In particular, if $V$ is merely convex, then $(\mathbb{R}^n, d\_2, \nu)$ satisfies the weak $\mathrm{CD}(0, \infty)$ condition.
@@ -9293,21 +9293,21 @@ Conversely, if $V$ is not convex, then $(\mathbb{R}^n, d\_2, e^{-V(x)}\, dx)$ **
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(29.15 — Quotient Manifold by a Compact Lie Group)</span></p>
 
 Let $M$ be a smooth compact $n$-dimensional Riemannian manifold with nonnegative Ricci curvature, and let $G$ be a compact Lie group acting isometrically on $M$. Then $\mathcal{X} = M/G$ with the quotient distance $d(x, y) = \inf\lbrace d\_M(x', y');\; q(x') = x,\, q(y') = y \rbrace$ and the measure $\nu = q\_\# \mathrm{vol}\_M$ is a weak $\mathrm{CD}(0, n)$ space. The resulting space will in general not be a manifold (there will typically be singularities at fixed points of the group action).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(29.16 — Normed Spaces)</span></p>
 
 It will be shown in the concluding chapter that $(\mathbb{R}^n, \lVert \cdot \rVert, \lambda\_n)$ is a weak $\mathrm{CD}(K, N)$ space, where $\lVert \cdot \rVert$ is *any* norm on $\mathbb{R}^n$ and $\lambda\_n$ is the $n$-dimensional Lebesgue measure. This example proves that a weak $\mathrm{CD}(K, N)$ space may be "strongly" branching (recall the discussion in Example 27.17).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(29.17 — Infinite Product of Circles)</span></p>
 
 Let $\mathcal{X} = \prod\_{i=1}^\infty T\_i$, where $T\_i = \mathbb{R}/(\varepsilon\_i \mathbb{Z})$ is equipped with the usual distance $d\_i$ and the normalized Lebesgue measure $\lambda\_i$, and $\varepsilon\_i = 2\operatorname{diam}(T\_i)$ is some positive number. If $\sum \varepsilon\_i^2 < +\infty$ then the product distance $d = \sqrt{\sum d\_i^2}$ turns $\mathcal{X}$ into a compact metric space. Equip $\mathcal{X}$ with the product measure $\nu = \prod \lambda\_i$; then $(\mathcal{X}, d, \nu)$ is a weak $\mathrm{CD}(0, \infty)$ space. (Indeed, it is the measured Gromov–Hausdorff limit of $\mathcal{X} = \prod\_{j=1}^k T\_j$ which is $\mathrm{CD}(0, k)$, hence $\mathrm{CD}(0, \infty)$; and it will be shown in Theorem 29.24 that the $\mathrm{CD}(0, \infty)$ property is stable under measured Gromov–Hausdorff limits.)
@@ -9502,7 +9502,7 @@ In connection with this, recall Gromov's precompactness theorem (Corollary 27.34
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(29.31 — Collapse and Non-Trivial Reference Measures)</span></p>
 
 Even if the limit space is smooth, it might have reference measure $\nu = e^{-\Psi}\, \mathrm{vol}$ for some nonconstant $\Psi$. Such phenomena occur in examples of **collapse** — when the dimension of the limit manifold is strictly less than the dimension of the manifolds in the converging sequence. This shows that basically any reference measure can be obtained as a limit of volume measures of higher-dimensional manifolds; it is a strong motivation to replace the class of Riemannian manifolds by the class of metric-measure spaces.

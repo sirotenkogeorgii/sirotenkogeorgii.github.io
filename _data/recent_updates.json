@@ -1,184 +1,184 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Complexity",
+   "url": "/subpages/books/algorithmic_randomness/algorithmic_randomness_and_complexity/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
+   "title": "Algorithms for Combinatorial Optimization",
+   "url": "/subpages/books/aco/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
+   "title": "An Introduction to Manifolds",
+   "url": "/subpages/books/introduction_to_manifolds/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
+   "title": "Basic Category Theory",
+   "url": "/subpages/books/category_theory/basic_category_theory/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
    "title": "Calculus of Variations",
    "url": "/subpages/books/calculus_of_variations_hd/",
    "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Books",
-   "url": "/notes/books/",
-   "date": "2026-10-25",
-   "added": false
-  },
-  {
-   "title": "Introduction to Functional Analysis",
-   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
-   "date": "2026-10-22",
-   "added": false
-  },
-  {
-   "title": "Mathematical Analysis (Klazar) — Semester 1",
-   "url": "/subpages/books/mathematical_analysis_matfyz/semester1/",
-   "date": "2026-10-21",
-   "added": false
-  },
-  {
-   "title": "Statistical Learning Theory",
-   "url": "/subpages/books/statistical-learning-theory-hd/",
-   "date": "2026-10-18",
-   "added": true
-  },
-  {
    "title": "Calculus of Variations — Gelfand & Fomin",
    "url": "/subpages/books/calculus_of_variations_fomin/",
-   "date": "2026-10-16",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Introduction to Topology",
-   "url": "/notes/introduction-to-topology/",
-   "date": "2026-10-11",
+   "title": "Computability and Complexity",
+   "url": "/notes/computability-and-complexity/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "SDEs & Diffusion Models",
-   "url": "/subpages/books/sde_hd/",
-   "date": "2026-10-01",
+   "title": "Computational Optimal Transport",
+   "url": "/subpages/books/computational_optimal_transport/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Stochastic Differential Equations",
-   "url": "/notes/stochastic-differential-equations/",
-   "date": "2026-09-28",
+   "title": "Course of Analysis for Computer Scientists — Semester 3",
+   "url": "/subpages/books/mathematical_analysis_matfyz/semester3/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Numerical Methods for Bayesian Inverse Problems",
-   "url": "/subpages/books/numerical_methods_for_bip/",
-   "date": "2026-09-18",
+   "title": "Differential Geometry",
+   "url": "/notes/differential_geometry/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Problems from the NMBIP course",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/",
-   "date": "2026-09-18",
+   "title": "Differential Geometry of Curves and Surfaces",
+   "url": "/subpages/books/differential_geometry_of_curves_and_surfaces/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 05",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet05/",
-   "date": "2026-09-18",
-   "added": false
-  },
-  {
-   "title": "Problems from the Numerical Methods for Bayesian Inverse Problems course. Sheet 06",
-   "url": "/subpages/books/numerical_methods_for_bip/problems/sheet06/",
-   "date": "2026-09-18",
-   "added": true
-  },
-  {
-   "title": "Partial Differential Equations in Data Science",
-   "url": "/subpages/books/pdeds/",
-   "date": "2026-09-15",
+   "title": "Diffusion Process",
+   "url": "/subpages/monte-carlo-methods/random_processes/diffusion_process/",
+   "date": "2026-10-27",
    "added": false
   },
   {
    "title": "Discrete and Continuous Optimization",
    "url": "/subpages/books/dso/",
-   "date": "2026-09-13",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Cookbook Tricks",
-   "url": "/notes/cookbook_tricks/",
-   "date": "2026-09-04",
+   "title": "Dynamical Systems Theory in Machine Learning",
+   "url": "/subpages/dynamical-systems/dynamical-systems-in-machine-learning/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Basic Category Theory",
-   "url": "/subpages/books/category_theory/basic_category_theory/",
-   "date": "2026-08-31",
+   "title": "Embedded Machine Learning",
+   "url": "/notes/embedded-machine-learning/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Pravděpodobnost a statistika 1",
-   "url": "/subpages/books/pas/",
-   "date": "2026-08-31",
+   "title": "Fourier Transform",
+   "url": "/subpages/model-based-time-series-analysis/fourier_transform/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-08-20",
+   "title": "Functional Analysis, Sobolev Spaces and PDEs — Brezis",
+   "url": "/subpages/books/brezis_funcan_sobolev_pde/",
+   "date": "2026-10-27",
    "added": false
   },
   {
-   "title": "Cheatsheet — Part 1: Foundations & Plain Kolmogorov Complexity",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part1-plain-complexity/",
-   "date": "2026-07-30",
-   "added": true
+   "title": "GPU Computing",
+   "url": "/notes/gpu-computing/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "MCU 2026: S2a-reducibility and differentiation in Martin-Löf random reals",
-   "url": "/subpages/presentations/conferences/mcu_2026/",
-   "date": "2026-07-25",
-   "added": true
+   "title": "General Solution Derivation For LDS",
+   "url": "/subpages/dynamical-systems/dynamical-systems-in-machine-learning/long-proofs/general-solution-lds.html",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Presentations and Talks",
-   "url": "/notes/presentations/",
-   "date": "2026-07-25",
-   "added": true
+   "title": "Geometric Deep Learning",
+   "url": "/subpages/books/geometric_machine_learning/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 10: Policy Gradient Methods",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture10-policy-gradients/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Graph Algorithms",
+   "url": "/subpages/books/graph_algorithms/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 2: Multi-Armed Bandits",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture2-bandits/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Information Theory, Inference, and Learning Algorithms",
+   "url": "/subpages/books/information_theory_mackay/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 5: Monte Carlo Methods",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture5-monte-carlo/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Introduction to Functional Analysis",
+   "url": "/subpages/books/functional_analysis/mit_rogriguez/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 6: Temporal-Difference Learning",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture6-td-learning/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Introduction to Geometric Deep Learning",
+   "url": "/subpages/books/geometric_deep_learning_hd/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 7: n-step Bootstrapping",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture7-n-step-bootstrapping/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Introduction to Learning Theory",
+   "url": "/subpages/books/introduction_learning_theory/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 8: Planning & Learning (Tabular)",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Introduction to Topology",
+   "url": "/notes/introduction-to-topology/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Cheatsheet — Lecture 9: On-Policy Prediction with Function Approximation",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture9-function-approximation/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Jordan Normal Form",
+   "url": "/subpages/linear-algebra/jordan-form/",
+   "date": "2026-10-27",
+   "added": false
   },
   {
-   "title": "Problems from the Reinforcement Learning course",
-   "url": "/subpages/reinforcement_learning_hd/problems/",
-   "date": "2026-07-23",
-   "added": true
+   "title": "Linear Algebra",
+   "url": "/notes/linear-algebra/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
+   "title": "Linear Algebra I & II",
+   "url": "/subpages/books/linear_algebra/la12/",
+   "date": "2026-10-27",
+   "added": false
   }
  ]
 }

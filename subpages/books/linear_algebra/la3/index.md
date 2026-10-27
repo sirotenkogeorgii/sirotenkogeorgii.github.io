@@ -263,7 +263,7 @@ which is the spectral decomposition of the positive semidefinite matrix $A^\top 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Since $Q^\top Q = I_n$, all eigenvalues are ones. Thus the singular values of an orthogonal matrix are also all ones.
@@ -272,7 +272,7 @@ Conversely, if $A \in \mathbb{R}^{n \times n}$ has all singular values equal to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A^\top A = A^2$ has eigenvalues that are squares of eigenvalues $\lambda_1, \ldots, \lambda_n$ of $A$. Hence the singular values of $A$ are $\lvert \lambda_1\rvert, \ldots, \lvert \lambda_n\rvert$ in descending order.
@@ -313,7 +313,7 @@ Unfortunately, the spectral decompositions of $A^\top A$ and $AA^\top$ alone can
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $A = (1\ 1\ 1\ 1)$. The spectral decomposition of $A^\top A$ is
@@ -529,7 +529,7 @@ Let $A \in \mathbb{R}^{m \times n}$ with reduced SVD $A = U_1 S V_1^\top$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The pseudoinverse of a nonzero vector $a \in \mathbb{R}^n$ is $a^\dagger = \frac{1}{a^\top a} a^\top$. For instance, $(1,1,1,1)^\dagger = \frac{1}{4}(1,1,1,1)^\top$.
@@ -670,7 +670,7 @@ Let $A \in \mathbb{R}^{n \times n}$ and let $A = SJS^{-1}$, where $J$ is the Jor
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$. Then $A^\dagger = \begin{pmatrix} 0 & 0 \\\ 1 & 0 \end{pmatrix}$, but $A^D = \begin{pmatrix} 0 & 0 \\\ 0 & 0 \end{pmatrix}$. Thus the Moore--Penrose and Drazin pseudoinverses generally differ.
@@ -704,7 +704,7 @@ Drazin originally defined the pseudoinverse as the unique matrix satisfying prop
 
 The Drazin pseudoinverse appears, for example, in solving systems of linear differential equations and also as the group inverse:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix Group)</span></p>
 
 It is well known that regular matrices in $\mathbb{R}^{n \times n}$ with multiplication form a group, with the inverse being the classical matrix inverse. In $\mathbb{R}^{n \times n}$ we can find other groups with multiplication.
@@ -944,7 +944,7 @@ $$
 
 One important relationship between matrix norms is their connection to the spectral radius. The spectral radius is **not** a matrix norm, as the following example shows.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The spectral radius is not a matrix norm because:
@@ -1018,7 +1018,7 @@ where $\lbrace 0,1 \rbrace$ denotes either $0$ or $1$ (the exact Jordan block st
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bounds for Polynomial Roots)</span></p>
 
 Consider a polynomial $p(x) = x^n + a_{n-1}x^{n-1} + \ldots + a_1 x + a_0$. Its **companion matrix** is
@@ -2113,7 +2113,7 @@ Consider the system $Ax = b$ with regular $A$, so $x = A^{-1}b$. Three cases ari
 
 Note that $A^{-1}$ always appears in the derivative formulas. This is not a coincidence --- it is directly connected to the condition number in Definition 6.1.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Consider the parametric system
@@ -2174,7 +2174,7 @@ If only $a_{ij}$ changes, $A' = e_i e_j^\top$, so $\lambda' = y^\top e_i e_j^\to
 
 If $A$ is symmetric and only a diagonal entry $a_{ii}$ changes, then $\lambda' = x_i^2 \geq 0$. This means that increasing any diagonal entry of a symmetric matrix does not decrease any eigenvalue --- each eigenvalue either increases or stays the same.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Consider $A = \begin{pmatrix} 2 & 1 \\\ 1 & 2 \end{pmatrix}$. It has eigenvalues $3$ and $1$ with eigenvectors $\frac{\sqrt{2}}{2}(1,1)^\top$ and $\frac{\sqrt{2}}{2}(1,-1)^\top$. By the theorem:
@@ -2187,7 +2187,7 @@ So the matrix $\begin{pmatrix} 2.1 & 1 \\\ 1 & 2 \end{pmatrix}$ should have eige
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Magnus, 1985)</span></p>
 
 Consider the symmetric matrix
@@ -2204,7 +2204,7 @@ Its eigenvalues are $\lambda_{1,2} = 1 \pm \sqrt{\varepsilon^2 + \delta^2}$, whi
 
 Matrix derivatives appear in many areas, for instance in optimization. A well-known application is the **least squares method**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Least Squares Method)</span></p>
 
 Consider the system $Ax = b$ where $A \in \mathbb{R}^{m \times n}$, $b \in \mathbb{R}^m$, and $A$ has rank $n$. Typically $m \gg n$, so the system has no exact solution. We seek the approximate solution by minimizing
@@ -2534,7 +2534,7 @@ Taking the limit $\varepsilon \to 0$ gives $f(A) = \begin{pmatrix} f(\lambda) & 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 1. The function $f(x) = x^2$ gives the matrix function 
@@ -2555,7 +2555,7 @@ Taking the limit $\varepsilon \to 0$ gives $f(A) = \begin{pmatrix} f(\lambda) & 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The above approach allows defining matrix functions for many real functions, especially analytic ones. Thus we can consider $\sin(A)$, $\cos(A)$, $e^A$, and study their properties. Some well-known identities generalize, for example
@@ -2983,7 +2983,7 @@ $$\lVert A \circ B \rVert_2^2 \leq \lVert A \rVert_2^2 \cdot \lVert B \rVert_2^2
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(JPEG Compression)</span></p>
 
 The Hadamard product is used in JPEG lossy image compression. During quantization, the image block (transformed by DCT) is Hadamard-multiplied by a quantization matrix and then the values are rounded. This performs part of the compression (rounding discards many values, achieving compression) and simultaneously introduces information loss --- according to the compression ratio. During decompression, the individual steps are performed in reverse order, and again the Hadamard product is used for multiplication with the quantization matrix.
@@ -3338,7 +3338,7 @@ Symmetric M-matrices are positive definite.
 
 Regarding the location of eigenvalues of M-matrices, one can show even stronger results. For $n > 2$, the angle at the origin between the real axis and the line to any eigenvalue is less than $\frac{\pi}{2} - \frac{\pi}{n}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Laplacian Matrix of a Graph)</span></p>
 
 The **Laplacian matrix** of a graph $G = (V, E)$ with $n$ vertices is $L \in \mathbb{R}^{n \times n}$ defined as
@@ -3353,7 +3353,7 @@ The Laplacian matrix is not an M-matrix in the strict sense (it is called a **si
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Complementarity Problem)</span></p>
 
 The **linear complementarity problem** is the feasibility problem for the system

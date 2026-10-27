@@ -205,7 +205,7 @@ A complex number $x$ is a **primitive n-th root of unity** if $x^n = 1$ and none
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fourth Roots of Unity)</span></p>
 
 Of the four fourth roots of 1, $i$ and $-i$ are primitive, while $1$ and $-1$ are not (verify this by substitution). For a general $n > 2$, there are always at least two primitive roots, namely the numbers $\omega = e^{2\pi i / n}$ and $\overline{\omega} = e^{-2\pi i / n}$. This is because $\omega^j = e^{2\pi ij / n}$, which is equal to 1 if and only if $j$ is a multiple of $n$ (the individual powers of $\omega$ successively traverse the unit circle). The same applies to $\overline{\omega}$.

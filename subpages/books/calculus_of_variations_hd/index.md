@@ -98,7 +98,7 @@ In the second part:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">1.1 (Variational problems)</span></p>
 
 1. **Dirichlet type integrals.** For $u:\Omega\to\mathbb R$ and $p\ge 1$ we consider
@@ -136,7 +136,7 @@ In the second part:
   <figcaption>The brachistochrone (Figure 2 of the script): among all slides from $A$ to $B$, a bead under gravity arrives fastest along a cycloid. Travel time is a functional $T[y]=\int \sqrt{(1+y'^2)/(2gy)}\,\mathrm{d}x$ of the whole curve $y$, and the straight line, a circular arc and a "drop first, then run flat" profile are all slower. This is the archetypal variational problem: the unknown is a function, and the quantity to minimize is an integral of it.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">1.2 (Elastic body)</span></p>
 
 Consider an elastic body in the reference configuration $\Omega\subset\mathbb R^n$, deformed by a displacement field $u:\Omega\to\mathbb R^n$. The energy of a *homogeneous* elastic body is a function of the local deformation of the crystal lattice, which is encoded in the deformation gradient $\nabla u$. The energy density is thus of the form $f(\nabla u)$, where $f$ is the elastic energy density. More generally, for an *inhomogeneous* elastic body the energy has the form
@@ -676,7 +676,7 @@ First choose $\varphi\in\mathcal D(\Omega)^m$: the boundary integral vanishes an
   <figcaption>The same integrand $f(z,\xi)=\tfrac12\xi^2-z$ on $\Omega=(0,1)$, two admissible classes. (a) With both endpoints prescribed, the Euler–Lagrange equation $-u''=1$ comes with the Dirichlet data $u(0)=u(1)=0$, and competitors $u+t\varphi$ must vanish at both ends. (b) If the right endpoint is left free, the test functions may be nonzero at $x=1$, and the extra boundary term in the first variation forces the natural condition $D_\xi f\,\nu=u'(1)=0$: the minimizer "chooses" a horizontal tangent at the free end by itself. In both cases every competitor has strictly larger energy than the minimizer (the values of $I$ are listed in the legends).</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.7 (Dirichlet integral)</span></p>
 
 Let $\Omega\Subset\mathbb R^n$ be smooth, $m=1$, and
@@ -739,7 +739,7 @@ with $\mathcal A=W^{1,p}\_g([a,b])^m$ or $\mathcal A=W^{1,p}([a,b])^m$. The foll
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.8 (Non-convex integrand I)</span></p>
 
 Let $I:W^{1,4}\_0([-1,1])\to\mathbb R$ be given by
@@ -997,7 +997,7 @@ because $w\_t\in C^2(\overline\Omega)^m$ solves the Euler–Lagrange equation. H
 
 We now ask ourselves whether there are Null Lagrangians $f=f(\xi)$ which are not affine.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.14 (The $2\times2$ determinant is a Null Lagrangian)</span></p>
 
 Let $f(\xi)=\det\xi$ for $m=n=2$ and $u\in C^2(\overline\Omega)^2$. We calculate, using that second derivatives commute,

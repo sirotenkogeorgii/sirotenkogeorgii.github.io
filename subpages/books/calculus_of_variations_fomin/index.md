@@ -46,7 +46,7 @@ Such functionals have a "localization property": if we divide the curve $y = y(x
 
 We now indicate some typical *variational problems*, i.e., problems involving the determination of maxima and minima of functionals.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortest Curve / Geodesic)</span></p>
 
 *Find the shortest plane curve joining two given points $A$ and $B$*, i.e., find the curve $y = y(x)$ for which the functional
@@ -57,14 +57,14 @@ achieves its minimum. The solution is the straight line segment joining $A$ and 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Brachistochrone Problem)</span></p>
 
 Let $A$ and $B$ be two fixed points. Find the curve along which a particle slides under gravity from $A$ to $B$ in the least time. This is the *brachistochrone problem*, posed by John Bernoulli in 1696. It played an important role in the development of the calculus of variations and was solved by John Bernoulli, James Bernoulli, Newton, and L'Hospital. The brachistochrone turns out to be a **cycloid**, lying in the vertical plane and passing through $A$ and $B$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Isoperimetric Problem)</span></p>
 
 *Among all closed curves of a given length $l$, find the curve enclosing the greatest area.* This was solved by Euler: the required curve is a **circle**.
@@ -186,7 +186,7 @@ Given a normed linear space $\mathscr{R}$, let each element $h \in \mathscr{R}$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Functionals)</span></p>
 
 1. If $h(x) \in \mathscr{C}(a, b)$ and we fix a point $x\_0 \in [a, b]$, then $\varphi[h] = h(x\_0)$ is a linear functional on $\mathscr{C}(a, b)$.
@@ -490,7 +490,7 @@ $$f_y - f_x y' - f \frac{y''}{1 + y'^2} = 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortest Curve Revisited)</span></p>
 
 Consider $J[y] = \int\_1^2 \frac{\sqrt{1 + y'^2}}{x}\,dx$, with $y(1) = 0$, $y(2) = 1$. The integrand does not contain $y$, so by Case 1, $F\_{y'} = C$. Thus
@@ -507,7 +507,7 @@ $$(y - 2)^2 + x^2 = 5.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Surface of Revolution of Minimum Area — Catenary)</span></p>
 
 Among all curves joining two given points $(x\_0, y\_0)$ and $(x\_1, y\_1)$, find the one which generates the surface of revolution of minimum area when rotated about the $x$-axis. The area is
@@ -536,7 +536,7 @@ Depending on the positions of the two points, three cases are possible:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Functional $(x - y)^2$)</span></p>
 
 For the functional
@@ -595,7 +595,7 @@ $$F_z - \frac{\partial}{\partial x} F_{z_x} - \frac{\partial}{\partial y} F_{z_y
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Minimal Surface / Plateau's Problem)</span></p>
 
 *Find the surface of least area spanned by a given contour.* This reduces to minimizing the functional
@@ -647,7 +647,7 @@ In the **mixed case**, where one end is fixed (say $y(a) = A$) and the other is 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Brachistochrone with Variable End Point)</span></p>
 
 Starting from the point $P = (a, A)$, a heavy particle slides down a curve in the vertical plane. Find the curve such that the particle reaches the vertical line $x = b$ ($\neq a$) in the shortest time. (This is a variant of the brachistochrone problem.)
@@ -781,7 +781,7 @@ Because of the invariance property, changes of variables can be made directly in
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geodesics in Polar Coordinates)</span></p>
 
 Consider the functional
@@ -864,7 +864,7 @@ lead to the same system of Euler equations. Two functionals are said to be *equi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Propagation of Light in an Inhomogeneous Medium)</span></p>
 
 Suppose that three-dimensional space is filled with an optically inhomogeneous medium, such that the velocity of propagation of light at each point is some function $v(x, y, z)$ of the coordinates of the point. According to Fermat's principle, light goes from one point to another along the curve for which the transit time of the light is the smallest. If the curve joining two points $A$ and $B$ is specified by the equations $y = y(x)$, $z = z(x)$, the time it takes light to traverse the curve equals
@@ -881,7 +881,7 @@ we obtain the differential equations for the curves along which the light propag
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Geodesics on a Surface)</span></p>
 
 Suppose we have a surface $\sigma$ specified by a vector equation $\mathbf{r} = \mathbf{r}(u, v)$. The shortest curve lying on $\sigma$ and connecting two points of $\sigma$ is called the *geodesic* connecting the two points. The equations for the geodesics of $\sigma$ are the Euler equations of the corresponding variational problem, i.e., the problem of finding the minimum distance (measured along $\sigma$) between two points of $\sigma$.
@@ -1083,7 +1083,7 @@ $$\frac{\partial}{\partial y_i}\!\left(F + \sum_{j=1}^{k} \lambda_j G_j\right) -
 
 The $2n$ arbitrary constants appearing in the solution of the system, and the values of the $k$ parameters $\lambda\_1, \ldots, \lambda\_k$, sometimes called *Lagrange multipliers*, are determined from the boundary conditions and the subsidiary conditions.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Largest Area under a Curve of Given Length)</span></p>
 
 Among all curves of length $l$ in the upper half-plane passing through the points $(-a, 0)$ and $(a, 0)$, find the one which together with the interval $[-a, a]$ encloses the largest area. We are looking for the function $y = y(x)$ for which the integral
@@ -1106,7 +1106,7 @@ of a family of circles. The values of $C\_1$, $C\_2$ and $\lambda$ are then dete
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Shortest Curve on a Sphere)</span></p>
 
 Among all curves lying on the sphere $x^2 + y^2 + z^2 = a^2$ and passing through two given points $(x\_0, y\_0, z\_0)$ and $(x\_1, y\_1, z\_1)$, find the one which has the least length. The length of the curve $y = y(x)$, $z = z(x)$ is given by the integral
@@ -1652,7 +1652,7 @@ where $\xi$ is regarded as the function of $p$ obtained by solving $p = f'(\xi)$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Legendre Transform of a Power Function)</span></p>
 
 If $f(\xi) = \frac{\xi^a}{a}$ with $a > 1$, then $f'(\xi) = p = \xi^{a-1}$, i.e., $\xi = p^{1/(a-1)}$. It follows that
@@ -1713,7 +1713,7 @@ i.e., just the canonical equations for the original functional. Moreover, since 
 
 The fact that the Legendre transformation is an involution means that if we subject $H(x, y, p)$ to a Legendre transformation, we get back the function $F(x, y, y')$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Sturm-Liouville Functional)</span></p>
 
 Consider the functional
@@ -1815,14 +1815,14 @@ $$\int_{x_0^*}^{x_1^*} F\!\left(x^*, y^*, \frac{dy^*}{dx^*}\right)dx^* = \int_{x
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Translation Invariance)</span></p>
 
 The functional $J[y] = \int\_{x\_0}^{x\_1} y'^2\,dx$ is invariant under the transformation $x^\ast = x + \varepsilon$, $y^\ast = y$, where $\varepsilon$ is an arbitrary constant. In fact, the "transformed" curve $\gamma^\ast$, obtained by shifting $\gamma$ a distance $\varepsilon$ along the $x$-axis, satisfies $y^\ast(x^\ast - \varepsilon) = y(x^\ast - \varepsilon) = y^\ast(x^\ast)$, and so $J[\gamma^\ast] = J[\gamma]$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Non-Invariance)</span></p>
 
 The integral $J[y] = \int\_{x\_0}^{x\_1} xy'^2\,dx$ is *not* invariant under the translation $x^\ast = x + \varepsilon$, $y^\ast = y$. In fact, $J[\gamma^\ast] = \int\_{x\_0 + \varepsilon}^{x\_1 + \varepsilon} (x + \varepsilon)\left[\frac{dy(x)}{dx}\right]^2 dx \neq J[\gamma]$.
@@ -1888,7 +1888,7 @@ $$\sum_{i=1}^{n} p_i \psi_i - H\varphi = \mathrm{const}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Hamiltonian as a Special Case of Noether's Theorem)</span></p>
 
 Consider the functional $J[y] = \int\_{x\_0}^{x\_1} F(y, y')\,dx$, whose integrand does not depend on $x$ explicitly. Then, by the same argument as in Example 1, $J[y]$ is invariant under the one-parameter family of transformations $x^\ast = x + \varepsilon$, $y\_i^\ast = y\_i$. In this case, $\varphi = 1$, $\psi\_i = 0$, and the first integral reduces to just $H = \mathrm{const}$, i.e., the Hamiltonian $H$ is constant along each extremal of $J[y]$. This recovers the result already obtained in Sec. 17.
@@ -2039,21 +2039,21 @@ If we set $y = x$ in a bilinear functional, we obtain an expression called a **q
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Inner Product as Bilinear Functional)</span></p>
 
 The expression $B[x, y] = \int\_a^b x(t)y(t)\,dt$ is a bilinear functional defined on the space $\mathscr{C}$ of all functions which are continuous in the interval $a \leqslant t \leqslant b$. The corresponding quadratic functional is $A[x] = \int\_a^b x^2(t)\,dt$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Weighted Bilinear Functional)</span></p>
 
 A more general bilinear functional defined on $\mathscr{C}$ is $B[x, y] = \int\_a^b \alpha(t)x(t)y(t)\,dt$, where $\alpha(t)$ is a fixed function. If $\alpha(t) > 0$ for all $t$ in $[a, b]$, then the corresponding quadratic functional $A[x] = \int\_a^b \alpha(t)x^2(t)\,dt$ is positive definite.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Quadratic Functional on $\mathscr{D}\_1$)</span></p>
 
 The expression $A[x] = \int\_a^b [\alpha(t)x^2(t) + \beta(t)x(t)x'(t) + \gamma(t)x'^2(t)]\,dt$ is a quadratic functional defined on the space $\mathscr{D}\_1$ of all functions which are continuously differentiable in $[a, b]$.
@@ -2437,7 +2437,7 @@ It is clear that if the point $\tilde{M}$ is conjugate to the point $M$ in the s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Conjugate Points on a Sphere)</span></p>
 
 Consider the geodesics on a sphere, i.e., the great circle arcs. Each such arc is an extremal of the functional which gives arc length on the sphere. The conjugate of any point $M$ on the sphere is the diametrically opposite point $\tilde{M}$. In fact, given an extremal, *all* extremals with the same initial point $M$ (and not just the neighboring extremals) intersect the given extremal at $\tilde{M}$. This property stems from the fact that a sphere has constant curvature, and is no longer true if the sphere is replaced by a "neighboring" ellipsoid (for example).
@@ -2975,7 +2975,7 @@ Thus, the system (7) is a consequence of the system (6) if and only if (8) holds
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Field for a Single Linear Equation)</span></p>
 
 Consider a single linear differential equation $y'' = p(x)y$. The corresponding Hamilton-Jacobi system reduces to a single equation
@@ -2990,7 +2990,7 @@ The set of solutions of (10) depends on an arbitrary function, and according to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Field for a System of Linear Equations)</span></p>
 
 In the same way, we can find the simplest field for a system of linear differential equations $Y'' = P(x)Y$, where $Y = (y\_1, \ldots, y\_n)$ and $P(x) = \lVert p\_{ik}(x)\rVert$ is a matrix. The system of Hamilton-Jacobi equations corresponding to this system is
@@ -3930,7 +3930,7 @@ $$\delta u_{x_i} = (\bar{\delta}u)_{x_i} + \sum_{k=1}^{n} u_{x_i x_k}\,\delta x_
 
 This formula shows that **the operations $\delta$ and $\partial/\partial x\_i$ commute when applied to $\bar{\delta}u$**, i.e., $\delta u\_{x\_i} - (\bar{\delta}u)\_{x\_i} = \sum\_k u\_{x\_i x\_k}\,\delta x\_k$, which is analogous to the one-variable formula from Sec. 13.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Rotation in the $xu$-Plane)</span></p>
 
 Let $u$ be a function of a single independent variable $x$, and let the transformation be the counterclockwise rotation of the $xu$-plane about the small angle $\alpha = \varepsilon$:
@@ -4015,7 +4015,7 @@ $$\int_{R^*} F(x^*, u^*, \nabla^* u^*)\,dx^* = \int_R F(x, u, \nabla u)\,dx.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Invariance under Rotation)</span></p>
 
 The functional
@@ -4141,7 +4141,7 @@ which are the desired field equations.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Vibrating String with Free Ends)</span></p>
 
 For the vibrating string with free ends ($\varkappa\_1 = \varkappa\_2 = 0$), we have $m = n = 1$, and
@@ -4152,7 +4152,7 @@ $$\mathscr{L} = \tfrac{1}{2}(\rho u_t^2 - \tau u_x^2) = \tfrac{1}{2}(\rho u_{x_0
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Vibrating Membrane with Free Boundary)</span></p>
 
 For the vibrating membrane with a free boundary [$\varkappa(s) = 0$], we have $m = 1$, $n = 2$, and
@@ -4163,7 +4163,7 @@ $$\mathscr{L} = \tfrac{1}{2}[\rho u_t^2 - \tau(u_x^2 + u_y^2)] = \tfrac{1}{2}[\r
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Klein-Gordon Equation)</span></p>
 
 Consider the *Klein-Gordon equation*
@@ -4297,7 +4297,7 @@ a fact summarized by saying that *the angular momentum of the field is conserved
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Klein-Gordon Field)</span></p>
 
 Using the quantities $g\_{ii}$, we can write the Lagrangian density corresponding to the Klein-Gordon equation in the form

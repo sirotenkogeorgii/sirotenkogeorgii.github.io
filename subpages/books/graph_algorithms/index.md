@@ -328,7 +328,7 @@ So a flow and a cut of equal value certify each other's optimality — an algori
 
 **Naive idea.** Find an $st$-path $e\_1, \dots, e\_k$ such that $f(e\_i) < c(e\_i)$ for all $i$. Then we can *push* $\varepsilon := \min\_i \bigl(c(e\_i) - f(e\_i)\bigr) > 0$ along the path — increase the flow by $\varepsilon$ on every edge of the path — which increases $\lvert f\rvert$ by $\varepsilon$: Kirchhoff's law is preserved at the inner vertices of the path since both their inflow and outflow grow by $\varepsilon$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Naive Idea Is Broken)</span></p>
 
 Pushing only along edges with spare capacity can get stuck at a non-maximum flow. In the network below (all capacities $1$), a greedy first augmentation along $s \to u \to v \to t$ saturates the diagonal edge $uv$; afterwards no $st$-path with spare capacity remains, and the naive rule terminates with $\lvert f\rvert = 1$ — although the maximum flow has size $2$. The larger flow exists, it just requires *rerouting* the unit currently using the diagonal, and the naive rule offers no way to undo a bad routing decision.
@@ -1693,7 +1693,7 @@ If $G$ has **no negative cycles**, then at least one shortest $uv$-*walk* is a *
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Negative Cycles Break Everything)</span></p>
 
 In the graph below, walks may traverse the negative cycle arbitrarily often, so the walk-distance from $u$ to $v$ is $-\infty$. Restricting to simple paths does not save the day either: there $d(u,v) = 2$, $d(u,t) = -1$ and $d(t,v) = 1$, so
@@ -2917,7 +2917,7 @@ Values on the number line: with every edge of length at least $\delta$, no futur
 
 Everything so far assumed $\ell \ge 0$. What if some lengths are negative — while the graph still has no negative cycles?
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Attempt: Shift All Lengths — FAIL)</span></p>
 
 Add a constant $\Delta$ to every edge length until nothing is negative, then run Dijkstra? **This fails:** a path with $k$ edges grows by $k\Delta$, so paths with different numbers of edges shift by *different* amounts — the shortest path can change.
@@ -3488,7 +3488,7 @@ This reproduces Floyd–Warshall — and the $\ast$-rule even handles negative c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Widest Paths)</span></p>
 
 Give each edge a **width** and look for the $uv$-walk maximizing its narrowest edge: $f(\text{walk}) := \min\_{e \in \text{walk}} \mathrm{width}(e)$ and $f(\text{bundle}) := \max\_{\text{walk} \in \text{bundle}} f(\text{walk})$. The same skeleton applies with

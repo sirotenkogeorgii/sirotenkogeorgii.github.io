@@ -21,27 +21,27 @@ tags:
 
 ### What is a Combinatorial Problem?
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Shortest path in a graph)</span></p>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span><span class="math-callout__name">((Cyclic) traveling salesman)</span></p>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">(Pseudo-boolean optimization)</span></p>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.4</span><span class="math-callout__name">(Constraint optimization problem)</span></p>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.5</span><span class="math-callout__name">(Prime factorization)</span></p>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.6</span><span class="math-callout__name">((Non-binary) knapsack problem)</span></p>
 </div>
 
@@ -66,7 +66,7 @@ Labeling problems as a modeling tool naturally appear when
 - each part must be labeled by a label from a *finite set*, and
 - parts (and, therefore, their labels) are *mutually dependent*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.10</span><span class="math-callout__name">(Image segmentation)</span></p>
 
 Image segmentation is a classical image analysis task: Each pixel of an input image must be assigned a label of an object visible in the image. For instance, for street scenes the labels could belong to the set $\lbrace\texttt{pedestrian}, \texttt{car}, \texttt{tree}, \texttt{building}\rbrace$.
@@ -75,7 +75,7 @@ The target object is an image, i.e. a two-dimensional array of pixels. Each pixe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.11</span><span class="math-callout__name">(Depth reconstruction)</span></p>
 
 Depth reconstruction is another important image analysis problem. In the classical setting there are (at least) two images taken from different viewpoints. The task is to match pixels from these two images to each other. Assuming the positions of cameras and their focal lengths are known, this allows us to estimate depth of the scene.
@@ -86,7 +86,7 @@ Assuming that the observed surface is smooth, one would expect the difference $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.12</span><span class="math-callout__name">(Cell tracking problem in bio-imaging)</span></p>
 
 Given is a sequence of images that show the development of a living organism from an early embryo consisting of only a few cells to a fully grown animal. During this sequence, the images show moving and splitting cells.
@@ -391,7 +391,7 @@ A feasible point $x$ such that $f(x) \approx f^\ast$ (denoted as $f(x) \approx f
 
 The problem of the form $\min_{x \in X} f(x)$ is referred to as a *constraint minimization* problem. The *constrained maximization* problem $\max_{x \in X} f(x)$ is defined by substituting min with max, inf with sup, and $-\infty$ with $\infty$ and the other way around. Minimization and maximization problems together are also called *optimization* problems.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1</span><span class="math-callout__name">(Optimal values exist but optimal points do not)</span></p>
 
 The optimal values of the problems
@@ -402,7 +402,7 @@ are finite and equal to 1, but their optimal points do not exist. For the first 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.2</span><span class="math-callout__name">(Infeasible problems)</span></p>
 
 The following optimization problems are infeasible, as their respective feasible sets are empty:
@@ -411,7 +411,7 @@ $$\min_{\substack{x \geq 1 \\ x \leq 0}} f(x); \qquad \max_{\substack{x \in \{0,
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span><span class="math-callout__name">(Unbounded problems)</span></p>
 
 The following optimization problems are unbounded:
@@ -420,7 +420,7 @@ $$\min_{x \leq 0} x + 1; \qquad \min_{x \geq 0} 2 - x; \qquad \max_{x \leq 0} x^
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4</span><span class="math-callout__name">(Multiple optimal solutions)</span></p>
 
 The following optimization problems have multiple optimal solutions:
@@ -446,21 +446,21 @@ is called a *relaxation* of the problem $\min_{x \in X} f(x)$ if $X' \supseteq X
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.6</span></p>
 
 The problems $\min_{x \geq 0} f(x)$ and $\min_{x \in [0,1]^n} f(x)$ are relaxations of the problem $\min_{x \in \{0,1\}^n} f(x)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.7</span></p>
 
 The problem $\min_{x \in [0,1]} x^2$ is a relaxation of the problem $\min_{x \in [0,1]} \lvert x \rvert$. The advantage of this relaxation is the differentiability of $x^2$, which may often lead to faster optimization algorithms.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.8</span></p>
 
 The problems $\min_{x \in X \subset \mathbb{R}^n} \langle c, x \rangle$ and $\min_{x \colon Ax = b} \langle c, x \rangle$ are relaxations of $\min_{\substack{x \in X \subset \mathbb{R}^n \\ Ax = b}} \langle c, x \rangle$.
@@ -480,7 +480,7 @@ if $X \subseteq X'$ and $g(x) \leq f(x)$ for $x \in X$. Moreover, if $x' \in X$ 
 
 Relaxations, which provide tight lower bounds for *all* instances of optimization problems from a certain class, are called *tight relaxations*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.10</span></p>
 
 Problem $\min_{x \in [0,1]} cx$ is a tight relaxation for $\min_{x \in \{0,1\}} cx$ for any constant $c$.
@@ -543,7 +543,7 @@ for some matrix $A$.
 
 The dimension of *any subset* of $\mathbb{R}^n$ is the smallest dimension of any affine subspace which contains it.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.14</span></p>
 
 The dimension of the non-empty set $P := \lbrace \mathbf{x} \in \mathbb{R}^n \colon A\mathbf{x} = \mathbf{b}, \ \mathbf{x} \geq \mathbf{0} \rbrace \neq \emptyset$ is $\dim P = n - \operatorname{rank} A$, i.e., the same as the affine subspace $\lbrace \mathbf{x} \in \mathbb{R}^n \colon A\mathbf{x} = \mathbf{b} \rbrace$.
@@ -565,7 +565,7 @@ Since in the following all considered polyhedra will be convex, we will omit thi
 
 As any subset of $\mathbb{R}^n$, polyhedra have their dimension. Polyhedra of dimension $n$ are called *full-dimensional*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.16</span><span class="math-callout__name">($n$-dimensional cube)</span></p>
 
 The set $[0,1]^n$, called an *$n$-dimensional cube*, is a polytope, since it can be represented as
@@ -592,7 +592,7 @@ The equality constraints $Ax = b$ can be equivalently represented as inequalitie
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.18</span></p>
 
 A hyperplane $\langle \mathbf{a}, \mathbf{x} \rangle = b$ is a polyhedron, and so is an intersection of multiple hyperplanes $A\mathbf{x} = \mathbf{b}$. Indeed, as an intersection of hyperplanes $A\mathbf{x} = \mathbf{b}$ defines an affine subspace, which is unbounded unless it is empty or consists of a single point.
@@ -678,7 +678,7 @@ A vertex $x'$ of polytope $P$ is the **unique maximizer** of some linear functio
 
 Note that since $\max_{x \in P} \langle c, x \rangle = -\min_{x \in P}(-\langle c, x \rangle)$, the maximization problem $\max_{x \in P} \langle c, x \rangle$ can be equivalently exchanged with $\min_{x \in P} \langle c, x \rangle$ in Definition 2.20.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.21</span></p>
 
 Let us show that $\lbrace 0,1 \rbrace^n \subseteq \operatorname{vrtx}([0,1]^n)$. Indeed, consider $z \in \lbrace 0,1 \rbrace^n$ and a linear function $\langle c, x \rangle$ with $c_i = 2z_i - 1$. Then
@@ -696,7 +696,7 @@ The polytope $\Delta^n := \lbrace x \in \mathbb{R}^n_+ \colon \sum_{i=1}^{n} x_i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.23</span></p>
 
 Let us show that vectors $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$ such that $x^i_j = \lbracket i = j \rbracket$ are vertices of the simplex $\Delta^n$. Indeed, for $c = x^i$ the maximum $\max_{x \in \Delta^n} \langle c, x \rangle$ is attained in a single point $x^i$. Therefore, $x^i \in \operatorname{vrtx}(\Delta^n)$.
@@ -846,7 +846,7 @@ Any $x \in \operatorname{conv}(X)$ is representable as $\sum_{i=1}^{N} p_i x^i$ 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.33</span></p>
 
 Let us show that simplex $\Delta^n$ is a convex hull of vectors $\lbrace x^i \in \mathbb{R}^n \mid i = 1, \ldots, n, \ x^i_j = \lbracket i = j \rbracket \rbrace = \Delta^n \cap \lbrace 0,1 \rbrace^n$. Indeed, any vector $p \in \Delta^n$ is representable as $\sum_{i=1}^{n} p_i x^i$. The other way around, all vectors of the form $\sum_{i=1}^{n} p_i x^i$ belong to $\Delta^n$.
@@ -860,7 +860,7 @@ Let $X = \prod_{i=1}^{n} X^i$ be the Cartesian product of $X^i \subseteq \mathbb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.35</span></p>
 
 Due to Lemma 2.34 the equality $\operatorname{conv}(\lbrace 0,1 \rbrace^n) = [0,1]^n$ follows directly from the fact that $\operatorname{conv}(\lbrace 0,1 \rbrace) = [0,1]$.
@@ -922,7 +922,7 @@ Let $a \in \mathbb{R}^n$ and $p^\ast = \arg\min_{p \in \Delta^n} \sum_{i=1}^{n} 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.42</span></p>
 
 According to Example 2.16, $[0,1]^n$ is a polytope. Let us show that the set of its vertices is precisely the set $\lbrace 0,1 \rbrace^n$.
@@ -931,7 +931,7 @@ Since $\operatorname{conv}(\lbrace 0,1 \rbrace^n) = [0,1]^n$ (see Example 2.35),
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.43</span></p>
 
 $\Delta^n \cap \lbrace 0,1 \rbrace^n = \operatorname{vrtx}(\Delta^n)$. In other words, the binary vectors of a simplex are all its vertices.
@@ -1076,7 +1076,7 @@ is called a *0/1 integer linear program* (further we omit mentioning '0/1' for b
 
 The class of integer linear programs is $\mathcal{NP}$-hard, as is shown by the following two examples:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.53</span><span class="math-callout__name">(Binary knapsack problem)</span></p>
 
 Let $\lbrace 1, \ldots, n \rbrace$ be indexes of $n$ items, each of which has its volume $a_i$ and its cost $c_i$. Therefore, we assume two vectors $\mathbf{a}, \mathbf{c} \in \mathbb{R}^n$ to be given. The task is to select a subset of items to maximize their total cost, whereas their total volume should not exceed a given (knapsack) volume $b$. This can be equivalently formulated as the integer linear program
@@ -1087,7 +1087,7 @@ $$\text{s.t. } \langle \mathbf{a}, \mathbf{x} \rangle \leq b \,.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.54</span><span class="math-callout__name">(Max-weight independent set problem)</span></p>
 
 Let $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ be an undirected graph with a *node set* $\mathcal{V}$ and an *edge set* $\mathcal{E} \subseteq \binom{\mathcal{V}}{2}$. An *independent* or *stable set* is the subset of mutually non-adjacent vertices $\mathcal{V}' \subseteq \mathcal{V}$, e.g. for any $i, j \in \mathcal{V}'$ it holds $\lbrace i, j \rbrace \notin \mathcal{E}$. Given the costs $c_i$, $i \in \mathcal{V}$, the *maximum weight independent set (MWIS)* problem consists in finding an independent set with the maximum total cost.
@@ -1323,7 +1323,7 @@ This adds $3\lvert \mathcal{E} \rvert$ additional non-trivial constraints (in ad
 
 Being very simple this linearization method is known for its main weakness: The resulting LP relaxation is typically not particularly tight. Therefore, several other linearizations have been proposed. We consider the one known to be tighter than most of others in the following section.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.1</span></p>
 
 Consider the problem
@@ -1366,7 +1366,7 @@ $$(1 - x_j)(\langle \mathbf{a}, \mathbf{x} \rangle \leq b) \;\Leftrightarrow\; \
 
 Note that both of these are valid linear constraints that include the new lifted variable $\mathbf{y}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2</span></p>
 
 Consider constraints $x_i \geq 0$, $x_i \leq 1$, $i \in [n]$. After multiplication of them to $x_j$ one obtains
@@ -1441,7 +1441,7 @@ Note that:
 - Other simplifications are often possible. E.g. if $P_1$ contains a *simplex* (or *uniqueness* or *set partitioning*) constraint $x_1 + \cdots + x_m = 1$ then $y_{\lbrace ij \rbrace} = 0$ for all $i, j \in [m]$, $i \neq j$, see Example 3.3 below.
 - Contrary to the Fortet linearization that introduces new variables $y_{\lbrace ij \rbrace}$ only for $\lbrace i, j \rbrace \in \mathcal{E}$ the Sherali-Adams method introduces them for all $\binom{[n]}{2}$. In case of sparse quadratic terms, i.e. $\lvert \mathcal{E} \rvert \ll \lvert \binom{[n]}{2} \rvert$ this significantly increases the size of the initial problem. In some cases the unnecessary variables and constraints can be ignored without influencing the resulting LP relaxation. In general, one may consider less tight relaxation by defining only a subset of quadratic variables $y_{\lbrace ij \rbrace}$ and the respective constraints.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.3</span></p>
 
 Now let us get back to Example 3.1. Multiplication of the simplex constraint $x_1 + x_2 = 1$ by $x_1$ results in $x_1^2 + x_1 x_2 = x_1 \Rightarrow x_1 + y = x_1 \Rightarrow y = 0$. The same result is obtained with multiplication by $x_2$.
@@ -1462,7 +1462,7 @@ Note that LP relaxation of this problem is tight, contrary to the relaxation wit
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4</span><span class="math-callout__name">(Uniqueness/simplex constraints)</span></p>
 
 Let $\mathbf{x} \in \mathbb{R}^n$. Consider the *uniqueness* constraint
@@ -1560,7 +1560,7 @@ $$\min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymb
 
 Naturally, this relaxation referred to as the *local polytope relaxation* of the labeling problem.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.6</span><span class="math-callout__name">(How large-scale is the ILP representation of the labeling problem?)</span></p>
 
 Consider the depth reconstruction Example 1.11 from Chapter 1. Each element of the nodes set $\mathcal{V}$ corresponds to a pixel in an input image. Let the latter be as small as $100 \times 100 = 10^4$. Let also each node be associated with 10 labels only. It implies there are in total $10^{10^4}$ labelings.
@@ -1610,7 +1610,7 @@ $$\min_{x \in X \subseteq \mathbb{R}^n} f(x) \,,$$
 
 we assumed that the value $f(x)$ is finite for all $x \in X$. But this may not always hold. Consider for example, that $f(x)$ is defined implicitly, as the result of another optimization, e.g. $f(x) = \max_{z \in Z} g(x, z)$ with $g \colon X \times Z \to \mathbb{R}$. The maximization problem may turn out to be unbounded for some $x$. Loosely speaking, this would mean that $f(x) = \infty$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1</span><span class="math-callout__name">(Implicitly defined extended value function)</span></p>
 
 Consider the following extended value function, defined implicitly:
@@ -1659,7 +1659,7 @@ An *epigraph* of a function $f$ is defined as the set $\operatorname{epi} f := \
 
 Loosely speaking, epigraph is set of points "above" the plot of a function.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.4</span></p>
 
 The epigraph of a linear function $f \colon \mathbb{R}^n \to \mathbb{R}$ is a half-space in $\mathbb{R}^{n+1}$.
@@ -2006,7 +2006,7 @@ The dimensionality of $\boldsymbol{\lambda}$ equals the number of rows of the ma
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1</span></p>
 
 Consider
@@ -2023,7 +2023,7 @@ with $\lambda$ being a real number.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2</span></p>
 
 Consider
@@ -2106,7 +2106,7 @@ The proof follows from Corollary 4.22 and the fact that the objective of the dua
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.6</span><span class="math-callout__name">(Piecewise linear Lagrange dual)</span></p>
 
 Consider the Lagrange dual as in the primal problem:
@@ -2216,7 +2216,7 @@ Together with $p^\ast \geq d^\ast$ this implies $p^\ast = d^\ast$. $\square$
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.10</span></p>
 
 Consider Example 5.1, the primal
@@ -2286,7 +2286,7 @@ $$\max_{\substack{\boldsymbol{\lambda} \\ \boldsymbol{\mu} \geq 0}} \min_{\mathb
 
 Note that objective of the dual problem is a concave piecewise linear, therefore, non-differentiable, function.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.12</span></p>
 
 Consider the ILP and assume $P = \mathbb{R}^n$. Then the dual objective can be rewritten as
@@ -2410,7 +2410,7 @@ $$\max_{\boldsymbol{\lambda}} \left[D(\boldsymbol{\lambda}) := \min_{\mathbf{x} 
 
 therefore consists in finding an *optimal reparametrization* of the problem.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.15</span></p>
 
 In Example 5.10 the reparametrized cost vector has coordinates $c_1 + \lambda$ and $c_2 - \lambda$.
@@ -2580,7 +2580,7 @@ If $\mathbf{x}^\ast$ in Corollary 5.17 is binary, i.e. $\mathbf{x}^\ast \in \lbr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.19</span><span class="math-callout__name">(Binary knapsack problem)</span></p>
 
 Let us get back to the Lagrange dual of the binary knapsack problem and exchange the feasible set $\lbrace 0, 1 \rbrace^n$ with its convex hull $[0, 1]^n$, corresponding to $\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)$:
@@ -2674,7 +2674,7 @@ Compute the dual LP for the standard form and the inequality form. Show that the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.21</span></p>
 
 Consider
@@ -2799,7 +2799,7 @@ $$\max_{\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}} \mathcal{D}(\boldsymbol{
 
 Note that to compute the value of the dual objective in (5.122) for a fixed $\boldsymbol{\phi}$ one has to select *independently* in each node and each edge an optimal label and an optimal label pair, respectively. Such labels and label pairs will be called *locally optimal* in the following. Note also that these locally optimal labels and label pairs need not be consistent. In other words, if the label $s$ is selected in node $u$ and the label pair $(t, t')$ in edge $uv$, this does not generally imply that $s = t$. However, as we will show later in this chapter, some kind of relaxed consistency (known as *arc-consistency*) is enforced in the optimum of the dual function.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.22</span><span class="math-callout__name">(How large-scale is the Lagrangean dual of the labeling problem?)</span></p>
 
 Consider now the Lagrangean dual (5.122). The number of variables is equal to $\lvert \mathcal{J} \rvert$, that grows linearly with the number of labels and the number of edges in a graph. This is in contrast to the primal problem (5.114), where the number of variables grows quadratically with the number of labels.
@@ -2872,7 +2872,7 @@ In the following, we will use two functions, which turn real-valued vectors from
 
 - For $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$ let $\operatorname{mi}[\boldsymbol{\theta}]$ be defined such that locally minimal labels and label pairs (w.r.t. $\theta$) obtain the value 1 and others zero, i.e. $\operatorname{mi}[\boldsymbol{\theta}]\_w(x_w) := \lbracket \theta_w(x_w) = \min_{x_w \in \mathcal{Y}\_w} \theta_w(x_w) \rbracket$ for $w \in \mathcal{V} \cup \mathcal{E}$. Here $\operatorname{mi}$ stands for $\min$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.24</span></p>
 
 $\operatorname{nz}[\boldsymbol{\delta}(\mathbf{y})] = \boldsymbol{\delta}(\mathbf{y})$;
@@ -3054,7 +3054,7 @@ where $\lVert \cdot \rVert_2$ is a spectral norm, i.e. the largest eigenvalue of
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3</span></p>
 
 Proposition 6.2 implies that:
@@ -3066,7 +3066,7 @@ Proposition 6.2 implies that:
 
 We will use the notation $C_L^{1,1}(X)$ for functions $f \colon X \to \mathbb{R}$, which are differentiable on $X$ and whose gradient is Lipschitz-continuous on $X$ with the Lipschitz constant $L$. In general $C_L^{k,m}(X)$ is a standard notation for the set of $k$-times differentiable functions such that their $m$th derivative is Lipschitz-continuous on $X$ with the constant $L$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.4</span></p>
 
 $C_L^{1,1}(\mathbb{R})$ includes such functions as $x$ and $x^2$. The functions $x^n$ for $n = 3, 4, \ldots$ belong to $C_L^{1,1}(X)$ for any bounded $X \subset \mathbb{R}$, but not for $X = \mathbb{R}$.
@@ -3383,7 +3383,7 @@ Algorithm 3 applies this rule to each node sequentially and iterates this proced
 
 As any coordinate descent, Algorithm 3 guarantees that the objective value of $E$ is monotonically nonincreasing. However, since $E$ as a function of $\mathbf{y}$ is neither convex nor differentiable (moreover, it is defined on a discrete set $\mathcal{Y}\_\mathcal{V}$ only), Algorithm 3 does not guarantee attainment of the optimal value of $E$ and its output significantly depends on the initial labeling. In practice Algorithm 3 typically returns labelings with significantly higher energies than many other techniques.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.13</span></p>
 
 Consider a simple two-node model with two labels in each node. Suppose that the unary costs are all zero and the pairwise costs are $\theta_{uv}(0, 0) = 0$, $\theta_{uv}(1, 1) = 1$, $\theta_{uv}(0, 1) = \theta_{uv}(1, 0) = 2$. If the initial labeling is $(1, 1)$, the ICM updates cannot improve the labeling, since they can switch only to the labelings $(1, 0)$ or $(0, 1)$, each with total cost 2, while the labeling $(1, 1)$ has total cost 1. However, the optimum is attained in labeling $(0, 0)$, which has total cost 0.
@@ -3720,7 +3720,7 @@ that must be solved w.r.t. $\nu$. A unique solution to this equation together wi
 
 Note that due to one-to-one correspondence between $\boldsymbol{\lambda}$ and $\mathbf{x}[\boldsymbol{\lambda}]$ the algorithm can explicitly update either the former or the latter.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.22</span><span class="math-callout__name">(Smooth coordinate minimization for uniqueness constraints)</span></p>
 
 Let $[A\mathbf{x}[\boldsymbol{\lambda}^{t+1}]]\_j = b_j$ has a form of a uniqueness constraint
@@ -3807,7 +3807,7 @@ Taxonomy of smoothing methods and their relations: Amir Beck and Mark Teboulle. 
 
 ### 7.1 Systematic Search: Branch-and-Bound
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.1</span><span class="math-callout__name">(Binary knapsack problem)</span></p>
 
 Consider the binary knapsack problem and the respective branching tree in Figure 7.1. A general algorithm for a minimization (maximization) branch-and-bound approach looks as follows:
@@ -4036,7 +4036,7 @@ Domain propagation and probing are used as a preprocessing, before branching as 
 
 Consider the convex polyhedron $P := \lbrace \mathbf{x} \in \mathbb{R}^m \colon A\mathbf{x} \leq \mathbf{b} \rbrace$. The goal of *domain propagation* or *bound strengthening* is to find $\mathbf{b}' \leq \mathbf{b}$ such that $P = \lbrace \mathbf{x} \in \mathbb{R}^m \colon A\mathbf{x} \leq \mathbf{b}' \rbrace$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.6</span><span class="math-callout__name">(Variable's upper bound)</span></p>
 
 Consider
@@ -4049,7 +4049,7 @@ $$P = \begin{cases} 2x_1 + x_2 \leq 3 \\ 0 \leq x_1 \leq 1.5 \\ 0 \leq x_2 \end{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.7</span><span class="math-callout__name">(Constraint's upper bound)</span></p>
 
 Consider
@@ -4136,7 +4136,7 @@ $$\left( \sum_{i \in C^+} a_{ji} l_i - \sum_{i \in C^- \setminus \lbrace k \rbra
 
 **Iterative domain propagation.** Domain propagation can be run iteratively over all constraints until no significant change is happening. The following example shows that the iterative improvement can be infinite:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.8</span></p>
 
 For $0 < a < 1$ consider the constraints
@@ -4399,7 +4399,7 @@ Assume it holds for the dimension $d$. Consider now $d+1$. A polytope with dimen
 
 The proof of Theorem 7.12 follows directly from convexity of the problem $\min_{\mathbf{x}' \in P} \langle \mathbf{c}, \mathbf{x}' \rangle$, which implies that each local minimum is a global one, see Proposition 4.19.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.14</span><span class="math-callout__name">(Simplex Method)</span></p>
 
 Consider the linear program in Figure 7.3:
@@ -4785,7 +4785,7 @@ $$\mathbf{x}^* \in \operatorname*{arg\,min}_{\mathbf{x} \in P \cap \lbrace 0,1 \
 
 such that $A\mathbf{x}^\ast = \mathbf{b}$, then $\mathbf{x}^\ast$ is the exact solution of the ILP (8.1). Hence, the greedy algorithm (8.2), when applied to the reparametrized costs $\mathbf{c}^\lambda = \mathbf{c} + A^\top \boldsymbol{\lambda}$ can be interpreted as an attempt to find a solution $\mathbf{x}^\ast$ that satisfies the above condition. According to the dual optimality condition (Corollary 5.17) this greedy algorithm finds an optimal ILP solution if the solutions $\mathbf{x}^l$ to all greedy subproblems also satisfy the unconstrained versions. We will refer to the class of algorithms above as *reparametrized greedy algorithms*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4</span><span class="math-callout__name">(Acyclic labeling problem)</span></p>
 
 Let $\mathcal{G}$ be acyclic and the reparametrized costs $\boldsymbol{\theta}^\phi$ be the fix-point of the diffusion algorithm. Proposition 5.29 together with Theorem 6.19 imply that the dual vector $\boldsymbol{\phi}$ is optimal. All reparametrized unary costs are zero. W.l.o.g. we will assume that also all locally optimal label pairs have zero reparametrized pairwise costs and otherwise all costs are non-negative.
@@ -4806,7 +4806,7 @@ Note that the greedy method (8.3)-(8.4) applied to the non-reparametrized costs 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.5</span><span class="math-callout__name">(Max-weight independent set problem, slack-based clique ILP formulation)</span></p>
 
 Consider the clique-based ILP representation of the max-weight independent set problem:
@@ -4904,7 +4904,7 @@ $$\mathbf{x}^* \in \operatorname*{arg\,min}_{\substack{\mathbf{x} \in P \cap \lb
 
 however, the feasible set of this problem may be empty, if the relaxation has no integer solution.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.8</span><span class="math-callout__name">(Binary knapsack problem)</span></p>
 
 The condition (8.28) takes the form
@@ -4925,14 +4925,14 @@ As mentioned in Chapter 8, *randomized* greedy subroutines are a common tool for
 
 **Order randomization.** Randomization may lead to the optimal solution (that satisfies (8.15) and (8.16)), if, e.g., the processing of the (randomized) greedy algorithm iterations (8.2) (resp. (8.17)) is done in the order $\pi(l)$ instead of $l$ with $\pi$ being a *suitable* randomized permutation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.9</span><span class="math-callout__name">(Labeling problem)</span></p>
 
 Consider the greedy algorithm described in Section 8.2.1 and applied to the initial or reparametrized costs. One can randomly select the initial pair of neighboring nodes $uv \in \mathcal{E}$, see (8.3), and on each iteration *randomly* select a neighboring node (node $u$ in (8.4)).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.10</span><span class="math-callout__name">(Max-weight independent set problem)</span></p>
 
 Consider the greedy algorithm described in Example 8.5. The order of processing of the cliques can be randomly selected.
@@ -4991,14 +4991,14 @@ Mutation is the type of local search problems, when a subset of coordinates of a
 
 Whereas mutation problems with a small set of feasible solutions are usually solved with simple and efficient enumeration algorithms, the subproblems with larger feasible set often allow to attain better objective values. The sweet spot are the mutation subproblems with exponentially large feasible set that build a special, efficiently solvable special case of the initial problem.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.13</span><span class="math-callout__name">(Labeling problem)</span></p>
 
 The ICM algorithm, see Section 6.5.1, is a classical mutation-based method. In the case of the single-node updates, as in Algorithm 3, these are usually computed with the total enumeration of all labels in a given node. In the case of the block-ICM, see Algorithm 4, the resulting subproblem belongs to the efficiently solvable subclass of the acyclic labeling problems and can be solved with the specialized, dynamic programming algorithm.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.14</span><span class="math-callout__name">(Binary knapsack)</span></p>
 
 Assume $\mathbf{x} \in \lbrace 0,1 \rbrace^n$ to be a feasible solution of the problem (8.11) and let all coordinates but $x_i$, $i \in [k]$, be fixed. Then the mutation problem takes the form
@@ -5013,7 +5013,7 @@ which is a binary knapsack problem with $k$ variables and smaller maximal volume
 
 **Mutation for General ILPs.** Mutation is also used by off-the-shelf ILP solvers as one of the primal heuristics. In the simplest implementation one fixes a certain amount, (80-90%) of randomly selected variables and solves the problem with respect to the remaining ones. However, fixing of one variable may lead to the implicit fixing of another one, see Example 8.16. In turn, this may result in a very small feasible sets of the mutation problem leading to its overall inefficiency. The problem can be mitigated by interchangeable fixing of the variables and domain propagation until a certain number of *actually* free variables is attained.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.16</span><span class="math-callout__name">(Implicit variable fixing)</span></p>
 
 Consider the local polytope relaxation of the labeling problem (3.45). Let $uv \in \mathcal{E}$ and the node variables are fixed, e.g., $\mu_u(s) = \llbracket s = y_u \rrbracket$ and $\mu_v(l) = \llbracket l = y_v \rrbracket$. This implies that all pairwise variables in the edge $uv$ are implicitly fixed as well to $\mu_{uv}(s, l) = \llbracket s = y_u \rrbracket \cdot \llbracket l = y_v \rrbracket$ that significantly decreases the size of the mutation problem.
@@ -5115,7 +5115,7 @@ A labeling problem is called *binary*, if each of its nodes contains at most two
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.22</span><span class="math-callout__name">(Labeling problem)</span></p>
 
 Let $(\mathcal{G}, \boldsymbol{\theta}, \mathcal{Y}\_\mathcal{V})$ be a multilabel labeling problem and let $\mathbf{y}^1, \mathbf{y}^2 \in \mathcal{Y}\_\mathcal{V}$ be two labelings. The optimal recombination problem consists in finding a labeling $\mathbf{z} \in \mathcal{Y}\_\mathcal{V}$ with the minimal total cost such that $z_u \in \lbrace y_u^1, y_u^2 \rbrace$ for all $u \in \mathcal{V}$.
@@ -5124,7 +5124,7 @@ This problem can be posed as a binary labeling problem $(\mathcal{G}', \boldsymb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.23</span><span class="math-callout__name">(Max-weight independent set problem)</span></p>
 
 Let the graph $(\mathcal{V}, \mathcal{E})$ and costs $\mathbf{c} \in \mathbb{R}^\mathcal{V}$ define a max-weight independent set problem. And let $\mathbf{x}^1, \mathbf{x}^2 \in \lbrace 0,1 \rbrace^\mathcal{V}$ be two independent sets defined by their indicator vectors. The respective optimal recombination problem consist in finding an independent set $\mathbf{z} \in \lbrace 0,1 \rbrace^\mathcal{V}$ in $\mathcal{G}$ such that for all $i \in [\lvert \mathcal{V} \rvert]$ such that $x_i^1 = x_i^2$ it also holds $z_i = x_i^1$.
@@ -5137,7 +5137,7 @@ The $-\infty$ value in the pairwise costs assures that the optimization result i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.24</span><span class="math-callout__name">(Binary knapsack)</span></p>
 
 Optimal recombination is NOT binary labeling.
@@ -5152,7 +5152,7 @@ Let $X$ be a finite set and $2^X$ be its powerset. Mappings of the form $f \colo
 
 $$\xi_x = \begin{cases} 0, & x \notin A \,, \\ 1, & x \in A \,. \end{cases}$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.1</span></p>
 
 Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$ be a binary graphical model, i.e. $\mathcal{Y}\_\mathcal{V} = \lbrace 0,1 \rbrace^\mathcal{V}$. Then the energy function
@@ -5271,7 +5271,7 @@ In particular, Lemma 9.8 implies, that adding a modular function to a submodular
 
 #### Submodular Functions of Two Variables
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.9</span><span class="math-callout__name">(Binary problem)</span></p>
 
 In the binary case, when $\mathcal{Y}\_u = \lbrace 0, 1 \rbrace$ for all $u \in \mathcal{V}$, the submodularity condition simplifies to
@@ -5282,7 +5282,7 @@ It is also easy to see that in this case each factor is either submodular or sup
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.10</span><span class="math-callout__name">(Ising model)</span></p>
 
 Let the energy function be binary and $\theta_{uv}(s, t) = \lambda_{uv} \llbracket s \neq t \rrbracket$ for some constant $\lambda_{uv}$. If $\lambda_{uv} > 0$, the corresponding cost function is submodular, for $\lambda_{uv} < 0$ it is supermodular. It can be shown, see Exercise 9.19, that using reparametrization any pairwise binary energy function can be transformed into the Ising model.
@@ -5395,7 +5395,7 @@ An $st$-cut partitions $\mathcal{V}'$ into $S\ni s$ (blue) and $T\ni t$ (orange)
 
 As many combinatorial problems, min-cut can be formulated as an integer linear program, see Example 9.13. In general it is NP-hard, just like other ILPs. However, if all weights $c_{u,v}$ are non-negative, its linear programming relaxation is tight and therefore the problem is polynomially solvable. The corresponding linear programming relaxation has a special structure, which allows us to find its minimum with polynomial finite-step algorithms with the worst-case complexity $O(\lvert \mathcal{V}' \rvert^3)$. Typically, the full Lagrange dual of the problem is solved instead of the primal problem. It constitutes the *max-flow* problem, for which a number of efficient polynomial finite-step solvers exist.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.13</span><span class="math-callout__name">(ILP representation of the min-$st$-cut and its LP relaxation)</span></p>
 
 The min-$st$-cut problem with non-negative edge weights has the following simple ILP representation:
@@ -5429,14 +5429,14 @@ will be called an *oriented form*.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.15</span></p>
 
 The following quadratic pseudo-boolean functions are oriented forms: $-5 + 7x_3\bar{x}\_1 + 12x_3 + \bar{x}\_1$; $\quad 2\bar{x}\_1 x_2 + 3\bar{x}\_2 x_1 - 6x_3\bar{x}\_4$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.16</span></p>
 
 The quadratic pseudo-boolean functions below are *not* oriented forms: $-5 + 7x_3 x_1 + 12x_3 + \bar{x}\_1$; $\quad 2x_1 x_2 + 3\bar{x}\_2 x_1 - 6x_3\bar{x}\_4$.

@@ -449,7 +449,7 @@ In each case, there is a standard oscillation of some preferred period, waveform
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple Limit Cycle)</span></p>
 
 **It’s straightforward to construct examples of limit cycles if we use polar coordinates.**
@@ -497,7 +497,7 @@ This behavior represents a nonlinear oscillation. If we were to plot one of the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Limit cycles are not merely a mathematical curiosity; they appear in numerous models across science and engineering.
@@ -595,7 +595,7 @@ A useful intuition:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Damped Oscialltions in Physics)</span></p>
 
 <figure>
@@ -662,7 +662,7 @@ Just like fixed points, limit cycles can be classified by their stability. The s
   <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Half-Stable "Saddle" Cycle Around the Origin)</span></p>
 
 Consider the following system in 
@@ -770,7 +770,7 @@ A solution cannot get stuck anywhere else. If it did, then $V$ would stop changi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lyapunov Function Application)</span></p>
 
 Use a Lyapunov function to show that the system
@@ -948,7 +948,7 @@ Imagine walking along a closed path on a field of arrows (the vector field). As 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 * Index of $+1$: If we draw a closed curve around a stable or unstable equilibrium point (like a node or a focus), the vectors of the field will make one full counter-clockwise rotation as we move counter-clockwise along the curve. This configuration has an index of $+1$.

@@ -216,7 +216,7 @@ independent parameters $q\_1, q\_2, \ldots, q\_n$. The number $n$ is a character
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Degrees of Freedom)</span></p>
 
 * *One degree of freedom:* A piston moving up and down. A rigid body rotating about a fixed axis.
@@ -374,7 +374,7 @@ where the coefficients $A\_k$ are given functions of the $q\_k$, this relation i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ball Rolling on a Table)</span></p>
 
 A characteristic example is the rolling of a ball on a table. The ball, moving freely in space, has six degrees of freedom. Since it rests on the surface, the height of the centre is a given constant, reducing the degrees of freedom to five (two rectangular coordinates $x$ and $y$ of the point of contact, plus three angles $\alpha$, $\beta$, $\gamma$ fixing the orientation of the ball relative to its centre).
@@ -720,7 +720,7 @@ and again all the $\delta u\_k$ are handled as free variations. The only differe
 
 The analytical problems of motion involve a special type of extremum problem: the stationary value of a *definite integral*. The branch of mathematics dealing with problems of this nature is called the Calculus of Variations.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Brachistochrone)</span></p>
 
 A typical problem is that of the brachistochrone (the curve of quickest descent), first formulated and solved by John Bernoulli (1696). We wish to find a suitable plane curve along which a particle descends in the shortest possible time, starting from $A$ and arriving at $B$. If the unknown curve is $y = f(x)$, the time to be minimized is given by:
@@ -1082,7 +1082,7 @@ It is a particularly beautiful feature of variational problems that *they always
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Loaded Elastic Bar)</span></p>
 
 Consider a horizontal elastic bar of length $l$, loaded by weights and supported at the two ends. Let $y(x)$ denote the small vertical displacement and $\rho(x)$ the load per unit length, assuming the bar has everywhere the same cross-section. The potential energy due to elastic forces is
@@ -1259,7 +1259,7 @@ The virtual work of the impressed forces determines not only the equilibrium but
 
 Since the virtual work of an arbitrary system of forces acting on a rigid body depends solely on two quantities, viz. the resultant force $\bar{\mathbf{F}}$ and the resultant moment $\bar{\mathbf{M}}$, we get at once the important theorem that *two systems of forces which have the same resultant force and resultant moment are mechanically equivalent*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Problems on Force Equivalence)</span></p>
 
 **Problem 1.** Any given system of forces acting on a rigid body can be replaced by a single force if, and only if, the resultant moment $\bar{\mathbf{M}}$ and the resultant force $\bar{\mathbf{F}}$ are perpendicular to each other:
@@ -1282,7 +1282,7 @@ provided that $\bar{m} = \Sigma m$ is not zero.
 
 Occasionally, equilibrium problems occur which involve one or more auxiliary conditions. In such problems the infinitesimal virtual work $\bar{\delta w}$, before being equated to zero, must be augmented by the variation of the auxiliary conditions, each one multiplied by an undetermined Lagrangian factor $\lambda$, according to the general method discussed in Chapter II, sections 5 and 12.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Problem of Jointed Bars)</span></p>
 
 Consider a system of uniform rigid bars of constant cross-section, freely jointed at their end-points. The two free ends of the chain are suspended. Find the position of equilibrium of the system.
@@ -1313,7 +1313,7 @@ $$c\left(\frac{\Delta y_k}{\Delta x_k} - \frac{\Delta y_{k-1}}{\Delta x_{k-1}}\r
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Catenary — Continuous Limit)</span></p>
 
 If the number of jointed bars increases more and more, while their lengths decrease, the bars approach a smooth, continuous and differentiable curve. In the limit we get the problem of the uniform *chain*. The difference equation approaches the differential equation
@@ -1392,7 +1392,7 @@ Hence the ingenious method of the Lagrangian multiplier elucidates the nature of
 
 All our previous conclusions were made under the tacit assumption that the virtual displacements are reversible. This is the case if we are somewhere *inside* the configuration space, so that motion can occur in every direction. The situation is quite different if we reach the *boundaries* of the configuration space. Here a virtual displacement has to be directed *inward* and the opposite displacement is not possible because it would lead out of the region.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Irreversible Displacements)</span></p>
 
 Consider a ball hanging on the end of a flexible string. That ball can move upwards, which merely relaxes the string. But it cannot move downwards because the string does not permit it.
@@ -1724,7 +1724,7 @@ Then *the actual motion occurring in nature is such that under the given kinemat
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Particle on a Surface)</span></p>
 
 A particle is forced to stay on the surface $z = f(x, y)$ and is acted upon by the force $\mathbf{F}$. The constraint of the surface gives the auxiliary condition $\ddot{z} = f\_x\ddot{x} + f\_y\ddot{y} + f\_{xx}\dot{x}^2 + \ldots$ Minimizing the Gaussian constraint $Z = \frac{1}{2m}(\mathbf{F} - m\mathbf{A})^2$ subject to this auxiliary condition yields the equations of motion directly.
@@ -1832,7 +1832,7 @@ Because time $t$ enters as just another variable in the extended configuration s
 
 A practical advantage of the variational approach, compared with d'Alembert's principle, is the use of the single scalar function $L = T - V$. There is no need to determine the acceleration and virtual work for each particle individually; the scalar Lagrangian determines the entire dynamics.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compound Pendulum)</span></p>
 
 Consider a compound pendulum whose position is described by the angle $\theta$ between the plane through the axis of suspension and the centre of mass and the vertical. The kinetic and potential energies are
@@ -1843,7 +1843,7 @@ where $I$ is the moment of inertia about the axis of suspension, $M$ the total m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Planetary Motion in Polar Coordinates)</span></p>
 
 For a planet of mass $m$ moving under the gravitational attraction of a sun of mass $M$ fixed at the origin, polar coordinates $(r, \theta)$ give
@@ -1854,7 +1854,7 @@ where $f$ is the gravitational constant. The two Lagrangian equations yield the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Spherical Pendulum)</span></p>
 
 A pendulum of length $l$ and mass $m$ free to swing in any direction is described by spherical polar coordinates $(\theta, \varphi)$. The energies are
@@ -2007,7 +2007,7 @@ Whether the reduced problem contains gyroscopic terms depends on the $a\_{in}$ c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler Problem --- Elimination of $\theta$)</span></p>
 
 In the Kepler problem with polar coordinates $(r, \theta)$, the angle $\theta$ is ignorable. Eliminating it produces an apparent repulsive potential proportional to $1/r^2$ (the "centrifugal barrier"), which competes with the attractive $1/r$ gravitational potential. The balance between these two forces creates a stable equilibrium radius, and the oscillation of $r$ about this point explains the pulsation of the orbit between perihelion and aphelion. If the attractive force fell off faster than $1/r^2$, no such stable equilibrium would exist and closed orbits would be impossible.
@@ -2062,7 +2062,7 @@ When no impressed forces act ($V = 0$ or $V = \text{const.}$), Jacobi's principl
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Particle on a Curved Surface)</span></p>
 
 Consider a particle constrained to move on a curved surface with no impressed forces. The Riemannian space is two-dimensional with the intrinsic geometry of the surface. The particle traces out a geodesic of that surface --- the shortest path between two points. This is exactly the behaviour one observes: a marble rolling on a frictionless bowl follows a geodesic arc.
@@ -2227,7 +2227,7 @@ with **natural frequency** $\nu\_i = \sqrt{\lambda\_i}$. The general motion near
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double Pendulum)</span></p>
 
 Consider two identical simple pendulums of the same length and mass, where the second is suspended from the bob of the first. Using the small-angle displacements $\theta\_1, \theta\_2$ as coordinates, the kinetic and potential energies are quadratic forms that can be diagonalised. The two oblique axes of the original coordinate system are at $45°$ to the principal axes. The two normal frequencies turn out to be $\nu\_1 = (\sqrt{2} - \sqrt[4]{2})\,\nu$ and $\nu\_2 = (\sqrt{2} + \sqrt[4]{2})\,\nu$, where $\nu$ is the natural frequency of a single pendulum. The two normal modes correspond to symmetric and antisymmetric oscillation patterns.
@@ -3168,7 +3168,7 @@ This completes the solution. The $q\_i$ and $p\_i$ are determined as explicit fu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Oscillator)</span></p>
 
 For a single degree of freedom with $V = \frac{1}{2}mk^2 x^2$, the partial differential equation reduces to an ordinary differential equation solvable by quadratures. The Hamilton--Jacobi equation yields the canonical transformation:
@@ -3248,7 +3248,7 @@ The "constants of integration" are obtained by the technique of separation; the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler Problem)</span></p>
 
 For the Kepler problem of planetary motion, we use polar coordinates $r$, $\theta$, $\phi$, where the line element is $ds^2 = dr^2 + r^2\,d\theta^2 + r^2\sin^2\theta\,d\phi^2$ and the Hamiltonian is

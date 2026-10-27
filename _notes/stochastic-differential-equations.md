@@ -27,7 +27,7 @@ The equation we obtain by allowing randomness in the coeﬃcients of a diﬀeren
 
 ### 1.1 Stochastic Analogs of Classical Diﬀerential Equations
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Population Growth with Noise)</span></p>
 
 A population model with a randomly fluctuating growth rate is described by the stochastic differential equation
@@ -44,7 +44,7 @@ Here $r(t)$ is a nonrandom (deterministic) function. We do not know the exact be
 
 ### 1.2 Filtering Problems
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Filtering Problem)</span></p>
 
 Given a system described by a stochastic differential equation, such as the RLC circuit example, observations $Z(s)$ are taken at times $s \le t$. These measurements are also corrupted by noise:
@@ -57,7 +57,7 @@ Basically, we have two sources of noise. The filtering problem is to find the be
 
 In 1960 Kalman and in 1961 Kalman and Bucy proved what is now known as the Kalman-Bucy filter. Basically the filter gives a procedure for estimating the state of a system which satisfies a "noisy" linear diﬀerential equation, based on a series of "noisy" observations. Almost immediately the discovery found applications in aerospace engineering (Ranger, Mariner, Apollo etc.) and it now has a broad range of applications.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stochastic Solution to the Dirichlet Problem)</span></p>
 
 Given a domain $U \subset \mathbb{R}^n$ and a continuous function $f$ on the boundary $\partial U$, the Dirichlet problem is to find a function $\tilde{f}$ continuous on the closure $\bar{U}$ such that
@@ -69,7 +69,7 @@ The solution can be expressed stochastically: the value $\tilde{f}(x)$ is the ex
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An Optimal Stopping Problem)</span></p>
 
 An asset price $X_t$ at time $t$ evolves according to the stochastic differential equation
@@ -80,7 +80,7 @@ where $r$ and $\alpha$ are known constants. Given a discount rate $\rho$, the op
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An Optimal Portfolio Problem)</span></p>
 
 An investor allocates a fortune $X_t$ between two investments:
@@ -99,7 +99,7 @@ $$\max_{0 \le u_t \le 1} \lbrace E[U(X_T^{(u)})] \rbrace.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pricing of European Call Options)</span></p>
 
 A European call option grants the right, but not the obligation, to buy a unit of a risky asset at a specified price $K$ (the strike price) at a specified future time $T$ (the maturity time). The problem is to determine the fair price of this option at time $t=0$.
@@ -421,7 +421,7 @@ $$\int_S^T \phi(t,\omega)dB_t(\omega) = \sum_{j \ge 0} e_j(\omega)[B_{t_{j+1}} -
 
 where $t_k = t_k^{(n)}$ is defined as $k \cdot 2^{-n}$ if $S \le k \cdot 2^{-n} \le T$, as $S$ if $k \cdot 2^{-n} < S$, and as $T$ if $k \cdot 2^{-n} > T$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Choice of Evaluation Point Matters)</span></p>
 
 Without further assumptions on $e_j(\omega)$ this leads to difficulties. Choose
@@ -585,7 +585,7 @@ $$\int_S^T f_n(t,\omega)dB_t(\omega) \to \int_S^T f(t,\omega)dB_t(\omega) \quad 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Itô Integral of $B_s$)</span></p>
 
 Assume $B_0 = 0$. Then
@@ -650,7 +650,7 @@ A **filtration** (on $(\Omega, \mathcal{F})$) is a family $\mathcal{M} = \lbrace
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Brownian Motion is a Martingale)</span></p>
 
 Brownian motion $B_t$ in $\mathbb{R}^n$ is a martingale w.r.t. the $\sigma$-algebras $\mathcal{F}\_t$ generated by $\lbrace B_s; s \le t\rbrace$, because
@@ -823,7 +823,7 @@ $$dX_t = u \, dt + v \, dB_t$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differential form of $\frac{1}{2}B_t^2$)</span></p>
 
 The equation $\frac{1}{2}B_t^2 = \int_0^t \frac{1}{2}ds + \int_0^t B_s dB_s$ may be represented by
@@ -860,7 +860,7 @@ where $u_s = u(s,\omega)$, $v_s = v(s,\omega)$. Note that this is an Itô proces
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recovering $\int B_s \, dB_s$ via Itô's Formula)</span></p>
 
 Let us return to $I = \int_0^t B_s dB_s$ from Chapter 3. Choose $X_t = B_t$ and $g(t,x) = \frac{1}{2}x^2$. Then $Y_t = g(t, B_t) = \frac{1}{2}B_t^2$. By Itô's formula,
@@ -871,7 +871,7 @@ Hence $d(\frac{1}{2}B_t^2) = B_t dB_t + \frac{1}{2}dt$, which gives $\frac{1}{2}
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computing $\int_0^t s \, dB_s$)</span></p>
 
 What is $\int_0^t s \, dB_s$? From classical calculus it seems reasonable that a term of the form $tB_t$ should appear, so we put $g(t,x) = tx$ and $Y_t = g(t,B_t) = tB_t$. Then by Itô's formula,
@@ -961,7 +961,7 @@ where $dB_i \, dB_j = \delta_{ij} dt$, $dB_i \, dt = dt \, dB_i = 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bessel Process)</span></p>
 
 Let $B = (B_1, \dots, B_n)$ be Brownian motion in $\mathbb{R}^n$, $n \ge 2$, and consider
@@ -1109,7 +1109,7 @@ Therefore, to get from the first form to the second we formally replace the whit
 
 We will first consider question (B) by looking at some simple examples, and then in Section 5.2 we will discuss (A). It is the Itô formula that is the key to the solution of many stochastic differential equations.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5.1.1 — Population Growth Model)</span></p>
 
 Let us return to the population growth model:
@@ -1184,7 +1184,7 @@ $$\limsup_{t \to \infty} \frac{B_t}{\sqrt{2t \log \log t}} = 1 \quad a.s.$$
 
 For the Stratonovich solution $\overline{N}\_t$ we get by the same argument that $\overline{N}\_t \to 0$ a.s. if $r < 0$ and $\overline{N}\_t \to \infty$ a.s. if $r > 0$. Thus the two solutions have fundamentally different properties and it is an interesting question what solution gives the best description of the situation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5.1.3 — RLC Circuit with Noise)</span></p>
 
 Let us return to the equation
@@ -1227,7 +1227,7 @@ by integration by parts (Theorem 4.1.5).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5.1.4 — Brownian Motion on the Unit Circle)</span></p>
 
 Choose $X = B$, 1-dimensional Brownian motion, and $g(t,x) = e^{ix} = (\cos x, \sin x) \in \mathbb{R}^2$ for $x \in \mathbb{R}$. Then
@@ -1375,7 +1375,7 @@ Let $((\tilde{X}\_t, \tilde{B}\_t), \tilde{\mathcal{H}}\_t)$ and $((\hat{X}\_t, 
 
 From a modelling point of view the weak solution concept is often natural, because it does not specify beforehand the explicit representation of the white noise. Moreover, the concept is convenient for mathematical reasons, because there are stochastic differential equations which have *no strong solutions* but still a (weakly) *unique weak solution*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5.3.2 — The Tanaka Equation)</span></p>
 
 Consider the 1-dimensional stochastic differential equation
@@ -1728,7 +1728,7 @@ $$\frac{dS}{dt} = 2F(t)S(t) - \frac{G^2(t)}{D^2(t)}S^2(t) + C^2(t), \quad S(0) =
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.2.9 — Noisy Observations of a Constant Process)</span></p>
 
 Consider the simple case $dX_t = 0$, i.e. $X_t = X_0$; $E[X_0] = 0$, $E[X_0^2] = a^2$, with observations $dZ_t = X_t\,dt + m\,dV_t$; $Z_0 = 0$ (corresponding to $H_t = X_t + mW_t$, white noise).
@@ -1741,7 +1741,7 @@ which yields $\hat{X}\_t = \frac{a^2}{m^2 + a^2 t}Z_t$; $t \ge 0$. This is the c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.2.10 — Noisy Observations of a Brownian Motion)</span></p>
 
 If we modify the preceding example slightly, so that $dX_t = c\,dU_t$; $E[X_0] = 0$, $E[X_0^2] = a^2$, $c$ constant, with observations $dZ_t = X_t\,dt + m\,dV_t$, the Riccati equation becomes
@@ -1769,7 +1769,7 @@ It is interesting to compare formula (6.2.31) with established formulas in forec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.2.11 — Estimation of a Parameter)</span></p>
 
 Suppose we want to estimate the value of a (constant) parameter $\theta$, based on observations $Z_t$ satisfying the model $dZ_t = \theta M(t)\,dt + N(t)\,dB_t$, where $M(t), N(t)$ are known functions. In this case the stochastic differential equation for $\theta$ is of course $d\theta = 0$, so the Riccati equation for $S(t) = E[(\theta - \hat{\theta}\_t)^2]$ is
@@ -1784,7 +1784,7 @@ This estimate coincides with the maximum likelihood estimate in classical estima
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.2.12 — Noisy Observations of a Population Growth)</span></p>
 
 Consider a simple growth model ($r$ constant) $dX_t = rX_t\,dt$, $E[X_0] = b > 0$, $E[(X_0 - b)^2] = a^2$, with observations $dZ_t = X_t\,dt + m\,dV_t$; $m$ constant.
@@ -1803,7 +1803,7 @@ As in Example 6.2.10 this may be written $\hat{X}\_t = \exp(-rt)\left[\int_0^t 2
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.2.13 — Constant Coefficients)</span></p>
 
 Now consider the system $dX_t = FX_t\,dt + C\,dU_t$; $F, C$ constants $\ne 0$, with observations $dZ_t = GX_t\,dt + D\,dV_t$; $G, D$ constants $\ne 0$. The corresponding Riccati equation $S^{\prime} = 2FS - \frac{G^2}{D^2}S^2 + C^2$, $S(0) = a^2$ has the solution
@@ -1939,7 +1939,7 @@ In other words, it should be possible to decide whether or not $\tau \le t$ has 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.2.2 — First Exit Time)</span></p>
 
 Let $U \subset \mathbb{R}^n$ be open. Then the **first exit time**
@@ -2087,7 +2087,7 @@ This follows directly from Lemma 7.3.2 (with $\tau = t$) and the definition of $
 
 We let $L = L_X$ denote the differential operator given by the right hand side of Theorem 7.3.3. From the theorem, $A_X$ and $L_X$ coincide on $C_0^2(\mathbb{R}^n)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.3.4 — Generator of Brownian Motion)</span></p>
 
 The $n$-dimensional Brownian motion is the solution of $dX_t = dB_t$, i.e. $b = 0$ and $\sigma = I_n$. The generator of $B_t$ is
@@ -2098,7 +2098,7 @@ i.e. $A = \tfrac{1}{2}\Delta$, where $\Delta$ is the Laplace operator.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.3.5 — The Graph of Brownian Motion)</span></p>
 
 Let $B$ denote 1-dimensional Brownian motion and let $X = \binom{X_1}{X_2}$ be the solution of the stochastic differential equation
@@ -2130,7 +2130,7 @@ $$E^x[f(X_\tau)] = f(x) + E^x\left[\int_0^\tau Af(X_s)\,ds\right]$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.4.2 — Expected Exit Time and Recurrence/Transience of Brownian Motion)</span></p>
 
 **Expected exit time from a ball.** Consider $n$-dimensional Brownian motion $B = (B_1, \ldots, B_n)$ starting at $a = (a_1,\ldots,a_n) \in \mathbb{R}^n$ ($n \ge 1$) with $\lvert a\rvert < R$. The expected first exit time $\tau_K$ of $B$ from the ball $K = \lbrace x \in \mathbb{R}^n;\, \lvert x\rvert < R\rbrace$ is
@@ -2210,7 +2210,7 @@ We have now obtained that an Itô diffusion is a continuous, strong Markov proce
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.5.5 — Brownian Motion on the Unit Circle)</span></p>
 
 The characteristic operator of the process $Y = \binom{Y_1}{Y_2}$ from Example 5.1.4 satisfying
@@ -2227,7 +2227,7 @@ $$b(y_1,y_2) = \binom{-\frac{1}{2}y_1}{-\frac{1}{2}y_2}, \qquad \sigma(y_1,y_2) 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(7.5.6 — X-Harmonic Extension)</span></p>
 
 Let $D$ be an open subset of $\mathbb{R}^n$ such that $\tau_D < \infty$ a.s. $Q^x$ for all $x$. Let $\phi$ be a bounded, measurable function on $\partial D$ and define
@@ -2456,7 +2456,7 @@ A spectacular result of Stroock and Varadhan (1979) is that the martingale probl
 
 The Itô formula gives that if we apply a $C^2$ function $\phi\colon U \subset \mathbb{R}^n \to \mathbb{R}^n$ to an Itô process $X_t$, the result $\phi(X_t)$ is another Itô process. A natural question: if $X_t$ is an Itô diffusion, will $\phi(X_t)$ be an Itô diffusion too? The answer is no in general, but it may be yes in some cases.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.4.1 — The Bessel Process)</span></p>
 
 Let $n \ge 2$. The process $R_t(\omega) = \lvert B(t,\omega)\rvert = (B_1(t,\omega)^2 + \cdots + B_n(t,\omega)^2)^{1/2}$ satisfies
@@ -2598,7 +2598,7 @@ where $\alpha_r^{\prime}(\omega) = \frac{1}{c(\alpha_r, \omega)}$ for a.a. $r \g
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.5.8 — Brownian Motion on the Unit Sphere in $\mathbb{R}^n$; $n > 2$)</span></p>
 
 Apply the function $\phi(x) = x \cdot \lvert x\rvert^{-1}$ to $n$-dimensional Brownian motion $B = (B_1,\ldots,B_n)$. The result is a stochastic integral $Y = (Y_1,\ldots,Y_n) = \phi(B)$ with
@@ -2621,7 +2621,7 @@ where $[g^{ij}] = [g_{ij}]^{-1}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.5.9 — Harmonic and Analytic Functions)</span></p>
 
 Let $B = (B_1, B_2)$ be 2-dimensional Brownian motion. Apply a $C^2$ function $\phi(x_1,x_2) = (u(x_1,x_2), v(x_1,x_2))$ to $B$. Put $Y = (Y_1, Y_2) = \phi(B_1,B_2)$. By Itô's formula:
@@ -2847,7 +2847,7 @@ $$dY_t = a(Y_t)\,dt + \sigma(Y_t)\,d\widehat{B}_t$$
 
 Thus we have found a Brownian motion $(\widehat{B}\_t, Q)$ such that $Y_t$ satisfies the equation with drift $a$. Therefore $(Y_t, \widehat{B}\_t)$ is a weak solution.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.6.6 — Weak Solution via Girsanov)</span></p>
 
 Let $a\colon\mathbb{R}^n \to \mathbb{R}^n$ be a bounded, measurable function. Then we can construct a weak solution $X_t = X_t^x$ of the stochastic differential equation
@@ -2995,7 +2995,7 @@ $$u(x) := E^x[\phi(X_{\tau_D})]$$
 
 a solution? Unfortunately, in general this function $u$ need not be in $C^2(U)$. In fact, it need not even be continuous. Moreover, it need not satisfy the boundary condition, either.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.1 — Failure of classical Dirichlet solution)</span></p>
 
 Let $X(t) = (X_1(t), X_2(t))$ be the solution of the equations $dX_1(t) = dt$, $dX_2(t) = 0$, so that $X(t) = X(0) + t(1,0) \in \mathbb{R}^2$; $t \ge 0$. Let
@@ -3183,14 +3183,14 @@ Otherwise the point $y$ is called **irregular**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.9 — Regular points for Brownian motion)</span></p>
 
 Corollary 9.2.7 may seem hard to believe at first glance. For example, if $X_t$ is a 2-dimensional Brownian motion $B_t$ and $\overline{D}$ is the square $[0,1] \times [0,1]$, one might think that, starting from $(\tfrac{1}{2},0)$, say, half of the paths will stay in the upper half plane and half in the lower, for a positive period of time. However, Corollary 9.2.7 says that this is not the case: Either they all stay in $D$ initially or they all leave $D$ immediately. Symmetry considerations imply that the first alternative is impossible. Thus $(\tfrac{1}{2},0)$, and similarly all the other points of $\partial D$, are regular for $D$ w.r.t. $B_t$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.10 — Irregular points for the graph of Brownian motion)</span></p>
 
 Let $D = [0,1] \times [0,1]$ and let $L$ be the parabolic differential operator
@@ -3205,7 +3205,7 @@ In other words, $X_t = \binom{t+t_0}{B_t}$, $X_0 = \binom{t_0}{x}$, where $B_t$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.11 — Wiener criterion)</span></p>
 
 Let $\Delta = \lbrace(x,y); x^2 + y^2 < 1\rbrace \subset \mathbb{R}^2$ and let $\lbrace\Delta_n\rbrace$ be a sequence of disjoint open discs in $\Delta$ centered at $(2^{-n},0)$, respectively, $n = 1,2,\ldots$. Put
@@ -3320,7 +3320,7 @@ for all regular $y \in \partial D$ and bounded $\phi \in C(\partial D)$. Therefo
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.15 — Boundary condition can fail at irregular points)</span></p>
 
 We have already seen (Example 9.2.1) that condition (9.1.3) does not hold in general. This example shows that it need not hold even when $L$ is elliptic: Consider Example 9.2.11 again, in the case when the point 0 is not regular. Choose $\phi \in C(\partial D)$ such that $\phi(0) = 1$, $0 \le \phi(y) < 1$ for $y \in \partial D \setminus \lbrace 0\rbrace$. Since $\lbrace 0\rbrace$ is polar for $B_t$ (see Exercise 9.7 a) we have $B_{\tau_D}^0 \ne 0$ a.s. and therefore
@@ -3335,7 +3335,7 @@ where $\sigma_k = \inf\lbrace t > 0; B_t \notin D \cap \lbrace\lvert x\rvert < \
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.2.16 — The infinite strip)</span></p>
 
 Let $D$ denote the infinite strip $D = \lbrace(t,x) \in \mathbb{R}^2; x < R\rbrace$, where $R \in \mathbb{R}$, and let $L$ be the differential operator
@@ -3592,7 +3592,7 @@ if $\alpha > 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(9.3.6 — Green function of Brownian motion on an interval)</span></p>
 
 If $X_t = B_t$ is 1-dimensional Brownian motion in a bounded interval $(a,b) \subset \mathbb{R}$, then we can compute the Green function $G(x,y)$ explicitly. To this end, choose a bounded continuous function $g\colon(a,b) \to \mathbb{R}$ and let us compute
@@ -3943,7 +3943,7 @@ so $g(x) < g^\ast(x)$ and therefore $x \in D$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.1.13 — Brownian Motion in $\mathbb{R}^2$)</span></p>
 
 Let $X_t = B_t$ be a Brownian motion in $\mathbb{R}^2$. Using that $B_t$ is recurrent in $\mathbb{R}^2$ (Example 7.4.2) one can show that the only (nonnegative) superharmonic functions in $\mathbb{R}^2$ are the constants. Therefore
@@ -3954,7 +3954,7 @@ So if $g$ is unbounded then $g^\ast = \infty$ and no optimal stopping time exist
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.1.14 — Brownian Motion in $\mathbb{R}^n$ for $n \ge 3$)</span></p>
 
 The situation is different in $\mathbb{R}^n$ for $n \ge 3$.
@@ -4015,7 +4015,7 @@ $$\widehat{\mathcal{A}}\phi(s,x) = \frac{\partial \phi}{\partial s}(s,x) + \math
 
 where $\mathcal{A}$ is the characteristic operator of $X_t$ (working on the $x$-variables).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.2.1 — Exponential Reward with Brownian Motion)</span></p>
 
 Let $X_t = B_t$ be 1-dimensional Brownian motion and let the reward function be $g(t,\xi) = e^{-\alpha t + \beta \xi}$; $\xi \in \mathbb{R}$, where $\alpha, \beta \ge 0$ are constants. The characteristic operator $\widehat{\mathcal{A}}$ of $Y_t^{s,x} = (s + t, B_t)$ is given by $\widehat{\mathcal{A}}f(s,x) = \frac{\partial f}{\partial s} + \frac{1}{2} \cdot \frac{\partial^2 f}{\partial x^2}$; $f \in C^2$.
@@ -4028,7 +4028,7 @@ so $g_n(s,x) \to \infty$ as $n \to \infty$. Hence no optimal stopping exists in 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.2.2 — When Is the Right Time to Sell the Stocks?)</span></p>
 
 We now return to a specified version of Problem 5 in the introduction. Suppose the price $X_t$ at time $t$ of a person's assets (e.g. a house, stocks, oil ...) varies according to a stochastic differential equation of the form
@@ -4124,7 +4124,7 @@ In particular, if $G(y,w) = g(y) + w \in C^2(\mathbb{R}^{k+1})$ then
 
 $$\mathcal{A}_Z G(y,w) = \mathcal{A}_Y g(y) + f(y).$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.3.1 — Optimal Stopping with Running Reward and Geometric Brownian Motion)</span></p>
 
 Consider the optimal stopping problem
@@ -4257,7 +4257,7 @@ Moreover, the stopping time $\widehat{\tau}$ defined by $\widehat{\tau}(y,\omega
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.4.2 — Revisiting the Stock-Selling Problem)</span></p>
 
 To illustrate Theorem 10.4.1 let us apply it to reconsider Example 10.2.2. Rather than *proving* (10.2.8) and the following properties of $D$, we now simply guess/assume that $D$ has the form
@@ -4507,7 +4507,7 @@ $$\inf_{v \in U}\lbrace F^v(y) + (L^v\Psi)(y)\rbrace = 0 \quad \text{for all } y
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.2.4 — The Linear Stochastic Regulator Problem)</span></p>
 
 Suppose the state $X_t$ of the system at time $t$ is given by a linear stochastic differential equation:
@@ -4593,7 +4593,7 @@ where $\widehat{X}\_t$ is the filtered estimate of $X_t$ based on the observatio
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.2.5 — An Optimal Portfolio Selection Problem)</span></p>
 
 Let $X_t$ denote the wealth of a person at time $t$. Suppose that the person has the choice of two different investments. The price $p_1(t)$ at time $t$ of one of the assets is assumed to satisfy the equation
@@ -4660,7 +4660,7 @@ $$v = u(t, X_t) = \frac{a - b}{\alpha^2} \quad \text{for all } t, \omega.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.2.6 — Breakdown of HJB Theory)</span></p>
 
 This example shows that even quite simple — and apparently innocent — stochastic control problems can lead us beyond the reach of the theory developed in this chapter.
@@ -4875,7 +4875,7 @@ In other words, $\theta(t)$ is an arbitrage if it gives an increase in the value
 
 Intuitively, the existence of an arbitrage is a sign of lack of equilibrium in the market: No real market equilibrium can exist in the long run if there are arbitrages there. Therefore it is important to be able to determine if a given market allows an arbitrage or not.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.1.4 — Why Admissibility Matters)</span></p>
 
 Consider the following market: $dX_0(t) = 0$, $dX_1(t) = dB(t)$, $0 \le t \le T = 1$. Let
@@ -4982,7 +4982,7 @@ Since the market has no arbitrage we must have $\mathcal{X}\_{F_t}(\omega) = 0$ 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.1.9 — Detecting Arbitrage)</span></p>
 
 **a)** Consider the price process $X(t)$ given by $dX_0(t) = 0$, $dX_1(t) = 2dt + dB_1(t)$, $dX_2(t) = -dt + dB_1(t) + dB_2(t)$. In this case we have
@@ -5132,7 +5132,7 @@ Hence by uniqueness we have $\phi(t,\omega) = \psi(t,\omega)$ for a.a. $(t,\omeg
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.2.7 — A Complete Market with $n > m$)</span></p>
 
 Define $X_0(t) \equiv 1$ and
@@ -5149,7 +5149,7 @@ $$\Lambda = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0\end{bmatrix}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.2.8 — An Incomplete Market)</span></p>
 
 Let $X_0(t) \equiv 1$ and $dX_1(t) = 2dt + dB_1(t) + dB_2(t)$. Then $\mu = 2$, $\sigma = (1, 1) \in \mathbf{R}^{1 \times 2}$, so $n = 1 < 2 = m$. Hence this market cannot be complete, by Corollary 12.2.6. So there exist bounded $T$-claims which cannot be hedged.
@@ -5278,7 +5278,7 @@ where $\Lambda(t,\omega)$ is the left inverse of $\sigma(t,\omega)$ (Theorem 12.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.3.5 — Hedging $\exp(Y(T))$ in an Ornstein-Uhlenbeck Market)</span></p>
 
 Suppose the market is $X_0(t) = e^{\rho t}$, $X_1(t) = Y(t)$, where $\rho > 0$ is constant and $Y(t)$ is an Ornstein-Uhlenbeck process $dY(t) = \alpha Y(t)dt + \sigma dB(t)$; $Y(0) = y$ where $\alpha, \sigma$ are constants, $\sigma \ne 0$. How do we hedge the claim $F(\omega) = \exp(Y(T))$?
@@ -5494,7 +5494,7 @@ The price $p_A(F)$ of an American contingent $T$-claim $F$ of the Markovian form
 
 We recognize this as a special case of the optimal stopping problem considered in Theorem 10.4.1. We can therefore use the method there to evaluate $p_A(F)$ in special cases.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(12.3.10 — American Options in the Black-Scholes Market)</span></p>
 
 Consider the Black and Scholes market:

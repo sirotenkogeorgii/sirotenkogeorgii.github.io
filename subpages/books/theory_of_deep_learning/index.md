@@ -338,7 +338,7 @@ Then $\mathcal{H}$ is dense in $C^0(K)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.5</span><span class="math-callout__name">(Polynomials are a Universal Approximator)</span></p>
 
 For a multiindex $\boldsymbol{\alpha} = (\alpha\_1, \ldots, \alpha\_d) \in \mathbb{N}\_0^d$ and a vector $\boldsymbol{x} = (x\_1, \ldots, x\_d) \in \mathbb{R}^d$, denote $\boldsymbol{x}^{\boldsymbol{\alpha}} := \prod\_{j=1}^d x\_j^{\alpha\_j}$. The space of polynomials of degree at most $n$ is
@@ -679,7 +679,7 @@ $$\frac{\sigma(x)}{x^q} \to 0 \quad \text{as } x \to -\infty, \qquad \frac{\sigm
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.6</span></p>
 
 The rectified power unit $x \mapsto \sigma\_{\text{ReLU}}(x)^q$ is sigmoidal of order $q$.
@@ -2160,7 +2160,7 @@ The existence of solutions to the interpolation problem does not follow triviall
 
 Under what conditions on the activation function and architecture can a set of neural networks interpolate $m \in \mathbb{N}$ points? According to Chapter 3, particularly Theorem 3.8, we know that shallow neural networks can approximate every continuous function with arbitrary accuracy, provided the neural network width is large enough. As the neural network's width and/or depth increases, the architectures become increasingly powerful, leading us to expect that at some point, they should be able to interpolate $m$ points. However, this intuition may not be correct:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.2</span></p>
 
 Let $\mathcal{H} := \lbrace f \in C^0([0,1]) \mid f(0) \in \mathbb{Q} \rbrace$. Then $\mathcal{H}$ is dense in $C^0([0,1])$, but $\mathcal{H}$ does not even interpolate one point in $[0,1]$.
@@ -2536,7 +2536,7 @@ where $h\_k > 0$ denotes again the step size. Unlike in Section 10.1, we focus h
 
 #### 10.2.1 Motivation and Decreasing Learning Rates
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.9</span><span class="math-callout__name">(Empirical Risk Minimization)</span></p>
 
 Suppose we have a data sample $S := (\boldsymbol{x}\_j, y\_j)\_{j=1}^m$, where $y\_j \in \mathbb{R}$ is the label corresponding to the data point $\boldsymbol{x}\_j \in \mathbb{R}^d$. Using the square loss, we wish to fit a neural network $\Phi(\cdot, \boldsymbol{w}) : \mathbb{R}^d \to \mathbb{R}$ depending on parameters $\boldsymbol{w} \in \mathbb{R}^n$, such that the empirical risk
@@ -2746,7 +2746,7 @@ for $k \in \mathbb{N}\_0$, and certain hyperparameters $\alpha\_k$, $\beta\_1$, 
 
 #### 10.4.1 Coordinate-wise Scaling
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.14</span></p>
 
 Consider an objective function $f : \mathbb{R}^n \to \mathbb{R}$, and its rescaled version
@@ -3043,7 +3043,7 @@ with $w \in H$. The components of $\phi$ are referred to as **features**. The go
 
 $$f(w) := \sum_{j=1}^m \big( \langle \phi(\boldsymbol{x}_j), w \rangle_H - y_j \big)^2 \qquad \text{or} \qquad f_\lambda(w) := f(w) + \lambda \lVert w \rVert_H^2.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.6</span><span class="math-callout__name">(Polynomial Features)</span></p>
 
 Let data $(x\_i, y\_i)\_{i=1}^m \subseteq \mathbb{R} \times \mathbb{R}$ be given, and define for $x \in \mathbb{R}$
@@ -3305,7 +3305,7 @@ independently for all $i = 1, \ldots, n$, $j = 1, \ldots, d$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.17</span><span class="math-callout__name">(Typical Initializations)</span></p>
 
 Typical examples for $\mathcal{W}(0,1)$ are the standard normal distribution on $\mathbb{R}$ or the uniform distribution on $[-\sqrt{3}, \sqrt{3}]$.
@@ -3333,7 +3333,7 @@ $$\mathbb{P}\!\left[\left\lVert \frac{1}{n} \hat{K}_n(\boldsymbol{x}, \boldsymbo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.19</span><span class="math-callout__name">($K^{\mathrm{NTK}}$ for ReLU)</span></p>
 
 Let $\sigma(x) = \max\lbrace 0, x \rbrace$ and let $\mathcal{W}(0,1)$ be the standard normal distribution. For $\boldsymbol{x}, \boldsymbol{z} \in \mathbb{R}^d$ denote by
@@ -3988,7 +3988,7 @@ As discussed in Section 1.2, we generally learn based on a finite data set. For 
 
 A general learning problem requires a **feature space** $X$ and a **label space** $Y$, which we assume throughout to be measurable spaces. We observe joint data pairs $(x\_i, y\_i)\_{i=1}^m \subseteq X \times Y$, and aim to identify a connection between the $x$ and $y$ variables. Specifically, we assume a relationship between features $x$ and labels $y$ modeled by a probability distribution $\mathcal{D}$ over $X \times Y$, that generated the observed data $(x\_i, y\_i)\_{i=1}^m$. While this distribution is unknown, our goal is to extract information from it, so that we can make possibly good predictions of $y$ for a given $x$. Importantly, the relationship between $x$ and $y$ need not be deterministic.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.1</span><span class="math-callout__name">(Coffee Quality)</span></p>
 
 Our goal is to determine the quality of different coffees. We model the quality as a number in $Y = \lbrace 0/10, \ldots, 10/10 \rbrace$, with higher numbers indicating better quality. We assume that our subjective assessment of quality of coffee is related to six features: "Acidity", "Caffeine content", "Price", "Aftertaste", "Roast level", and "Origin". The feature space $X$ thus corresponds to the set of six-tuples describing these attributes, which can be either numeric or categorical.
@@ -4016,7 +4016,7 @@ $$R^* := \inf_{h \colon X \to Y} \mathcal{R}(h),$$
 
 where the infimum is taken over all measurable $h \colon X \to Y$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.3</span><span class="math-callout__name">(Loss Functions)</span></p>
 
 The choice of a loss function $\mathcal{L}$ usually depends on the application.
@@ -4099,7 +4099,7 @@ as soon as $m$ is so large that $\kappa(\delta, m) \leq \varepsilon$. If there e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.8</span><span class="math-callout__name">(Generalization in the Coffee Quality Problem)</span></p>
 
 In Example 14.1, the underlying distribution describes both our process of choosing coffees and the relation between the attributes and the quality. Suppose we do not enjoy drinking coffee that costs less than 1€. Consequently, we do not have a single sample of such coffee in the dataset, and therefore we have no chance of learning the quality of cheap coffees.
@@ -4318,7 +4318,7 @@ The **VC dimension** of $\mathcal{H}$ is the cardinality of the largest set $S \
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.17</span><span class="math-callout__name">(Intervals)</span></p>
 
 Let $\mathcal{H} = \lbrace \mathbb{1}\_{[a,b]} \mid a, b \in \mathbb{R} \rbrace$. It is clear that $\text{VCdim}(\mathcal{H}) \geq 2$ since for $x\_1 < x\_2$ the functions
@@ -4331,7 +4331,7 @@ On the other hand, if $x\_1 < x\_2 < x\_3$ then, since $h^{-1}(\lbrace 1 \rbrace
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.18</span><span class="math-callout__name">(Half-spaces)</span></p>
 
 Let $\mathcal{H}\_2 = \lbrace \mathbb{1}\_{[0, \infty)}(\langle \boldsymbol{w}, \cdot \rangle + b) \mid \boldsymbol{w} \in \mathbb{R}^2, b \in \mathbb{R} \rbrace$ be a hypothesis set of rotated and shifted two-dimensional half-spaces. $\mathcal{H}\_2$ shatters a set of three points. More generally, for $d \geq 2$ with
@@ -4342,7 +4342,7 @@ the VC dimension of $\mathcal{H}\_d$ equals $d + 1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.19</span><span class="math-callout__name">(Infinite VC Dimension)</span></p>
 
 Let for $x \in \mathbb{R}$
@@ -4687,7 +4687,7 @@ $$\mathbb{P}[y = g(\boldsymbol{x}) \mid \boldsymbol{x}] \geq \mathbb{P}[y = -g(\
 
 We allow $g$ to take the value $0$, which corresponds to an additional label for nonrelevant or nonsensical input data $\boldsymbol{x}$. We refer to $g^{-1}(0)$ as the **nonrelevant class**. The ground truth $g$ is interpreted as how a human would classify the data.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.1</span></p>
 
 We wish to classify whether an image shows a panda ($y = 1$) or a wombat ($y = -1$). Consider three images $\boldsymbol{x}\_1$, $\boldsymbol{x}\_2$, $\boldsymbol{x}\_3$. The first image $\boldsymbol{x}\_1$ is a photograph of a panda. Together with a label $y$, it can be interpreted as a draw $(\boldsymbol{x}\_1, y)$ from a distribution of images $\mathcal{D}$, i.e. $\boldsymbol{x}\_1 \in D\_{\boldsymbol{x}}$ and $g(\boldsymbol{x}\_1) = 1$. The second image $\boldsymbol{x}\_2$ displays noise and corresponds to nonrelevant data, so $\boldsymbol{x}\_2 \in D\_{\boldsymbol{x}}^c$ and $g(\boldsymbol{x}\_2) = 0$. The third (perturbed) image $\boldsymbol{x}\_3$ also belongs to $D\_{\boldsymbol{x}}^c$, as it is not a photograph but a noise-corrupted version of $\boldsymbol{x}\_1$. Nonetheless, it is *not* nonrelevant, as a human would classify it as a panda. Thus $g(\boldsymbol{x}\_3) = 1$.
@@ -4839,7 +4839,7 @@ is an adversarial example with perturbation $\delta = (\varepsilon + \lvert \bol
 
 We now study two cases of linear classifiers which allow for different types of adversarial examples. In both examples, the ground-truth classifier $g \colon \mathbb{R}^d \to \lbrace -1, 1 \rbrace$ is given by $g(\boldsymbol{x}) = \text{sign}(\overline{\boldsymbol{w}}^\top \boldsymbol{x})$ for $\overline{\boldsymbol{w}} \in \mathbb{R}^d$ with $\lVert \overline{\boldsymbol{w}} \rVert = 1$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.6</span><span class="math-callout__name">(Bayes Classifier with Non-Exhaustive Distribution)</span></p>
 
 Let $\mathcal{D}$ be the uniform distribution on $\lbrace (\lambda \overline{\boldsymbol{w}}, g(\lambda \overline{\boldsymbol{w}})) \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace$. The feature support equals $D\_{\boldsymbol{x}} = \lbrace \lambda \overline{\boldsymbol{w}} \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace \subseteq \text{span}\lbrace \overline{\boldsymbol{w}} \rbrace$.
@@ -4852,7 +4852,7 @@ Hence, for $\varepsilon < \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert$ ther
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.7</span><span class="math-callout__name">(Non-Bayes Classifier with Global Feature Support)</span></p>
 
 Let $\mathcal{D}\_{\boldsymbol{x}}$ be a distribution on $\mathbb{R}^d$ with positive Lebesgue density everywhere outside the decision boundary $\text{DB}\_g = \lbrace \boldsymbol{x} \mid \overline{\boldsymbol{w}}^\top \boldsymbol{x} = 0 \rbrace$ of $g$. We define $\mathcal{D}$ to be the distribution of $(X, g(X))$ for $X \sim \mathcal{D}\_{\boldsymbol{x}}$. Let $\boldsymbol{w} \notin \lbrace \pm \overline{\boldsymbol{w}} \rbrace$, $\lVert \boldsymbol{w} \rVert = 1$ and $h(\boldsymbol{x}) = \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$. We exclude $\boldsymbol{w} = -\overline{\boldsymbol{w}}$ because in this case every prediction of $h$ is wrong, so no adversarial examples are possible.
@@ -5153,7 +5153,7 @@ The two notions differ in that a topology allows for unions of *arbitrary* (poss
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.4</span><span class="math-callout__name">(Euclidean Topology)</span></p>
 
 Let $d \in \mathbb{N}$ and denote by $B\_\varepsilon(\boldsymbol{x}) = \lbrace \boldsymbol{y} \in \mathbb{R}^d \mid \lVert \boldsymbol{y} - \boldsymbol{x} \rVert < \varepsilon \rbrace$ the set of points whose Euclidean distance to $\boldsymbol{x}$ is less than $\varepsilon$. Then for every $A \subseteq \mathbb{R}^d$, the smallest topology on $A$ containing $A \cap B\_\varepsilon(\boldsymbol{x})$ for all $\varepsilon > 0$, $\boldsymbol{x} \in \mathbb{R}^d$, is called the **Euclidean topology** on $A$.
@@ -5178,7 +5178,7 @@ We say that the measure is **finite** if $\mu(\Omega) < \infty$, and it is **sig
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.6</span><span class="math-callout__name">(Lebesgue Measure)</span></p>
 
 One can show that there exists a unique measure $\lambda$ on $(\mathbb{R}^d, \mathfrak{B}\_d)$, such that for all sets of the type $\times\_{j=1}^d [a\_i, b\_i)$ with $-\infty < a\_i \leq b\_i < \infty$ holds
@@ -5254,7 +5254,7 @@ The term distribution is often used without specifying an underlying probability
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.12</span><span class="math-callout__name">(Important Distributions)</span></p>
 
 Some important distributions include the following.
@@ -5343,7 +5343,7 @@ $$A, B \text{ are independent for all } A \in \mathfrak{A}_X,\; B \in \mathfrak{
 
 Two random variables are thus independent if and only if all events in their induced sigma-algebras are independent. This turns out to be equivalent to the joint distribution $\mathbb{P}\_{(X,Y)}$ being equal to the product measure $\mathbb{P}\_X \otimes \mathbb{P}\_Y$; the latter is characterized as the unique measure $\mu$ on $\mathbb{R}^{d\_X + d\_Y}$ satisfying $\mu(A \times B) = \mathbb{P}\_X[A] \mathbb{P}\_Y[B]$ for all $A \in \mathfrak{B}\_{d\_X}$, $B \in \mathfrak{B}\_{d\_Y}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.15</span><span class="math-callout__name">(Independence and Dice Rolls)</span></p>
 
 Let $\Omega = \lbrace 1, \ldots, 6 \rbrace$ represent the outcomes of rolling a fair die, let $\mathfrak{A} = 2^\Omega$ be the sigma-algebra, and let $\mathbb{P}[\omega] = 1/6$ for all $\omega \in \Omega$. Consider three random variables:
@@ -5370,7 +5370,7 @@ $$\mathbb{P}[A \mid B] := \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]},$$
 
 and call $\mathbb{P}[A \mid B]$ the **conditional probability of $A$ given $B$**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.16</span></p>
 
 Consider the setting of Example A.15. Let $A = \lbrace \omega \in \Omega \mid X\_1(\omega) = 0 \rbrace$ be the event that the die roll was an odd number and let $B = \lbrace \omega \in \Omega \mid X\_2(\omega) = 0 \rbrace$ be the event that the outcome yielded a number at most 3. Then $\mathbb{P}[B] = 1/2$, and $\mathbb{P}[A \cap B] = 1/3$. Thus
@@ -5383,7 +5383,7 @@ This reflects that, given we know the outcome to be at most 3, the probability o
 
 The conditional probability above is only well-defined if $\mathbb{P}[B] > 0$. In practice, we often encounter the case where we would like to condition on an event of probability zero.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.17</span></p>
 
 Consider the following procedure: We first draw a random number $p \in [0, 1]$ according to a uniform distribution on $[0, 1]$. Afterwards we draw a random number $X \in \lbrace 0, 1 \rbrace$ according to a $p$-Bernoulli distribution, i.e. $\mathbb{P}[X = 1] = p$ and $\mathbb{P}[X = 0] = 1 - p$. Then $(p, X)$ is a joint random variable taking values in $[0, 1] \times \lbrace 0, 1 \rbrace$. What is $\mathbb{P}[X = 1 \mid p = 0.5]$ in this case? Intuitively, it should be $1/2$, but note that $\mathbb{P}[p = 0.5] = 0$, so that the conditional probability formula is not meaningful here.
@@ -5744,7 +5744,7 @@ Let $X$ be a real vector space. A map $\langle \cdot, \cdot \rangle\_X \colon X 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example B.12</span></p>
 
 For $p = 2$, the Lebesgue spaces $L^2(\Omega)$ and $\ell^2(\mathbb{N})$ are Hilbert spaces with inner products

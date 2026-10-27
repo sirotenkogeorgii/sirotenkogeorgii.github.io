@@ -285,7 +285,7 @@ where the quantifiers alternate, and:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\Sigma_1$, $\Sigma_2$, $\Sigma_3$)</span></p>
 
 * $\Sigma_1$: $\exists y, R(x,y)$

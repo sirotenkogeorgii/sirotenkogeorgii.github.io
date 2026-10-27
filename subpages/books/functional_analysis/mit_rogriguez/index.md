@@ -69,7 +69,7 @@ In many math courses — calculus, linear algebra — the methods we learn help 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortest Curve)</span></p>
 
 Finding the shortest possible curve between two points amounts to specifying a **functional** — the input is a function. We need infinitely many real numbers to specify a real-valued function $f : [0, 1] \to \mathbb{R}$.
@@ -115,7 +115,7 @@ A **vector space** $V$ over a field $\mathbb{K}$ (which we take to be either $\m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Vector Spaces)</span></p>
 
 $\mathbb{R}^n$ and $\mathbb{C}^n$ are vector spaces, and so is $C([0, 1])$, the space of continuous functions $[0, 1] \to \mathbb{C}$. The latter is a vector space because the sum of two continuous functions is continuous, and so is a scalar multiple of a continuous function.
@@ -135,7 +135,7 @@ $E$ has finite cardinality. $V$ is **infinite-dimensional** if it is not finite-
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($C([0,1])$ is Infinite-Dimensional)</span></p>
 
 The set 
@@ -237,7 +237,7 @@ By the triangle inequality, $\lVert u \rVert \le \lVert u - v \rVert + \lVert v 
 
 ### Examples of Norms
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^p$ Norms on $\mathbb{R}^n$)</span></p>
 
 The **Euclidean norm** on $\mathbb{R}^n$ or $\mathbb{C}^n$ is
@@ -556,7 +556,7 @@ $$\lVert a \rVert_p = \begin{cases} \left( \sum_{j=1}^{\infty} \lvert a_j \rvert
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^p$ Membership)</span></p>
 
 The sequence $\left\lbrace \frac{1}{j} \right\rbrace_{j=1}^{\infty}$ is in $\ell^p$ for all $p > 1$ but not in $\ell^1$ (by the usual $p$-series test).
@@ -651,7 +651,7 @@ We know from real analysis that $\mathbb{Q}$ is not **complete** — one can con
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Completeness of $\mathbb{R}^n$ and $\mathbb{C}^n$)</span></p>
 
 For any $n \in \mathbb{Z}\_{\ge 0}$, $\mathbb{R}^n$ and $\mathbb{C}^n$ are complete with respect to any of the $\lVert \cdot \rVert_p$ norms.
@@ -723,7 +723,7 @@ The trick throughout is to **back off to finite sums**, where limits can be exch
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Unit Sphere of $\ell^p$ Is Closed but Not Compact)</span></p>
 
 Let $1 \le p < \infty$ and $S = \lbrace a \in \ell^p : \lVert a \rVert\_p = 1 \rbrace$.
@@ -851,7 +851,7 @@ converges with $n\to\infty$. It shows the subsequence of the Cauchy sequence has
 
 Not every natural normed space is complete. The motivating example of the course:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($C([0,1])$ with the $L^1$ Norm Is Not Complete)</span></p>
 
 On $C([0, 1])$ consider $\lVert u \rVert\_{L^1} = \int\_0^1 \lvert u(x) \rvert\,dx$ (a Riemann integral). Let $u\_n$ be $0$ on $[0, \frac12]$, $1$ on $[\frac12 + \frac1n, 1]$, and linear in between. For $m > n$, $u\_n$ and $u\_m$ differ only on $[\frac12, \frac12 + \frac1n]$, where both lie in $[0,1]$, so $\lVert u\_n - u\_m \rVert\_{L^1} \le \frac1n$: the sequence is Cauchy. Its only candidate limit is the jump function $\mathbf{1}\_{(1/2, 1]}$, which is not continuous: if $u \in C([0,1])$ had $\lVert u\_n - u \rVert\_{L^1} \to 0$, then $u = 0$ on $[0, \frac12]$ and $u = 1$ on $(\frac12, 1]$, contradicting continuity at $\frac12$.
@@ -921,7 +921,7 @@ Now that we have characterized our vector spaces, we want to find the analog of 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integral Operator)</span></p>
 
 Let $K : [0, 1] \times [0, 1] \to \mathbb{C}$ be a continuous function. For any $f \in C([0, 1])$, define
@@ -1048,7 +1048,7 @@ The theorem above does not mean the image of the bounded operator $T$ is bounded
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integral Operator is Bounded)</span></p>
 
 The linear operator $T : C([0, 1]) \to C([0, 1])$ defined by 
@@ -1067,7 +1067,7 @@ and we can take $C = \lVert K \rVert_\infty$. We often call $K$ the **kernel** o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Unbounded Linear Operator I)</span></p>
 
 A very clean example is on the space
@@ -1100,7 +1100,7 @@ must have a uniform ceiling. Here different coordinate directions $e_n$ are ampl
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Unbounded Linear Operator II: Differentiation Operator)</span></p>
 
 A classical analytic example is differentiation
@@ -1332,7 +1332,7 @@ $$(v_1 + W) + (v_2 + W) = (v_1 + v_2) + W, \qquad \lambda(v + W) = \lambda v + W
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Seminorm and Quotient)</span></p>
 
 Consider the seminorm which assigns $\sup \lvert f' \rvert$ to a function $f$. This satisfies homogeneity and the triangle inequality, but it is not a norm because the derivative of any constant function is 0. The constant functions form a subspace, and we can "mod out" by that subspace.
@@ -1424,7 +1424,7 @@ Let $X, Y$ be normed spaces. A sequence $A\_n \in \mathcal{B}(X, Y)$ **converges
 
 Norm convergence $\lVert A\_n - A \rVert \to 0$ means $A\_n x \to Ax$ **uniformly** on the unit ball; strong convergence only asks for it pointwise.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Strong but Not Norm Convergence)</span></p>
 
 On $\ell^2$ let $P\_N$ keep the first $N$ coordinates: $P\_N(a\_1, a\_2, \dots) = (a\_1, \dots, a\_N, 0, \dots)$. For each $a \in \ell^2$, $\lVert a - P\_N a \rVert^2 = \sum\_{k > N}\lvert a\_k \rvert^2 \to 0$, so $P\_N \to I$ strongly. But $(I - P\_N)e\_{N+1} = e\_{N+1}$, so $\lVert I - P\_N \rVert = 1$ for all $N$.
@@ -1645,7 +1645,7 @@ Notably, in a partial ordering a maximal element does not need to sit "on top" o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Partial Order on Powerset)</span></p>
 
 If $S$ is a set, we can define a partial order on the powerset of $S$ by $E \preceq F$ if $E$ is a subset of $F$. Not all sets can be compared.
@@ -2313,7 +2313,7 @@ So the sequence gets arbitrarily close to every point of the space.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dense Sequence)</span></p>
 
 $\mathbb Q\cap[0,1]$ can be enumerated as a sequence $(q_n)$, and that sequence is dense in $[0,1]$.
@@ -2491,7 +2491,7 @@ The **double dual** of a normed space $V$, denoted $V''$, is the dual of $V'$. I
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Canonical Embedding into $V''$)</span></p>
 
 Fix $v \in V$ and define $T_v : V' \to \mathbb{C}$ by $T_v(v') = v'(v)$ for all $v' \in V'$. Then $T_v$ is an element of the double dual: it is linear in $v'$ (since $v'$ is a functional applied to a fixed $v$), and bounded since $\lvert T_v(v') \rvert = \lvert v'(v) \rvert \le \lVert v' \rVert \cdot \lVert v \rVert$.
@@ -2532,7 +2532,7 @@ A Banach space $V$ is **reflexive** if $V = V''$, in the sense that the map $v \
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reflexivity of $\ell^p$ Spaces)</span></p>
 
 For all $1 < p < \infty$, $\ell^p$ is reflexive (its dual is $\ell^q$ with $1/p + 1/q = 1$, whose dual is $\ell^p$ again). But $\ell^1$ is not reflexive (its dual $\ell^\infty$ has a much larger dual). The space $c_0$ of sequences converging to 0 is also not reflexive — $(c_0)' = \ell^1$, whose dual is $\ell^\infty \ne c_0$.
@@ -2652,7 +2652,7 @@ While every set has an outer measure, not every set is **measurable**. In classi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Outer Measure of a Point)</span></p>
 
 $$m^\ast(\lbrace 0 \rbrace) = 0$$
@@ -3141,7 +3141,7 @@ Because $A$ was arbitrary, this establishes Carathéodory's criterion. Thus, $rE
 
 Algebras are closed under complements and finite unions; $\sigma$-algebras are additionally closed under countable unions. By de Morgan's laws, closure under countable unions and complements implies closure under countable intersections.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\sigma$-Algebras)</span></p>
 
 * The simplest $\sigma$-algebra is 
@@ -3931,14 +3931,14 @@ If $f : E \to \mathbb{R}$ is measurable, then $f^{-1}(\lbrace \infty \rbrace)$ a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Continuous Functions are Measurable)</span></p>
 
 If $f : \mathbb{R} \to \mathbb{R}$ is continuous, then $f$ is measurable, because $f^{-1}((\alpha, \infty]) = f^{-1}((\alpha, \infty))$ is the preimage of an open set, hence open and thus measurable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Indicator Functions are Measurable)</span></p>
 
 If $E, F \subset \mathbb{R}$ are two measurable sets, then the indicator function $\chi_F : E \to \mathbb{R}$ defined by $\chi_F(x) = 1$ if $x \in F$ and $\chi_F(x) = 0$ if $x \notin F$ is measurable.
@@ -4121,7 +4121,7 @@ This corollary is **false** for Riemann integration — the pointwise limit of R
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise Limit Leaving Riemann Integration)</span></p>
 
 Enumerate 
@@ -5771,7 +5771,7 @@ For $x < y$, $\lvert F(x) - F(y) \rvert = \lvert \int f\chi\_{[x, y)} \rvert \le
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Improperly Riemann Integrable but Not Lebesgue Integrable)</span></p>
 
 Let $f(x) = x^{-1}\cos(1/x)$ on $(0, 1]$. The improper Riemann integral exists: substituting $u = 1/x$,
@@ -6045,7 +6045,7 @@ $\chi\_{\mathbb{R} \setminus A} = 1 - \chi\_A$, and $1$ is locally integrable. F
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An Unbounded Integrable Function from a Cantor Construction)</span></p>
 
 Remove the middle third $[\frac13, \frac23)$ from $[0, 1)$ to get $C\_1$, remove the middle thirds of the two remaining intervals to get $C\_2$, and so on; $C\_k$ is a union of $2^k$ half-open intervals of total length $(2/3)^k$. Let $f\_k = \chi\_{C\_k}$.
@@ -6057,7 +6057,7 @@ Remove the middle third $[\frac13, \frac23)$ from $[0, 1)$ to get $C\_1$, remove
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Continuous Functions Are Integrable; Riemann = Lebesgue)</span></p>
 
 Let $f \in C([0, 1])$ be real. By uniform continuity choose $N\_n$ (nondecreasing) such that $f$ varies by at most $2^{-n}$ on intervals of length $2^{-N\_n}$, and let $F\_n$ be the step function equal to $\min f$ on each of the $2^{N\_n}$ dyadic subintervals of $[0, 1)$. Then $\lvert f - F\_n \rvert \le 2^{-n}$ on $[0, 1)$, and the telescoping series $F\_1, F\_2 - F\_1, F\_3 - F\_2, \dots$ satisfies $\lvert F\_{n+1} - F\_n \rvert \le 2^{-n}$, so it is absolutely summable and converges (everywhere on $[0,1)$) to $f$. Hence $f\chi\_{[0,1)} \in \mathcal{L}^1$, and $\int f = \lim\_n \int F\_n$ is squeezed between the lower and upper Riemann sums, so it equals the Riemann integral.
@@ -6791,7 +6791,7 @@ A **Hilbert space** is a pre-Hilbert space that is complete with respect to the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 146</span><span class="math-callout__name">($\mathbb{C}^n$)</span></p>
 
 The space of $n$-tuples of complex numbers $\mathbb{C}^n$ with inner product $\langle \underline{z}, \underline{w} \rangle = \sum_{j=1}^{n} z_j \overline{w_j}$ is a (finite-dimensional) Hilbert space.
@@ -6828,7 +6828,7 @@ Taking inner products shows $w\_{k+1} \perp e\_1, \dots, e\_k$, and $w\_{k+1} \n
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 147</span><span class="math-callout__name">($\ell^2$)</span></p>
 
 The space $\ell^2 = \lbrace \underline{a} : \sum_n \lvert a_n \rvert^2 < \infty \rbrace$ is a Hilbert space, where we define
@@ -6837,7 +6837,7 @@ $$\langle \underline{a}, \underline{b} \rangle = \sum_{k=1}^{\infty} a_k \overli
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 148</span><span class="math-callout__name">($L^2(E)$)</span></p>
 
 Let $E \subset \mathbb{R}$ be measurable. Then $L^2(E)$, the space of measurable functions $f : E \to \mathbb{C}$ with $\int_E \lvert f \rvert^2 < \infty$, is a Hilbert space with inner product
@@ -6947,21 +6947,21 @@ Let $H$ be a pre-Hilbert space. Two elements $u, v \in H$ are **orthogonal** if 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 152</span><span class="math-callout__name">(Standard Basis Vectors)</span></p>
 
 The set $\lbrace (0, 1), (1, 0) \rbrace$ is an orthonormal set in $\mathbb{C}^2$, and $\lbrace (0, 0, 1), (0, 1, 0) \rbrace$ is an orthonormal set in $\mathbb{C}^3$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 153</span><span class="math-callout__name">(Standard Basis in $\ell^2$)</span></p>
 
 Let $\underline{e}\_n$ be the sequence which is $1$ in the $n$th entry and $0$ everywhere else. Then $\lbrace e_n \rbrace_{n \ge 1}$ is an orthonormal subset of $\ell^2$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 154</span><span class="math-callout__name">(Fourier Basis in $L^2$)</span></p>
 
 The functions $f_n(x) = \frac{1}{\sqrt{2\pi}} e^{inx}$ (as elements of $L^2([-\pi, \pi])$) form an orthonormal subset of $L^2([-\pi, \pi])$. This is because 
@@ -7255,14 +7255,14 @@ An orthonormal subset $\lbrace e_\lambda \rbrace_{\lambda \in \Lambda}$ of a pre
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 157</span></p>
 
 The $n$ standard basis vectors in $\mathbb{C}^n$ form a maximal orthonormal subset. (A non-example would be any proper subset of that set.)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 158</span></p>
 
 The example $\lbrace \underline{e}\_n \rbrace$ of sequences from above is a maximal orthonormal subset of $\ell^2$.
@@ -7292,7 +7292,7 @@ The word **finite** is crucial.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Standard vectors is not Hamel Basis in infinite-dimensional Banach Spaces)</p>
 
 For example, in an infinite-dimensional Banach space such as $\ell^2$, the standard vectors $e_1,e_2,\dots$ are not a Hamel basis, because a general element
@@ -7363,7 +7363,7 @@ So intuitively, a separable space may be uncountable, but it can be approximated
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Separable Space)</p>
 
 * $\mathbb R$ is separable because $\mathbb Q$ is countable and dense in $\mathbb R$.
@@ -7814,7 +7814,7 @@ For all $f \in L^2$, $\lVert \sigma_N f - f \rVert_2 \to 0$ as $N \to \infty$. T
 
 This shows that the normalized exponentials $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \right\rbrace_{n \in \mathbb{Z}}$ form a maximal orthonormal subset, so the partial Fourier sums of $f$ converge to $f$ in $L^2$. As a deep result, **Carleson's theorem** tells us that in fact $S_N f(x) \to f(x)$ **almost everywhere** for all $f \in L^2$. It is also known that for all $1 < p < \infty$, $\lVert S_N f - f \rVert_p \to 0$, though this is false for $p = 1, \infty$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Completeness of the Fourier Basis Computes $\zeta(2)$ and $\zeta(4)$)</span></p>
 
 Fourier series on $[0, 2\pi]$ work the same way (translate by $\pi$). For $t \in (0, 2\pi)$ let $f\_t = \mathbf{1}\_{[0, t)}$. Its Fourier coefficients are $\hat f\_t(0) = \frac{t}{2\pi}$ and, for $n \ne 0$,
@@ -7834,7 +7834,7 @@ $$\sum_{n=1}^\infty \frac{1 - \cos(nt)}{n^2} = \frac{\pi t}{2} - \frac{t^2}{4}, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Sine Basis by Odd Extension)</span></p>
 
 The functions $\frac{1}{\sqrt{\pi}}\sin\big(\frac{kx}{2}\big)$, $k \in \mathbb{N}$, form an orthonormal basis of $L^2(0, 2\pi)$.
@@ -8114,7 +8114,7 @@ Finally $\lVert f \rVert \le \lVert w \rVert$ by Cauchy–Schwarz, and $f(w) = \
 
 In other words, every element of the dual can be realized as an inner product with a fixed vector.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Weighted Sequence Spaces and Their Duals)</span></p>
 
 For $s \in \mathbb{R}$ let
@@ -8158,21 +8158,21 @@ for all $u, v \in H$. In addition, we have that $\lVert A^* \rVert = \lVert A \r
 
 ### Examples of Adjoints
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 186</span><span class="math-callout__name">(Matrices on $\mathbb{C}^n$)</span></p>
 
 If $H = \mathbb{C}^n$ and $A$ is represented by a matrix $(A_{ij})$, then the adjoint $A^*$ is the conjugate transpose: $(A^\ast v)\_i = \sum_{j=1}^{n} \overline{A_{ji}} v_j$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 187</span><span class="math-callout__name">(Operators on $\ell^2$)</span></p>
 
 On $\ell^2$, an operator described by a double sequence $\lbrace A_{ij} \rbrace$ with $\sum_{i,j} \lvert A_{ij} \rvert^2 < \infty$ acts as $(A\underline{a})\_i = \sum_{j=1}^{\infty} A_{ij} a_j$. The adjoint is $(A^\ast \underline{b})\_i = \sum_{j=1}^{\infty} \overline{A_{ji}} b_j$ — again, the conjugate transpose.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 188</span><span class="math-callout__name">(Integral Operators on $L^2$)</span></p>
 
 Let $K \in C([0, 1] \times [0, 1])$, and define $A : L^2([0, 1]) \to L^2([0, 1])$ via 
@@ -8304,7 +8304,7 @@ Let $X$ be a metric space. A subset $K \subset X$ is **compact** if every sequen
   <figcaption>Two faces of compactness in a metric space. <strong>Left (Definition 190).</strong> A sequence in $K$ may wander forever (gray), but one can always extract a subsequence $x_{n_1}, x_{n_2}, \dots$ (blue) that enters ever-smaller $\varepsilon$-balls around some point $x$, and that limit still belongs to $K$. <strong>Right (finite cover).</strong> $K$ is <em>totally bounded</em>: for every $\varepsilon > 0$ it is covered by finitely many balls $N(x, \varepsilon)$; a smaller $\varepsilon$ needs more balls, but never infinitely many. In a metric space these notions line up: $K$ satisfies Definition 190 $\iff$ every open cover of $K$ has a finite subcover $\iff$ $K$ is complete and totally bounded. Completeness is what stops a limit from escaping the set: $(0,1)$ is totally bounded, yet $x_n = 1/n$ has no subsequence converging inside $(0,1)$. Boundedness alone is weaker still: the closed unit ball of an infinite-dimensional Hilbert space is bounded but not totally bounded (an orthonormal sequence has mutual distance $\sqrt{2}$, so no finite $\tfrac{1}{2}$-net exists), which is the mechanism behind Example 193 below.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 191</span></p>
 
 By the Pigeonhole Principle, all finite subsets are compact.
@@ -8327,7 +8327,7 @@ This does not hold for arbitrary metric spaces or even Banach spaces, and in fac
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 193</span></p>
 
 Let $H$ be an infinite-dimensional Hilbert space. Then the closed ball $F = \lbrace u \in H : \lVert u \rVert \le 1 \rbrace$ is closed and bounded but **not** compact.
@@ -8452,7 +8452,7 @@ We know that the sequence for any given $v$ converges by Bessel’s inequality, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 195</span></p>
 
 Any finite set $K$ has equi-small tails with respect to any countable orthonormal subset (we can take the maximum of finitely many $N$s).
@@ -8496,7 +8496,7 @@ Let $H$ be a Hilbert space, and let $\lbrace v_n \rbrace_n$ be a convergent sequ
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compact sets on a real line)</span></p>
 
 Examples on the real line included the following examples
@@ -8568,7 +8568,7 @@ These names emphasize the relationship between the results:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 198</span><span class="math-callout__name">(Hilbert Cube)</span></p>
 
 Let $K$ be the set (not subspace) of sequences $\lbrace a_k \rbrace_k$ in $\ell^2$ satisfying $\lvert a_k \rvert \le 2^{-k}$ — this set is known as the **Hilbert cube**, and it is compact.
@@ -8832,7 +8832,7 @@ In this language, the generalized theorem can be viewed as a compactness criteri
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Local version of Arzelà-Ascoli: Locally Uniform Convergence)</span></p>
 
 Consider the function $f_n(x)=\tanh(x/n)$,  $x\in\mathbb R$. For any fixed compact interval $[-R,R]$,
@@ -9089,7 +9089,7 @@ By Cauchy–Schwarz, $\lvert \langle u\_n, v \rangle - \langle u, v \rangle \rve
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Orthonormal Sequences Converge Weakly to $0$)</span></p>
 
 If $\lbrace e\_n \rbrace$ is an orthonormal sequence, then $e\_n \rightharpoonup 0$: 
@@ -9243,7 +9243,7 @@ Consider the bounded linear functionals $T\_n(v) = \langle v, u\_n \rangle$ (the
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coefficient Convergence Is Not Enough)</span></p>
 
 * Let $\lbrace e\_j \rbrace$ be an orthonormal basis and $u\_n = n e\_n$. 
@@ -9447,7 +9447,7 @@ Taking $v = u$ in the definition, $\lVert u \rVert^2 = \lim\_n \langle u\_n, u \
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Drop in norm of a weak limit)</span></p>
 
 The inequality can be strict — for an orthonormal sequence, $\lVert 0 \rVert = 0 < 1 = \lVert e\_n \rVert$. The norm can only **drop** in a weak limit, and the next result says that this drop is exactly the obstruction to strong convergence.
@@ -9544,7 +9544,7 @@ A bounded linear operator $T \in \mathcal{B}(H)$ is a **finite rank operator** i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 202</span></p>
 
 If $H$ is finite-dimensional, every linear operator is of finite rank. For a more interesting example on $\ell^2$, for any positive integer $n$, the operator $Ta = \left\lbrace \frac{a_1}{1}, \frac{a_2}{2}, \dots, \frac{a_n}{n}, 0, \dots \right\rbrace$ is a finite rank operator (the image is spanned by the first $n$ standard basis vectors).
@@ -9620,7 +9620,7 @@ so $\operatorname{Range}(T)$ would have dimension at most $N - 1$. Since $T^\ast
 
 The set $\mathcal{R}(H)$ is **not** closed under limits in operator norm:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 206</span></p>
 
 Let $T_n : \ell^2 \to \ell^2$ be defined as $T_n a = \left\lbrace \frac{a_1}{1}, \dots, \frac{a_n}{n}, 0, \dots \right\rbrace$. Each $T_n$ is finite rank, and $\lVert T - T_n \rVert \le \frac{1}{n+1} \to 0$ where $Ta = \left\lbrace \frac{a_1}{1}, \frac{a_2}{2}, \frac{a_3}{3}, \dots \right\rbrace$, but $T$ is **not** of finite rank (since $T(ke_k) = e_k$ for each standard basis vector $e_k$).
@@ -9634,7 +9634,7 @@ An operator $K \in \mathcal{B}(H)$ is a **compact operator** if $\overline{K(\lb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 208</span></p>
 
 Illustrative examples of compact operators include $K : \ell^2 \to \ell^2$ sending 
@@ -9772,7 +9772,7 @@ Hence $T$ is compact.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 209</span></p>
 
 The identity operator $I$ on $\ell^2$ is **not** compact, because the closed unit ball is not compact in an infinite-dimensional Hilbert space. This argument shows that the identity is never compact for an infinite-dimensional Hilbert space.
@@ -9926,7 +9926,7 @@ $GL(H)$ is a group under composition: $(G\_1 G\_2)^{-1} = G\_2^{-1} G\_1^{-1}$. 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Shift Operator)</span></p>
 
 Let $\lbrace e\_j \rbrace\_{j \ge 1}$ be an orthonormal basis of $H$ (e.g. $H = \ell^2$). The **(right) shift**
@@ -9995,7 +9995,7 @@ Let $A \in \mathcal{B}(H)$ be a bounded linear operator. The **resolvent set** o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 215</span></p>
 
 Let $A : \mathbb{C}^2 \to \mathbb{C}^2$ be the matrix $\begin{bmatrix} \lambda_1 & 0 \\\ 0 & \lambda_2 \end{bmatrix}$. Then $A - \lambda$ is not invertible exactly when $\lambda = \lambda_1$ or $\lambda = \lambda_2$, so $\operatorname{Spec}(A) = \lbrace \lambda_1, \lambda_2 \rbrace$.
@@ -10011,14 +10011,14 @@ If $A \in \mathcal{B}(H)$ and $A - \lambda$ is not injective, then there exists 
 
 In finite dimensions, the spectrum consists entirely of eigenvalues. In infinite dimensions, there can be elements of the spectrum that are not eigenvalues:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 217</span></p>
 
 For the compact operator $T : \ell^2 \to \ell^2$ sending $a \mapsto \left( \frac{a_1}{1}, \frac{a_2}{2}, \frac{a_3}{3}, \dots \right)$, the $n$th basis vector $e_n$ is an eigenvector with eigenvalue $\frac{1}{n}$. But $0$ is also in the spectrum despite not being an eigenvalue: $T$ is injective, but not surjective (its inverse would map $a \mapsto (a_1, 2a_2, 3a_3, \dots)$, which is unbounded).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 218</span></p>
 
 Let $T : L^2([0, 1]) \to L^2([0, 1])$ be defined via $Tf(x) = xf(x)$. Then $T$ has no eigenvalues, but the spectrum is $\operatorname{Spec}(T) = [0, 1]$.
@@ -10295,7 +10295,7 @@ By Theorem 189, $\operatorname{Range}(F)^\perp = \operatorname{Null}(F^\ast)$, s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Shift Has Index $-1$)</span></p>
 
 The right shift $S$ on $\ell^2$ (see Section "Invertible Operators") is injective with closed range $\lbrace e_1 \rbrace^\perp$. So $S$ is Fredholm with $\operatorname{ind}(S) = 0 - 1 = -1$. The theorem below shows this can never happen for $I - K$ with $K$ compact.

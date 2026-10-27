@@ -151,7 +151,7 @@ should be checked by analyzing the residuals.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common Diagnostic Visualizations)</span></p>
 
   * **Error Histogram:** A histogram of the residuals $res_t$ can provide a first check on the assumption that the errors are normally distributed.
@@ -187,7 +187,7 @@ where $\phi_k(\cdot)$ are chosen functions that transform the original predictor
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common Choices for Basis Functions)</span></p>
 
 * **Polynomials:** $\phi_k(u_j) = u_{jt}^k$ (e.g., $u_t, u_t^2, u_t^3, \dots$).
@@ -269,7 +269,7 @@ The standard linear regression model is a special case of a GLM.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Logistic Regression)</span></p>
 
 Logistic regression is a GLM used for modeling **binary response variables**.
@@ -357,7 +357,7 @@ $$p(y_{1t}, y_{2t} \mid x_t) = p(y_{1t} \mid x_t) p(y_{2t} \mid x_t)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Loss Function (MLE) for Multimodal Regression Above)</span></p>
 
 Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:

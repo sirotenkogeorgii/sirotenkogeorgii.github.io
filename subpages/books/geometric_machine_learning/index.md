@@ -254,7 +254,7 @@ For instance, the group of Euclidean isometries $\mathrm{E}(2)$ is a subgroup of
 
 Symmetries are structure-preserving and invertible maps *from an object to itself*. Such maps are also known as *automorphisms*. However, an equally important class of maps are the *isomorphisms*, which exhibit an equivalence between two non-identical objects.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Automorphisms vs. Isomorphisms)</span></p>
 
 Consider a set $\Omega = \lbrace 0, 1, 2 \rbrace$. An automorphism of $\Omega$ is a bijection $\tau : \Omega \to \Omega$ such as a cyclic shift $\tau(u) = u + 1 \mod 3$. Such a map preserves the cardinality property and maps $\Omega$ onto itself.
@@ -699,7 +699,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid and Cyclic Shift Group)</span></p>
 
 The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z}\_n = \lbrace 0, \ldots, n-1 \rbrace$ and the cyclic shift group $\mathfrak{G} = \mathbb{Z}\_n$. The group elements are cyclic shifts of indices. An element $\mathfrak{g} \in \mathfrak{G}$ can be identified with some $u = 0, \ldots, n-1$ such that $\mathfrak{g}.v = v - u \bmod n$, whereas the inverse element is $\mathfrak{g}^{-1}.v = v + u \bmod n$. Since the elements of the group (shifts) are also elements of the domain (indices), we can identify $\Omega = \mathfrak{G}$; our expression for the group convolution leads to the familiar convolution $(x \star \theta)\_u = \sum_{v=0}^{n-1} x_v \theta_{v + u \bmod n}$.
@@ -708,7 +708,7 @@ The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z
 
 #### Spherical Convolution
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Spherical Convolution)</span></p>
 
 Consider the two-dimensional sphere $\Omega = \mathbb{S}^2$ with the group of rotations, the *special orthogonal group* $\mathfrak{G} = \mathrm{SO}(3)$. Representing a point on the sphere as a three-dimensional unit vector $\mathbf{u}$ with $\|\mathbf{u}\| = 1$, the action of the group can be represented as a $3 \times 3$ orthogonal matrix $\mathbf{R}$ with $\det(\mathbf{R}) = 1$. The spherical convolution can be written as
@@ -1059,7 +1059,7 @@ $$
 
 Sometimes we may wish to restrict attention to frames with a certain property, such as orthogonal frames, right-handed frames, etc. The group that preserves orthogonality is the orthogonal group $\mathrm{O}(s)$ (rotations and reflections), and the group that additionally preserves orientation or "handedness" is $\mathrm{SO}(s)$ (pure rotations). In general we have a group $\mathfrak{G}$ called the **structure group** of the bundle, and a gauge transformation is a map $\mathfrak{g} : \Omega \to \mathfrak{G}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(RGB Colour Space as a Gauge)</span></p>
 
 Gauge theory extends beyond tangent bundles. For instance, a colour image pixel has a position $u \in \Omega = \mathbb{Z}^2$ on a 2D grid and a value $\mathbf{x}(u) \in \mathbb{R}^3$ in the RGB space, so the space of pixels can be viewed as a vector bundle with base space $\mathbb{Z}^2$ and a fibre $\mathbb{R}^3$ attached at each point. It is customary to express an RGB image relative to a gauge that has basis vectors for R, G, and B (in that order), so that $\mathbf{x}(u) = (r(u), g(u), b(u))^\top$. But we may equally well permute the basis vectors (colour channels) independently at each position. An RGB gauge transformation changes the numerical representation of an image (permuting the RGB values independently at each pixel) but not the underlying image. Choosing the structure group $\mathfrak{G} = \Sigma_3$ (permutations of the 3 colour channels) allows us to express a gauge symmetry --- an equivalence between colours --- and make functions defined on images respect this symmetry.
@@ -1291,14 +1291,14 @@ As discussed in Section 4.3, we can generalise the convolution operation from si
 
 We begin by considering the case where the domain $\Omega$ as well as the group $\mathfrak{G}$ are discrete.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3D Medical Volumetric Images)</span></p>
 
 Consider medical volumetric images represented as signals on 3D grids with discrete translation and rotation symmetries. The domain is the 3D cubical grid $\Omega = \mathbb{Z}^3$ and the images are modelled as functions $x : \mathbb{Z}^3 \to \mathbb{R}$. As our symmetry, we consider the group $\mathfrak{G} = \mathbb{Z}^3 \rtimes O_h$ of distance- and orientation-preserving transformations on $\mathbb{Z}^3$, consisting of translations ($\mathbb{Z}^3$) and the discrete rotations $O_h$ generated by 90 degree rotations about the three axes.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(DNA Sequences and Reverse-Complement Symmetry)</span></p>
 
 DNA sequences made up of four letters (C, G, A, T) can be represented on the 1D grid $\Omega = \mathbb{Z}$ as signals $x : \mathbb{Z} \to \mathbb{R}^4$, where each letter is one-hot coded in $\mathbb{R}^4$. Beyond the discrete 1D translation symmetry, DNA sequences exhibit *reverse-complement symmetry*: a sequence such as ACCCTGG is equivalent to the reversed sequence with each letter replaced by its complement, CCAGGGT. This gives the two-element group $\mathbb{Z}_2 = \lbrace 0, 1 \rbrace$ corresponding to the identity and reverse-complement transformation. The full group combines translations and reverse-complement transformations.

@@ -41,7 +41,7 @@ Depending on the character of the feasible set $M$, we distinguish two types:
 
 Discrete and continuous optimization are not disjoint. They are closely related and techniques from one area are used in the other. Consider \astinteger programming\ast: most of the methods are based on a relaxation to a continuous problem and an iterative improvement. Conversely, an integer condition can easily be reduced to a continuous one. For example, the condition $x \in \lbrace 0, 1 \rbrace$ is equivalent to $x = x^2$ (in reality, however, this is not used).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Flows in Networks)</span></p>
 
 Consider a directed graph $G = (V, E)$, where $s \in V$ is the source vertex and $t \in V$ the terminal vertex. Each edge has a capacity, represented by a function $u \colon E \mapsto \mathbb{R}^+$. The objective is to find a maximum flow from $s$ to $t$. The flow coming into any intermediate vertex needs to equal the flow going out of it (flow in $=$ flow out, called the conservation law).
@@ -64,7 +64,7 @@ $$\min \sum_{(i,j)\in E} c_{ij} x_{ij} \quad \text{subject to} \quad Ax = 0, \; 
 
 ## 1.1 Motivation Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span><span class="math-callout__name">(Theoretical: Eigenvalues)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be a symmetric matrix and $\lambda_1 \ge \cdots \ge \lambda_n$ its (real) eigenvalues. Consider the unit ball $B$ in space $\mathbb{R}^n$; the ball is defined as $B := \lbrace x \in \mathbb{R}^n;\; \lVert x \rVert_2 \le 1 \rbrace$. The maximal eigenvalue $\lambda_1$ is attained as the maximal value of the quadratic form $x^T A x$ on ball $B$, and similarly the minimal eigenvalue $\lambda_n$ is attained as the minimal value of $x^T A x$ on $B$. Formally:
@@ -83,7 +83,7 @@ $$x^T A x = x^T Q \Lambda Q^T x = y^T \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">(Functional Optimization)</span></p>
 
 In principle, the number of variables need not be finite. In a functional problem, we want to find a function satisfying certain constraints and minimizing a specified criterion. For illustration, imagine computing the best trajectory for a spacecraft traveling from Earth to Mercury; the variable is the curve of the trajectory described by a function, and the objective is to minimize travel time. Certain simple functional problems can be solved analytically, but in general they are solved by discretization of the unknown function and then application of classical optimization methods.
@@ -92,7 +92,7 @@ Isoperimetric problems belong to this area, too. It is well-known that the ball 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.4</span><span class="math-callout__name">(When the Nature Optimizes)</span></p>
 
 Snell's law quantifies the bending of light as it passes through a boundary between two media. The less dense the medium, the faster light travels. The trajectory of light is such that it is traversed in the least time (the so called Fermat's principle of least time).
@@ -161,7 +161,7 @@ provided
 
 Both optimization problems then possess the same minima. The optimal values are different, but they can be easily computed from the optimal solutions.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.6</span><span class="math-callout__name">(Geometric Programming)</span></p>
 
 The transformation turns out to be very convenient in geometric programming, for instance. To illustrate it, consider the particular example
@@ -184,7 +184,7 @@ $$\min \; z \quad \text{subject to} \quad f(x) \le z, \; x \in M.$$
 
 The objective function is now linear, and all possible obstacles are hidden in the constraints.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.7</span><span class="math-callout__name">(A Finite Minimax)</span></p>
 
 Consider the problem
@@ -263,7 +263,7 @@ where $\gamma > 0$ is a suitably chosen constant. Again, this is a hard combinat
 
 $$\min \; \lVert Ax - b \rVert_2 + \gamma \lVert x \rVert_1.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.8</span><span class="math-callout__name">(Signal Reconstruction)</span></p>
 
 Consider the problem of a signal reconstruction. Let a vector $\tilde{x} \in \mathbb{R}^n$ represent the unknown signal, and let $y = \tilde{x} + \text{err}$ represent the observed noisy signal. We want to smooth the noisy signal and find a good approximation of $\tilde{x}$. To this end, we will seek for a vector $x \in \mathbb{R}^n$ that is close to $y$ and that is also smoothed, i.e., there are not big oscillations.
@@ -372,7 +372,7 @@ Therefore $f(x^\ast + \lambda y) > f(x^\ast)$.
 
 We see that there is a quite tight gap between the necessary and the sufficient conditions. However, the example $f(x) = -x^4$ shows that the gap is not zero: the point $x = 0$ is a strict local maximum (and not a minimum), the sufficient condition is not satisfied (as expected), but the necessary condition is satisfied.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4</span><span class="math-callout__name">(The Least Squares Method)</span></p>
 
 Consider a system of linear equations $Ax = b$, where $A \in \mathbb{R}^{m \times n}$, $b \in \mathbb{R}^m$ and matrix $A$ has rank $n$ (cf. Section 1.3). Usually, $m$ is much greater than $n$. Since this system has practically never an exact solution, we seek for an approximate solution by means of an optimization problem
@@ -526,7 +526,7 @@ If we have $f(\lambda_1 x_1 + \lambda_2 x_2) < \lambda_1 f(x_1) + \lambda_2 f(x_
 
 Analogously we define a \astconcave\ast function: $f(x)$ is concave if $-f(x)$ is convex. A function is linear (or, more precisely, affine) if and only if it is both convex and concave.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.11</span></p>
 
 Any vector norm is a convex function because by definition for any $x_1, x_2 \in \mathbb{R}^n$ and $\lambda_1, \lambda_2 \ge 0$, $\lambda_1 + \lambda_2 = 1$,
@@ -716,7 +716,7 @@ In the first item, we cannot claim positive definiteness everywhere on $M$. Usin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.22</span></p>
 
 1. Function $f(x) = x^4$ is strictly convex on $\mathbb{R}$, but its Hessian $f(x)'' = 12x^2$ vanishes at $x = 0$.
@@ -725,7 +725,7 @@ In the first item, we cannot claim positive definiteness everywhere on $M$. Usin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.23</span></p>
 
 Consider a quadratic function $f \colon \mathbb{R}^n \to \mathbb{R}$ given by formula $f(x) = x^T Ax + b^T x + c$, where $A \in \mathbb{R}^{n \times n}$ is symmetric, $b \in \mathbb{R}^n$ and $c \in \mathbb{R}$. Then
@@ -762,7 +762,7 @@ Let $f \colon \mathbb{R}^m \to \mathbb{R}$ be a convex function, $A \in \mathbb{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.27</span></p>
 
 1. Function $e^x$ is convex, so $e^{x_1 - 2x_2 + 3}$ is convex.
@@ -780,14 +780,14 @@ Let $f, g \colon \mathbb{R} \to \mathbb{R}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.29</span></p>
 
 All three functions $f_1(x) = x$, $f_2(x) = x^2$ and $g(x) = e^x$ are convex, nonnegative and nondecreasing on $M = \lbrace x \ge 0 \rbrace$. Hence the function products $f_1(x)g(x) = xe^x$ and $f_2(x)g(x) = x^2 e^x$ are convex on the set $M$. However, on the whole real line, none of the products is convex.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.30</span></p>
 
 Both functions $f(x) = x$ and $g(y) = y$ are convex, but their product $h(x,y) = xy$ is not convex even when restricted to domain $(x,y) \in [0, \infty)^2$; it is strictly concave on the segment between points $(1,0)$ and $(0,1)$. Therefore, in order to apply Theorem 3.28, we need that both functions are of the same variable. Notice that function $f(x) \cdot g(x) = x^2$ is convex now.
@@ -804,7 +804,7 @@ Let $f \colon \mathbb{R}^n \to \mathbb{R}^k$ and $g \colon \mathbb{R}^k \to \mat
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.32</span></p>
 
 1. If $f \colon \mathbb{R}^n \to \mathbb{R}$ is convex, then $e^{f(x)}$ is convex. For example, $e^{e^x}$, $e^{x^2 - x}$, $e^{x_1 - x_2}$, $\ldots$
@@ -813,7 +813,7 @@ Let $f \colon \mathbb{R}^n \to \mathbb{R}^k$ and $g \colon \mathbb{R}^k \to \mat
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.33</span></p>
 
 The monotonicity assumption in Theorem 3.31 is necessary, indeed. For example, functions $f(x) = x^2 - 1$ and $g(y) = y^2$ are convex, but $g(f(x)) = (x^2 - 1)^2$ is not convex.
@@ -827,7 +827,7 @@ Checking convexity of a function is a hard problem in general. Ahmadi et al. (20
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.35</span></p>
 
 Consider the function $f(x_1, x_2) = x_1^2 x_2^2$. How to check if it is convex? Let us try the second order characterization. The Hessian of $f(x)$ reads
@@ -850,7 +850,7 @@ $$M = \lbrace x \in \mathbb{R}^n;\; g_j(x) \le 0, \; j = 1, \ldots, J \rbrace,$$
 
 where $g_j(x) \colon \mathbb{R}^n \to \mathbb{R}$, $j = 1, \ldots, J$, are convex functions. By Theorem 3.16 the set $M$ is convex then. In this chapter, however, we will deal with a general convex set $M$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1</span></p>
 
 An example of a convex optimization problem:
@@ -903,7 +903,7 @@ that is, $x$ is better than the optimal solution; a contradiction.
 
 Notice that a convex optimization problem need not possess an optimal solution. Consider, for example, $\min_{x \in \mathbb{R}} e^x$. This situation may happen even if the feasible set is compact:
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.3</span></p>
 
 Consider the function $f \colon [1,2] \to \mathbb{R}$ defined by
@@ -960,7 +960,7 @@ Hence $f(x_\lambda) < f(x^\ast)$ for a sufficiently small $\lambda > 0$; a contr
 
 The condition from Theorem 4.5 is particularly satisfied if $\nabla f(x^\ast) = o$. This means that each stationary point is a global minimum.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.6</span></p>
 
 The first problem in Example 4.1 reads
@@ -981,7 +981,7 @@ We compute $\nabla f(x^\ast) = (2x_1, 2x_2 + 2)^T$, and this gradient is zero at
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.7</span><span class="math-callout__name">(Rating System)</span></p>
 
 Many methods have been developed to provide ratings of sport teams or other entities. Consider $n$ teams that we want to rate by numbers $r_1, \ldots, r_n \in \mathbb{R}^n$. Let $A \in \mathbb{R}^{n \times n}$ be a known scoring matrix, where $a_{ij}$ gives the scoring of team $i$ against team $j$. This matrix is skew symmetric, that is $A = -A^T$, since $a_{ii} = 0$ and $a_{ij} = -a_{ji}$. The rating vector $r = (r_1, \ldots, r_n)^T$ should reflect the scorings, so ideally we have $a_{ij} = r_i - r_j$, or in matrix form $A = re^T - er^T$. This is hardly satisfied in practice, but we aim to find the best approximation, which leads to an optimization formulation
@@ -1004,7 +1004,7 @@ The matrix has rank $n-1$ and so the solution set is the line $x = \frac{1}{n}Ae
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.8</span></p>
 
 Consider the problem $\min_{x \ge o} x^T Cx + d^T x$, where
@@ -1054,7 +1054,7 @@ The optimal value of this problem is $n$ if and only if SET-PARTITIONING is solv
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.10</span><span class="math-callout__name">(Portfolio Selection Problem)</span></p>
 
 This is a textbook example of an application of convex quadratic programming. The pioneer in this area was Harry Markowitz, a Nobel Prize winner in Economics in 1990, awarding his results from 1952.
@@ -1077,7 +1077,7 @@ where $\gamma > 0$ is the so called risk aversion coefficient.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.11</span><span class="math-callout__name">(Quadrocopter Trajectory Planning)</span></p>
 
 We need to plan a trajectory for a quadrocopter fleet such that a collision is avoided and the fleet is transferred from an initial state to a terminal state with minimum effort. In our model, time is discretized into time slots of length $h$. The variables are the position $p_i(k)$, velocity $v_i(k)$ and acceleration $a_i(k)$ for quadrocopter $i$ in time step $k$. The constraints are:
@@ -1165,7 +1165,7 @@ If $\mathcal{K}$ is a pointed convex cone, then it induces
 
 From now on we consider only a pointed convex closed cone $\mathcal{K}$ with nonempty interior.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.14</span><span class="math-callout__name">(Examples of Cones)</span></p>
 
 The frequently used cones are:
@@ -1182,7 +1182,7 @@ Now we are ready to introduce cone programming. The **cone programming problem**
 
 $$\min \; c^T x \quad \text{subject to} \quad Ax \ge_\mathcal{K} b. \tag{4.1}$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.15</span><span class="math-callout__name">(Examples of Cone Programs)</span></p>
 
 - For $\mathcal{K} = \mathbb{R}_+^n$ we get the standard linear programming.
@@ -1247,7 +1247,7 @@ In other words, the objective value of each feasible solution is an upper bound 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.18</span></p>
 
 - Nonnegative orthant is self-dual, that is, $(\mathbb{R}_+^n)^\ast = \mathbb{R}_+^n$.
@@ -1290,7 +1290,7 @@ The primal and dual optimal values are the same provided at least one of the fol
 
 Notice that even when strong duality holds and both primal and dual optimal values are (the same and) finite, it may happen that the optimal value is not attained (formally, we should write "inf" instead of "min"). The following example illustrates this situation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.21</span></p>
 
 Consider the convex cone program of form (4.2)
@@ -1305,7 +1305,7 @@ Even though the problem is strictly feasible, the optimal value is not attained.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.22</span></p>
 
 Consider the second order cone program
@@ -1346,7 +1346,7 @@ $$\min \; c^T x \quad \text{subject to} \quad Ax \ge b, \; \lVert Dx - f \rVert_
 
 A lot of functions and nonlinear conditions can be expressed in the form of (4.5).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.23</span><span class="math-callout__name">(Examples of Second Order Cone Programs)</span></p>
 
 - \astQuadratic constraints.\ast For example, the condition $x^T x \le z$ can be expressed as $x^T x + \frac{1}{4}(z-1)^2 \le \frac{1}{4}(z+1)^2$, the square root of which gives $\lVert (x^T, \frac{1}{2}(z-1)) \rVert_2 \le \frac{1}{4}(z+1)$.
@@ -1378,7 +1378,7 @@ How to construct the dual problem? According to (4.3), the dual problem has $m^2
 
 $$\max \; \text{tr}(BY) \quad \text{subject to} \quad \text{tr}(A^{(k)} Y) = c_k, \; k = 1, \ldots, n, \; Y \succeq 0. \tag{4.7}$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.24</span><span class="math-callout__name">(Examples of Semidefinite Programs)</span></p>
 
 - \astLinear constraints.\ast Linear inequalities $Ax \le b$ are expressed as semidefinite conditions as follows:
@@ -1395,7 +1395,7 @@ $$\max \; \text{tr}(BY) \quad \text{subject to} \quad \text{tr}(A^{(k)} Y) = c_k
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.25</span><span class="math-callout__name">(Portfolio Selection with Interval Estimation)</span></p>
 
 Consider the portfolio selection problem (Example 4.10)
@@ -1425,7 +1425,7 @@ In order that the above algorithm is correct and runs in polynomial time, we nee
 - The feasible set $M$ shouldn't be too flat or too large. There must exist "reasonably" large numbers $r, R > 0$ such that $M$ contains a ball of radius $r$ and also $M$ lies in the ball $\lbrace x;\; \lVert x \rVert_2 \le R \rbrace$.
 - **Separation oracle.** For every $x^\ast \in \mathbb{R}^n$ we need to check for $x^\ast \in M$ in polynomial time. If $x^\ast \notin M$, then we need to find a vector $a \ne o$ such that $a^T x^\ast \ge \sup_{x \in M} a^T x$. This gives us a hyperplane $a^T x = a^T x^\ast$ satisfying $a^T x \le a^T x^\ast$ for every $x \in M$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.26</span></p>
 
 In some cases, the ellipsoid method provides a polynomial algorithm for problems with exponentially many or even infinitely many constraints. For example, let $M$ be a unit ball described by the tangent hyperplanes, that is,
@@ -1716,7 +1716,7 @@ $$\lambda^T g(x^\ast) = 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.7</span></p>
 
 If Slater's condition is not satisfied, then the KKT conditions property (Corollary 5.5) can fail. Consider an optimization problem $\min_{x \in M} x_1$. Two constraints describe the feasible set having the form of a half-line starting from point $x^\ast$. Point $x^\ast$ is optimal. The KKT conditions read $-\nabla f(x^\ast) = \nabla g(x^\ast)\lambda$, but the point $x^\ast$ does not fulfill them since the gradients $\nabla g_1(x^\ast) = (0,-1)^T$ and $\nabla g_2(x^\ast) = (0,1)^T$ span a vertical line, not containing the opposite of the objective function gradient $-\nabla f(x^\ast) = (-1,0)^T$.
@@ -1753,7 +1753,7 @@ Therefore $f(x^\ast)$ is the optimal value and $x^\ast$ is an optimal solution.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.9</span></p>
 
 Consider the problem
@@ -1831,14 +1831,14 @@ In $k$th iteration, the current point is $x_k$. We determine a direction $d_k$ i
 
 How to choose $d_k$? The simplest way is the **steepest descent method**, which takes $d_k := -\nabla f(x_k)$, that is, the direction in which the objective function locally decreases the most rapidly. This choice need no be the best one. There are advanced methods that take into account also the Hessian $\nabla^2 f(x_k)$ or its approximation and they combine the steepest descent direction and the directions of the previous iteration(s); see also the conjugate gradient methods in Section 6.4.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.1</span><span class="math-callout__name">(Learning of Neural Networks)</span></p>
 
 Basically, the steepest descent method is used in learning of artificial neural networks. The goal of the learning is to set up weights of inputs of particular neurons such that the neural network performs best on the training data. Mathematically speaking, the variables are the weights of inputs of the neurons. The objective function that we minimize is the distance between the actual output vector and the ideal output vector. It is hard to find the optimal solution since this optimization problem is nonlinear, nonconvex and high-dimensional. That is why the problem is solved iteratively and at each step the weights are refined by means of the steepest descent. To compute the gradient of the objective function is also computationally demanding since there are usually large training data, so we simplify further and we approximate the gradient by its partial value based on the gradient of a randomly chosen training sample point. This approach is called \aststochastic gradient descent\ast.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.2</span></p>
 
 Optimization techniques are also used to solve problems that are not optimization problems in the essence. Consider for example the problem of solving a system of linear equations $Ax = b$, where $A$ is a positive definite matrix. Then the optimal solution of the convex quadratic program
@@ -1989,7 +1989,7 @@ which is a contradiction to the optimality of $x_k$ in iteration $k$.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.5</span></p>
 
 For constraints of type $g(x) \le 0$ we often use the penalty function
@@ -2018,7 +2018,7 @@ where $c > 0$ is a parameter.
 
 The algorithm is similar to penalty methods, that is, we iteratively seek for optimal solutions of auxiliary problems when $c \to \infty$. A drawback of this method is that we have to know an initial feasible solution at the beginning. The advantage is its simplicity.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.6</span></p>
 
 For constraints of type $g(x) \le 0$ we often use the barrier function in the form
@@ -2043,7 +2043,7 @@ $$q(X) := -\log(\det(X)).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.7</span></p>
 
 For concreteness, consider the constraint $x \in [-1, 2]$. The inverse barrier function (6.3) takes the form
@@ -2195,7 +2195,7 @@ Suppose that $A$ and $b$ are not known exactly and the only information that we 
 
 $$\min \; c^T x \quad \text{subject to} \quad \overline{A}x \le \underline{b}, \; x \ge 0.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.1</span><span class="math-callout__name">(Catfish Diet Problem)</span></p>
 
 This is a simplified example of an optimization model of finding a minimum cost catfish diet in Thailand. The mathematical formulation reads
@@ -2256,7 +2256,7 @@ $$a_c^T x + a_\Delta^T y \le \underline{d}, \quad x \le y, \quad -x \le y.$$
 
 Therefore linearity is preserved — the robust solutions of interval linear programs are also described by linear constraints.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.3</span><span class="math-callout__name">(Robust Classification)</span></p>
 
 Consider two classes of data, the first one comprises given points $x_1, \ldots, x_p \in \mathbb{R}^n$, and the second one contains given points $y_1, \ldots, y_q \in \mathbb{R}^n$. We wish to construct a classifier that is able to predict to which class a new input belongs to. A basic linear classifier is based on data separation by a widest separating band. Mathematically, we seek for a hyperplane $a^T x + b = 0$ such that the first set of points belongs to the positive halfspace, the second set of points belongs to the negative halfspace, and the separating band is maximal. This leads to a convex quadratic program
@@ -2313,7 +2313,7 @@ $$p^T x + \lVert P^T x \rVert_2 \le d.$$
 
 The left-hand side function is smooth and convex — indeed it is a second order cone constraint.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.5</span><span class="math-callout__name">(Portfolio Selection under Ellipsoidal Uncertainty)</span></p>
 
 Consider again the portfolio selection problem (Example 4.10)

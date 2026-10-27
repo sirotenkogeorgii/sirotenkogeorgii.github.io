@@ -64,7 +64,7 @@ We treat the terms "$C^\infty$" and "smooth" as synonymous.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span></p>
 
 **(i)** A $C^0$ function on $U$ is simply a continuous function on $U$.
@@ -108,7 +108,7 @@ A real-analytic function is necessarily $C^\infty$, because a convergent power s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">($C^\infty$ function, but not real-analytic)</span></p>
 
 Define $f(x)$ on $\mathbb{R}$ by
@@ -224,7 +224,7 @@ A **relation** on a set $S$ is a subset $R$ of $S \times S$. Given $x, y$ in $S$
 
 As long as two functions agree on some neighborhood of a point $p$, they will have the same directional derivatives at $p$. This suggests that we introduce an equivalence relation on the $C^\infty$ functions defined in some neighborhood of $p$. Consider the set of all pairs $(f, U)$, where $U$ is a neighborhood of $p$ and $f \colon U \to \mathbb{R}$ is a $C^\infty$ function. We say that $(f, U)$ is *equivalent* to $(g, V)$ if there is an open set $W \subset U \cap V$ containing $p$ such that $f = g$ when restricted to $W$. The equivalence class of $(f, U)$ is called the **germ** of $f$ at $p$. We write $C_p^\infty(\mathbb{R}^n)$, or simply $C_p^\infty$, for the set of all germs of $C^\infty$ functions on $\mathbb{R}^n$ at $p$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The functions $f(x) = \frac{1}{1-x}$ with domain $\mathbb{R} - \lbrace 1 \rbrace$ and $g(x) = 1 + x + x^2 + x^3 + \cdots$ with domain the open interval $]-1, 1[$ have the same germ at any point $p$ in the open interval $]-1, 1[$.
@@ -337,7 +337,7 @@ Omitting $p$, we may write $X = \sum a^i \,\partial/\partial x^i$, where the $a^
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span></p>
 
 On $\mathbb{R}^2 - \lbrace \mathbf{0} \rbrace$, let $p = (x, y)$. Then
@@ -488,7 +488,7 @@ The dual space $V^\vee$ of a finite-dimensional vector space $V$ has the same di
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.3</span><span class="math-callout__name">(Coordinate functions)</span></p>
 
 With respect to a basis $e_1, \dots, e_n$ for a vector space $V$, every $v \in V$ can be written uniquely as a linear combination $v = \sum b^j(v)\,e_j$, where $b^j(v) \in \mathbb{R}$. Let $\alpha^1, \dots, \alpha^n$ be the basis of $V^\vee$ dual to $e_1, \dots, e_n$. Then
@@ -505,7 +505,7 @@ Fix a positive integer $k$. A **permutation** of the set $A = \lbrace 1, \dots, 
 
 Two cycles $(a_1 \cdots a_r)$ and $(b_1 \cdots b_s)$ are **disjoint** if $\lbrace a_1, \dots, a_r \rbrace$ and $\lbrace b_1, \dots, b_s \rbrace$ have no elements in common. The **product** $\tau\sigma$ of two permutations $\tau$ and $\sigma$ of $A$ is the composition $\tau \circ \sigma \colon A \to A$; first apply $\sigma$, then $\tau$. Any permutation can be written as a product of disjoint cycles.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4</span></p>
 
 The permutation $\sigma \colon \lbrace 1,2,3,4,5 \rbrace \to \lbrace 1,2,3,4,5 \rbrace$ mapping $1,2,3,4,5$ to $2,4,5,1,3$ in that order has matrix
@@ -561,7 +561,7 @@ for all $a, b \in \mathbb{R}$ and $v, w \in V$. Instead of $2$-linear and $3$-li
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.9</span><span class="math-callout__name">(Dot product on $\mathbb{R}^n$)</span></p>
 
 With respect to the standard basis $e_1, \dots, e_n$ for $\mathbb{R}^n$, the **dot product**, defined by
@@ -688,7 +688,7 @@ Let $f$ be a $k$-linear function and $g$ an $\ell$-linear function on a vector s
 
 $$(f \otimes g)(v_1, \dots, v_{k+\ell}) = f(v_1, \dots, v_k)\,g(v_{k+1}, \dots, v_{k+\ell}).$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.16</span><span class="math-callout__name">(Bilinear maps)</span></p>
 
 Let $e_1, \dots, e_n$ be a basis for a vector space $V$, $\alpha^1, \dots, \alpha^n$ the dual basis in $V^\vee$, and $\langle\,,\,\rangle \colon V \times V \to \mathbb{R}$ a bilinear map on $V$. Set $g_{ij} = \langle e_i, e_j \rangle \in \mathbb{R}$. If $v = \sum v^i e_i$ and $w = \sum w^j e_j$, then by bilinearity,
@@ -732,7 +732,7 @@ $$(f \wedge g)(v_1, \dots, v_{k+\ell}) = \sum_{(k,\ell)\text{-shuffles } \sigma}
 
 Written this way, the definition of $(f \wedge g)(v_1, \dots, v_{k+\ell})$ is a sum of $\binom{k+\ell}{k}$ terms, instead of $(k+\ell)!$ terms.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.19</span><span class="math-callout__name">(Wedge product of two covectors)</span></p>
 
 If $f$ and $g$ are covectors on a vector space $V$ and $v_1, v_2 \in V$, then by the shuffle formula,
@@ -1042,7 +1042,7 @@ $$\omega_p = \sum_i a_i(p)\,(dx^i)_p,$$
 
 for some $a_i(p) \in \mathbb{R}$. As $p$ varies over $U$, the coefficients $a_i$ become functions on $U$, and we may write $\omega = \sum a_i\,dx^i$. The covector field $\omega$ is said to be $C^\infty$ on $U$ if the coefficient functions $a_i$ are all $C^\infty$ on $U$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differential 1-Forms and Tangent Vectors)</span></p>
 
 Differential 1-forms arise naturally even if one is interested only in tangent vectors. Every tangent vector $X_p \in T_p(\mathbb{R}^n)$ is a linear combination of the standard basis vectors:
@@ -1108,7 +1108,7 @@ $$(f \wedge \omega)_p = f(p) \wedge \omega_p = f(p)\,\omega_p,$$
 
 since the wedge product with a 0-covector is scalar multiplication. Thus, if $f \in C^\infty(U)$ and $\omega \in \Omega^\ell(U)$, then $f \wedge \omega = f\omega$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differential Forms on $\mathbb{R}^3$)</span></p>
 
 Let $x, y, z$ be the coordinates on $\mathbb{R}^3$. The $C^\infty$ 1-forms are
@@ -1162,7 +1162,7 @@ $$d\omega = \sum_I da_I \wedge dx^I = \sum_I \left(\sum_j \frac{\partial a_I}{\p
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exterior Derivative of a 1-Form on $\mathbb{R}^2$)</span></p>
 
 Let $\omega$ be the 1-form $f\,dx + g\,dy$ on $\mathbb{R}^2$, where $f$ and $g$ are $C^\infty$ functions. To simplify the notation, write $f_x = \partial f/\partial x$, $f_y = \partial f/\partial y$, $g_x = \partial g/\partial x$, $g_y = \partial g/\partial y$. Then
@@ -1327,7 +1327,7 @@ On $\mathbb{R}^3$, a vector field $\mathbf{F}$ is the gradient of some scalar fu
 
 Propositions A and B express the property $d^2 = 0$ of the exterior derivative on open subsets of $\mathbb{R}^3$; these are easy computations. Proposition C expresses the fact that a 1-form on $\mathbb{R}^3$ is exact if and only if it is closed. Proposition C need not be true on a region other than $\mathbb{R}^3$, as the following well-known example from calculus shows.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Closed but Not Exact 1-Form)</span></p>
 
 If $U = \mathbb{R}^3 - \lbrace z\text{-axis}\rbrace$, and $\mathbf{F}$ is the vector field
@@ -1404,7 +1404,7 @@ A **topological manifold** is a Hausdorff, second countable, locally Euclidean s
 
 For the dimension of a topological manifold to be well defined, we need to know that for $n \neq m$ an open subset of $\mathbb{R}^n$ is not homeomorphic to an open subset of $\mathbb{R}^m$. This fact, called **invariance of dimension**, is indeed true, but is not easy to prove directly. We will not pursue this point, since we are mainly interested in *smooth* manifolds, for which the analogous result is easy to prove (Corollary 8.7).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Euclidean Space)</span></p>
 
 The Euclidean space $\mathbb{R}^n$ is covered by a single chart $(\mathbb{R}^n, \mathbb{1}\_{\mathbb{R}^n})$, where $\mathbb{1}\_{\mathbb{R}^n} \colon \mathbb{R}^n \to \mathbb{R}^n$ is the identity map. It is the prime example of a topological manifold. Every open subset of $\mathbb{R}^n$ is also a topological manifold, with chart $(U, \mathbb{1}\_U)$.
@@ -1413,14 +1413,14 @@ The Euclidean space $\mathbb{R}^n$ is covered by a single chart $(\mathbb{R}^n, 
 
 Recall that the Hausdorff condition and second countability are "hereditary properties": a subspace of a Hausdorff space is Hausdorff, and a subspace of a second-countable space is second countable. So any subspace of $\mathbb{R}^n$ is automatically Hausdorff and second countable.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.3</span><span class="math-callout__name">(A Cusp)</span></p>
 
 The graph of $y = x^{2/3}$ in $\mathbb{R}^2$ is a topological manifold. By virtue of being a subspace of $\mathbb{R}^2$, it is Hausdorff and second countable. It is locally Euclidean, because it is homeomorphic to $\mathbb{R}$ via $(x, x^{2/3}) \mapsto x$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.4</span><span class="math-callout__name">(A Cross)</span></p>
 
 The cross in $\mathbb{R}^2$ with the subspace topology is not locally Euclidean at the intersection point $p$, and so cannot be a topological manifold.
@@ -1453,7 +1453,7 @@ A **$C^\infty$ atlas** or simply an **atlas** on a locally Euclidean space $M$ i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.7</span><span class="math-callout__name">(A $C^\infty$ Atlas on a Circle)</span></p>
 
 The unit circle $S^1$ in the complex plane $\mathbb{C}$ may be described as the set of points $\lbrace e^{it} \in \mathbb{C} \mid 0 \le t \le 2\pi \rbrace$. Let $U_1$ and $U_2$ be the two open subsets of $S^1$:
@@ -1533,28 +1533,28 @@ From now on, a "manifold" will mean a $C^\infty$ manifold. We use the terms "smo
 
 ### 5.4 Examples of Smooth Manifolds
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.11</span><span class="math-callout__name">(Euclidean Space)</span></p>
 
 The Euclidean space $\mathbb{R}^n$ is a smooth manifold with a single chart $(\mathbb{R}^n, r^1, \dots, r^n)$, where $r^1, \dots, r^n$ are the standard coordinates on $\mathbb{R}^n$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.12</span><span class="math-callout__name">(Open Subset of a Manifold)</span></p>
 
 Any open subset $V$ of a manifold $M$ is also a manifold. If $\lbrace (U_\alpha, \phi_\alpha) \rbrace$ is an atlas for $M$, then $\lbrace (U_\alpha \cap V, \phi_\alpha\vert_{U_\alpha \cap V}) \rbrace$ is an atlas for $V$, where $\phi_\alpha\vert_{U_\alpha \cap V} \colon U_\alpha \cap V \to \mathbb{R}^n$ denotes the restriction of $\phi_\alpha$ to the subset $U_\alpha \cap V$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.13</span><span class="math-callout__name">(Manifolds of Dimension Zero)</span></p>
 
 In a manifold of dimension zero, every singleton subset is homeomorphic to $\mathbb{R}^0$ and so is open. Thus, a zero-dimensional manifold is a discrete set. By second countability, this discrete set must be countable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.14</span><span class="math-callout__name">(Graph of a Smooth Function)</span></p>
 
 For a subset $A \subset \mathbb{R}^n$ and a function $f \colon A \to \mathbb{R}^m$, the **graph** of $f$ is defined to be the subset
@@ -1569,7 +1569,7 @@ are continuous and inverse to each other, and so are homeomorphisms. The graph $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.15</span><span class="math-callout__name">(General Linear Groups)</span></p>
 
 For any two positive integers $m$ and $n$ let $\mathbb{R}^{m \times n}$ be the vector space of all $m \times n$ matrices. Since $\mathbb{R}^{m \times n}$ is isomorphic to $\mathbb{R}^{mn}$, we give it the topology of $\mathbb{R}^{mn}$. The **general linear group** $\operatorname{GL}(n, \mathbb{R})$ is by definition
@@ -1582,7 +1582,7 @@ The **complex general linear group** $\operatorname{GL}(n, \mathbb{C})$ is defin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.16</span><span class="math-callout__name">(Unit Circle in the $(x,y)$-Plane)</span></p>
 
 In Example 5.7 we found a $C^\infty$ atlas with two charts on the unit circle $S^1$ in the complex plane $\mathbb{C}$. It follows that $S^1$ is a manifold. We now view $S^1$ as the unit circle in the real plane $\mathbb{R}^2$ with defining equation $x^2 + y^2 = 1$, and describe a $C^\infty$ atlas with four charts on it.
@@ -1608,7 +1608,7 @@ of charts is a $C^\infty$ atlas on $M \times N$. Therefore, $M \times N$ is a $C
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Product Manifolds)</span></p>
 
 It follows from Proposition 5.18 that the infinite cylinder $S^1 \times \mathbb{R}$ and the torus $S^1 \times S^1$ are manifolds. Since $M \times N \times P = (M \times N) \times P$ is the successive product of pairs of spaces, if $M$, $N$, and $P$ are manifolds, then so is $M \times N \times P$. Thus, the $n$-dimensional torus $S^1 \times \cdots \times S^1$ ($n$ times) is a manifold.
@@ -1818,7 +1818,7 @@ Let $F \colon N \to M$ be a continuous map between two manifolds of dimensions $
 
 ### 6.5 Examples of Smooth Maps
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.17</span><span class="math-callout__name">(Smoothness of a Projection Map)</span></p>
 
 Let $M$ and $N$ be manifolds and $\pi \colon M \times N \to M$, $\pi(p, q) = p$ the projection to the first factor. Then $\pi$ is a $C^\infty$ map.
@@ -1831,7 +1831,7 @@ which is a $C^\infty$ map from $(\phi \times \psi)(U \times V)$ in $\mathbb{R}^{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.19</span><span class="math-callout__name">(Restriction of $C^\infty$ Functions to $S^1$)</span></p>
 
 The unit circle $S^1$ defined by $x^2 + y^2 = 1$ in $\mathbb{R}^2$ is a $C^\infty$ manifold. A $C^\infty$ function $f(x, y)$ on $\mathbb{R}^2$ restricts to a $C^\infty$ function on $S^1$.
@@ -1958,7 +1958,7 @@ $\iff$ $(W, F^1, \dots, F^n)$ is a coordinate chart about $p$ in the differentia
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Local Coordinate System)</span></p>
 
 Find all points in $\mathbb{R}^2$ in a neighborhood of which the functions $x^2 + y^2 - 1, y$ can serve as a local coordinate system.
@@ -1990,7 +1990,7 @@ Similarly, a **topological group** is a topological space having a group structu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of Lie Groups)</span></p>
 
 * The Euclidean space $\mathbb{R}^n$ is a Lie group under addition.
@@ -2000,7 +2000,7 @@ Similarly, a **topological group** is a topological space having a group structu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.21</span><span class="math-callout__name">(General Linear Group as a Lie Group)</span></p>
 
 In Example 5.15 we defined the general linear group
@@ -2073,7 +2073,7 @@ This proposition gives a useful criterion for checking whether a function $\bar{
 
 If $A$ is a subspace of a topological space $S$, we can define a relation $\sim$ on $S$ by declaring $x \sim x$ for all $x \in S$ (so the relation is reflexive) and $x \sim y$ for all $x, y \in A$. This is an equivalence relation on $S$. We say that the quotient space $S/{\sim}$ is obtained from $S$ by **identifying $A$ to a point**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.2</span></p>
 
 Let $I$ be the unit interval $[0, 1]$ and $I/{\sim}$ the quotient space obtained from $I$ by identifying the two points $\lbrace 0, 1 \rbrace$ to a point. Denote by $S^1$ the unit circle in the complex plane. The function $f \colon I \to S^1$, $f(x) = \exp(2\pi i x)$, assumes the same value at $0$ and $1$, and so induces a function $\bar{f} \colon I/{\sim} \to S^1$.
@@ -2107,7 +2107,7 @@ If the quotient space $S/{\sim}$ is Hausdorff, then the equivalence class $[p]$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Define an equivalence relation $\sim$ on $\mathbb{R}$ by identifying the open interval $]0, \infty[$ to a point. Then the quotient space $\mathbb{R}/{\sim}$ is not Hausdorff because the equivalence class $]0, \infty[$ of $\sim$ in $\mathbb{R}$ corresponding to the point $]0, \infty[$ in $\mathbb{R}/{\sim}$ is not a closed subset of $\mathbb{R}$.
@@ -2131,7 +2131,7 @@ $$\pi^{-1}(\pi(U)) = \bigcup_{x \in U} [x]$$
 
 of all points equivalent to some point of $U$ is open.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.6</span></p>
 
 The projection map to a quotient space is in general not open. For example, let $\sim$ be the equivalence relation on $\mathbb{R}$ that identifies the two points $1$ and $-1$, and $\pi \colon \mathbb{R} \to \mathbb{R}/{\sim}$ the projection map. The map $\pi$ is open if and only if for every open set $V$ in $\mathbb{R}$, its image $\pi(V)$ is open in $\mathbb{R}/{\sim}$, which by the definition of the quotient topology means that $\pi^{-1}(\pi(V))$ is open in $\mathbb{R}$. Now let $V$ be the open interval $]-2, 0[$. Then
@@ -2224,14 +2224,14 @@ $$x \sim y \iff x = \pm y, \quad x, y \in S^n.$$
 
 We then have a bijection $\mathbb{R}P^n \leftrightarrow S^n/{\sim}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.12</span><span class="math-callout__name">(The real projective line $\mathbb{R}P^1$)</span></p>
 
 Each line through the origin in $\mathbb{R}^2$ meets the unit circle in a pair of antipodal points. By Exercise 7.11, $\mathbb{R}P^1$ is homeomorphic to the quotient $S^1/{\sim}$, which is in turn homeomorphic to the closed upper semicircle with the two endpoints identified. Thus, $\mathbb{R}P^1$ is homeomorphic to $S^1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7.13</span><span class="math-callout__name">(The real projective plane $\mathbb{R}P^2$)</span></p>
 
 By Exercise 7.11, there is a homeomorphism $\mathbb{R}P^2 \simeq S^2 / \lbrace \text{antipodal points} \rbrace = S^2/{\sim}$. For points not on the equator, each pair of antipodal points contains a unique point in the upper hemisphere. Thus, there is a bijection between $S^2/{\sim}$ and the quotient of the closed upper hemisphere in which each pair of antipodal points on the equator is identified.
@@ -2414,7 +2414,7 @@ Here $f$ is a germ at $F(p)$, represented by a $C^\infty$ function in a neighbor
 
 To make the dependence on $p$ explicit we sometimes write $F_{*,p}$ instead of $F_*$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4</span><span class="math-callout__name">(Differential of a map between Euclidean spaces)</span></p>
 
 Suppose $F \colon \mathbb{R}^n \to \mathbb{R}^m$ is smooth and $p$ is a point in $\mathbb{R}^n$. Let $x^1, \dots, x^n$ be the coordinates on $\mathbb{R}^n$ and $y^1, \dots, y^m$ the coordinates on $\mathbb{R}^m$. Then the tangent vectors $\partial/\partial x^1|_p, \dots, \partial/\partial x^n|_p$ form a basis for the tangent space $T_p(\mathbb{R}^n)$ and $\partial/\partial y^1|_{F(p)}, \dots, \partial/\partial y^m|_{F(p)}$ form a basis for the tangent space $T_{F(p)}(\mathbb{R}^m)$. The linear map $F_* \colon T_p(\mathbb{R}^n) \to T_{F(p)}(\mathbb{R}^m)$ is described by a matrix $[a_j^i]$ relative to these two bases:
@@ -2697,7 +2697,7 @@ $$F_{*,p}(X_p) = F_{*,p}(c'(0)) = (F_{*,p} \circ c_{*,0})\left(\frac{d}{dt}\bigg
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.19</span><span class="math-callout__name">(Differential of left multiplication)</span></p>
 
 If $g$ is a matrix in the general linear group $\operatorname{GL}(n, \mathbb{R})$, let $\ell_g \colon \operatorname{GL}(n, \mathbb{R}) \to \operatorname{GL}(n, \mathbb{R})$ be left multiplication by $g$; thus, $\ell_g(B) = gB$ for any $B \in \operatorname{GL}(n, \mathbb{R})$. Since $\operatorname{GL}(n, \mathbb{R})$ is an open subset of the vector space $\mathbb{R}^{n \times n}$, the tangent space $T_g(\operatorname{GL}(n, \mathbb{R}))$ can be identified with $\mathbb{R}^{n \times n}$. Show that with this identification the differential $(\ell_g)_{*,I} \colon T_I(\operatorname{GL}(n, \mathbb{R})) \to T_g(\operatorname{GL}(n, \mathbb{R}))$ is also left multiplication by $g$.
@@ -2726,7 +2726,7 @@ Suppose $N$ and $M$ are manifolds of dimensions $n$ and $m$ respectively. Then $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.21</span></p>
 
 The prototype of an immersion is the inclusion of $\mathbb{R}^n$ in a higher-dimensional $\mathbb{R}^m$:
@@ -2829,7 +2829,7 @@ There are other types of submanifolds, but unless otherwise specified, by a "sub
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Interval on the $x$-axis)</span></p>
 
 The interval $S := ]-1, 1[$ on the $x$-axis is a regular submanifold of the $xy$-plane. As an adapted chart, we can take the open square $U = ]-1, 1[ \times ]-1, 1[$ with coordinates $x, y$. Then $U \cap S$ is precisely the zero set of $y$ on $U$.
@@ -2838,7 +2838,7 @@ Note that if $V = ]-2, 0[ \times ]-1, 1[$, then $(V, x, y)$ is not an adapted ch
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.3</span><span class="math-callout__name">(Topologist's sine curve)</span></p>
 
 Let $\Gamma$ be the graph of the function $f(x) = \sin(1/x)$ on the interval $]0, 1[$, and let $S$ be the union of $\Gamma$ and the open interval $I = \lbrace (0, y) \in \mathbb{R}^2 \mid -1 < y < 1 \rbrace$. The closure of $\Gamma$ in $\mathbb{R}^2$ is called the *topologist's sine curve*.
@@ -2886,7 +2886,7 @@ If a regular level set $F^{-1}(c)$ is nonempty, say $p \in F^{-1}(c)$, then the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.6</span><span class="math-callout__name">(The 2-sphere in $\mathbb{R}^3$)</span></p>
 
 The unit 2-sphere
@@ -2984,7 +2984,7 @@ The regular level set theorem gives a sufficient but not necessary condition for
 
 ### 9.4 Examples of Regular Submanifolds
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.11</span><span class="math-callout__name">(Hypersurface)</span></p>
 
 Show that the solution set $S$ of $x^3 + y^3 + z^3 = 1$ in $\mathbb{R}^3$ is a manifold of dimension $2$.
@@ -2993,7 +2993,7 @@ Show that the solution set $S$ of $x^3 + y^3 + z^3 = 1$ in $\mathbb{R}^3$ is a m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.12</span><span class="math-callout__name">(Solution set of two polynomial equations)</span></p>
 
 Decide whether the subset $S$ of $\mathbb{R}^3$ defined by the two equations
@@ -3014,7 +3014,7 @@ Solving, we get $y = \pm x$ and $z = \pm x$. Since $x + y + z = 0$ on $S$, this 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.13</span><span class="math-callout__name">(Special linear group)</span></p>
 
 As a set, the **special linear group** $\operatorname{SL}(n, \mathbb{R})$ is the subset of $\operatorname{GL}(n, \mathbb{R})$ consisting of matrices of determinant $1$. Since
@@ -3062,35 +3062,35 @@ If $f \in \operatorname{Mor}(A, B)$, we often write $f \colon A \to B$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Groups and group homomorphisms)</span></p>
 
 The collection of groups and group homomorphisms forms a category in which the objects are groups and for any two groups $A$ and $B$, $\operatorname{Mor}(A, B)$ is the set of group homomorphisms from $A$ to $B$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Real vector spaces and linear maps)</span></p>
 
 The collection of all vector spaces over $\mathbb{R}$ and $\mathbb{R}$-linear maps forms a category in which the objects are real vector spaces and for any two real vector spaces $V$ and $W$, $\operatorname{Mor}(V, W)$ is the set $\operatorname{Hom}(V, W)$ of linear maps from $V$ to $W$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Continuous category)</span></p>
 
 The collection of all topological spaces together with continuous maps between them is called the **continuous category**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Smooth category)</span></p>
 
 The collection of smooth manifolds together with smooth maps between them is called the **smooth category**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointed manifolds)</span></p>
 
 We call a pair $(M, q)$, where $M$ is a manifold and $q$ a point in $M$, a **pointed manifold**. Given any two such pairs $(N, p)$ and $(M, q)$, let $\operatorname{Mor}\bigl((N, p), (M, q)\bigr)$ be the set of all smooth maps $F \colon N \to M$ such that $F(p) = q$. This gives rise to the **category of pointed manifolds**.
@@ -3122,7 +3122,7 @@ A *(covariant) functor* $\mathcal{F}$ from one category $\mathcal{C}$ to another
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tangent space as a functor)</span></p>
 
 The tangent space construction is a functor from the category of pointed manifolds to the category of vector spaces. To each pointed manifold $(N, p)$ we associate the tangent space $T_pN$ and to each smooth map $f \colon (N, p) \to (M, f(p))$ we associate the differential $f_{*, p} \colon T_pN \to T_{f(p)}M$.
@@ -3157,7 +3157,7 @@ A **contravariant functor** $\mathcal{F}$ from one category $\mathcal{C}$ to ano
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pullback of smooth functions)</span></p>
 
 Smooth functions on a manifold give rise to a contravariant functor that associates to each manifold $M$ the algebra $\mathcal{F}(M) = C^\infty(M)$ of $C^\infty$ functions on $M$ and to each smooth map $F \colon N \to M$ of manifolds the pullback map $\mathcal{F}(F) = F^* \colon C^\infty(M) \to C^\infty(N)$, where $F^*(h) = h \circ F$ for $h \in C^\infty(M)$. It is easy to verify that the pullback satisfies the two functorial properties:
@@ -3285,7 +3285,7 @@ Thus, the level set $f^{-1}(c)$ in $U$ is defined by the vanishing of the coordi
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.3</span><span class="math-callout__name">(Orthogonal group)</span></p>
 
 The **orthogonal group** $\operatorname{O}(n)$ is defined to be the subgroup of $\operatorname{GL}(n, \mathbb{R})$ consisting of matrices $A$ such that $A^T A = I$, the $n \times n$ identity matrix. Using the constant rank theorem, prove that $\operatorname{O}(n)$ is a regular submanifold of $\operatorname{GL}(n, \mathbb{R})$.
@@ -3385,7 +3385,7 @@ By the regular level set theorem, the *preimage* of a regular value of a smooth 
 
 The following are all examples of $C^\infty$ maps $f \colon N \to M$, with $N = \mathbb{R}$ and $M = \mathbb{R}^2$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.7</span></p>
 
 $f(t) = (t^2, t^3)$.
@@ -3394,7 +3394,7 @@ This $f$ is one-to-one, because $t \mapsto t^3$ is one-to-one. Since $f'(0) = (0
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.8</span></p>
 
 $f(t) = (t^2 - 1, t^3 - t)$.
@@ -3407,7 +3407,7 @@ Thus the image of $f$ is the nodal cubic $y^2 = x^2(x + 1)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.9</span></p>
 
 The map $f$ in Figure 11.4 is a one-to-one immersion but its image, with the subspace topology induced from $\mathbb{R}^2$, is not homeomorphic to the domain $\mathbb{R}$, because there are points near $f(p)$ in the image that correspond to points in $\mathbb{R}$ far away from $p$. More precisely, if $U$ is an interval about $p$ as shown, there is no neighborhood $V$ of $f(p)$ in $f(N)$ such that $f^{-1}(V) \subset U$; hence, $f^{-1}$ is not continuous.
@@ -3435,7 +3435,7 @@ For us, a submanifold without any qualifying adjective is always a **regular sub
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.12</span><span class="math-callout__name">(The figure-eight)</span></p>
 
 The figure-eight is the image of a one-to-one immersion
@@ -3506,7 +3506,7 @@ In the literature the image of an embedding is often called an **embedded subman
 
 Suppose $f \colon N \to M$ is a $C^\infty$ map whose image $f(N)$ lies in a subset $S \subset M$. If $S$ is a manifold, is the induced map $\tilde{f} \colon N \to S$ also $C^\infty$? This question is more subtle than it looks, because the answer depends on whether $S$ is a regular submanifold or an immersed submanifold.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Smooth maps and immersed submanifolds)</span></p>
 
 Consider the one-to-one immersions $f$ and $g \colon I \to \mathbb{R}^2$ in Example 11.12, where $I$ is the open interval $]-\pi/2, 3\pi/2[$. Let $S$ be the figure-eight in $\mathbb{R}^2$ with the immersed submanifold structure induced from $g$. Because the image of $f \colon I \to \mathbb{R}^2$ lies in $S$, the $C^\infty$ map $f$ induces a map $\tilde{f} \colon I \to S$.
@@ -3557,7 +3557,7 @@ $$\sum_{i=1}^3 \frac{\partial f}{\partial x^i}(p)(x^i - p^i) = 0.$$
 
 One interpretation of this equation is that the gradient vector $\langle \partial f/\partial x^1(p), \partial f/\partial x^2(p), \partial f/\partial x^3(p) \rangle$ of $f$ at $p$ is normal to any vector in the tangent plane.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.17</span><span class="math-callout__name">(Tangent plane to a sphere)</span></p>
 
 Let $f(x, y, z) = x^2 + y^2 + z^2 - 1$. To get the equation of the tangent plane to the unit sphere $S^2 = f^{-1}(0)$ in $\mathbb{R}^3$ at $(a, b, c) \in S^2$, we compute
@@ -3580,7 +3580,7 @@ since $a^2 + b^2 + c^2 = 1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.16</span><span class="math-callout__name">(Multiplication map of $\operatorname{SL}(n, \mathbb{R})$)</span></p>
 
 The multiplication map
@@ -3746,7 +3746,7 @@ For any regular submanifold $S \subset M$, the triple $(\pi^{-1}S, S, \pi|_{\pi^
 
 Properly speaking, the tangent bundle of a manifold $M$ is a triple $(TM, M, \pi)$, and $TM$ is the total space of the tangent bundle. In common usage, $TM$ is often referred to as the tangent bundle.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.6</span><span class="math-callout__name">(Product bundle)</span></p>
 
 Given a manifold $M$, let $\pi \colon M \times \mathbb{R}^r \to M$ be the projection to the first factor. Then $M \times \mathbb{R}^r \to M$ is a vector bundle of rank $r$, called the **product bundle** of rank $r$ over $M$. The vector space structure on the fiber $\pi^{-1}(p) = \lbrace (p, v) \mid v \in \mathbb{R}^r \rbrace$ is the obvious one:
@@ -3783,7 +3783,7 @@ is commutative, meaning $\pi_F \circ \tilde{f} = f \circ \pi_E$;
 
 The collection of all vector bundles together with bundle maps between them forms a category.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tangent bundle as a functor)</span></p>
 
 A smooth map $f \colon N \to M$ of manifolds induces a bundle map $(f, \tilde{f})$, where $\tilde{f} \colon TN \to TM$ is given by
@@ -3812,7 +3812,7 @@ A **vector field** $X$ on a manifold $M$ is a function that assigns a tangent ve
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.8</span></p>
 
 The formula
@@ -3880,21 +3880,21 @@ A **frame** for a vector bundle $\pi \colon E \to M$ over an open set $U$ is a c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard frame on $\mathbb{R}^3$)</span></p>
 
 The collection of vector fields $\partial/\partial x, \partial/\partial y, \partial/\partial z$ is a smooth frame on $\mathbb{R}^3$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Frame of a product bundle)</span></p>
 
 Let $M$ be a manifold and $e_1, \dots, e_r$ the standard basis for $\mathbb{R}^r$. Define $\bar{e}_i \colon M \to M \times \mathbb{R}^r$ by $\bar{e}_i(p) = (p, e_i)$. Then $\bar{e}_1, \dots, \bar{e}_r$ is a $C^\infty$ frame for the product bundle $M \times \mathbb{R}^r \to M$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.10</span><span class="math-callout__name">(The frame of a trivialization)</span></p>
 
 Let $\pi \colon E \to M$ be a smooth vector bundle of rank $r$. If $\phi \colon E|_U \xrightarrow{\sim} U \times \mathbb{R}^r$ is a trivialization of $E$ over an open set $U$, then $\phi^{-1}$ carries the $C^\infty$ frame $\bar{e}_1, \dots, \bar{e}_r$ of the product bundle $U \times \mathbb{R}^r$ to a $C^\infty$ frame $t_1, \dots, t_r$ for $E$ over $U$:
@@ -4032,7 +4032,7 @@ A collection $\lbrace A_\alpha \rbrace$ of subsets of a topological space $S$ is
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 13.3</span><span class="math-callout__name">(An open cover that is not locally finite)</span></p>
 
 Let $U_{r,n}$ be the open interval $]r - \frac{1}{n}, r + \frac{1}{n}[$ on the real line $\mathbb{R}$. The open cover $\lbrace U_{r,n} \mid r \in \mathbb{Q}, n \in \mathbb{Z}^+ \rbrace$ of $\mathbb{R}$ is not locally finite.
@@ -4060,7 +4060,7 @@ Suppose $\lbrace f_\alpha \rbrace_{\alpha \in A}$ is a collection of $C^\infty$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Partition of unity on $\mathbb{R}$)</span></p>
 
 Let $U$ and $V$ be the open intervals $]-\infty, 2[$ and $]-1, \infty[$ in $\mathbb{R}$ respectively, and let $\rho_V$ be a $C^\infty$ function with graph as in Figure 13.9, for example the function $g(t)$ in (13.1). Define $\rho_U = 1 - \rho_V$. Then $\operatorname{supp} \rho_V \subset V$ and $\operatorname{supp} \rho_U \subset U$. Thus, $\lbrace \rho_U, \rho_V \rbrace$ is a partition of unity subordinate to the open cover $\lbrace U, V \rbrace$.
@@ -4285,7 +4285,7 @@ An integral curve is **maximal** if its domain cannot be extended to a larger in
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integral curve of $X_{(x,y)} = \langle -y, x \rangle$ on $\mathbb{R}^2$)</span></p>
 
 Recall the vector field $X_{(x,y)} = \langle -y, x \rangle$ on $\mathbb{R}^2$ (Figure 12.4). We find an integral curve $c(t)$ of $X$ starting at the point $(1, 0) \in \mathbb{R}^2$. The condition for $c(t) = (x(t), y(t))$ to be an integral curve is $c'(t) = X_{c(t)}$, or
@@ -4320,7 +4320,7 @@ since a rotation through an angle $t$ followed by a rotation through an angle $s
 
 Let $\operatorname{Diff}(M)$ be the group of diffeomorphisms of a manifold $M$ with itself, the group operation being composition. A homomorphism $c \colon \mathbb{R} \to \operatorname{Diff}(M)$ is called a **one-parameter group of diffeomorphisms** of $M$. In this example the integral curves of the vector field $X_{(x,y)} = \langle -y, x \rangle$ on $\mathbb{R}^2$ give rise to a one-parameter group of diffeomorphisms of $\mathbb{R}^2$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Maximal integral curve of $x^2\,d/dx$)</span></p>
 
 Let $X$ be the vector field $x^2\,d/dx$ on the real line $\mathbb{R}$. We find the maximal integral curve of $X$ starting at $x = 2$.
@@ -4434,7 +4434,7 @@ $$F(0, q) = q \quad \text{and} \quad \frac{\partial F}{\partial t}(0, q) = X_{F(
 
 Thus, one can recover the vector field from its flow.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recovering the vector field from its flow)</span></p>
 
 The function $F \colon \mathbb{R} \times \mathbb{R}^2 \to \mathbb{R}^2$,
@@ -4510,7 +4510,7 @@ Let $K$ be a field. A **Lie algebra** over $K$ is a vector space $V$ over $K$ to
 
 In practice, we will be concerned only with *real Lie algebras*, i.e., Lie algebras over $\mathbb{R}$. Unless otherwise specified, a Lie algebra in this book means a real Lie algebra.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Abelian Lie algebra)</span></p>
 
 On any vector space $V$, define $[X, Y] = 0$ for all $X, Y \in V$. With this bracket, $V$ becomes a Lie algebra, called an **abelian Lie algebra**.
@@ -4519,14 +4519,14 @@ On any vector space $V$, define $[X, Y] = 0$ for all $X, Y \in V$. With this bra
 
 Our definition of an algebra in Subsection 2.2 requires that the product be associative. An abelian Lie algebra is trivially associative, but in general the bracket of a Lie algebra need not be associative. So despite its name, a Lie algebra is in general not an algebra.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lie algebra of vector fields)</span></p>
 
 If $M$ is a manifold, then the vector space $\mathfrak{X}(M)$ of $C^\infty$ vector fields on $M$ is a real Lie algebra with the Lie bracket $[\,,\,]$ as the bracket.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lie algebra of matrices)</span></p>
 
 Let $K^{n \times n}$ be the vector space of all $n \times n$ matrices over a field $K$. Define for $X, Y \in K^{n \times n}$,
@@ -4552,7 +4552,7 @@ $$D[Y, Z] = [DY, Z] + [Y, DZ] \quad \text{for } Y, Z \in V.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The adjoint is a derivation)</span></p>
 
 Let $V$ be a Lie algebra over a field $K$. For each $X$ in $V$, define $\operatorname{ad}_X \colon V \to V$ by
@@ -4590,7 +4590,7 @@ $$F_{*,p}(X_p) = \tilde{X}_{F(p)}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.15</span><span class="math-callout__name">(Pushforward by a diffeomorphism)</span></p>
 
 If $F \colon N \to M$ is a diffeomorphism and $X$ is a vector field on $N$, then the pushforward $F_*X$ is defined. By definition, the vector field $X$ on $N$ is $F$-related to the vector field $F_*X$ on $M$. In Subsection 16.5, we will see examples of vector fields related by a map $F$ that is not a diffeomorphism.
@@ -4701,7 +4701,7 @@ $$F \circ \ell_h = \ell_{F(h)} \circ F \quad \text{for all } h \in H.$$
 
 Let $e_H$ and $e_G$ be the identity elements of $H$ and $G$, respectively. Taking $h$ and $x$ in the equation above to be $e_H$, it follows that $F(e_H) = e_G$. So a group homomorphism always maps the identity to the identity.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.4</span><span class="math-callout__name">(General linear group)</span></p>
 
 In Example 6.21, we showed that the general linear group
@@ -4712,7 +4712,7 @@ is a Lie group.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.5</span><span class="math-callout__name">(Special linear group)</span></p>
 
 The special linear group $\operatorname{SL}(n, \mathbb{R})$ is the subgroup of $\operatorname{GL}(n, \mathbb{R})$ consisting of matrices of determinant $1$. By Example 9.13, $\operatorname{SL}(n, \mathbb{R})$ is a regular submanifold of dimension $n^2 - 1$ of $\operatorname{GL}(n, \mathbb{R})$. By Example 11.16, the multiplication map
@@ -4733,7 +4733,7 @@ An entirely analogous argument proves that the complex special linear group $\op
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.6</span><span class="math-callout__name">(Orthogonal group)</span></p>
 
 Recall that the orthogonal group $\operatorname{O}(n)$ is the subgroup of $\operatorname{GL}(n, \mathbb{R})$ consisting of all matrices $A$ satisfying $A^T A = I$. Thus, $\operatorname{O}(n)$ is the inverse image of $I$ under the map $f(A) = A^T A$.
@@ -4783,7 +4783,7 @@ $$\mu \circ (i \times i) \colon H \times H \to G \times G \to G$$
 
 is $C^\infty$. If $H$ were defined to be a regular submanifold of $G$, then by Theorem 11.15, because $H$ is a regular submanifold of $G$, the multiplication map $H \times H \to H$ and similarly the inverse map $H \to H$ would automatically be $C^\infty$, and condition (iii) in the definition of a Lie subgroup would be redundant. Since a Lie subgroup is defined to be an immersed submanifold, it is necessary to impose condition (iii) on the group operations on $H$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 15.9</span><span class="math-callout__name">(Lines with irrational slope in a torus)</span></p>
 
 Let $G$ be the torus $\mathbb{R}^2/\mathbb{Z}^2$ and $L$ a line through the origin in $\mathbb{R}^2$. The torus can also be represented by the unit square with the opposite edges identified. The image $H$ of $L$ under the projection $\pi \colon \mathbb{R}^2 \to \mathbb{R}^2/\mathbb{Z}^2$ is a closed curve if and only if the line $L$ goes through another lattice point, say $(m, n) \in \mathbb{Z}^2$. This is the case if and only if the slope of $L$ is $n/m$, a rational number or $\infty$; then $H$ is the image of finitely many line segments on the unit square. It is a closed curve diffeomorphic to a circle and is a regular submanifold of $\mathbb{R}^2/\mathbb{Z}^2$ (Figure 15.1).
@@ -4827,7 +4827,7 @@ A closed subgroup of a Lie group is an embedded Lie subgroup.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span></p>
 
 **(i)** A line with irrational slope in the torus $\mathbb{R}^2/\mathbb{Z}^2$ is not a closed subgroup, since it is not the whole torus, but being dense, its closure is.
@@ -4972,7 +4972,7 @@ $$\operatorname{tr}(YX) = \sum_k (YX)_{kk} = \sum_k \sum_i y_{ki} x_{ik}.$$
 
 The eigenvalues of an $n \times n$ matrix $X$ are the roots of the polynomial equation $\det(\lambda I - X) = 0$. Over the field of complex numbers, which is algebraically closed, such an equation necessarily has $n$ roots, counted with multiplicity. Thus, the advantage of allowing complex numbers is that every $n \times n$ matrix, real or complex, has $n$ complex eigenvalues, counted with multiplicity, whereas a real matrix need not have any real eigenvalue.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The real matrix
@@ -5101,14 +5101,14 @@ $$\ell_{g*} = (\ell_g)_{*,e} \colon T_e(G) \to T_g(G).$$
 
 Thus, if we can describe the tangent space $T_e(G)$ at the identity, then $\ell_{g*} T_e(G)$ will give a description of the tangent space $T_g(G)$ at any point $g \in G$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.1</span><span class="math-callout__name">(The tangent space to $\operatorname{GL}(n, \mathbb{R})$ at $I$)</span></p>
 
 In Example 8.19, we identified the tangent space $\operatorname{GL}(n, \mathbb{R})$ at any point $g \in \operatorname{GL}(n, \mathbb{R})$ as $\mathbb{R}^{n \times n}$, the vector space of all $n \times n$ real matrices. We also identified the isomorphism $\ell_{g*} \colon T_I(\operatorname{GL}(n, \mathbb{R})) \to T_g(\operatorname{GL}(n, \mathbb{R}))$ as left multiplication by $g \colon X \mapsto gX$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.2</span><span class="math-callout__name">(The tangent space to $\operatorname{SL}(n, \mathbb{R})$ at $I$)</span></p>
 
 We begin by finding a condition that a tangent vector $X$ in $T_I(\operatorname{SL}(n, \mathbb{R}))$ must satisfy. By Proposition 8.16 there is a curve $c \colon ]-\varepsilon, \varepsilon[ \to \operatorname{SL}(n, \mathbb{R})$ with $c(0) = I$ and $c'(0) = X$. Being in $\operatorname{SL}(n, \mathbb{R})$, this curve satisfies
@@ -5138,7 +5138,7 @@ The tangent space $T_I(\operatorname{SL}(n, \mathbb{R}))$ at the identity of the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.4</span><span class="math-callout__name">(The tangent space to $\operatorname{O}(n)$ at $I$)</span></p>
 
 Let $X$ be a tangent vector to the orthogonal group $\operatorname{O}(n)$ at the identity $I$. Choose a curve $c(t)$ in $\operatorname{O}(n)$ defined on a small interval containing $0$ such that $c(0) = I$ and $c'(0) = X$. Since $c(t)$ is in $\operatorname{O}(n)$,
@@ -5212,7 +5212,7 @@ $$A \mapsto \tilde{A}.$$
 
 It is easy to show that this correspondence is in fact a vector space isomorphism.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.6</span><span class="math-callout__name">(Left-invariant vector fields on $\mathbb{R}$)</span></p>
 
 On the Lie group $\mathbb{R}$, the group operation is addition and the identity element is $0$. So "left multiplication" $\ell_g$ is actually addition:
@@ -5235,7 +5235,7 @@ This shows that $d/dx$ is a left-invariant vector field on $\mathbb{R}$. Therefo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.7</span><span class="math-callout__name">(Left-invariant vector fields on $\operatorname{GL}(n, \mathbb{R})$)</span></p>
 
 Since $\operatorname{GL}(n, \mathbb{R})$ is an open subset of $\mathbb{R}^{n \times n}$, at any $g \in \operatorname{GL}(n, \mathbb{R})$ there is a canonical identification of the tangent space $T_g(\operatorname{GL}(n, \mathbb{R}))$ with $\mathbb{R}^{n \times n}$, under which a tangent vector corresponds to an $n \times n$ matrix:
@@ -5635,7 +5635,7 @@ Using this bijection, we can transfer the topology of $\phi(U) \times \mathbb{R}
 
 In terms of the cotangent bundle, a 1-form on $M$ is simply a section of the cotangent bundle $T^* M$; i.e., it is a map $\omega \colon M \to T^* M$ such that $\pi \circ \omega = \mathbb{1}_M$, the identity map on $M$. We say that a 1-form $\omega$ is $C^\infty$ if it is $C^\infty$ as a map $M \to T^* M$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 17.4</span><span class="math-callout__name">(Liouville form on the cotangent bundle)</span></p>
 
 If a manifold $M$ has dimension $n$, then the total space $T^\ast M$ of its cotangent bundle $\pi \colon T^\ast M \to M$ is a manifold of dimension $2n$. Remarkably, on $T^\ast M$ there is a 1-form $\lambda$, called the **Liouville form** (or the **Poincaré form** in some books), defined independently of charts as follows. A point in $T^\ast M$ is a covector $\omega_p \in T_p^\ast M$ at some point $p \in M$. If $X_{\omega_p}$ is a tangent vector to $T^\ast M$ at $\omega_p$, then the pushforward $\pi_\ast\left(X_{\omega_p}\right)$ is a tangent vector to $M$ at $p$. Therefore, one can pair up $\omega_p$ and $\pi_\ast\left(X_{\omega_p}\right)$ to obtain a real number $\omega_p\left(\pi_\ast\left(X_{\omega_p}\right)\right)$. Define
@@ -5855,7 +5855,7 @@ since both $i$ and $i_*$ are inclusions. $\square$
 
 To avoid too cumbersome a notation, we sometimes simply write $\omega$ to mean $\omega\vert_S$, relying on the context to make clear that it is the restriction of $\omega$ to $S$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 17.15</span><span class="math-callout__name">(A 1-form on the circle)</span></p>
 
 The velocity vector field of the unit circle $c(t) = (x, y) = (\cos t, \sin t)$ in $\mathbb{R}^2$ is
@@ -5876,7 +5876,7 @@ Since $x^2 + y^2 = 1$ on $S^1$, $a = -y$ and $b = x$ is a solution to (17.6). So
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 17.16</span><span class="math-callout__name">(Pullback of a 1-form)</span></p>
 
 Let $h \colon \mathbb{R} \to S^1 \subset \mathbb{R}^2$ be given by $h(t) = (x, y) = (\cos t, \sin t)$. If $\omega$ is the 1-form $-y\,dx + x\,dy$ on $S^1$, compute the pullback $h^* \omega$.
@@ -5932,7 +5932,7 @@ $$\omega(X_1, \dots, hX_i, \dots, X_k) = h\,\omega(X_1, \dots, X_i, \dots, X_k).
 
 ### 18.2 Local Expression for a $k$-Form
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 18.2</span></p>
 
 Let $(U, x^1, \dots, x^n)$ be a coordinate chart on a manifold. At each point $p \in U$, a basis for the tangent space $T_p U$ is
@@ -6211,7 +6211,7 @@ Thus, a left-invariant $k$-form is uniquely determined by its value at the ident
 
 $$\omega_g = \ell_{g^{-1}}^*(\omega_e). \tag{18.6}$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 18.13</span><span class="math-callout__name">(A left-invariant 1-form on $S^1$)</span></p>
 
 By Problem 17.3, $\omega = -y\,dx + x\,dy$ is a left-invariant 1-form on $S^1$.
@@ -6320,7 +6320,7 @@ An operator $D \colon \Omega^\ast(M) \to \Omega^\ast(M)$ is said to be **local**
 
 Here by restricting to 0 on $U$, we mean that $\omega_p = 0$ at every point $p$ in $U$, and the symbol "$\equiv 0$" means "is identically zero": $(D\omega)_p = 0$ at every point $p$ in $U$. An equivalent criterion for an operator $D$ to be local is that for all $k \ge 0$, whenever two $k$-forms $\omega, \tau \in \Omega^k(M)$ agree on an open set $U$, then $D\omega \equiv D\tau$ on $U$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integral Operator)</span></p>
 
 Define the integral operator
@@ -6492,7 +6492,7 @@ Let $i \colon U \hookrightarrow M$ be the inclusion map. Then $\omega\vert_U = i
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pullback under polar coordinates)</span></p>
 
 Let $U$ be the open set $]0,\infty[ \times ]0, 2\pi[$ in the $(r,\theta)$-plane $\mathbb{R}^2$. Define $F \colon U \subset \mathbb{R}^2 \to \mathbb{R}^2$ by
@@ -6567,7 +6567,7 @@ One should distinguish between a *nonzero* form and a *nowhere-zero* or *nowhere
 
 In Example 17.15 we found a nowhere-vanishing 1-form $-y\,dx + x\,dy$ on the unit circle. As an application of the exterior derivative, we will construct in a different way a nowhere-vanishing 1-form on the circle. One advantage of the new method is that it generalizes to the construction of a nowhere-vanishing top form on a **smooth hypersurface** in $\mathbb{R}^{n+1}$, a regular level set of a smooth function $f \colon \mathbb{R}^{n+1} \to \mathbb{R}$. As we will see in Section 21, the existence of a nowhere-vanishing top form is intimately related to orientations on a manifold.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 19.8</span><span class="math-callout__name">(Nowhere-vanishing 1-form on $S^1$)</span></p>
 
 Let $S^1$ be the unit circle defined by $x^2 + y^2 = 1$ in $\mathbb{R}^2$. The 1-form $dx$ restricts from $\mathbb{R}^2$ to a 1-form on $S^1$. At each point $p \in S^1$, the domain of $(dx\vert_{S^1})_p$ is $T_p(S^1)$ instead of $T_p(\mathbb{R}^2)$:
@@ -6897,7 +6897,7 @@ Let $\mathcal{F}$ be the ring $C^\infty(M)$ of $C^\infty$ functions on the manif
 1. $\iota_{fX}\,\omega = f\,\iota_X\,\omega$;
 2. $\iota_X(f\omega) = f\,\iota_X\,\omega$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 20.9</span><span class="math-callout__name">(Interior multiplication on $\mathbb{R}^2$)</span></p>
 
 Let $X = x\,\partial/\partial x + y\,\partial/\partial y$ be the radial vector field and $\alpha = dx \wedge dy$ the area 2-form on the plane $\mathbb{R}^2$. Compute the contraction $\iota_X\,\alpha$.
@@ -6976,7 +6976,7 @@ $$(d\iota_X + \iota_X d)f = \iota_X\,df = (df)(X) = Xf = \mathcal{L}_X f \quad \
 
 $$\mathcal{L}_X(f\omega) = (\mathcal{L}_X f)\omega + f\mathcal{L}_X\,\omega = (Xf)\omega + f\mathcal{L}_X\,\omega.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 20.11</span><span class="math-callout__name">(The Lie derivative on a circle)</span></p>
 
 Let $\omega$ be the 1-form $-y\,dx + x\,dy$ and let $X$ be the tangent vector field $-y\,\partial/\partial x + x\,\partial/\partial y$ on the unit circle $S^1$ from Example 17.15. Compute the Lie derivative $\mathcal{L}_X\,\omega$.
@@ -7164,7 +7164,7 @@ Thus, in addition to an equivalence class of ordered bases, an orientation of $V
 
 A linear isomorphism $\bigwedge^n(V^\vee) \simeq \mathbb{R}$ identifies the set of nonzero $n$-covectors on $V$ with $\mathbb{R} - \lbrace 0 \rbrace$, which has two connected components. Two nonzero $n$-covectors $\beta$ and $\beta'$ on $V$ are in the same component if and only if $\beta = a\beta'$ for some real number $a > 0$. Thus, each connected component of $\bigwedge^n(V^\vee) - \lbrace 0 \rbrace$ determines an orientation of $V$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $e_1, e_2$ be the standard basis for $\mathbb{R}^2$ and $\alpha^1, \alpha^2$ its dual basis. Then the 2-covector $\alpha^1 \wedge \alpha^2$ determines the counterclockwise orientation of $\mathbb{R}^2$, since
@@ -7173,7 +7173,7 @@ $$(\alpha^1 \wedge \alpha^2)(e_1, e_2) = 1 > 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Let $\partial/\partial x|_p, \partial/\partial y|_p$ be the standard basis for the tangent space $T_p(\mathbb{R}^2)$, and $(dx)_p, (dy)_p$ its dual basis. Then $(dx \wedge dy)_p$ determines the counterclockwise orientation of $T_p(\mathbb{R}^2)$.
@@ -7210,14 +7210,14 @@ A continuous pointwise orientation on $M$ is called an **orientation** on $M$. A
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The Euclidean space $\mathbb{R}^n$ is orientable with orientation given by the continuous global frame $(\partial/\partial r^1, \dots, \partial/\partial r^n)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 21.2</span><span class="math-callout__name">(The open Möbius band)</span></p>
 
 Let $R$ be the rectangle
@@ -7343,7 +7343,7 @@ A connected manifold of dimension 0 is a point. The equivalence class of a nowhe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 21.6</span><span class="math-callout__name">(Orientability of a regular zero set)</span></p>
 
 By the regular level set theorem, if $0$ is a regular value of a $C^\infty$ function $f(x, y, z)$ on $\mathbb{R}^3$, then the zero set $f^{-1}(0)$ is a $C^\infty$ manifold. One can construct a nowhere-vanishing 2-form on the regular zero set of a $C^\infty$ function. It then follows from Theorem 21.5 that the regular zero set of a $C^\infty$ function on $\mathbb{R}^3$ is orientable.
@@ -7547,7 +7547,7 @@ A point $p$ of $M$ is called an **interior point** if in some chart $(U, \phi)$,
 
 Most of the concepts introduced for a manifold extend word for word to a manifold with boundary, the only difference being that now a chart can be either of two types and the local model is $\mathcal{H}^n$ (or $\mathcal{L}^1$). For example, a function $f \colon M \to \mathbb{R}$ is $C^\infty$ at a boundary point $p \in \partial M$ if there is a chart $(U, \phi)$ about $p$ such that $f \circ \phi^{-1}$ is $C^\infty$ at $\phi(p) \in \mathcal{H}^n$. This in turn means that $f \circ \phi^{-1}$ has a $C^\infty$ extension to a neighborhood of $\phi(p)$ in $\mathbb{R}^n$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.7</span><span class="math-callout__name">(Topological boundary versus manifold boundary)</span></p>
 
 Let $A$ be the open unit disk in $\mathbb{R}^2$:
@@ -7560,7 +7560,7 @@ If $B$ is the closed unit disk in $\mathbb{R}^2$, then its topological boundary 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.8</span><span class="math-callout__name">(Topological interior versus manifold interior)</span></p>
 
 Let $S$ be the upper half-plane $\mathcal{H}^2$ and let $D$ be the subset
@@ -7607,7 +7607,7 @@ $$T_p^*M = \mathrm{Hom}(T_pM, \mathbb{R}).$$
 
 An **orientation** on an $n$-manifold $M$ with boundary is again a continuous pointwise orientation on $M$. The discussion in Section 21 on orientations goes through word for word for manifolds with boundary. Thus, the orientability of a manifold with boundary is equivalent to the existence of a $C^\infty$ nowhere-vanishing top form and to the existence of an oriented atlas. At one point in the proof of Lemma 21.4, it was necessary to replace the chart $(U, x^1, x^2, \dots, x^n)$ by $(U, -x^1, x^2, \dots, x^n)$. This would not have been possible for $n = 1$ if we had not allowed the left half-line $\mathcal{L}^1$ as a local model in the definition of a chart on a 1-dimensional manifold with boundary.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.9</span></p>
 
 The closed interval $[0, 1]$ is a $C^\infty$ manifold with boundary. It has an atlas with two charts $(U_1, \phi_1)$ and $(U_2, \phi_2)$, where $U_1 = [0, 1[$, $\phi_1(x) = x$, and $U_2 = {]0, 1]}$, $\phi_2(x) = 1 - x$. With $d/dx$ as a continuous pointwise orientation, $[0, 1]$ is an oriented manifold with boundary. However, $\lbrace (U_1, \phi_1), (U_2, \phi_2) \rbrace$ is not an oriented atlas, because the Jacobian determinant of the transition function $(\phi_2 \circ \phi_1^{-1})(x) = 1 - x$ is negative. If we change the sign of $\phi_2$, then $\lbrace (U_1, \phi_1), (U_2, -\phi_2) \rbrace$ is an oriented atlas. Note that $-\phi_2(x) = x - 1$ maps $]0, 1]$ into the left half-line $\mathcal{L}^1 \subset \mathbb{R}$. If we had allowed only $\mathcal{H}^1$ as a local model for a 1-dimensional manifold with boundary, the closed interval $[0, 1]$ would not have an oriented atlas.
@@ -7694,7 +7694,7 @@ $$\iff \quad (X_p, v_1, \dots, v_{n-1}) \text{ represents the orientation on } M
 
 To make this rule easier to remember, we summarize it under the rubric **"outward vector first."**
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 22.13</span><span class="math-callout__name">(The boundary orientation on $\partial\mathcal{H}^n$)</span></p>
 
 An orientation form for the standard orientation on the upper half-space $\mathcal{H}^n$ is $\omega = dx^1 \wedge \cdots \wedge dx^n$. A smooth outward-pointing vector field on $\partial\mathcal{H}^n$ is $-\partial/\partial x^n$. By definition, an orientation form for the boundary orientation on $\partial\mathcal{H}^n$ is given by the contraction
@@ -7709,14 +7709,14 @@ Thus, the boundary orientation on $\partial\mathcal{H}^1 = \lbrace 0 \rbrace$ is
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Boundary orientation on a closed interval)</span></p>
 
 The closed interval $[a, b]$ in the real line with coordinate $x$ has a standard orientation given by the vector field $d/dx$, with orientation form $dx$. At the right endpoint $b$, an outward vector is $d/dx$. Hence, the boundary orientation at $b$ is given by $\iota_{d/dx}(dx) = +1$. Similarly, the boundary orientation at the left endpoint $a$ is given by $\iota_{-d/dx}(dx) = -1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Boundary orientation on an immersed curve)</span></p>
 
 Suppose $c \colon [a, b] \to M$ is a $C^\infty$ immersion whose image is a 1-dimensional manifold $C$ with boundary. An orientation on $[a, b]$ induces an orientation on $C$ via the differential $c_{*,p} \colon T_p([a, b]) \to T_pC$ at each point $p \in [a, b]$. In a situation like this, we give $C$ the orientation induced from the standard orientation on $[a, b]$. The boundary orientation on the boundary of $C$ is given by $+1$ at the endpoint $c(b)$ and $-1$ at the initial point $c(a)$.
@@ -7823,7 +7823,7 @@ Since $\tilde{f}$ agrees with $f$ on $U$, the extended function $\tilde{f}$ is c
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 23.5</span></p>
 
 The continuous function $f \colon \,]-1, 1[\, \to \mathbb{R}$, $f(x) = \tan(\pi x / 2)$, is defined on an open subset of finite length in $\mathbb{R}$, but is not bounded. The support of $f$ is the open interval $]-1, 1[$, which is not compact. Thus, the function $f$ does not satisfy the hypotheses of either Lebesgue's theorem or Proposition 23.4. Note that it is not Riemann integrable.
@@ -8002,7 +8002,7 @@ A **parametrized set** in an oriented $n$-manifold $M$ is a subset $A$ together 
 
 If $A$ is a parametrized set in $M$ with parametrization $F \colon D \to A$ and $\omega$ is a $C^\infty$ $n$-form on $M$, not necessarily with compact support, then we define $\int_A \omega$ to be $\int_D F^*\omega$. It can be shown that the definition of $\int_A \omega$ is independent of the parametrization and that in case $A$ is a manifold, it agrees with the earlier definition of integration over a manifold.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 23.11</span><span class="math-callout__name">(Integral over a sphere)</span></p>
 
 In spherical coordinates, $\rho$ is the distance $\sqrt{x^2 + y^2 + z^2}$ of the point $(x, y, z) \in \mathbb{R}^3$ to the origin, $\varphi$ is the angle that the vector $\langle x, y, z \rangle$ makes with the positive $z$-axis, and $\theta$ is the angle that the vector $\langle x, y \rangle$ in the $(x, y)$-plane makes with the positive $x$-axis. Let $\omega$ be the 2-form on the unit sphere $S^2$ in $\mathbb{R}^3$ given by
@@ -8238,7 +8238,7 @@ At any point $p \in M$, the tangent space $T_pM$ is a vector space of dimension 
 
 ### 24.2 Examples of de Rham Cohomology
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 24.3</span><span class="math-callout__name">(De Rham cohomology of the real line)</span></p>
 
 Since the real line $\mathbb{R}^1$ is connected, by Proposition 24.1,
@@ -8259,7 +8259,7 @@ $$H^k(\mathbb{R}^1) = \begin{cases} \mathbb{R} & \text{for } k = 0, \\ 0 & \text
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 24.4</span><span class="math-callout__name">(De Rham cohomology of a circle)</span></p>
 
 Let $S^1$ be the unit circle in the $xy$-plane. By Proposition 24.1, $H^0(S^1) = \mathbb{R}$, and because $S^1$ is one-dimensional, $H^k(S^1) = 0$ for all $k \ge 2$. It remains to compute $H^1(S^1)$.
@@ -8523,7 +8523,7 @@ This is well defined because a cochain map takes cocycles to cocycles and coboun
 1. For $a \in Z^k(\mathcal{A})$: $d'(\varphi(a)) = \varphi(da) = 0$.
 2. For $a' \in A^{k-1}$: $\varphi(da') = d'(\varphi(a'))$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 25.4</span></p>
 
 **(i)** For a smooth map $F \colon N \to M$ of manifolds, the pullback map $F^* \colon \Omega^*(M) \to \Omega^*(N)$ on differential forms is a cochain map, because $F^*$ commutes with $d$ (Proposition 19.5). By the discussion above, there is an induced map $F^* \colon H^k(M) \to H^k(N)$ in cohomology, as we saw once before, after Lemma 24.6.
@@ -8824,7 +8824,7 @@ such that $F(x, 0) = f(x)$ and $F(x, 1) = g(x)$ for all $x \in M$. The map $F$ i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 27.1</span><span class="math-callout__name">(Straight-line homotopy)</span></p>
 
 Let $f$ and $g$ be $C^\infty$ maps from a manifold $M$ to $\mathbb{R}^n$. Define $F \colon M \times \mathbb{R} \to \mathbb{R}^n$ by
@@ -8857,7 +8857,7 @@ In this case we say that $M$ is **homotopy equivalent** to $N$, or that $M$ and 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 27.4</span><span class="math-callout__name">(Homotopy type of the punctured plane)</span></p>
 
 Let $i \colon S^1 \to \mathbb{R}^2 - \lbrace \mathbf{0} \rbrace$ be the inclusion map and let $r \colon \mathbb{R}^2 - \lbrace \mathbf{0} \rbrace \to S^1$ be the map $r(x) = x / \lVert x \rVert$. Then $r \circ i$ is the identity map on $S^1$.
@@ -8877,7 +8877,7 @@ A manifold is **contractible** if it has the homotopy type of a point.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 27.6</span><span class="math-callout__name">(The Euclidean space $\mathbb{R}^n$ is contractible)</span></p>
 
 Let $p$ be a point in $\mathbb{R}^n$, $i \colon \lbrace p \rbrace \to \mathbb{R}^n$ the inclusion map, and $r \colon \mathbb{R}^n \to \lbrace p \rbrace$ the constant map. Then $r \circ i = \mathbb{1}_{\lbrace p \rbrace}$, the identity map on $\lbrace p \rbrace$. The straight-line homotopy provides a homotopy between the constant map $i \circ r \colon \mathbb{R}^n \to \mathbb{R}^n$ and the identity map on $\mathbb{R}^n$:
@@ -8998,14 +8998,14 @@ $$H^k(\mathbb{R}^n) = \begin{cases} \mathbb{R} & \text{for } k = 0, \\ 0 & \text
 
 More generally, any contractible manifold will have the same cohomology as a point.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 27.14</span><span class="math-callout__name">(Cohomology of a punctured plane)</span></p>
 
 For any $p \in \mathbb{R}^2$, the translation $x \mapsto x - p$ is a diffeomorphism of $\mathbb{R}^2 - \lbrace p \rbrace$ with $\mathbb{R}^2 - \lbrace 0 \rbrace$. Because the punctured plane $\mathbb{R}^2 - \lbrace 0 \rbrace$ and the circle $S^1$ have the same homotopy type (Example 27.4), they have isomorphic cohomology. Hence, $H^k(\mathbb{R}^2 - \lbrace p \rbrace) \simeq H^k(S^1)$ for all $k \ge 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cohomology of the Möbius band)</span></p>
 
 The central circle of an open Möbius band $M$ is a deformation retract of $M$. Thus, the open Möbius band has the homotopy type of a circle. By the homotopy axiom,
@@ -9388,7 +9388,7 @@ $$B(p, r) = \lbrace x \in \mathbb{R}^n \mid d(x, p) < r \rbrace.$$
 
 A set $U$ in $\mathbb{R}^n$ is said to be *open* if for every $p$ in $U$, there is an open ball $B(p, r)$ with center $p$ and radius $r$ such that $B(p, r) \subset U$. It is clear that the union of an arbitrary collection $\lbrace U_\alpha \rbrace$ of open sets is open, but the same need not be true of the intersection of infinitely many open sets.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The intervals $]-1/n, 1/n[$, $n = 1, 2, 3, \ldots$, are all open in $\mathbb{R}^1$, but their intersection $\bigcap_{n=1}^\infty ]-1/n, 1/n[$ is the singleton set $\lbrace 0 \rbrace$, which is not open.
@@ -9406,14 +9406,14 @@ A **topology** on a set $S$ is a collection $\mathcal{T}$ of subsets containing 
 
 The elements of $\mathcal{T}$ are called **open sets** and the pair $(S, \mathcal{T})$ is called a **topological space**. A **neighborhood** of a point $p$ in $S$ is an open set $U$ containing $p$. If $\mathcal{T}_1$ and $\mathcal{T}_2$ are two topologies on a set $S$ and $\mathcal{T}_1 \subset \mathcal{T}_2$, then we say that $\mathcal{T}_1$ is **coarser** than $\mathcal{T}_1$, or that $\mathcal{T}_2$ is **finer** than $\mathcal{T}_1$. A coarser topology has fewer open sets; conversely, a finer topology has more open sets.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard topology on $\mathbb{R}^n$)</span></p>
 
 The open subsets of $\mathbb{R}^n$ as we understand them in advanced calculus form a topology on $\mathbb{R}^n$, the **standard topology** of $\mathbb{R}^n$. In this topology a set $U$ is open in $\mathbb{R}^n$ if and only if for every $p \in U$, there is an open ball $B(p, \varepsilon)$ with center $p$ and radius $\varepsilon$ contained in $U$. Unless stated otherwise, $\mathbb{R}^n$ will always have its standard topology.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Trivial and discrete topologies)</span></p>
 
 For any set $S$, the collection $\mathcal{T} = \lbrace \varnothing, S \rbrace$ consisting of the empty set $\varnothing$ and the entire set $S$ is a topology on $S$, sometimes called the **trivial** or **indiscrete topology**. It is the coarsest topology on a set.
@@ -9453,7 +9453,7 @@ When we say that a topology is *closed* under arbitrary union and finite interse
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.3</span><span class="math-callout__name">(Finite-complement topology on $\mathbb{R}^1$)</span></p>
 
 Let $\mathcal{T}$ be the collection of subsets of $\mathbb{R}^1$ consisting of the empty set $\varnothing$, the line $\mathbb{R}^1$ itself, and the complements of finite sets. Suppose $F_\alpha$ and $F_i$ are finite subsets of $\mathbb{R}^1$ for $\alpha \in$ some index set A and $i = 1, \ldots, n$. By de Morgan's laws,
@@ -9464,7 +9464,7 @@ Since the arbitrary intersection $\bigcap_{\alpha \in A} F_\alpha$ and the finit
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.4</span><span class="math-callout__name">(Zariski topology)</span></p>
 
 One well-known topology is the **Zariski topology** from algebraic geometry. Let $K$ be a field and let $S$ be the vector space $K^n$. Define a subset of $K^n$ to be **Zariski closed** if it is the zero set $Z(f_1, \ldots, f_r)$ of finitely many polynomials $f_1, \ldots, f_r$ on $K^n$.
@@ -9491,7 +9491,7 @@ which shows that $\mathcal{T}_A$ is closed under arbitrary unions and finite int
 
 If $A$ is an open subset of a topological space $S$, then a subset of $A$ is relatively open in $A$ if and only if it is open in $S$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Consider the subset $A = [0, 1]$ of $\mathbb{R}^1$. In the subspace topology, the half-open interval $[0, 1/2[$ is open relative to $A$, because
@@ -9511,7 +9511,7 @@ A subcollection $\mathcal{B}$ of a topology $\mathcal{T}$ on a topological space
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The collection of all open balls $B(p, r)$ in $\mathbb{R}^n$, with $p \in \mathbb{R}^n$ and $r$ a positive real number, is a basis for the standard topology of $\mathbb{R}^n$.
@@ -9629,7 +9629,7 @@ A topological space is said to be **second countable** if it has a countable bas
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.13</span></p>
 
 Proposition A.11 shows that $\mathbb{R}^n$ with its standard topology is second countable. With the discrete topology, $\mathbb{R}^n$ would not be second countable. More generally, any uncountable set with the discrete topology is not second countable.
@@ -9659,14 +9659,14 @@ Let $S$ be a topological space and $p$ a point in $S$. A **basis of neighborhood
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 For $p \in \mathbb{R}^n$, let $B(p, 1/n)$ be the open ball of center $p$ and radius $1/n$ in $\mathbb{R}^n$. Then $\lbrace B(p, 1/n) \rbrace_{n=1}^\infty$ is a neighborhood basis at $p$. Thus, $\mathbb{R}^n$ is first countable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 An uncountable discrete space is first countable but not second countable. Every second-countable space is first countable.
@@ -9710,14 +9710,14 @@ By the local criterion for openness (Lemma A.2), $S - \lbrace x \rbrace$ is open
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The Euclidean space $\mathbb{R}^n$ is Hausdorff, for given distinct points $x, y$ in $\mathbb{R}^n$, if $\varepsilon = \frac{1}{2} d(x, y)$, then the open balls $B(x, \varepsilon)$ and $B(y, \varepsilon)$ will be disjoint.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.18</span><span class="math-callout__name">(Zariski topology)</span></p>
 
 Let $S = K^n$ be a vector space of dimension $n$ over a field $K$, endowed with the Zariski topology. Every open set $U$ in $S$ is of the form $S - Z(I)$, where $I$ is an ideal in $K[x_1, \ldots, x_n]$. The open set $U$ is nonempty if and only if $I$ is not the zero ideal. In the Zariski topology any two nonempty open sets intersect: if $U = S - Z(I)$ and $V = S - Z(J)$ are nonempty, then $I$ and $J$ are nonzero ideals and
@@ -9827,14 +9827,14 @@ $(\Leftarrow)$ Let $p$ be a point in $X$, and $V$ a neighborhood of $f(p)$ in $Y
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.24</span><span class="math-callout__name">(Continuity of an inclusion map)</span></p>
 
 If $A$ is a subspace of $X$, then the inclusion map $i \colon A \to X$, $i(a) = a$, is continuous. If $U$ is open in $X$, then $i^{-1}(U) = U \cap A$, which is open in the subspace topology of $A$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.25</span><span class="math-callout__name">(Continuity of a projection map)</span></p>
 
 The projection $\pi \colon X \times Y \to X$, $\pi(x, y) = x$, is continuous. Let $U$ be open in $X$. Then $\pi^{-1}(U) = U \times Y$, which is open in the product topology on $X \times Y$.
@@ -10210,7 +10210,7 @@ The advantage of the bar notation $\overline{A}$ is its simplicity, while the ad
 
 As an intersection of closed sets, $\overline{A}$ is a closed set. It is the smallest closed set containing $A$ in the sense that any closed set containing $A$ contains $\overline{A}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The closure of the open disk $B(\mathbf{0}, r)$ in $\mathbb{R}^2$ is the closed disk
@@ -10254,7 +10254,7 @@ If $U$ is a neighborhood of $p$ in $S$, we call $U - \lbrace p \rbrace$ a **dele
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 If $A = [0, 1[ \cup \lbrace 2 \rbrace$ in $\mathbb{R}^1$, then the closure of $A$ is $[0, 1] \cup \lbrace 2 \rbrace$, but the set of accumulation points of $A$ is only the closed interval $[0, 1]$.
@@ -10392,7 +10392,7 @@ Since the linear map represented by the Jacobian matrix $Jf(p)$ is the best line
 
 In an equation such as $f(x, y) = 0$, it is often impossible to solve explicitly for one of the variables in terms of the other. If we can show the existence of a function $y = h(x)$, which we may or may not be able to write down explicitly, such that $f(x, h(x)) = 0$, then we say that $f(x, y) = 0$ can be solved **implicitly** for $y$ in terms of $x$. The implicit function theorem provides a sufficient condition on a system of equations $f^i(x^1, \ldots, x^n) = 0$, $i = 1, \ldots, m$, under which *locally* a set of variables can be solved implicitly as $C^\infty$ functions of the other variables.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Consider the equation
@@ -10580,7 +10580,7 @@ $$(F \circ f \circ G^{-1})(u, v) = F(u, h(u)) = (u, h(u) - h(u)) = (u, 0). \quad
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example B.5</span></p>
 
 If a $C^\infty$ map $f \colon \mathbb{R}^n \supset U \to \mathbb{R}^n$ defined on an open subset $U$ of $\mathbb{R}^n$ has nonzero Jacobian determinant $\det(Jf(p))$ at a point $p \in U$, then by continuity it has nonzero Jacobian determinant in a neighborhood of $p$. Therefore, it has constant rank $n$ in a neighborhood of $p$.
@@ -10740,7 +10740,7 @@ $$(u + W) + (v + W) = (u + v) + W, \quad r(v + W) = rv + W$$
 
 for $u, v \in V$ and $r \in \mathbb{R}$. We call $V/W$ the **quotient vector space** or the **quotient space** of $V$ by $W$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example D.1</span></p>
 
 For $V = \mathbb{R}^2$ and $W$ a line through the origin in $\mathbb{R}^2$, a coset of $W$ in $\mathbb{R}^2$ is a line in $\mathbb{R}^2$ parallel to $W$. (For the purpose of this discussion, two lines in $\mathbb{R}^2$ are *parallel* if and only if they coincide or fail to intersect. This definition differs from the usual one in plane geometry in allowing a line to be parallel to itself.) The quotient space $\mathbb{R}^2/W$ is the collection of lines in $\mathbb{R}^2$ parallel to $W$.
@@ -10753,7 +10753,7 @@ Let $V$ and $W$ be vector spaces over $\mathbb{R}$. A map $f \colon V \to W$ is 
 
 $$f(u + v) = f(u) + f(v), \quad f(ru) = rf(u).$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example D.2</span></p>
 
 Let $V = \mathbb{R}^2$ and $W$ a line through the origin in $\mathbb{R}^2$ as in Example D.1. If $L$ is a line through the origin not parallel to $W$, then $L$ will intersect each line in $\mathbb{R}^2$ parallel to $W$ in one and only one point. This one-to-one correspondence
@@ -11131,7 +11131,7 @@ Therefore, the condition $f \circ r_\mathbf{j} = r_\mathbf{j} \circ f$ is redund
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Under the algebra isomorphisms $\operatorname{End}_\mathbb{H}(\mathbb{H}) \simeq \mathbb{H}$, elements of $\mathrm{Sp}(1)$ correspond to quaternions $q = a + \mathbf{i}b + \mathbf{j}c + \mathbf{k}d$ such that

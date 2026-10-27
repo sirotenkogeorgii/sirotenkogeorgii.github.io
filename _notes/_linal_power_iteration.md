@@ -44,7 +44,7 @@ $$\lvert \lambda - a_{ii}\rvert = \left\| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}
 
 The theorem gives a simple but coarse estimate on the magnitude of eigenvalues (there also exist improvements, e.g., Cassini ovals, etc.). Nevertheless, in some applications such an estimate may suffice.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.59)</span></p>
 
 Consider 
@@ -210,7 +210,7 @@ By similarity, the matrix $A'$ has the same eigenvalues as $A$, only $\lambda$ h
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.66 — Google search engine and PageRank)</span></p>
 
 Consider a web network with $N$ web pages. The goal is to determine the importances $x_1, \ldots, x_N$ of individual pages. The basic idea of the authors of Google's PageRank is to set the importance of the $i$-th page to be proportional to the sum of the importances of the pages linking to it. We therefore solve the equation $x_i = \sum_{j=1}^N \frac{a_{ij}}{b_j} x_j$, $i = 1, \ldots, N$, where $a_{ij} = 1$ if the $j$-th page links to the $i$-th page (otherwise 0) and $b_j$ is the number of links from the $j$-th page. In matrix form $A'x = x$, where $a'\_{ij} \coloneqq \frac{a_{ij}}{b_j}$.

@@ -145,7 +145,7 @@ So in one variable, the total derivative is equivalent to the usual derivative n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($f(x,y)=x^2+y^2$)</span></p>
 
 Let
@@ -285,7 +285,7 @@ $$(Df)_p= \frac{\partial f}{\partial e_1}(p)e_1^\vee+\cdots+\frac{\partial f}{\p
 
 So the partial derivatives $\frac{\partial f}{\partial e_i}$ are themselves functions $U\to\mathbb R$. At a particular point $p$, they become numbers.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($f(x,y)=x^2+y^2$)</span></p>
 
 For $f(x,y)=x^2+y^2$ we have
@@ -334,7 +334,7 @@ $$p \to p+t_1e_1 \to p+t_1e_1+t_2e_2 \to \cdots \to p+v$$
 
 The accumulated first-order changes are controlled by the partial derivatives.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computing a Nontrivial Total Derivative)</span></p>
 
 Let
@@ -564,7 +564,7 @@ A 0-form assigns a real number to every point of $U$. It can be integrated over 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(0-Form)</span></p>
 
 Thus, if we specify a finite set $S$ of points in $U$ we can “integrate” over $S$ by just adding up the values of the points:
@@ -751,7 +751,7 @@ At each point, a $k$-form is a rule that takes $k$ vectors and returns a number 
 
 ### Low-Dimensional Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Forms in Low Dimensions)</span></p>
 
 **$k=0$:** A 0-form is just a smooth function $U\to \mathbb R$.
@@ -824,7 +824,7 @@ Determinants measure **signed volume**: swap two vectors → sign changes; linea
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Evaluating a 2-Form in $\mathbb R^3$)</span></p>
 
 Let $V=\mathbb R^3$. Suppose at a point $p$,
@@ -1026,7 +1026,7 @@ Then we define
 
 $$\phi^\ast\alpha = \sum_{I\subseteq\lbrace 1,\dots,n\rbrace}(f_I\circ\phi)(D\phi_{i_1}\wedge\cdots\wedge D\phi_{i_k})$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computation of a Pullback)</span></p>
 
 Let $V=\mathbb R^2$ with basis $\mathbf e_1$ and $\mathbf e_2$, and suppose $\phi\colon V\to V'$ is given by sending
@@ -1063,7 +1063,7 @@ A **$k$-cell** is a smooth function $c\colon [a_1,b_1]\times[a_2,b_2]\times\dots
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of Cells)</span></p>
 
 Let $V=\mathbb R^2$ for convenience.
@@ -1091,7 +1091,7 @@ $$\int_0^1\cdots\int_0^1 f(x_1,\dots,x_n)\,dx_1\wedge\cdots\wedge dx_n$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Area of a Circle)</span></p>
 
 Consider $V=\mathbb R^2$ and let $c\colon (r,\theta)\mapsto (r\cos\theta)\mathbf e_1+(r\sin\theta)\mathbf e_2$ on $[0,R]\times[0,2\pi]$ as before. Take the 2-form $\alpha$ which gives $\alpha_p=\mathbf e_1^\vee\wedge\mathbf e_2^\vee$ at every point $p$. Then
@@ -1170,7 +1170,7 @@ Finally, the boundary of a chain is the sum of the boundaries of each cell (with
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Boundaries of a Square)</span></p>
 
 Consider the 2-cell $c\colon [0,1]^2\to\mathbb R^2$. Let $p_1,p_2,p_3,p_4$ be the images of $(0,0)$, $(0,1)$, $(1,1)$, $(1,0)$ respectively. Then
@@ -1183,7 +1183,7 @@ $$\partial(\partial c) = \sum_{i=1}^4 \lbrace p_{i+1}\rbrace - \lbrace p_i\rbrac
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Boundary of a Unit Disk)</span></p>
 
 Consider the unit disk given by
@@ -1355,14 +1355,14 @@ This definition is nice because it doesn't depend on embeddings: a manifold is a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An Atlas on $S^1$)</span></p>
 
 An atlas for $S^1$ can be built with just two open sets $U_1$ and $U_2$, each homeomorphic to an open interval in $\mathbb R$. The two sets overlap in two disjoint arcs.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Some Examples of Topological Manifolds)</span></p>
 
 * The sphere $S^2$ is a 2-manifold: every point in the sphere has a small open neighborhood that looks like $D^2$. One can cover the Earth with just two hemispheres, and each hemisphere is homeomorphic to a disk.
@@ -1456,7 +1456,7 @@ Let $V$ be a finite-dimensional real normed vector space, let $U\subseteq V$ be 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Circle $x^2+y^2-c=0$)</span></p>
 
 Let $f(x,y)=x^2+y^2-c$, $f\colon\mathbb R^2\to\mathbb R$, where $c$ is a positive real number. Note that
@@ -1519,7 +1519,7 @@ For "embedded manifolds," this just amounts to being able to pick a nonzero fiel
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Orientable Surfaces)</span></p>
 
 * Spheres $S^n$, planes, and the torus $S^1\times S^1$ are orientable.

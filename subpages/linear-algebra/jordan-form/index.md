@@ -110,7 +110,7 @@ So even if $\lvert\lambda\rvert=1$ (or $\Re(\lambda)=0$), nontrivial Jordan bloc
 
 ## Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Powers of matrix)</span></p>
 
 We already mentioned the use of diagonalization for computing a power of a matrix. Using the Jordan normal form, we can generalize the statement to an arbitrary matrix $A \in \mathbb{C}^{n\times n}$. If
@@ -144,7 +144,7 @@ where $\rho(A)$ denotes the spectral radius of $A$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix function)</span></p>
 
 Let us ask: how can we define a matrix function such as $\cos(A)$, $e^{A}$, etc.?

@@ -40,7 +40,7 @@ where $d_1$ and $d_0$ are the **number of free parameters** in the full and rest
   </figure>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VAR($p$) vs. VAR($p+1$))</span></p>
 
 We can use the LR test to decide if a VAR($p+1$) model provides a significantly better fit than a VAR($p$) model.
@@ -120,7 +120,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Granger Causality for VAR Models)</span></p>
 
 * To make this concept testable, Granger proposed embedding it within a VAR model. 

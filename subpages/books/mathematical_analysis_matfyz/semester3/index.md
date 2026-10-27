@@ -672,7 +672,7 @@ $$f_n \to f.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1.1</span></p>
 
 Pointwise convergence does not preserve nice properties of the functions $f\_n$, not even continuity, not to speak of possessing derivatives. Consider $X = Y = \langle 0, 1 \rangle$ and $f\_n(x) = x^n$. Then $f(x) = \lim\_n f\_n(x)$ is $0$ for $x < 1$ while $f(1) = 1$.
@@ -742,7 +742,7 @@ Let $f\_n : X \to Y$ be continuous mappings and let the sequence $f\_n$ converge
 
 ## 2. More about Uniform Convergence: Derivatives, Riemann Integral
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1</span></p>
 
 Although uniform convergence preserves continuity, it does not preserve smoothness (existence of derivatives). Consider the functions
@@ -791,7 +791,7 @@ and the statement follows. $\square$
 
 For Riemann integral we do not generally have $\int\_a^b \lim\_n f\_n = \lim\_n \int\_a^b f\_n$ even if all the $\int\_a^b f\_n$ exist and all the functions $f\_n$ are bounded by the same constant.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span></p>
 
 Order all the rational numbers between 0 and 1 in a sequence $r\_1, r\_2, \dots, r\_n, \dots$ Set
@@ -857,7 +857,7 @@ But whatever the strength of the integral might be, the formula $\int\_a^b \lim\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3.3</span></p>
 
 Consider the functions $f\_n, g\_n : \langle -1, 1 \rangle \to \mathbb{R} \cup \lbrace +\infty \rbrace$ defined by
@@ -1362,7 +1362,7 @@ $$\lim_n \sum_{k=0}^{n} \frac{f^{(k)}(c)}{k!}(x - c)^k = \lim_n (f(x) - R_n(f, x
 
 ### 3.2. Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2</span><span class="math-callout__name">(Standard Taylor Series)</span></p>
 
 1. For an arbitrary large $K$ we have $\lim\_n \frac{K^n}{n!} = 0$ (indeed, if we put $k\_n = \frac{K^n}{n!}$ then for $n > 2K$, $k\_{n+1} < \frac{k\_n}{2}$ and hence $k\_{n+m} < 2^{-m} k\_n$). Consequently for any $x$ the remainder in the Taylor formula VIII.7.3 converges to zero for $e^x$, $\sin x$ and $\cos x$ and we have the Taylor series
@@ -1387,7 +1387,7 @@ where $f^{(k)}(0) = 0$ for all $k$.
 
 It is not always easy to obtain general formula for the coefficients $\frac{f^{(n)}(c)}{n!}$ of the Taylor series of a function $f$ by taking derivatives. Sometimes, however, we can determine the Taylor series very easily using Proposition 3.3.1 and Theorem 2.5.1.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4.1</span><span class="math-callout__name">(Logarithm)</span></p>
 
 We have $(\lg(1 - x))' = \frac{1}{x - 1}$. Since
@@ -1402,7 +1402,7 @@ and since $\lg 1 = \lg(1 - 0) = 0$ we have $C = 0$ and obtain the well known for
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4.2</span><span class="math-callout__name">(Arcus Tangens)</span></p>
 
 We have $\arctan(x)' = \frac{1}{1 + x^2}$. Since
@@ -1417,7 +1417,7 @@ The additive constant is 0, because $\arctan(0) = 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.4.3</span><span class="math-callout__name">(A Formula for $\pi$)</span></p>
 
 The formula $(\ast)$ suggests that
@@ -1833,7 +1833,7 @@ If the sums $\sum \lvert a\_n \rvert$ and $\sum \lvert b\_n \rvert$ converge, th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2</span><span class="math-callout__name">(Differentiating by Summands May Fail)</span></p>
 
 Differentiating by individual summands may be false even if the resulting sum has a derivative. Consider $f(x) = x$ on $(-\pi, \pi)$ extended to a periodic function with the period $2\pi$. Then we obtain
@@ -2303,7 +2303,7 @@ Let $f$ have a derivative at $z$. Then it is continuous at this point.
 
 ### 1.2. A Somewhat Surprising Example
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span></p>
 
 Proposition 1.1.2 seems to suggest that similarly like in the real case, the existence of a derivative can be interpreted as a "geometric tangent" and expresses a sort of smoothness. But it is a much more special property.

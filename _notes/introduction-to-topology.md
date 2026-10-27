@@ -123,7 +123,7 @@ A metric space $M$ is bounded if and only if for every point $p \in M$, there is
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of bounded spaces)</span></p>
 
 * Finite intervals like $[0, 1]$ and $(a, b)$ are bounded.
@@ -141,7 +141,7 @@ A metric space is **totally bounded** if for any $\varepsilon > 0$, we can cover
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of totally bounded spaces)</span></p>
 
 * A subset of $\mathbb{R}^n$ is bounded if and only if it is totally bounded.
@@ -170,7 +170,7 @@ A metric space $M$ is **complete** if every Cauchy sequence converges.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of complete spaces)</span></p>
 
 * $\mathbb{R}$ is complete.
@@ -180,7 +180,7 @@ A metric space $M$ is **complete** if every Cauchy sequence converges.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-examples of complete spaces)</span></p>
 
 * The rationals $\mathbb{Q}$ are not complete.
@@ -195,7 +195,7 @@ Every metric space can be "completed", i.e. made into a complete space by adding
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{Q}$ completes to $\mathbb{R}$)</span></p>
 
 The completion of $\mathbb{Q}$ is $\mathbb{R}$.
@@ -206,7 +206,7 @@ The completion of $\mathbb{Q}$ is $\mathbb{R}$.
 
 There is something suspicious about both these notions: neither are preserved under homeomorphism!
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Something fishy is going on here)</span></p>
 
 Let $M = (0, 1)$ and $N = \mathbb{R}$. As we saw much earlier $M$ and $N$ are homeomorphic. However:
@@ -249,7 +249,7 @@ A **topological space** is a pair $(X, \mathcal{T})$, where $X$ is a set of poin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of topologies)</span></p>
 
 * Given a metric space $M$, we can let $\mathcal{T}$ be the open sets in the metric sense. The point is that the axioms are satisfied.
@@ -353,7 +353,7 @@ For example $\varnothing$ and the entire space are examples of clopen sets. The 
 
 We say $X$ is **disconnected** if there are nontrivial clopen sets, and **connected** otherwise.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Disconnected and connected spaces)</span></p>
 
 * The metric space $\lbrace (x,y) \mid x^2 + y^2 \le 1 \rbrace \cup \lbrace (x,y) \mid (x-4)^2 + y^2 \le 1 \rbrace \subseteq \mathbb{R}^2$ is disconnected (it consists of two disks).
@@ -388,7 +388,7 @@ A space $X$ is **path-connected** if any two points in it are connected by some 
 
 Path-connected implies connected.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of path-connected spaces)</span></p>
 
 * $\mathbb{R}^2$ is path-connected, since we can "connect" any two points with a straight line.
@@ -437,7 +437,7 @@ A **basis** for a topological space $X$ is a subset $\mathcal{B}$ of the open se
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basis of $\mathbb{R}$)</span></p>
 
 The open intervals form a basis of $\mathbb{R}$.
@@ -484,7 +484,7 @@ A metric space $M$ is **sequentially compact** if every sequence has a subsequen
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-examples of compact metric spaces)</span></p>
 
 * The space $\mathbb{R}$ is not compact: consider the sequence $1, 2, 3, 4, \dots$. Any subsequence explodes, hence $\mathbb{R}$ cannot possibly be compact.
@@ -494,7 +494,7 @@ A metric space $M$ is **sequentially compact** if every sequence has a subsequen
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of compact spaces)</span></p>
 
 * $[0, 1]$ is compact.
@@ -552,7 +552,7 @@ Look at a closed and bounded $S \subseteq \mathbb{R}^n$. Since it's bounded, it 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Closed and bounded but not compact)</span></p>
 
 Let $S = \lbrace s_1, s_2, \dots \rbrace$ be any infinite set equipped with the discrete metric. Then $S$ is closed (since all convergent sequences are constant sequences) and $S$ is bounded (all points are a distance $1$ from each other) but it's certainly not compact since the sequence $s_1, s_2, \dots$ doesn't converge.
@@ -588,7 +588,7 @@ The "Hausdorff" hypothesis is a sanity condition which is not worth worrying abo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example of a finite subcover)</span></p>
 
 Suppose we cover the unit square $M = [0, 1]^2$ by putting an open disk of diameter $1$ centered at every point. This is clearly an open cover. But this is way overkill — we only need about four of these circles to cover the whole square. That's what is meant by a "finite subcover".
@@ -602,7 +602,7 @@ A metric space $M$ is sequentially compact if and only if it is compact.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(An example of non-compactness)</span></p>
 
 The space $X = [0, 1)$ is not compact in either sense. It is not sequentially compact, because it is not even complete (look at $x_n = 1 - \frac{1}{n}$). To see it is not compact under the covering definition, consider the sets
@@ -663,7 +663,7 @@ Consider a continuous function $f\colon [0, 1] \to \mathbb{R}$. Then the image o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($1/x$)</span></p>
 
 The compactness hypothesis is really important here. Otherwise, consider the function
@@ -681,7 +681,7 @@ A function $f\colon M \to N$ of metric spaces is called **uniformly continuous**
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uniform continuity)</span></p>
 
 * The functions $\mathbb{R}$ to $\mathbb{R}$ of the form $x \mapsto ax + b$ are all uniformly continuous, since one can always take $\delta = \varepsilon / \lvert a \rvert$ (or $\delta = 1$ if $a = 0$).

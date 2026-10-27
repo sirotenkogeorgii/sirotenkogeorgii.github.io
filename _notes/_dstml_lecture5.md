@@ -193,7 +193,7 @@ The system perpetually jumps back and forth between these two points.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A 2-Cycle in the Logistic Map)</span></p>
 
 For a parameter value of $\alpha = 3.3$, the logistic map exhibits a stable 2-cycle.
@@ -218,7 +218,7 @@ This observation leads to a powerful insight: a point on a two-cycle returns to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Logistic Map Iterated Twice)</span></p>
 
 Let's consider the logistic map, which is a second-order polynomial (a "square map"). If we construct the twice-iterated map, $f^2(x) = f(f(x))$, by substituting the logistic equation into itself, the resulting function is a fourth-order polynomial.
@@ -445,7 +445,7 @@ corresonds to the **vector field on the circle**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Vector Field on Circle via Phase Variable)</span></p>
 
 For the system
@@ -555,7 +555,7 @@ So:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Important Nonuniform Oscillator)</span></p>
 
 The equation
@@ -598,7 +598,7 @@ $$T_{\text{osc}} = \int_0^{2\pi} \frac{1}{f(\theta)} \, d\theta$$
 
 #### Study Case: Saddle-Node Bifurcation in Nonuniform Oscillators
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Saddle-Node Bifurcation in Nonuniform Oscillators (I))</span></p>
 
 Consider the differential equation
@@ -851,7 +851,7 @@ The same behavior can also be illustrated by drawing the vector fields directly 
 
 #### Period Divergence at Saddle-Node Bifurcation Point
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Period Divergence at Saddle-Node Bifurcation Point (II))</span></p>
 
 Apply linear stability analysis to determine the nature of the fixed points when $a>\omega$.
@@ -919,7 +919,7 @@ So the blow-up follows a **square-root scaling law**.
 
 #### Ghosts and Bottlenecks near Saddle-Node Bifurcation Point
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ghosts and Bottlenecks near Saddle-Node Bifurcation Point (III))</span></p>
 
 The **square-root scaling law derived above is a very common feature of systems near a saddle-node bifurcation**. Right after two fixed points merge and disappear, their influence does not vanish immediately. Instead, a leftover effect remains — often called a **saddle-node ghost** — which causes trajectories to move very slowly through a **bottleneck** region.
@@ -972,7 +972,7 @@ We now extend our analysis from a single oscillator to a system of multiple osci
 
 #### The State-Space Torus
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Independent Runners on a Circular Track)</span></p>
 
 Two runners move around the same circular track with constant angular speeds. Let Speedy complete one lap in $T_1$ seconds and Pokey complete one lap in $T_2$ seconds, where $T_2>T_1$. Since Speedy is faster, he will eventually catch up and overtake Pokey. We want to compute the time for one such overtake.
@@ -1315,7 +1315,7 @@ In most non-linear oscillators, the effect of an external perturbation depends c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Biological Neuron)</span></p>
 
 Consider a biological neuron that fires action potentials periodically. If we inject a small pulse of electrical current into the neuron, the effect will depend on when we inject it.
@@ -1397,7 +1397,7 @@ The concept of synchronization or phase locking is now transformed into a famili
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Identical Intrinsic Frequencies)</span></p>
 
 Let's analyze the simplest case, where the two oscillators have the same intrinsic frequency, $\omega_1 = \omega_2$. The phase difference equation simplifies to:

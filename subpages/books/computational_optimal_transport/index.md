@@ -2337,7 +2337,7 @@ $$
 
 We now review a few popular instances of this framework.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.1</span><span class="math-callout__name">(Kullback–Leibler Divergence)</span></p>
 
 The Kullback–Leibler divergence $\mathrm{KL} \stackrel{\text{def}}{=} \mathcal{D}_{\varphi_\mathrm{KL}}$, also known as the relative entropy, is the divergence associated to the Shannon–Boltzmann entropy function $\varphi_\mathrm{KL}$, given by
@@ -2394,7 +2394,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.2</span><span class="math-callout__name">(Total Variation)</span></p>
 
 The total variation distance $\mathrm{TV} \stackrel{\text{def}}{=} \mathcal{D}_{\varphi_\mathrm{TV}}$ is the divergence associated to
@@ -2426,7 +2426,7 @@ so that this strong notion of convergence implies the weak convergence metrized 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.3</span><span class="math-callout__name">(Hellinger)</span></p>
 
 The Hellinger distance $\mathfrak{h} \stackrel{\text{def}}{=} \mathcal{D}_{\varphi_H}^{1/2}$ is the square root of the divergence associated to
@@ -2439,7 +2439,7 @@ As its name suggests, $\mathfrak{h}$ is a distance on $\mathcal{M}\_+(\mathcal{X
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4</span><span class="math-callout__name">(Jensen–Shannon Distance)</span></p>
 
 The KL divergence is not symmetric and, while being a Bregman divergence (which are locally quadratic norms), it is not the square of a distance. On the other hand, the Jensen–Shannon distance $\mathrm{JS}(\alpha, \beta)$, defined as
@@ -2452,7 +2452,7 @@ is a distance. $\mathrm{JS}^2$ can be shown to be a $\varphi$-divergence for $\v
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.5</span><span class="math-callout__name">($\chi^2$-Divergence)</span></p>
 
 The $\chi^2$-divergence $\chi^2 \stackrel{\text{def}}{=} \mathcal{D}_{\varphi_{\chi^2}}$ is the divergence associated to
@@ -2479,7 +2479,7 @@ $$
 
 These dual norms are often called "integral probability metrics."
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.6</span><span class="math-callout__name">(Total Variation as Dual Norm)</span></p>
 
 The total variation norm (Example 8.2) is a dual norm associated to the whole space of continuous functions
@@ -2503,7 +2503,7 @@ By using smaller "balls" $B$, which typically only contain continuous (and somet
 
 If the set $B$ is bounded, then $\|\cdot\|\_B$ is a norm on the whole space $\mathcal{M}(\mathcal{X})$ of measures. This is not the case of $\mathcal{W}\_1$, which is only defined for $\alpha$ such that $\int\_\mathcal{X} \mathrm{d}\alpha = 0$ (otherwise $\|\alpha\|\_B = +\infty$). This can be alleviated by imposing a bound on the value of the potential $f$, in order to define for instance the flat norm.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.7</span><span class="math-callout__name">($\mathcal{W}_1$ Norm)</span></p>
 
 $\mathcal{W}_1$ as defined in (6.3), is a special case of dual norm (8.10), using
@@ -2516,7 +2516,7 @@ the set of 1-Lipschitz functions.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.8</span><span class="math-callout__name">(Flat Norm and Dudley Metric)</span></p>
 
 The flat norm is defined using
@@ -2577,14 +2577,14 @@ $$
 \|\alpha - \beta\|_k^2 = \sum_{i,i'} \mathbf{a}_i \mathbf{a}_{i'} k(x_i, x_{i'}) + \sum_{j,j'} \mathbf{b}_j \mathbf{b}_{j'} k(y_j, y_{j'}) - 2\sum_{i,j} \mathbf{a}_i \mathbf{b}_j k(x_i, y_j). \tag{8.14}
 $$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.9</span><span class="math-callout__name">(Gaussian RKHS)</span></p>
 
 One of the most popular kernels is the Gaussian one $k(x, y) = e^{-\frac{\|x-y\|^2}{2\sigma^2}}$, which is a positive universal kernel on $\mathcal{X} = \mathbb{R}^d$. An attractive feature of the Gaussian kernel is that it is separable as a product of 1-D kernels, which facilitates computations when working on regular grids. However, an important issue that arises when using the Gaussian kernel is that one needs to select the bandwidth parameter $\sigma$. This bandwidth should match the "typical scale" between observations in the measures to be compared. If the measures have multiscale features, a Gaussian kernel is thus not well adapted, and one should consider a "scale-free" kernel as we detail next.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.10</span><span class="math-callout__name">($H^{-1}(\mathbb{R}^d)$ Norm)</span></p>
 
 Another important dual norm is $H^{-1}(\mathbb{R}^d)$, the dual (over distributions) of the Sobolev space $H^1(\mathbb{R}^d)$ of functions having derivatives in $L^2(\mathbb{R}^d)$. It is defined using the primal RKHS norm $\|\nabla f\|\_{L^2(\mathbb{R}^d)}^2$. It is not defined for singular measures (*e.g.* Diracs) unless $d = 1$ because functions in the Sobolev space $H^1(\mathbb{R}^d)$ are in general not continuous. This $H^{-1}$ norm (defined on the space of zero mean measures with densities) can also be formulated in divergence form,
@@ -2613,7 +2613,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.11</span><span class="math-callout__name">(Negative Sobolev Spaces)</span></p>
 
 One can generalize this construction by considering the Sobolev space $H^{-r}(\mathbb{R}^d)$ of arbitrary negative index, which is the dual of the functional Sobolev space $H^r(\mathbb{R}^d)$ of functions having $r$ derivatives (in the sense of distributions) in $L^2(\mathbb{R}^d)$. In order to metrize the weak convergence, one needs functions in $H^r(\mathbb{R}^d)$ to be continuous, which is the case when $r > d/2$. For arbitrary $\alpha$ (not necessarily integers), these spaces are defined using the Fourier transform, and for a measure $\alpha$ with Fourier transform $\hat{\alpha}(\omega)$ (written here as a density with respect to the Lebesgue measure $\mathrm{d}\omega$)
@@ -2630,7 +2630,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.12</span><span class="math-callout__name">(Energy Distance)</span></p>
 
 The energy distance (or Cramér distance when $d = 1$) associated to a distance $d$ is defined as

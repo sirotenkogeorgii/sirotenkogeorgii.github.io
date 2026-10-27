@@ -132,7 +132,7 @@ is called the **Taylor series** of $f$ at $p$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analytic functions)</span></p>
 
 * $e^x$, $\sin x$, $\cos x$, and polynomials are analytic.
@@ -156,7 +156,7 @@ A useful contrast:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Smooth, but not analytic functions)</span></p>
 
 So a function can be smooth but **not** analytic. A classic example is

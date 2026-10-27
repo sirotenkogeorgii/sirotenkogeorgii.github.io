@@ -530,7 +530,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Goals of ARMA Modeling)</span></p>
 
 Once an ARMA model is fitted, it can be used for:

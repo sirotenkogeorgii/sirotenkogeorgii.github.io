@@ -201,7 +201,7 @@ $$
 
 and so on.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($2\times 2$ Jordan block)</span></p>
 
 If

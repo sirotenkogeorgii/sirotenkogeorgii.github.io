@@ -186,7 +186,7 @@ This two-part structure is analogous to concepts in dynamical systems where an u
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Decoder)</span></p>
 
 A simple and common choice for the decoder $g$ is a linear mapping, also known as a linear layer in neural network terminology:
@@ -542,7 +542,7 @@ $$\theta_{n+1} = \theta_n - \gamma (|H(\theta_n)|)^{-1} \nabla_{\theta} L(\theta
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recursive Least Squares)</span></p>
 
 Recursive Least Squares (RLS) is an algorithm formerly used for updating recurrent networks that falls into the family of quasi-Newton methods.
@@ -681,7 +681,7 @@ This decomposition is possible due to the linearity of gradients, which allows u
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Squared Error Loss)</span></p>
 
 For concreteness, a common choice for the loss function is the squared error loss. Let $x_{\text{obs}}(t)$ be the observed value at time $t$ and $x(t)$ be the value predicted by our model. The loss at that time step, $l_t$, would be:
@@ -765,7 +765,7 @@ Each term in this product, $\frac{\partial x_u}{\partial x_{u-1}}$, is the Jacob
 
 Let's now investigate the structure of the single-step Jacobian, $\frac{\partial x_u}{\partial x_{u-1}}$, to understand the long-term behavior of this product.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple RNN Update Rule)</span></p>
 
 Consider a standard RNN where the state $x_t$ is updated according to the following rule:

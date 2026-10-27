@@ -833,6 +833,12 @@ thead {
   --callout-title: #0a7c55;
 }
 
+.math-callout--example {
+  --callout-border: #6d28d9;
+  --callout-bg: rgba(124, 58, 237, 0.08);
+  --callout-title: #4c1d95;
+}
+
 /* Dark-theme callout palette: every flavor gets a light border, a pale title,
    and a translucent tint that stays legible under the light body text. */
 
@@ -871,6 +877,12 @@ thead {
   --callout-border: #34d399;
   --callout-bg: rgba(52, 211, 153, 0.15);
   --callout-title: #a7f3d0;
+}
+
+:root[data-theme="dark"] .math-callout--example {
+  --callout-border: #a78bfa;
+  --callout-bg: rgba(167, 139, 250, 0.14);
+  --callout-title: #ddd6fe;
 }
 
 .accordion {

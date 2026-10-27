@@ -1006,7 +1006,7 @@ This identity is not exact if $V$ is updated during the episode (as it is in TD(
 
 ### 6.1.1 Example: Driving Home
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Driving Home)</span></p>
 
 Each day as you drive home from work, you try to predict how long it will take to get home. You note the time, the day of week, the weather, and anything else that might be relevant. The sequence of states, elapsed times, and predictions is:
@@ -1039,7 +1039,7 @@ For any fixed policy $\pi$, TD(0) has been proved to converge to $v_\pi$, in the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Random Walk)</span></p>
 
 A **Markov reward process** (MRP) is a Markov decision process without actions. Consider the following MRP with five states A through E:
@@ -1079,7 +1079,7 @@ This helps explain why TD methods converge more quickly than Monte Carlo methods
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(You Are the Predictor)</span></p>
 
 Suppose you observe the following eight episodes of an unknown Markov reward process:
@@ -1139,7 +1139,7 @@ Sarsa converges with probability 1 to an optimal policy and action-value functio
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Windy Gridworld)</span></p>
 
 A standard gridworld with start and goal states, but with a crosswind running upward through the middle of the grid. The actions are the standard four — up, down, right, and left — but in the middle region the resultant next states are shifted upward by a "wind" whose strength varies from column to column. This is an undiscounted episodic task, with constant rewards of $-1$ until the goal state is reached. Applying $\varepsilon$-greedy Sarsa ($\varepsilon = 0.1$, $\alpha = 0.5$, initial $Q(s, a) = 0$), the goal was reached more quickly over time — by 8000 time steps the greedy policy was long since optimal.
@@ -1186,7 +1186,7 @@ Q-learning is considered an off-policy method because the update rule uses $\max
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cliff Walking)</span></p>
 
 A standard undiscounted, episodic gridworld with start (S) and goal (G) states. The usual actions cause movement up, down, right, and left. Reward is $-1$ on all transitions except those into a region marked "The Cliff" — stepping into this region incurs a reward of $-100$ and sends the agent instantly back to the start.
@@ -1264,7 +1264,7 @@ Loop for each episode:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Maximization Bias Example)</span></p>
 
 Consider an MDP with two non-terminal states A and B. Episodes always start in A with a choice between **left** and **right**. The **right** action transitions immediately to the terminal state with reward and return of zero. The **left** action transitions to B with reward zero, from which there are many possible actions all causing immediate termination with a reward drawn from $\mathcal{N}(-0.1, 1.0)$. Thus the expected return for any trajectory starting with **left** is $-0.1$, so taking **left** in state A is always a mistake.
@@ -1396,7 +1396,7 @@ for all $n \geq 1$. This is called the **error reduction property** of $n$-step 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($n$-step TD Methods on the Random Walk)</span></p>
 
 Consider using $n$-step TD methods on a 19-state random walk process (with a $-1$ outcome on the left, all values initialized to 0). If the first episode progressed directly from the center state C to the right, through D and E, and terminated with a return of 1:
@@ -1829,7 +1829,7 @@ Steps (d), (e), and (f) implement direct reinforcement learning, model-learning,
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.1: Dyna Maze)</span></p>
 
 Consider a simple maze with 47 states and four actions (up, down, right, left). Movement is deterministic except when blocked by an obstacle or the maze edge, in which case the agent remains in place. Reward is zero on all transitions except those into the goal state, where it is $+1$. After reaching the goal state (G), the agent returns to the start state (S). This is a discounted, episodic task with $\gamma = 0.95$.
@@ -1855,14 +1855,14 @@ In some cases, the suboptimal policy computed by planning quickly leads to the d
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.2: Blocking Maze)</span></p>
 
 Initially, there is a short path from start to goal, to the right of a barrier. After 1000 time steps, the short path is "blocked," and a longer path is opened up along the left-hand side. The graph shows that both Dyna-Q and an enhanced Dyna-Q+ agent found the short path within 1000 steps. When the environment changed, the graphs become flat (no reward), indicating a period of wandering behind the barrier. After a while, however, both agents were able to find the new opening and the new optimal behavior.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.3: Shortcut Maze)</span></p>
 
 Initially, the optimal path is to go around the left side of a barrier. After 3000 steps, a shorter path is opened up along the right side. The regular Dyna-Q agent never switched to the shortcut — it never realized it existed. Its model said there was no shortcut, so the more it planned, the less likely it was to step to the right and discover it. Even with an $\varepsilon$-greedy policy, it is very unlikely that an agent will take so many exploratory actions as to discover the shortcut.
@@ -1919,7 +1919,7 @@ Loop forever:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(8.4: Prioritized Sweeping on Mazes)</span></p>
 
 Prioritized sweeping has been found to dramatically increase the speed at which optimal solutions are found in maze tasks, often by a factor of 5 to 10. For a sequence of maze tasks with the same structure but varying grid resolution, prioritized sweeping maintained a decisive advantage over unprioritized Dyna-Q. Both systems made at most $n = 5$ updates per environmental interaction.
@@ -2653,7 +2653,7 @@ Loop for each episode:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Mountain Car Task)</span></p>
 
 Consider the task of driving an underpowered car up a steep mountain road. Gravity is stronger than the car's engine, and even at full throttle the car cannot accelerate up the steep slope. The only solution is to first move away from the goal and up the opposite slope on the left, then by applying full throttle, build enough inertia to carry it up the steep slope even though it is slowing down.
@@ -2801,7 +2801,7 @@ One limitation of this algorithm is that it does not converge to the differentia
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Access-Control Queuing Task)</span></p>
 
 This is a decision task involving access control to a set of 10 servers. Customers of four different priorities arrive at a single queue. If given access to a server, the customers pay a reward of 1, 2, 4, or 8, depending on their priority. In each time step, the customer at the head of the queue is either accepted (assigned to one of the servers) or rejected (removed with reward zero). The queue never empties. Each busy server becomes free with probability $p = 0.06$ on each time step.
@@ -2980,7 +2980,7 @@ $$G_{t:t+n} \doteq \hat{q}(S_t, A_t, \mathbf{w}_{t+n-1}) + \sum_{k=t}^{t+n-1} \d
 
 This section discusses the second part of the challenge: the distribution of updates does not match the on-policy distribution. Semi-gradient and other simple algorithms can be unstable and diverge.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The $w$-to-$2w$ Divergence)</span></p>
 
 Suppose there are two states whose estimated values are of the functional form $w$ and $2w$, where $\mathbf{w}$ consists of a single component $w$. In the first state, only one action is available, and it results deterministically in a transition to the second state with reward 0.
@@ -2997,7 +2997,7 @@ If $1 + \alpha(2\gamma - 1) > 1$, i.e., whenever $\gamma > 0.5$, the system is u
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Baird's Counterexample)</span></p>
 
 An episodic seven-state, two-action MDP. The **dashed** action takes the system to one of the six upper states with equal probability, whereas the **solid** action takes the system to the seventh state. The behavior policy $b$ selects dashed and solid with probabilities $\frac{6}{7}$ and $\frac{1}{7}$. The target policy $\pi$ always takes the solid action. The reward is zero on all transitions, so $v_\pi(s) = 0$ for all $s$, which is exactly representable with $\mathbf{w} = \mathbf{0}$.
@@ -3006,7 +3006,7 @@ If we apply semi-gradient TD(0), the weights diverge to infinity — for any pos
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tsitsiklis and Van Roy's Counterexample)</span></p>
 
 Extending the $w$-to-$2w$ example with a terminal state. Even if we change the value function at each step to the best, least-squares approximation (minimizing the $\overline{\text{VE}}$), stability is not guaranteed. The sequence $\lbrace w_k \rbrace$ diverges when $\gamma > \frac{5}{6 - 4\varepsilon}$ and $w_0 \neq 0$:
@@ -3802,7 +3802,7 @@ Advantages of parameterizing policies according to the soft-max in action prefer
 3. The policy may be a **simpler function** to approximate than the action-value function, leading to faster learning and a superior asymptotic policy.
 4. The choice of policy parameterization is sometimes a good way of injecting **prior knowledge** about the desired form of the policy into the reinforcement learning system.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(13.1: Short Corridor with Switched Actions)</span></p>
 
 Consider a small corridor gridworld with three nonterminal states and two actions: **right** and **left**. Actions have their usual consequences in the first and third states, but in the second state they are reversed (right moves left, left moves right). The reward is $-1$ per step. Under the function approximation $\mathbf{x}(s, \text{right}) = [1, 0]^\top$ and $\mathbf{x}(s, \text{left}) = [0, 1]^\top$ for all $s$, all states appear identical.
@@ -4352,7 +4352,7 @@ The distinction between **model-free** and **model-based** reinforcement learnin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Outcome-Devaluation Experiments)</span></p>
 
 **Outcome-devaluation experiments** test whether an animal's behavior is habitual or goal-directed. In the Adams and Dickinson (1981) experiment:

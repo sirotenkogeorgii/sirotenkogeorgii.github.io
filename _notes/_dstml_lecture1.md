@@ -41,7 +41,7 @@ These systems evolve in discrete steps. They are described by iterative function
 
 $$x_t = f(x_{t-1})$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Discrete-Time Systems)</span></p>
 
 * **Population Biology:** Models describing population growth, like the logistic map, often use discrete-time equations to represent generational changes.
@@ -100,7 +100,7 @@ $$\dot{x} = f(x, t)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Forced Oscillator)</span></p>
 
 Consider a simple oscillator. In its autonomous form, its behavior is self-contained. If we add a rhythmic external push (e.g., an "air puff" driving a pendulum), we introduce a forcing function $F(t)$.
@@ -140,7 +140,7 @@ An $n^{th}$-order one-dimensional ODE of the form $F(\frac{d^n x}{dt^n}, \dots, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Harmonic Oscillator)</span></p>
 
 Let's start with a second-order linear ODE for a harmonic oscillator: 
@@ -252,7 +252,7 @@ The point $x=0$ is an **equilibrium point** (or **fixed point**) because if the 
 
 ### Higher-Dimensional Linear Systems: $\dot{x} = Ax$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear vector field, Non-linear trajectories)</span></p>
 
 Let a dynamical system be linear and $x\in\mathbb{R}^2$, then

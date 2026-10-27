@@ -689,7 +689,7 @@ $$
 
 Here the sum ranges over all $p$-tuples $1 \leq i_1, \dots, i_p \leq n$ and all $q$-tuples $1 \leq j_1, \dots, j_q \leq n$ with $n = \dim(E)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.10 (Tensors, Duality)</span></p>
 
 **(1)** The coefficients (A.36) of a multilinear function $f \in T^{2,2}(E)$, with $n = \dim(E) = 2$, form a $2 \times 2 \times 2 \times 2$ array, here plotted after reshaping it to matrix form
@@ -899,7 +899,7 @@ $$
   <figcaption>Theorem A.11 in pictures: the same operator $\mathcal A$ admits two equivalent readings. <em>Left:</em> as a single map $\mathcal L(E, F) \to G$, eating an entire linear map $W = \widecheck x \otimes y$ and returning an element of $G$. <em>Right:</em> in curried form, $\mathcal A$ is a map $\widecheck E \to \mathcal L(F, G)$: feed it just the covector part $\widecheck x$, get back another linear map $\mathcal A(\widecheck x) : F \to G$, then evaluate that on the vector part $y$. The defining identity $\mathcal A(\widecheck x \otimes y) = \mathcal A(\widecheck x)(y)$ from (A.62) is precisely the assertion that these two readings produce the same answer, so the two function spaces are isomorphic via uncurrying / currying.</figcaption>
 </figure> -->
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.12 (Mapping $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$)</span></p>
 
 Let $x \in E$ and $B \in \mathcal{L}(F, G)$ and set
@@ -1446,7 +1446,7 @@ which is (1.8).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">1.4 (Linear Associative Memory)</span></p>
 
 We apply Theorem 1.2 to the data depicted in Figure 1.1(a) and (b). From a few thousand samples of the digit $0$, with $\dim = 784$, representative vectors were selected by unsupervised clustering. The goal is to compute a data-specific inner product $\ell(x,x')$ according to Lemma A.2.
@@ -2109,7 +2109,7 @@ Our goal is to generalize this concrete scenario by incorporating more generic g
 
 To keep the discussion concrete, two running examples will accompany us throughout the chapter: one *flat* and Abelian, the other *curved* and non-Abelian.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two running Lie groups)</span></p>
 
 We consider the two Lie groups
@@ -2161,7 +2161,7 @@ Definition 2.1 packs three layers of structure into a single object — it is wo
 
 We now apply Definition 2.1 to our first running example, the Euclidean space $\mathbb{R}^N$ regarded as a Riemannian manifold.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^{N}$ as Riemannian manifold)</span></p>
 
 With respect to the geometry of $\mathbb{R}^{N}$ as a Riemannian manifold, the metric is
@@ -2270,7 +2270,7 @@ This twisting is exactly what we need to encode that, when a rotation $h$ is per
 
 We apply this operation to the two running Lie groups and obtain a *single* Lie group $G$ that acts on $\mathcal{M} = \mathbb{R}^{N}$ by rigid motions. This will serve as a simple yet representative scenario which exemplifies generic geometric objects on $\mathcal{M}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Special Euclidean group $E^{+}(N)$)</span></p>
 
 We set $H := \mathrm{SO}(N)$ and $N := \mathbb{R}^{N}$. The group $H$ acts on $N$ by automorphisms in the obvious way (a rotation matrix times a vector). Applying Definition 2.2 yields the
@@ -2511,7 +2511,7 @@ $$
 G_{0} \;=\; \mathrm{SO}(N) \;\subset\; \mathrm{SE}(N). \tag{2.32}
 $$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^{N} \cong \mathrm{SE}(N)/\mathrm{SO}(N)$ as a homogeneous $G$-space)</span></p>
 
 We unfold the map $F$ of Theorem 2.3 in this case. With $x_{0} := 0 \in \mathbb{R}^{N} = \mathcal{M}$, $g_{0} := (b_{0}, A_{0}) \in \mathrm{SE}(N)$ and $h := (0, A') \in \mathrm{SO}(N) = G_{0}$, the map (2.30a) becomes
@@ -2564,7 +2564,7 @@ A **frame** at $x \in \mathcal{M}$ is an ordered basis of the tangent space $T_{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.9 (frame representation of Riemannian metrics)</span></p>
 
 Given a frame $X = \lbrace X_{1}, \ldots, X_{n} \rbrace$, a **coframe** is an ordered $n$-tuple of $1$-forms $\widecheck{X} = \lbrace \widecheck{X}^{1}, \ldots, \widecheck{X}^{n} \rbrace$ that is *dual* to $X$ in the sense
@@ -2737,7 +2737,7 @@ The three items have a clean conceptual reading: (i) says $\mathcal{B}$ is "fibe
 
 The next example illustrates how a frame bundle becomes relevant in a *data-driven* setting: a color image, viewed as a smooth function on a 2D manifold, will naturally **induce** a moving frame from its own gradient structure. We set the scene here; the explicit construction is carried out in the following pages.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.12 (section of a frame bundle — data-induced moving frame from a color image)</span></p>
 
 We consider a color image
@@ -2771,7 +2771,7 @@ on $\mathcal{M}$ (the actual construction continues on the next pages).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.12 (continued — the eigenframe construction)</span></p>
 
 The data-induced moving frame $X \in \Gamma(\mathcal{M}, \mathcal{B})$ from (2.50) is a section of the frame bundle $\pi : \mathcal{B} \to \mathcal{M}$. Since $T\mathcal{M} \cong \mathcal{M} \cong \mathbb{R}^{2}$ in the present Euclidean case, $X$ has to assign a two-dimensional basis $X_{x}$ of $\mathbb{R}^{2}$ at every point $x \in \mathcal{M}$. We extract such a basis from the *only* available datum: the image $f$ itself.
@@ -3166,7 +3166,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.19 (discussion: direct application)</span></p>
 
 Consider the situation in which data are given as points in $\mathbb{R}^{n}$. We briefly discuss the *direct applicability* of basic geometric concepts in this *unsupervised* situation. It is reasonable to assume that points which are close to each other belong to the same class. But measuring closeness by the Euclidean norm of the *ambient space* does not make sense whenever the data points are samples on an unknown underlying *curved* manifold (the **manifold assumption**).
@@ -3177,7 +3177,7 @@ So we consider *geodesics* and wish to measure closeness of data points through 
 
 [^riemannian-metric]: Here $g = g(\cdot, \cdot) = \langle \cdot, \cdot \rangle$ denotes the Riemannian metric on $\mathcal{M}$ (Definition 2.1), i.e. a specified family $(\langle \cdot, \cdot \rangle\_{x})\_{x \in \mathcal{M}}$ of inner products on the tangent spaces $T\_{x}\mathcal{M}$ that smoothly vary with the base point $x \in \mathcal{M}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.19 (continued — steps and issues)</span></p>
 
 Carrying out this geodesic program on real data runs into a chain of estimation problems.
@@ -3196,7 +3196,7 @@ Overall, these issues sum up to a serious obstacle for handling general data set
 
 The next example shows that a coarse but cheap discretization already captures the essential idea behind geodesic distances.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.20 (poor man's geodesics)</span></p>
 
 In view of the **Riemannian distance**

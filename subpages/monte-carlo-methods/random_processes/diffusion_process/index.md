@@ -158,7 +158,7 @@ where now $Z_k \sim \mathcal{N}(0,I)$ is an $n$-dimensional standard normal vect
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simplified Duffing–Van der Pol Oscillator (2D SDE))</span></p>
 
 A two-dimensional system $(X_t,Y_t)$:

@@ -151,7 +151,7 @@ $$\inf(B) := \max(L(B)).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Suprema and Infima in $\mathbb{R}$)</span></p>
 
 In the standard linear order of real numbers: $\min((0,1))$ does not exist, $\min([0,1)) = 0$, $\inf((0,1)) = \inf([0,1)) = 0$, and $\sup(\mathbb{N})$ does not exist because $U(\mathbb{N}) = \emptyset$.
@@ -179,7 +179,7 @@ Axioms 1–4 are the axioms of a **field**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ordered Fields)</span></p>
 
 The **fractions** (or **rational numbers**) $\mathbb{Q} := \lbrace m/n \mid m, n \in \mathbb{Z},\; n \neq 0 \rbrace$, where $\mathbb{Z} := \lbrace \dots, -1, 0, 1, \dots \rbrace$ are the integers, form an ordered field. Another example is $\mathbb{Q}(\sqrt{2}) := \lbrace r + s\sqrt{2} \mid r, s \in \mathbb{Q} \rbrace$.
@@ -1458,7 +1458,7 @@ In the proof of the implication $\Leftarrow$ we used the so called **axiom of ch
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Limit of a Function)</span></p>
 
 Due to the identity $a^2 - b^2 = (a - b)(a + b)$,
@@ -2025,7 +2025,7 @@ we write $f(x) = O(g(x))$ ($x \in N$) and say that the function $f$ is **big $O$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Big $O$)</span></p>
 
 1. Is $x^2 = O(x^3)$ ($x \in \mathbb{R}$)? No, there is a problem at 0.
@@ -2048,7 +2048,7 @@ Let $A \in \mathbb{R}^\ast$ be a limit point of $M \subset \mathbb{R}$, let $f, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Little $o$ and $\sim$)</span></p>
 
 1. Is $x^2 = o(x^3)$ ($x \to +\infty$)? Yes.
@@ -3134,7 +3134,7 @@ where the first equality holds due to the theorem on limits of composite functio
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(L'Hospital's Rule)</span></p>
 
 $$\lim_{x \to 0} \sqrt{x} \log x = \lim_{x \to 0} \frac{(\log x)'}{(1/\sqrt{x})'} = \lim_{x \to 0} \frac{1/x}{(-1/2)x^{-3/2}} = -2 \lim_{x \to 0} x^{1/2} = 0,$$
@@ -3357,7 +3357,7 @@ To graph a function $f$ (i.e., to make a picture of $G\_f$), usually given by a 
 
 We determine where $f''$ exists and, using Theorem 12, determine maximum intervals of convexity and concavity. Using Proposition 15 and Theorem 16 we find inflection points of the graph. We determine asymptotes of the function $f$ and draw its graph by hand or computer.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Graphing $\tan x$)</span></p>
 
 Let $f(x) := \tan x = \frac{\sin x}{\cos x}$. The definition domain is $M = \bigcup\_{n \in \mathbb{Z}} (\pi n - \pi/2,\, \pi n + \pi/2)$. It is a $\pi$-periodic function, $\sin(\pi + x) = -\sin x$ and $\cos(\pi + x) = -\cos x$. Due to the continuity of sine and cosine and due to the arithmetic of continuity, $f$ is continuous on $M$. For $b(n) := \pi n + \frac{\pi}{2}$, $n \in \mathbb{Z}$, one has the limits $\lim\_{x \to b(n)^-} f(x) = +\infty$ and $\lim\_{x \to b(n)^+} f(x) = -\infty$ — each line $x = b(n)$ is both the left and right vertical asymptote of $f$. There are no asymptotes in $-\infty$ and $+\infty$, nor the limits $\lim\_{x \to \pm\infty} f(x)$ exist. Because $f'(x) = 1/\cos^2 x > 0$ on $M$, $f$ increases on each interval $(b(n) - \pi, b(n))$. Because of this and the periodicity, $f$ has no extremes. $G\_f$ intersects the $y$-axis only in the origin $(0, 0)$ and the $x$-axis exactly in the points $(b(n) - \frac{\pi}{2}, 0) = (\pi n, 0)$, $n \in \mathbb{Z}$. By the above infinite limits and continuity of $f$ (attaining intermediate values) we see that $f[M] = f[(b(n) - \pi, b(n))] = \mathbb{R}$.
@@ -3366,7 +3366,7 @@ The second derivative is $f''(x) = \frac{2\sin x}{\cos^3 x}\colon M \to \mathbb{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Graphing $\arcsin(2x/(1+x^2))$)</span></p>
 
 Let $f(x) := \arcsin\bigl(2x/(1+x^2)\bigr)$. The definition domain is $M = \mathbb{R}$ because the definition domain of arcsin is $[-1, 1]$ and $2\vert x\vert  \le 1 + x^2$ for every $x \in \mathbb{R}$ ($x^2 \pm 2x + 1 = (x \pm 1)^2 \ge 0$). This function is odd, i.e., $f(-x) = -f(x)$, because $\sin x$, $\arcsin x$ and $\frac{2x}{1+x^2}$ are odd. According to the theorems on continuity of inverse functions, of rational functions and of composite functions, $f$ is continuous on $M$. Clearly, $\lim\_{x \to -\infty} f(x) = \lim\_{x \to +\infty} f(x) = \arcsin(0) = 0$, because $\frac{2x}{1+x^2} \to 0$ for $x \to \pm\infty$, and so $y = 0 = 0x + 0$ is the asymptote of $f$ both in $-\infty$ and $+\infty$. There are no vertical asymptotes.
@@ -3457,7 +3457,7 @@ The notation $o(\dots)$ means that $\lim\_{x \to b} e(x)/(x - b)^n = 0$.
 
 ## Taylor Polynomials of Elementary Functions
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Several Taylor polynomials centered at 0)</span></p>
 
 We present several Taylor polynomials centered at 0. We justify these formulas, calculate a few limits with them, and discuss when the extension of Taylor polynomials of $f$ to an infinite series converges to $f(x)$. In the following formulas $n \in \mathbb{N}\_0$ is arbitrary.
@@ -3583,7 +3583,7 @@ where $B\_n$ is the number of partitions of an $n$-element set.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 $B\_3 = 5$ because of the five partitions
@@ -3663,7 +3663,7 @@ Thus for every $x \in M$, $\lim f\_n(x) = f(x)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise Convergence)</span></p>
 
 Let $M = \mathbb{R}$ and let $f\_n(x) := x/n$. Then $f\_n \to 0$ pointwise on $\mathbb{R}$, because for every fixed $x \in \mathbb{R}$,
@@ -3690,7 +3690,7 @@ we write $f\_n \rightrightarrows f$ (on $M$) and say that the functions $f\_n$ *
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uniform Convergence)</span></p>
 
 Let $M = [0, 1]$ and let $f\_n(x) := x/n$. Then $f\_n \rightrightarrows 0$ on $[0,1]$, because
@@ -3715,7 +3715,7 @@ but the converse in general **does not hold**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pointwise but not Uniform)</span></p>
 
 Let $M = [0,1]$ and let $f\_n(x) := x^n$. Then $f\_n$ converges pointwise to
@@ -4244,7 +4244,7 @@ At first look these two definitions appear very differently, but we know from Co
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Area Under Graph)</span></p>
 
 Let $f(x) = x^2\colon [-1, 1] \to \mathbb{R}$ then $F(x) = x^3/3$ is a primitive of $f$ on $[-1, 1]$. By Newton's definition the area of the domain
@@ -4302,7 +4302,7 @@ Hence $F(d) - F(c) \le G(d) - G(c)$. This inequality is preserved under the limi
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Newton Integrals)</span></p>
 
 $$\text{(N)} \int_0^1 \sqrt{x} = \frac{2 \cdot 1^{3/2}}{3} - \frac{2 \cdot 0^{3/2}}{3} = \frac{2}{3}$$
@@ -4441,14 +4441,14 @@ $$\boxed{\text{The class of Darboux functions is strictly larger than the class 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-Darboux function)</span></p>
 
 The signum function $\operatorname{sgn}(x)$ is not Darboux on any nontrivial interval $I \ni 0$ and therefore it does not have primitive there.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Function with the Darboux property that does not have a primitive)</span></p>
 
 The most common example of a function with the Darboux property that **does not** have a primitive is the function
@@ -4527,7 +4527,7 @@ $$(FG - H)' = F'G + FG' - H' = fG + Fg - Fg = fG. \quad \square$$
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Integration by Parts)</span></p>
 
 </div>
@@ -4622,7 +4622,7 @@ $$(G(g^{-1}))' = G'(g^{-1}) \cdot (g^{-1})' = f(\underbrace{g(g^{-1})}_{=\mathrm
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Substitution: Linear Argument)</span></p>
 
 If $F = \int f$ on $I$ and $a, b \in \mathbb{R}$ with $a \neq 0$ then the first formula gives that
@@ -4636,7 +4636,7 @@ $$\frac{F(ax + b)}{a} = \int f(ax + b) \quad \text{on } J := (I - b)/a.$$
   <figcaption>Substitution for the semicircle example. The change of variables $t=\sin x$ transforms $\sqrt{1-t^2}$ into $\cos x$, and the horizontal stretching contributes the extra factor $dt=\cos x\,dx$, giving $\cos^2 x$.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Substitution: $\int\sqrt{1-t^2}$)</span></p>
 
 What is 
@@ -4853,7 +4853,7 @@ on any nontrivial interval $I \subset \mathrm{Def}(r)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Antiderivative of a Rational Function)</span></p>
 
 By linearity of integration, by integration by substitution and by the above table of primitives,

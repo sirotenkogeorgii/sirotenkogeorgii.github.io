@@ -174,7 +174,7 @@ We refer to $\text{NPSPACE}$ as the class of problems decidable in nondeterminis
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Directed Path Problem)</span></p>
 
 A canonical problem in $\text{NLOG}$ is determining **reachability in a directed graph**.

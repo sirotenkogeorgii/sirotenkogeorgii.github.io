@@ -1765,7 +1765,7 @@ and $\mathbb{P}(A_i \cap N) = 0$ for every $i$, so any mass sitting inside $N$ c
 
 ### What "blindness" looks like concretely
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(finite-set modification)</span></p>
 
 Take $f(x) = \sin(2\pi x)$ on $[0,1]$ and define $g$ by
@@ -1788,7 +1788,7 @@ no matter how we choose the $y_i$. Visually the two functions disagree at four p
   <img src="{{ '/assets/images/notes/random/null_set_finite_modification.png' | relative_url }}" alt="Two functions on [0,1] that agree off a four-point null set have the same integral" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dirichlet function)</span></p>
 
 The rationals $\mathbb{Q} \cap [0,1]$ are **dense** in $[0,1]$ yet have Lebesgue measure $0$. The Dirichlet function
@@ -3184,7 +3184,7 @@ You walk along the graph and add up *all* up-and-down changes (absolute incremen
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bounded variation in 1D)</span></p>
 
 * $f(x)=\sin x$ on $[0,2\pi]$ is BV (finite total variation).
@@ -3222,7 +3222,7 @@ BV functions may have jumps (like edges in images), but the total “edge streng
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(BV in $\mathbb{R}^n$)</span></p>
 
 * $f(x)=\sin x$ on $[0,2\pi]$ is BV (finite total variation).
@@ -3258,7 +3258,7 @@ $H(X_1,\dots,X_n)$ is the average number of bits you need to encode the first $n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(i.i.d. case (simplest))</span></p>
 
 If you flip a biased coin with $\Pr(1)=p$ independently each time, then the entropy **per bit** is
@@ -3291,7 +3291,7 @@ meaning: all infinite sequences $X$ whose first $\lvert\sigma\rvert$ bits are ex
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(All infinite sequences starting with 101)</span></p>
 
 If $\sigma=101$, then
@@ -3485,7 +3485,7 @@ All of these are **local** notions. When doing **differential calculus**, we usu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Derivative in one variable)</span></p>
 
 To define
@@ -3555,7 +3555,7 @@ Because a PSD operator is the mathematical form of “**cannot produce negative 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It makes quadratic forms behave like a notion of size)</span></p>
 
 For a general operator $A$, the quantity
@@ -3582,7 +3582,7 @@ So PSD is often the exact condition that says: “this quantity is physically or
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It prevents pathological behavior)</span></p>
 
 If the operator were not PSD, then there would be some direction $x$ with
@@ -3601,7 +3601,7 @@ So PSD is a natural safety condition.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It appears in physics as “energy cannot be negative”)</span></p>
 
 Many operators represent energy, stiffness, dissipation, or mass. PSD then means:
@@ -3677,7 +3677,7 @@ So spectral decay tells you whether the matrix is effectively:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Slow and fast spectral decay)</span></p>
 
 Suppose the singular values are
@@ -3694,7 +3694,7 @@ this is **slow spectral decay**: many directions still carry substantial weight.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common types of decay)</span></p>
 
 People sometimes describe decay as:
@@ -4111,7 +4111,7 @@ is called the **Taylor series** of $f$ at $p$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analytic functions)</span></p>
 
 * $e^x$, $\sin x$, $\cos x$, and polynomials are analytic.
@@ -4135,7 +4135,7 @@ A useful contrast:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Smooth, but not analytic functions)</span></p>
 
 So a function can be smooth but **not** analytic. A classic example is
@@ -4212,7 +4212,7 @@ So divergence is a local measure of **expansion/compression** or **source/sink b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant field)</span></p>
 
 In 2D, if $F(x,y) = (P(x,y), Q(x,y))$, then
@@ -4234,7 +4234,7 @@ $$\operatorname{div} F = 0 + 0 = 0$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Expanding field)</span></p>
 
 $$F(x,y) = (x,y)$$
@@ -4247,7 +4247,7 @@ $$\operatorname{div} F = 1 + 1 = 2$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Contracting field)</span></p>
 
 $$F(x,y) = (-x,-y)$$
@@ -4260,7 +4260,7 @@ $$\operatorname{div} F = -1 + (-1) = -2$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Rotational field)</span></p>
 
 $$F(x,y) = (-y,x)$$
@@ -4562,7 +4562,7 @@ This happens a lot.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hessian)</span></p>
 
 Let $A = \nabla^2 f(x)$, the Hessian.
@@ -4579,7 +4579,7 @@ This is much cheaper than computing every Hessian entry.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Jacobian)</span></p>
 
 Suppose $A = J(x)$, a Jacobian. You may not form all partial derivatives, but autodiff can compute:
@@ -4591,7 +4591,7 @@ again without storing the whole Jacobian.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix function)</span></p>
 
 If $A = \log(B)$ or $A = f(B)$, you may approximate $Az = f(B)z$ using Krylov methods, Chebyshev methods, Lanczos, etc., without ever forming $f(B)$.
@@ -5539,7 +5539,7 @@ A good one-line summary is:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Saddle-node bifurcation application)</p>
 
 A simple model is
@@ -5575,7 +5575,7 @@ The harmful part is not the bifurcation itself, but that **the desired stable st
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Hopf bifurcation application)</p>
 
 A standard normal form is
@@ -5852,7 +5852,7 @@ This memory is often maintained through molecular feedback loops, such as positi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hysteretic Current-Voltage Curve)</span></p>
 
 Suppose $\alpha$ is small and $I$ is initially below the homoclinic bifurcation (thick line in Figure). Then the junction will be operating at the stable fixed point, corresponding to the zero-voltage state. As $I$ is increased, nothing changes until $I$ exceeds $1$. Then the stable fixed point disappears in a saddle-node bifurcation, and the junction jumps into a nonzero voltage state (the limit cycle).
@@ -7464,7 +7464,7 @@ These are genuinely different physical phenomena, even though all are lumped tog
 
 #### Conservative forces
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Canonical conservative forces)</span></p>
 
 | force | potential $V$ | verification |
@@ -7481,7 +7481,7 @@ In each case, *because* a potential $V$ exists, all four equivalent conditions o
 
 #### Non-conservative forces — and why each fails to be conservative
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dissipative forces: friction and drag)</span></p>
 
 **Linear (viscous) friction $F=-\lambda v,\ \lambda>0$.** The kind appearing in §1.3 of the pdeds notes.
@@ -7499,7 +7499,7 @@ In all three cases the force opposes velocity, removes energy from the system, a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gyroscopic force: magnetic Lorentz)</span></p>
 
 The Lorentz force $F=qv\times B$ is the most interesting non-conservative force because *it does no work*:
@@ -7517,7 +7517,7 @@ So the magnetic force is **gyroscopic**: kinetic energy is conserved (it does no
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Time-dependent driving)</span></p>
 
 Consider a periodic external forcing $F=F_0\cos(\omega t)$. The force is not autonomous: it depends explicitly on time, not just on $x$ or $v$. The closed-loop work test (1)–(2) is inapplicable, because closed *spatial* loops are traversed at different times, and the *value* of the force at a point depends on when you are there.
@@ -7526,7 +7526,7 @@ The energy injected over a cycle depends on phase relations between $F$ and $v$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constraint forces: frictionless rail)</span></p>
 
 A bead constrained to slide on a smooth curve experiences a normal force from the curve. This force:
@@ -7747,7 +7747,7 @@ So when matrix shape feels backwards, the question to ask is: *am I describing a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dim V = 3$, $\dim W = 2$)</span></p>
 
 Pick bases $e_1, e_2, e_3$ of $V$ and $f_1, f_2$ of $W$, with dual basis $e^1, e^2, e^3$ of $V^\vee$.
@@ -8032,7 +8032,7 @@ not "pairs are matrices."
   <figcaption>Left: the pure tensor $v \otimes w$ for $v = (1, 2, 3)^\top, w = (4, 5)^\top$ as the rank-one outer-product matrix $a_i b_j$. Right: a general tensor in $V \otimes W$, formed as a sum $v \otimes w + \alpha v_2 \otimes w_2$, which is no longer rank-one and no longer factors as a single outer product. The rank-one matrices form a (non-linear) subset of $V \otimes W$; their linear span is the whole space.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Worked bilinear-vs-linear identification)</span></p>
 
 Take $V = W = \mathbb{R}^2$, $U = \mathbb{R}$, and define the bilinear form

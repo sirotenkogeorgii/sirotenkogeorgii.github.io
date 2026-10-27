@@ -186,7 +186,7 @@ Estimation is usually the easy part — the law of large numbers does most of th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Restaurant Problem)</span></p>
 
 You have just moved to a new city with $k = 10$ restaurants nearby. Each night you pick one and rate your meal. Your goal is to maximize total enjoyment over the year. The dilemma is painfully concrete:
@@ -319,7 +319,7 @@ A **testbed** is a fixed *distribution over bandit instances* used to evaluate a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The 10-armed Testbed)</span></p>
 
 * **Across runs:** each arm's true value is drawn independently, $q_\ast(a) \sim \mathcal{N}(0, 1)$, for $a = 1, \dots, 10$.
@@ -358,7 +358,7 @@ The general lesson: greedy looks good *early*, exploration pays off *late*.
   <img src="{{ '/assets/images/notes/rl_hd/reward_curves.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tracking the Updates by Hand)</span></p>
 
 Setup: $k = 2$ arms, $Q_1(1) = Q_1(2) = 0$, $\varepsilon = 0.2$. The first three steps produce:
@@ -1079,7 +1079,7 @@ Different contexts may have entirely different best actions.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(What Is Context Worth?)</span></p>
 
 Two cases occur with equal probability at every round:
@@ -1187,7 +1187,7 @@ The contextual bandit at the end of the previous lecture was a small step in thi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gridworld — value depends on where you are)</span></p>
 
 Place an agent on a $5 \times 5$ grid. Some cells are walls (obstacles), one cell is a terminal goal, and the agent receives a constant per-step penalty until it reaches the goal. Two non-terminal cells $(4,1)$ and $(5,1)$ both *look* like ordinary cells. Yet they are not equally good places to be: one is closer to the goal, has fewer obstacles between it and the terminal cell, and so it requires fewer per-step penalties to escape from. **The "value" of a state is exactly this kind of information** — and it is something a one-step bandit could never represent, because in a bandit there is no notion of "where you are".
@@ -1734,7 +1734,7 @@ A Bellman backup is therefore *always* the same operation — **one-step lookahe
 
 ### Gridworld Example
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gridworld as a Concrete Finite MDP)</span></p>
 
 * **State space:** $\mathcal{S} = \lbrace (i, j) : i \in \lbrace 1, \dots, H \rbrace,\, j \in \lbrace 1, \dots, W \rbrace \rbrace$.
@@ -1753,7 +1753,7 @@ A Bellman backup is therefore *always* the same operation — **one-step lookahe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One Concrete Bellman Equation — top-left corner)</span></p>
 
 In the simple gridworld with $r(s, a, s') = -1$ and $\gamma \in (0, 1)$, the Bellman expectation equation simplifies because the reward is constant:
@@ -2731,7 +2731,7 @@ $$\lVert T_\pi u- T_\pi v\rVert_\infty \le \gamma\lVert u-v\rVert_\infty$$
 
 #### Gridworld: Evaluation in Action
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Small Gridworld under the Random Policy)</span></p>
 
 * **Non-terminal states:** $\mathcal{S} = \lbrace 1, 2, \dots, 14 \rbrace$, arranged on a $4 \times 4$ grid with two terminal corners.
@@ -3043,7 +3043,7 @@ Argue that policy iteration must converge to an optimal policy in finitely many 
 
 #### Jack's Car Rental: Policy Iteration in Action
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Jack's Car Rental — a textbook continuing MDP)</span></p>
 
 Jack manages two rental locations:
@@ -3296,7 +3296,7 @@ This distinction matters for analysis (error bounds, monotonicity) and for any l
 
 #### Gambler's Problem: Value Iteration on a Tiny MDP
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gambler's Problem)</span></p>
 
 A gambler repeatedly bets on coin flips.
@@ -3580,7 +3580,7 @@ MC sits in the unique "model-free, non-bootstrapping" corner; TD will occupy the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Running example — Blackjack)</span></p>
 
 Throughout this lecture we use **Blackjack** as a recurring concrete example because it has exactly the structure MC needs.
@@ -3705,7 +3705,7 @@ Both estimators converge to $v_\pi(s)$. First-visit is the *theoretically* clean
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First-visit vs. Every-visit on a tiny episode)</span></p>
 
 Take $\gamma = 0.5$ and one sampled episode
@@ -3781,7 +3781,7 @@ The term $G - V_n(s)$ is the prediction error: $V_{n+1}(s) = (1-\alpha)V_n(s)+\a
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One sampled Blackjack episode)</span></p>
 
 A single Blackjack episode might be
@@ -4100,7 +4100,7 @@ contribution.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\varepsilon$-Greedy improvement on two actions)</span></p>
 
 Take a single state $s$ with two actions and action-values
@@ -4634,7 +4634,7 @@ $$V(s) \;\approx\; \frac{1}{\lvert \mathcal{T}(s) \rvert} \sum_{t \in \mathcal{T
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Importance sampling on Blackjack)</span></p>
 
 Take
@@ -4656,7 +4656,7 @@ If $\pi$ would also hit on 18, the first factor is positive. If $\pi$ would *nev
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why importance weights become unstable — toy model)</span></p>
 
 Suppose an episode has length $H$, and at each step the per-step ratio
@@ -5467,7 +5467,7 @@ TD(0) is the corner that is both shallow and narrow — and therefore the cheape
 
 ### The Driving-Home Example
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Predicting time to drive home)</span></p>
 
 A canonical intuition pump. The **state** is the situation along the route (leaving office, in the car, exiting the highway, …); the **reward** is the minutes elapsed on each leg ($\gamma = 1$); the **value** $V(s)$ is the *expected remaining* travel time; the **return** is the *actual* remaining time; and the **predicted total** is elapsed-so-far $+\, V(s)$.
@@ -5806,7 +5806,7 @@ Monte Carlo prediction is useful in short episodic tasks, when full returns are 
   <figcaption>Five nonterminal states $A, B, C, D, E$. Every episode starts at $C$; each step goes left or right with probability $1/2$. Reward $+1$ only on terminating to the <em>right</em>, $0$ otherwise; undiscounted episodic ($\gamma = 1$).</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Random walk — true values)</span></p>
 
 Because $\gamma = 1$ and the only nonzero reward is $+1$ on terminating to the right, the value of a state equals the **probability of eventually exiting on the right**, which for a symmetric walk is linear in position:
@@ -5865,7 +5865,7 @@ Identical data, different notion of "best fit."
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(What should $V(A)$ be?)</span></p>
 
 Eight observed episodes ($\gamma = 1$):
@@ -6305,7 +6305,7 @@ Q-learning is inferior here only in **online performance during persistent explo
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cliff walking — on-policy vs off-policy)</span></p>
 
 * **Q-learning** learns the values of the *greedy* (optimal) path that runs right along the cliff edge. 
@@ -7028,7 +7028,7 @@ The most important two remaining errors are **selecting a suboptimal action** an
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Maximization bias — Q-learning vs Double Q-learning)</span></p>
 
 From state $A$: going **right** terminates immediately with reward $0$ (this is optimal). Going **left** leads to state $B$, from which $10$ different actions all give $\mathcal{N}(-0.1,\, 1)$ rewards — *negative in expectation*. The true optimum is therefore "always go right"; the only reason to ever go left is forced $\varepsilon$-exploration, whose floor is $\varepsilon/2 = 5\%$.
@@ -7378,7 +7378,7 @@ Because of error reduction, **all $n$-step TD methods converge to $v\_\pi$** und
 
 ### The Empirical Story: Bias, Variance, and the Best $n$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(5-state random walk — credit travels $n$ states)</span></p>
 
 Consider a short chain 
@@ -7459,7 +7459,7 @@ starting in $C$, with reward $+1$ only on terminating at the right end. Suppose 
   <figcaption>One episode $C \to D \to E \to$ right-terminal (reward $+1$). Filled green = a state whose value moves toward $1$ after this single episode. Deeper backups (<em>larger $n$</em>) push the outcome's credit further back along the visited path — one extra state per extra step.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(19-state random walk — intermediate $n$ wins)</span></p>
 
 Running $n$-step TD directly on a 19-state random walk and plotting RMS error against step size $\alpha$ for each fixed $n$ gives a family of U-shaped curves:
@@ -7567,7 +7567,7 @@ It is the same algorithm — only the return is longer.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why $n$-step control learns faster)</span></p>
 
 Picture a gridworld episode that wanders to the goal $G$, where reaching $G$ is the *only* reward. After that single episode:
@@ -9167,7 +9167,7 @@ The parameter $n$ is the number of planning updates per real step; $n = 0$ recov
 
 #### Example: The Dyna Maze
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dyna maze — planning buys speed)</span></p>
 
 A gridworld agent must reach a goal $G$ from a start $S$ around a few walls. Holding the **real** experience stream fixed and varying only the number of planning steps:
@@ -9256,7 +9256,7 @@ Planning amplifies whatever the model believes. **A bad model can make planning 
 
 #### Failure Mode 1: The Blocking Maze
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Blocking maze — the model becomes too optimistic)</span></p>
 
 A short path exists for a while, then the environment changes and that path is **blocked**. The agent's model still records the old, now-impossible transition.
@@ -9270,7 +9270,7 @@ The lesson: *exploration in planning is about checking whether the model is stil
 
 #### Failure Mode 2: The Shortcut Maze
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortcut maze — the model is too pessimistic)</span></p>
 
 Now the environment change *opens* a new, shorter path. The agent's model says no shortcut exists, so planning keeps reinforcing the old longer route and the agent may **never discover** the improvement.
@@ -10349,7 +10349,7 @@ Heuristic search is like a deeper greedy policy: it does not just ask “what ha
   <!-- <figcaption>The short corridor objective $J(p)$ as a function of $p = \pi(\text{right} \mid s)$. The best stochastic policy sits at $p^* = 2 - \sqrt{2} \approx 0.59$; $\varepsilon$-greedy ($\varepsilon = 0.1$) is confined to the two dashed lines, earning about $-82$ or $-44$.</figcaption> -->
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Backing up a small look-ahead tree)</span></p>
 
 Take a tree rooted at $s$ with $\gamma = 1$. From $s$, action $a\_1$ leads to node $x$ and action $a\_2$ to a leaf valued $4$. From $x$, action $b\_1$ leads through a **stochastic** action $o\_1$ to leaves $\lbrace 12, 2\rbrace$ with equal probability, and $b\_2$ to a leaf valued $6$. Backing up bottom-up:
@@ -10864,7 +10864,7 @@ Trouble (b) is the deeper one: it survives even infinite memory, and it is what 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(How astronomically large an image state space is)</span></p>
 
 Suppose the state is a small grayscale image, $84 \times 84$ pixels, each pixel one of $256$ levels. The number of possible configurations is
@@ -11226,7 +11226,7 @@ Any raw state — a position, an image, a board — is first turned into a numer
   <figcaption>The state is mapped through a <strong>fixed</strong> feature map $\mathbf{x}(\cdot)$ into a numeric vector; the value is a linear read-out $\mathbf{w}^\top\mathbf{x}(s)$. Learning only adjusts $\mathbf{w}$ — the features are designed in advance and never change.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A tiny worked feature map)</span></p>
 
 Let the state be a 1-D position $s \in [0,1]$. Choose **three** features — soft "bumps" centred at $0.25, 0.5, 0.75$:
@@ -11507,7 +11507,7 @@ It is the degenerate, zero-generalization end of the feature-design spectrum: gr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1000-state random walk with state aggregation)</span></p>
 
 States $1, \dots, 1000$, episodes start at $500$. From each non-terminal state the agent jumps **uniformly** to one of the $\pm 100$ nearest neighbours; reward is $-1$ on left-termination, $+1$ on right-termination, $0$ otherwise. The true $v\_\pi$ is nearly **linear** in the state index.
@@ -11552,7 +11552,7 @@ Two states inside many common regions generalize strongly; two states sharing on
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coarse coding on a 1-D interval)</span></p>
 
 Let $s \in [0,1]$ (say, a cartpole position). Cover the interval with overlapping regions
@@ -12079,7 +12079,7 @@ The denominator is a normalizer: for any fixed $s$, $\pi(\cdot \mid s, \boldsymb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Action preferences and the soft-max policy)</span></p>
 
 Two standard choices for the preferences:
@@ -12163,7 +12163,7 @@ The smoothness is not cosmetic: to follow $\nabla\_{\boldsymbol{\theta}} J(\bold
   <figcaption>The short corridor with switched actions: three nonterminal states, actions <code>left</code>/<code>right</code>, reward $-1$ per step, undiscounted episodic ($\gamma = 1$). In the middle state the actions are reversed.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Short corridor with switched actions)</span></p>
 
 The corridor has three nonterminal states and a goal; the reward is $-1$ per step, so maximizing return means reaching the goal fast. Two twists make it interesting:
@@ -12856,7 +12856,7 @@ The eligibility vector points from the **expected feature vector under $\pi$** t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One REINFORCE step by hand)</span></p>
 
 **Setup.** 

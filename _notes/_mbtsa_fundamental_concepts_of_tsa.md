@@ -155,7 +155,7 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Where Strong Stationarity holds)</span></p>
 
 Despite being "unrealistic," the assumption is a necessary "working fiction" in several fields:

@@ -31,7 +31,7 @@ $$x^{\ast} = f(x^{\ast})$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed point of Linear AR(1))</span></p>
 
 For $f(x) = \alpha x + c$, the fixed point equation is 
@@ -60,7 +60,7 @@ The behavior of the system near a fixed point determines its stability.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stability of FP of Linear System)</span></p>
 
 For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^{\ast}$ is:
@@ -88,7 +88,7 @@ $$x^{\ast} = f^p(x^{\ast})$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2-cycle and neutrally stable cycle)</span></p>
 
 For the map 
@@ -139,7 +139,7 @@ Every point is part of a 2-cycle. This is a **neutrally stable cycle**.
   </figure>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multivariate Extension (Linear Case))</span></p>
 
 For a **multivariate linear system** 
@@ -233,7 +233,7 @@ $$\lvert f'(x^{\ast})\rvert < 1$$
   </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stability Analysis of Logistic Map)</span></p>
 
 - **Applying to the Logistic Map:** The derivative is $f'(x) = \alpha(1-2x)$.

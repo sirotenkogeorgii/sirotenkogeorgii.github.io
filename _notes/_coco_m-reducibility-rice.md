@@ -162,7 +162,7 @@ For an index set $I$ and any partial computable function $\alpha$, either all or
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
 The following sets are index sets: 
@@ -347,7 +347,7 @@ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \ph
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
 Let

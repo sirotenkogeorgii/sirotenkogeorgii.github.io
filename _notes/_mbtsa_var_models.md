@@ -163,7 +163,7 @@ Maximizing this log-likelihood function provides the parameter estimates.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian errors)</span></p>
 
 In the case of Gaussian errors, MLI is equivalent to multivariate least squares.

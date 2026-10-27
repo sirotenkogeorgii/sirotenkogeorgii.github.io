@@ -17,7 +17,7 @@ tags:
 
 ### The Binomial Distribution
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Binomial Distribution)</span></p>
 
 A bent coin has probability $f$ of coming up heads. The coin is tossed $N$ times. The number of heads $r$ has a **binomial distribution**:
@@ -119,7 +119,7 @@ A **block code** converts a sequence of source bits $\mathbf{s}$ of length $K$ i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">((7, 4) Hamming Code)</span></p>
 
 The **(7, 4) Hamming code** transmits $N = 7$ bits for every $K = 4$ source bits, giving a rate $R = 4/7$. The first four transmitted bits $t_1 t_2 t_3 t_4$ are the source bits $s_1 s_2 s_3 s_4$. The three parity-check bits $t_5 t_6 t_7$ enforce even parity within three overlapping groups of bits.
@@ -250,7 +250,7 @@ $$P(y \mid x, \mathcal{H}) = \frac{P(x \mid y, \mathcal{H}) P(y \mid \mathcal{H}
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Medical Test -- Bayes' Theorem)</span></p>
 
 Jo has a test for a disease. The test is 95% reliable: $P(b{=}1 \mid a{=}1) = 0.95$, $P(b{=}0 \mid a{=}0) = 0.95$. The disease prevalence is $P(a{=}1) = 0.01$. Jo tests positive ($b = 1$). By Bayes' theorem:
@@ -281,7 +281,7 @@ This more general use of probability to quantify beliefs is known as the **Bayes
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Urn Problem -- Inverse Probability)</span></p>
 
 There are eleven urns labelled $u \in \lbrace 0, 1, \ldots, 10 \rbrace$. Urn $u$ contains $u$ black balls and $10 - u$ white balls. Fred selects an urn $u$ at random and draws $N$ times with replacement, obtaining $n_B$ blacks. After $N = 10$ draws with $n_B = 3$ blacks, the posterior probability of $u$ given $n_B$ is:
@@ -387,7 +387,7 @@ $$H(\mathbf{p}) = H\bigl[(p_1 + \cdots + p_m),\, (p_{m+1} + \cdots + p_I)\bigr] 
 
 This means we can compute the entropy by decomposing the random variable into successive revelations and summing the weighted entropies.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Decomposability of Entropy)</span></p>
 
 A source produces a character $x$ from the alphabet $\mathcal{A} = \lbrace 0, 1, \ldots, 9, \texttt{a}, \texttt{b}, \ldots, \texttt{z} \rbrace$. With probability $1/3$, $x$ is a numeral (equiprobable); with probability $1/3$, $x$ is a vowel ($\texttt{a}, \texttt{e}, \texttt{i}, \texttt{o}, \texttt{u}$, equiprobable); with probability $1/3$, $x$ is one of the 21 consonants (equiprobable). Using decomposability:
@@ -459,7 +459,7 @@ Bayes' theorem provides the correct language for describing inference -- whether
 
 ### 3.1 A First Inference Problem
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inferring a Decay Constant)</span></p>
 
 Unstable particles are emitted from a source and decay at a distance $x$ with an exponential distribution of characteristic length $\lambda$. Decays are only observable in a window from $x = 1$ cm to $x = 20$ cm. $N$ decays are observed at locations $\lbrace x_1, \ldots, x_N \rbrace$. What is $\lambda$?
@@ -554,7 +554,7 @@ Key observations:
 
 ### 3.4 An Example of Legal Evidence
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Forensic Evidence)</span></p>
 
 Two people left blood traces at a crime scene. Oliver, a suspect, has type O blood. The two blood traces are type O (frequency $p_\text{O} = 0.6$) and type AB (frequency $p_\text{AB} = 0.01$). Do these data support the hypothesis $S$ that Oliver was present?
@@ -622,7 +622,7 @@ $$H(X, Y) = H(X) + H(Y).$$
 
 #### The Weighing Problem: Designing Informative Experiments
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Weighing Problem)</span></p>
 
 You are given 12 balls, all equal in weight except for one that is either heavier or lighter. Using a three-outcome balance, the number of conceivable outcomes in three weighings is $3^3 = 27$, while the number of possible states is 24 (any of 12 balls, heavy or light). Since $3^2 < 24 < 3^3$, the problem might be solvable in three weighings but not in two.
@@ -640,7 +640,7 @@ The outcome of a random experiment is guaranteed to be most informative if the p
 
 #### Guessing Games
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Game 'Sixty-Three')</span></p>
 
 What is the smallest number of yes/no questions needed to identify an integer $x$ between 0 and 63? Since there are $64 = 2^6$ possibilities, six questions suffice. A reasonable strategy successively halves the search space:
@@ -658,7 +658,7 @@ The answers, translated from $\lbrace \text{yes}, \text{no} \rbrace$ to $\lbrace
 
 #### The Game of Submarine
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Game of Submarine)</span></p>
 
 In **submarine**, one player hides a submarine in one square of an $8 \times 8$ grid. The other player fires at squares, receiving 'miss' or 'hit' outcomes. If we hit on the first shot:
@@ -703,7 +703,7 @@ There are only two ways a compressor can actually compress files:
 
 We introduce a parameter $\delta$ describing the risk of our compression method: $\delta$ is the probability that there will be no name for an outcome $x$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lossy Compression with 8 Symbols)</span></p>
 
 Let $\mathcal{A}_X = \lbrace \mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d}, \mathbf{e}, \mathbf{f}, \mathbf{g}, \mathbf{h} \rbrace$ with $\mathcal{P}_X = \lbrace \tfrac{1}{4}, \tfrac{1}{4}, \tfrac{1}{4}, \tfrac{1}{16}, \tfrac{3}{64}, \tfrac{1}{64}, \tfrac{1}{64}, \tfrac{1}{64} \rbrace$. The raw bit content is 3 bits (8 binary names). But since $P(x \in \lbrace \mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d} \rbrace) = 15/16$, if we accept risk $\delta = 1/16$ of failure, we need only 4 names (2 bits).
@@ -736,7 +736,7 @@ Note that $H_0(X)$ is the special case with $\delta = 0$ (if $P(x) > 0$ for all 
 
 We now consider compressing **blocks** of $N$ i.i.d. symbols from a single ensemble $X$. Denote by $X^N$ the ensemble $(X_1, X_2, \dots, X_N)$. Since entropy is additive for independent variables, $H(X^N) = NH(X)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bent Coin Sequences)</span></p>
 
 Consider a string of $N$ flips of a bent coin, $\mathbf{x} = (x_1, \dots, x_N)$, with $x_n \in \lbrace 0, 1 \rbrace$ and probabilities $p_0 = 0.9$, $p_1 = 0.1$. If $r(\mathbf{x})$ is the number of 1s in $\mathbf{x}$, then $P(\mathbf{x}) = p_0^{N - r(\mathbf{x})} p_1^{r(\mathbf{x})}$.
@@ -929,7 +929,7 @@ Prefix codes correspond to binary trees: *complete* prefix codes correspond to b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Prefix and Non-Prefix Codes)</span></p>
 
 - $C_1 = \lbrace 0, 101 \rbrace$ is a prefix code: 0 is not a prefix of 101, nor is 101 a prefix of 0.
@@ -952,7 +952,7 @@ where $I = \lvert \mathcal{A}_X \rvert$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Optimal Codelengths Equal Shannon Information Content)</span></p>
 
 Let $\mathcal{A}_X = \lbrace \mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d} \rbrace$ with $\mathcal{P}_X = \lbrace 1/2, 1/4, 1/8, 1/8 \rbrace$ and code $C_3$: $\mathbf{a} \to 0$, $\mathbf{b} \to 10$, $\mathbf{c} \to 110$, $\mathbf{d} \to 111$. The entropy of $X$ is 1.75 bits, and the expected length $L(C_3, X) = 1.75$ bits. This is because the codeword lengths satisfy $l_i = \log_2(1/p_i)$, i.e., they equal the Shannon information contents.
@@ -1090,7 +1090,7 @@ Since each step reduces the alphabet size by one, the algorithm assigns codeword
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Huffman Coding for Five Symbols)</span></p>
 
 Let $\mathcal{A}_X = \lbrace \mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d}, \mathbf{e} \rbrace$ with $\mathcal{P}_X = \lbrace 0.25, 0.25, 0.2, 0.15, 0.15 \rbrace$.
@@ -1116,7 +1116,7 @@ There is no better symbol code for a source than the Huffman code. The proof rel
 
 #### Constructing a Binary Tree Top-Down Is Suboptimal
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Greedy Top-Down vs. Huffman)</span></p>
 
 For the ensemble $\mathcal{A}_X = \lbrace \mathbf{a}, \mathbf{b}, \mathbf{c}, \mathbf{d}, \mathbf{e}, \mathbf{f}, \mathbf{g} \rbrace$ with $\mathcal{P}_X = \lbrace 0.01, 0.24, 0.05, 0.20, 0.47, 0.01, 0.02 \rbrace$:
@@ -1168,7 +1168,7 @@ As a motivation for these two compression methods, consider the redundancy in a 
 
 To illustrate the redundancy of English, we can imagine a **guessing game** in which an English speaker repeatedly attempts to predict the next character in a text file. For an alphabet of 27 symbols (26 upper case letters plus a space), the subject guesses the next character repeatedly until correct, and we record the number of guesses required.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Guessing Game)</span></p>
 
 One sentence gave the following result when a human was asked to guess:
@@ -1259,7 +1259,7 @@ To encode a string $x_1 x_2 \ldots x_N$, we locate the interval corresponding to
 
 #### Example: Compressing the Tosses of a Bent Coin
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compressing `bbba☐`)</span></p>
 
 Imagine watching a bent coin tossed some number of times with outcomes `a` and `b`, plus an end-of-file symbol `☐`. Let the source string be `bbba☐`. The probability of the next symbol given the string thus far:
@@ -1322,7 +1322,7 @@ The key result is the predictive distribution for the next symbol given the stri
 
 #### Comparison of Compression Methods
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Laplace vs. Dirichlet Models)</span></p>
 
 Compare the expected message length when an ASCII file is compressed by the following three methods:
@@ -1362,7 +1362,7 @@ The method of compression is to replace a substring with a **pointer** to an ear
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Lempel--Ziv Encoding)</span></p>
 
 If the string is `1011010100010...`, we parse it into a dictionary of substrings: $\lambda$, `1`, `0`, `11`, `01`, `010`, `00`, `10`, ... (where $\lambda$ is the empty substring). Each new substring is one bit longer than a substring that has occurred earlier. The code for this example:
@@ -1402,7 +1402,7 @@ In principle, one can design adaptive probabilistic models, and thence arithmeti
 
 #### Compression of a Text File
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compression Comparison -- Text File)</span></p>
 
 Comparison of compression algorithms applied to a text file (LaTeX source, 20,942 bytes):
@@ -1420,7 +1420,7 @@ Comparison of compression algorithms applied to a text file (LaTeX source, 20,94
 
 #### Compression of a Sparse File
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compression Comparison -- Sparse File)</span></p>
 
 Comparison of compression algorithms applied to a random file of $10^6$ characters (99% `0`s and 1% `1`s). An ideal model would compress the file to about $10^6 H_2(0.01)/8 \simeq 10\,100$ bytes:
@@ -1589,7 +1589,7 @@ These codes are almost complete. (Recall that a code is 'complete' if it satisfi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Encoding 'Claude Shannon')</span></p>
 
 To illustrate these codes, consider a small file consisting of just 14 characters: `Claude Shannon`.
@@ -1847,7 +1847,7 @@ The information transmitted is given by the **mutual information** between the s
 
 ### 9.2 Review of Probability and Information
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Joint Distribution $XY$)</span></p>
 
 Consider the joint distribution from exercise 8.6:
@@ -1948,7 +1948,7 @@ Given a received symbol $y$, we can write down the posterior distribution of the
 
 $$P(x \mid y) = \frac{P(y \mid x) P(x)}{\sum_{x'} P(y \mid x') P(x')}.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(BSC Posterior Inference)</span></p>
 
 Consider a BSC with $f = 0.15$ and input ensemble $\mathcal{P}_X : \lbrace p_0 = 0.9, p_1 = 0.1 \rbrace$. If we observe $y = 1$:
@@ -1959,7 +1959,7 @@ Thus '$x{=}1$' is still less probable than '$x{=}0$', although it is not as impr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Z Channel Posterior Inference)</span></p>
 
 Consider a Z channel with $f = 0.15$ and $\mathcal{P}_X : \lbrace p_0 = 0.9, p_1 = 0.1 \rbrace$. If we observe $y = 1$:
@@ -1978,7 +1978,7 @@ $$I(X; Y) \equiv H(X) - H(X \mid Y) = H(Y) - H(Y \mid X).$$
 
 For computational purposes, it is often handy to evaluate $I(X; Y)$ as $H(Y) - H(Y \mid X)$ rather than $H(X) - H(X \mid Y)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Mutual Information for the BSC)</span></p>
 
 For the BSC with $f = 0.15$ and $\mathcal{P}_X : \lbrace p_0 = 0.9, p_1 = 0.1 \rbrace$:
@@ -1991,7 +1991,7 @@ This may be contrasted with the entropy of the source $H(X) = H_2(0.1) = 0.47$ b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Mutual Information for the Z Channel)</span></p>
 
 For the Z channel with $f = 0.15$ and $\mathcal{P}_X$ as above, $P(y{=}1) = p_1(1-f) = 0.085$:
@@ -2015,7 +2015,7 @@ The distribution $\mathcal{P}_X$ that achieves the maximum is called the **optim
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Capacity of the BSC)</span></p>
 
 For the BSC with noise level $f$, by symmetry the optimal input distribution is $\lbrace 0.5, 0.5 \rbrace$, giving:
@@ -2028,14 +2028,14 @@ To verify without invoking symmetry, write $I(X; Y) = H_2((1-f)p_1 + (1-p_1)f) -
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Capacity of the Noisy Typewriter)</span></p>
 
 For the noisy typewriter, the optimal input distribution is uniform over $x$, giving $C = \log_2 9$ bits. This is because we can find a **non-confusable subset** of 9 inputs (every third letter: B, E, H, ..., Z) such that any output can be uniquely decoded.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Capacity of the Z Channel)</span></p>
 
 For the Z channel with noise level $f$, the mutual information is:
@@ -2050,7 +2050,7 @@ $$p_1^* = \frac{1/(1-f)}{1 + 2^{H_2(f)/(1-f)}}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Capacity of the Binary Erasure Channel)</span></p>
 
 For the BEC with erasure probability $f$, the optimal input distribution is $\lbrace 0.5, 0.5 \rbrace$ by symmetry. The conditional entropy $H(X \mid Y) = \sum_y P(y) H(X \mid y)$; $x$ is uncertain only when $y = \text{?}$, which occurs with probability $f$, so $H(X \mid Y) = f H_2(0.5) = f$. Thus:
@@ -2185,7 +2185,7 @@ The **jointly-typical set** $J_{N\beta}$ is the set of all jointly-typical seque
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Jointly-Typical Pair)</span></p>
 
 For $N = 100$, $P(x)$ with $(p_0, p_1) = (0.9, 0.1)$, and $P(y \mid x)$ corresponding to a BSC with noise level 0.2: $\mathbf{x}$ has 10 ones (typical since $P(x=1) = 0.1$), $\mathbf{y}$ has 26 ones (typical since $P(y=1) = 0.26$), and $\mathbf{x}$ and $\mathbf{y}$ differ in 20 bits (the typical number of flips for this channel).
@@ -2331,7 +2331,7 @@ $$\frac{\partial I(X; Y)}{\partial p_i} \le \lambda \quad \text{for all } i \tex
 
 where $\lambda$ is a Lagrange multiplier associated with the constraint $\sum_i p_i = 1$, and $C = \lambda + \log_2 e$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ternary Confusion Channel)</span></p>
 
 Consider a channel with $\mathcal{A}_X = \lbrace 0, ?, 1 \rbrace$ and $\mathcal{A}_Y = \lbrace 0, 1 \rbrace$. The transition probabilities are:
@@ -2363,7 +2363,7 @@ A discrete memoryless channel is a **symmetric channel** if the set of outputs c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Channel)</span></p>
 
 The channel with $\mathcal{A}_X = \lbrace 0, 1 \rbrace$ and $\mathcal{A}_Y = \lbrace 0, ?, 1 \rbrace$ defined by:
@@ -2797,7 +2797,7 @@ For $f \simeq 0.01$, that means an extra 7 bits above $\log_2 S$.
 
 #### Checking Arithmetic
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Casting Out Nines)</span></p>
 
 **Casting out nines** is a method for checking addition by hand. One finds the sum, modulo nine, of all the *digits* of the numbers to be summed and compares it with the sum, modulo nine, of the digits of the putative answer.
@@ -2814,7 +2814,7 @@ It is a nice property of decimal arithmetic that if $a + b + c + \cdots = m + n 
 
 Hash codes can be used to determine whether two files are the same without transferring either file. Alice and Bob each compute the hash of their respective files using the same $M$-bit hash function. If the hashes match, the two files are almost surely the same.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(False Negative Probability)</span></p>
 
 What is the probability of a false negative, i.e., the probability that the two files do differ but the two hashes are nevertheless identical?
@@ -2876,7 +2876,7 @@ The **weight enumerator function** (or **distance distribution**) of a code, $A(
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Weight Enumerators of Known Codes)</span></p>
 
 - The $(7, 4)$ Hamming code has distance $d = 3$. Its weight enumerator is: $A(0) = 1$, $A(3) = 7$, $A(4) = 7$, $A(7) = 1$; total 16 codewords.
@@ -3099,7 +3099,7 @@ The set of *all* vectors of length $N$ that are orthogonal to all codewords in a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Duals of Standard Codes)</span></p>
 
 - **Repetition code $R_3$:** generator matrix $\mathbf{G} = [1\ 1\ 1]$, parity-check matrix $\mathbf{H} = \begin{bmatrix} 1 & 1 & 0 \\\\ 1 & 0 & 1 \end{bmatrix}$. The dual code has generator matrix $\mathbf{G}^{\perp} = \mathbf{H}$, which is the **simple parity code** $P_3$ (the code with one parity-check bit equal to the sum of the two source bits).
@@ -3135,7 +3135,7 @@ If $\mathbf{G} = [\mathbf{I}_K | \mathbf{P}^{\mathsf{T}}]$ is self-dual, then $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Self-Dual Codes)</span></p>
 
 - The repetition code $R_2$ with $\mathbf{G} = \mathbf{H} = [1\ 1]$ is a simple self-dual code.
@@ -3537,7 +3537,7 @@ One of the themes of this book is the idea of doing complicated calculations usi
 
 ### 16.1 Counting
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Counting Soldiers in a Line)</span></p>
 
 Consider a line of soldiers walking in the mist. The commander wishes to count them. A centralized solution requires global communication hardware and the ability to listen to all incoming messages. A message-passing solution requires only *local* communication: each soldier can communicate single integers with the two adjacent soldiers in the line, and can add one to a number. Each soldier follows these rules:
@@ -3671,21 +3671,21 @@ This chapter studies the task of communicating efficiently over a **constrained 
 
 A constrained channel can be defined by rules that define which strings are permitted.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Channel A)</span></p>
 
 In **Channel A** every 1 must be followed by at least one 0. The substring $11$ is forbidden. A valid string: $0010010100101000010$. A motivation: a channel where 1s represent pulses of electromagnetic energy, and the device requires a recovery time of one clock cycle after generating a pulse.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Channel B)</span></p>
 
 **Channel B** has the rule that all 1s must come in groups of two or more, and all 0s must come in groups of two or more. The substrings $101$ and $010$ are forbidden. A valid string: $0011100111000011$. A motivation: a disk drive where isolated magnetic domains surrounded by domains of opposite orientation are unstable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Channel C)</span></p>
 
 **Channel C** has the rule that the largest permitted runlength is two -- each symbol can be repeated at most once. The substrings $111$ and $000$ are forbidden. A valid string: $1001001101100110100$. A motivation: a disk drive where the rate of rotation is not known accurately, making it difficult to distinguish between runs of two and three identical symbols.
@@ -4339,7 +4339,7 @@ We open our toolbox of methods for handling probabilities by discussing a brute-
 
 ### 21.1 The Burglar Alarm
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Burglar Alarm)</span></p>
 
 Fred lives in Los Angeles and commutes 60 miles to work. Whilst at work, he receives a phone-call from his neighbour saying that Fred's burglar alarm is ringing. What is the probability that there was a burglar in his house today? While driving home to investigate, Fred hears on the radio that there was a small earthquake near his home. What is the probability that there was a burglar in his house?
@@ -4391,7 +4391,7 @@ Many of the hypothesis spaces we will consider are naturally thought of as conti
 
 #### A Two-Parameter Model
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inferring Gaussian Parameters by Enumeration)</span></p>
 
 The one-dimensional Gaussian distribution is parameterized by a mean $\mu$ and standard deviation $\sigma$:
@@ -4406,7 +4406,7 @@ Using a finer grid, the likelihood can be represented as a surface plot or conto
 
 #### A Five-Parameter Mixture Model
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Mixture of Two Gaussians)</span></p>
 
 Consider a mixture of two Gaussians with five parameters $\mu_1, \sigma_1, \mu_2, \sigma_2, \pi_1$ (where $\pi_1 + \pi_2 = 1$, $\pi_i \geq 0$):
@@ -5128,7 +5128,7 @@ The first ratio on the right-hand side measures how much our initial beliefs fav
 
 Simple models tend to make precise predictions. Complex models, by their nature, are capable of making a greater variety of predictions. So if $\mathcal{H}_2$ is a more complex model, it must spread its predictive probability $P(D \mid \mathcal{H}_2)$ more thinly over the data space than $\mathcal{H}_1$. Thus, in the case where the data are compatible with both theories, the simpler $\mathcal{H}_1$ will turn out more probable than $\mathcal{H}_2$, without our having to express any subjective dislike for complex models.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Arithmetic vs. Cubic: Sequence $-1, 3, 7, 11$)</span></p>
 
 Consider the sequence $-1, 3, 7, 11$. Let:
@@ -5222,7 +5222,7 @@ In summary, Bayesian model comparison is a simple extension of maximum likelihoo
 
 ### 28.2 Example
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(How Many Boxes Behind the Tree?)</span></p>
 
 Consider an image of an area around a tree trunk with a size of 50 pixels, the trunk 10 pixels wide, and 16 distinguishable colours for boxes.
@@ -5759,7 +5759,7 @@ It may be a helpful perspective, when thinking about speeding up Monte Carlo met
 
 In a dumb Metropolis method, the proposals $Q(\mathbf{x}'; \mathbf{x})$ have nothing to do with $P(\mathbf{x})$. Properties of $P(\mathbf{x})$ are only involved in the algorithm at the acceptance step, when the ratio $P^*(\mathbf{x}')/P^*(\mathbf{x})$ is computed. The channel from the true distribution $P(\mathbf{x})$ to the user who is interested in computing properties of $P(\mathbf{x})$ thus passes through a bottleneck: all the information about $P$ is conveyed by the string of acceptances and rejections.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Optimal Acceptance Rate)</span></p>
 
 The information-theoretic viewpoint offers a simple justification for the widely-adopted rule of thumb which states that the parameters of a dumb Metropolis method should be adjusted such that the acceptance rate is about one half. Let the acceptance history be the binary string of accept or reject decisions, $\mathbf{a}$. The information learned about $P(\mathbf{x})$ after the algorithm has run for $T$ steps is less than or equal to the information content of $\mathbf{a}$, since all information about $P$ is mediated by $\mathbf{a}$. The information content of $\mathbf{a}$ is upper-bounded by $T H_2(f)$, where $f$ is the acceptance rate. This bound on information acquired about $P$ is maximized by setting $f = 1/2$.
@@ -6365,14 +6365,14 @@ Infinite mixture models for categorical data are presented in Neal (1991), along
 
 ### 34.4 Exercises
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 34.1 -- ICA with Noise)</span></p>
 
 Repeat the derivation of the algorithm, but assume a small amount of noise in $\mathbf{x}$: $\mathbf{x} = \mathbf{G}\mathbf{s} + \mathbf{n}$, so the term $\delta\!\left(x_j^{(n)} - \sum_i G_{ji} s_i^{(n)}\right)$ is replaced by a probability distribution over $x_j^{(n)}$ with mean $\sum_i G_{ji} s_i^{(n)}$. Show that, if this noise distribution has sufficiently small standard deviation, the identical algorithm results.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 34.3 -- Factor Analysis)</span></p>
 
 **Factor analysis** assumes that the observations $\mathbf{x}$ can be described in terms of independent latent variables $\lbrace s_k \rbrace$ and independent additive noise. The observable $\mathbf{x}$ is given by
@@ -6389,7 +6389,7 @@ Create algorithms appropriate for the situations: (a) $\mathbf{x}$ includes subs
 
 ### 35.1 What Do You Know If You Are Ignorant?
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Benford's Law)</span></p>
 
 A real variable $x$ is measured in an accurate experiment (e.g., the half-life of the neutron, the wavelength of light emitted by a firefly, the depth of Lake Vostok). What is the probability that the value of $x$ starts with a '1'?
@@ -6412,7 +6412,7 @@ This observation about initial digits is known as **Benford's law**. Ignorance d
 
 ### 35.2 The Luria--Delbruck Distribution
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 35.4 -- The Luria--Delbruck Distribution)</span></p>
 
 In their landmark paper demonstrating that bacteria could mutate from virus sensitivity to virus resistance, Luria and Delbruck (1943) wanted to estimate the mutation rate in an exponentially-growing population from the total number of mutants found at the end of the experiment.
@@ -6435,7 +6435,7 @@ Given $M$ experiments, each with colony size $N$, and measured numbers of resist
 
 ### 35.3 Inferring Causation
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 35.5 -- Inferring Causation)</span></p>
 
 In the Bayesian graphical model community, the task of inferring which way the arrows point -- that is, which nodes are parents, and which children -- is one on which much has been written. Inferring causation is tricky because of **likelihood equivalence**: two graphical models are likelihood-equivalent if for any setting of the parameters of either, there exists a setting of the parameters of the other such that the two joint probability distributions of all observables are identical. An example of a pair of likelihood-equivalent models are $A \to B$ and $B \to A$.
@@ -6469,7 +6469,7 @@ Some statistical methods that use the likelihood alone are unable to distinguish
 
 ### 35.4 Further Exercises
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 35.6 -- Poisson Process Inference)</span></p>
 
 Photons arriving at a photon detector are believed to be emitted as a Poisson process with a time-varying rate,
@@ -6480,7 +6480,7 @@ where the parameters $a$, $b$, $\omega$, and $\phi$ are known. Data are collecte
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 35.8 -- Biexponential Distribution)</span></p>
 
 In an experiment, the measured quantities $\lbrace x_n \rbrace$ come independently from a biexponential distribution with mean $\mu$,
@@ -6574,7 +6574,7 @@ If the world in which we act is more complicated than the prospecting problem --
 
 ### 36.3 Further Exercises
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 36.4 -- The Four Doors Problem)</span></p>
 
 A new game show uses rules similar to those of the three doors (exercise 3.8), but there are four doors. The host explains: "First you will point to one of the doors, and then I will open one of the other doors, guaranteeing to choose a non-winner. Then you decide whether to stick with your original pick or switch to one of the remaining doors. Then I will open another non-winner (but never the current pick). You will then make your final decision by sticking with the door picked on the previous decision or by switching to the only other remaining door."
@@ -6583,7 +6583,7 @@ What is the optimal strategy? Should you switch on the first opportunity? Should
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 36.5 -- The Allais Paradox)</span></p>
 
 One of the challenges of decision theory is figuring out exactly what the utility function is. The utility of money, for example, is notoriously nonlinear for most people. The behaviour of many people cannot be captured by a coherent utility function, as illustrated by the *Allais paradox*:
@@ -6600,7 +6600,7 @@ Many people prefer A to B, and at the same time, D to C. Prove that these prefer
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 36.6 -- Optimal Stopping)</span></p>
 
 A large queue of $N$ potential partners is waiting at your door, all asking to marry you. They have arrived in random order. As you meet each partner, you have to decide on the spot whether to marry them or say no. Each potential partner has a desirability $d_n$. You must marry one of them, but you are not allowed to go back to anyone you have said no to.
@@ -6611,7 +6611,7 @@ A large queue of $N$ potential partners is waiting at your door, all asking to m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 36.7 -- Regret as an Objective Function)</span></p>
 
 Many people working in learning theory and decision theory use "minimizing the maximal possible regret" as an objective function. Consider a lottery ticket that is a winner with probability $1/100$ and worth &pound;10 if it wins. Fred offers to sell you the ticket for &pound;1.
@@ -6625,7 +6625,7 @@ The four possible regret outcomes are: if you buy and it doesn't win, regret is 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 36.8 -- Gambling Oddities / Cover's Aim)</span></p>
 
 A horse race involving $I$ horses occurs repeatedly, and you are obliged to bet all your money each time. Your bet at time $t$ can be represented by a normalized probability vector $\mathbf{b}$ multiplied by your money $m(t)$. The odds offered by the bookies are such that if horse $i$ wins then your return is $m(t+1) = b_i o_i m(t)$. Assuming the bookies' odds are "fair" ($\sum_i 1/o_i = 1$) and the probability that horse $i$ wins is $p_i$, work out the optimal betting strategy if your aim is **Cover's aim**, namely to maximize the *expected value of* $\log m(T)$.
@@ -6642,7 +6642,7 @@ Sampling theory is the widely used approach to statistics, and most papers in mo
 
 ### 37.1 A Medical Example
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Vaccination Trial)</span></p>
 
 We are trying to reduce the incidence of an unpleasant disease called *microsoftus*. Two vaccinations, $A$ and $B$, are tested on a group of volunteers. Vaccination $B$ is a control treatment, a placebo. Of the 40 subjects, 30 are randomly assigned to treatment $A$ and 10 to control treatment $B$. After one year: of the 30 in group $A$, one contracts *microsoftus*; of the 10 in group $B$, three contract *microsoftus*. Is treatment $A$ better than treatment $B$?
@@ -6704,7 +6704,7 @@ Thus there is a **99% chance**, given the data and our prior assumptions, that t
 
 If there were a situation in which we really did want to compare the two hypotheses $\mathcal{H}_0$: $p_{A+} = p_{B+}$ and $\mathcal{H}_1$: $p_{A+} \neq p_{B+}$, we can of course do this directly with Bayesian methods.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bayesian Model Comparison -- Minimal Data)</span></p>
 
 Consider the data set: one subject, given treatment $A$, subsequently contracted *microsoftus*; one subject, given treatment $B$, did not.
@@ -6727,7 +6727,7 @@ So if the prior probability over the two hypotheses was 50:50, the posterior pro
 
 ### 37.2 Dependence of $p$-values on Irrelevant Information
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dr. Bloggs's Coin -- Stopping Rule Dependence)</span></p>
 
 In an expensive laboratory, Dr. Bloggs tosses a coin labelled $a$ and $b$ twelve times and the outcome is the string $aaabaaaabaab$, which contains three $b$s and nine $a$s. What evidence do these data give that the coin is biased in favour of $a$?
@@ -6764,7 +6764,7 @@ In an experiment in which data $D$ are obtained from a system with an unknown pa
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Confidence Interval Paradox)</span></p>
 
 Let the parameter $\theta$ be an integer, and let the data be a pair of points $x_1, x_2$, drawn independently from:
@@ -6792,7 +6792,7 @@ Another piece of common ground: while most well-posed inference problems have a 
 
 ### 37.5 Further Exercises
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 37.2 -- Traffic Survey)</span></p>
 
 A traffic survey records traffic on two successive days. On Friday morning, there are 12 vehicles in one hour. On Saturday morning, there are 9 vehicles in half an hour. Assuming the vehicles are Poisson distributed with rates $\lambda_F$ and $\lambda_S$ (in vehicles per hour) respectively:
@@ -6802,7 +6802,7 @@ A traffic survey records traffic on two successive days. On Friday morning, ther
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exercise 37.3 -- Comparing Treatments Program)</span></p>
 
 Write a program to compare treatments $A$ and $B$ given data $F_{A+}$, $F_{A-}$, $F_{B+}$, $F_{B-}$ as described in section 37.1. The outputs of the program should be: (a) the probability that treatment $A$ is more effective than treatment $B$; (b) the probability that $p_{A+} < 10 \, p_{B+}$; (c) the probability that $p_{B+} < 10 \, p_{A+}$.
@@ -7042,7 +7042,7 @@ Let $T(N, K)$ denote the number of distinct threshold functions on $N$ points in
 - **$N = 1$ point, any $K$:** We can realize both possible labellings by setting $\mathbf{w} = \pm \mathbf{x}^{(1)}$. Thus $T(1, K) = 2$.
 - **$K = 2$ dimensions:** Spinning the separating line around the origin, each time the line passes over a point we obtain a new function. In one revolution, every point is passed over twice. Thus $T(N, 2) = 2N$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Unrealizable Functions)</span></p>
 
 For $N \ge 3$ and $K = 2$, not all binary functions can be realized by a linear threshold function. One famous example with $N = 4$ and $K = 2$ is the **exclusive-or** function on the points $\mathbf{x} = (\pm 1, \pm 1)$. This function remains unrealizable even if the points are perturbed into general position.
@@ -7423,7 +7423,7 @@ This gradient-based learning algorithm does a better job than the one-shot Hebb 
 
 Since a Hopfield network's dynamics minimize an energy function, it is natural to map interesting optimization problems onto Hopfield networks.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Travelling Salesman Problem)</span></p>
 
 A set of $K$ cities is given with $K(K-1)/2$ distances between them. The task is to find a closed tour visiting each city once with the smallest total distance. This is NP-complete.
@@ -7641,7 +7641,7 @@ We are given $N$ data points $\mathbf{X}_N, \mathbf{t}_N = \lbrace \mathbf{x}^{(
 
 In a parametric approach we express the unknown function $y(\mathbf{x})$ in terms of a nonlinear function $y(\mathbf{x}; \mathbf{w})$ parameterized by parameters $\mathbf{w}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed Basis Functions)</span></p>
 
 Using a set of basis functions $\lbrace \phi_h(\mathbf{x}) \rbrace_{h=1}^H$, we can write:
@@ -7656,7 +7656,7 @@ then $y(\mathbf{x}; \mathbf{w})$ is a nonlinear function of $\mathbf{x}$; howeve
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Adaptive Basis Functions -- Neural Network)</span></p>
 
 In a two-layer feedforward neural network with nonlinear hidden units and a linear output, the function can be written:
@@ -7753,7 +7753,7 @@ and the $(n, n')$ entry of $\mathbf{C}$ is:
 
 $$C_{nn'} = \sigma_w^2 \sum_h \phi_h(\mathbf{x}^{(n)}) \phi_h(\mathbf{x}^{(n')}) + \delta_{nn'} \sigma_\nu^2.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Radial Basis Functions in 1D)</span></p>
 
 Consider one-dimensional radial basis functions, uniformly spaced with the basis function labelled $h$ centred on $x = h$. Taking the limit $H \to \infty$, the sum over $h$ becomes an integral. To avoid a divergent covariance, we scale $\sigma_w^2$ as $S / (\Delta H)$. Then:
@@ -7841,7 +7841,7 @@ for some function $D$ (autocovariance function). If additionally $C$ depends onl
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Covariance Function)</span></p>
 
 Let the power spectrum be a Gaussian function of frequency. Since the Fourier transform of a Gaussian is a Gaussian, the autocovariance function is also a Gaussian function of separation. This rederives the covariance function:
@@ -8634,7 +8634,7 @@ The derivatives of $\ln Z$ describe properties like the heat capacity of the sys
 
 #### A Toy System That Shows a Phase Transition
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coupled Spins Phase Transition)</span></p>
 
 Imagine a collection of $N$ coupled spins that have the following energy as a function of their state $\mathbf{x} \in \lbrace 0, 1 \rbrace^N$:

@@ -494,7 +494,7 @@ Using the formula $(\ast)$ is called **integration per partes**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.2 - Illustration of 3.1.(1): $\int x^a \lg x$)</span></p>
 
 Let us compute $J = \int x^a \lg x$ with $x > 0$ and $a \neq -1$.
@@ -509,7 +509,7 @@ $$\int \lg x \mathrm{d}x = x(\lg x - 1).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.3 - Illustration of 3.1.(2): $\int e^x \sin x$)</span></p>
 
 Let us compute $J = \int e^x \sin x \mathrm{d}x$.
@@ -532,7 +532,7 @@ $$J = \frac{e^x}{2}(\sin x - \cos x).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.4 - Illustration of 3.1.(3): $\int x^n e^x$)</span></p>
 
 Let us compute $J\_n = \int x^n e^x \mathrm{d}x$ for integers $n \ge 0$.
@@ -578,7 +578,7 @@ $$\mathrm{d}y = \phi'(x)\mathrm{d}x \quad \text{as obtained from} \quad \frac{\m
 
 This is very easy to remember.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.2 - $\int \frac{\lg x}{x}\mathrm{d}x$)</span></p>
 
 To determine $\int \frac{\lg x}{x}\mathrm{d}x$ substitute $y = \lg x$. Then $\mathrm{d}y = \frac{\mathrm{d}x}{x}$ and we obtain
@@ -587,7 +587,7 @@ $$\int \frac{\lg x}{x}\mathrm{d}x = \int y\mathrm{d}y = \frac{1}{2}y^2 = \frac{1
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.3 - $\int \tan x \mathrm{d}x$)</span></p>
 
 To compute $\int \tan x \mathrm{d}x$ recall that $\tan x = \frac{\sin x}{\cos x}$ and that $(-\cos x)' = \sin x$. Hence, substituting $y = -\cos x$ we obtain
@@ -1308,7 +1308,7 @@ $$\mathsf{vol}(F) = \int_a^b f(x)\mathrm{d}x,$$
 
 the common value of the supremum of the former and the infimum of the latter.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.2 - Area under a parabola)</span></p>
 
 The area of the section of parabola $F = \lbrace (x, y) \mid -1 \le x \le 1, 0 \le y \le 1 - x^2 \rbrace$ is
@@ -1317,7 +1317,7 @@ $$\int_{-1}^{1} (1 - x^2)\mathrm{d}x = \left[x - \frac{1}{3}x^3\right]_{-1}^{1} 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.3 - Area of a circle)</span></p>
 
 Let us compute the area of the circle with radius $r$. A half of it is given by
@@ -1356,7 +1356,7 @@ Thus, we compute the volume of $F$ as
 
 $$\mathsf{vol}(F) = \pi \int_a^b f^2(x)\mathrm{d}x.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.2 - Volume of a ball)</span></p>
 
 For instance we obtain the three-dimensional ball $B\_3$ as bounded by the rotating curve $\lbrace (x, \sqrt{r^2 - x^2}) \mid -r \le x \le r \rbrace$ and hence obtain
@@ -1513,7 +1513,7 @@ Note that the convergence of the series $(\ast)$ does not follow from the criter
 
 In the following chapters we will study real functions of several real variables. Hence, domains of such functions will be subsets of Euclidean spaces. We will need to understand better the basic notions like convergence or continuity: as we will see in the following example they cannot be reduced to the behaviour of functions in the individual variables. In this chapter we will discuss some concepts to be used in the general context of metric spaces.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.2 - Continuity in individual variables does not imply joint continuity)</span></p>
 
 Define a function of two real variables $f : \mathbb{E}\_2 \to \mathbb{R}$ by setting
@@ -1550,7 +1550,7 @@ The assumptions (1) and (3) are rather intuitive: (1) requires that the distance
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.2 - Examples of metric spaces)</span></p>
 
 1. The **real line**, that is, $\mathbb{R}$ with the distance $d(x, y) = \lvert x - y \rvert$.
@@ -2607,7 +2607,7 @@ Note that the order is given by the number of taking derivatives and does not de
 
 To simplify notation, taking a partial derivatives by the same variable more than once consecutively may be indicated by an exponent, e.g. $\frac{\partial^5 f(x, y)}{\partial x^2 \partial y^3} = \frac{\partial^5 f(x, y)}{\partial x \partial x \partial y \partial y \partial y}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.2 - Mixed second order derivatives)</span></p>
 
 Compute the "mixed" second order derivatives of the function $f(x, y) = x\sin(y^2 + x)$. We obtain, first,
@@ -2860,7 +2860,7 @@ $$F_k(\mathbf{x}, y_1, \ldots, y_m) = 0, \quad k = 1, \ldots, m \qquad (*)$$
 
 and we are looking for solutions $y\_k = f\_k(\mathbf{x})$ $(= f(x\_1, \ldots, x\_n))$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1.2 - The circle equation)</span></p>
 
 Even in simplest cases we cannot expect to have necessarily a solution, not to speak of a unique one. Take for example the following single equation
@@ -3175,7 +3175,7 @@ $$\frac{\partial f}{\partial x_i}(\mathbf{a}) = 0, \quad i = 1, \ldots, n. \qqua
 
 But the boundary is now another matter. Typically it does not consist of finitely many isolated points to be checked one at a time.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.1.1 - Extremes on a ball)</span></p>
 
 Suppose we want to find the local extremes of the function $f(x, y) = x + 2y$ on the ball $B = \lbrace (x, y) \mid x^2 + y^2 \le 1 \rbrace$. The domain $B$ is compact, and hence the function $f$ certainly attains a minimum and a maximum on $B$. They cannot be in the interior of $B$: we have constantly $\frac{\partial f}{\partial x} = 1$ and $\frac{\partial f}{\partial y} = 2$; thus, the extremes must be located somewhere in the infinite set $\lbrace (x, y) \mid x^2 + y^2 = 1 \rbrace$, and the rule $(\ast)$ is of no use.
@@ -3253,7 +3253,7 @@ $$\frac{\partial f(\mathbf{a})}{\partial x_i} + \sum_{j=1}^{n} \lambda_j \cdot \
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.3 - Solution of 6.1.1)</span></p>
 
 We have $\frac{\partial f}{\partial x} = 1$ and $\frac{\partial f}{\partial y} = 2$, $g(x, y) = x^2 + y^2 - 1$ and hence $\frac{\partial g}{\partial x} = 2x$ and $\frac{\partial g}{\partial y} = 2y$. There is *one* $\lambda$ that satisfies *two* equations
@@ -3264,7 +3264,7 @@ This is possible only if $y = 2x$. Thus, as $x^2 + y^2 = 1$ we obtain $5x^2 = 1$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.4 - Parallelepiped of largest volume for given surface area)</span></p>
 
 The constraints $g\_i$ do not necessarily come from describing boundaries. Here is an example of another nature.

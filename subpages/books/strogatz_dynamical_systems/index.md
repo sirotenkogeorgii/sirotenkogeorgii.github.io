@@ -58,7 +58,7 @@ where the overdots denote differentiation with respect to $t$, i.e. $\dot{x}\_i 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Damped Harmonic Oscillator)</span></p>
 
 The equation $m\ddot{x} + b\dot{x} + kx = 0$ can be rewritten in the general form by introducing $x\_1 = x$ and $x\_2 = \dot{x}$:
@@ -71,7 +71,7 @@ This system is **linear** because all the $x\_i$ on the right-hand side appear t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pendulum — Nonlinear System)</span></p>
 
 The pendulum equation $\ddot{x} + \frac{g}{L}\sin x = 0$ becomes the nonlinear system
@@ -116,7 +116,7 @@ The framework for dynamics and its applications has two axes:
 1. **Number of variables** (equivalently, the dimension of the phase space): $n = 1$, $n = 2$, $n \geq 3$, or continuum.
 2. **Linearity vs. nonlinearity** of the system.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Classifying Systems)</span></p>
 
 * **Exponential growth** $\dot{x} = rx$: first-order ($n = 1$), linear.
@@ -145,7 +145,7 @@ is called a **one-dimensional** or **first-order system**. Here $x(t)$ is a real
 
 Pictures are often more helpful than formulas for analyzing nonlinear systems. The key technique is to *interpret a differential equation as a vector field*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = \sin x$ — Geometric Analysis)</span></p>
 
 Consider $\dot{x} = \sin x$. Although this can be solved in closed form (yielding $t = \ln\left\lvert\frac{\csc x\_0 + \cot x\_0}{\csc x + \cot x}\right\rvert$), the formula is hard to interpret.
@@ -182,7 +182,7 @@ An equilibrium is **stable** if all sufficiently small disturbances away from it
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = x^2 - 1$)</span></p>
 
 Find all fixed points and classify their stability.
@@ -198,7 +198,7 @@ The definition of stable equilibrium is based on *small* disturbances; certain l
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(RC Circuit)</span></p>
 
 A resistor $R$ and capacitor $C$ in series with a battery of constant voltage $V\_0$. Let $Q(t)$ be the charge on the capacitor for $t \geq 0$ with $Q(0) = 0$. By Kirchhoff's voltage law:
@@ -209,7 +209,7 @@ The graph of $f(Q)$ is a straight line with negative slope. The unique fixed poi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = x - \cos x$)</span></p>
 
 To find fixed points, we need to solve $x = \cos x$. Rather than plotting $f(x) = x - \cos x$, we can graph $y = x$ and $y = \cos x$ separately and find where they intersect. They intersect at exactly one point $x^\ast$. Since the line lies above the cosine curve for $x > x^\ast$, we have $\dot{x} > 0$ there (flow to the right), and similarly $\dot{x} < 0$ for $x < x^\ast$ (flow to the left). Hence $x^\ast$ is the only fixed point, and it is **unstable** — even though we don't have a formula for $x^\ast$ itself.
@@ -262,7 +262,7 @@ If $f'(x^\ast) = 0$, the linearization is inconclusive and a nonlinear analysis 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability of $\dot{x} = \sin x$)</span></p>
 
 The fixed points are $x^\ast = k\pi$. Then 
@@ -273,14 +273,14 @@ Hence $x^\ast$ is **unstable** if $k$ is even and **stable** if $k$ is odd, agre
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability of the Logistic Equation)</span></p>
 
 Here $f(N) = rN(1 - N/K)$, so $f'(N) = r - 2rN/K$. At $N^\ast = 0$: $f'(0) = r > 0$ (unstable). At $N^\ast = K$: $f'(K) = -r < 0$ (stable). The characteristic time scale in either case is $\tau = 1/r$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(When $f'(x^\ast) = 0$ — Marginal Cases)</span></p>
 
 When $f'(x^\ast) = 0$, the linearization fails and the stability must be determined case by case using graphical methods. Consider:
@@ -358,14 +358,14 @@ We picture a particle sliding down the walls of a potential well. The particle i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Potential for $\dot{x} = -x$)</span></p>
 
 Solving $-dV/dx = -x$ gives $V(x) = \frac{1}{2}x^2 + C$. Taking $C = 0$, the potential is a parabola with a single minimum at $x = 0$. Hence $x = 0$ is the only equilibrium point, and it is stable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double-Well Potential: $\dot{x} = x - x^3$)</span></p>
 
 Solving $-dV/dx = x - x^3$ yields $V(x) = -\frac{1}{2}x^2 + \frac{1}{4}x^4$. The local minima at $x = \pm 1$ correspond to stable equilibria, and the local maximum at $x = 0$ corresponds to an unstable equilibrium. This system is called **bistable** because it has two stable equilibria. The potential is a **double-well potential**.
@@ -456,7 +456,7 @@ Other names for the saddle-node bifurcation include **fold bifurcation** and **t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability at a Saddle-Node)</span></p>
 
 For $\dot{x} = r - x^2$, the fixed points for $r > 0$ are $x^\ast = \pm\sqrt{r}$. Then $f'(x) = -2x$, so:
@@ -467,7 +467,7 @@ At the bifurcation point $r = 0$, the fixed points coalesce and $f'(x^\ast) = 0$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = r - x - e^{-x}$)</span></p>
 
 We cannot find fixed points explicitly, so we use a geometric approach: plot $r - x$ and $e^{-x}$ on the same axes and look for intersections.
@@ -510,7 +510,7 @@ An **exchange of stabilities** has taken place between the two fixed points. Cru
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = r\ln x + x - 1$ near $x = 1$)</span></p>
 
 We analyze the dynamics near $x = 1$. Note that $x = 1$ is a fixed point for all $r$. Let $u = x - 1$ (small). Taylor expanding:
@@ -523,7 +523,7 @@ A transcritical bifurcation occurs at $r\_c = -1$ (where the linear coefficient 
 
 ### Laser Threshold
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Laser Model — Transcritical Bifurcation)</span></p>
 
 A simplified model for a solid-state laser (Haken 1983): let $n(t)$ be the number of photons in the laser field. Then
@@ -571,7 +571,7 @@ The bifurcation diagram has the shape of a pitchfork.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\dot{x} = -x + \beta\tanh x$ — Magnets and Neural Networks)</span></p>
 
 This equation arises in statistical mechanics and neural networks. Fixed points satisfy $x = \beta\tanh x$. We graph $y = x$ and $y = \beta\tanh x$:
@@ -583,7 +583,7 @@ To get a numerically accurate bifurcation diagram, we compute $\beta = x^\ast/\t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Potential for Supercritical Pitchfork)</span></p>
 
 For $\dot{x} = rx - x^3$, the potential is $V(x) = -\frac{1}{2}rx^2 + \frac{1}{4}x^4$.
@@ -628,7 +628,7 @@ The bifurcation diagram now has a richer structure:
 
 ### Overdamped Bead on a Rotating Hoop
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bead on a Rotating Hoop)</span></p>
 
 A bead of mass $m$ slides along a wire hoop of radius $r$, rotating at constant angular velocity $\omega$ about its vertical axis. The bead is subject to gravity, centrifugal force, and viscous friction ($b\dot{\phi}$). Let $\phi$ be the angle from the downward vertical. Newton's law gives:
@@ -731,7 +731,7 @@ The term **catastrophe** is motivated by the fact that as parameters change, the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bead on a Tilted Wire)</span></p>
 
 A bead of mass $m$ slides along a straight wire inclined at angle $\theta$ to the horizontal. The bead is attached to a spring of stiffness $k$ and relaxed length $L\_0$, and is also acted on by gravity. When $\theta = 0$ (horizontal wire), the system has perfect left-right symmetry, and the stability of $x = 0$ depends on whether $L\_0 < a$ (spring in tension, $x = 0$ stable) or $L\_0 > a$ (spring in compression, pitchfork bifurcation to two symmetric equilibria). Tilting the wire ($\theta \neq 0$) breaks the symmetry — an imperfect bifurcation. For steep enough tilt, the uphill equilibrium may suddenly disappear, causing the bead to jump catastrophically to the downhill equilibrium.
@@ -740,7 +740,7 @@ A bead of mass $m$ slides along a straight wire inclined at angle $\theta$ to th
 
 ### Insect Outbreak
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Spruce Budworm Model — Ludwig et al. 1978)</span></p>
 
 The spruce budworm is a serious pest in eastern Canada. Ludwig et al. (1978) proposed a model exploiting the separation of time scales: budworm population evolves *fast* (months), while the forest grows *slowly* (decades). Hence forest variables ($K$, $R$) are treated as constants for the budworm dynamics:
@@ -806,14 +806,14 @@ corresponds to a **vector field on the circle**. Here $\theta$ is a point on the
 
 ### Examples and Definitions
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Vector Field $\dot{\theta} = \sin\theta$ on the Circle)</span></p>
 
 We assign coordinates on the circle in the usual way, with $\theta = 0$ in the direction of "east" and $\theta$ increasing counterclockwise. The fixed points are defined by $\dot{\theta} = 0$, which occur at $\theta^\ast = 0$ and $\theta^\ast = \pi$. Since $\sin\theta > 0$ on the upper semicircle, the flow is counterclockwise there; since $\sin\theta < 0$ on the lower semicircle, the flow is clockwise. Hence $\theta^\ast = \pi$ is stable and $\theta^\ast = 0$ is unstable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why $\dot{\theta} = \theta$ Is Not a Vector Field on the Circle)</span></p>
 
 The equation $\dot{\theta} = \theta$ cannot be regarded as a vector field on the circle, for $\theta$ in the range $-\infty < \theta < \infty$. The velocity is not uniquely defined: for example, $\theta = 0$ and $\theta = 2\pi$ are two labels for the same point on the circle, but the first implies a velocity of $0$ while the second implies a velocity of $2\pi$.
@@ -848,7 +848,7 @@ There is no amplitude variable in our system. There is really no amplitude varia
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Joggers — Beat Phenomenon)</span></p>
 
 Two joggers, Speedy and Pokey, are running at a steady pace around a circular track. It takes Speedy $T\_1$ seconds to run once around the track, whereas it takes Pokey $T\_2 > T\_1$ seconds. How long does it take for Speedy to lap Pokey?
@@ -888,7 +888,7 @@ A typical graph of $f(\theta) = \omega - a\sin\theta$ is a sine wave shifted up 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability Analysis for $a > \omega$)</span></p>
 
 The fixed points $\theta^\ast$ satisfy $\sin\theta^\ast = \omega / a$, so $\cos\theta^\ast = \pm\sqrt{1 - (\omega/a)^2}$. Their linear stability is determined by
@@ -953,7 +953,7 @@ which confirms the generality of the square-root scaling law.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bottleneck Estimate for the Nonuniform Oscillator)</span></p>
 
 Estimate the period of $\dot{\theta} = \omega - a\sin\theta$ in the limit $a \to \omega^-$, using the normal form method.
@@ -1161,7 +1161,7 @@ From Section 4.3, the solutions tend to a stable fixed point when $I < I\_c$, an
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(I–V Curve in the Overdamped Limit)</span></p>
 
 Find the **current–voltage curve** analytically in the overdamped limit: find $\langle V \rangle$ as a function of constant applied current $I$.
@@ -1221,7 +1221,7 @@ The solutions of $\dot{\mathbf{x}} = A\mathbf{x}$ can be visualized as trajector
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple Harmonic Oscillator)</span></p>
 
 The vibrations of a mass on a linear spring are governed by $m\ddot{x} + kx = 0$. The **state** of the system is characterized by position $x$ and velocity $v$. Letting $\omega^2 = k/m$, the system becomes
@@ -1232,7 +1232,7 @@ The vector field $(\dot{x}, \dot{v}) = (v, -\omega^2 x)$ swirls about the origin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uncoupled System with Parameter $a$)</span></p>
 
 Consider $\dot{\mathbf{x}} = A\mathbf{x}$ where $A = \begin{pmatrix} a & 0 \\ 0 & -1 \end{pmatrix}$. The two equations are **uncoupled**: $\dot{x} = ax$ and $\dot{y} = -y$, with solutions
@@ -1313,7 +1313,7 @@ $$\mathbf{x}(t) = c_1 e^{\lambda_1 t}\mathbf{v}_1 + c_2 e^{\lambda_2 t}\mathbf{v
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Solving a Linear System — Saddle Point)</span></p>
 
 Solve $\dot{x} = x + y$, $\dot{y} = 4x - 2y$ with initial condition $(x\_0, y\_0) = (2, -3)$.
@@ -1394,7 +1394,7 @@ Saddle points, nodes, and spirals are the major types — they occur in large op
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Classifying Fixed Points from $\tau$ and $\Delta$)</span></p>
 
 **Example 1:** $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$. Then $\Delta = 4 - 6 = -2 < 0$, so the fixed point is a **saddle point**.
@@ -1405,7 +1405,7 @@ Saddle points, nodes, and spirals are the major types — they occur in large op
 
 ### Love Affairs
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Romeo and Juliet — A Linear Model of Love)</span></p>
 
 Let $R(t)$ = Romeo's love/hate for Juliet and $J(t)$ = Juliet's love/hate for Romeo (positive values signify love, negative values signify hate). Romeo is in love with Juliet, but Juliet is a fickle lover: the more Romeo loves her, the more she wants to run away. But when Romeo backs off, Juliet finds him strangely attractive. Romeo echoes Juliet — he warms up when she loves him, and grows cold when she hates him. A model for this is
@@ -1416,7 +1416,7 @@ where $a, b > 0$. The governing system has a center at $(R, J) = (0, 0)$ — a n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Cautious Lovers)</span></p>
 
 What happens when two identically cautious lovers get together? The system is
@@ -1529,7 +1529,7 @@ The borderline cases (centers, degenerate nodes, stars, non-isolated fixed point
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linearization Predicting Correctly)</span></p>
 
 Find all fixed points of $\dot{x} = -x + x^3$, $\dot{y} = -2y$ and use linearization to classify them.
@@ -1545,7 +1545,7 @@ Since stable nodes and saddle points are not borderline cases, the linearization
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linearization Failing for a Center)</span></p>
 
 Consider $\dot{x} = -y + ax(x^2 + y^2)$, $\dot{y} = x + ay(x^2 + y^2)$, where $a$ is a parameter. The linearization about the origin gives $A = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$, which has $\tau = 0$, $\Delta = 1 > 0$, so it *incorrectly* predicts a center for all values of $a$.
@@ -1593,7 +1593,7 @@ The marginal cases are those where at least one eigenvalue satisfies $\operatorn
 
 ### Rabbits versus Sheep
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lotka-Volterra Competition Model)</span></p>
 
 Consider the classic **Lotka-Volterra model of competition** between rabbits ($x$) and sheep ($y$), where both compete for the same limited food supply (grass):
@@ -1650,7 +1650,7 @@ A conservative system cannot have any attracting fixed points. *Proof:* Suppose 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double-Well Potential)</span></p>
 
 Consider a particle of mass $m = 1$ moving in a double-well potential $V(x) = -\tfrac{1}{2}x^2 + \tfrac{1}{4}x^4$. The force is $-dV/dx = x - x^3$, so the equation of motion becomes
@@ -1715,7 +1715,7 @@ and suppose that the system is reversible. Then sufficiently close to the origin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Nonlinear Center via Reversibility)</span></p>
 
 The system $\dot{x} = y - y^3$, $\dot{y} = -x - y^2$ has a nonlinear center at the origin. The Jacobian at the origin is
@@ -1728,7 +1728,7 @@ The other fixed points $(-1, 1)$ and $(-1, -1)$ are saddle points. The trajector
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Homoclinic Orbit via Reversibility)</span></p>
 
 The system $\dot{x} = y$, $\dot{y} = x - x^2$ has a homoclinic orbit in the half-plane $x \ge 0$. The unstable manifold of the saddle at the origin leaves along the vector $(1, 1)$, enters the first quadrant, and eventually reaches $y = 0$ at $x = 1$. By reversibility, the reflected trajectory completes the homoclinic orbit.
@@ -1742,7 +1742,7 @@ There is a more general definition of reversibility that extends to higher-order
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reversible but Not Conservative)</span></p>
 
 The system
@@ -1829,7 +1829,7 @@ where $[\phi]\_C$ denotes the net change in $\phi$ over one circuit. Thus $I\_C$
 
 To compute the index, we do not need to know the vector field everywhere — only along $C$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Index Computation from Pictures)</span></p>
 
 If the vectors along $C$ rotate once counterclockwise as $\mathbf{x}$ traverses $C$ counterclockwise, then $I\_C = +1$. If they rotate once clockwise, then $I\_C = -1$.
@@ -1838,7 +1838,7 @@ A useful method: number the vectors in counterclockwise order along $C$, then tr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Index of the Unit Circle)</span></p>
 
 For the vector field $\dot{x} = x^2 y$, $\dot{y} = x^2 - y^2$, with $C$ the unit circle $x^2 + y^2 = 1$: computing the vector field at several points around $C$ (e.g., at $(1, 0)$, $(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}})$, $(0, 1)$, etc.) and translating the vectors shows that they rotate $180°$ clockwise, then $360°$ counterclockwise, then $180°$ clockwise again. The net change is $[\phi]\_C = -\pi + 2\pi - \pi = 0$, so $I\_C = 0$.
@@ -1911,7 +1911,7 @@ Theorem 6.8.2 has several practical consequences:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(No Closed Orbits in Rabbits vs. Sheep)</span></p>
 
 Consider the "rabbit vs. sheep" system $\dot{x} = x(3 - x - 2y)$, $\dot{y} = y(2 - x - y)$ for $x, y \ge 0$. It has four fixed points: $(0, 0)$ is an unstable node ($I = +1$); $(0, 2)$ and $(3, 0)$ are stable nodes ($I = +1$ each); and $(1, 1)$ is a saddle ($I = -1$).
@@ -1947,7 +1947,7 @@ Stable limit cycles are very important scientifically — they model self-sustai
 
 ### Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple Limit Cycle)</span></p>
 
 Consider the system in polar coordinates:
@@ -1960,7 +1960,7 @@ The limit cycle solution is $x(t) = \cos(t + \theta\_0)$ — a sinusoidal oscill
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Van der Pol Oscillator)</span></p>
 
 The **van der Pol equation** is
@@ -1997,7 +1997,7 @@ $$\Delta V = \int_0^T \frac{dV}{dt}\,dt = \int_0^T (\nabla V \cdot \dot{\mathbf{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gradient System Check)</span></p>
 
 The system $\dot{x} = \sin y$, $\dot{y} = x\cos y$ is a gradient system with $V(x,y) = -x\sin y$, since $\dot{x} = -\partial V/\partial x$ and $\dot{y} = -\partial V/\partial y$. Hence there are no closed orbits.
@@ -2018,14 +2018,14 @@ If such a function exists, then $\mathbf{x}^\ast$ is globally asymptotically sta
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Nonlinearly Damped Oscillator)</span></p>
 
 The nonlinearly damped oscillator $\ddot{x} + (\dot{x})^3 + x = 0$ has no periodic solutions. Consider the energy function $E(x, \dot{x}) = \tfrac{1}{2}(x^2 + \dot{x}^2)$. Then $\dot{E} = \dot{x}(x + \ddot{x}) = \dot{x}(-\dot{x}^3) = -\dot{x}^4 \le 0$, with equality only when $\dot{x} \equiv 0$ (which would make the trajectory a fixed point). Hence $\Delta E < 0$ around any putative closed orbit, contradicting $\Delta E = 0$. So there are no periodic solutions.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Liapunov Function by Construction)</span></p>
 
 The system $\dot{x} = -x + 4y$, $\dot{y} = -x - y^3$ has no closed orbits. Consider $V(x, y) = x^2 + ay^2$ where $a$ is a parameter. Then $\dot{V} = 2x\dot{x} + 2ay\dot{y} = 2x(-x + 4y) + 2ay(-x - y^3) = -2x^2 + (8 - 2a)xy - 2ay^4$. Choosing $a = 4$ eliminates the $xy$ term: $\dot{V} = -2x^2 - 8y^4$. Since $V > 0$ and $\dot{V} < 0$ for all $(x, y) \neq (0, 0)$, $V = x^2 + 4y^2$ is a Liapunov function. There are no closed orbits, and all trajectories approach the origin.
@@ -2054,7 +2054,7 @@ The left side is nonzero since $\nabla \cdot (g\dot{\mathbf{x}})$ has one sign i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dulac's Criterion Applied)</span></p>
 
 The system $\dot{x} = x(2 - x - y)$, $\dot{y} = y(4x - x^2 - 3)$ has no closed orbits in the positive quadrant $x, y > 0$. Choosing $g = 1/xy$ gives
@@ -2097,7 +2097,7 @@ The standard trick to satisfy condition (4) is to construct a **trapping region*
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Trapping Region in Polar Coordinates)</span></p>
 
 Consider the system $\dot{r} = r(1 - r^2) + \mu r\cos\theta$, $\dot{\theta} = 1$. When $\mu = 0$, there is a stable limit cycle at $r = 1$. For $\mu > 0$ small, a closed orbit still exists. We seek concentric circles $r\_{\min}$ and $r\_{\max}$ such that $\dot{r} < 0$ on the outer circle and $\dot{r} > 0$ on the inner circle.
@@ -2110,7 +2110,7 @@ The annulus $r\_{\min} \le r \le r\_{\max}$ is a trapping region with no fixed p
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Glycolytic Oscillator)</span></p>
 
 A model of glycolysis (Sel'kov 1968) is given by
@@ -2181,7 +2181,7 @@ The assumptions on $g(x)$ mean that the restoring force acts like an ordinary sp
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Van der Pol Has a Unique Stable Limit Cycle)</span></p>
 
 For the van der Pol equation $\ddot{x} + \mu(x^2 - 1)\dot{x} + x = 0$, we have $f(x) = \mu(x^2 - 1)$ and $g(x) = x$. Conditions (1)–(4) are clearly satisfied. For condition (5):
@@ -2196,7 +2196,7 @@ This has its unique positive zero at $x = a = \sqrt{3}$. It is negative for $0 <
 
 For the van der Pol equation with $\mu \gg 1$ (the *strongly nonlinear* limit), the limit cycle consists of an extremely slow buildup followed by a sudden discharge, repeated periodically. These are called **relaxation oscillations** because the "stress" accumulated during the slow buildup is "relaxed" during the sudden discharge.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Phase Plane Analysis of van der Pol for $\mu \gg 1$)</span></p>
 
 Introducing the Lienard transformation $w = \dot{x} + \mu(\tfrac{1}{3}x^3 - x)$ and $F(x) = \tfrac{1}{3}x^3 - x$, the van der Pol equation becomes
@@ -2209,7 +2209,7 @@ Away from the cubic nullcline, $y - F(x) \sim O(1)$, so $\lvert \dot{x} \rvert \
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Period of Relaxation Oscillation)</span></p>
 
 The period $T$ of the van der Pol limit cycle for $\mu \gg 1$ is essentially the time spent on the two slow branches (the fast jumps contribute negligibly). By symmetry, both branches contribute equally. On a slow branch, $y \approx F(x)$, so $\dot{y} \approx F'(x)\dot{x} = (x^2 - 1)\dot{x}$. Since $\dot{y} = -x/\mu$, we get
@@ -2257,7 +2257,7 @@ $$x(t, \varepsilon) = x_0(t) + \varepsilon x_1(t) + \varepsilon^2 x_2(t) + \cdot
 
 This is called **regular perturbation theory**. Substituting into the equation and collecting powers of $\varepsilon$ yields a hierarchy of equations that can be solved sequentially.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Failure of Regular Perturbation Theory)</span></p>
 
 Consider the weakly damped linear oscillator $\ddot{x} + 2\varepsilon\dot{x} + x = 0$ with $x(0) = 0$, $\dot{x}(0) = 1$. The exact solution is
@@ -2303,7 +2303,7 @@ Substituting into the governing equation and collecting powers of $\varepsilon$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two-Timing the Damped Oscillator)</span></p>
 
 For $\ddot{x} + 2\varepsilon\dot{x} + x = 0$ with $x(0) = 0$, $\dot{x}(0) = 1$:
@@ -2324,7 +2324,7 @@ which matches the exact solution beautifully for all $t$, not just $t \ll 1/\var
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two-Timing the Van der Pol Oscillator)</span></p>
 
 For $\ddot{x} + x + \varepsilon(x^2 - 1)\dot{x} = 0$:
@@ -2375,7 +2375,7 @@ $$\langle \cos^2\theta \rangle = \langle \sin^2\theta \rangle = \tfrac{1}{2}, \q
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Duffing Equation — Amplitude-Dependent Frequency)</span></p>
 
 For the Duffing equation $\ddot{x} + x + \varepsilon x^3 = 0$, we have $h = x^3 = r^3\cos^3\theta$. The averaged equations give
@@ -2441,7 +2441,7 @@ Consider a two-dimensional system $\dot{x} = f(x, y)$, $\dot{y} = g(x, y)$ that 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.1.1</span><span class="math-callout__name">(Genetic Control System)</span></p>
 
 The following system has been discussed by Griffith (1971) as a model for a genetic control system. The activity of a certain gene is assumed to be directly induced by two copies of the protein for which it codes — leading to an autocatalytic feedback process. In dimensionless form, the equations are
@@ -2486,7 +2486,7 @@ $$\dot{x} = \mu x + x^3, \quad \dot{y} = -y \qquad \text{(subcritical pitchfork)
 
 The analysis in each case follows the same pattern, so we'll discuss only the supercritical pitchfork and leave the other two cases as exercises.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.1.2</span><span class="math-callout__name">(Supercritical Pitchfork)</span></p>
 
 Plot the phase portraits for the supercritical pitchfork system $\dot{x} = \mu x - x^3$, $\dot{y} = -y$, for $\mu < 0$, $\mu = 0$, and $\mu > 0$.
@@ -2495,7 +2495,7 @@ Plot the phase portraits for the supercritical pitchfork system $\dot{x} = \mu x
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.1.3</span><span class="math-callout__name">(Pitchfork with Symmetry)</span></p>
 
 Show that a supercritical pitchfork bifurcation occurs at the origin in the system
@@ -2607,7 +2607,7 @@ This degenerate case typically arises when a nonconservative system suddenly bec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.2.1</span><span class="math-callout__name">(Hopf Bifurcation Classification)</span></p>
 
 Consider the system $\dot{x} = \mu x - y + xy^2$, $\dot{y} = x + \mu y + y^3$. Show that a Hopf bifurcation occurs at the origin as $\mu$ varies. Is the bifurcation subcritical, supercritical, or degenerate?
@@ -2650,7 +2650,7 @@ where $x$ and $y$ are the dimensionless concentrations of $\text{I}^-$ and $\tex
 
 We begin the analysis by constructing a trapping region and applying the Poincaré–Bendixson theorem. Then we'll show that the chemical oscillations arise from a supercritical Hopf bifurcation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.3.1</span><span class="math-callout__name">(Existence of Closed Orbit)</span></p>
 
 Prove that the system has a closed orbit in the positive quadrant $x, y > 0$ if $a$ and $b$ satisfy certain constraints, to be determined.
@@ -2685,7 +2685,7 @@ When this condition holds, the Poincaré-Bendixson theorem implies the existence
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.3.2</span><span class="math-callout__name">(Hopf Bifurcation in Chemical Oscillator)</span></p>
 
 Using numerical integration, show that a Hopf bifurcation occurs at $b = b\_c$ and decide whether the bifurcation is sub- or supercritical.
@@ -2698,7 +2698,7 @@ Our results are summarized in a stability diagram in the $(a, b)$-parameter plan
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.3.3</span><span class="math-callout__name">(Period of the Limit Cycle)</span></p>
 
 Approximate the period of the limit cycle for $b$ slightly less than $b\_c$.
@@ -2803,7 +2803,7 @@ Exceptions to these rules can occur, but only if there is some symmetry or other
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4.1</span><span class="math-callout__name">(Van der Pol Oscillator — Degenerate Hopf)</span></p>
 
 The van der Pol oscillator $\ddot{x} + \varepsilon\dot{x}(x^2 - 1) + x = 0$ does not seem to fit anywhere in the table above. At $\varepsilon = 0$, the eigenvalues at the origin are pure imaginary ($\lambda = \pm i$), suggesting that a Hopf bifurcation occurs at $\varepsilon = 0$. But we know from Section 7.6 that for $0 < \varepsilon \ll 1$, the system has a limit cycle of amplitude $r \approx 2$. Thus the cycle is born "full grown," not with size $O(\varepsilon^{1/2})$ as predicted by the scaling law. What's the explanation?
@@ -3036,7 +3036,7 @@ Suppose that $\mathbf{x}^\ast$ is a **fixed point** of $P$, i.e., $P(\mathbf{x}^
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.7.1</span><span class="math-callout__name">(Poincaré Map in Polar Coordinates)</span></p>
 
 Consider the vector field given in polar coordinates by $\dot{r} = r(1 - r^2)$, $\dot{\theta} = 1$. Let $S$ be the positive $x$-axis, and compute the Poincaré map. Show that the system has a unique periodic orbit and classify its stability.
@@ -3055,7 +3055,7 @@ The cobweb shows that the fixed point $r^\ast = 1$ is stable and unique. No surp
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.7.2</span><span class="math-callout__name">(Sinusoidally Forced RC Circuit)</span></p>
 
 A sinusoidally forced $RC$-circuit can be written in dimensionless form as $\ddot{x} + x = A\sin\omega t$, where $\omega > 0$. Using a Poincaré map, show that this system has a unique, globally stable limit cycle.
@@ -3105,7 +3105,7 @@ In general, the characteristic multipliers can only be found by numerical integr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.7.3</span><span class="math-callout__name">(Characteristic Multiplier for a Simple Limit Cycle)</span></p>
 
 Find the characteristic multiplier for the limit cycle of Example 8.7.1.
@@ -3116,7 +3116,7 @@ For this simple two-dimensional system, the linearized Poincaré map degenerates
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.7.4</span><span class="math-callout__name">(Coupled Josephson Junctions — In-Phase Solution)</span></p>
 
 The $N$-dimensional system
@@ -3314,7 +3314,7 @@ Volume contraction imposes strong constraints on the possible solutions of the L
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.2.1</span><span class="math-callout__name">(No Quasiperiodic Solutions)</span></p>
 
 Show that there are no quasiperiodic solutions of the Lorenz equations.
@@ -3323,7 +3323,7 @@ Show that there are no quasiperiodic solutions of the Lorenz equations.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.2.2</span><span class="math-callout__name">(No Repelling Fixed Points or Closed Orbits)</span></p>
 
 Show that the Lorenz system cannot have repelling fixed points or repelling closed orbits. (By *repelling*, we mean that *all* nearby trajectories are driven away.)
@@ -3437,7 +3437,7 @@ $$t_{\text{horizon}} \sim O\!\left(\frac{1}{\lambda}\ln\frac{a}{\lVert\boldsymbo
 
 The logarithmic dependence on $\lVert\boldsymbol{\delta}\_0\rVert$ is what hurts us. No matter how hard we work to reduce the initial measurement error, we can't predict longer than a few multiples of $1/\lambda$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.3.1</span><span class="math-callout__name">(Prediction Horizon)</span></p>
 
 Suppose we're trying to predict the future state of a chaotic system to within a tolerance of $a = 10^{-3}$. Given that our estimate of the initial state is uncertain to within $\lVert\boldsymbol{\delta}\_0\rVert = 10^{-7}$, for about how long can we predict? Now suppose we improve our initial error to $\lVert\boldsymbol{\delta}\_0\rVert = 10^{-13}$ (a millionfold improvement). How much longer can we predict?
@@ -3463,7 +3463,7 @@ No definition of the term *chaos* is universally accepted, but almost everyone w
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.3.2</span><span class="math-callout__name">(Instability Is Not Chaos)</span></p>
 
 Some people think that chaos is just a fancy word for instability. For instance, the system $\dot{x} = x$ is deterministic and shows exponential separation of nearby trajectories. Should we call this system chaotic?
@@ -3485,7 +3485,7 @@ An **attractor** is a closed set $A$ with the following properties:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.3.3</span><span class="math-callout__name">(Invariant Set vs. Attractor)</span></p>
 
 Consider the system $\dot{x} = x - x^3$, $\dot{y} = -y$. Let $I$ denote the interval $-1 \leq x \leq 1$, $y = 0$. Is $I$ an invariant set? Does it attract an open set of initial conditions? Is it an attractor?
@@ -3544,7 +3544,7 @@ $$\lvert f'(z)\rvert > 1$$
 
 everywhere. This property ultimately implies that if any limit cycles exist, they are necessarily **unstable**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.4.1</span><span class="math-callout__name">(All Closed Orbits Are Unstable)</span></p>
 
 Given the Lorenz map approximation $z\_{n+1} = f(z\_n)$, with $\lvert f'(z)\rvert > 1$ for all $z$, show that *all* closed orbits are unstable.
@@ -3590,7 +3590,7 @@ As we decrease $r$ from $r\_H$, the unstable limit cycles born at the Hopf bifur
 
 At the homoclinic bifurcation, an amazingly complicated invariant set is born — a thicket of infinitely many saddle-cycles and aperiodic orbits. It is not an attractor and is not observable directly, but it generates sensitive dependence on initial conditions in its neighborhood. Trajectories can get hung up near this set, rattling around chaotically for a while, but eventually escape and settle down to $C^+$ or $C^-$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.5.1</span><span class="math-callout__name">(Transient Chaos)</span></p>
 
 Show numerically that the Lorenz equations can exhibit **transient chaos** when $r = 21$ (with $\sigma = 10$ and $b = 8/3$).
@@ -3608,7 +3608,7 @@ For $24.06 < r < 24.74$, there are **two** types of attractors: stable fixed poi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.5.2</span><span class="math-callout__name">(Large $r$: Globally Attracting Limit Cycle)</span></p>
 
 Describe the long-term dynamics for large values of $r$, for $\sigma = 10$, $b = 8/3$.
@@ -3634,7 +3634,7 @@ One of the most exciting developments in nonlinear dynamics is the realization t
 
 The key idea, due to Pecora and Carroll (1990), is that two identical chaotic systems can be made to **synchronize** perfectly, even though chaos is ordinarily associated with sensitive dependence on initial conditions.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.6.1</span><span class="math-callout__name">(Proof of Synchronization via Liapunov Function)</span></p>
 
 Consider a transmitter governed by the Lorenz equations (written in scaled variables $u = \frac{1}{10}x$, $v = \frac{1}{10}y$, $w = \frac{1}{20}z$):
@@ -3718,7 +3718,7 @@ Fixed points with multiplier $\lambda = 0$ are called **superstable** because pe
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.1.1</span><span class="math-callout__name">(Fixed Points of $x\_{n+1} = x\_n^2$)</span></p>
 
 Find the fixed points of the map $x\_{n+1} = x\_n^2$ and determine their stability.
@@ -3746,7 +3746,7 @@ The convergence pattern depends on the sign of the multiplier $\lambda = f'(x^\a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.1.2</span><span class="math-callout__name">(Marginal Case: $x\_{n+1} = \sin x\_n$)</span></p>
 
 Consider the map $x\_{n+1} = \sin x\_n$. Show that the fixed point $x^\ast = 0$ is globally stable, even though linear analysis is inconclusive.
@@ -3755,7 +3755,7 @@ Consider the map $x\_{n+1} = \sin x\_n$. Show that the fixed point $x^\ast = 0$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.1.3</span><span class="math-callout__name">(The Cosine Map: $x\_{n+1} = \cos x\_n$)</span></p>
 
 Given $x\_{n+1} = \cos x\_n$, how does $x\_n$ behave as $n \to \infty$?
@@ -3827,7 +3827,7 @@ The orbit diagram for $3.4 \leq r \leq 4$ reveals:
 
 ### 10.3 Logistic Map: Analysis
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.3.1</span><span class="math-callout__name">(Fixed Points of the Logistic Map)</span></p>
 
 Find all the fixed points of the logistic map $x\_{n+1} = rx\_n(1 - x\_n)$ for $0 \leq x\_n \leq 1$ and $0 \leq r \leq 4$, and determine their stability.
@@ -3850,7 +3850,7 @@ At $r = 3$, the multiplier at $x^\ast$ reaches $f'(x^\ast) = -1$. This is called
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.3.2</span><span class="math-callout__name">(Existence of the 2-Cycle)</span></p>
 
 Show that the logistic map has a 2-cycle for all $r > 3$.
@@ -3863,7 +3863,7 @@ These are real for $r > 3$, confirming that a 2-cycle exists for all $r > 3$. At
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.3.3</span><span class="math-callout__name">(Stability of the 2-Cycle)</span></p>
 
 Show that the 2-cycle of Example 10.3.2 is stable for $3 < r < 1 + \sqrt{6} = 3.449\ldots$.
@@ -3947,7 +3947,7 @@ Note that $\lambda$ depends on $x\_0$. However, it is the same for all $x\_0$ in
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.5.1</span><span class="math-callout__name">(Liapunov Exponent for Stable Cycles)</span></p>
 
 Suppose that $f$ has a stable $p$-cycle containing the point $x\_0$. Show that the Liapunov exponent $\lambda < 0$. If the cycle is superstable, show that $\lambda = -\infty$.
@@ -3966,7 +3966,7 @@ as desired. If the cycle is superstable, then $\|(f^p)'(x\_0)\| = 0$ by definiti
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.5.2</span><span class="math-callout__name">(Liapunov Exponent of the Tent Map)</span></p>
 
 The **tent map** is defined by
@@ -3983,7 +3983,7 @@ Example 10.5.2 suggests that the tent map has chaotic solutions for all $r > 1$,
 
 In general, one needs to use a computer to calculate Liapunov exponents.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.5.3</span><span class="math-callout__name">(Numerical Computation of $\lambda$ for the Logistic Map)</span></p>
 
 Describe a numerical scheme to compute $\lambda$ for the logistic map $f(x) = rx(1 - x)$. Graph the results as a function of the control parameter $r$, for $3 \le r \le 4$.
@@ -4000,7 +4000,7 @@ All the dips actually drop down to $\lambda = -\infty$, because a superstable cy
 
 This section deals with some of the most astonishing results in all of nonlinear dynamics.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.6.1</span><span class="math-callout__name">(The Sine Map)</span></p>
 
 Plot the graph of the **sine map** $x\_{n+1} = r\sin\pi x\_n$ for $0 \le r \le 1$ and $0 \le x \le 1$, and compare it to the logistic map. Then plot the orbit diagrams for both maps, and list some similarities and differences.
@@ -4059,7 +4059,7 @@ Feigenbaum went on to develop a beautiful theory that explained why $\alpha$ and
 
 Since Feigenbaum's work, sequences of period-doubling bifurcations have been measured in a variety of experimental systems.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Libchaber's Convection Experiment)</span></p>
 
 In the convection experiment of Libchaber et al. (1982), a box containing liquid mercury is heated from below. The control parameter is the Rayleigh number $R$, a dimensionless measure of the externally imposed temperature gradient from bottom to top. For $R$ less than a critical value $R\_c$, heat is conducted upward while the fluid remains motionless. But for $R > R\_c$, the motionless state becomes unstable and **convection** occurs — hot fluid rises on one side, loses its heat at the top, and descends on the other side, setting up a pattern of counterrotating cylindrical **rolls**.
@@ -4087,7 +4087,7 @@ The predictive power of Feigenbaum's theory may strike you as mysterious. How ca
 
 The key idea is to use Lorenz's trick for obtaining a map from a flow (Section 9.4). For a given value of the control parameter, record the successive local maxima of $x(t)$ for a trajectory on the strange attractor. Then plot $x\_{n+1}$ vs. $x\_n$, where $x\_n$ denotes the $n$th local maximum. This **Lorenz map** is an approximate one-dimensional map derived from the continuous-time system.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Rössler System)</span></p>
 
 The **Rössler system** is
@@ -4119,7 +4119,7 @@ First we introduce some notation. Let $f(x, r)$ denote a unimodal map that under
 
 Feigenbaum phrased his analysis in terms of the superstable cycles, so let's get some practice with them.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.7.1</span><span class="math-callout__name">(Superstable Fixed Point and 2-Cycle)</span></p>
 
 Find $R\_0$ and $R\_1$ for the map $f(x, r) = r - x^2$.
@@ -4223,7 +4223,7 @@ since the eigenvalue is $-1$ at the bifurcation. Without loss of generality we c
 
 $$x_{n+1} = -(1 + \mu)x_n + x_n^2 + \ldots.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.7.2</span><span class="math-callout__name">(Period-4 Bifurcation Value)</span></p>
 
 Using the renormalization transformation, calculate the value of $\mu$ at which the original map gives birth to a period-4 cycle. Compare your result to the value $r\_2 = 1 + \sqrt{6}$ found for the logistic map in Example 10.3.3.
@@ -4242,7 +4242,7 @@ To convert this into a forward iteration, solve for $\mu\_k$ in terms of $\mu\_{
 
 $$\mu_k = -2\sqrt{6 + \mu_{k-1}}.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.7.3</span><span class="math-callout__name">(Finding $\mu^\ast$ and Predicting $r\_\infty$)</span></p>
 
 Find $\mu^\ast$, the stable fixed point of the renormalization transformation.
@@ -4296,7 +4296,7 @@ A familiar infinite set is the set of natural numbers $\mathbb{N} = \lbrace 1, 2
 
 There is an equivalent characterization: a set $X$ is countable if it can be written as a list $\lbrace x\_1, x\_2, x\_3, \ldots\rbrace$, with every $x \in X$ appearing somewhere in the list.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.1.1</span><span class="math-callout__name">(Even Numbers Are Countable)</span></p>
 
 Show that the set of even natural numbers $E = \lbrace 2, 4, 6, \ldots\rbrace$ is countable.
@@ -4307,7 +4307,7 @@ Hence there are exactly as many even numbers as natural numbers. You might have 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.1.2</span><span class="math-callout__name">(Integers Are Countable)</span></p>
 
 Show that the integers are countable.
@@ -4316,7 +4316,7 @@ Show that the integers are countable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.1.3</span><span class="math-callout__name">(Positive Rationals Are Countable)</span></p>
 
 Show that the positive rational numbers are countable.
@@ -4329,7 +4329,7 @@ The right way is to make a table where the $pq$-th entry is $p/q$. Then the rati
 
 Now we consider our first example of an uncountable set.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.1.4</span><span class="math-callout__name">(The Reals Are Uncountable)</span></p>
 
 Let $X$ denote the set of all real numbers between 0 and 1. Show that $X$ is uncountable.
@@ -4378,7 +4378,7 @@ The Cantor set $C$ has several properties that are typical of fractals more gene
 
 Two other important properties of the Cantor set are: *$C$ has measure zero* and *it consists of uncountably many points*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.2.1</span><span class="math-callout__name">(The Cantor Set Has Measure Zero)</span></p>
 
 Show that the **measure** of the Cantor set is zero, in the sense that it can be covered by intervals whose total length is arbitrarily small.
@@ -4387,7 +4387,7 @@ Show that the **measure** of the Cantor set is zero, in the sense that it can be
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.2.2</span><span class="math-callout__name">(Base-3 Characterization)</span></p>
 
 Show that the Cantor set $C$ consists of all points $c \in [0, 1]$ that have no 1's in their base-3 expansion.
@@ -4400,7 +4400,7 @@ Now think about the base-3 expansion of points in the Cantor set $C$. We deleted
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.2.3</span><span class="math-callout__name">(The Cantor Set Is Uncountable)</span></p>
 
 Show that the Cantor set is uncountable.
@@ -4453,7 +4453,7 @@ $$d = \frac{\ln m}{\ln r}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.3.1</span><span class="math-callout__name">(Dimension of the Cantor Set)</span></p>
 
 Find the similarity dimension of the Cantor set $C$.
@@ -4462,7 +4462,7 @@ Find the similarity dimension of the Cantor set $C$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.3.2</span><span class="math-callout__name">(Dimension of the Von Koch Curve)</span></p>
 
 Show that the von Koch curve has a similarity dimension of $\ln 4 / \ln 3 \approx 1.26$.
@@ -4471,7 +4471,7 @@ Show that the von Koch curve has a similarity dimension of $\ln 4 / \ln 3 \appro
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.3.3</span><span class="math-callout__name">(Even-Fifths Cantor Set)</span></p>
 
 Other self-similar fractals can be generated by changing the recursive procedure. For instance, divide an interval into five equal pieces, delete the second and fourth subintervals, and then repeat the process indefinitely. We call the limiting set the **even-fifths Cantor set**. Find its similarity dimension.
@@ -4495,7 +4495,7 @@ $$d = \lim_{\varepsilon \to 0}\frac{\ln N(\varepsilon)}{\ln(1/\varepsilon)},\qua
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.4.1</span><span class="math-callout__name">(Box Dimension of the Cantor Set)</span></p>
 
 Find the box dimension of the Cantor set.
@@ -4515,7 +4515,7 @@ The solution of Example 11.4.1 illustrates a helpful trick. We used a discrete s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.4.2</span><span class="math-callout__name">(A Non-Self-Similar Fractal)</span></p>
 
 A fractal that is *not* self-similar is constructed as follows. A square region is divided into nine equal squares, and then one of the small squares is selected at random and discarded. Then the process is repeated on each of the eight remaining small squares, and so on. What is the box dimension of the limiting set?
@@ -4575,7 +4575,7 @@ $$\text{(minimum separation of points on } A) \ll \varepsilon \ll \text{(diamete
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.5.1</span><span class="math-callout__name">(Correlation Dimension of the Lorenz Attractor)</span></p>
 
 Estimate the correlation dimension of the Lorenz attractor, for the standard parameter values $r = 28$, $\sigma = 10$, $b = \frac{8}{3}$.
@@ -4586,7 +4586,7 @@ These results were obtained with 15,000 points; convergence was rapid and the co
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.5.2</span><span class="math-callout__name">(Correlation Dimension at the Onset of Chaos)</span></p>
 
 Consider the logistic map $x\_{n+1} = rx\_n(1 - x\_n)$ at the parameter value $r = r\_\infty = 3.5699456\ldots$, corresponding to the onset of chaos. Show that the attractor is a Cantor-like set, although it is not strictly self-similar. Then compute its correlation dimension numerically.
@@ -4652,7 +4652,7 @@ The pastry map transformation is normally called a horseshoe map, but we avoid t
 
 #### The Baker's Map
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.1.1</span><span class="math-callout__name">(The Baker's Map)</span></p>
 
 The **baker's map** $B$ of the square $0 \le x \le 1$, $0 \le y \le 1$ to itself is given by
@@ -4667,7 +4667,7 @@ The baker's map exhibits sensitive dependence on initial conditions, thanks to t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.1.2</span><span class="math-callout__name">(Fractal Attractor of the Baker's Map)</span></p>
 
 Show that for $a < \frac{1}{2}$, the baker's map has a fractal attractor $A$ that attracts all orbits. More precisely, show that there is a set $A$ such that for any initial condition $(x\_0, y\_0)$, the distance from $B^n(x\_0, y\_0)$ to $A$ converges to zero as $n \to \infty$.
@@ -4682,7 +4682,7 @@ The nesting property also helps us show that $A$ attracts all orbits. The point 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.1.3</span><span class="math-callout__name">(Box Dimension of the Baker's Map Attractor)</span></p>
 
 Find the box dimension of the attractor for the baker's map with $a < \frac{1}{2}$.
@@ -4758,7 +4758,7 @@ The Hénon map captures several essential properties of the Lorenz system:
 
 4. **Some trajectories of the Hénon map escape to infinity.** In contrast, all trajectories of the Lorenz system are bounded.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.2.1</span><span class="math-callout__name">(Invertibility of the Hénon Map)</span></p>
 
 Show that the Hénon map $T$ is invertible if $b \ne 0$, and find the inverse $T^{-1}$.
@@ -4767,7 +4767,7 @@ Show that the Hénon map $T$ is invertible if $b \ne 0$, and find the inverse $T
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.2.2</span><span class="math-callout__name">(Area Contraction)</span></p>
 
 Show that the Hénon map contracts areas if $-1 < b < 1$.
@@ -4899,7 +4899,7 @@ Two important choices must be made when implementing attractor reconstruction:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reconstruction of a Limit Cycle)</span></p>
 
 Consider a system with a limit-cycle attractor for which $x(t) = \sin t$. Plotting the time-delayed trajectory $\mathbf{x}(t) = (x(t),\, x(t+\tau))$ for different values of $\tau$ yields ellipses. For small $\tau$ (e.g. $\tau = \pi/6$), the ellipse is elongated along the diagonal $y = x$, so the attractor is poorly resolved. At $\tau = \pi/2$ (one-quarter of the period $T = 2\pi$), the trajectory traces a perfect circle, since $x(t) = \sin t$ and $x(t+\pi/2) = \cos t$. This is optimal because the reconstructed attractor is as "open" as possible. For larger $\tau$ (e.g. $\tau = 5\pi/6$), the ellipse is stretched along $y = -x$, again becoming cigar-shaped. In general, narrow reconstructions are more vulnerable to noise corruption.
@@ -4949,14 +4949,14 @@ If the well is shaken periodically, several regimes emerge depending on the forc
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coexisting Limit Cycles, $F = 0.18$)</span></p>
 
 Fix $\delta = 0.25$ and $\omega = 1$ throughout. For $F = 0.18$, numerical integration reveals several coexisting stable limit cycles. Different initial conditions converge to different periodic solutions, all of which correspond physically to oscillations confined to a single well.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Chaotic Regime, $F = 0.40$)</span></p>
 
 For $F = 0.40$ and initial conditions $(x\_0, y\_0) = (0, 0)$ (where $y = \dot{x}$), the time series of $x(t)$ and $y(t)$ appear aperiodic — the displacement repeatedly changes sign, indicating that the particle crosses the central hump over and over. The phase portrait $(x, y)$ looks like a tangled mess, but this is because the system is nonautonomous: the full state is $(x, y, t)$, and we are seeing a two-dimensional projection of a three-dimensional trajectory.
@@ -4974,7 +4974,7 @@ The numerical simulations reproduce the sustained chaos seen in the beam experim
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Transient Chaos with $F = 0.25$)</span></p>
 
 For $F = 0.25$, two nearby initial conditions can both exhibit wild, chaotic-looking transients before finally converging to *different* periodic attractors. For instance, starting at $(x\_0, y\_0) = (0.2, 0.1)$, the trajectory wanders chaotically before settling into a periodic state with $x > 0$ (oscillations in the right well). A tiny change to $x\_0 = 0.195$ leads to a similarly chaotic transient, but the trajectory ultimately converges to the *left* well instead. The choice of final attractor depends sensitively on the initial conditions.

@@ -52,7 +52,7 @@ The word *differentiable* means that $\alpha$ is a correspondence which maps eac
 
 The vector $(x'(t), y'(t), z'(t)) = \alpha'(t) \in R^3$ is called the **tangent vector** (or **velocity vector**) of the curve $\alpha$ at $t$. The image set $\alpha(I) \subset R^3$ is called the **trace** of $\alpha$. One should carefully distinguish a parametrized curve, which is a map, from its trace, which is a subset of $R^3$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Helix)</span></p>
 
 The parametrized differentiable curve given by
@@ -63,28 +63,28 @@ has as its trace in $R^3$ a helix of pitch $2\pi b$ on the cylinder $x^2 + y^2 =
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cusp Curve)</span></p>
 
 The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t^3, t^2)$, $t \in R$, is a parametrized differentiable curve. Notice that $\alpha'(0) = (0, 0)$; that is, the velocity vector is zero for $t = 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Self-Intersecting Curve)</span></p>
 
 The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t^3 - 4t,\; t^2 - 4)$, $t \in R$, is a parametrized differentiable curve. Notice that $\alpha(2) = \alpha(-2) = (0, 0)$; that is, the map $\alpha$ is not one-to-one.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-Differentiable Map)</span></p>
 
 The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t, \|t\|)$, $t \in R$, is *not* a parametrized differentiable curve, since $\|t\|$ is not differentiable at $t = 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Same Trace, Different Parametrizations)</span></p>
 
 The two distinct parametrized curves
@@ -699,7 +699,7 @@ $$\frac{1}{2}\iint n\,dp\,d\theta = \text{length of } C$$
 
 and therefore gives an estimate for the length of $C$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Estimating DNA Length via Cauchy-Crofton)</span></p>
 
 Consider an electron micrograph of a circular DNA molecule. Four families of straight lines at a distance of 7 millimeters and angles of $\pi/4$ are drawn over the picture. The number of intersection points is found to be 153. Thus,
@@ -780,7 +780,7 @@ Condition 1 is very natural if we expect to do some differential geometry on $S$
 
 ### Examples of Regular Surfaces
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Sphere $S^2$)</span></p>
 
 Let us show that the unit sphere
@@ -803,7 +803,7 @@ Here $\theta$ is called the **colatitude** (the complement of the latitude) and 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Ellipsoid)</span></p>
 
 The ellipsoid
@@ -818,14 +818,14 @@ is a differentiable function and $0$ is a regular value of $f$. This follows fro
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Hyperboloid of Two Sheets)</span></p>
 
 The hyperboloid of two sheets $-x^2 - y^2 + z^2 = 1$ is a regular surface, since it is given by $S = f^{-1}(0)$, where $f(x, y, z) = -x^2 - y^2 + z^2 - 1$ and $0$ is a regular value of $f$. Note that the surface $S$ is not connected; that is, given two points in two distinct sheets ($z > 0$ and $z < 0$), it is not possible to join them by a continuous curve $\alpha(t) = (x(t), y(t), z(t))$ contained in the surface.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Torus)</span></p>
 
 The torus $T$ is the "surface" generated by rotating a circle $S^1$ of radius $r$ about a straight line belonging to the plane of the circle and at a distance $a > r$ away from the center of the circle. Let $S^1$ be the circle in the $yz$ plane with its center at the point $(0, a, 0)$. Then $S^1$ is given by $(y - a)^2 + z^2 = r^2$, and the points of the figure $T$ obtained by rotating this circle about the $z$ axis satisfy the equation
@@ -850,7 +850,7 @@ where $0 < u < 2\pi$, $0 < v < 2\pi$. The torus can be covered by three such coo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The One-Sheeted Cone is Not a Regular Surface)</span></p>
 
 The one-sheeted cone $C$, given by $z = +\sqrt{x^2 + y^2}$, $(x, y) \in R^2$, is *not* a regular surface. By Prop. 3 below, if $C$ were a regular surface, it would be, in a neighborhood of $(0, 0, 0)$, the graph of a differentiable function having one of three forms: $y = h(x, z)$, $x = g(y, z)$, $z = f(x, y)$. The first two forms can be discarded by the simple fact that the projections of $C$ over the $xz$ and $yz$ planes are not one-to-one. The last form would have to agree, in a neighborhood of $(0, 0, 0)$, with $z = +\sqrt{x^2 + y^2}$. Since $z = +\sqrt{x^2 + y^2}$ is not differentiable at $(0, 0)$, this is impossible.
@@ -957,7 +957,7 @@ A **parametrized surface** $\mathbf{x}\colon U \subset R^2 \to R^3$ is a differe
 
 Observe that a parametrized surface, even when regular, may have self-intersections in its trace.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tangent Surface)</span></p>
 
 Let $\alpha\colon I \to R^3$ be a regular parametrized curve. Define
@@ -976,7 +976,7 @@ since the curvature $k(t) = \|\alpha''(t) \wedge \alpha'(t)\|/\|\alpha'(t)\|^3$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Surfaces of Revolution)</span></p>
 
 Let $S \subset R^3$ be the set obtained by rotating a regular plane curve $C$ about an axis in the plane which does not meet the curve; we shall take the $xz$ plane as the plane of the curve and the $z$ axis as the rotation axis. Let
@@ -1033,7 +1033,7 @@ Let $f\colon V \subset S \to R$ be a function defined in an open subset $V$ of a
 
 It follows immediately from the last proposition that the definition given does not depend on the choice of the parametrization $\mathbf{x}$. In fact, if $\mathbf{y}\colon V \subset R^2 \to S$ is another parametrization with $p \in \mathbf{x}(V)$, and if $h = \mathbf{x}^{-1} \circ \mathbf{y}$, then $f \circ \mathbf{y} = f \circ \mathbf{x} \circ h$ is also differentiable, whence the asserted independence.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differentiable Functions on Surfaces)</span></p>
 
 Let $S$ be a regular surface and $V \subset R^3$ be an open set such that $S \subset V$. Let $f\colon V \subset R^3 \to R$ be a differentiable function. Then the restriction of $f$ to $S$ is a differentiable function on $S$. In fact, for any $p \in S$ and any parametrization $\mathbf{x}\colon U \subset R^2 \to S$ in $p$, the function $f \circ \mathbf{x}\colon U \to R$ is differentiable. In particular, the following are differentiable functions:
@@ -1065,14 +1065,14 @@ Two regular surfaces $S\_1$ and $S\_2$ are **diffeomorphic** if there exists a d
 
 The notion of diffeomorphism plays the same role in the study of regular surfaces that the notion of isomorphism plays in the study of vector spaces or the notion of congruence plays in Euclidean geometry. In other words, from the point of view of differentiability, two diffeomorphic surfaces are indistinguishable.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parametrizations are Local Diffeomorphisms)</span></p>
 
 If $\mathbf{x}\colon U \subset R^2 \to S$ is a parametrization, $\mathbf{x}^{-1}\colon \mathbf{x}(U) \to R^2$ is differentiable. In fact, for any $p \in \mathbf{x}(U)$ and any parametrization $\mathbf{y}\colon V \subset R^2 \to S$ in $p$, we have that $\mathbf{x}^{-1} \circ \mathbf{y}\colon \mathbf{y}^{-1}(W) \to \mathbf{x}^{-1}(W)$, where $W = \mathbf{x}(U) \cap \mathbf{y}(V)$, is differentiable. This shows that $U$ and $\mathbf{x}(U)$ are diffeomorphic (i.e., every regular surface is locally diffeomorphic to a plane) and justifies the identification made in Remark 1.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differentiable Maps from Ambient Space)</span></p>
 
 Let $S\_1$ and $S\_2$ be regular surfaces. Assume that $S\_1 \subset V \subset R^3$, where $V$ is an open set of $R^3$, and that $\varphi\colon V \to R^3$ is a differentiable map such that $\varphi(S\_1) \subset S\_2$. Then the restriction $\varphi\|\_{S\_1}\colon S\_1 \to S\_2$ is a differentiable map. In particular:
@@ -1142,7 +1142,7 @@ In the discussion above, given $w$, the vector $\beta'(0)$ does not depend on th
 
 The linear map $d\varphi\_p$ defined by Prop. 2 is called the **differential** of $\varphi$ at $p \in S\_1$. In a similar way we define the differential of a (differentiable) function $f\colon U \subset S \to R$ at $p \in U$ as a linear map $df\_p\colon T\_p(S) \to R$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differential of the Height Function)</span></p>
 
 Let $v \in R^3$ be a unit vector and let $h\colon S \to R$, $h(p) = v \cdot p$, $p \in S$, be the height function defined in Example 1 of Sec. 2-3. To compute $dh\_p(w)$, $w \in T\_p(S)$, choose a differentiable curve $\alpha\colon (-\epsilon, \epsilon) \to S$ with $\alpha(0) = p$, $\alpha'(0) = w$. Since $h(\alpha(t)) = \alpha(t) \cdot v$, we obtain
@@ -1151,7 +1151,7 @@ $$dh_p(w) = \frac{d}{dt}h(\alpha(t))\bigg|_{t=0} = \alpha'(0) \cdot v = w \cdot 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differential of Rotation on the Sphere)</span></p>
 
 Let $S^2 \subset R^2$ be the unit sphere and let $R\_{z,\theta}\colon R^3 \to R^3$ be the rotation of angle $\theta$ about the $z$ axis. Then $R\_{z,\theta}$ restricted to $S^2$ is a differentiable map of $S^2$. We shall compute $(dR\_{z,\theta})\_p(w)$, $p \in S^2$, $w \in T\_p(S^2)$. Choose $\alpha\colon (-\epsilon, \epsilon) \to S^2$ with $\alpha(0) = p$, $\alpha'(0) = w$. Then, since $R\_{z,\theta}$ is linear,
@@ -1244,7 +1244,7 @@ $$\left(\frac{ds}{dt}\right)^2 = E\left(\frac{du}{dt}\right)^2 + 2F\frac{du}{dt}
 
 ### Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Fundamental Form of the Plane)</span></p>
 
 A coordinate system for a plane $P = R^3$ passing through $p\_0 = (x\_0, y\_0, z\_0)$ and containing the orthonormal vectors $w\_1 = (a\_1, a\_2, a\_3)$, $w\_2 = (b\_1, b\_2, b\_3)$ is given as follows:
@@ -1259,7 +1259,7 @@ In this trivial case, the first fundamental form is essentially the Pythagorean 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Fundamental Form of the Cylinder)</span></p>
 
 The right cylinder over the circle $x^2 + y^2 = 1$ admits the parametrization $\mathbf{x}\colon U \to R^3$, where
@@ -1274,7 +1274,7 @@ We remark that, although the cylinder and the plane are distinct surfaces, we ob
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Fundamental Form of the Helicoid)</span></p>
 
 Consider a helix that is given by (see Example 1, Sec. 1-2) $(\cos u, \sin u, au)$. Through each point of the helix, draw a line parallel to the $xy$ plane and intersecting the $z$ axis. The surface generated by these lines is called a **helicoid** and admits the following parametrization:
@@ -1287,7 +1287,7 @@ $$E(u, v) = v^2 + a^2, \qquad F(u, v) = 0, \qquad G(u, v) = 1.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(First Fundamental Form of the Sphere — Geographical Coordinates)</span></p>
 
 We shall compute the first fundamental form of a sphere at a point of the coordinate neighborhood given by the parametrization (cf. Example 1, Sec. 2-2)
@@ -1347,7 +1347,7 @@ which shows that the integrand of $A(R)$ can be written as
 
 $$|\mathbf{x}_u \wedge \mathbf{x}_v| = \sqrt{EG - F^2}.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Area of the Torus)</span></p>
 
 Let us compute the area of the torus of Example 6, Sec. 2-2. For that, we consider the coordinate neighborhood corresponding to the parametrization
@@ -1401,7 +1401,7 @@ A regular surface $S$ is called **orientable** if it is possible to cover it wit
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Graphs and Spheres are Orientable)</span></p>
 
 1. A surface which is the graph of a differentiable function (cf. Sec. 2-2, Prop. 1) is an orientable surface. In fact, all surfaces which can be covered by one coordinate neighborhood are trivially orientable.
@@ -1449,7 +1449,7 @@ As the proof shows, we need only to require the existence of a *continuous* unit
 
 ### The Möbius Strip — A Nonorientable Surface
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Möbius Strip)</span></p>
 
 The **Möbius strip** is obtained by considering the circle $S^1$ given by $x^2 + y^2 = 4$ and the open segment $AB$ given in the $yz$ plane by $y - 2$, $\vert z\vert  < 1$. We move the center $c$ of $AB$ along $S^1$ and turn $AB$ about $c$ in the $cz$ plane in such a manner that when $c$ has passed through an angle $u$, $AB$ has been rotated by an angle $u/2$. When $c$ completes one trip around the circle, $AB$ returns to its initial position, with its end points inverted.
@@ -1897,7 +1897,7 @@ Let $F\colon U \subset R^n \to R^n$ be a differentiable mapping and suppose that
 
 A differentiable mapping $F\colon V \subset R^n \to W \subset R^n$, where $V$ and $W$ are open sets, is called a **diffeomorphism** of $V$ with $W$ if $F$ has a differentiable inverse. The inverse function theorem asserts that if at a point $p \in U$ the differential $dF\_p$ is an isomorphism, then $F$ is a diffeomorphism in a neighborhood of $p$. In other words, an assertion about the differential of $F$ at a point implies a similar assertion about the behavior of $F$ in a neighborhood of the point.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Local but Not Global Diffeomorphism)</span></p>
 
 Let $F\colon R^2 \to R^2$ be given by
@@ -1959,14 +1959,14 @@ The linear map $dN\_p\colon T\_p(S) \to T\_p(S)$ operates as follows. For each p
 
 ### Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Gauss Map of a Plane)</span></p>
 
 For a plane $P$ given by $ax + by + cz + d = 0$, the unit normal vector $N = (a, b, c)/\sqrt{a^2 + b^2 + c^2}$ is constant, and therefore $dN \equiv 0$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Gauss Map of the Unit Sphere)</span></p>
 
 Consider the unit sphere $S^2 = \lbrace (x, y, z) \in R^3;\; x^2 + y^2 + z^2 = 1 \rbrace$. If $\alpha(t) = (x(t), y(t), z(t))$ is a parametrized curve in $S^2$, then $2xx' + 2yy' + 2zz' = 0$, which shows that the vector $(x, y, z)$ is normal to the sphere at the point $(x, y, z)$. Thus, $\bar{N} = (x, y, z)$ and $N = (-x, -y, -z)$ are fields of unit normal vectors in $S^2$. We fix an orientation in $S^2$ by choosing $N = (-x, -y, -z)$. Notice that $N$ points toward the center of the sphere.
@@ -1979,7 +1979,7 @@ that is, $dN\_p(v) = -v$ for all $p \in S^2$ and all $v \in T\_p(S^2)$. Notice t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Gauss Map of the Cylinder)</span></p>
 
 Consider the cylinder $\lbrace (x, y, z) \in R^3;\; x^2 + y^2 = 1 \rbrace$, and $N = (-x, -y, 0)$ are unit normal vectors at $(x, y, z)$. We fix an orientation by choosing $N = (-x, -y, 0)$ as the normal vector field.
@@ -1992,7 +1992,7 @@ We conclude the following: If $v$ is a vector tangent to the cylinder and parall
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Gauss Map of the Hyperbolic Paraboloid)</span></p>
 
 Let us analyze the point $p = (0, 0, 0)$ of the hyperbolic paraboloid $z = y^2 - x^2$. We consider a parametrization $\mathbf{x}(u, v) = (u, v, v^2 - u^2)$ and compute the normal vector $N(u, v)$. We obtain successively
@@ -2316,7 +2316,7 @@ We recall that this is merely the determinant of the $3 \times 3$ matrix whose c
 
 ### Examples in Local Coordinates
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Curvature of the Torus)</span></p>
 
 We shall compute the Gaussian curvature of the points of the torus covered by the parametrization (cf. Example 6 of Sec. 2-2)
@@ -2377,7 +2377,7 @@ For a hyperbolic point $p$, in each neighborhood of $p$ there exist points $(u, 
 
 No such statement as Prop. 1 can be made in a neighborhood of a parabolic or a planar point. In the above examples of parabolic and planar points (cf. Examples 3 and 6 of Sec. 3-2) the surface lies on one side of the tangent plane and may have a line in common with this plane.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Monkey Saddle)</span></p>
 
 The "monkey saddle" is given by $x = u$, $y = v$, $z = u^3 - 3v^2 u$. A direct computation shows that at $(0, 0)$ the coefficients of the second fundamental form are $e = f = g = 0$; the point $(0, 0)$ is therefore a planar point. In any neighborhood of this point, however, there are points in both sides of its tangent plane.
@@ -2410,7 +2410,7 @@ Using the fact that the principal directions are orthogonal to each other, it fo
 
 ### Surfaces of Revolution in Local Coordinates
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Surfaces of Revolution — Curvatures)</span></p>
 
 Consider a surface of revolution parametrized by (cf. Example 4 of Sec. 2-3; we have changed $f$ and $g$ by $\varphi$ and $\psi$, respectively)
@@ -2443,7 +2443,7 @@ $$H = \frac{1}{2}\frac{-\psi' + \varphi(\psi'\varphi'' - \psi''\varphi')}{\varph
 
 ### Formulas for Graphs $z = h(x, y)$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Curvatures for Graphs)</span></p>
 
 Very often a surface is given as the graph of a differentiable function $z = h(x, y)$, where $(x, y)$ belong to an open set $U \subset R^2$. It is therefore convenient to have at hand formulas for the relevant concepts in this case. Using the parametrization $\mathbf{x}(u, v) = (u, v, h(u, v))$, with $u = x$, $v = y$, we obtain
@@ -2700,7 +2700,7 @@ Let $p \in S$ be a nonumbilical point of $S$. Then it is possible to parametrize
 
 Similarly, in a neighborhood of a nonumbilical point, it is possible to decompose the differential equation of the lines of curvature into distinct linear factors. By an analogous argument we obtain Corollary 4.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Asymptotic Curves of the Hyperbolic Paraboloid)</span></p>
 
 Let $S$ be the hyperbolic paraboloid $z = x^2 - y^2$. As usual we parametrize the entire surface by $\mathbf{x}(u, v) = (u, v, u^2 - v^2)$. A simple computation shows that
@@ -2746,7 +2746,7 @@ is called the **ruled surface** generated by the family $\lbrace \alpha(t), w(t)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Ruled Surfaces)</span></p>
 
 1. The simplest examples of ruled surfaces are the tangent surfaces to a regular curve (cf. Example 4, Sec. 2-3), the cylinders, and the cones. A **cylinder** is a ruled surface generated by a one-parameter family $\lbrace \alpha(t), w(t) \rbrace$, $t \in I$, where $\alpha(I) \subset P$ a plane and $w(t)$ is parallel to a fixed direction in $R^3$. A **cone** is a ruled surface generated by a family $\lbrace \alpha(t), w(t) \rbrace$, $t \in I$, where $\alpha(I) \subset P$ and the rulings $L\_t$ all pass through a point $p \notin P$.
@@ -2791,7 +2791,7 @@ This shows that, at regular points, *the Gaussian curvature $K$ of a ruled surfa
 
 The function $\lambda(t)$ is called the **distribution parameter** of $\mathbf{x}$. Since the line of striction is independent of the choice of the directrix, the same holds for $\lambda$. The distribution parameter has a geometric interpretation: if $\theta$ is the angle which the normal vector at a point of a ruling makes with the normal vector at the central point of this ruling, then $\tan\theta = u/\lambda$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Hyperbolic Paraboloid as a Ruled Surface)</span></p>
 
 Let $S$ be the hyperbolic paraboloid $z = kxy$, $k \neq 0$. To show that $S$ is a ruled surface, we observe that the lines $y = z/tk$, $x = t$, for each $t \neq 0$ belong to $S$. If we take the intersection of this family of lines with the plane $z = 0$, we obtain the curve $x = t$, $y = 0$, $z = 0$. Taking this curve as the directrix and $w(t)$ parallel to the lines $y = z/tk$, $x = t$, we obtain
@@ -2843,7 +2843,7 @@ Of course, the above cases do not exhaust all possibilities. As usual, if there 
 
 ### The Envelope of Tangent Planes along a Curve
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Envelope of Tangent Planes along a Curve)</span></p>
 
 Let $S$ be a regular surface and $\alpha = \alpha(s)$ a curve on $S$ parametrized by arc length. Assume that $\alpha$ is nowhere tangent to an asymptotic direction. Consider the ruled surface
@@ -2965,7 +2965,7 @@ Let $\mathbf{x}(u, v) = (x(u, v), y(u, v), z(u, v))$ be a parametrized surface a
 
 ### Examples of Minimal Surfaces
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Catenoid)</span></p>
 
 The **catenoid** is the surface generated by rotating the catenary $y = a\cosh(z/a)$ about the $z$ axis. It is given by
@@ -2993,7 +2993,7 @@ which integrates to $\cosh^{-1}(yk) = kx + c$ or $y = (1/k)\cosh(kx + c)$. Thus,
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Helicoid)</span></p>
 
 The **helicoid** (cf. Example 3, Sec. 2-5) is given by
@@ -3006,7 +3006,7 @@ It is easily checked that $E = G = a^2\cosh^2 v$, $F = 0$, and $\mathbf{x}\_{uu}
 
 The helicoid and the catenoid were discovered in 1776 by Meusnier, who also proved that Lagrange's definition of minimal surfaces as critical points of a variational problem is equivalent to the vanishing of the mean curvature. For a long time, they were the only known examples of minimal surfaces. Only in 1835 did Scherk find further examples.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Enneper's Minimal Surface)</span></p>
 
 **Enneper's surface** is the parametrized surface
@@ -3047,7 +3047,7 @@ and similarly for $y$ and $z$, which give one-half of the Cauchy-Riemann equatio
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Scherk's Minimal Surface)</span></p>
 
 **Scherk's surface** is given by
@@ -3134,7 +3134,7 @@ Assume the existence of parametrizations $\mathbf{x}\colon U \to S$ and $\bar{\m
 
 ### Examples of Isometries
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cylinder and Plane are Locally Isometric)</span></p>
 
 Let $\varphi$ be a map of the coordinate neighborhood $\bar{\mathbf{x}}(U)$ of the cylinder given in Example 2 of Sec. 2-5 into the plane $\mathbf{x}(R^2)$ of Example 1 of Sec. 2-5, defined by $\varphi = \mathbf{x} \circ \bar{\mathbf{x}}^{-1}$. Then $\varphi$ is a local isometry. In fact, each vector $w$, tangent to the cylinder at a point $p \in \bar{\mathbf{x}}(U)$, is tangent to a curve $\bar{\mathbf{x}}(u(t), v(t))$, where $(u(t), v(t))$ is a curve in $U \subset R^2$. Thus, $w = \bar{\mathbf{x}}\_u u' + \bar{\mathbf{x}}\_v v'$. On the other hand, $d\varphi(w)$ is tangent to the curve $\mathbf{x}(u(t), v(t))$. Thus, $d\varphi(w) = \mathbf{x}\_u u' + \mathbf{x}\_v v'$. Since $E = \bar{E}$, $F = \bar{F}$, $G = \bar{G}$, we obtain
@@ -3145,7 +3145,7 @@ and it follows that the cylinder $x^2 + y^2 = 1$ is locally isometric to a plane
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Catenoid and Helicoid are Locally Isometric)</span></p>
 
 Let $S$ be a surface of revolution and let
@@ -3166,7 +3166,7 @@ relative to which the coefficients of the first fundamental form are given by $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Cone Minus a Generator is Locally Isometric to a Plane)</span></p>
 
 The one-sheeted cone (minus the vertex) $z = +k\sqrt{x^2 + y^2}$, $(x, y) \neq (0, 0)$, is locally isometric to a plane. To show this, let $U \subset R^2$ be the open set given in polar coordinates $(\rho, \theta)$ by $0 < \rho < \infty$, $0 < \theta < 2\pi\sin\alpha$, where $2\alpha$ ($0 < 2\alpha < \pi$) is the angle at the vertex of the cone (i.e., $\cot\alpha = k$), and let $F\colon U \to R^3$ be the map
@@ -3257,7 +3257,7 @@ Note that for each pair the determinant of the system is $EG - F^2 \neq 0$. Thus
 
 An important consequence: *All geometric concepts and properties expressed in terms of the Christoffel symbols are invariant under isometries.*
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Christoffel Symbols for a Surface of Revolution)</span></p>
 
 We shall compute the Christoffel symbols for a surface of revolution parametrized by $\mathbf{x}(u, v) = (f(v)\cos u, f(v)\sin u, g(v))$, $f(v) \neq 0$. Since $E = (f(v))^2$, $F = 0$, $G = (f'(v))^2 + (g'(v))^2$, we obtain $E\_u = 0$, $E\_v = 2ff'$, $F\_u = F\_v = 0$, $G\_u = 0$, $G\_v = 2(f'f'' + g'g'')$, where prime denotes derivative with respect to $v$. The first two equations of the system give
@@ -3405,7 +3405,7 @@ Let $\alpha\colon I \to S$ be a parametrized curve and $w\_0 \in T\_{\alpha(t\_0
 
 It should be remarked that if $\alpha\colon I \to S$, $t \in I$, is regular, then the parallel transport does not depend on the parametrization of $\alpha(I)$. By Prop. 1, $P\_\alpha\colon T\_p(S) \to T\_q(S)$ is an isometry.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parallel Transport on the Sphere)</span></p>
 
 Let $C$ be a parallel of colatitude $\varphi$ of an oriented unit sphere and let $w\_0$ be a unit vector, tangent to $C$ at some point $p$ of $C$. Let us determine the parallel transport of $w\_0$ along $C$, parametrized by arc length $s$, with $s = 0$ at $p$.
@@ -3442,7 +3442,7 @@ Observe that every straight line contained in a surface satisfies the geodesic c
 
 ### Examples of Geodesics
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geodesics of the Sphere)</span></p>
 
 The great circles of a sphere $S^2$ are geodesics. Indeed, the great circles $C$ are obtained by intersecting the sphere with a plane that passes through the center $O$ of the sphere. The principal normal at a point $p \in C$ lies in the direction of the line that connects $p$ to $O$ because $C$ is a circle of center $O$. Since $S^2$ is a sphere, the normal lies in the same direction, which verifies our assertion.
@@ -3451,7 +3451,7 @@ Later in this section we shall prove the general fact that for each point $p \in
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geodesics of the Cylinder)</span></p>
 
 For the right circular cylinder over the circle $x^2 + y^2 = 1$, the circles obtained by the intersection of the cylinder with planes that are normal to the axis of the cylinder are geodesics. That is so because the principal normal to any of its points is parallel to the normal to the surface at this point.
@@ -3547,7 +3547,7 @@ Given a point $p \in S$ and a vector $w \in T\_p(S)$, $w \neq 0$, there exist an
 
 ### Geodesics on Surfaces of Revolution
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geodesics of a Surface of Revolution)</span></p>
 
 We shall use the differential equations of geodesics to study locally the geodesics of a surface of revolution parametrized by $\mathbf{x}(u, v) = (f(v)\cos u, f(v)\sin u, g(v))$, $f(v) \neq 0$. Using the Christoffel symbols computed in Example 1 of Sec. 4-3, the geodesic equations become
@@ -4866,7 +4866,7 @@ Let $\gamma\colon [0, l] \to S$ be a geodesic of $S$ with $\gamma(0) = p$. We sa
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Conjugate Points on the Sphere)</span></p>
 
 Let $S^2 = \lbrace (x, y, z) \in R^3;\; x^2 + y^2 + z^2 = 1 \rbrace$ be the unit sphere and $\mathbf{x}(\theta, \varphi)$ be a parametrization at $p \in S$ by the colatitude $\theta$ and the longitude $\varphi$. Consider on the parallel $\theta = \pi/2$ the segment between $\varphi\_0 = \pi/2$ and $\varphi\_1 = 3\pi/2$. This segment is a geodesic $\gamma$, which we assume to be parametrized by $\varphi - \varphi\_0 = s$. Let $w(s)$ be the parallel transport along $\gamma$ of a vector $w(0) \in T\_{\gamma(0)}(S)$, with $\vert w(0)\vert  = 1$ and $\langle w(0), \gamma'(0) \rangle = 0$. We shall prove that the vector field
@@ -4983,7 +4983,7 @@ $\tilde{B}$ is then called a **covering space** of $B$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Plane Covering the Cylinder)</span></p>
 
 Let $P \subset R^3$ be a plane. By fixing a point $q\_0 \in P$ and two orthogonal unit vectors $e\_1, e\_2 \in P$, with origin in $q\_0$, every point $q \in P$ is characterized by coordinates $(u, v)$ given by $q - q\_0 = ue\_1 + ve\_2$. Now let $S = \lbrace (x, y, z) \in R^3;\; x^2 + y^2 = 1 \rbrace$ be the right circular cylinder whose axis is the $z$ axis, and let $\pi\colon P \to S$ be the map defined by $\pi(u, v) = (\cos u, \sin u, v)$.
@@ -4992,7 +4992,7 @@ We shall prove that $\pi$ is a covering map. For each $(u\_0, v\_0) \in P$, the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Helix Covering the Circle)</span></p>
 
 Let $H$ be the helix $H = \lbrace (x, y, z) \in R^3;\; x = \cos t,\; y = \sin t,\; z = bt,\; t \in R \rbrace$ and let $S^1 = \lbrace (x, y, 0) \in R^3;\; x^2 + y^2 = 1 \rbrace$ be a unit circle. Let $\pi\colon H \to S^1$ be defined by $\pi(x, y, z) = (x, y, 0)$. Then $\pi$ is a covering map: for each $p \in S^1$, $U = S^1 - \lbrace q \rbrace$ (where $q$ is the point diametrically opposite to $p$) is a distinguished neighborhood.
@@ -5199,7 +5199,7 @@ $$\deg\varphi = \frac{1}{2\pi}\int_0^l \frac{d\tilde{\varphi}}{dt}\,dt.$$
 
 ### Winding Number and Rotation Index
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Winding Number)</span></p>
 
 Let $\alpha\colon [0, l] \to R^2$ be a plane, continuous closed curve. Choose a point $p\_0 \in R^2$, $p\_0 \notin \alpha([0, l])$, and let $\varphi\colon [0, l] \to S^1$ be given by
@@ -5212,7 +5212,7 @@ The winding number is constant when $q$ runs in a connected component of $R^2 - 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Rotation Index)</span></p>
 
 Let $\alpha\colon [0, l] \to R^2$ be a regular plane closed curve, and let $\varphi\colon [0, l] \to S^1$ be given by
@@ -5327,7 +5327,7 @@ Let $S \subset R^3$ be a regular surface with Gaussian curvature $K \equiv 0$. S
 
 $P$ is closed in $S$ (the points of $P$ satisfy the condition that the mean curvature $H = \frac{1}{2}(k\_1 + k\_2)$ is zero, which is a closed condition). Therefore, $U = S - P$ is open in $S$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Surface of Zero Curvature with Planar and Parabolic Points)</span></p>
 
 Consider an open triangle $ABC$ and attach to each side a cylindrical surface with generators parallel to the given side. For instance, along the open segment $BC$, attach a cylindrical band $BCDE$ whose generators are parallel to $BC$. To ensure regularity along $BC$, it suffices that the section $FG$ of the cylindrical band by a plane normal to $BC$ is a curve of the form $\exp(-1/x^2)$.
@@ -5587,14 +5587,14 @@ The pair $(U\_\alpha, \mathbf{x}\_\alpha)$ with $p \in \mathbf{x}\_\alpha(U\_\al
 
 It follows immediately from condition 2 that the "change of parameters" $\mathbf{x}\_\beta^{-1} \circ \mathbf{x}\_\alpha\colon \mathbf{x}\_\alpha^{-1}(W) \to \mathbf{x}\_\beta^{-1}(W)$ is a diffeomorphism.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Real Projective Plane $P^2$)</span></p>
 
 Let $S^2 = \lbrace (x, y, z) \in R^3;\; x^2 + y^2 + z^2 = 1 \rbrace$ be the unit sphere and let $A\colon S^2 \to S^2$ be the antipodal map; i.e., $A(x, y, z) = (-x, -y, -z)$. Let $P^2$ be the set obtained from $S^2$ by identifying $p$ with $A(p)$ and denote by $\pi\colon S^2 \to P^2$ the natural map $\pi(p) = \lbrace p, A(p) \rbrace$. Cover $S^2$ with parametrizations $\mathbf{x}\_\alpha\colon U\_\alpha \to S^2$ such that $\mathbf{x}\_\alpha(U\_\alpha) \cap A \circ \mathbf{x}\_\alpha(U\_\alpha) = \phi$. From the fact that $S^2$ is a regular surface and $A$ is a diffeomorphism, it follows that $P^2$ together with the family $\lbrace U\_\alpha, \pi \circ \mathbf{x}\_\alpha \rbrace$ is an abstract surface, to be denoted again by $P^2$. $P^2$ is called the **real projective plane**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2</span><span class="math-callout__name">(Klein Bottle)</span></p>
 
 Let $T \subset R^3$ be a torus of revolution (Sec. 2-2, Example 4) with center in $(0, 0, 0) \in R^3$ and let $A\colon T \to T$ be defined by $A(x, y, z) = (-x, -y, -z)$. Let $K$ be the quotient space of $T$ by the equivalence relation $p \sim A(p)$ and denote by $\pi\colon T \to K$ the map $\pi(p) = \lbrace p, A(p) \rbrace$. Cover $T$ with parametrizations $\mathbf{x}\_\alpha\colon U\_\alpha \to T$ such that $\mathbf{x}\_\alpha(U\_\alpha) \cap A \circ \mathbf{x}\_\alpha(U\_\alpha) = \phi$. As before, it is possible to prove that $K$ with the family $\lbrace U\_\alpha, \pi \circ \mathbf{x}\_\alpha \rbrace$ is an abstract surface, which is called the **Klein bottle**.
@@ -5657,7 +5657,7 @@ are differentiable functions in $U$. The inner product $\langle\; ,\; \rangle$ i
 
 With the functions $E$, $F$, $G$ we define Christoffel symbols for $S$ by system 2 of Sec. 4-3. Since the notions of intrinsic geometry were all defined in terms of the Christoffel symbols, they can now be defined in $S$: covariant derivatives, parallel transport, geodesics, Gaussian curvature (via Eq. (5) of Sec. 4-3 or in terms of parallel transport as in Sec. 4-5).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(The Hyperbolic Plane)</span></p>
 
 Let $S = R^2$ be a plane with coordinates $(u, v)$ and define an inner product at each point $q = (u, v) \in R^2$ by setting
@@ -5711,7 +5711,7 @@ The first inner product above is the usual inner product of $R^3$, whereas the s
 
 Hilbert's theorem, to be proved in Sec. 5-11, states that there is no isometric immersion into $R^3$ of the complete hyperbolic plane. In particular, one cannot find a model of the geometry of Lobachevski as a regular surface in $R^3$. The above definition of isometric immersion makes perfect sense when we replace $R^3$ by $R^4$ or, for that matter, by an arbitrary $R^n$. Thus, we can ask: *For what values of $n$ is there an isometric immersion of the complete hyperbolic plane into $R^n$?* Hilbert's theorem says that $n \ge 4$. As far as we know, the case $n = 4$ is still unsettled.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4</span><span class="math-callout__name">(The Flat Torus)</span></p>
 
 Let $R^2$ be a plane with coordinates $(x, y)$ and $T\_{m,n}\colon R^2 \to R^2$ be the map (translation) $T\_{m,n}(x, y) = (x + m, y + n)$, where $m$ and $n$ are integers. Define an equivalence relation in $R^2$ by $(x, y) \sim (x\_1, y\_1)$ if there exist integers $m$, $n$ such that $T\_{m,n}(x, y) = (x\_1, y\_1)$. Let $T$ be the quotient space of $R^2$ by this equivalence relation, and let $\pi\colon R^2 \to T$ be the natural projection map $\pi(x, y) = \lbrace T\_{m,n}(x, y);\; \text{all integers } m, n \rbrace$.
@@ -5728,7 +5728,7 @@ Since $F(x + m, y + n) = F(x, y)$ for all $m$, $n$, we can define a map $\varphi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5</span><span class="math-callout__name">(Orientability and Nonorientable Surfaces)</span></p>
 
 The definition of orientability (cf. Sec. 2-6, Def. 1) can be extended, without changing a single word, to abstract surfaces. The real projective plane $P^2$ of Example 1 is **nonorientable**. To prove this, we observe that whenever an abstract surface $S$ contains an open set $M$ diffeomorphic to a Mobius strip (Sec. 2-6, Example 3), it is nonorientable. Now, $P^2$ is obtained from the sphere $S^2$ by identifying antipodal points. Consider on $S^2$ a thin strip $B$ made up of open segments of meridians whose centers lay on half an equator. Under identification of antipodal points, $B$ clearly becomes an open Mobius strip in $P^2$. Thus, $P^2$ is nonorientable.
@@ -5765,7 +5765,7 @@ A **differentiable manifold of dimension $n$** is a set $M$ together with a fami
 
 The definitions of differentiable maps and tangent vector carry over, word by word, to differentiable manifolds. The tangent space is now an $n$-dimensional vector space. The definitions of differential and orientability also extend straightforwardly to the present situation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6</span><span class="math-callout__name">(The Tangent Bundle)</span></p>
 
 Let $S$ be an abstract surface and let $T(S) = \lbrace (p, w);\; p \in S,\; w \in T\_p(S) \rbrace$. We shall show that $T(S)$ can be given a differentiable structure (of dimension 4) to be called the **tangent bundle** of $S$.

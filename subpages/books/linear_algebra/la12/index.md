@@ -149,7 +149,7 @@ Proof by mathematical induction is used for statements of the type "For all natu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Proof by induction)</span></p>
 
 *Claim:* For every natural number $n$, the number $n^3 + 2n$ is divisible by three.
@@ -327,7 +327,7 @@ We seek a point $x \in M$ such that $f(x) \le f(y)$ for all $y \in M$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear optimization)</span></p>
 
 Consider the function $f(x_1, x_2) = x_1 - x_2$ and the set $M$ in the plane defined by the constraints $x_1 + 2x_2 \le 4$, $x_1 \ge 0$, $x_2 \ge 0$. The set $M$ is a triangle with vertices $(0, 0)$, $(4, 0)$ and $(0, 2)$. The minimum value of the function is attained at the point $(0, 2)$.
@@ -349,7 +349,7 @@ Functions for solving basic problems of linear algebra are a standard part of ma
 
 Systems of linear equations are among the fundamental algebraic problems and we encounter them almost everywhere — if a problem does not lead to a system of equations directly, systems of equations often appear as a subproblem.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Historical problem — Jiuzhang Suanshu, ca 200 BC)</span></p>
 
 *Three sheaves of good grain, two sheaves of average grain, and one sheaf of poor grain sell for a total of 39 dou. Two sheaves of good grain, three of average, and one of poor sell for 34 dou. One sheaf of good grain, two of average, and three of poor sell for 26 dou. What is the price of one sheaf of good / average / poor grain?*
@@ -473,7 +473,7 @@ The key idea is to show that an elementary operation does not change the solutio
 
 The basic idea of the method is to transform the augmented matrix of the system using elementary row operations into a simpler matrix from which the solution can be easily read off.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian elimination — demonstration)</span></p>
 
 Consider the system of linear equations:
@@ -504,7 +504,7 @@ The positions $(1, p_1), (2, p_2), \ldots, (r, p_r)$ are called **pivots**. The 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrices in REF and not in REF)</span></p>
 
 The following matrices are in row echelon form:
@@ -569,7 +569,7 @@ $$x_k := \frac{b_k' - \sum_{j=k+1}^{n} a_{kj}' x_j}{a_{kk}'}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian elimination with infinitely many solutions)</span></p>
 
 We solve the system with augmented matrix:
@@ -635,7 +635,7 @@ A matrix $A \in \mathbb{R}^{m \times n}$ is in *reduced row echelon form* (RREF)
 
 The difference from the REF algorithm is in steps 5 and 6: the pivots are normalized to one and elimination is performed not only below but also above the pivot.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reduction to RREF)</span></p>
 
 $$\begin{pmatrix} 2 & 2 & -1 & 5 \\ 4 & 5 & 0 & 9 \\ 0 & 1 & 2 & 2 \\ 2 & 4 & 3 & 7 \end{pmatrix} \xrightarrow{\text{RREF}} \begin{pmatrix} 1 & 0 & -2.5 & 0 \\ 0 & 1 & 2 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{pmatrix}.$$
@@ -661,7 +661,7 @@ $$x_{p_k} := b_k' - \sum_{j \in N,\; j > p_k} a_{kj}' x_j.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gauss-Jordan elimination)</span></p>
 
 The system from the previous example solved by Gauss-Jordan elimination:
@@ -710,7 +710,7 @@ The system $(A \mid b)$ has at least one solution if and only if $\operatorname{
 
 ### Applications
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Electrical circuit)</span></p>
 
 Consider an electrical circuit with resistors $10\,\Omega$, $10\,\Omega$, $20\,\Omega$ and voltage sources $10\,\text{V}$, $5\,\text{V}$. We want to determine the currents $I_1, I_2, I_3$. Using Kirchhoff's laws (current law: $I_1 + I_2 - I_3 = 0$; voltage law for loops) we obtain the system:
@@ -920,7 +920,7 @@ The composition of two mappings $x \mapsto Ax$ and $y \mapsto By$ corresponds to
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix as a mapping in the plane)</span></p>
 
 - **Reflection across the $x_2$-axis**: $A = \bigl(\begin{smallmatrix} -1 & 0 \\ 0 & 1 \end{smallmatrix}\bigr)$, mapping $(x_1, x_2)^\top \mapsto (-x_1, x_2)^\top$.
@@ -1093,7 +1093,7 @@ Let $A \in \mathbb{R}^{n \times n}$. Suppose the matrix $(A \mid I_n)$ of type $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computing the inverse matrix)</span></p>
 
 Let $A = \begin{pmatrix} 1 & 1 & 3 \\ 0 & 2 & -1 \\ 3 & 5 & 7 \end{pmatrix}$. We compute the inverse matrix:
@@ -1172,7 +1172,7 @@ The LU decomposition is closely related to the echelon form of a matrix. We can 
 
 Reduce $A$ to echelon form $U$: $E_k \ldots E_1 A = U$, from which $A = \underbrace{E_1^{-1} \ldots E_k^{-1}}_{L} U$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(LU decomposition)</span></p>
 
 $$A = \begin{pmatrix} 2 & 1 & 3 \\ 4 & 1 & 7 \\ -6 & -2 & -12 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 2 & 1 & 0 \\ -3 & -1 & 1 \end{pmatrix} \begin{pmatrix} 2 & 1 & 3 \\ 0 & -1 & 1 \\ 0 & 0 & -2 \end{pmatrix} = LU.$$
@@ -1181,7 +1181,7 @@ The matrix $L$ is constructed by writing the coefficients $-\alpha$ from the ele
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Using LU decomposition to solve a system)</span></p>
 
 To solve the system $Ax = b$ (i.e., $LUx = b$):
@@ -1214,7 +1214,7 @@ When solving systems of linear equations numerically on computers, rounding erro
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ill-conditioned system)</span></p>
 
 Two systems differing in a single coefficient by $\frac{2}{30}$:
@@ -1229,7 +1229,7 @@ has the solution $(-666, 834)$. Geometrically, this is the intersection of two n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hilbert matrix)</span></p>
 
 A typical example of an ill-conditioned matrix is the Hilbert matrix $H_n$ of order $n$, defined by $(H_n)_{ij} = \frac{1}{i + j - 1}$. Already for $n \approx 14$, numerical errors have an enormous impact on the accuracy of the solution (with double precision $\approx 10^{-16}$).
@@ -1254,7 +1254,7 @@ Large practical problems (typically solving differential equations) lead to larg
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gauss--Seidel method)</span></p>
 
 Consider the system:
@@ -1278,7 +1278,7 @@ Convergence is guaranteed only for certain classes of matrices, e.g., when in ea
 
 ### Applications
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Leontief input-output model)</span></p>
 
 Consider an economy with $n$ sectors. Sector $i$ produces one commodity in quantity $x_i$. Producing one unit of the $j$-th commodity requires $a_{ij}$ units of the $i$-th commodity. Let $d_i$ denote the final demand for the output of sector $i$. The model:
@@ -1289,7 +1289,7 @@ The solution has the explicit expression $x = (I_n - A)^{-1} d$. Leontief applie
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Polynomial interpolation)</span></p>
 
 Given $n + 1$ points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ in the plane, where $x_i \neq x_j$ for $i \neq j$, we seek a polynomial $p(x) = a_n x^n + \ldots + a_1 x + a_0$ passing through these points. Substituting, we obtain a system of equations with the **Vandermonde matrix**:
@@ -1309,7 +1309,7 @@ The **fast Fourier transform** (FFT) allows switching between both representatio
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Image compression — Haar transform)</span></p>
 
 An image represented by a matrix $M \in \mathbb{R}^{m \times n}$ can be compressed using the Haar transform. The matrix $M$ is divided into $8 \times 8$ submatrices, and to each we apply the transformation $A' = H^\top A H$, where $H$ is a nonsingular matrix. By averaging neighboring pixels, values close to zero are set to zero — this produces a sparse matrix that can be stored more efficiently. The *compression ratio* $k$ gives the ratio of nonzero numbers in $A'$ before and after zeroing out small values. A higher $k$ means greater compression, but also greater loss of information.
@@ -1348,7 +1348,7 @@ A mathematical object can be introduced either by construction from some already
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.3 — Examples of groups)</span></p>
 
 - The well-known domains of integers $(\mathbb{Z}, +)$, rational numbers $(\mathbb{Q}, +)$, real numbers $(\mathbb{R}, +)$, and complex numbers $(\mathbb{C}, +)$. The identity element is $0$, and the inverse of an element $a$ is $-a$. Commutativity and associativity of addition clearly hold.
@@ -1395,7 +1395,7 @@ In other words, with the same operation, $H$ satisfies the properties of closure
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.6)</span></p>
 
 - Every group $(G, \circ)$ has two trivial subgroups: itself $(G, \circ)$ and $(\lbrace e \rbrace, \circ)$.
@@ -1403,7 +1403,7 @@ In other words, with the same operation, $H$ satisfies the properties of closure
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.7)</span></p>
 
 Subgroups are closed under intersection, but not under union. In other words, the intersection of two subgroups of a group $(G, \circ)$ is again a subgroup, but the union of subgroups is not necessarily a subgroup.
@@ -1436,7 +1436,7 @@ Let $p \in S_n$. The **inverse permutation** of $p$ is the permutation $p^{-1}$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.10)</span></p>
 
 $(i, j)^{-1} = (i, j)$, $(i, j, k)^{-1} = (k, j, i)$, ...
@@ -1450,7 +1450,7 @@ Let $p, q \in S_n$. The **composed permutation** $p \circ q$ is the permutation 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.12)</span></p>
 
 $id \circ p = p \circ id = p$, $p \circ p^{-1} = p^{-1} \circ p = id$, ...
@@ -1566,7 +1566,7 @@ The group $(S_n, \circ)$ is called symmetric because it and its subgroups descri
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.22 — The 15 puzzle)</span></p>
 
 Symmetric groups and the sign of a permutation are also used in the analysis of puzzles such as the 15 puzzle or the Rubik's cube. The 15 puzzle is a game consisting of a $4 \times 4$ grid and tiles numbered $1$ to $15$. One cell is empty, and by sliding adjacent tiles into the empty cell we change the arrangement of tiles. The goal is to reach an ascending arrangement of tiles through these moves.
@@ -1579,7 +1579,7 @@ If we number the individual cells as $1$ to $16$, then the tile configuration co
 
 Algebraic fields generalize the class of traditional number domains, such as the set of real numbers, to an abstract set with two operations and a number of properties. This allows us to work with matrices (add, multiply, invert, solve systems of equations, ...) over domains other than just $\mathbb{R}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.23 — Motivational)</span></p>
 
 Consider a system of linear equations $Ax = b$ with an invertible matrix $A$. The system therefore has a unique solution. If the entries of the matrix $(A \mid b)$ are integers, then the solution may not have integer components, because division occurs during the elimination. However, if the entries of the matrix $(A \mid b)$ are rational numbers, then the solution also has rational components, because ordinary matrix operations only involve arithmetic operations with numbers. The set of rational numbers $\mathbb{Q}$ thus has the property that ordinary matrix operations do not take us outside of $\mathbb{Q}$. A similar property is also enjoyed by the set of real numbers $\mathbb{R}$ and the set of complex numbers $\mathbb{C}$.
@@ -1601,14 +1601,14 @@ Every field has at least two elements, because the definition necessarily implie
 
 The inverse element property in the group $(\mathbb{T}, +)$ naturally introduces the operation "$-$" defined as addition of the inverse element, i.e. $a - b \equiv a + (-b)$. Analogously, the inverse element property in the group $(\mathbb{T} \setminus \lbrace 0 \rbrace, \cdot)$ naturally introduces the operation "$/$" defined as multiplication by the inverse element, i.e. $a / b \equiv ab^{-1}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.25)</span></p>
 
 Examples of infinite fields include $\mathbb{Q}$, $\mathbb{R}$, and $\mathbb{C}$ with the usual operations of addition and multiplication. However, the set of integers $\mathbb{Z}$ does not form a field, because multiplicative inverses are missing (e.g. when we invert an integer matrix, fractions often arise, and thus we leave the domain $\mathbb{Z}$). Numbers represented on a computer in floating-point arithmetic also do not form a field — the operations of addition and multiplication are not closed (if the result were a very large or very small number), and they are not even associative (due to rounding).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.26 — Quaternions)</span></p>
 
 Another example of fields are **quaternions**. They are a generalization of complex numbers by adding two more imaginary units $j$ and $k$, whose squares equal $-1$ and which are additionally linked by the relation $ijk = -1$. While addition is defined naturally, multiplication is somewhat more complicated and commutativity no longer holds. Quaternions therefore form a non-commutative field. Quaternions are well suited for describing rotations in three-dimensional space and have found applications in robotics and quantum physics.
@@ -1679,7 +1679,7 @@ If $n$ is prime, then all axioms from the definition of a field are easily verif
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.30 — The field $\mathbb{Z}_5$)</span></p>
 
 For illustration, we present in tables the explicit expressions of both operations over the field $\mathbb{Z}_5$:
@@ -1714,7 +1714,7 @@ The inverse elements of the field $\mathbb{Z}_5$ are then:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.31 — The field $\mathbb{Z}_2$ and bits)</span></p>
 
 The field $\mathbb{Z}_2$ is of particular importance to computer scientists, since it works with two elements $0$ and $1$, which can be viewed as computer bits. Many common bit operations can then be translated into the language of operations in the field $\mathbb{Z}_2$. It is easy to see that the addition operation in $\mathbb{Z}_2$ corresponds to the computer operation XOR, and multiplication corresponds to AND. Similarly, other logical operations can be expressed using operations in the field $\mathbb{Z}_2$. Consequently, any logic gate of a digital circuit represents some arithmetic expression over $\mathbb{Z}_2$.
@@ -1728,7 +1728,7 @@ We introduced systems of equations and matrix operations over the field of real 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.33 — Computing an inverse matrix over $\mathbb{Z}_5$)</span></p>
 
 $$(A \mid I_3) = \begin{pmatrix} 1 & 2 & 3 & 1 & 0 & 0 \\ 2 & 0 & 4 & 0 & 1 & 0 \\ 3 & 3 & 4 & 0 & 0 & 1 \end{pmatrix} \sim \ldots \sim \begin{pmatrix} 1 & 0 & 0 & 2 & 4 & 2 \\ 0 & 1 & 0 & 1 & 0 & 3 \\ 0 & 0 & 1 & 4 & 2 & 4 \end{pmatrix} = (I_3 \mid A^{-1})$$
@@ -1759,7 +1759,7 @@ Addition is defined analogously to real polynomials. However, multiplication cou
 
 Another interesting property is that every finite field of size $p^n$ is isomorphic to $\operatorname{GF}(p^n)$, meaning that such fields are essentially the same up to relabeling of elements.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.36 — The field $\operatorname{GF}(8)$)</span></p>
 
 The set has as its elements polynomials of degree at most two with coefficients in $\mathbb{Z}_2$:
@@ -1832,7 +1832,7 @@ By Lemma 4.28, $\lbrace 0, 1, \ldots, p - 1 \rbrace = \lbrace 0a, 1a, \ldots, (p
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.41)</span></p>
 
 What is the value of $2^{111}$ in the field $\mathbb{Z}_{11}$? By Fermat's little theorem, $2^{10} = 1$, and therefore $2^{110} = 1$. Hence $2^{111} = 2^{110+1} = 2^{110} \cdot 2^1 = 2$.
@@ -1843,7 +1843,7 @@ What is the value of $2^{111}$ in the field $\mathbb{Z}_{11}$? By Fermat's littl
 
 Finite fields are used, for example, in coding theory and cryptography. To conclude this chapter, we demonstrate a practical application of fields in coding.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 4.42 — Error-correcting codes — Hamming code $(7, 4, 3)$)</span></p>
 
 Consider the problem of transmitting data consisting of a sequence of zeros and ones. While the task of encryption is to transform data so that no unauthorized person can read it, the task of coding is to improve transmission properties. By this we mean primarily the ability to detect and correct errors that naturally arise during transmission.
@@ -1868,7 +1868,7 @@ Vector spaces (in some fields also referred to as *linear spaces*) generalize th
 
 ### 5.1 Basic Concepts
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.1 — Motivational)</span></p>
 
 An ordered $n$-tuple of real numbers $v = (v_1, \ldots, v_n)$ has two possible interpretations in the Euclidean $n$-dimensional space $\mathbb{R}^n$, and we will use both for geometric intuition. We can view it as a specific point or as a vector. A vector specifies the direction from the origin $(0, \ldots, 0)$ to the point $(v_1, \ldots, v_n)$. We can perform the following operations with vectors:
@@ -1895,7 +1895,7 @@ The elements of the vector space $V$ are called *vectors* and will be denoted by
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.3 — Examples of Vector Spaces)</span></p>
 
 - The arithmetic space $\mathbb{R}^n$ over $\mathbb{R}$, or more generally $\mathbb{T}^n$ over $\mathbb{T}$, where $\mathbb{T}$ is an arbitrary field; $n$-tuples of elements from the field $\mathbb{T}$ are added and multiplied by scalars componentwise, similarly to $\mathbb{R}^n$. The axioms from the definition of a vector space then follow from the properties of the field.
@@ -1964,7 +1964,7 @@ If $U$ is a subspace of $V$, then it must satisfy the required three properties 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.7 — Examples of Vector Subspaces)</span></p>
 
 - Two trivial subspaces of $V$ are: $V$ and $\lbrace o \rbrace$.
@@ -2007,7 +2007,7 @@ Let $V$ be a vector space over $\mathbb{T}$, and $W \subseteq V$. Then the *line
 
 The linear span of a set of vectors $W$ is therefore the smallest space containing $W$ in the sense that any other space containing $W$ is a superset of it.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.10 — Examples of Linear Spans)</span></p>
 
 Examples of linear spans in the vector space $\mathbb{R}^2$:
@@ -2026,7 +2026,7 @@ Let the space $U$ be the linear span of a set of vectors $W$, i.e., $U = \operat
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.12)</span></p>
 
 Consider the vector space $\mathbb{R}^2$ and its subspace $U$ represented by the $x_1$-axis. This subspace can be generated by the vector $(1, 0)^\top$, or by the vector $(-3, 0)^\top$, or by any other vector of the form $(a, 0)^\top$ where $a \neq 0$. However, $U$ can also be generated by the set of vectors $\lbrace (2, 0)^\top, (5, 0)^\top \rbrace$. We see that this set is not minimal — one vector can be removed and the remaining vector still generates the subspace $U$. This pursuit of a minimal representation and the elimination of redundancies will later lead to the concept of a basis (Section 5.4).
@@ -2139,7 +2139,7 @@ Let $V$ be a vector space over $\mathbb{T}$ and let $M \subseteq V$ be an infini
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.25 — Examples of Linearly (In)dependent Vectors in $\mathbb{R}^2$)</span></p>
 
 - $(1, 0)^\top$ is linearly independent,
@@ -2151,7 +2151,7 @@ Let $V$ be a vector space over $\mathbb{T}$ and let $M \subseteq V$ be an infini
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.26 — Testing Linear Independence)</span></p>
 
 It is not hard to see that two vectors form a linearly dependent system if one of them is a scalar multiple of the other. For more vectors, however, linear dependence is not so easy to see. How can we practically determine whether given arithmetic vectors, e.g., $(1, 3, 2)^\top$, $(2, 5, 3)^\top$, $(2, 3, 1)^\top$, are linearly dependent or independent? By the definition, we seek when a linear combination of the vectors gives the zero vector:
@@ -2202,7 +2202,7 @@ $$\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace = \operatorname{span}\lbra
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.30)</span></p>
 
 The vectors $(2, 3)^\top, (2, 1)^\top, (4, 2)^\top \in \mathbb{R}^2$ are linearly dependent, so their linear span can also be generated from a proper subset of these vectors. We can remove, for example, the second or the third vector (but not both at once) and the resulting two vectors will still generate the same space $\mathbb{R}^2$. However, the first vector cannot be removed — the remaining two vectors no longer generate $\mathbb{R}^2$!
@@ -2222,7 +2222,7 @@ In the definition, by a system we mean an ordered set; we will see later why the
 
 A basis is therefore, by definition, a generating system of the space $V$ that is minimal in the sense of inclusion. Each generator serves a purpose; we cannot omit any of them, otherwise we would not generate the entire space $V$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.32 — Examples of Bases)</span></p>
 
 - In $\mathbb{R}^2$ we have, for example, the basis $e_1 = (1, 0)^\top$, $e_2 = (0, 1)^\top$. Another basis is $(7, 5)^\top$, $(2, 3)^\top$.
@@ -2260,7 +2260,7 @@ Let $B = \lbrace v_1, \ldots, v_n \rbrace$ be a basis of the space $V$ and let t
 
 The concept of coordinates is more important than it might seem at first glance. It allows us to represent hard-to-grasp vectors and (finitely generated) spaces using coordinates, i.e., arithmetic vectors. Every vector has certain coordinates and conversely every $n$-tuple of scalars gives the coordinates of some vector. There is thus a bijective correspondence between vectors and coordinates, which we will later (Section 6.3) use to transfer many, e.g., computational, problems from the space $V$ to an arithmetic space where computations are easier.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.35 — Coordinates of a Vector with Respect to a Basis in $\mathbb{R}^2$)</span></p>
 
 - Coordinates of the vector $(-2, 3)^\top$ with respect to the canonical basis: $[(-2, 3)^\top]\_{\text{kan}} = (-2, 3)^\top$.
@@ -2268,28 +2268,28 @@ The concept of coordinates is more important than it might seem at first glance.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.36)</span></p>
 
 For every $v \in \mathbb{R}^n$ we have $[v]\_{\text{kan}} = v$, since the vector $v = (v_1, \ldots, v_n)^\top$ has the representation $v = \sum_{i=1}^{n} v_i e_i$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.37)</span></p>
 
 Consider the basis $B = \lbrace 1, x, x^2 \rbrace$ of the space $\mathcal{P}^2$. Then $[3x^2 - 5]\_B = (-5, 0, 3)^\top$. In general, every polynomial $p \in \mathcal{P}^n$ in standard form $p(x) = a_n x^n + \ldots + a_1 x + a_0$ has coordinates with respect to the basis $B = \lbrace 1, x, x^2, \ldots, x^n \rbrace$ given by $[p]\_B = (a_0, a_1, \ldots, a_n)^\top$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.38)</span></p>
 
 Let $B = \lbrace v_1, \ldots, v_n \rbrace$ be a basis of the space $V$. Then $[v_1]\_B = (1, 0, \ldots, 0)^\top = e_1$, $[v_2]\_B = e_2$, $\ldots$, $[v_n]\_B = e_n$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.39 — Observation)</span></p>
 
 Observe the following for a vector space $V$:
@@ -2398,7 +2398,7 @@ The *dimension* of a finitely generated vector space is the size of any of its b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.47 — Examples of Dimensions)</span></p>
 
 - $\dim \mathbb{R}^n = n$, 
@@ -2409,7 +2409,7 @@ The *dimension* of a finitely generated vector space is the size of any of its b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subpace defined by a linear contraint)</span></p>
 
 The space
@@ -2556,7 +2556,7 @@ Define $M := \emptyset$. If $\operatorname{span}(M) = W$, we are done. Otherwise
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.51 — Subspaces of $\mathbb{R}^2$)</span></p>
 
 Let us find all subspaces of $\mathbb{R}^2$:
@@ -2567,7 +2567,7 @@ Let us find all subspaces of $\mathbb{R}^2$:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.52 — Structure of Subspaces)</span></p>
 
 To illustrate the structure of subspaces, let us first consider all subsets of the set $\lbrace 1, \ldots, n \rbrace$ and the relation "being a subset", i.e., inclusion $\subseteq$. Some subsets are incomparable with respect to inclusion while others are not. Inclusion is thus a partial order and can be depicted by a so-called *Hasse diagram*, where edges indicate "adjacent" subsets in the inclusion.
@@ -2603,7 +2603,7 @@ Inclusion "$\subseteq$": this is trivial, since the space $\operatorname{span}(U
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.55)</span></p>
 
 - $\mathbb{R}^2 = \operatorname{span}\lbrace e_1 \rbrace + \operatorname{span}\lbrace e_2 \rbrace$,
@@ -2660,7 +2660,7 @@ The column space is therefore the space generated by the columns of matrix $A$, 
 - The kernel is closed under addition: If $x, y \in \mathbb{T}^n$ are solutions to the system, then $Ax = o$, $Ay = o$. Adding the equations we get $A(x + y) = o$, so the vector $x + y$ also belongs to the kernel.
 - The kernel is closed under scalar multiples: If the vector $x \in \mathbb{T}^n$ is a solution to the system, then $Ax = o$. For any $\alpha \in \mathbb{T}$ we have $A(\alpha x) = \alpha(Ax) = \alpha o = o$, so the vector $\alpha x$ also belongs to the kernel.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.60)</span></p>
 
 Consider the real matrix
@@ -2762,7 +2762,7 @@ Let $Q \in \mathbb{T}^{m \times m}$ be regular and $A \in \mathbb{T}^{m \times n
 
 A consequence of the preceding theorem is that if some columns of matrix $A$ are linearly independent, they remain so after multiplication by a regular matrix on the left.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.65)</span></p>
 
 In matrix $A$, the second column is twice the first, and this property is preserved in the product $QA$:
@@ -2812,7 +2812,7 @@ $$\operatorname{rank}(A) = \operatorname{rank}(A^\top)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.70)</span></p>
 
 Consider the space $V = \operatorname{span}\lbrace (1, 2, 3, 4, 5)^\top, (1, 1, 1, 1, 1)^\top, (1, 3, 5, 7, 9)^\top, (2, 1, 1, 0, 0)^\top \rbrace \le \mathbb{R}^5$. First, let us construct a matrix $A$ whose columns equal the given generators of $V$, so that $V = \mathcal{S}(A)$, and reduce it to reduced row echelon form:
@@ -2862,7 +2862,7 @@ Consider the mapping $x \mapsto Ax$ with matrix $A \in \mathbb{T}^{m \times n}$,
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.74 — Computing a Basis of the Kernel)</span></p>
 
 Consider the matrix and its RREF form
@@ -2879,7 +2879,7 @@ Thus the vectors $(6, -4, 1, 0)^\top$, $(4, -3, 0, 1)^\top$ form a basis of $\op
 
 ### 5.7 Applications
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.75 — More on Coding)</span></p>
 
 Let us continue from Example 4.42 about the Hamming code $(7, 4, 3)$. For encoding we used the generating matrix $H$ of size $7 \times 4$ simply by encoding an input segment $a$ of length $4$ into a segment $b := Ha$ of length $7$. All encoded segments thus represent the column space of matrix $H$. Since $H$ has linearly independent columns, this is a subspace of dimension $4$ in the space $\mathbb{Z}\_2^7$.
@@ -2888,7 +2888,7 @@ Error detection of a received segment $b$ is performed using a detection matrix 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.76 — Face Recognition)</span></p>
 
 Detection and recognition of faces from a digital image is a modern task in computer graphics. We represent a digital image as a matrix $A \in \mathbb{R}^{m \times n}$, where $a_{ij}$ specifies the color of the pixel at position $i, j$. The set of images containing faces can, with some degree of simplification, be thought of as a subspace of the space of all images $\mathbb{R}^{m \times n}$. The basis of this subspace consists of so-called *eigenfaces*, i.e., certain basic types or features of a face from which we compose other faces.
@@ -2897,7 +2897,7 @@ If we want to determine whether an image corresponds to a face, we check whether
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.77 — Lagrange Interpolation Polynomial)</span></p>
 
 Let us now return to the problem of interpolating points by a polynomial. Suppose we have $n + 1$ points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ in the plane, where $x_i \neq x_j$ for $i \neq j$. The task is to find a polynomial $p(x)$ passing through these points.
@@ -2948,7 +2948,7 @@ Let $U, V$ be vector spaces over a field $\mathbb{T}$. A map $f \colon U \to V$ 
 
 A linear map is also called a **homomorphism**. An injective homomorphism is a **monomorphism**, a surjective homomorphism is an **epimorphism**, a homomorphism from a set to itself is an **endomorphism**, a surjective and injective homomorphism is an **isomorphism**, and an isomorphic endomorphism is called an **automorphism**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.2 — Examples of Linear Maps in the Plane)</span></p>
 
 Already in Example 3.21 we showed several linear maps given by $x \mapsto Ax$, where $A \in \mathbb{R}^{2 \times 2}$. These maps represented various transformations in the plane, specifically reflection about an axis, stretching along an axis, and rotation about the origin. Projection as a linear map was introduced in Remark 3.43.
@@ -2957,7 +2957,7 @@ A linear map with matrix $A = \binom{v_1 \ 0}{0 \ v_2}$ represents scaling that 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.3 — Rotation Matrix)</span></p>
 
 We derive the expression for the linear map that represents rotation in the plane about the origin by an angle $\alpha$ counterclockwise. We identify the point $(x_1, x_2)^\top \in \mathbb{R}^2$ with the complex number $z := x_1 + ix_2$ and denote the complex number $r := \cos(\alpha) + i\sin(\alpha)$. As we know from Section 1.4, multiplication by $r$ represents rotation by the angle $\alpha$. Thus the complex number $z$ is rotated to the complex number
@@ -2980,7 +2980,7 @@ $$\begin{pmatrix} I & & & \\ & \cos(\alpha) & & -\sin(\alpha) & \\ & & I & & \\ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.4 — Further Examples of Linear Maps)</span></p>
 
 - A typical example of a linear map is $f \colon \mathbb{R}^n \to \mathbb{R}^m$ defined by $f(x) = Ax$, where $A \in \mathbb{R}^{m \times n}$ is a fixed matrix. As we will see later in Corollary 6.20, no other linear map between the spaces $\mathbb{R}^n$ and $\mathbb{R}^m$ exists.
@@ -3029,7 +3029,7 @@ The kernel of a matrix and the kernel of a linear map are closely related. If we
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.9 — Image and Kernel)</span></p>
 
 Consider the linear map $x \mapsto Ax$, where $A \in \mathbb{R}^{2 \times 2}$, see Example 6.2.
@@ -3087,7 +3087,7 @@ We prove the implications $(1) \Rightarrow (2) \Rightarrow (3) \Rightarrow (1)$.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.13 — Injective Linear Map)</span></p>
 
 Consider the linear map from Example 6.9, i.e., $x \mapsto Ax$, where $A \in \mathbb{R}^{2 \times 2}$.
@@ -3103,7 +3103,7 @@ Even an injective linear map need not always be surjective, as witnessed for exa
 
 For vector spaces, we know that every (finitely generated) subspace is uniquely determined by some basis. We would like such a minimal representation for linear maps as well. As we will see, a certain analogy holds for linear maps, since every linear map is uniquely determined by where it sends the vectors of a basis.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.14)</span></p>
 
 Consider a linear map $f \colon \mathbb{R}^2 \to V$. If we only know the image of a vector $x \neq o$, then we can determine the images of all its scalar multiples, i.e., vectors on the line $\operatorname{span}\lbrace x \rbrace$, simply from the relation $f(\alpha x) = \alpha f(x)$. However, we cannot reconstruct the entire map. For that, we need to also know the image of some other (linearly independent) vector $y$. Then we can compute the image not only of all scalar multiples of vectors $x$ and $y$, but also of their sums and all linear combinations, i.e., all vectors of the space $\mathbb{R}^2$ from the relation $f(\alpha x + \beta y) = \alpha f(x) + \beta f(y)$. Thus the linear map $f$ is characterized solely by the images of two linearly independent vectors, i.e., a basis.
@@ -3132,7 +3132,7 @@ Let $U, V$ be spaces over $\mathbb{T}$ and $x_1, \ldots, x_n$ a basis of $U$. Fo
 
 Every linear map between (finitely generated) vector spaces can be represented by a matrix. Since vectors can be various objects, it is convenient to describe them in the language of coordinates. Then we can operate with them as with arithmetic vectors, which is often more convenient.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.16 — Introduction to the Matrix of a Linear Map)</span></p>
 
 Consider a linear map $f \colon \mathbb{T}^n \to \mathbb{T}^m$. Then for arbitrary $x \in \mathbb{T}^n$ we have
@@ -3168,7 +3168,7 @@ In other words, the matrix of a linear map is such that its $j$-th column consis
 
 $${}_{B_V}[f]_{B_U} = \begin{pmatrix} | & & | \\ [f(x_1)]_{B_V} & \cdots & [f(x_n)]_{B_V} \\ | & & | \end{pmatrix}.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.18 — Matrix of a Linear Map)</span></p>
 
 Consider the linear map $f \colon \mathbb{R}^2 \to \mathbb{R}^2$ given by $f(x) = Ax$, where
@@ -3259,7 +3259,7 @@ $$[x]_{B_2} = {}_{B_2}[id]_{B_1} \cdot [x]_{B_1},$$
 
 so by simple matrix multiplication we obtain coordinates with respect to a different basis. Clearly ${}\_{B}[id]\_{B} = I_n$ for any basis $B$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.24 — Change-of-Basis Matrix)</span></p>
 
 Find the change-of-basis matrix in $\mathbb{R}^3$ from the basis
@@ -3284,7 +3284,7 @@ $$[(4, -1, -1)^\top]_{B_2} = {}_{B_2}[id]_{B_1} \cdot [(4, -1, -1)^\top]_{B_1} =
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.25)</span></p>
 
 Let $B$ be a basis of the space $\mathbb{T}^n$. By the matrix representation of a linear map, we obtain in particular
@@ -3327,7 +3327,7 @@ By the uniqueness of the matrix of a linear map (Theorem 6.21), ${}\_{B_W}[g]\_{
 
 In formula (6.2), the mnemonic in the notation of matrices of linear maps is again useful. Specifically, the matrix of the map $g \circ f$ has the same input basis $B_U$ as the matrix of the map $f$ and the same output basis $B_W$ as the matrix of the map $g$. Moreover, the output basis $B_V$ of the matrix of the map $f$ must be the same as the input basis of the matrix of the map $g$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.28 — Composition of Rotations and Addition Formulas for sin and cos)</span></p>
 
 Rotation in the plane by an angle $\alpha$ counterclockwise has, with respect to the canonical basis, the matrix
@@ -3340,7 +3340,7 @@ $$\begin{pmatrix} \cos(\alpha + \beta) & -\sin(\alpha + \beta) \\ \sin(\alpha + 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.29 — Converting the Matrix of a Map Between Bases)</span></p>
 
 Suppose we are given the matrix of a linear map $f$ with respect to bases $B_1, B_2$, i.e., ${}\_{B_2}[f]\_{B_1}$. How do we determine the matrix with respect to bases $B_3, B_4$, i.e., ${}\_{B_4}[f]\_{B_3}$? By the theorem on the matrix of a composite map applied to $f = id \circ f \circ id$ and the appropriate bases, we have
@@ -3370,7 +3370,7 @@ The Jacobian matrix is the matrix of the linear map that (locally best) approxim
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.31 — Translation as a Linear Map?)</span></p>
 
 Let $v \in \mathbb{R}^n$ be fixed and consider the map $f \colon \mathbb{R}^n \to \mathbb{R}^n$ given by $f(x) = x + v$. This map is not linear because it does not map the zero vector to the zero vector. However, we can simulate it as a linear map using techniques from classical projective geometry. We embed the space $\mathbb{R}^n$ into a space of one higher dimension so that for a certain linear map $g \colon \mathbb{R}^{n+1} \to \mathbb{R}^{n+1}$ we have
@@ -3398,7 +3398,7 @@ An *isomorphism* between spaces $U, V$ over a field $\mathbb{T}$ is a bijective 
 
 Isomorphic spaces behave the same from the perspective of linear algebra. An isomorphism maps linearly dependent vectors to linearly dependent ones with the same relations (because it is a linear map), maps linearly independent vectors to linearly independent ones (because it is an injective map), preserves dimension, maps a basis to a basis, etc.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.33)</span></p>
 
 Examples of isomorphisms include scaling, reflection in $\mathbb{R}^2$ (Example 6.2), or rotation (Example 6.28). An example of a linear map that is not an isomorphism is projection (Example 6.2).
@@ -3465,7 +3465,7 @@ A further corollary of Proposition 6.35 is obtained specifically for the change-
 
 $${}_{B_U}[id]_{B_V} = {}_{B_V}[id]_{B_U}^{-1}.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.37 — Mnemonic for Computing Change-of-Basis Matrices)</span></p>
 
 For computing the change-of-basis matrix in $\mathbb{R}^n$ from basis $B_U$ to basis $B_V$, i.e., ${}\_{B_V}[id]\_{B_U}$, one can use the following mnemonic:
@@ -3507,7 +3507,7 @@ All $n$-dimensional vector spaces over a field $\mathbb{T}$ are mutually isomorp
 
 The theorem says that all $n$-dimensional spaces over the same field are mutually isomorphic. This means that they are, in a certain sense, the same. Although each has its own specifics, special operations, etc., they exhibit a similar structure and we can approach them in a uniform way. Therefore, when finding dimension, verifying linear independence, etc., it suffices to pass via an isomorphism to the space $\mathbb{T}^n$ over $\mathbb{T}$, where computation is much easier. Indeed, an isomorphism preserves linear independence of vectors, preserves the dimension of the image of a subspace, and also preserves dependence of vectors.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.40)</span></p>
 
 Consider the polynomials $2x^3 + x^2 + x + 3$, $x^3 + 2x^2 + 3x + 1$, $x^3 - x^2 - 2x + 2$, $4x^3 - x^2 - 3x + 7$ as vectors of the space $\mathcal{P}^3$. Are they linearly independent? What is the dimension of the space they generate? What is its basis? These questions are easily answered using the isomorphism $a_3 x^3 + a_2 x^2 + a_1 x + a_0 \mapsto (a_3, a_2, a_1, a_0)$. Under this isomorphism, the polynomials map to the vectors
@@ -3574,7 +3574,7 @@ Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.45)</span></p>
 
 Let us have a linear map $f \colon \mathbb{R}^3 \to \mathcal{P}^2$ given by the matrix
@@ -3624,7 +3624,7 @@ Let $V$ be a vector space over $\mathbb{T}$. A **linear form** (also called a li
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Important Case)</span></p>
 
 Suppose for example $V=\mathbb{R}^3$. We can think of elements of $V$ as column matrices, like
@@ -3891,7 +3891,7 @@ That is why the book says the isomorphism exists but is not canonical.
 
 
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.47)</span></p>
 
 An example of a linear form on the space $\mathbb{R}^n$ over $\mathbb{R}$ is the map 
@@ -3914,7 +3914,7 @@ For a finitely generated space, $V$ is therefore isomorphic to the dual space $V
 
 Linear maps have wide applications in computer graphics for data visualization, animation, 3D scene modeling, etc. Since linear maps allow performing basic transformations (scaling, rotation, projection, ...) using simple matrix operations, we obtain an elegant way to display two- and three-dimensional objects.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.48 — Visualization of Three-Dimensional Objects)</span></p>
 
 Consider an object for visualization; in practice, this could be, for example, a 3D image of a human organ obtained via magnetic resonance or CT, which we want to display from a certain viewpoint and at a certain scale. The object is placed in a given coordinate system. In our case, we consider a cylinder-shaped object with the center of its base at the origin.
@@ -3969,7 +3969,7 @@ An affine subspace (the terms affine space or affine set are also used with the 
 
 Since $o \in U$, we have $a \in M$. This representative $a$ is not unique; we can choose any vector from $M$. Conversely, the subspace $U$ is uniquely determined for each affine subspace (Problem 7.1).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.2)</span></p>
 
 Let $V$ be a vector space. Every vector subspace $U$ of $V$ is also an affine subspace, since we can choose $a = o$, so that $U = U + o$ has the form of an affine subspace.
@@ -4056,7 +4056,7 @@ Let $U + a$ be an affine subspace of $\mathbb{T}^n$ over $\mathbb{T}$. Then ther
 
 *Proof.* Let $v_1, \ldots, v_k \in \mathbb{T}^n$ be a basis of the subspace $U$. We construct a matrix $C \in \mathbb{T}^{k \times n}$ whose rows are the vectors $v_1, \ldots, v_k$. The dimension of its kernel is $\dim \operatorname{Ker}(C) = n - \operatorname{rank}(C) = n - k$. Let $w_1, \ldots, w_{n-k}$ be a basis of $\operatorname{Ker}(C)$. Thus $Cw_j = o$, which in particular for the rows of $C$ gives $v_i^\top w_j = 0$ for $i = 1, \ldots, k$, $j = 1, \ldots, n - k$. Now we construct a matrix $A \in \mathbb{T}^{(n-k) \times n}$ whose rows are formed by the vectors $w_1, \ldots, w_{n-k}$. The dimension of its kernel is $\dim \operatorname{Ker}(A) = n - \operatorname{rank}(A) = n - (n - k) = k$. Since the vectors $v_1, \ldots, v_k$ are linearly independent and there are the right number of them, they form a basis of $\operatorname{Ker}(A)$. Therefore $\operatorname{Ker}(A) = U$. It remains to determine the vector $b$ so that the vector $a$ is a solution of the system $Ax = b$. It suffices to choose $b := Aa$. By Theorem 7.6, the solution set of the system $Ax = b$ equals $\operatorname{Ker}(A) + a = U + a$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.8 — System of Linear Equations Under Change of the Right-Hand Side)</span></p>
 
 Theorem 7.6 gives the following geometric perspective on systems of equations under perturbation of the right-hand side. Let $Ax = b$ be solvable, so it describes an affine subspace $\operatorname{Ker}(A) + x_0$, where $x_0'$ is one chosen solution. If we change the right-hand side from $b$ to $b'$, then either the system becomes unsolvable, or the affine subspace shifts to $\operatorname{Ker}(A) + x_0'$, where $x_0'$ is one chosen solution. If the rows of $A$ are linearly independent, then the system is solvable for any right-hand side, and therefore the solution set merely shifts in some direction when the right-hand side changes. If the rows of $A$ are linearly dependent, then for some $b$ the system is solvable and for others it is not. For those values of $b$ for which the system is solvable, the solution set is again the same up to a shift.
@@ -4090,14 +4090,14 @@ It also allows us to define a *line* $p$ in any vector space $V$ over $\mathbb{T
 
 A *hyperplane* in a space of dimension $n$ is any affine subspace of dimension $n - 1$. For example, in $\mathbb{R}^2$ these are lines, in $\mathbb{R}^3$ they are planes, etc.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.10)</span></p>
 
 The set $\lbrace e^x + \alpha \sin x;\ \alpha \in \mathbb{R} \rbrace$ is a line in the function space $\mathcal{F}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.11)</span></p>
 
 For any $a \in \mathbb{R}^n \setminus \lbrace o \rbrace$ and $b \in \mathbb{R}$, the set described by the equation $a^\top x = b$ is a hyperplane in $\mathbb{R}^n$. Conversely, every hyperplane in $\mathbb{R}^n$ can be described by the equation $a^\top x = b$ for some $a \in \mathbb{R}^n \setminus \lbrace o \rbrace$ and $b \in \mathbb{R}$.
@@ -4139,14 +4139,14 @@ It is not difficult to see that affine independence does not depend on the order
 
 Affine independence also provides a simple formalization of the notion of "points in general position": A set of points $x_1, \ldots, x_m \in \mathbb{R}^n$ is in general position if every subset of size at most $n + 1$ is affinely independent. For example, in the plane $\mathbb{R}^2$, points are in general position if no three of them lie on a common line.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.14)</span></p>
 
 The vectors $(1, 1)^\top, (2, 2)^\top, (1, 2)^\top \in \mathbb{R}^2$ are linearly dependent but affinely independent.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.15)</span></p>
 
 Two distinct points in $\mathbb{R}^n$ are affinely independent and the affine subspace they generate is a line. However, three points on a line are already affinely dependent, because a line is uniquely determined by just two points.
@@ -4157,7 +4157,7 @@ Two distinct points in $\mathbb{R}^n$ are affinely independent and the affine su
 
 Let $M = U + a$ be an affine subspace and $B = \lbrace v_1, \ldots, v_n \rbrace$ a basis of $U$. Then every $x \in M$ can be uniquely written in the form $x = a + \sum_{i=1}^{n} \alpha_i v_i$. Thus the system of vectors $S = \lbrace a, v_1, \ldots, v_n \rbrace$ can be regarded as a *coordinate system* and the vector $[x]_S := [x - a]_B = (\alpha_1, \ldots, \alpha_n)^\top$ as the corresponding *coordinates*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.16)</span></p>
 
 Let $v = (2, 1)^\top$, $a = (1, 2)^\top$ and consider the line $\operatorname{span}\lbrace v \rbrace + a$. Consider also the coordinate system $S = \lbrace a, v \rbrace$. Then the point $x = (5, 4)^\top$ can be expressed as $x = a + 2v$, and therefore its coordinates are $[x]_S = (2)$.
@@ -4187,7 +4187,7 @@ To transition between coordinate systems we can use our familiar change-of-basis
 
 Affine subspaces $U + a$, $W + b$ are *parallel* if $U \subseteq W$ or $W \subseteq U$; *intersecting* if they are not parallel and have nonempty intersection; and *skew* if they are not parallel and have empty intersection.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.18)</span></p>
 
 Let $v$ be any vector of a vector space $V$. Then the affine subspace $\lbrace v \rbrace$ is parallel to every affine subspace of $V$. The entire space $V$ has the same property.
@@ -4200,7 +4200,7 @@ Let $g \colon U \to V$ be a linear map and let $b \in V$ be a fixed vector. Then
 
 An affine map need not send the zero vector in $U$ to the zero vector in $V$, because the images are shifted by the additive term $b$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.19)</span></p>
 
 Let $U + a$ be an affine subspace of dimension $k$ in the space $V$, and let $S$ be a coordinate system in $U + a$. Then the map $f(v) = [v]_S$ is an affine map that maps $U + a$ isomorphically onto $\mathbb{T}^k$.
@@ -4234,7 +4234,7 @@ From Theorem 7.6 we know that the solution set of the system $Ax = b$ is either 
 
 ### 7.2 Applications
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.21 — Equations Yes, but Inequalities?)</span></p>
 
 In the previous chapters we studied systems of linear equations $Ax = b$, so it is natural to also consider systems of linear inequalities $Ax \le b$. Inequality between vectors means inequality in each component, i.e., $(Ax)_i \le b_i$ for all $i$. Furthermore, we restrict ourselves to the field $\mathbb{R}$, where an ordering is defined.
@@ -4253,7 +4253,7 @@ where $c \in \mathbb{R}^n$, $A \in \mathbb{R}^{m \times n}$ and $b \in \mathbb{R
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.22 — Affine Maps and Fractals)</span></p>
 
 A fractal is a self-similar geometric shape that appears complex at first glance. We will show by example that even a rather complex fractal can have a simple description in terms of affine maps.
@@ -4272,7 +4272,7 @@ The visited points gradually draw the so-called Barnsley fern fractal in the sha
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.23 — Stewart–Gough Platform in Robotics)</span></p>
 
 The Stewart--Gough platform is a so-called parallel manipulator in the field of kinematic robotics. A fixed base is connected to a mobile platform by several (usually six) movable legs. These platforms are used as manipulators, in simulations (e.g., flight simulators), or in joint biomechanics for testing implants outside the human body.
@@ -4281,7 +4281,7 @@ Both the base and the mobile platform have their own coordinate systems, between
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 7.24 — Linear Classifier and Neural Networks)</span></p>
 
 Suppose we have data represented by vectors $v_1, \ldots, v_m \in \mathbb{R}^n$ and for each one we know whether it belongs to group A or group B. Let $v_i$ belong to group A for $i \in \mathcal{A}$ and to group B for $i \in \mathcal{B}$. We want to construct a classifier that can automatically decide for a new value $v \in \mathbb{R}^n$ which group it belongs to. A simple classifier can be constructed based on a linear separator. Its essence lies in constructing a hyperplane $a^\top x = b$ such that the vectors of group A lie in one half-space and the vectors of group B in the other.
@@ -4310,7 +4310,7 @@ By Definition 5.2, we must be able to add vectors and multiply them by scalars, 
 
 ### 8.1 Inner product and norm
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.1 — Motivational)</span></p>
 
 The standard inner product (p. 41) of vectors $x, y \in \mathbb{R}^n$ is defined as
@@ -4375,7 +4375,7 @@ $$\langle x, \alpha y \rangle = \overline{\langle \alpha y, x \rangle} = \overli
 
 In the second argument, the complex inner product is therefore no longer linear.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.4 — Examples of standard inner products)</span></p>
 
 - In the space $\mathbb{R}^n$: the standard inner product $\langle x, y \rangle = x^\top y = \sum_{i=1}^{n} x_i y_i$.
@@ -4409,7 +4409,7 @@ Vectors $x, y \in V$ are *orthogonal* if $\langle x, y \rangle = 0$. Notation: $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.7 — Examples of orthogonal vectors for standard inner products)</span></p>
 
 - In the space $\mathbb{R}^3$: $(1, 2, 3) \perp (1, 1, -1)$.
@@ -4531,7 +4531,7 @@ $$\|\alpha x\| = \sqrt{\langle \alpha x, \alpha x \rangle} = \sqrt{\alpha \overl
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.13 — Examples of norms in $\mathbb{R}^n$)</span></p>
 
 A special class of norms are the so-called $p$-norms. For $p = 1, 2, \ldots$ we define the $p$-norm of a vector $x \in \mathbb{R}^n$ as
@@ -4546,7 +4546,7 @@ Special choices of $p$ lead to well-known norms:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.14 — Unit ball)</span></p>
 
 The unit ball is the set of vectors whose norm is at most 1, and thus they are at distance at most 1 from the origin. Formally, we define the unit ball as
@@ -4557,7 +4557,7 @@ Different norms have different geometric objects as their unit balls. However, e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.15 — Examples of norms in $\mathcal{C}_{[a,b]}$)</span></p>
 
 The norm of a continuous function $f \colon [a, b] \to \mathbb{R}$ can be introduced analogously to the Euclidean space:
@@ -4604,7 +4604,7 @@ Every norm determines a metric by the formula $d(x, y) := \lVert x - y\rVert$, i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.18 — Classification of handwritten digits)</span></p>
 
 We demonstrate the use of distance for creating a simple classifier for automatic identification of handwritten digits. We assume that each digit is given as an image, represented by a matrix $A \in \mathbb{R}^{m \times n}$, so the pixel of the image at position $(i, j)$ has color number $a_{ij}$. As templates we use averaged values from the MNIST database.
@@ -4630,7 +4630,7 @@ A system of vectors $z_1, \ldots, z_n$ is *orthogonal* if $\langle z_i, z_j \ran
 
 If a system $z_1, \ldots, z_n$ is orthonormal, then it is also orthogonal. The converse does not hold in general, but it is easy to orthonormalize an orthogonal system. If $z_1, \ldots, z_n$ are nonzero and orthogonal, then $\frac{1}{\|z_1\|} z_1, \ldots, \frac{1}{\|z_n\|} z_n$ is orthonormal.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.20)</span></p>
 
 In the space $\mathbb{R}^n$ with the standard inner product, an example of an orthonormal system is the canonical basis $e_1, \ldots, e_n$. In particular, in the plane $\mathbb{R}^2$, the vectors $(1, 0)^\top$, $(0, 1)^\top$ form an orthonormal basis. Another example of an orthonormal basis in $\mathbb{R}^2$ is: $\frac{\sqrt{2}}{2}(1, 1)^\top$, $\frac{\sqrt{2}}{2}(-1, 1)^\top$.
@@ -4706,7 +4706,7 @@ It remains to verify $\operatorname{span}\lbrace z_1, \ldots, z_n \rbrace = \ope
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.24 — Gram–Schmidt orthogonalization)</span></p>
 
 With the standard inner product, we want to find an orthonormal basis of the space generated by the vectors
@@ -4838,7 +4838,7 @@ Let $V$ be a vector space and $M \subseteq V$. Then the *orthogonal complement* 
 
 The orthogonal complement $M^\perp$ thus contains those vectors $x$ that are orthogonal to all vectors from $M$ (sometimes we say briefly that $x$ is orthogonal to $M$). Clearly $\lbrace o \rbrace^\perp = V$ and $V^\perp = \lbrace o \rbrace$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.31)</span></p>
 
 The orthogonal complement of the vector $(2, 5)^\top$ is the line $\operatorname{span}\lbrace (5, -2)^\top \rbrace$. The orthogonal complement of the entire line $\operatorname{span}\lbrace (2, 5)^\top \rbrace$ is also the line $\operatorname{span}\lbrace (5, -2)^\top \rbrace$.
@@ -4935,7 +4935,7 @@ that is, $\|x - y\| \ge \|x - x_U\|$, which proves minimality. Uniqueness: equal
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.37)</span></p>
 
 We want to find the projection $x_U$ of the vector $x = (1, 2, 4, 5)^\top$ into the subspace $U$ generated by the vectors
@@ -4956,7 +4956,7 @@ The desired distance is $\|x - x_U\| = \|\frac{1}{2}(-3, -3, 3, 3)^\top\| = 3$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.38 — Projection onto a line)</span></p>
 
 Let $a \in \mathbb{R}^n$ be a nonzero vector and consider the projection of a vector $x \in \mathbb{R}^n$ onto the line with direction $a$, i.e., the projection into the subspace $U = \operatorname{span}\lbrace a \rbrace$. The orthonormal basis of the space $U$ is the vector $z = \frac{1}{\|a\|} a$ and by formula (8.2), the projection of the vector $x$ has the form
@@ -4996,7 +4996,7 @@ $$\|x - x_U\|^2 = \|x - y\|^2 + \|y - x_U\|^2 \ge \|x - y\|^2.$$
 
 We get $\|x - x_U\| \ge \|x - y\|$, so by the property and uniqueness of the projection, $y = x_U$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.42 — Legendre polynomials)</span></p>
 
 Consider the space of polynomials $\mathcal{P}^n$. If we realize that $\mathcal{P}^n$ is a subspace of the space of continuous functions $\mathcal{C}\_{[a,b]}$, we can use the standard inner product of $\mathcal{C}\_{[a,b]}$ on $\mathcal{P}^n$. If we orthogonalize the vectors $1, x, x^2, \ldots$ specifically on $\mathcal{C}\_{[-1,1]}$, we obtain the so-called *Legendre polynomials*
@@ -5009,7 +5009,7 @@ Legendre polynomials can be used, for example, to approximate a function by a po
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.43 — Orthonormal system in a function space)</span></p>
 
 In the space $\mathcal{C}\_{[-\pi, \pi]}$ there exists a countable orthonormal system $z_1, z_2, \ldots$ consisting of the vectors
@@ -5073,7 +5073,7 @@ From the properties of the orthogonal complement (Proposition 8.32(3)) we know $
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.46)</span></p>
 
 Let $V$ be the space generated by the vectors $(1, 2, 3)^\top$ and $(1, -1, 0)^\top$. To determine $V^\perp$, we form the matrix
@@ -5192,7 +5192,7 @@ $$((I_n - P)x)^\top Py = x^\top(I_n - P)^\top Py = x^\top(P - P^2)y = 0.$$
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.51)</span></p>
 
 Consider the problem from Example 8.37: computing the projection $x_U$ of the vector $x = (1, 2, 4, 5)^\top$ into the subspace $U$ generated by the vectors $x_1 = (1, 0, 1, 0)^\top$, $x_2 = (1, 1, 1, 1)^\top$, $x_3 = (1, 0, 0, 1)^\top$.
@@ -5224,7 +5224,7 @@ Recapitulation: Let the matrix $A$ have orthonormal columns. Then $AA^\top$ repr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.53 — Projection onto a line, revisited)</span></p>
 
 In particular, the projection matrix onto a one-dimensional subspace (line) has the form $P = a(a^\top a)^{-1} a^\top$, where $a \in \mathbb{R}^n$ is the direction of the line. The projection of a vector $x$ onto the line is then the vector $Px = a(a^\top a)^{-1} a^\top x = \frac{a^\top x}{a^\top a} a$ (cf. Example 8.38). If moreover we normalize the direction so that $\|a\|_2 = 1$, then $a^\top a = 1$ and therefore the projection matrix takes the simple form $P = aa^\top$.
@@ -5240,7 +5240,7 @@ Let $P \in \mathbb{R}^{n \times n}$ be the projection matrix into a subspace $V 
 
 *Proof.* By Theorem 8.33, every vector $x \in \mathbb{R}^n$ can be uniquely decomposed into the sum $x = y + z$, where $y \in V$ and $z \in V^\perp$. From the perspective of Theorem 8.36, $y$ is the projection of $x$ into $V$ and $z$ is the projection of $x$ into $V^\perp$. Thus $z = x - y = x - Px = (I - P)x$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.55 — Projection matrix into $\operatorname{Ker}(A)$)</span></p>
 
 Theorem 8.54 allows us to elegantly express the projection into the kernel of a matrix $A \in \mathbb{R}^{m \times n}$. Assume that $\operatorname{rank}(A) = m$. Since $\operatorname{Ker}(A)^\perp = \mathcal{R}(A) = \mathcal{S}(A^\top)$, the projection matrix into $\operatorname{Ker}(A)$ is given by $I - A^\top(AA^\top)^{-1} A$, where $A^\top(AA^\top)^{-1} A$ is the projection matrix into $\mathcal{S}(A^\top)$.
@@ -5317,7 +5317,7 @@ If the matrix $A$ is nonsingular, then the solution of the system $Ax = b$ is $x
 
 The least squares method has applications in many fields, especially in statistics for linear regression. It studies the behavior and estimates the future development of various quantities, e.g., global temperature, GDP, stock or oil prices over time.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.61 — Linear regression: world population growth)</span></p>
 
 The data on world population growth are as follows:
@@ -5391,7 +5391,7 @@ $(Q_1 Q_2)^\top Q_1 Q_2 = Q_2^\top Q_1^\top Q_1 Q_2 = Q_2^\top Q_2 = I_n$.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.65 — Examples of orthogonal matrices)</span></p>
 
 - The identity matrix $I_n$, or its negative $-I_n$.
@@ -5530,7 +5530,7 @@ Notation: $\det(A)$ or $\|A\|$.
 
 What does the formula from the definition of the determinant actually say? Each summand has the form $\operatorname{sgn}(p) \, a_{1,p(1)} \ldots a_{n,p(n)}$, which corresponds to selecting $n$ elements from the matrix $A$ such that exactly one element is chosen from each row and each column. These elements are then multiplied together, and the summand is assigned a positive or negative sign depending on the sign of the permutation that determined these elements.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 9.2 — Determinant of a matrix of order 2 and 3)</span></p>
 
 A matrix of order 2 has determinant
@@ -5648,7 +5648,7 @@ Reduce matrix $A$ to row echelon form $A'$ and keep track of the changes to the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 9.8 — Computing the determinant using elementary row operations)</span></p>
 
 $$|A| = \begin{vmatrix} 1 & 2 & 3 & 4 \\ 1 & 2 & 1 & 3 \\ 2 & 5 & 5 & 5 \\ 0 & 2 & -3 & -4 \end{vmatrix} = \begin{vmatrix} 1 & 2 & 3 & 4 \\ 0 & 0 & -2 & -1 \\ 0 & 1 & -1 & -3 \\ 0 & 2 & -3 & -4 \end{vmatrix} = -\begin{vmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & -1 & -3 \\ 0 & 0 & -2 & -1 \\ 0 & 0 & -1 & 2 \end{vmatrix}$$
@@ -5748,7 +5748,7 @@ $$\det(A) = \sum_{j=1}^{n} (-1)^{i+j} a_{ij} \det(A^{ij}),$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 9.14 — Laplace expansion along the 4th row)</span></p>
 
 $$\begin{vmatrix} 1 & 2 & 3 & 4 \\ 1 & 2 & 1 & 2 \\ 2 & 5 & 5 & 5 \\ 0 & 2 & -4 & -4 \end{vmatrix} = (-1)^{4+1} \cdot 0 \cdot \begin{vmatrix} 2 & 3 & 4 \\ 2 & 1 & 2 \\ 5 & 5 & 5 \end{vmatrix} + (-1)^{4+2} \cdot 2 \cdot \begin{vmatrix} 1 & 3 & 4 \\ 1 & 1 & 2 \\ 2 & 5 & 5 \end{vmatrix}$$
@@ -5789,7 +5789,7 @@ Cramer's rule from 1750 is named after the Swiss mathematician Gabriel Cramer. I
 - Continuity of the solution with respect to the entries of the matrix $A$ and the vector $b$. Formally, the mapping $(A, b) \mapsto A^{-1} b$ is continuous on the domain of nonsingular matrices $A$.
 - An estimate of the description size of the solution from the description size of the input values.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 9.16 — Cramer's rule)</span></p>
 
 The solution of the system of equations
@@ -5848,7 +5848,7 @@ If $A \in \mathbb{T}^{n \times n}$ is nonsingular, then $A^{-1} = \frac{1}{\det(
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 9.20 — Adjugate matrix)</span></p>
 
 Let
@@ -6033,7 +6033,7 @@ Naturally, eigenvalues and eigenvectors can be defined in the same way over any 
 
 Eigenvalues can also be introduced more generally. Let $V$ be a vector space and $f \colon V \to V$ a linear map. Then $\lambda$ is an eigenvalue and $x \neq o$ the corresponding eigenvector if $f(x) = \lambda x$. However, we will mostly deal with eigenvalues of matrices, because due to the matrix representation of linear maps we can reduce the problem of finding eigenvalues and eigenvectors of linear maps on finitely generated spaces to matrices.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.2 — Geometric interpretation of eigenvalues and eigenvectors)</span></p>
 
 An eigenvector represents an invariant direction under the map $x \mapsto Ax$, that is, a direction that maps to itself. In other words, if $v$ is an eigenvector, then the line $\operatorname{span}\lbrace v \rbrace$ maps to itself. The eigenvalue then represents the scaling factor in this invariant direction.
@@ -6092,7 +6092,7 @@ The eigenvalues of a matrix $A \in \mathbb{C}^{n \times n}$ are precisely the ro
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2D case)</span></p>
 
 For the 2D case 
@@ -6105,7 +6105,7 @@ $$D = \text{trace}(A)^2 - 4\det(A)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.6)</span></p>
 
 Consider the matrix $A = \begin{pmatrix} 0 & -2 \\\ 2 & 0 \end{pmatrix}$, similar to the matrix from Example 10.2. Then
@@ -6136,7 +6136,7 @@ The algebraic multiplicity is always greater than or equal to the geometric mult
 
 Computing eigenvalues as roots of the characteristic polynomial is not very efficient. Merely determining the individual coefficients of this polynomial is not a trivial task. Moreover, as we know, there is no formula or finite procedure for roots of polynomials and they are computed by iterative methods. The same holds for eigenvalues. Nevertheless, for certain special matrices, such as triangular matrices, we can determine the eigenvalues easily.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.9 — Eigenvalues of a triangular matrix)</span></p>
 
 - Let $A \in \mathbb{C}^{n \times n}$ be a triangular matrix. Then its eigenvalues are the diagonal entries, since $\det(A - \lambda I_n) = (a_{11} - \lambda) \ldots (a_{nn} - \lambda)$.
@@ -6146,7 +6146,7 @@ Computing eigenvalues as roots of the characteristic polynomial is not very effi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.10 — Geometric interpretation: shearing and stretching)</span></p>
 
 Consider the matrix $A = \begin{pmatrix} 1.5 & 0.75 \\\ 0 & 1 \end{pmatrix}$. The corresponding linear map $x \mapsto Ax$ geometrically represents a shear and a stretch in the $x_1$-axis by $50\%$, while it does not stretch in the direction of the $x_2$-axis.
@@ -6197,7 +6197,7 @@ Let $A \in \mathbb{C}^{n \times n}$ have eigenvalues $\lambda_1, \ldots, \lambda
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.13)</span></p>
 
 Consider the matrices
@@ -6243,7 +6243,7 @@ We know that $\lambda$ is a root of $p_A(\lambda) = (-1)^n \lambda^n + a_{n-1}\l
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.16)</span></p>
 
 The spectrum of a real matrix is therefore a set symmetric with respect to the real axis. Complex matrices can have any $n$ complex numbers as their spectrum.
@@ -6272,7 +6272,7 @@ The theorem has, among other things, the consequence that the problems of findin
 
 ### Cayley--Hamilton theorem
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.19 — Polynomial matrix)</span></p>
 
 To better understand the following theorem, we present an example of a polynomial matrix and a matrix polynomial
@@ -6323,7 +6323,7 @@ Matrices $A, B \in \mathbb{C}^{n \times n}$ are **similar** if there exists a no
 
 Similarity can equivalently be defined by the relation $AS = SB$ for some nonsingular matrix $S$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.23)</span></p>
 
 The matrices $\begin{pmatrix} 1 & 0 \\\ 0 & 0 \end{pmatrix}$ and $\begin{pmatrix} 0 & 0 \\\ 0 & 1 \end{pmatrix}$ are similar via the matrix $S = \begin{pmatrix} 0 & 1 \\\ 1 & 0 \end{pmatrix}$.
@@ -6350,7 +6350,7 @@ Both matrices have the same characteristic polynomials, and hence the same eigen
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.25)</span></p>
 
 Show that similarity as a binary relation is reflexive, symmetric, and transitive. Thus it is an equivalence relation.
@@ -6383,7 +6383,7 @@ A matrix $A \in \mathbb{C}^{n \times n}$ is **diagonalizable** if it is similar 
 
 A diagonalizable matrix $A$ can therefore be expressed in the form $A = S \Lambda S^{-1}$, where $S$ is nonsingular and $\Lambda$ is diagonal. This form is called the *spectral decomposition*, because the diagonal of $\Lambda$ contains the spectrum of matrix $A$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.28)</span></p>
 
 Not every matrix is diagonalizable, e.g., $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$. Its eigenvalue (of multiplicity two) is 0. If $A$ were diagonalizable, it would be similar to the zero matrix, so $A = S 0 S^{-1} = 0$, which is a contradiction.
@@ -6430,7 +6430,7 @@ Thanks to this geometric perspective, we can easily see the validity of Theorem 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.31 — Geometric interpretation of diagonalization)</span></p>
 
 Let $A = \begin{pmatrix} 3 & 1 \\\ 1 & 3 \end{pmatrix}$. The eigenvalues and eigenvectors of matrix $A$ are: $\lambda_1 = 4$, $x_1 = (1, 1)^\top$; $\lambda_2 = 2$, $x_2 = (-1, 1)^\top$.
@@ -6484,7 +6484,7 @@ The matrices $\begin{pmatrix} AB & 0 \\\ B & 0 \end{pmatrix}$ and $\begin{pmatri
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.35 — Matrix power)</span></p>
 
 Let $A = S \Lambda S^{-1}$ be the spectral decomposition of a matrix $A \in \mathbb{C}^{n \times n}$. Then $A^2 = S \Lambda S^{-1} S \Lambda S^{-1} = S \Lambda^2 S^{-1}$. More generally:
@@ -6499,7 +6499,7 @@ $$\lim_{k \to \infty} A^k = \begin{cases} 0, & \text{if } \rho(A) < 1, \\ \text{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.36 — Recurrence relations and Fibonacci)</span></p>
 
 Consider the sequence $a_1, a_2, \ldots$ defined by the recurrence relation $a_n = p a_{n-1} + q a_{n-2}$, where $a_1, a_2$ are the given initial values of the sequence and $p, q$ are constants. We express the recurrence in matrix form:
@@ -6516,7 +6516,7 @@ $$a_n = -\frac{\sqrt{5}}{5}(1 - \varphi)^n + \frac{\sqrt{5}}{5}\varphi^n.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.37 — Discrete and fast Fourier transform)</span></p>
 
 Matrices that have the same form as matrix $A$ (i.e., circulants) have remarkable properties. One of them is that their eigenvectors do not depend on the specific values $a_0, \ldots, a_{n-1}$, but only on the structure of the circulant. The eigenvalues of matrix $A$ can then be easily computed from the knowledge of the eigenvectors.
@@ -6566,7 +6566,7 @@ Every matrix $A \in \mathbb{C}^{n \times n}$ is similar to a matrix in Jordan no
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.41)</span></p>
 
 The matrix
@@ -6621,7 +6621,7 @@ In summary, let $A \in \mathbb{C}^{n \times n}$ and $\lambda \in \mathbb{C}$ be 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.46 — Matrix powers)</span></p>
 
 Already in Example 10.35 we mentioned the use of diagonalization for computing matrix powers. Using the Jordan normal form, we can generalize the statement for arbitrary $A \in \mathbb{C}^{n \times n}$: Let $A = SJS^{-1}$, then
@@ -6634,7 +6634,7 @@ $$\lim_{k \to \infty} A^k = \begin{cases} 0, & \text{if } \rho(A) < 1, \\ \text{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.47 — Matrix function)</span></p>
 
 Let us ask the question: How do we define a matrix function such as $\cos(A)$, $e^A$, etc.? For a real function $f \colon \mathbb{R} \to \mathbb{R}$ and a matrix $A \in \mathbb{R}^{n \times n}$, one can define $f(A)$ by applying the function to each entry of the matrix separately, but such an approach does not have very nice properties.
@@ -6659,7 +6659,7 @@ describes the rotation matrix around the axis with direction $(x, y, z)^\top$ by
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.48 — System of linear differential equations)</span></p>
 
 Consider the so-called system of linear differential equations:
@@ -6698,7 +6698,7 @@ The conjugate transpose has similar properties to the classical transpose, e.g.,
 
 Using the conjugate transpose, we can define *unitary matrices* (extending the concept of orthogonal matrices to complex matrices) as matrices $Q \in \mathbb{C}^{n \times n}$ satisfying $Q^\ast Q = I_n$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.50)</span></p>
 
 Of the matrices $\begin{pmatrix} 2 & 1 + i \\ 1 + i & 5 \end{pmatrix}$ and $\begin{pmatrix} 2 & 1 + i \\ 1 - i & 5 \end{pmatrix}$, the first is symmetric but not Hermitian, and the second is Hermitian but not symmetric. For real matrices, both concepts coincide.
@@ -6718,7 +6718,7 @@ $$\lambda = x^* Ax = x^* A^* x = (x^* Ax)^* = \lambda^*$$
 
 Thus $\lambda = \lambda^\ast$, and therefore $\lambda$ must be real.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.52 — Eigenvalues of a projection matrix)</span></p>
 
 Let $P \in \mathbb{R}^{n \times n}$ be the projection matrix onto a subspace $U$ of dimension $d$. For every vector $x \in U$ we have $Px = x$. Therefore 1 is an eigenvalue and it has $d$ eigenvectors from a basis of the space $U$. For every vector $x \in U^\perp$ we have $Px = o$. Thus 0 is an eigenvalue and it has $n - d$ eigenvectors from a basis of the space $U^\perp$. The matrix $P$ has no other eigenvalues, since we have found $n$ linearly independent eigenvectors. In summary, a projection matrix has only eigenvalues 0 and 1.
@@ -6788,7 +6788,7 @@ The Perron--Frobenius theory of nonnegative matrices is an advanced theory conce
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.57 — Markov chains)</span></p>
 
 One application of matrix powers (Example 10.46) and, to some extent, of the theory of nonnegative matrices is Markov chains. Let $x \in \mathbb{R}^n$ be a state vector, where $x_i$ gives the value of state $i$. Let $A \in \mathbb{R}^{n \times n}$ be a matrix with values $a_{ij} \in [0, 1]$ such that the sum of values in each column equals 1. We view the matrix $A$ as a transition matrix, that is, the value $a_{ij}$ is the probability of transition from state $j$ to state $i$. Then $Ax$ gives the new state vector after one step of the process. We are interested in how the state vector evolves over time and whether it stabilizes.
@@ -6838,7 +6838,7 @@ $$\lvert \lambda - a_{ii}\rvert = \left\| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}
 
 The theorem gives a simple but coarse estimate on the magnitude of eigenvalues (there also exist improvements, e.g., Cassini ovals, etc.). Nevertheless, in some applications such an estimate may suffice.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.59)</span></p>
 
 Consider 
@@ -7003,7 +7003,7 @@ By similarity, the matrix $A'$ has the same eigenvalues as $A$, only $\lambda$ h
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.66 — Google search engine and PageRank)</span></p>
 
 Consider a web network with $N$ web pages. The goal is to determine the importances $x_1, \ldots, x_N$ of individual pages. The basic idea of the authors of Google's PageRank is to set the importance of the $i$-th page to be proportional to the sum of the importances of the pages linking to it. We therefore solve the equation $x_i = \sum_{j=1}^N \frac{a_{ij}}{b_j} x_j$, $i = 1, \ldots, N$, where $a_{ij} = 1$ if the $j$-th page links to the $i$-th page (otherwise 0) and $b_j$ is the number of links from the $j$-th page. In matrix form $A'x = x$, where $a'\_{ij} \coloneqq \frac{a_{ij}}{b_j}$.
@@ -7067,7 +7067,7 @@ Thus, for testing the condition one can equivalently use the symmetric matrix $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.3)</span></p>
 
 An example of a positive semidefinite matrix is $0_n$. An example of a positive definite matrix is $I_n$, since 
@@ -7213,7 +7213,7 @@ Output: matrix $L$ satisfying $A = LL^\top$, or the information that $A$ is not 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.12)</span></p>
 
 Cholesky decomposition of the matrix $A$:
@@ -7222,7 +7222,7 @@ $$\begin{pmatrix} 2 & 0 & 0 \\ -1 & 3 & 0 \\ 2 & 1 & 1 \end{pmatrix} \begin{pmat
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.13 — Using the Cholesky decomposition for solving systems)</span></p>
 
 Using the Cholesky decomposition for solving the system $Ax = b$ with a positive definite matrix $A$. If we have the decomposition $A = LL^\top$, then the system has the form $L(L^\top x) = b$. First we solve the system $Ly = b$ by forward substitution, then $L^\top x = y$ by back substitution. The procedure is thus as follows:
@@ -7383,7 +7383,7 @@ where $c \in \mathbb{R}^m$, $A_0, A_1, \ldots, A_m \in \mathbb{R}^{n \times n}$ 
 
 The occurrence of positive (semi-)definite matrices is even broader. For example, in statistics we encounter the so-called covariance and correlation matrices. Both provide certain information about the dependence among $n$ random variables and, not coincidentally, are always positive semidefinite.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 11.22 — Determining protein structure)</span></p>
 
 One of the fundamental tasks in protein modeling is determining the three-dimensional structure of proteins. A typical procedure is to determine the distance matrix of individual atoms using nuclear magnetic resonance and then derive the structure.
@@ -7416,7 +7416,7 @@ We define a positive definite matrix as a symmetric matrix $A$ for which the fun
 
 The word *linear* in the expression "linear algebra" does not mean that the field deals only with linear objects such as lines and planes in geometric applications. In this chapter we take a closer look at quadratic forms. In principle, we have already encountered them with the Euclidean norm (p. 130) and positive definiteness (Definition 11.1). In this chapter we discuss quadratic forms in more detail. We show connections with positive (semi-)definiteness, the signs of eigenvalues, and the description of certain geometric objects.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 12.1</span><span class="math-callout__name">(Motivation for quadratic forms)</span></p>
 
 To begin with, we can think of a quadratic form as a polynomial in $n$ variables where the sum of degrees of each term is exactly two. That is,
@@ -7452,7 +7452,7 @@ It is easy to see that $b(o, v) = b(v, o) = 0$ and $f(o) = 0$ always hold.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.3)</span></p>
 
 - Every real inner product is a bilinear form, so for any matrix $A \in \mathbb{R}^{n \times n}$ the mapping $b(x, y) = x^\top Ay$ is a bilinear form. For a symmetric matrix $A$, the mapping $f(x) = x^\top Ax$ is then a quadratic form.
@@ -7559,7 +7559,7 @@ $$b(x, y) = [x]_{\text{kan}}^\top A [y]_{\text{kan}} = x^\top Ay$$
 
 For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.10)</span></p>
 
 Consider the bilinear form on $\mathbb{R}^2$
@@ -7680,7 +7680,7 @@ First assume that there is always a nonzero number in the pivot position, so we 
 
 A minor difficulty arises if a zero appears in the pivot position during the matrix operations. However, we can add the second row to the first row and analogously for columns, which leads to a matrix with a nonzero pivot. This procedure can be applied in general. If there is a zero in the pivot position, we add a suitable row below it and analogously for columns.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.17 — Diagonalization of a quadratic form matrix)</span></p>
 
 We diagonalize the matrix $A$ by alternately applying a row operation and then the corresponding column operation:
@@ -7693,7 +7693,7 @@ We see that the matrix $A$ has two positive eigenvalues and one zero eigenvalue,
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.18 — Finding a polar basis)</span></p>
 
 For simplicity, consider the quadratic form $f(x) = x^\top Ax$, where $A \in \mathbb{R}^{n \times n}$ is symmetric. If we find a matrix $S \in \mathbb{R}^{n \times n}$ such that $S^\top AS$ is diagonal, then the polar basis is contained in the columns of the matrix $S$. But how do we find the matrix $S$? If we diagonalize the matrix $A$ using elementary operations, then the matrix $S$ represents the accumulated column operations. The method is now straightforward: we transform the augmented matrix $(A \mid I_n)$ by applying row and column operations to the matrix $A$ to diagonalize it, and applying only column operations to the identity matrix. The polar basis is then read from the columns of the matrix on the right.
@@ -7708,7 +7708,7 @@ The corresponding polar basis thus consists of the vectors $(1, 0, 0)^\top$, $(-
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.19 — Sum of squares of linear forms)</span></p>
 
 Consider the quadratic form $f(x) = x^\top Ax$ with a symmetric matrix $A \in \mathbb{R}^{n \times n}$. If we can express $x^\top Ax$ with variables $x_1, \ldots, x_n$ as a sum of squares of linear forms, then obviously $f(x) \ge 0$ for all $x \in \mathbb{R}^n$ and the matrix $A$ is positive semidefinite. Interestingly, the converse also holds: Every quadratic form with a positive semidefinite matrix can be expressed as a sum of squares of linear forms.
@@ -7757,7 +7757,7 @@ Quadratic forms can be used to describe geometric objects called *quadrics*. The
 
 A special case of quadrics in the space $\mathbb{R}^2$ are the *conics*. These include ellipses, parabolas, and hyperbolas.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.22 — Ellipsoids)</span></p>
 
 The equation $\frac{1}{a^2}x_1^2 + \frac{1}{b^2}x_2^2 = 1$ describes in the plane $\mathbb{R}^2$ an ellipse centered at the origin, with semi-axes in the directions of the coordinate axes $x_1, x_2$ of lengths $a$ and $b$, respectively.
@@ -7772,7 +7772,7 @@ If $A$ is symmetric but not positive definite, the analysis will be the same. We
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.23 — Some quadrics in $\mathbb{R}^3$)</span></p>
 
 The following figures illustrate some three-dimensional quadrics:
@@ -7854,7 +7854,7 @@ The case $x = \|x\|_2 e_1$ is obvious. Otherwise we apply Theorem 13.1; the vect
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.3)</span></p>
 
 Let $x = (2, 2, 1)^\top$. Then $\|x\|_2 = 3$ and thus
@@ -7865,7 +7865,7 @@ Now $Hx = (3, 0, 0)^\top$, so the linear mapping $x \mapsto Hx$ maps the vector 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.4 — Extension to an Orthonormal Basis)</span></p>
 
 Let $u \in \mathbb{R}^n$ be a vector of unit length, i.e., $\|u\|_2 = 1$. Construct an orthogonal matrix $Q$ with its first column equal to $u$. In other words, extend $u$ to an orthonormal basis of $\mathbb{R}^n$.
@@ -7923,7 +7923,7 @@ The matrix $Q$ is orthogonal and $R$ is upper triangular with nonnegative diagon
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.7 — QR Decomposition)</span></p>
 
 Let
@@ -8064,7 +8064,7 @@ The matrices $A_0, A_1, \ldots$ are mutually similar.
 
 The output matrix $A_i$ is similar to $A$, and therefore has the same eigenvalues. How do we find them? The algorithm generally converges (cases where it does not converge are rare, almost artificial; for a long time no case of non-convergence was known) to a block upper triangular matrix with blocks of size 1 and 2. Blocks of size 1 are eigenvalues, and from blocks of size 2 we easily compute pairs of complex conjugate eigenvalues.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.13 — Iterations of the QR Algorithm)</span></p>
 
 Iterations of the QR algorithm for the given matrix $A$:
@@ -8107,7 +8107,7 @@ $$A^\top A = V\Sigma^\top U^\top U \Sigma V^\top = V\Sigma^\top \Sigma V^\top = 
 
 which is the spectral decomposition of the positive semidefinite matrix $A^\top A$. Therefore the determining elements of the diagonal matrix are its eigenvalues, i.e., $\lambda_i = \sigma_i^2$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.16)</span></p>
 
 Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Then $Q^\top Q = I_n$ has all eigenvalues equal to one. Therefore the orthogonal matrix $Q$ has all singular values equal to one as well.
@@ -8147,7 +8147,7 @@ It remains to show that $A = U\Sigma V^\top$, i.e., $\Sigma = U^\top AV$. Decomp
 
 $$U^\top AV = U^\top A(V_1 \mid V_2) = (U^\top U_1 S \mid U^\top AV_2) = \begin{pmatrix} S & 0 \\ 0 & 0 \end{pmatrix} = \Sigma.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.18 — SVD Decomposition)</span></p>
 
 Let
@@ -8174,7 +8174,7 @@ $$A = \begin{pmatrix} \frac{\sqrt{3}}{3} & 0 & -\frac{\sqrt{6}}{3} \\ \frac{\sqr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.19 — SVD Decomposition of Symmetric Matrices)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric and let $A = Q\Lambda Q^\top$ be its spectral decomposition, where the eigenvalues on the diagonal of $\Lambda$ are sorted in decreasing order of absolute value. If moreover $A$ is positive definite, then the spectral decomposition is also its SVD decomposition $A = U\Sigma V^\top$, since we can choose $U = Q$, $\Sigma = \Lambda$, and $V = Q$. The singular values and eigenvalues of $A$ then coincide. If $A$ is not positive definite, then its singular values are the absolute values of the eigenvalues. The SVD decomposition can have the form $A = U\Sigma V^\top$, where $U = Q'$, $\Sigma = |\Lambda|$, $V = Q$, and the matrix $Q'$ is obtained from $Q$ by multiplying those columns corresponding to negative eigenvalues by $-1$.
@@ -8282,7 +8282,7 @@ Let $A \in \mathbb{R}^{m \times n}$ be a matrix with reduced SVD decomposition $
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.24)</span></p>
 
 The pseudoinverse of a nonzero vector $a \in \mathbb{R}^n$ is $a^\dagger = \frac{1}{a^\top a} a^\top$, in particular e.g. $((1, 1, 1, 1)^\top)^\dagger = \frac{1}{4}(1, 1, 1, 1)$.
@@ -8499,7 +8499,7 @@ $$|\lambda| \cdot \|X\| = \|\lambda X\| = \|AX\| \le \|A\| \cdot \|X\|.$$
 
 Dividing by $\|X\| \neq 0$ we obtain $\|\lambda\| \le \|A\|$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.36)</span></p>
 
 Consider the matrix
@@ -8546,7 +8546,7 @@ $$\|U\Sigma V^\top z\|_2^2 = \|U\Sigma V^\top Vy\|_2^2 = \|\Sigma y\|_2^2 = \sum
 
 In particular, the smallest singular value $\sigma_n$ of a matrix $A \in \mathbb{R}^{n \times n}$ gives the distance to the nearest singular matrix. This means that the matrix $A + C$ is nonsingular for all matrices $C \in \mathbb{R}^{n \times n}$ satisfying $\|C\|_2 < \sigma_n$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 13.39)</span></p>
 
 Consider the matrix

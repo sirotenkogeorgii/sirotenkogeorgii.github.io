@@ -373,7 +373,7 @@ A special case with no context ($s_t$ is a fixed constant) and a finite number o
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Online Advertising)</span></p>
 
 In an **online advertising system**, the state $s_t$ represents features of the web page the user is currently looking at, and the action $a_t$ is the identity of the ad to show. The reward function $R(s_t, a_t)$ depends on the relevance of the ad to the page, so the problem is contextual. The goal is to maximize the expected number of times people click on ads, known as the **click through rate** (CTR).
@@ -405,7 +405,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bernoulli Bandit)</span></p>
 
 Consider a context-free **Bernoulli bandit**, where 
@@ -810,7 +810,7 @@ The maximizing action is called the **greedy action** with respect to the value 
 
 The problem of solving for $V^\ast$, $Q^\ast$ or $\pi^\ast$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}\_{\pi(a\mid s)}[\cdot]$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid World)</span></p>
 
 Consider a 1D **grid world** with 5 possible states. States $S_{T1}$ and $S_{T2}$ are absorbing states. There are 2 actions ($\uparrow$ and $\downarrow$). The reward function is zero everywhere except at the goal state $S_{T2}$, which gives a reward of 1.
@@ -2066,7 +2066,7 @@ We can also replace the 1-step IS-weighted TD error with an IS-weighted GAE valu
 
 #### IMPALA
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(IMPALA)</span></p>
 
 **IMPALA** ("Importance Weighted Actor-Learning Architecture") uses shared parameters for the policy and value function (with different output heads), and adds an entropy bonus to ensure the policy remains stochastic. The objective is very similar to the on-policy actor-critic:
@@ -2561,7 +2561,7 @@ One MCTS iteration. **Select** descends the explored subtree following UCT (bala
 
 #### MCTS for 2-Player Zero-Sum Games: AlphaGo, AlphaGoZero, and AlphaZero
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(AlphaGo and AlphaZero)</span></p>
 
 MCTS can be applied to games. In two-player, zero-sum symmetric games, the agent models the opponent using its own policy with roles reversed (**self-play**).
@@ -3642,7 +3642,7 @@ In the game theory literature, it is common to use the **extensive form game** r
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kuhn Poker as EFG)</span></p>
 
 **Kuhn Poker** is a form of (two player) poker where the deck includes only three cards: Jack, Queen, and King. First, each player places one chip into the pot as the initial forced bet (ante). Each player is then privately dealt one card (the last card isn't revealed). This is followed by a betting phase. The game ends either when one player folds (forfeiting all bets made so far to their opponent) or there is a showdown, where the private cards are revealed and the higher card's owner receives the bets. At the start of the betting, player one can either check/pass or raise/bet (one chip). If they check, player two can also check/pass (leading to a showdown) or bet. If one of the players bets, their opponent must either call (betting one chip to match the opponent's bet), followed by a showdown, or fold.
@@ -3733,7 +3733,7 @@ John Nash proved the existence of such a solution for general-sum non-repeated n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Nash Equilibria in Matrix Games)</span></p>
 
 * **Rock-paper-scissors**: the only NE is the **mixed strategy** (stochastic policy) where each agent chooses actions uniformly at random, $\pi_i = (1/3, 1/3, 1/3)$. This yields an expected return of 0.
@@ -3792,7 +3792,7 @@ That is, player $i$ has no incentive to deviate from the recommendation, after r
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Chicken Game)</span></p>
 
 In the **Chicken game**, two agents are driving towards each other. Each can either stay on course (S) or leave (L). The payoff matrix is:

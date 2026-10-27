@@ -32,7 +32,7 @@ Phrases of the form "there exists a unique such-and-such satisfying some conditi
 
 Properties such as these are called "universal" because they state how the object being described relates to the *entire* universe in which it lives.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.1</span><span class="math-callout__name">(Terminal set)</span></p>
 
 Let $1$ denote a set with one element. Then $1$ has the following property: for all sets $X$, there exists a unique map from $X$ to $1$.
@@ -41,7 +41,7 @@ Indeed, there *exists* a map $X \to 1$ (send every element to the single element
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.2</span><span class="math-callout__name">(Initial ring)</span></p>
 
 The ring $\mathbb{Z}$ has the following property: for all rings $R$, there exists a unique homomorphism $\mathbb{Z} \to R$.
@@ -65,7 +65,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.4</span><span class="math-callout__name">(Basis of a vector space)</span></p>
 
 Let $V$ be a vector space with a basis $(v\_s)\_{s \in S}$. Define a function $i \colon S \to V$ by $i(s) = v\_s$. Then $V$ together with $i$ has the following universal property: for all vector spaces $W$ and all functions $f \colon S \to W$, there exists a unique linear map $\bar{f} \colon V \to W$ such that $\bar{f} \circ i = f$.
@@ -74,7 +74,7 @@ In other words, the function $\lbrace \text{linear maps } V \to W \rbrace \to \l
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.5</span><span class="math-callout__name">(Discrete topological space)</span></p>
 
 Given a set $S$, we can build a topological space $D(S)$ by equipping $S$ with the **discrete topology**: all subsets are open. With this topology, *any* map from $S$ to a space $X$ is continuous.
@@ -83,7 +83,7 @@ Define $i \colon S \to D(S)$ by $i(s) = s$. Then $D(S)$ together with $i$ has th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.6</span><span class="math-callout__name">(Tensor product)</span></p>
 
 Given vector spaces $U$, $V$ and $W$, a **bilinear map** $f \colon U \times V \to W$ is a function that is linear in each variable:
@@ -109,7 +109,7 @@ Now $j' \circ j \colon T \to T$ satisfies $(j' \circ j) \circ b = b$; but the id
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.8</span><span class="math-callout__name">(Kernel of a group homomorphism)</span></p>
 
 Let $\theta \colon G \to H$ be a homomorphism of groups. Associated with $\theta$ is the diagram
@@ -122,7 +122,7 @@ where $\iota$ is the inclusion of $\ker(\theta)$ into $G$ and $\varepsilon$ is t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 0.9</span><span class="math-callout__name">(Pushout in topological spaces)</span></p>
 
 Take a topological space covered by two open subsets: $X = U \cup V$. The diagram of inclusion maps
@@ -194,7 +194,7 @@ satisfying the following axioms:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 1.1.3</span><span class="math-callout__name">(Categories of mathematical structures)</span></p>
 
 **(a)** The category **Set**: objects are sets, maps are functions, composition and identities are the usual ones.
@@ -218,14 +218,14 @@ We call $g$ the **inverse** of $f$ and write $g = f^{-1}$. If there exists an is
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1.5</span><span class="math-callout__name">(Isomorphisms in Set)</span></p>
 
 The isomorphisms in **Set** are exactly the bijections. This amounts to the assertion that a function has a two-sided inverse if and only if it is injective and surjective.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.1.7</span><span class="math-callout__name">(Isomorphisms in Top)</span></p>
 
 The isomorphisms in **Top** are exactly the homeomorphisms. A bijective map in **Top** is *not* necessarily an isomorphism: for example, the map $[0, 1) \to \lbrace z \in \mathbb{C} \mid \lvert z \rvert = 1 \rbrace$ given by $t \mapsto e^{2\pi i t}$ is a continuous bijection but not a homeomorphism.
@@ -243,7 +243,7 @@ In general, the objects of a category are *not* "sets equipped with extra stuff"
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 1.1.8</span><span class="math-callout__name">(Categories as mathematical structures)</span></p>
 
 **(a)** A category can be specified by saying directly what its objects, maps, composition and identities are. For example, there is a category $\mathbf{0}$ with no objects or maps at all. There is a category $\mathbf{1}$ with one object and only the identity map. There is a category with two objects and one non-identity map from the first to the second, drawn as $\bullet \to \bullet$.
@@ -313,7 +313,7 @@ satisfying the following axioms:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 1.2.3</span><span class="math-callout__name">(Forgetful functors)</span></p>
 
 Perhaps the easiest examples of functors are the **forgetful functors** (an informal term):
@@ -328,7 +328,7 @@ Perhaps the easiest examples of functors are the **forgetful functors** (an info
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 1.2.4</span><span class="math-callout__name">(Free functors)</span></p>
 
 **Free functors** are in some sense dual to forgetful functors:
@@ -341,7 +341,7 @@ Perhaps the easiest examples of functors are the **forgetful functors** (an info
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 1.2.5</span><span class="math-callout__name">(Functors in algebraic topology)</span></p>
 
 **(a)** Let $\mathbf{Top}\_\ast$ be the category of topological spaces equipped with a basepoint. There is a functor $\pi\_1 \colon \mathbf{Top}\_\ast \to \mathbf{Grp}$ assigning to each space $X$ with basepoint $x$ the fundamental group $\pi\_1(X, x)$, and to each basepoint-preserving continuous map $f \colon (X, x) \to (Y, y)$ the homomorphism $f\_\ast \colon \pi\_1(X, x) \to \pi\_1(Y, y)$.
@@ -350,21 +350,21 @@ Perhaps the easiest examples of functors are the **forgetful functors** (an info
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.6</span><span class="math-callout__name">(Functors from polynomial equations)</span></p>
 
 Any system of polynomial equations such as $2x^2 + y^2 - 3z^2 = 1$ and $x^3 + x = y^2$ gives rise to a functor $\mathbf{CRing} \to \mathbf{Set}$. For each commutative ring $A$, let $F(A)$ be the set of triples $(x, y, z) \in A \times A \times A$ satisfying the equations. A ring homomorphism $f \colon A \to B$ induces $F(f) \colon F(A) \to F(B)$. In algebraic geometry, a **scheme** is a functor $\mathbf{CRing} \to \mathbf{Set}$ with certain properties.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.7</span><span class="math-callout__name">(Functors between one-object categories)</span></p>
 
 Let $G$ and $H$ be monoids (or groups), regarded as one-object categories $\mathscr{G}$ and $\mathscr{H}$. A functor $F \colon \mathscr{G} \to \mathscr{H}$ must send the unique object of $\mathscr{G}$ to the unique object of $\mathscr{H}$, so it is determined by its effect on maps. The functor amounts to a function $F \colon G \to H$ such that $F(g'g) = F(g')F(g)$ for all $g', g \in G$ and $F(1) = 1$; that is, a homomorphism $G \to H$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.8</span><span class="math-callout__name">(Group actions as functors)</span></p>
 
 Let $G$ be a monoid, regarded as a one-object category $\mathscr{G}$. A functor $F \colon \mathscr{G} \to \mathbf{Set}$ consists of a set $S$ (the value of $F$ at the unique object) together with, for each $g \in G$, a function $F(g) \colon S \to S$, satisfying $(F(g))(s) = g \cdot s$. This amounts to a set $S$ together with a left action of $G$: a **left $G$-set**.
@@ -373,7 +373,7 @@ Similarly, a functor $\mathscr{G} \to \mathbf{Vect}\_k$ is exactly a $k$-linear 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.9</span><span class="math-callout__name">(Order-preserving maps)</span></p>
 
 When $A$ and $B$ are (pre)ordered sets, a functor between the corresponding categories is exactly an **order-preserving map**, that is, a function $f \colon A \to B$ such that $a \le a' \implies f(a) \le f(a')$.
@@ -389,14 +389,14 @@ An ordinary functor $\mathscr{A} \to \mathscr{B}$ is sometimes called a **covari
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.11</span><span class="math-callout__name">(Continuous functions as a contravariant functor)</span></p>
 
 Given a topological space $X$, let $C(X)$ be the ring of continuous real-valued functions on $X$. A continuous map $f \colon X \to Y$ induces a ring homomorphism $C(f) \colon C(Y) \to C(X)$ defined by $(C(f))(q) = q \circ f$. Note that $C(f)$ goes in the *opposite* direction from $f$, making $C$ a contravariant functor from **Top** to **Ring**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.2.12</span><span class="math-callout__name">(Hom functor and dual spaces)</span></p>
 
 Let $k$ be a field. For any two vector spaces $V$ and $W$ over $k$, there is a vector space $\mathbf{Hom}(V, W) = \lbrace \text{linear maps } V \to W \rbrace$. Fixing $W$, any linear map $f \colon V \to V'$ induces a linear map $f^\ast \colon \mathbf{Hom}(V', W) \to \mathbf{Hom}(V, W)$ defined by $f^\ast(q) = q \circ f$. This defines a functor $\mathbf{Hom}(-, W) \colon \mathbf{Vect}\_k^{\text{op}} \to \mathbf{Vect}\_k$.
@@ -486,21 +486,21 @@ commutes, i.e. $\alpha\_{A'} \circ F(f) = G(f) \circ \alpha\_A$. The maps $\alph
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.3</span><span class="math-callout__name">(Discrete categories)</span></p>
 
 Let $\mathscr{A}$ be a discrete category, and let $F, G \colon \mathscr{A} \to \mathscr{B}$ be functors. Then $F$ and $G$ are just families $(F(A))\_{A \in \mathscr{A}}$ and $(G(A))\_{A \in \mathscr{A}}$ of objects of $\mathscr{B}$. A natural transformation $\alpha \colon F \to G$ is just a family $\left( F(A) \xrightarrow{\alpha\_A} G(A) \right)\_{A \in \mathscr{A}}$ of maps in $\mathscr{B}$. The naturality axiom holds automatically because the only maps in $\mathscr{A}$ are identities.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.4</span><span class="math-callout__name">(G-equivariant maps)</span></p>
 
 Recall from Examples 1.1.8 that a group (or monoid) $G$ can be regarded as a one-object category, and from Example 1.2.8 that a functor from $G$ to **Set** is a left $G$-set. Take two $G$-sets $S$ and $T$, regarded as functors $G \to \mathbf{Set}$. A natural transformation $\alpha \colon S \to T$ consists of a single map $\alpha \colon S \to T$ (since $G$ has just one object) satisfying the naturality condition: $\alpha(g \cdot s) = g \cdot \alpha(s)$ for all $s \in S$ and $g \in G$. This is a map of $G$-sets, sometimes called a **$G$-equivariant** map.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.5</span><span class="math-callout__name">(Determinant as a natural transformation)</span></p>
 
 Fix a natural number $n$. For any commutative ring $R$, the $n \times n$ matrices with entries in $R$ form a monoid $M\_n(R)$ under multiplication. Any ring homomorphism $R \to S$ induces a monoid homomorphism $M\_n(R) \to M\_n(S)$. This defines a functor $M\_n \colon \mathbf{CRing} \to \mathbf{Mon}$.
@@ -530,21 +530,21 @@ So for any two categories $\mathscr{A}$ and $\mathscr{B}$, there is a category w
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.7</span><span class="math-callout__name">(Functor category from a discrete category)</span></p>
 
 Let $\mathbf{2}$ be the discrete category with two objects. A functor from $\mathbf{2}$ to a category $\mathscr{B}$ is a pair of objects of $\mathscr{B}$, and a natural transformation is a pair of maps. The functor category $[\mathbf{2}, \mathscr{B}]$ is therefore isomorphic to the product category $\mathscr{B} \times \mathscr{B}$ (Construction 1.1.11). This fits well with the alternative notation $\mathscr{B}^2$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.8</span><span class="math-callout__name">(Functor categories of G-sets)</span></p>
 
 Let $G$ be a monoid. Then $[G, \mathbf{Set}]$ is the category of left $G$-sets, and $[G^{\text{op}}, \mathbf{Set}]$ is the category of right $G$-sets (Example 1.2.14).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.9</span><span class="math-callout__name">(Ordered sets as functor categories)</span></p>
 
 Take ordered sets $A$ and $B$, viewed as categories (Example 1.1.8(e)). Given order-preserving maps $f, g \colon A \to B$ viewed as functors (Example 1.2.9), there is at most one natural transformation from $f$ to $g$, and there is one if and only if $f(a) \le g(a)$ for all $a \in A$. (The naturality axiom holds automatically in an ordered set because all diagrams commute.)
@@ -582,7 +582,7 @@ If $F \cong G$ then certainly $F(A) \cong G(A)$ for each individual $A$, but the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.13</span><span class="math-callout__name">(Natural isomorphism for discrete categories)</span></p>
 
 Let $F, G \colon \mathscr{A} \to \mathscr{B}$ be functors from a discrete category $\mathscr{A}$ to a category $\mathscr{B}$. Then $F \cong G$ if and only if $F(A) \cong G(A)$ for all $A \in \mathscr{A}$.
@@ -591,7 +591,7 @@ But this is only true because $\mathscr{A}$ is discrete. In general, it is empha
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.14</span><span class="math-callout__name">(Double dual as a natural isomorphism)</span></p>
 
 Let **FDVect** be the category of finite-dimensional vector spaces over some field $k$. The dual vector space construction defines a contravariant functor from **FDVect** to itself (Example 1.2.12), and the double dual construction therefore defines a covariant functor $(\ )^{\ast\ast}$ from **FDVect** to itself.
@@ -665,7 +665,7 @@ This result is analogous to the theorem that every bijective group homomorphism 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.20</span><span class="math-callout__name">(Equivalent subcategories)</span></p>
 
 Let $\mathscr{A}$ be any category, and let $\mathscr{B}$ be any full subcategory containing at least one object from each isomorphism class of $\mathscr{A}$. Then the inclusion functor $\mathscr{B} \hookrightarrow \mathscr{A}$ is faithful (like any inclusion of subcategories), full, and essentially surjective on objects. Hence $\mathscr{B} \simeq \mathscr{A}$.
@@ -674,14 +674,14 @@ For example, let **FinSet** be the category of finite sets and let $\mathscr{B}$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.21</span><span class="math-callout__name">(Monoids as one-object categories)</span></p>
 
 In Example 1.1.8(d), we saw that monoids are essentially the same thing as one-object categories. Let $\mathscr{C}$ be the full subcategory of **CAT** whose objects are the one-object categories. Let **Mon** be the category of monoids. Then $\mathscr{C} \simeq \mathbf{Mon}$: there is a canonical functor $F \colon \mathscr{C} \to \mathbf{Mon}$ sending a one-object category to the monoid of maps from the single object to itself. This functor is full and faithful (by Example 1.2.7) and essentially surjective on objects.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.22</span><span class="math-callout__name">(Duality)</span></p>
 
 An equivalence of the form $\mathscr{A}^{\text{op}} \simeq \mathscr{B}$ is sometimes called a **duality** between $\mathscr{A}$ and $\mathscr{B}$. One says that $\mathscr{A}$ is **dual** to $\mathscr{B}$. Famous examples include:
@@ -693,7 +693,7 @@ An equivalence of the form $\mathscr{A}^{\text{op}} \simeq \mathscr{B}$ is somet
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3.23</span><span class="math-callout__name">(Groups as a category of nonempty sets)</span></p>
 
 Let $\mathscr{A}$ be the category whose objects are groups and whose maps are *all* functions between them (not necessarily homomorphisms). Let $\mathbf{Set}\_{\ne \emptyset}$ be the category of nonempty sets. The forgetful functor $U \colon \mathscr{A} \to \mathbf{Set}\_{\ne \emptyset}$ is full and faithful. Since every nonempty set can be given at least one group structure, $U$ is essentially surjective on objects. Hence $U$ is an equivalence: $\mathscr{A}$, although defined in terms of groups, is really just the category of nonempty sets.
@@ -801,7 +801,7 @@ it is possible to construct exactly one map $A\_0 \to G(B\_m)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 2.1.3</span><span class="math-callout__name">(Algebra: free $\dashv$ forgetful)</span></p>
 
 Forgetful functors between categories of algebraic structures usually have left adjoints. For instance:
@@ -829,14 +829,14 @@ An algebraic theory consists of two things: first, a collection of operations, e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1.5</span><span class="math-callout__name">(Topological spaces)</span></p>
 
 There are adjunctions $D \dashv U \dashv I$ between $\mathbf{Set}$ and $\mathbf{Top}$, where $U$ sends a space to its set of points, $D$ equips a set with the discrete topology, and $I$ equips a set with the indiscrete topology.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1.6</span><span class="math-callout__name">(Products and exponentials in Set)</span></p>
 
 Given sets $A$ and $B$, we can form their cartesian product $A \times B$. We can also form the set $B^A$ of functions from $A$ to $B$. Fix a set $B$. Taking the product with $B$ defines a functor $- \times B \colon \mathbf{Set} \to \mathbf{Set}$, and there is also a functor $(-)^B \colon \mathbf{Set} \to \mathbf{Set}$ defined by $C \mapsto C^B$. There is a canonical bijection
@@ -869,7 +869,7 @@ A category need not have an initial object, but if it does have one, it is uniqu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.1.9</span><span class="math-callout__name">(Initial and terminal objects as adjoints)</span></p>
 
 Initial and terminal objects can be described as adjoints. Let $\mathscr{A}$ be a category. There is precisely one functor $\mathscr{A} \to \mathbf{1}$. Also, a functor $\mathbf{1} \to \mathscr{A}$ is essentially just an object of $\mathscr{A}$ (namely, the object to which the unique object of $\mathbf{1}$ is mapped). Viewing functors $\mathbf{1} \to \mathscr{A}$ as objects of $\mathscr{A}$, a left adjoint to $\mathscr{A} \to \mathbf{1}$ is exactly an initial object of $\mathscr{A}$.
@@ -930,7 +930,7 @@ $$
 
 called the **unit** and **counit** of the adjunction, respectively.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.2.1</span><span class="math-callout__name">(Unit and counit for $\mathbf{Vect}\_k \rightleftarrows \mathbf{Set}$)</span></p>
 
 Take the usual adjunction $F \dashv U$ between $\mathbf{Set}$ and $\mathbf{Vect}\_k$. Its unit $\eta \colon 1\_{\mathbf{Set}} \to U \circ F$ has components
@@ -1029,7 +1029,7 @@ These two functions are mutually inverse. Indeed, given $g \colon F(A) \to B$, w
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.2.7</span><span class="math-callout__name">(Adjunctions between ordered sets)</span></p>
 
 An adjunction between ordered sets consists of order-preserving maps $A \overset{f}{\underset{g}{\rightleftarrows}} B$ such that
@@ -1092,7 +1092,7 @@ commutes.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3.3</span><span class="math-callout__name">(Slice and coslice categories)</span></p>
 
 Let $\mathscr{A}$ be a category and $A \in \mathscr{A}$. The **slice category** of $\mathscr{A}$ over $A$, denoted by $\mathscr{A}/A$, is the category whose objects are maps into $A$ and whose maps are commutative triangles. More precisely, an object is a pair $(X, h)$ with $X \in \mathscr{A}$ and $h \colon X \to A$, and a map $(X, h) \to (X', h')$ is a map $f \colon X \to X'$ in $\mathscr{A}$ making the triangle $h = h' \circ f$ commute.
@@ -1103,7 +1103,7 @@ Dually (reversing all the arrows), there is a **coslice category** $A/\mathscr{A
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.3.4</span><span class="math-callout__name">(Comma category $(A \Rightarrow G)$)</span></p>
 
 Let $G \colon \mathscr{B} \to \mathscr{A}$ be a functor and let $A \in \mathscr{A}$. We can form the comma category $(A \Rightarrow G)$. Its objects are pairs $(B \in \mathscr{B},\ f \colon A \to G(B))$. A map $(B, f) \to (B', f')$ in $(A \Rightarrow G)$ is a map $q \colon B \to B'$ in $\mathscr{B}$ making the triangle $G(q) \circ f = f'$ commute.
@@ -1316,14 +1316,14 @@ A category $\mathscr{A}$ is **locally small** if for each $A, B \in \mathscr{A}$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.5</span></p>
 
 $\mathbf{Set}$ is locally small, because for any two sets $A$ and $B$, the functions from $A$ to $B$ form a set.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.6</span></p>
 
 $\mathbf{Vect}\_k$, $\mathbf{Grp}$, $\mathbf{Ab}$, $\mathbf{Ring}$ and $\mathbf{Top}$ are all locally small. For example, given rings $A$ and $B$, a homomorphism from $A$ to $B$ is a function from $A$ to $B$ with certain properties, and the collection of all functions from $A$ to $B$ is small, so the collection of homomorphisms from $A$ to $B$ is certainly small.
@@ -1348,7 +1348,7 @@ If two categories $\mathscr{A}$ and $\mathscr{B}$ are equivalent, the class of i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.9</span></p>
 
 For any field $k$, the category $\mathbf{Vect}\_k$ of vector spaces over $k$ is not essentially small. It is enough to prove that the class of isomorphism classes of vector spaces is large. For any set $I$ and family $(V\_i)\_{i \in I}$ of vector spaces, the set $S = \mathscr{P}\!\left(\sum\_{i \in I} U(V\_i)\right)$ has the property that $\lvert U(V\_i) \rvert < \lvert S \rvert$ for all $i \in I$. The free vector space $F(S)$ on $S$ contains a copy of $S$ as a basis, so $\lvert S \rvert \le \lvert UF(S) \rvert$. Hence $\lvert U(V\_i) \rvert < \lvert UF(S) \rvert$ for all $i$, and so $F(S) \not\cong V\_i$ for all $i$, as required. Similarly, none of the categories $\mathbf{Grp}$, $\mathbf{Ab}$, $\mathbf{Ring}$ and $\mathbf{Top}$ is essentially small.
@@ -1362,7 +1362,7 @@ We denote by $\mathbf{Cat}$ the category of small categories and functors betwee
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.11</span></p>
 
 Monoids are by definition *sets* equipped with certain structure, so the one-object categories that they correspond to are small. Let $\mathscr{M}$ be the full subcategory of $\mathbf{Cat}$ consisting of the one-object categories. Then there is an equivalence of categories $\mathbf{Mon} \simeq \mathscr{M}$. This is proved by the argument in Example 1.3.21, noting that because each object of $\mathscr{M}$ is a *small* one-object category, the collection of maps from the single object to itself really is a set.
@@ -1461,14 +1461,14 @@ Representable functors are sometimes just called "representables." Only set-valu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.4</span><span class="math-callout__name">(Identity functor on $\mathbf{Set}$)</span></p>
 
 Consider $H^1 \colon \mathbf{Set} \to \mathbf{Set}$, where $1$ is the one-element set. Since a map from $1$ to a set $B$ amounts to an element of $B$, we have $H^1(B) \cong B$ for each $B \in \mathbf{Set}$. It is easily verified that this isomorphism is natural in $B$, so $H^1$ is isomorphic to the identity functor $1\_{\mathbf{Set}}$. Hence $1\_{\mathbf{Set}}$ is representable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.5</span><span class="math-callout__name">(Forgetful functors)</span></p>
 
 All of the "seeing" functors in the introduction to this chapter are representable. The forgetful functor $\mathbf{Top} \to \mathbf{Set}$ is isomorphic to $H^1 = \mathbf{Top}(1, -)$, and the forgetful functor $\mathbf{Grp} \to \mathbf{Set}$ is isomorphic to $\mathbf{Grp}(\mathbb{Z}, -)$. For each prime $p$, there is a functor $U\_p \colon \mathbf{Grp} \to \mathbf{Set}$ defined on objects by
@@ -1481,21 +1481,21 @@ and $U\_p \cong \mathbf{Grp}(\mathbb{Z}/p\mathbb{Z}, -)$. Hence $U\_p$ is repres
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.6</span><span class="math-callout__name">(Objects functor on $\mathbf{Cat}$)</span></p>
 
 There is a functor $\mathrm{ob} \colon \mathbf{Cat} \to \mathbf{Set}$ sending a small category to its set of objects. It is representable. Indeed, consider the terminal category $\mathbf{1}$ (with one object and only the identity map). A functor from $\mathbf{1}$ to a category $\mathscr{B}$ simply picks out an object of $\mathscr{B}$. Thus, $H^{\mathbf{1}}(\mathscr{B}) \cong \mathrm{ob}\,\mathscr{B}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.7</span><span class="math-callout__name">(Monoid as one-object category)</span></p>
 
 Let $M$ be a monoid, regarded as a one-object category. A set-valued functor on $M$ is just an $M$-set. Since the category $M$ has only one object, there is only one representable functor on it (up to isomorphism). As an $M$-set, the unique representable is the so-called **left regular representation** of $M$, that is, the underlying set of $M$ acted on by multiplication on the left.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.8</span><span class="math-callout__name">(Fundamental group)</span></p>
 
 Let $\mathbf{Toph}\_\*$ be the category whose objects are topological spaces equipped with a basepoint and whose arrows are homotopy classes of basepoint-preserving continuous maps. Let $S^1 \in \mathbf{Toph}\_\*$ be the circle. Then for any object $X \in \mathbf{Toph}\_\*$, the maps $S^1 \to X$ in $\mathbf{Toph}\_\*$ are the elements of the fundamental group $\pi\_1(X)$. Formally, the composite functor
@@ -1508,7 +1508,7 @@ is isomorphic to $\mathbf{Toph}\_\*(S^1, -)$. In particular, it is representable
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.9</span><span class="math-callout__name">(Tensor product and bilinear maps)</span></p>
 
 Fix a field $k$ and vector spaces $U$ and $V$ over $k$. There is a functor
@@ -1557,21 +1557,21 @@ naturally in $A \in \mathscr{A}$ (by Example 4.1.4), that is, $G \cong \mathbf{S
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.12</span><span class="math-callout__name">(Forgetful functor on $\mathbf{Top}$)</span></p>
 
 Several of the examples of representables mentioned above arise as in Proposition 4.1.11. For instance, $U \colon \mathbf{Top} \to \mathbf{Set}$ has a left adjoint $D$ (Example 2.1.5), and $D(1) \cong 1$, so we recover the result that $U \cong H^1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.13</span><span class="math-callout__name">(Forgetful functor on $\mathbf{Vect}\_k$)</span></p>
 
 The forgetful functor $U \colon \mathbf{Vect}\_k \to \mathbf{Set}$ is representable, since it has a left adjoint. If $F$ denotes the left adjoint then $F(1)$ is the $1$-dimensional vector space $k$, so $U \cong H^k$. This is also easy to see directly: a map from $k$ to a vector space $V$ is uniquely determined by the image of $1$, which can be any element of $V$; hence $\mathbf{Vect}\_k(k, V) \cong U(V)$ naturally in $V$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.14</span><span class="math-callout__name">(Forgetful functor on $\mathbf{CRing}$)</span></p>
 
 Forgetful functors between categories of algebraic structures usually have left adjoints. Take the category $\mathbf{CRing}$ of commutative rings and the forgetful functor $U \colon \mathbf{CRing} \to \mathbf{Set}$. This general principle suggests that $U$ has a left adjoint, and Proposition 4.1.11 then tells us that $U$ is representable.
@@ -1638,21 +1638,21 @@ Let $\mathscr{A}$ be a locally small category. A functor $X \colon \mathscr{A}^{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.18</span><span class="math-callout__name">(Power set functor)</span></p>
 
 There is a functor $\mathscr{P} \colon \mathbf{Set}^{\mathrm{op}} \to \mathbf{Set}$ sending each set $B$ to its power set $\mathscr{P}(B)$, and defined on maps $g \colon B' \to B$ by $(\mathscr{P}(g))(U) = g^{-1}U$ for all $U \in \mathscr{P}(B)$. As we saw in Section 3.1, a subset amounts to a map into the two-point set $2$. Precisely put, $\mathscr{P} \cong H\_2$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.19</span><span class="math-callout__name">(Open subsets functor)</span></p>
 
 Similarly, there is a functor $\mathscr{O} \colon \mathbf{Top}^{\mathrm{op}} \to \mathbf{Set}$ defined on objects $B$ by taking $\mathscr{O}(B)$ to be the set of open subsets of $B$. If $S$ denotes the two-point topological space in which exactly one of the two singleton subsets is open, then continuous maps from a space $B$ into $S$ correspond naturally to open subsets of $B$. Hence $\mathscr{O} \cong H\_S$, and $\mathscr{O}$ is representable.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.1.20</span><span class="math-callout__name">(Ring of continuous functions)</span></p>
 
 In Example 1.2.11, we defined a functor $C \colon \mathbf{Top}^{\mathrm{op}} \to \mathbf{Ring}$, assigning to each space the ring of continuous real-valued functions on it. The composite functor
@@ -1881,7 +1881,7 @@ Our examples will use the dual form, for covariant set-valued functors:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.3.4</span><span class="math-callout__name">(Free vector space)</span></p>
 
 Fix a set $S$ and consider the functor $X = \mathbf{Set}(S, U(-)) \colon \mathbf{Vect}\_k \to \mathbf{Set}$, where $V \mapsto \mathbf{Set}(S, U(V))$. Here are two familiar (and true!) statements about $X$:
@@ -1894,7 +1894,7 @@ Each of these two statements says that $X$ is representable. Statement (a) says 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.3.5</span><span class="math-callout__name">(Adjunctions and universal elements)</span></p>
 
 The same can be said for any other adjunction $\mathscr{A} \overset{F}{\underset{G}{\rightleftarrows}} \mathscr{B}$. Fix $A \in \mathscr{A}$ and put $X = \mathscr{A}(A, G(-)) \colon \mathscr{B} \to \mathbf{Set}$. Then $X$ is representable, and this can be expressed in either of the following ways:
@@ -1907,7 +1907,7 @@ This observation can be developed into an alternative proof of Theorem 2.3.6, th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.3.6</span><span class="math-callout__name">(Universal element of the forgetful functor on $\mathbf{Grp}$)</span></p>
 
 For any group $G$ and element $x \in G$, there is a unique homomorphism $\phi \colon \mathbb{Z} \to G$ such that $\phi(1) = x$. This means that $1 \in U(\mathbb{Z})$ is a universal element of the forgetful functor $U \colon \mathbf{Grp} \to \mathbf{Set}$; in other words, condition (4.7) holds when $\mathscr{A} = \mathbf{Grp}$, $X = U$, $A = \mathbb{Z}$ and $u = 1$. So $1 \in U(\mathbb{Z})$ gives a representation $H^{\mathbb{Z}} \xrightarrow{\sim} U$ of $U$.
@@ -1991,28 +1991,28 @@ In general, in any category, the map $\bar{f}$ is usually written as $(f\_1, f\_
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.3</span><span class="math-callout__name">(Products in $\mathbf{Set}$)</span></p>
 
 Any two sets $X$ and $Y$ have a product in $\mathbf{Set}$. It is the usual cartesian product $X \times Y$, equipped with the usual projection maps $p\_1$ and $p\_2$. To verify, define $\bar{f} \colon A \to X \times Y$ by $\bar{f}(a) = (f\_1(a), f\_2(a))$. Then $p\_i \circ \bar{f} = f\_i$ for $i = 1, 2$. Moreover, this is the *only* map making the diagram commute: if $\hat{f}$ also makes it commute, then $\hat{f}(a) = (p\_1(\hat{f}(a)), p\_2(\hat{f}(a))) = (f\_1(a), f\_2(a)) = \bar{f}(a)$ for all $a \in A$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.4</span><span class="math-callout__name">(Products in $\mathbf{Top}$)</span></p>
 
 In the category of topological spaces, any two objects $X$ and $Y$ have a product. It is the set $X \times Y$ equipped with the product topology and the standard projection maps. The product topology is deliberately designed so that a function $A \to X \times Y$, $t \mapsto (x(t), y(t))$, is continuous if and only if it is continuous in each coordinate ($t \mapsto x(t)$ and $t \mapsto y(t)$ are both continuous). The product topology is the smallest topology on $X \times Y$ for which the projections are continuous.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.5</span><span class="math-callout__name">(Products in $\mathbf{Vect}\_k$)</span></p>
 
 Let $X$ and $Y$ be vector spaces. We can form their direct sum, $X \oplus Y$, with linear projection maps $X \xleftarrow{p\_1} X \oplus Y \xrightarrow{p\_2} Y$. It can be shown that $X \oplus Y$, together with $p\_1$ and $p\_2$, is the product of $X$ and $Y$ in the category of vector spaces.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 5.1.6</span><span class="math-callout__name">(Products in ordered sets)</span></p>
 
 **(a)** Let $x, y \in \mathbb{R}$. Their minimum $\min\lbrace x, y\rbrace$ satisfies $\min\lbrace x, y\rbrace \le x$ and $\min\lbrace x, y\rbrace \le y$, and has the further property that whenever $a \in \mathbb{R}$ with $a \le x$ and $a \le y$, we have $a \le \min\lbrace x, y\rbrace$. This means exactly that when the poset $(\mathbb{R}, \le)$ is viewed as a category, the product of $x$ and $y$ is $\min\lbrace x, y\rbrace$.
@@ -2040,7 +2040,7 @@ When the product $P$ exists, we write $P$ as $\prod\_{i \in I} X\_i$. We call th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.8</span><span class="math-callout__name">(Products in ordered sets — general)</span></p>
 
 In ordered sets, the extension from binary to arbitrary products works in the obvious way: given an ordered set $(A, \le)$, a **lower bound** for a family $(x\_i)\_{i \in I}$ of elements is an element $a \in A$ such that $a \le x\_i$ for all $i$, and a **greatest lower bound** or **meet** of the family is a lower bound greater than any other, written as $\bigwedge\_{i \in I} x\_i$. These are the products in $(A, \le)$.
@@ -2049,14 +2049,14 @@ For example, in $\mathbb{R}$ with its usual ordering, the meet of a family $(x\_
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.9</span><span class="math-callout__name">(Empty product is terminal object)</span></p>
 
 What happens to the definition of product when the indexing set $I$ is empty? When $I$ is empty, there is exactly one family $(X\_i)\_{i \in \emptyset}$, the **empty family**, and exactly one family of maps $(A \xrightarrow{f\_i} X\_i)\_{i \in \emptyset}$ for any given object $A$. A product of the empty family therefore consists of an object $P$ of $\mathscr{A}$ such that for each object $A$ of $\mathscr{A}$, there exists a unique map $\bar{f} \colon A \to P$. In other words, a product of the empty family is exactly a terminal object.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.10</span><span class="math-callout__name">(Powers)</span></p>
 
 Take an object $X$ of a category $\mathscr{A}$, and a set $I$. There is a constant family $(X)\_{i \in I}$. Its product $\prod\_{i \in I} X$, if it exists, is written as $X^I$ and called a **power** of $X$. When $X$ is a set, $X^I$ is the set of functions from $I$ to $X$, also written as $\mathbf{Set}(I, X)$.
@@ -2074,7 +2074,7 @@ Let $\mathscr{A}$ be a category and let $X \overset{s}{\underset{t}{\rightrighta
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.12</span><span class="math-callout__name">(Equalizers in $\mathbf{Set}$)</span></p>
 
 We have already met equalizers in $\mathbf{Set}$ (Section 3.1). Given functions $X \overset{s}{\underset{t}{\rightrightarrows}} Y$, write $E = \lbrace x \in X \mid s(x) = t(x)\rbrace$ and $i \colon E \to X$ for the inclusion. Then $si = ti$, so we have a fork, and one can check that it is universal among all forks on $s$ and $t$.
@@ -2083,21 +2083,21 @@ An equalizer describes the set of solutions of a single equation, but by combini
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.13</span><span class="math-callout__name">(Equalizers in $\mathbf{Top}$)</span></p>
 
 Take continuous maps $X \overset{s}{\underset{t}{\rightrightarrows}} Y$ between topological spaces. We can form their equalizer $E$ in the category of sets, with inclusion map $i \colon E \to X$. Since $E$ is a subset of the space $X$, it acquires the subspace topology from $X$, and $i$ is then continuous. This space $E$, together with $i$, is the equalizer of $s$ and $t$ in $\mathbf{Top}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.14</span><span class="math-callout__name">(Kernels as equalizers)</span></p>
 
 Let $\theta \colon G \to H$ be a homomorphism of groups. As in Example 0.8, the homomorphism $\theta$ gives rise to a fork $\ker \theta \xhookrightarrow{\iota} G \overset{\theta}{\underset{\varepsilon}{\rightrightarrows}} H$, where $\iota$ is the inclusion and $\varepsilon$ is the trivial homomorphism. This is an equalizer in $\mathbf{Grp}$. Thus, kernels are a special case of equalizers.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.15</span><span class="math-callout__name">(Equalizers in $\mathbf{Vect}\_k$)</span></p>
 
 Let $V \overset{s}{\underset{t}{\rightrightarrows}} W$ be linear maps between vector spaces. There is a linear map $t - s \colon V \to W$, and the equalizer of $s$ and $t$ in the category of vector spaces is the space $\ker(t - s)$ together with the inclusion map $\ker(t - s) \hookrightarrow V$.
@@ -2117,7 +2117,7 @@ We call this a **pullback square**. Another name for pullback is **fibred produc
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 5.1.17</span><span class="math-callout__name">(Pullbacks in $\mathbf{Set}$)</span></p>
 
 The pullback of a diagram $X \xrightarrow{s} Z \xleftarrow{t} Y$ in $\mathbf{Set}$ is
@@ -2169,7 +2169,7 @@ Let $\mathscr{A}$ be a category, $\mathbf{I}$ a small category, and $D \colon \m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples 5.1.21</span><span class="math-callout__name">(Limit shapes)</span></p>
 
 Let $\mathscr{A}$ be any category. Recall the categories $\mathbf{T}$, $\mathbf{E}$ and $\mathbf{P}$.
@@ -2186,7 +2186,7 @@ Let $\mathscr{A}$ be any category. Recall the categories $\mathbf{T}$, $\mathbf{
 
 In general, the limit of a diagram $D$ is the terminal object in the category of cones on $D$, and is therefore an extremal example of a cone on $D$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.22</span><span class="math-callout__name">(Limits in $\mathbf{Set}$ — explicit formula)</span></p>
 
 Let $D \colon \mathbf{I} \to \mathbf{Set}$, and let us ask what $\varprojlim D$ would have to be if it existed. We would have
@@ -2199,14 +2199,14 @@ In fact, this set really *is* the limit of $D$ in $\mathbf{Set}$, with projectio
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.23</span><span class="math-callout__name">(Limits in algebraic categories)</span></p>
 
 The same formula gives limits in categories of algebras such as $\mathbf{Grp}$, $\mathbf{Ring}$, $\mathbf{Vect}\_k$, etc. Of course, we also have to say what the group/ring/... structure on the set is, but this works in the most straightforward way imaginable. For instance, in $\mathbf{Vect}\_k$, if $(x\_I)\_{I \in \mathbf{I}}, (y\_I)\_{I \in \mathbf{I}} \in \varprojlim D$ then $(x\_I)\_{I \in \mathbf{I}} + (y\_I)\_{I \in \mathbf{I}} = (x\_I + y\_I)\_{I \in \mathbf{I}}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.24</span><span class="math-callout__name">(Limits in $\mathbf{Top}$)</span></p>
 
 The same formula also gives limits in $\mathbf{Top}$. The topology on the set given by the formula is the smallest for which the projection maps are continuous.
@@ -2245,14 +2245,14 @@ $$
 
 where the components of $s$ and $t$ are defined, for each map $J \xrightarrow{u} K$ in $\mathbf{I}$, by $s\_u((x\_I)\_{I \in \mathbf{I}}) = (Du)(x\_J)$ and $t\_u((x\_I)\_{I \in \mathbf{I}}) = x\_K$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.27</span><span class="math-callout__name">(Compact Hausdorff spaces)</span></p>
 
 Let $\mathbf{CptHff}$ denote the category of compact Hausdorff spaces and continuous maps. Given continuous maps $s$ and $t$ from a topological space $X$ to a Hausdorff space $Y$, the subset $\lbrace x \in X \mid s(x) = t(x)\rbrace$ of $X$ is closed. From this it follows that $\mathbf{CptHff}$ has equalizers. Also, Tychonoff's theorem states that any product (in $\mathbf{Top}$) of compact spaces is compact, and any product of Hausdorff spaces is Hausdorff. From this it follows that $\mathbf{CptHff}$ has all products. Hence by Proposition 5.1.26(a), $\mathbf{CptHff}$ has all limits.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.28</span><span class="math-callout__name">(Finite limits in $\mathbf{Vect}\_k$)</span></p>
 
 Recall from Example 5.1.15 that kernels provide equalizers in $\mathbf{Vect}\_k$. By Proposition 5.1.26(b), finite limits in $\mathbf{Vect}\_k$ can always be expressed in terms of $\oplus$ (binary direct sum), $\lbrace 0\rbrace$, and kernels. The same is true in $\mathbf{Ab}$.
@@ -2276,14 +2276,14 @@ This can be rephrased suggestively in terms of generalized elements: $f$ is moni
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.30</span><span class="math-callout__name">(Monics in $\mathbf{Set}$)</span></p>
 
 In $\mathbf{Set}$, a map is monic if and only if it is injective. Indeed, if $f$ is injective then certainly $f$ is monic, and for the converse, take $A = 1$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.1.31</span><span class="math-callout__name">(Monics in algebraic categories)</span></p>
 
 In categories of algebras such as $\mathbf{Grp}$, $\mathbf{Vect}\_k$, $\mathbf{Ring}$, etc., it is also true that the monic maps are exactly the injections. It is easy to show that injections are monic. For the converse, take $A = F(1)$ where $F$ is the free functor (Examples 2.1.3).
@@ -2337,28 +2337,28 @@ Let $(X\_i)\_{i \in I}$ be a family of objects of a category. Their sum (if it e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.3</span><span class="math-callout__name">(Empty sum is initial object)</span></p>
 
 By the dual of Example 5.1.9, a sum of the empty family is exactly an initial object.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.4</span><span class="math-callout__name">(Sums in $\mathbf{Set}$)</span></p>
 
 Sums in $\mathbf{Set}$ were described in Section 3.1. Take two sets $X\_1$ and $X\_2$. Form their sum $X\_1 + X\_2$, and consider the inclusions $X\_1 \xrightarrow{p\_1} X\_1 + X\_2 \xleftarrow{p\_2} X\_2$. This is a colimit cocone. To prove this: for any diagram $X\_1 \xrightarrow{f\_1} A \xleftarrow{f\_2} X\_2$ of sets and functions, there is a unique function $\bar{f} \colon X\_1 + X\_2 \to A$ making the diagram commute. This is because $p\_1$ and $p\_2$ are injections whose images partition $X\_1 + X\_2$, so every element of $X\_1 + X\_2$ is *either* equal to $p\_1(x\_1)$ for some unique $x\_1 \in X\_1$, *or* equal to $p\_2(x\_2)$ for some unique $x\_2 \in X\_2$, but not both. We define $\bar{f}(x) = f\_1(x\_1)$ in the first case and $\bar{f}(x) = f\_2(x\_2)$ in the second.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.5</span><span class="math-callout__name">(Sums in $\mathbf{Vect}\_k$)</span></p>
 
 Let $X\_1$ and $X\_2$ be vector spaces. There are linear maps $X\_1 \xrightarrow{i\_1} X\_1 \oplus X\_2 \xleftarrow{i\_2} X\_2$ defined by $i\_1(x\_1) = (x\_1, 0)$ and $i\_2(x\_2) = (0, x\_2)$, and it can be checked that this is a colimit cocone in $\mathbf{Vect}\_k$. Hence binary direct sums are sums in the categorical sense. This is remarkable, since we saw in Example 5.1.5 that $X\_1 \oplus X\_2$ is also the *product* of $X\_1$ and $X\_2$! Contrast this with the category of sets (or almost any other category), where sums and products are very different.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.6</span><span class="math-callout__name">(Sums in ordered sets)</span></p>
 
 Let $(A, \le)$ be an ordered set. **Upper bounds** and **least upper bounds** (or **joins**) in $A$ are defined by dualizing the definitions in Example 5.1.6, and, dually, they are sums in the corresponding category. The join of a family $(x\_i)\_{i \in I}$ is written as $\bigvee\_{i \in I} x\_i$. In the binary case, the join of $x\_1$ and $x\_2$ is written as $x\_1 \vee x\_2$. A join of the empty family (where $I = \emptyset$) is an initial object of the category $A$, as in Example 5.2.3. Equivalently, it is a **least element** of $A$: an element $0 \in A$ such that $0 \le a$ for all $a \in A$.
@@ -2380,14 +2380,14 @@ In other words, given a diagram $X \overset{s}{\underset{t}{\rightrightarrows}} 
 
 Coequalizers are something like quotients. Given any equivalence relation $\sim$ on a set $A$, we can form the set $A/{\sim}$ of equivalence classes and the quotient map $p \colon A \to A/{\sim}$. For any set $B$, the maps $A/{\sim} \to B$ correspond one-to-one with the maps $f \colon A \to B$ such that $a \sim a' \implies f(a) = f(a')$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.9</span><span class="math-callout__name">(Coequalizers in $\mathbf{Set}$)</span></p>
 
 Take sets and functions $X \overset{s}{\underset{t}{\rightrightarrows}} Y$. To find the coequalizer of $s$ and $t$, we must construct in some canonical way a set $C$ and a function $p \colon Y \to C$ such that $p(s(x)) = p(t(x))$ for all $x \in X$. So, let $\sim$ be the equivalence relation on $Y$ generated by $s(x) \sim t(x)$ for all $x \in X$, and take the quotient map $p \colon Y \to Y/{\sim}$. This is indeed the coequalizer of $s$ and $t$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.10</span><span class="math-callout__name">(Coequalizers in $\mathbf{Ab}$)</span></p>
 
 For each pair of homomorphisms $A \overset{s}{\underset{t}{\rightrightarrows}} B$ in $\mathbf{Ab}$, there is a homomorphism $t - s \colon A \to B$, which gives rise to a subgroup $\mathrm{im}(t - s)$ of $B$. The coequalizer of $s$ and $t$ is the canonical homomorphism $B \to B/\mathrm{im}(t - s)$. (Compare Example 5.1.15.)
@@ -2405,7 +2405,7 @@ In other words, the pushout of a diagram $X \xrightarrow{s} Y$, $X \xrightarrow{
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.12</span><span class="math-callout__name">(Pushouts in $\mathbf{Set}$)</span></p>
 
 Take a diagram $X \xrightarrow{s} Y$, $X \xrightarrow{t} Z$ in $\mathbf{Set}$. Its pushout $P$ is $(Y + Z)/{\sim}$, where $\sim$ is the equivalence relation on $Y + Z$ generated by $s(x) \sim t(x)$ for all $x \in X$. The coprojection $Y \to P$ sends $y \in Y$ to its equivalence class in $P$, and similarly for the coprojection $Z \to P$.
@@ -2414,21 +2414,21 @@ For example, let $Y$ and $Z$ be subsets of some set $A$. Then the square with $Y
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.13</span><span class="math-callout__name">(Pushouts and initial objects)</span></p>
 
 If $\mathscr{A}$ is a category with an initial object $0$, and if $Y, Z \in \mathscr{A}$, then a pushout of the unique diagram $0 \to Y$, $0 \to Z$ is exactly a sum of $Y$ and $Z$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.14</span><span class="math-callout__name">(Van Kampen theorem)</span></p>
 
 The van Kampen theorem says that given a pushout square in $\mathbf{Top}$ satisfying certain further hypotheses, the square in $\mathbf{Grp}$ obtained by taking fundamental groups throughout is also a pushout.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.15</span><span class="math-callout__name">(Direct limits)</span></p>
 
 A diagram $D \colon (\mathbb{N}, \le) \to \mathscr{A}$ consists of objects and maps
@@ -2443,7 +2443,7 @@ in $\mathscr{A}$. Colimits of such diagrams are traditionally called **direct li
 
 #### General Formula for Colimits in $\mathbf{Set}$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.16</span><span class="math-callout__name">(Colimits in $\mathbf{Set}$)</span></p>
 
 The colimit of a diagram $D \colon \mathbf{I} \to \mathbf{Set}$ is given by
@@ -2479,7 +2479,7 @@ This is the formal dual of the definition of monic. (In other words, an epic in 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.18</span><span class="math-callout__name">(Epics in $\mathbf{Set}$)</span></p>
 
 In $\mathbf{Set}$, a map is epic if and only if it is surjective. If $f$ is surjective then certainly $f$ is epic. To see the converse, take $Z$ to be a two-element set $\lbrace\mathtt{true}, \mathtt{false}\rbrace$, take $g$ to be the characteristic function of the image of $f$, and take $g'$ to be the function with constant value $\mathtt{true}$.
@@ -2488,14 +2488,14 @@ Any isomorphism in any category is both monic and epic. In $\mathbf{Set}$, the c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.19</span><span class="math-callout__name">(Epics in categories of algebras)</span></p>
 
 In categories of algebras, any surjective map is certainly epic. In some such categories, including $\mathbf{Ab}$, $\mathbf{Vect}\_k$ and $\mathbf{Grp}$, the converse also holds. However, there are other categories of algebras where it fails. For instance, in $\mathbf{Ring}$, the inclusion $\mathbb{Z} \hookrightarrow \mathbb{Q}$ is epic but not surjective (Exercise 5.2.23). This is also an example of a map that is monic and epic but not an isomorphism.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.2.20</span><span class="math-callout__name">(Epics in Hausdorff spaces)</span></p>
 
 In the category of Hausdorff topological spaces and continuous maps, any map with dense image is epic.
@@ -2543,21 +2543,21 @@ $$
 
 whenever $D$ is a diagram with a limit. Preservation of limits says more than this: the left- and right-hand sides are required to be not just isomorphic, but isomorphic *in a particular way*.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.3.2</span><span class="math-callout__name">(Forgetful functor $U \colon \mathbf{Top} \to \mathbf{Set}$)</span></p>
 
 The forgetful functor $U \colon \mathbf{Top} \to \mathbf{Set}$ preserves both limits and colimits. (As we will see, this follows from the fact that $U$ has adjoints on both sides.) It does not reflect all limits or all colimits. For instance, choose any non-discrete spaces $X$ and $Y$, and let $Z$ be the set $U(X) \times U(Y)$ equipped with the discrete topology. Then $X \leftarrow Z \to Y$ is a cone in $\mathbf{Top}$ whose image in $\mathbf{Set}$ is a product cone $U(X) \leftarrow U(X) \times U(Y) \to U(Y)$, but it is not a product cone in $\mathbf{Top}$, since the discrete topology on $U(X) \times U(Y)$ is strictly larger than the product topology.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.3.3</span><span class="math-callout__name">(Forgetful functors seldom preserve colimits)</span></p>
 
 The forgetful functor $\mathbf{Grp} \to \mathbf{Set}$ does not preserve initial objects and the forgetful functor $\mathbf{Vect}\_k \to \mathbf{Set}$ does not preserve binary sums. Forgetful functors out of categories of algebras very seldom preserve all colimits.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.3.4</span><span class="math-callout__name">(Forgetful functors on algebras preserve limits)</span></p>
 
 We saw that (in the examples mentioned) forgetful functors on categories of algebras do preserve limits. In fact, something stronger is true. Let us examine the case of binary products in $\mathbf{Grp}$, although all of the following can be said for any limits in any of the categories $\mathbf{Grp}$, $\mathbf{Ab}$, $\mathbf{Vect}\_k$, $\mathbf{Ring}$, etc.
@@ -2860,7 +2860,7 @@ $$
 
 This is sometimes half-jokingly called Fubini's theorem, as it is something like changing the order of integration in a double integral. The analogy is more appealing with *co*limits, since, like integrals, colimits can be thought of as a context-sensitive version of sums.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.2.9</span><span class="math-callout__name">(Binary products commute)</span></p>
 
 When $\mathbf{I} = \mathbf{J}$ is the discrete category with two objects, Proposition 6.2.8 says that binary products commute with binary products: if $\mathscr{S}$ has binary products and $S\_{11}, S\_{12}, S\_{21}, S\_{22} \in \mathscr{S}$ then
@@ -2916,7 +2916,7 @@ is a limit cone. But then, by the "moreover" part of Theorem 6.2.5 applied to th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.2.13</span><span class="math-callout__name">(Yoneda preserves products)</span></p>
 
 Let $\mathbf{A}$ be a category with binary products. Corollary 6.2.12 implies that for all $X, Y \in \mathbf{A}$,
@@ -2944,7 +2944,7 @@ We now know that the Yoneda embedding preserves limits but not colimits. In fact
 
 Every positive integer can be expressed as a product of primes in an essentially unique way. Somewhat similarly, every presheaf can be expressed as a colimit of representables in a canonical (though not unique) way.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.2.15</span><span class="math-callout__name">(Presheaves on a discrete category)</span></p>
 
 Let $\mathbf{A}$ be the discrete category with two objects, $K$ and $L$. A presheaf $X$ on $\mathbf{A}$ is just a pair $(X(K), X(L))$ of sets, and $[\mathbf{A}^{\mathrm{op}}, \mathbf{Set}] \cong \mathbf{Set} \times \mathbf{Set}$. There are two representables, $H\_K \cong (1, \emptyset)$ and $H\_L \cong (\emptyset, 1)$. Every object of $\mathbf{Set} \times \mathbf{Set}$ is a sum of copies of $(1, \emptyset)$ and $(\emptyset, 1)$. For instance, if $X(K)$ has three elements and $X(L)$ has two elements, then $X \cong H\_K + H\_K + H\_K + H\_L + H\_L$, exhibiting $X$ as a sum of representables.
@@ -3006,14 +3006,14 @@ naturally in $A \in \mathscr{A}$. Here the first isomorphism is by adjointness, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.2</span><span class="math-callout__name">(Forgetful functors from algebras)</span></p>
 
 Forgetful functors from categories of algebras to $\mathbf{Set}$ have left adjoints, but hardly ever right adjoints. Correspondingly, they preserve all limits, but rarely all colimits.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.3</span><span class="math-callout__name">(Arithmetic of sets)</span></p>
 
 Every set $B$ gives rise to an adjunction $(- \times B) \dashv (-)^B$ of functors from $\mathbf{Set}$ to $\mathbf{Set}$ (Example 2.1.6). So $- \times B$ preserves colimits and $(-)^B$ preserves limits. In particular, $- \times B$ preserves finite sums and $(-)^B$ preserves finite products, giving isomorphisms
@@ -3030,14 +3030,14 @@ These are the analogues of standard rules of arithmetic.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.4</span><span class="math-callout__name">(Limits commute with limits, again)</span></p>
 
 Given a category $\mathscr{A}$ with all limits of shape $\mathbf{I}$, we have the adjunction $\Delta \dashv \varprojlim$ (Proposition 6.1.4). Hence $\varprojlim\_\mathbf{I}$ preserves limits, or equivalently, limits of shape $\mathbf{I}$ commute with (all) limits. This gives another proof that limits commute with limits (Proposition 6.2.8).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.5</span><span class="math-callout__name">(Proving non-existence of adjoints)</span></p>
 
 Theorem 6.3.1 is often used to prove that a functor does *not* have an adjoint. For instance, it was claimed that the forgetful functor $U \colon \mathbf{Field} \to \mathbf{Set}$ does not have a left adjoint. We can now prove this. If $U$ had a left adjoint $F \colon \mathbf{Set} \to \mathbf{Field}$, then $F$ would preserve colimits, and in particular, initial objects. Hence $F(\emptyset)$ would be an initial object of $\mathbf{Field}$. But $\mathbf{Field}$ has no initial object, since there are no maps between fields of different characteristic.
@@ -3110,7 +3110,7 @@ $$
 F(A) = \bigwedge_{B \in \mathbf{B},\, A \le G(B)} B.
 $$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.8</span><span class="math-callout__name">(Complete ordered sets have least elements)</span></p>
 
 Consider Proposition 6.3.7 in the case $\mathbf{A} = \mathbf{1}$. The unique functor $G \colon \mathbf{B} \to \mathbf{1}$ automatically preserves meets, and a left adjoint to $G$ is an initial object of $\mathbf{B}$. So the proposition states that a complete ordered set has a least element. This is not quite trivial, since completeness means the existence of all meets, whereas a least element is an empty *join*.
@@ -3161,7 +3161,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.11</span><span class="math-callout__name">(GAFT for forgetful functors to Set)</span></p>
 
 The general adjoint functor theorem (GAFT) implies that for any category $\mathscr{B}$ of algebras ($\mathbf{Grp}$, $\mathbf{Vect}\_k$, $\ldots$), the forgetful functor $U \colon \mathscr{B} \to \mathbf{Set}$ has a left adjoint. Indeed, $\mathscr{B}$ has all limits, $U$ preserves them, and $\mathscr{B}$ is locally small. To apply GAFT, we just have to check that for each $A \in \mathbf{Set}$, the comma category $(A \Rightarrow U)$ has a weakly initial set. This requires a little cardinal arithmetic.
@@ -3170,7 +3170,7 @@ So GAFT tells us that, for instance, the free group functor exists. GAFT avoids 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.12</span><span class="math-callout__name">(GAFT for forgetful functors between algebras)</span></p>
 
 More generally, GAFT guarantees that forgetful functors between categories of algebras, such as
@@ -3198,7 +3198,7 @@ A precise statement and proof can be found in Section V.8 of Mac Lane (1971).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.14</span><span class="math-callout__name">(Stone--Cech compactification)</span></p>
 
 Here is the classic application of SAFT. Let $\mathbf{CptHff}$ be the category of compact Hausdorff spaces, and $U \colon \mathbf{CptHff} \to \mathbf{Top}$ the forgetful functor. SAFT tells us that $U$ has a left adjoint $F$, turning any space into a compact Hausdorff space in a canonical way.
@@ -3234,14 +3234,14 @@ naturally in $A$ and $C$. In fact, the isomorphism is natural in $B$ too; that c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.16</span><span class="math-callout__name">(Set is cartesian closed)</span></p>
 
 $\mathbf{Set}$ is cartesian closed; $C^B$ is the function set $\mathbf{Set}(B, C)$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.17</span><span class="math-callout__name">(CAT is cartesian closed)</span></p>
 
 $\mathbf{CAT}$ is cartesian closed; $\mathscr{C}^{\mathscr{B}}$ is the functor category $[\mathscr{B}, \mathscr{C}]$.
@@ -3250,7 +3250,7 @@ $\mathbf{CAT}$ is cartesian closed; $\mathscr{C}^{\mathscr{B}}$ is the functor c
 
 In any cartesian closed category with finite sums, the isomorphisms of Example 6.3.3 hold, for the same reasons as stated there. The objects of a cartesian closed category therefore possess an arithmetic like that of the natural numbers. These isomorphisms also provide a way of proving that a category is *not* cartesian closed.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.3.18</span><span class="math-callout__name">(Vect is not cartesian closed)</span></p>
 
 $\mathbf{Vect}\_k$ is not cartesian closed, for any field $k$. It does have finite products, as we saw in Example 5.1.5: binary product is direct sum $\oplus$, and the terminal object is the trivial vector space $\lbrace 0 \rbrace$, which is also initial. But if $\mathbf{Vect}\_k$ were cartesian closed then the arithmetic equations would hold, so that $\lbrace 0 \rbrace \oplus B \cong \lbrace 0 \rbrace$ for all vector spaces $B$. This is plainly false.

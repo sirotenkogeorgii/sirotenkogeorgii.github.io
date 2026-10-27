@@ -30,7 +30,7 @@ tags:
 
 Before building probability from the ground up, here is a quick motivating application.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1</span><span class="math-callout__name">(Polynomial Identity Testing)</span></p>
 
 Given two polynomials $f, g$ of degree $d$, we want to check whether they are identical as fast as possible. The polynomial $f$ is given by its coefficients, i.e. $f(x) = \sum_{i=0}^{d} a_i x^i$, and $g$ can be written as $g_1 \cdot g_2$ where we are given the coefficients of $g_1$ and $g_2$.
@@ -353,7 +353,7 @@ $$p_X(k) = \binom{n}{k} p^k (1-p)^{n-k} \quad \text{for } k \in \lbrace 0, 1, \l
 
 Verification via the binomial theorem: $\sum_{k=0}^{n} \binom{n}{k} p^k (1-p)^{n-k} = (p + (1-p))^n = 1$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 19</span><span class="math-callout__name">(Drawing with Replacement)</span></p>
 
 An urn contains $N$ balls, $K$ of which are red. We draw a ball, check its color, return it, and repeat $n$ times. Let $X$ be the number of red balls drawn. Since each draw is independent with success probability $K/N$, we have $X \sim \mathrm{Bin}(n, K/N)$.
@@ -362,7 +362,7 @@ An urn contains $N$ balls, $K$ of which are red. We draw a ball, check its color
 
 **Hypergeometric distribution.** $X \sim \mathrm{Hyper}(N, K, n)$: the number of red balls when drawing $n$ balls *without* replacement from an urn of $N$ balls, $K$ red.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 20</span><span class="math-callout__name">(Drawing without Replacement)</span></p>
 
 With $N$ balls, $K$ red, drawing $n$ without replacement, the number of red balls $X \sim \mathrm{Hyper}(N, K, n)$ has pmf:
@@ -515,7 +515,7 @@ $$\mathbb{E}(X) = \sum_{x \in \mathrm{Im}(X)} x \cdot P(X = x) = \sum_x x \cdot 
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 31</span><span class="math-callout__name">(Expected Number of Rolls until First Six)</span></p>
 
 Let $X$ be the number of die rolls until the first six (inclusive). Let $PS$ denote the event that the first roll is a six. Using Theorem 30 with partition $\lbrace PS, PS^c \rbrace$:
@@ -724,7 +724,7 @@ $$P(Z = z) = \sum_{x \in \mathrm{Im}(X)} P(X = x) P(Y = z - x).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 41</span><span class="math-callout__name">(Sum of Two Dice)</span></p>
 
 Let $X, Y$ be independent uniform random variables on $\lbrace 1, 2, \ldots, 6 \rbrace$ (two independent die rolls). The distribution of $Z = X + Y$:
@@ -739,7 +739,7 @@ Each term is $1/36$ or $0$ (the latter when $1 \le k - x \le 6$ fails). Counting
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 42</span><span class="math-callout__name">(Sum of Independent Binomials)</span></p>
 
 Let $X \sim \mathrm{Bin}(m, p)$ and $Y \sim \mathrm{Bin}(n, p)$ be independent. Then $Z = X + Y \sim \mathrm{Bin}(m + n, p)$.
@@ -1128,7 +1128,7 @@ Let $X = Q(U)$. Then $P(X \le x) = P(Q(U) \le x) = P(U \le F(x)) = F(x)$, using 
 
 Theorem 61 is used in practice to **generate random variables with any desired distribution**: given access to $U \sim U(0, 1)$, compute $Q(U)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 62</span><span class="math-callout__name">(Generating Exponential Samples)</span></p>
 
 To generate $X \sim \mathrm{Exp}(\lambda)$ from $U \sim U(0, 1)$: the CDF is $F(x) = 1 - e^{-\lambda x}$, which is continuous and strictly increasing. The quantile function is $Q(p) = \frac{-\log(1-p)}{\lambda}$. By Theorem 61, $Q(U) = \frac{-\log(1-U)}{\lambda} \sim \mathrm{Exp}(\lambda)$.
@@ -1302,7 +1302,7 @@ Dividing by $a$ gives the result.
 - Setting $a = b \cdot \mathbb{E}(X)$: $P(X \ge b \cdot \mathbb{E}(X)) \le 1/b$.
 - Markov's inequality is tight: consider $X = a$ with probability $1/a$ and $X = 0$ otherwise (so $\mathbb{E}(X) = 1$).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 75</span><span class="math-callout__name">(Algorithm Runtime)</span></p>
 
 A randomized algorithm has expected runtime $\mathbb{E}(X) = n^2$. By Markov's inequality (since runtime is non-negative):
@@ -1679,7 +1679,7 @@ where $k$ is the number of real-valued components of $\vartheta$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 88</span><span class="math-callout__name">(Bernoulli -- Method of Moments)</span></p>
 
 Continuing with our left-handers example: $X_i$ is 1 if person $i$ is left-handed, 0 otherwise. So $X_1, \ldots, X_n$ is a random sample from $\mathrm{Bern}(\vartheta)$, where $\vartheta$ is the (unknown) proportion of left-handers.
@@ -1688,7 +1688,7 @@ We have $m_1(\vartheta) = \vartheta$ and $\widehat{m_1(\vartheta)} = \bar{X}_n$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 89</span><span class="math-callout__name">(Normal -- Method of Moments)</span></p>
 
 Let $X_1, \ldots, X_n$ be a random sample from $N(\mu, \sigma^2)$ (e.g. measuring the height of randomly chosen people). The parameter is $\vartheta = (\mu, \sigma)$. Determine $\vartheta$ by the method of moments.
@@ -1728,7 +1728,7 @@ Note the key difference from earlier: before, $\vartheta$ was fixed and we varie
 
 Computationally it is often easier to maximise the **log-likelihood** $\ell(x; \vartheta) = \log L(x; \vartheta)$, which gives the same result by monotonicity of the logarithm.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 90</span><span class="math-callout__name">(Bernoulli -- Maximum Likelihood)</span></p>
 
 Again counting left-handers: $X_i$ is 1 if the $i$-th person is left-handed, 0 otherwise. So $X_1, \ldots, X_n \sim \mathrm{Bern}(\vartheta)$. Determine $\vartheta$ by maximum likelihood.
@@ -1741,7 +1741,7 @@ Setting $\ell'(x; \vartheta) = \frac{k}{\vartheta} - \frac{n-k}{1-\vartheta} = 0
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 91</span><span class="math-callout__name">(Normal -- Maximum Likelihood)</span></p>
 
 Let $X_1, \ldots, X_n$ be a random sample from $N(\mu, \sigma^2)$ (e.g. measuring height). The parameter is $\vartheta = (\mu, \sigma)$. Determine $\vartheta$ by maximum likelihood.
@@ -1798,7 +1798,7 @@ Now use the definition of $t_{\alpha/2}$ and the symmetry of the $t$-distributio
 
 In this chapter we introduce the basics of statistical hypothesis testing, which is a cornerstone of modern science.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 93</span><span class="math-callout__name">(Are Boys and Girls Born Equally Often?)</span></p>
 
 If we have access to all birth records, we can count exactly. But the counts fluctuate randomly over time -- our task is to determine whether the data are explainable by random fluctuation, or whether one sex is born more often.
@@ -1807,7 +1807,7 @@ This was studied in 1710 by the Scottish polymath John Arbuthnot. He found 82 ye
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 95</span><span class="math-callout__name">(Biased Coin?)</span></p>
 
 Out of 1000 coin flips, heads came up 472 times. Is this (or rather, the coin that produced it) suspicious?
@@ -1843,7 +1843,7 @@ The procedure in detail:
 
 Note that $P(h(X) \in W \mid H_0)$ uses a semicolon rather than a conditional bar: the world we live in (and which hypothesis describes it) is not treated as a random event. This changes in Bayesian statistics, which we do not cover here.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 96</span><span class="math-callout__name">(One-Sample Z-test)</span></p>
 
 Is our drink poured to the correct measure? More precisely: is the mean volume what it says on the menu?
@@ -1856,7 +1856,7 @@ We use the statistic $Z = \frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}}$. If $H_0$ is 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 97</span><span class="math-callout__name">(Two-Sample Z-test)</span></p>
 
 Are our drinks poured the same as our friend's? More precisely: is the mean the same for both of us?
@@ -1924,7 +1924,7 @@ Both statistics measure the deviation of the data from the ideal $E_i = O_i$ (al
 - For larger $n$: simulate many random samples (each of $n$ ideal draws), compute $T$ each time, and take as $\gamma$ the worst $T$ from the best outcomes.
 - For large $n$: use the **$\chi^2$-distribution** with $k - 1$ degrees of freedom. The $\chi^2$-distribution with $k - 1$ degrees of freedom is the distribution of $Q = Z_1^2 + \cdots + Z_{k-1}^2$ where $Z_i \sim N(0, 1)$ are i.i.d. It can be shown that for large $n$ the statistic $\chi^2$ (under $H_0$) approximately follows this distribution. We set $\gamma = F_Q^{-1}(1 - \alpha)$ and get $P(Q > \gamma) \doteq \alpha$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 99</span><span class="math-callout__name">(Is the Die Fair?)</span></p>
 
 A die is rolled repeatedly. The individual faces come up with counts 92, 120, 88, 98, 95, 107. Is the die fair?

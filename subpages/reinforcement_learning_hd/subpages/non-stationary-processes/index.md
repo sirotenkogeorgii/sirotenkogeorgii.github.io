@@ -148,7 +148,7 @@ but not conversely.
 
 ### Random walks: non-stationary with stationary increments
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Random walk)</span></p>
 
 Consider
@@ -192,7 +192,7 @@ Thus a random walk is a **non-stationary process with stationary increments**.
 
 ### Asymptotic stationarity
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Convergence to equilibrium)</span></p>
 
 A process can be non-stationary initially but approach a stationary regime. For example,
@@ -758,7 +758,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(For quadratic losses the interpretation is literal)</span></p>
 
 Suppose
@@ -1234,7 +1234,7 @@ Historically, economists assumed the economy followed a smooth trend path determ
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Which macroeconomic variables do *not* have a unit root?)</span></p>
 
 While aggregate levels (GDP, price indices, money supply) almost always contain a unit root, variables representing **rates, ratios, returns, or spreads** are typically stationary: they are bounded by economic behavior, institutional ceilings, or arithmetic, so shocks eventually fade and the series reverts to a long-run mean.

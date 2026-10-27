@@ -272,7 +272,7 @@ where the multiplicities $a$, $b$, $c$ can be determined from the eigenvalues of
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tensor Decomposition: $V \otimes V$ for $\mathfrak{S}\_3$)</span></p>
 
 Let $V$ be the standard two-dimensional representation with basis $\alpha, \beta$ such that $\tau\alpha = \omega\alpha$, $\tau\beta = \omega^2\beta$, $\sigma\alpha = \beta$, $\sigma\beta = \alpha$. For $V \otimes V$, the basis vectors $\alpha \otimes \alpha$, $\alpha \otimes \beta$, $\beta \otimes \alpha$, $\beta \otimes \beta$ are eigenvectors for $\tau$ with eigenvalues $\omega^2$, $1$, $1$, and $\omega$, respectively, and $\sigma$ interchanges $\alpha \otimes \alpha$ with $\beta \otimes \beta$, and $\alpha \otimes \beta$ with $\beta \otimes \alpha$. Thus $\alpha \otimes \beta + \beta \otimes \alpha$ spans a trivial representation $U$, and $\alpha \otimes \beta - \beta \otimes \alpha$ spans $U'$, so
@@ -324,7 +324,7 @@ and since $g^2$ has eigenvalues $\lbrace \lambda\_i^2 \rbrace$, the last formula
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.6 — Character Table of $\mathfrak{S}\_3$)</span></p>
 
 The conjugacy classes of $\mathfrak{S}\_3$ are $[1]$, $[(12)]$, and $[(123)]$, with 1, 3, and 2 elements respectively. The trivial representation takes values $(1, 1, 1)$; the alternating representation has values $(1, -1, 1)$. The character of the standard representation is found from the permutation representation: since $\mathbb{C}^3 = U \oplus V$, we have $\chi\_V = \chi\_{\mathbb{C}^3} - \chi\_U = (3, 1, 0) - (1, 1, 1) = (2, 0, -1)$. The character table is:
@@ -486,7 +486,7 @@ $$\sum_\chi \overline{\chi(g)}\chi(h) = 0.$$
 
 ### 2.3 Examples: $\mathfrak{S}\_4$ and $\mathfrak{A}\_4$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Character Table of $\mathfrak{S}\_4$)</span></p>
 
 The conjugacy classes of $\mathfrak{S}\_4$ correspond to partitions of 4:
@@ -512,7 +512,7 @@ The key to identifying $W$: the 2 in the last column for $\chi\_W$ says that the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.24 — $\mathfrak{S}\_4$ as Symmetries of the Cube)</span></p>
 
 $\mathfrak{S}\_4$ is the group of rigid motions of a cube, acting on the four long diagonals. It follows that $\mathfrak{S}\_4$ acts as well on the set of faces, of edges, of vertices, etc.; and to each of these is associated a permutation representation of $\mathfrak{S}\_4$.
@@ -521,7 +521,7 @@ For the **faces** of the cube, the permutation character $\chi$ takes values: $\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.26 — Character Table of $\mathfrak{A}\_4$)</span></p>
 
 The alternating group $\mathfrak{A}\_4$ has four conjugacy classes. Three representations $U$, $U'$, and $U''$ come from the representations of
@@ -625,7 +625,7 @@ This lecture is a grabbag. We start with examples illustrating the use of the te
 
 #### Representations of $\mathfrak{S}\_5$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Character Table of $\mathfrak{S}\_5$)</span></p>
 
 The conjugacy classes of $\mathfrak{S}\_5$ and their sizes are:
@@ -659,7 +659,7 @@ From the decomposition $V \oplus U = \mathbb{C}^5$, we also have $\bigwedge^4 V 
 
 #### Representations of the Alternating Group $\mathfrak{A}\_5$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Character Table of $\mathfrak{A}\_5$)</span></p>
 
 When we replace $\mathfrak{S}\_5$ by $\mathfrak{A}\_5$, all odd conjugacy classes disappear. The class of five-cycles breaks into two conjugacy classes: $(12345)$ and $(21345)$, each having 12 elements.
@@ -733,14 +733,14 @@ In this case we write $V = \mathrm{Ind}\_H^G\, W = \mathrm{Ind}\, W$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.13 — Permutation Representation as Induced)</span></p>
 
 The permutation representation associated to the left action of $G$ on $G/H$ is induced from the trivial one-dimensional representation $W$ of $H$. Here $V$ has basis $\lbrace e\_\sigma \colon \sigma \in G/H \rbrace$, and $W = \mathbb{C} \cdot e\_H$, with $H$ acting trivially on the coset $H$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.14 — Regular Representation as Induced)</span></p>
 
 The regular representation of $G$ is induced from the regular representation of $H$. Here $V$ has basis $\lbrace e\_g \colon g \in G \rbrace$, whereas $W$ has basis $\lbrace e\_h \colon h \in H \rbrace$.
@@ -787,14 +787,14 @@ In particular, if both $W$ and $U$ are irreducible, Frobenius reciprocity says: 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.21 — Induction from $\mathfrak{S}\_2 \subset \mathfrak{S}\_3$)</span></p>
 
 Let $H = \mathfrak{S}\_2 \subset G = \mathfrak{S}\_3$, $W = V\_2 = U\_2'$ (the alternating representation of $\mathfrak{S}\_2$). The irreducible representations of $\mathfrak{S}\_3$ restrict to: $U\_3 \to U\_2$, $U\_3' \to U\_2'$, $V\_3 \to U\_2 \oplus U\_2'$. By Frobenius reciprocity, $\mathrm{Ind}\, V\_2 = U\_3' \oplus V\_3$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.22 — Induction from $\mathfrak{S}\_3 \subset \mathfrak{S}\_4$)</span></p>
 
 Let $H = \mathfrak{S}\_3 \subset G = \mathfrak{S}\_4$, $W = V\_3$ (the standard representation of $\mathfrak{S}\_3$). We know the irreducible representations of $\mathfrak{S}\_4$ and their restrictions: $\mathrm{Res}\, U\_4 = U\_3$, $\mathrm{Res}\, U\_4' = U\_3'$, $\mathrm{Res}\, V\_4' = U\_3' \oplus V\_3$, $\mathrm{Res}\, V\_4 = U\_3 \oplus V\_3$, $\mathrm{Res}\, W\_4 = V\_3$. The vector $(1, 1, 1, -3) \in V\_4 = \lbrace (x\_1, x\_2, x\_3, x\_4) \colon \sum x\_i = 0 \rbrace$ is fixed by $H$, so $\mathrm{Res}\, V\_4 = U\_3 \oplus V\_3$, and $\mathrm{Res}\, W\_4 = V\_3$ (as one may see directly). Hence, by Frobenius, $\mathrm{Ind}\, V\_3 = V\_4 \oplus V\_4' \oplus W\_4$.
@@ -1033,7 +1033,7 @@ As a corollary, each irreducible representation of $\mathfrak{S}\_d$ can be defi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.5 — Young Diagrams for Small Symmetric Groups)</span></p>
 
 For $\lambda = (d)$, we have $c\_{(d)} = a\_{(d)} = \sum\_{g \in \mathfrak{S}\_d} e\_g$, and $V\_{(d)}$ is the **trivial** representation $U$. For $\lambda = (1, \ldots, 1)$, we have $c\_{(1,\ldots,1)} = b\_{(1,\ldots,1)} = \sum\_{g} \mathrm{sgn}(g) e\_g$, and $V\_{(1,\ldots,1)}$ is the **alternating** representation $U'$.
@@ -1081,7 +1081,7 @@ In terms of **Schur polynomials** $S\_\lambda$, Frobenius's formula can be expre
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dimension via Frobenius's Formula)</span></p>
 
 To compute the dimension of $V\_\lambda$, evaluate the character on the identity element, which corresponds to $\mathbf{i} = (d, 0, \ldots, 0)$. Then
@@ -1412,7 +1412,7 @@ Since $G$ acts transitively on $\mathbb{P}^1(\mathbb{F}\_q)$ with $B$ the isotro
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Conjugacy Classes of $\mathrm{GL}\_2(\mathbb{F}\_q)$)</span></p>
 
 The conjugacy classes of $G$ are easily found:
@@ -1428,7 +1428,7 @@ Here $c\_{x,y}$ and $c\_{y,x}$ are conjugate, and $d\_{x,y}$ and $d\_{x,-y}$ are
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Irreducible Representations of $\mathrm{GL}\_2(\mathbb{F}\_q)$)</span></p>
 
 The $q^2 - 1$ irreducible representations of $G$ are found by several methods:
@@ -1456,7 +1456,7 @@ where in the last column we identify $d\_{x,y}$ with $\zeta = x + y\sqrt{\vareps
 
 #### The Group $\mathrm{SL}\_2(\mathbb{F}\_q)$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Conjugacy Classes of $\mathrm{SL}\_2(\mathbb{F}\_q)$, $q$ odd)</span></p>
 
 The conjugacy classes of $\mathrm{SL}\_2(\mathbb{F}\_q)$ for $q$ odd are:
@@ -1530,7 +1530,7 @@ This is again a representation of $\mathrm{GL}(V)$. We call the functor $V \lead
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Schur Functors)</span></p>
 
 - For $\lambda = (d)$: $\mathbb{S}\_{(d)}V = \mathrm{Sym}^d V$.
@@ -2047,7 +2047,7 @@ for all $X \in \mathfrak{g}$ and $v, w \in V$.
 
 ### 8.2 Examples of Lie Algebras
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lie Algebras of Classical Groups)</span></p>
 
 The Lie algebras of the groups introduced in Lecture 7 are all subspaces of $\mathfrak{gl}\_n\mathbb{R} = M\_n\mathbb{R}$ (or $\mathfrak{gl}\_n\mathbb{C}$):
@@ -2261,7 +2261,7 @@ We have $\mathscr{D}^k\mathfrak{g} \subset \mathscr{D}\_k\mathfrak{g}$ for all $
 
 #### Standard Examples
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Nilpotent: Strictly Upper-Triangular Matrices)</span></p>
 
 The standard example of a nilpotent Lie algebra is $\mathfrak{n}\_n\mathbb{R}$, the algebra of strictly upper-triangular $n \times n$ matrices. The $k$th subalgebra $\mathscr{D}\_k\mathfrak{g}$ in the lower central series is the subspace $\mathfrak{n}\_{k+1,n}\mathbb{R}$ of matrices $(a\_{i,j})$ with $a\_{i,j} = 0$ whenever $j \le i + k$, i.e., matrices that are zero within a distance $k$ of the diagonal. Any subalgebra of $\mathfrak{n}\_n\mathbb{R}$ is likewise nilpotent, and any nilpotent Lie algebra is isomorphic to such a subalgebra.
@@ -2270,7 +2270,7 @@ If a Lie algebra $\mathfrak{g}$ is represented on a vector space $V$ such that e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Solvable: Upper-Triangular Matrices)</span></p>
 
 A standard example of a solvable Lie algebra is $\mathfrak{b}\_n\mathbb{R}$, the space of upper-triangular $n \times n$ matrices. The commutator $\mathscr{D}\mathfrak{b}\_n\mathbb{R}$ is the algebra $\mathfrak{n}\_n\mathbb{R}$, and the derived series is $\mathscr{D}^k\mathfrak{b}\_n\mathbb{R} = \mathfrak{n}\_{2^{k-1},n}\mathbb{R}$. Any subalgebra of $\mathfrak{b}\_n\mathbb{R}$ is likewise solvable. We will show later that, conversely, *any* representation of a solvable Lie algebra on a vector space $V$ can be put in upper-triangular form with respect to a suitable basis.
@@ -2583,7 +2583,7 @@ This is the **Heisenberg algebra**: the unique three-dimensional Lie algebra wit
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Heisenberg Algebra and Group)</span></p>
 
 The Heisenberg algebra is just the Lie algebra $\mathfrak{n}\_3$ of strictly upper-triangular $3 \times 3$ matrices. The simply connected Lie group is the group $G$ of $3 \times 3$ unipotent upper-triangular matrices:
@@ -2910,7 +2910,7 @@ $$\mathrm{Sym}^a V \otimes \mathrm{Sym}^b V = \mathrm{Sym}^{a+b} V \oplus \mathr
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tensor Product $\mathrm{Sym}^2 V \otimes \mathrm{Sym}^3 V$)</span></p>
 
 Let $V \cong \mathbb{C}^2$ be the standard representation. The eigenvalues of $\mathrm{Sym}^2 V$ are $2, 0, -2$, and those of $\mathrm{Sym}^3 V$ are $3, 1, -1, -3$. The 12 eigenvalues of the tensor product $\mathrm{Sym}^2 V \otimes \mathrm{Sym}^3 V$ are thus $5$, $3$ and $-3$ (taken twice), $1$ and $-1$ (taken three times), and $-5$.
@@ -2923,7 +2923,7 @@ $$\mathrm{Sym}^2 V \otimes \mathrm{Sym}^3 V \cong \mathrm{Sym}^5 V \oplus \mathr
 
 #### Symmetric Powers of Symmetric Powers
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Square of $\mathrm{Sym}^2 V$)</span></p>
 
 Let $W = \mathrm{Sym}^2 V$ with eigenvalues $-2, 0, 2$. The symmetric square of $W$ will have eigenvalues the pairwise sums of these numbers (each occurring once): $-4, -2, 0$ (occurring twice), $2, 4$. Therefore:
@@ -2943,7 +2943,7 @@ $$\mathrm{Sym}^n(\mathrm{Sym}^2 V) = \bigoplus_{s=0}^{\lfloor n/2 \rfloor} \math
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Further Plethysm Decompositions)</span></p>
 
 By eigenvalue analysis:
@@ -3009,7 +3009,7 @@ The group $G$ of automorphisms of $\mathbb{P}^n$ that preserve $C\_n$ is precise
 
 #### Geometric Interpretation of Plethysm
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geometric Interpretation of $\mathrm{Sym}^2(\mathrm{Sym}^2 V)$)</span></p>
 
 $\mathrm{SL}\_2\mathbb{C}$ acts on $\mathbb{P}^2 = \mathbb{P}(\mathrm{Sym}^2 V^\ast)$ as the group of motions of $\mathbb{P}^2$ carrying the conic $C\_2$ into itself. Its action on the space $\mathrm{Sym}^2(\mathrm{Sym}^2 V)$ of quadratic polynomials on $\mathbb{P}^2$ must preserve the one-dimensional subspace $\mathbb{C} \cdot F$ spanned by the polynomial $F$ defining the conic $C\_2$.
@@ -3029,7 +3029,7 @@ The subrepresentation $\mathrm{Sym}^4 V \subset \mathrm{Sym}^2(\mathrm{Sym}^2 V)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Geometric Interpretation of $\mathrm{Sym}^2(\mathrm{Sym}^3 V)$)</span></p>
 
 For the twisted cubic $C = C\_3 \subset \mathbb{P}^3$, the decomposition
@@ -3269,14 +3269,14 @@ The existence part of the theorem follows from the observation that $\mathrm{Sym
 
 #### The Standard Representation and its Dual
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard Representation $V = \Gamma\_{1,0}$)</span></p>
 
 The standard representation of $\mathfrak{sl}\_3\mathbb{C}$ on $V \cong \mathbb{C}^3$ has eigenvectors $e\_1, e\_2, e\_3$ for $\mathfrak{h}$ with eigenvalues $L\_1, L\_2, L\_3$ respectively. Its weight diagram is a triangle with vertices at the three $L\_i$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dual Representation $V^\ast = \Gamma\_{0,1}$)</span></p>
 
 The dual representation $V^\ast$ has dual basis vectors $e\_i^\ast$ with eigenvalues $-L\_i$. Note that while in the case of $\mathfrak{sl}\_2\mathbb{C}$ the weights of any representation were symmetric about the origin (and correspondingly each representation was isomorphic to its dual), this is **not** true for $\mathfrak{sl}\_3\mathbb{C}$: the diagrams for $V$ and $V^\ast$ look different (one is a reflection of the other).
@@ -3287,7 +3287,7 @@ We have $V^\ast \cong \bigwedge^2 V$ (whose weights are the pairwise sums of the
 
 #### Symmetric Powers
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Powers $\mathrm{Sym}^n V$ and $\mathrm{Sym}^n V^\ast$)</span></p>
 
 The symmetric powers of $V$ and $V^\ast$ are exactly the representations with **triangular** weight diagrams (as opposed to hexagonal). All weights occur with multiplicity 1, so $\mathrm{Sym}^n V$ and $\mathrm{Sym}^n V^\ast$ are all irreducible:
@@ -3298,7 +3298,7 @@ $$\mathrm{Sym}^n V = \Gamma_{n,0} \qquad \text{and} \qquad \mathrm{Sym}^n V^* = 
 
 #### Tensor Products with the Standard Representation
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Tensor Product $V \otimes V^\ast$)</span></p>
 
 The weights of $V \otimes V^\ast$ are the sums $L\_i + (-L\_j) = L\_i - L\_j$ (each occurring once) and $0$ (occurring with multiplicity three, with weight vectors $e\_i \otimes e\_i^\ast$). There is a $\mathfrak{sl}\_3\mathbb{C}$-linear contraction map
@@ -3313,7 +3313,7 @@ $$V \otimes V^* \cong \Gamma_{1,1} \oplus \mathbb{C}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Tensor Product $\mathrm{Sym}^2 V \otimes V^\ast$)</span></p>
 
 The weights of $\mathrm{Sym}^2 V \otimes V^\ast$ are $2L\_i - L\_j$ (each occurring once) and $L\_i$ (each occurring three times). The contraction map $\iota\colon \mathrm{Sym}^2 V \otimes V^\ast \to V$ is surjective, and its kernel is the irreducible representation $\Gamma\_{2,1}$:
@@ -3400,7 +3400,7 @@ Given a representation $U$:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tensor Product $V \otimes \Gamma\_{2,1}$)</span></p>
 
 Since $\Gamma\_{2,1}$ has weights $2L\_i - L\_j$, $L\_i + L\_j - L\_k$, and $L\_i$ (taken twice), and $V$ has weights $L\_i$, the tensor product $V \otimes \Gamma\_{2,1}$ will have weights $3L\_i - L\_j$, $2L\_i + L\_j - L\_k$ (taken twice), $2L\_i$ (taken four times), and $L\_i + L\_j$ (taken five times). By the decomposition algorithm:
@@ -3411,7 +3411,7 @@ $$V \otimes \Gamma_{2,1} = \Gamma_{3,1} \oplus \Gamma_{1,2} \oplus \Gamma_{2,0}.
 
 #### Symmetric and Exterior Powers
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Square $\mathrm{Sym}^2(\mathrm{Sym}^2 V)$)</span></p>
 
 Let $W = \mathrm{Sym}^2 V = \Gamma\_{2,0}$. The eigenvalue diagram of $\mathrm{Sym}^2 W = \mathrm{Sym}^2(\mathrm{Sym}^2 V)$ has a unique possible decomposition:
@@ -3422,7 +3422,7 @@ The presence of the $\mathrm{Sym}^4 V$ factor is clear: there is a natural multi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Cube $\mathrm{Sym}^3(\mathrm{Sym}^2 V)$)</span></p>
 
 By eigenvalue analysis (drawing one-sixth of the plane and labeling weights with multiplicities):
@@ -3898,7 +3898,7 @@ The general irreducible representation $\Gamma\_{a\_1, \ldots, a\_{n-1}}$ appear
 
 ### 15.2 Representations of $\mathfrak{sl}\_4\mathbb{C}$ and $\mathfrak{sl}\_n\mathbb{C}$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Representations of $\mathfrak{sl}\_4\mathbb{C}$)</span></p>
 
 Let $V = \mathbb{C}^4$ be the standard representation with weights $L\_1, L\_2, L\_3, L\_4$.
@@ -3910,7 +3910,7 @@ Since $V$, $\bigwedge^2 V$, and $\bigwedge^3 V = V^\ast$ have highest weight vec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tensor Products of Basic Representations of $\mathfrak{sl}\_4\mathbb{C}$)</span></p>
 
 - $V \otimes \bigwedge^2 V$: weights are $2L\_i + L\_j$ (once) and $L\_i + L\_j + L\_k$ (three times). There is a natural surjection $\varphi\colon V \otimes \bigwedge^2 V \to \bigwedge^3 V$, whose kernel (with weights $L\_i + L\_j + L\_k$ having multiplicity 2 rather than 3) contains the irreducible representation $\Gamma\_{1,1,0}$ with highest weight $2L\_1 + L\_2$:
@@ -4183,14 +4183,14 @@ We now specialize to $n = 2$. We write $\Gamma\_{a,b}$ for $\Gamma\_{aL\_1 + b(L
 
 #### The Standard Representation and Its Exterior Square
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard Representation $V = \Gamma\_{1,0}$)</span></p>
 
 The standard representation of $\mathfrak{sp}\_4\mathbb{C}$ on $V = \mathbb{C}^4$ has weights $L\_1, L\_2, -L\_1, -L\_2$. Its weight diagram is a square (or diamond). Note that $V$ is self-dual ($V \cong V^\ast$), since the symplectic group preserves a bilinear form $Q$ giving an identification $V \cong V^\ast$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exterior Square $\bigwedge^2 V$)</span></p>
 
 The exterior square $\bigwedge^2 V$ has weights $\pm L\_i \pm L\_j$ (each once) and $0$ (appearing twice, as $L\_1 - L\_1$ and $L\_2 - L\_2$). This representation is **not** irreducible: by Observation 14.16, there is only one way to get from the highest weight $L\_1 + L\_2$ to the zero weight space by successive applications of primitive negative root spaces, so the zero weight space of the irreducible $\Gamma\_{0,1}$ has dimension 1. We have
@@ -4203,7 +4203,7 @@ where $W = \Gamma\_{0,1}$ is the irreducible five-dimensional representation wit
 
 #### Symmetric Powers and the Adjoint Representation
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric Square $\mathrm{Sym}^2 V$ and the Adjoint Representation)</span></p>
 
 The weights of $\mathrm{Sym}^2 V$ are the pairwise sums of the weights of $V$: $\pm 2L\_i$, $\pm L\_1 \pm L\_2$, and $0$ (twice). Its weight diagram looks like the root diagram plus the origin (with multiplicity 3). Since $\mathfrak{sp}\_4\mathbb{C} \subset \mathrm{Hom}(V,V) = V \otimes V^\ast = V \otimes V$, and the defining relation (16.1) says exactly that $\mathfrak{sp}\_4\mathbb{C}$ is the subspace $\mathrm{Sym}^2 V \subset V \otimes V$, we find:
@@ -4245,7 +4245,7 @@ The kernel $\Gamma\_{0,2}$ is the irreducible 14-dimensional representation with
 
 #### Tensor Products
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tensor Product $V \otimes W$)</span></p>
 
 The tensor product $V \otimes W$ has highest weight $2L\_1 + L\_2$ and must contain $\Gamma\_{1,1}$. A natural surjective map $\varphi\colon V \otimes W \to V$ (coming from $\wedge\colon V \otimes \bigwedge^2 V \to \bigwedge^3 V = V^\ast = V$, restricted to $V \otimes W \subset V \otimes \bigwedge^2 V$) shows that it also contains a copy of $V$:
@@ -4256,7 +4256,7 @@ $$V \otimes W = \Gamma_{1,1} \oplus V.$$
 
 #### The Representation $\Gamma\_{2,1}$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analyzing $\mathrm{Sym}^2 V \otimes W$)</span></p>
 
 The tensor product $\mathrm{Sym}^2 V \otimes W$ contains $\Gamma\_{2,1}$ (with highest weight $2L\_1 + (L\_1 + L\_2) = 3L\_1 + L\_2$). A detailed weight-by-weight analysis shows:
@@ -4293,14 +4293,14 @@ The weight lattice consists of integral linear combinations of the $L\_i$. The i
 
 #### Fundamental Representations
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard Representation $V = \Gamma\_{1,0,0}$)</span></p>
 
 The standard representation of $\mathfrak{sp}\_6\mathbb{C}$ on $V = \mathbb{C}^6$ has weights $\pm L\_i$. Its weight diagram is the vertices of the reference octahedron (one-half size).
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Second Exterior Power $\bigwedge^2 V$ and $W = \Gamma\_{0,1,0}$)</span></p>
 
 $\bigwedge^2 V$ has the 12 weights $\pm L\_i \pm L\_j$ ($i \neq j$, each once) and the weight $0$ (taken three times). The action of $\mathfrak{sp}\_6\mathbb{C}$ preserves a skew form, so $\bigwedge^2 V$ contains a trivial summand $\mathbb{C}$. Its complement $W = \Gamma\_{0,1,0}$ is the irreducible 14-dimensional representation with highest weight $L\_1 + L\_2$.
@@ -4309,7 +4309,7 @@ To verify that $0$ appears with multiplicity 2 (not 3) in $W$: there are only th
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Third Exterior Power $\bigwedge^3 V$ and $U = \Gamma\_{0,0,1}$)</span></p>
 
 $\bigwedge^3 V$ has 20 weights: the eight sums $\pm L\_1 \pm L\_2 \pm L\_3$ (each once, corresponding to vertices of the reference cube) and the six weights $\pm L\_i$ (each twice). Since the highest weight is $L\_1 + L\_2 + L\_3$, the representation $\bigwedge^3 V$ must contain the irreducible $\Gamma\_{0,0,1}$.
@@ -4331,7 +4331,7 @@ Having found $V$, $W$, and $U$ with highest weights $L\_1$, $L\_1 + L\_2$, and $
 
 #### Further Tensor Products
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Representation $\Gamma\_{1,1,0}$)</span></p>
 
 The representation $V \otimes W$ contains $\Gamma\_{1,1,0}$ with highest weight $2L\_1 + L\_2$. A natural map $V \otimes W \to U$ (via $V \otimes \bigwedge^2 V \to \bigwedge^3 V \to U$) shows that $\Gamma\_{1,1,0}$ must lie in the kernel of this map. The exact multiplicities of $\Gamma\_{1,1,0}$ require either explicit calculation or the Weyl character formula.
@@ -4647,7 +4647,7 @@ The geometric explanation: the locus of isotropic lines for a quadric in $\mathb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Representations of $\mathfrak{so}\_5\mathbb{C}$)</span></p>
 
 The standard representation $V = \mathbb{C}^5$ of $\mathfrak{so}\_5\mathbb{C}$ has weights $\pm L\_1, \pm L\_2, 0$, which corresponds to $W = \bigwedge^2(\mathbb{C}^4)/\mathbb{C} \cdot Q$ — the five-dimensional fundamental representation of $\mathfrak{sp}\_4\mathbb{C}$.
@@ -4682,7 +4682,7 @@ The Weyl chamber has edges generated by $L\_1$, $L\_1 + L\_2$, $(L\_1 + L\_2 + L
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard and Exterior Power Representations of $\mathfrak{so}\_6\mathbb{C}$)</span></p>
 
 - The **standard representation** $V = \mathbb{C}^6$ has weights $\pm L\_i$, with highest weight $L\_1$ corresponding to $\bigwedge^2 W$ of $\mathfrak{sl}\_4\mathbb{C}$ (where $W = \mathbb{C}^4$).
@@ -4770,7 +4770,7 @@ The root diagram of $\mathfrak{so}\_7\mathbb{C}$ (with $n = 3$) has 18 roots $\p
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Representations of $\mathfrak{so}\_7\mathbb{C}$)</span></p>
 
 - The **standard representation** $V = \mathbb{C}^7$ has weights $\pm L\_i$ and $0$.
@@ -5439,14 +5439,14 @@ We write $\Gamma\_{a,b}$ for the irreducible representation with highest weight 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Standard Representation $V = \Gamma\_{1,0}$)</span></p>
 
 The standard representation $V$ has highest weight $\omega\_1$ and dimension 7. The multiplicity of the weight $0$ is 1 (since there is a unique path from $\omega\_1$ to $0$ by subtraction of simple positive roots). $V$ is the **smallest** representation of $\mathfrak{g}\_2$, and every irreducible representation appears in some tensor power $V^{\otimes m}$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Adjoint Representation $\Gamma\_{0,1}$)</span></p>
 
 The adjoint representation has highest weight $\omega\_2$ and dimension 14. The multiplicity of $0$ is 2. Since $\Gamma\_{0,1}$ appears in $\bigwedge^2 V$ (the adjoint representation of $\mathfrak{g}\_2$ is a subrepresentation of $\bigwedge^2 V$):
@@ -5457,7 +5457,7 @@ This decomposition also shows that every $\Gamma\_{a,b}$ appears in $\mathrm{Sym
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symmetric and Exterior Powers of $V$)</span></p>
 
 Further decompositions:
@@ -5501,7 +5501,7 @@ Given a semisimple Lie algebra $\mathfrak{g}\_0$, a representation $W$, and tril
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constructing $\mathfrak{e}\_8$, $\mathfrak{e}\_7$, $\mathfrak{e}\_6$)</span></p>
 
 To construct $\mathfrak{e}\_8$: take $\mathfrak{g}\_0 = \mathfrak{sl}\_9\mathbb{C}$ with $V = \mathbb{C}^9$, $W = \bigwedge^3 V$ (so $W^\ast = \bigwedge^3 V^\ast$); the trilinear map is the wedge product $\bigwedge^3 V \otimes \bigwedge^3 V \otimes \bigwedge^3 V \to \bigwedge^9 V = \mathbb{C}$. Since $\dim \mathfrak{sl}\_9\mathbb{C} = 80$ and $\dim W = \dim W^\ast = 84$, the sum has dimension $80 + 84 + 84 = 248$, as predicted by the root system of $(\mathrm{E}\_8)$ (which has 120 positive roots, hence $\dim \mathfrak{e}\_8 = 8 + 2 \times 120 = 248$).

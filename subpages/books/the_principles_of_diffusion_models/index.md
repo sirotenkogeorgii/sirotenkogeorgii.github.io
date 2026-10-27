@@ -253,7 +253,7 @@ where $f:\mathbb{R}_+\to\mathbb{R}$ is **convex**. $\text{(1.1.4)}$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($f$-divergence instances)</span></p>
 
 * **Forward KL:** $f(u)=u\log u \Rightarrow D_f = D_{\mathrm{KL}}(p\parallel q)$
@@ -605,7 +605,7 @@ They define $p_\phi(x)$ either:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Explicit Generative Models)</span></p>
 
 * **ARs** (Autoregressive models)
@@ -630,7 +630,7 @@ So:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Implicit Generative Models)</span></p>
 
 * **GANs**
@@ -1529,7 +1529,7 @@ So if the decoder can already generate both 5s and 9s by itself, then the model 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Generating digits 5s and 9s)</span></p>
 
 Suppose your dataset is 50% 5s and 50% 9s.
@@ -1661,7 +1661,7 @@ In implementation, the decoder of the classic autoencoder often outputs a tensor
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian decoder)</span></p>
 
 Suppose
@@ -1684,7 +1684,7 @@ $$z \mapsto x$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bernoulli decoder)</span></p>
 
 For binary images, often
@@ -3239,7 +3239,7 @@ i.e. the learned model recovers the correct marginal score at that noise level.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Special case: additive Gaussian noise (the key diffusion-model case))</span></p>
 
 Assume the corruption is Gaussian:
@@ -4469,7 +4469,7 @@ So $p_t$ is a (generally complicated) mixture induced by the kernel + the data d
 
 ## Affine drift special case (closed-form Gaussian kernels)
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Affine drift special case (closed-form Gaussian kernels))</span></p>
 
 A common analytically convenient assumption is that drift is **linear in $\mathbf{x}$**:
@@ -5745,7 +5745,7 @@ $$
 
 ### VE SDE
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VE SDE worked example)</span></p>
 
 Here $f=0$, $g(t)=\sqrt{\frac{\mathrm{d}\sigma^2(t)}{\mathrm{d}t}}$.
@@ -5764,7 +5764,7 @@ $$
 
 ### VP SDE
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VP SDE worked example)</span></p>
 
 Here $f(t)=-\tfrac12\beta(t)$, $g(t)=\sqrt{\beta(t)}$, and $B(t)=\int_0^t\beta(s)ds$.
@@ -9210,7 +9210,7 @@ where $h := \lambda_t - \lambda_s$ and $\varphi_1(h) = \frac{e^h - 1}{h},\; \var
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(DPM-Solver-1)</span></p>
 
 Consider $n = 1$ (first order). Starting from the previous estimated point $\tilde{\mathbf{x}}_s$:

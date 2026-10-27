@@ -649,7 +649,7 @@ Each neuron is connected to every neuron in the next layer (**fully connected**)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(MNIST)</span></p>
 
 For $28\times 28$ grayscale images:
@@ -1379,7 +1379,7 @@ Regularization enables embedded ML by:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Polynomial regression on a noisy sine)</span></p>
 
 Consider polynomial regression on noisy samples from a sine wave.
@@ -1522,7 +1522,7 @@ Stop training when validation error stops improving.
 
 Model capacity is strongly linked to **parameter count**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bottleneck architecture)</span></p>
 
 Compare:
@@ -2053,7 +2053,7 @@ Conv cost scales strongly with $E\cdot F$ and $R\cdot S\cdot C$. Efficient desig
 
 ### 6.9 Case study: AlexNet, and pooling
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(AlexNet layer breakdown)</span></p>
 
 Key empirical insight from the layer breakdown:
@@ -2124,7 +2124,7 @@ Parallel branches (e.g., $1\times1$, $3\times3$, $5\times5$, pooling), then conc
 
 $1\times1$ conv performs channel mixing and dimensionality reduction, reducing the channel depth before expensive filters.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bottleneck savings for a $5\times5$ conv on $28\times28\times192$)</span></p>
 
 A $5\times5$ conv on a $28\times28\times192$ input:
@@ -2269,7 +2269,7 @@ Safe optimizations are “free” in accuracy, but **require careful hardware/sy
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Safe optimization methods)</span></p>
 
 * **shorter communication paths** (layout / interconnect optimization)
@@ -2291,7 +2291,7 @@ Most embedded ML performance gains come from unsafe optimizations applied carefu
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Unsafe optimization methods)</span></p>
 
 * **pruning** (remove weights/structures)
@@ -2313,7 +2313,7 @@ Specifically, we will talk about the mechanical difference between how computers
 
 #### Floating-point arithmetic (The "Flexible" Way)
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Floating-Point)</span></p>
 
 Floating-point works like **scientific notation** ($1.275 \times 10^1$). The decimal point "floats" to the most significant digit, and we store the "zoom level" (exponent) separately.
@@ -2400,7 +2400,7 @@ The lecture mentions that for multiplication $\lbrace \text{Energy}, \text{Area}
 
 #### Fixed-point arithmetic (The "Cheap" Way)
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed-Point)</span></p>
 
 In a fixed-point system, we decide ahead of time exactly where the "point" goes. Imagine we have an **8-bit** system where we decide the first 4 bits are for the whole number and the last 4 bits are for the fraction.
@@ -2500,7 +2500,7 @@ The **Quantizer** $Q$, which is a mathematical function that maps a continuous r
   <img src="{{ '/assets/images/notes/embedded-machine-learning/weight_distribution.png' | relative_url }}" alt="a" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quantization functions)</span></p>
 
 * **Piece-wise Constant Function:** The quantizer is like a staircase. Any input value falling within a certain "step" (interval) gets snapped to the same value (quantization level).
@@ -2589,7 +2589,7 @@ Non-uniform quantization allocates more levels where values are dense.
 
 > **Highlight:** Learnable thresholds/scales allow the quantizer to adapt to layer-specific distributions (remember bell curve figure).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Trainable ternary quantizer)</span></p>
 
 $$
@@ -2707,7 +2707,7 @@ $$
 
 where $N$ is the length of the vectors $a$ and $b$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(XNOR dot products)</span></p>
 
 * $a = [10010]$, $b = [11100]$:
@@ -3033,7 +3033,7 @@ $$b_o = b_a + b_w + \log_2(nk^2)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why multiplication cost scales with the operand-width product)</span></p>
 
 **The schoolbook binary view (most intuitive)**
@@ -3190,7 +3190,7 @@ A practical escalation strategy for applying quantization is:
 
 ### 8.5 Practical Quantization: A ResNet Case Study
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quantizing ResNet conv1)</span></p>
 
 Let's examine the quantization of the first convolutional layer (`conv1`) of a ResNet model to illustrate these concepts.
@@ -3402,7 +3402,7 @@ The **Compressed Sparse Row (CSR)** format stores sparse matrices while avoiding
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(CSR on a $4\times 4$ matrix)</span></p>
 
 Consider the following dense $4\times 4$ matrix $D$ with 8 non-zero elements:
@@ -3517,7 +3517,7 @@ This method removes entire groups of weights. The importance of a group (e.g., a
 * **L1 Norm:** $\lVert w \rVert\_1 = \sum\_j \lvert w\_j \rvert$. Each weight contributes linearly. This norm is less sensitive to a single large weight within a group.
 * **L2 Norm (Squared):** $\lVert w \rVert\_2 = \sum\_j w\_j^2$. Larger weights have a disproportionately greater impact on the norm. A single large weight can "save" its group from being pruned, even if other weights are small.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(L1 vs. L2 pruning criteria)</span></p>
 
 Consider two weight vectors, $a = [3, 0, 0, 0]$ and $b = [2, 1, 0, 0]$.
@@ -3847,7 +3847,7 @@ A visual inspection of a modern ML accelerator chip, such as the one developed b
 
 #### How Systolic Arrays Perform Matrix Multiplication
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix multiplication on a systolic array)</span></p>
 
 Consider the matrix multiplication $C = A \cdot B$. In a systolic array, the elements of matrices $A$ and $B$ are streamed into the array from different directions (e.g., $A$ from the left, $B$ from the top). As the data waves intersect within the array, each PE accumulates a partial product.
@@ -4176,7 +4176,7 @@ Optimizing for ML is not a single-step process. It involves a holistic approach 
 
 #### Example of Extreme Specialization: The FINN Framework
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(FINN framework)</span></p>
 
 The FINN framework is an example of pushing specialization to its logical extreme.
@@ -4395,7 +4395,7 @@ Instead of spatial separation, MobileNet factorizes a standard convolution into 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Depthwise separable walk-through)</span></p>
 
 The lecture slides include a diagram illustrating this flow: an initial $7 \times 7 \times 3$ input is processed by three $3 \times 3 \times 1$ depthwise filters, producing a $5 \times 5 \times 3$ intermediate map. This is then processed by 128 pointwise ($1 \times 1 \times 3$) filters to create the final $5 \times 5 \times 128$ output.
@@ -4406,7 +4406,7 @@ The lecture slides include a diagram illustrating this flow: an initial $7 \time
 
 The true power of this factorization lies in its computational savings.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(MAC savings)</span></p>
 
 Let us analyze the number of MACs required, assuming a stride of 1 and appropriate padding.
@@ -4551,7 +4551,7 @@ As efficient model architectures mature, the frontier of embedded ML is expandin
 
 Standard deep neural networks are deterministic functions: for a given input, they always produce the same output. A major limitation of this approach is their tendency to be **overconfident**, even when presented with noisy, ambiguous, or out-of-distribution (OOD) data. This is a critical safety and reliability concern for real-world applications.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Overconfidence on out-of-distribution inputs)</span></p>
 
 The lecture slides provide two striking examples:

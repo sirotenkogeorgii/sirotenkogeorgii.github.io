@@ -471,7 +471,7 @@ Note that **indistinguishability is strictly stronger**: it requires $\mathbb{P}
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Versions but not indistinguishable)</span></p>
 
 Take $(\Omega, \mathcal{A}, \mathbb{P}) := ([0,1], \mathcal{B}([0,1]), \mathrm{Leb})$ and let $T(\omega) := \omega$, so $T \sim \mathrm{Unif}([0,1])$. On $I := [0,1]$ define
@@ -3455,7 +3455,7 @@ If $P_t$ tells us *where* the process expects to be in the future, then $A$ eval
 
 For Brownian motion, this abstract generator reduces to a simple differential operator. The following example (and its proof) is central to all that follows.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.14 (Generator of Brownian Motion)</span></p>
 
 Let $(B_t)\_{t \ge 0}$ with $B_t = (B_t^{(1)}, \dots, B_t^{(d)})^{\top}$ be a $d$-dimensional Brownian motion, and let $P_t u(x) := \mathbb{E}\_x[u(B_t)]$ be the associated transition semigroup. Let $(A, \mathcal{D}(A))$ denote its generator. Then $C_\infty^2(\mathbb{R}^d) \subset \mathcal{D}(A)$, and the operator acts as
@@ -3576,7 +3576,7 @@ and a random-walk step of a particle is exactly a hop to a uniformly chosen neig
 
 A straightforward extension of the previous computation handles affine transformations of Brownian motion.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.15 (Generator of Brownian Motion with Drift)</span></p>
 
 Let $X_t = C B_t + b t$, where $C \in \mathbb{R}^{d \times d}$ is a constant matrix and $b \in \mathbb{R}^d$ a constant vector. Then the generator $A$ associated with $(X_t)\_{t \ge 0}$ acts on $u \in C_\infty^2(\mathbb{R}^d)$ as
@@ -4758,7 +4758,7 @@ By continuity, $\max_i \lvert X_{s_{i+1}} - X_{s_i} \rvert \to 0$ a.s. as the me
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quadratic Variation of Brownian Motion)</span></p>
 
 A paramount example is the standard Brownian motion $W$. Since it is a well-known fact that $W_t^2 - t$ is a martingale, the uniqueness statement of Theorem 4.4 (part 3, with $V_t = t$: adapted, continuous, non-decreasing, $V_0 = 0$) immediately dictates that

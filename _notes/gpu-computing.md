@@ -105,7 +105,7 @@ The serial fraction $s$ places a hard limit on the maximum possible speed-up. As
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Amdahl's Law)</span></p>
 
 If $90$% of your program is parallel ($p = 0.9$), the serial fraction is $10$% ($s = 0.1$). The maximum speed-up you can ever achieve is $1 / 0.1 = 10 \times$, even with a million cores.
@@ -333,7 +333,7 @@ Inside a kernel, each thread needs a way to identify itself so it can **work on 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple matrix addition)</span></p>
 
 Let's see a simple example of adding two matrices, where each thread computes one element of the result.
@@ -377,7 +377,7 @@ Let's break this down:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Revised `matAdd` kernel with any size matrix)</span></p>
 
 Here is the revised `matAdd` kernel that can handle any size matrix by using a grid of blocks.
@@ -491,7 +491,7 @@ You manage **global memory from the host using the CUDA runtime API**:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Workflow for a CUDA program)</span></p>
 
 The standard workflow for a CUDA program looks like this:
@@ -631,7 +631,7 @@ Here, `x` and `y` are vectors, $\alpha$ is a scalar, and `i` is the index of the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Serial CPU Implementation of SAXPY)</span></p>
 
 A standard C implementation of SAXPY uses a simple `for` loop.
@@ -647,7 +647,7 @@ void saxpy_serial(int n, float alpha, float *x, float *y) {
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parallel CUDA Implementation of SAXPY)</span></p>
 
 The CUDA version replaces the loop with a kernel where each thread processes one element.
@@ -683,7 +683,7 @@ By allocating host memory directly as pinned memory, we eliminate this extra cop
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pinned Memory)</span></p>
 
 ```c++
@@ -956,7 +956,7 @@ The GK110 chip consists of up to 15 **Streaming Multiprocessors (SMX)**, which a
   </figure>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's SM's (SMX))</span></p>
 
 The **Streaming Multiprocessor**, often abbreviated as **SM** (or **SMX** in the Kepler architecture), is the true "core" of the GPU where threads are scheduled and instructions are executed. Each GK110 SMX contains:
@@ -1142,7 +1142,7 @@ A system diagram shows the CPU/Host Memory connection (\~64 GB/s) is vastly diff
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's cache lines)</span></p>
 
 * the L1 cache line size is 128 bytes (**latency-optimized**)
@@ -1211,7 +1211,7 @@ The GPU hardware does not manage individual threads. Instead, it groups them int
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(On Kepler)</span></p>
 
 * Up to 1024 threads can be in a **thread block**.
@@ -1239,7 +1239,7 @@ The goal of FGMT is **latency hiding**. With enough active warps, the scheduler 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hardware Multi-Threading on G80)</span></p>
 
 An older G80 architecture provides a clear example. Assume 
@@ -1285,7 +1285,7 @@ Modern schedulers use a **scoreboard**, a hardware table that tracks the status 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's scheduler)</span></p>
 
 The Kepler scheduler 
@@ -1781,7 +1781,7 @@ A **reduction** is a common parallel operation where an array of elements is "re
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reductions)</span></p>
 
 Examples of reduction include:
@@ -1863,7 +1863,7 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
    
    where $b_r$ is the number of resident blocks per SM.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deadlock from Global Synchronization)</span></p>
 
 The classic deadlock scenario works as follows:
@@ -2605,7 +2605,7 @@ This **massive performance degradation** suggests that the **skewed shapes** are
 
 ### Using Nsight Compute to Uncover the Truth
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Using Nsight Compute to Uncover the Truth)</span></p>
 
 To diagnose this, we can use `ncu` to profile the application for each skewed matrix configuration. A simple shell for loop can automate this process, saving a unique report file for each run.
@@ -2767,7 +2767,7 @@ Before tackling the N-body problem, we address a foundational optimization: how 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Array of Structures (AoS): The Intuitive Approach)</span></p>
 
 When programming in languages like C or C++, the most common way to group related data is using a struct. For a particle simulation, we might define a particle like this:
@@ -2797,7 +2797,7 @@ This layout is intuitive and works well for many single-threaded applications wh
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Structure of Arrays (SoA): The GPU-Friendly Approach)</span></p>
 
 An alternative data layout is the **Structure of Arrays (SoA)**. Instead of one large array of particle structures, we create a single structure that contains arrays for each attribute.
@@ -2863,7 +2863,7 @@ The tiling principle from matrix multiplication — load a tile into shared memo
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(N-Body Simulation)</span></p>
 
 Applications include astrophysics (galaxy formation, neutron star collisions) and biomolecular simulation (protein folding, virus modeling).
@@ -2947,7 +2947,7 @@ This **approach requires communication** (each thread needs to read the data of 
 
 Let's start with a straightforward implementation. First, a helper function to calculate the interaction between two bodies. This function can be used by both the CPU (`__host__`) and GPU (`__device__`).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(bodyBodyInteraction Helper Function)</span></p>
 
 This function takes the properties of two bodies and calculates the force components (`fx`, `fy`, `fz`) that body 1 exerts on body 0. It performs approximately 16 single-precision floating-point operations (FLOPs).
@@ -2982,7 +2982,7 @@ __host__ __device__ void bodyBodyInteraction(
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(ComputeNBodyGravitation_GPU_AOS Kernel)</span></p>
 
 Now for the main kernel. This kernel uses the AoS data layout with packed `float4` values to improve memory access. Each thread calculates the total force for one body `i`.
@@ -3083,7 +3083,7 @@ The idea is to break the $N \times N$ interaction calculation into smaller tiles
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tiled ComputeNBodyGravitation_Shared Kernel)</span></p>
 
 This strategy drastically reduces global memory traffic. A tile of body data is loaded once from global memory into fast shared memory, and then every thread in the block can reuse it `blockDim.x` times.
@@ -3312,7 +3312,7 @@ When you launch a kernel or call `cudaMemcpy` without specifying a stream, you a
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Default Stream)</span></p>
 
 Consider this typical sequence of operations for a SAXPY kernel, which computes y[i] = $\alpha$ $\cdot$ x[i] + y[i]:
@@ -3418,7 +3418,7 @@ Let's see how to implement this in code. First, we need to know the relevant API
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY (Version 1))</span></p>
 
 Below is a conceptual code snippet showing how to process a large SAXPY operation by breaking it into two segments and processing them in two different streams.
@@ -3478,7 +3478,7 @@ The way a GPU executes commands from streams depends heavily on its architecture
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY: More Robust Approach (Version 2))</span></p>
 
 To ensure overlap even on older hardware, we can reorder the commands we issue from the host. The goal is to issue all independent operations first to allow the hardware scheduler more flexibility.
@@ -3618,7 +3618,7 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(SAXPY application using Unified Memory)</span></p>
 
 ```c++
@@ -3720,7 +3720,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(P2P Access)</span></p>
 
 ```c++
@@ -3771,7 +3771,7 @@ A **stencil** is a geometric pattern used to update elements in a regular array 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Real-World Applications of Stencils)</span></p>
 
 1. **Image Processing:** Used in blob analysis, which helps computers identify and categorize distinct shapes within an image.
@@ -3970,7 +3970,7 @@ Parallelism in OpenACC is organized into three levels:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Syntax and Directives in OpenACC)</span></p>
 
 To tell the compiler to run a loop on the GPU, you use:
@@ -4259,7 +4259,7 @@ While coherence ensures that everyone eventually sees the same value for a singl
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Store Buffering)</span></p>
 
 Consider two threads:
@@ -4271,7 +4271,7 @@ In a "perfect" world, it should be impossible for both `if` statements to be tru
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></p>
 
 * **Thread 0 (Producer):** Sets `a = 1`, then sets `flag = 1`.
@@ -4389,7 +4389,7 @@ In CUDA, you can define the scope of consistency:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Release-Acquire Sequence)</span></p>
 
 Below is an example of how a producer-consumer relationship is handled using CUDA atomics to ensure consistency.
@@ -4711,7 +4711,7 @@ In reality, the GPU hardware bundles these individual threads into groups of 32,
 
 A major challenge arises when threads within the same warp want to do different things—a concept called **Divergent Control Flow**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Masked Execution)</span></p>
 
 Imagine an `if-else` statement:
@@ -4784,7 +4784,7 @@ Supported hierarchies include:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Block-Level Synchronization)</span></p>
 
 Using **Cooperative Groups**
@@ -4818,7 +4818,7 @@ An equivalent way to synchronize is `cg::synchronize(block)`.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Warp-Level Aggregated Atomics)</span></p>
 
 A powerful feature of CG is the ability to create opportunistic groups of threads that happen to be executing together (coalesced).
@@ -4885,7 +4885,7 @@ To use Tensor Cores in CUDA C++, you use the **WMMA (Warp Matrix Multiply Accumu
 1. `matrix_a` and `matrix_b`: The input matrices.
 2. `accumulator`: Holds the intermediate and final results.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix Multiplication with WMMA)</span></p>
 
 Below is a simplified example of how a warp processes a $16 \times 16 \times 16$ matrix operation.

@@ -111,7 +111,7 @@ The fundamental relation is equivalent to the three equations of state. If only 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two-Level System)</span></p>
 
 Consider a system characterized solely by its energy, which can change between zero and $E_{max}$. The equation of state is the energy-temperature relation $E/E_{max} = (1 + e^{\epsilon/T})^{-1}$, which tends to $1/2$ at $T \gg \epsilon$ and is exponentially small at $T \ll \epsilon$. In Section 1.3, we shall identify this with a set of elements with two energy levels, $0$ and $\epsilon$. To find the fundamental relation in the entropy representation, we integrate the equation of state:
@@ -120,7 +120,7 @@ $$\frac{1}{T} = \frac{dS}{dE} = \frac{1}{\epsilon}\ln\frac{E_{max} - E}{E} \;\Ri
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ideal Monatomic Gas)</span></p>
 
 Consider an ideal monatomic gas characterized by two equations of state (found experimentally, with $R \simeq 8.3\,\text{J/mole K} \simeq 2\,\text{cal/mole K}$):
@@ -224,7 +224,7 @@ $$\Gamma(E,V,N,\Delta) = \int \delta[E(p_1 \ldots p_N, q_1 \ldots q_N) - E_0]\, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ideal Gas Phase Volume)</span></p>
 
 For $N$ noninteracting particles (ideal gas) the states with energy $E = \sum p^2/2m$ are in the $\mathbf{p}$-space near the hyper-sphere with the radius $\sqrt{2mE}$. Using the surface area of the hyper-sphere with radius $R$ in $3N$-dimensional space, $2\pi^{3N/2} R^{3N-1}/(3N/2-1)!$, we have
@@ -266,7 +266,7 @@ Defining temperature in the usual way, $T^{-1} = \partial S / \partial E = 3N/2E
 
 #### Two-Level System (Discrete)
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two-Level System — Negative Temperature)</span></p>
 
 Consider $N$ particles (spins, neurons), each with two energy levels $0$ and $\epsilon$. If the energy of the set is $E$ then there are $L = E/\epsilon$ upper levels occupied. The statistical weight is $\Gamma(N,L) = C_N^L = N!/L!(N-L)!$ and the entropy is $S(E,N) = \ln\Gamma$.
@@ -516,7 +516,7 @@ $$\lim_{t\to\infty}\int_0^t S_i(t')\,dt' = 0, \quad \left\langle\frac{r_i(t)}{r_
 
 This is because the intervals of time with positive $\Lambda(t)$ give more contribution into the exponent than the intervals with negative $\Lambda(t)$. That follows from the *concavity* of the exponential function.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Saddle-Point Flow)</span></p>
 
 Consider the simplest two-dimensional pure strain, which corresponds to an incompressible saddle-point flow: $v_x = \lambda x$, $v_y = -\lambda y$. Here we have one expanding direction and one contracting direction, with equal rates. Since $x(t) = x_0\exp(\lambda t)$ and 
@@ -650,7 +650,7 @@ It is important that we allowed for a compressibility of a phase-space flow $\ma
 
 #### Generalized Baker Map and Fractal Dimension
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Generalized Baker Map)</span></p>
 
 This can be illustrated by a slight generalization of the baker map, expanding one region and contracting another, keeping the whole volume of the phase space unity. The transformation has the form
@@ -834,7 +834,7 @@ $$-\sum_i p(i)\log_q p(i) \le \ell < -\sum_i p(i)\log_q p(i) + 1.$$
 
 #### Huffman Coding
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Huffman Code for DNA Bases)</span></p>
 
 Not any encoding guarantees the shortest mean codeword and the maximal rate of transmission. Designating sequences of the same length to objects with different probabilities is apparently sub-optimal. Consider a fictional creature whose DNA contains four bases A, T, C, G occurring with probabilities $p_i$ listed in the table:
@@ -937,7 +937,7 @@ $$\langle\log_2[P(B_j\mid A_i)/P(B_j)]\rangle \ge 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Choice out of $n$ with $m$ Remaining)</span></p>
 
 Let $B$ be a choice out of $n$ equal possibilities: $P(B) = 1/n$ and $S(B) = \log_2 n$. If for every $A_i$ we can have $m$ different values of $B$, that is $P(B\mid A) = 1/m$, then $S(B\mid A) = \log_2 m$ and $I(A,B) = S(B) - S(B\mid A) = \log_2(n/m)$ bits. It is non-negative, since evidently $m \le n$. Note that in this case, knowledge of $B$ fixes $A$, so that $S(A\mid B) = 0$ and $I(A,B) = S(A)$.
@@ -1002,7 +1002,7 @@ It is possible to make the probability of error arbitrarily small when sending i
 
 This (arguably the most important) result of the communication theory is rather counter-intuitive: if the channel makes errors all the time, how one can decrease the error probability treating long messages? Shannon's argument is based on typical sequences and average equipartition, that is on the law of large numbers.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Binary Symmetric Channel)</span></p>
 
 If in a binary channel the probability of every single bit going wrong is $q$, then $A$ is binary random variable with equal probabilities of 0 and 1, so that $S(A) = \log_2 2 = 1$. Conditional probabilities are $P(1\mid 0) = P(0\mid 1) = q$ and $P(1\mid 1) = P(0\mid 0) = 1 - q$, so that $S(A\mid B) = S(B\mid A) = S(q) = -q\log_2 q - (1-q)\log_2(1-q)$. The mutual information $I(A,B) = S(A) - S(A\mid B) = 1 - S(q)$. This is actually the maximum, that is the channel capacity: $\mathcal{C} = \max_{P(B)}[S(B) - S(B\mid A)] = 1 - S(q)$, because the maximal entropy is unity for a binary variable and corresponds to $P(0) = P(1) = 1/2$.
@@ -1021,7 +1021,7 @@ $$I(A,B) = S(A) - S(\xi).$$
 
 The more choices of the output are recognizable despite the noise, the more is the capacity of the channel. When the conditional entropy $S(A\mid B)$ is given, then to maximize the mutual information we need to choose the measurement/coding procedure, for instance $g(B)$, that maximizes the entropy of the output $S(A)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Channel Capacity)</span></p>
 
 In a continuous case, an indeterminacy is infinite. If we agree to know the position of a point on an interval $L$ with an accuracy $\epsilon$, the entropy is $S(B) = \log_2(L/\epsilon)$. A measurement $A$ with precision $\Delta$ brings the information $I(A,B) = S(B) - S(B\mid A) = \log(L/\Delta)$, independent of $\epsilon$.
@@ -1078,7 +1078,7 @@ $$P(h_1\mid e) = P(h_1)\frac{P(e\mid h_1)}{P(h_1)P(e\mid h_1) + P(h_2)P(e\mid h_
 
 For checking an a priori improbable hypothesis, $P(h_1) \ll P(h_2)$, it is better to design an experiment that minimizes $P(e\mid h_2)$ rather than maximizes $P(e\mid h_1)$ — that is, *rule out the alternative* rather than support the hypothesis.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Drug Test in a Mostly Drug-Free Population)</span></p>
 
 Suppose a drug test is 99% sensitive and 99% specific: $P(e\mid h_1) = 0.99$ and $P(e\mid h_2) = 0.01$, where $e$ is a positive test result, $h_1$ is "drug user", $h_2$ is "clean". If 0.5% of the population are drug users, i.e. $P(h_1) = 0.005$, the probability that a randomly selected individual with a positive test is actually a drug user is:
@@ -1117,7 +1117,7 @@ Making prior assumptions explicit is important, both computationally and concept
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Arithmetic vs Fibonacci Sequence)</span></p>
 
 Given $5, 8, \ldots$ as two numbers of a sequence, one may put forward two hypotheses: $h_1$ predicts an arithmetic sequence $5, 8, 11, \ldots$; $h_2$ predicts a Fibonacci sequence $5, 8, 13, \ldots$ If the next number comes through a noisy channel as $12 \pm 1$, then $P(e\mid h_1) = P(e\mid h_2)$ and the choice is due to priors. Engineers and accountants would argue for arithmetic sequences (more frequently encountered), while natural scientists would point to pine cones, floral petals and seed heads to argue for Fibonacci.
@@ -1253,7 +1253,7 @@ Interaction information measures the influence of a third variable on the amount
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Channels and Love Triangles)</span></p>
 
 A channel with input $X$, noise $Z$ and output $Y$ corresponds to $I(X,Z) = 0$ and $I(X,Z\mid Y) > 0$, that is $II(X,Y,Z) < 0$ (synergy). Once you know the output, the unknown noise and input become related.
@@ -1329,7 +1329,7 @@ That this distribution is indeed a *maximum* follows from the positivity of rela
 
 $$S(\rho) - S(g) = -\int dx\,(g\ln\rho - g\ln g) = \int dx\,g\ln(g/\rho) = D(g\|\rho) \geq 0.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gibbs, Maxwell, and Boltzmann Distributions)</span></p>
 
 The Gibbs distribution is the maximum entropy distribution with $R_1$ being energy. When $R_1$ is the kinetic energy of molecules, we get the Maxwell distribution; when it is potential energy in an external field, we get the Boltzmann distribution.
@@ -1481,7 +1481,7 @@ Another natural transformation replaces a pair by their mean $z_i = (x_{2i-1} + 
 
 When dealing with strongly correlated random variables, we consider the Ising model of interacting spins with the block spin transformation. We divide all spins into groups (blocks) of side $k$ ($k^d$ spins per block in $d$ dimensions) and assign to each block a new variable $\sigma' = \pm 1$ corresponding to the majority orientation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Ising Chain Decimation)</span></p>
 
 Consider a 1D chain with nearest-neighbor interaction, Gibbs distribution $Z^{-1}\exp(-K\sum_{ij}\sigma'_i\sigma'_j)$, where $K = J/2T$. The partition function is:
@@ -1565,7 +1565,7 @@ When $T_1 \to T_2$, information processing becomes prohibitively ineffective, ju
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Human Information Processing Rate)</span></p>
 
 An average lazy human being dissipates about $W = 200$ watts of power at $T = 300\,K$. Since the Boltzmann constant is $k = 1.38 \times 10^{-23}$, that gives about $W/kT \simeq 10^{23}$ bits per second. The amount of information processed per unit of subjective time (per thought) is about the same, assuming each moment of consciousness lasts about a second (Dyson, 1979).
@@ -1576,7 +1576,7 @@ An average lazy human being dissipates about $W = 200$ watts of power at $T = 30
 
 Do the Gibbs entropy and mutual information have any quantitative relation to the way we react to signals? When one must react differently to different stimuli, the average choice-reaction time was found experimentally to be **linearly proportional to the entropy** of the statistical distribution of stimuli (Hick 1952, Hyman 1953). The more uncertainty, the longer it takes to recognize the event.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reaction Time and Entropy)</span></p>
 
 When one needs to name a letter or number that appears randomly on a screen, the average response time grows **logarithmically** with the size of the set (logarithmic dependence means the decision is made by a subdividing strategy — like binary search). When the number of elements stays constant but their frequencies are made unequal (lowering entropy), the average response time decreases proportionally.
@@ -1606,7 +1606,7 @@ In other words, we choose equal bins for the output variable — more frequent i
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fly Eye and Laughlin's Experiment)</span></p>
 
 This was discovered in one of the first applications of information theory to biology (Laughlin 1981). First-order interneurons of the insect eye were found to code contrast rather than absolute light intensity. The response function $y = g(x)$ measured from fly neurons matched the cumulative probability distribution of contrasts measured in the fly's natural habitat (woodlands and lakeside) — with no fitting parameters. The same approach works for biochemical and genetic input-output relations.
@@ -1689,7 +1689,7 @@ The **rate distortion function** $R(\mathcal{D})$ is the minimal rate $R$ (mutua
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Rate Distortion)</span></p>
 
 Consider a Gaussian $B$ with $\langle B\rangle = 0$ and $\langle B^2\rangle = \sigma^2$. With one bit, we can only convey the sign of $B$. The simplest encoding is $A = \pm\sigma\sqrt{2/\pi}$ (to minimize squared error). For a fixed variance, maximal $S(B|A)$ corresponds to Gaussian distortion with variance $\mathcal{D}$, corresponding to an imaginary Gaussian channel with $\langle(B-A)^2\rangle = \mathcal{D}$. The minimal rate is:
@@ -2346,7 +2346,7 @@ Quantum correlations are stronger than classical: nonlocality of information enc
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Entanglement Entropy of Two Qubits)</span></p>
 
 For $\psi_{AB} = a\lvert 00\rangle + b\lvert 11\rangle$, the von Neumann entropy is $S(\rho_A) = -\lvert a\rvert^2\log_2\lvert a\rvert^2 - \lvert b\rvert^2\log_2\lvert b\rvert^2$. The maximum $S(\rho_A) = 1$ is reached when $\lvert a\rvert^2 = \lvert b\rvert^2 = 1/2$ — the state of **maximal entanglement**. When we trace out $B$ (or $A$), we wipe out this information: any measurement on $A$ or $B$ alone cannot tell us anything about the pair, since both outcomes are equally probable. Conversely, when either $b \to 0$ or $a \to 0$, the entropy goes to zero and measurements give definite information on the state.
@@ -2418,7 +2418,7 @@ The new issue is that **non-orthogonal quantum states cannot be perfectly distin
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Compression of Non-orthogonal States)</span></p>
 
 Consider a source producing non-orthogonal states $\lvert 0\rangle$ and $\lvert s\rangle = (\lvert 0\rangle + \lvert 1\rangle)/\sqrt{2}$ with probabilities $p$ and $1-p$. The Shannon entropy is $S(p) = 1$ bit (for $p = 1/2$). The density matrix in the $\lvert 0\rangle,\lvert 1\rangle$ basis is:
@@ -2476,7 +2476,7 @@ This measurement is chosen so that Alice learns nothing about $A_0$ (each outcom
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Teleportation Protocol in Detail)</span></p>
 
 The initial state of $A_0A_1B_1$ is:

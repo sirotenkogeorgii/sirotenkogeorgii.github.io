@@ -7,7 +7,7 @@
 To introduce the core properties of nonlinear systems, we will begin with the simplest case: a one-dimensional system, also known as a flow on a line ($\mathbb{R}$).
 
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Cubic Vector Field)</span></p>
 
 Let's consider a one-dimensional nonlinear dynamical system whose vector field is defined by a third-order polynomial:
@@ -207,7 +207,7 @@ Recognizing these patterns allows us to transfer insights from one field to anot
 
 To ground our discussion, we will use a classic model from population dynamics that describes the interaction between a population of predators (e.g., foxes) and a population of prey (e.g., rabbits).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lotka-Volterra Equations)</span></p>
 
 Let $x$ represent the population of prey (rabbits) and $y$ represent the population of predators (foxes). The dynamics of their interaction can be modeled by the following system of differential equations:
@@ -316,7 +316,7 @@ $$\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} = 0$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Calculating Equilibria for the Predator-Prey Model)</span></p>
 
 We set the equations of motion to zero:
@@ -353,7 +353,7 @@ The core idea is to approximate the complex nonlinear system with a simpler line
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Jacobian for the Predator-Prey Model)</span></p>
 
 Our system is:
@@ -588,7 +588,7 @@ The "strictly less than" condition is what makes the set open, meaning for any p
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 * **A manifold:** A closed orbit (like a circle) is a simple example of a 1-dimensional manifold. For any point on the circle, you can find a small arc around it that is homeomorphic to an open interval in $\mathbb{R}^1$.
@@ -791,7 +791,7 @@ If two systems are topologically equivalent, then properties like the number and
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Let's demonstrate topological equivalence with a simple example.
@@ -968,7 +968,7 @@ Notice the crucial difference: the time variable $t$ is exactly the same on both
 
 Let's demonstrate this stronger condition with an example.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the following two systems:
@@ -1386,7 +1386,7 @@ This must hold for all $t$ within some open time interval $I_0 \subset \mathbb{R
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hartman-Grobman Visualization)</span></p>
 
 It shows a hyperbolic equilibrium at the origin for:

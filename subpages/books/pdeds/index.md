@@ -2728,7 +2728,7 @@ This problem is incredibly **hard** because the constraint $T_\sharp\mu=\nu$ is 
   <figcaption>Monge's problem in pictures. <strong>Left.</strong> A deterministic map $T$ sends each source point $x$ to a single destination $T(x)$, deforming the source density $\mu$ (blue) into the target density $\nu$ (red); the greying arrows show several individual source–target pairs. <strong>Right.</strong> The Jacobian rule $f(x)=g(T(x))\,\det DT(x)$ visualised: three sample mass-blocks of equal $\mu$-mass are transported to destination blocks whose width is dilated or contracted by $1/\det DT$, so densities scale inversely to local volume change. Mass is conserved exactly; only the geometry of "where it lives" is rearranged.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Absolutely continuous case — the Monge–Ampère equation)</span></p>
 
 If $\mu$ and $\nu$ are both absolutely continuous with respect to Lebesgue measure with densities $f$ and $g$, i.e. $d\mu = f\,dx$ and $d\nu = g\,dy$, and $T$ is a $C^1$-diffeomorphism, then the change-of-variables formula turns $T_\sharp\mu=\nu$ into the **pointwise** identity
@@ -2747,7 +2747,7 @@ a fully non-linear second-order PDE — one of the reasons optimal transport is 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(No transport map exists in general)</span></p>
 
 Let $d=1$ and consider the discrete measures
@@ -3635,7 +3635,7 @@ for every measurable $F\colon W\to\mathbb R$ with $F\circ s,\,F\in L^1(\lambda)$
   <figcaption><strong>Measure-preserving maps preserve the size of every set, not the labels of points.</strong> The domain $\Omega$ is cut into nine equal tiles. <strong>(a)</strong> A measure-preserving $s$ — here a $90^\circ$ rotation — relocates the tiles (follow the outlined red tile) but every tile keeps area $\tfrac19$, so the uniform measure is reproduced exactly: $s_\sharp\lambda=\lambda$, equivalently $\lambda(s^{-1}(A))=\lambda(A)$ for every measurable $A$. <strong>(b)</strong> A map that compresses the top rows and stretches the bottom ones carries the <em>same</em> colours but rescales their areas; the dashed test set $A$ has a strictly larger preimage $s^{-1}(A)$, so $s_\sharp\lambda\neq\lambda$ and $\lvert\det\nabla s\rvert\neq 1$. This is the picture behind the defining identity $\int_W F\circ s\,d\lambda=\int_W F\,d\lambda$: it holds in (a) because relabelling points never moves mass between regions, and fails in (b) because the regions themselves are resized.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(measure-preserving maps)</span></p>
 
 Throughout, $\lambda$ is Lebesgue measure; for the smooth ones the quickest check is the criterion below, $\lvert\det\nabla s\rvert=1$.
@@ -4194,7 +4194,7 @@ $$
 
 Here $c'$ can be viewed as a **differential cost**: it prices the instantaneous velocity, and the trajectory cost accumulates it over time.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3</span><span class="math-callout__name">(Differential costs and their induced static costs)</span></p>
 
 1. $c' = \lvert\cdot\rvert^2 \;\Rightarrow\; c(x,y)=\lvert x-y\rvert^2$.
@@ -5072,7 +5072,7 @@ $$
 W_1(\mu,\nu) = \sup_{\mathrm{Lip}\,f\le 1}\int_{\mathbb R^d} f\,d(\mu-\nu).
 $$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4</span><span class="math-callout__name">(Distance to a Dirac, and the variance)</span></p>
 
 Let $\mu\in\mathcal P^2(\mathbb R^d)$ and $a\in\mathbb R^d$. There is only **one** transference plan onto a Dirac mass — all of $\mu$ must travel to $a$ — so
@@ -5217,7 +5217,7 @@ $$
 
 i.e. against all bounded continuous test functions. The next two examples probe how $W\_p$-convergence relates to this notion.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5</span><span class="math-callout__name">(Dirac measures)</span></p>
 
 For a sequence of points $(x\_n)\_n\subset\mathbb R^d$ we know that $x\_n\to x$ if and only if $\delta\_{x\_n}\rightharpoonup\delta\_x$ weakly. It is easy to see that for any two points $x,y\in\mathbb R^d$,
@@ -5235,7 +5235,7 @@ So in particular, for $p>0$, $\;W\_p(\delta\_{x\_n},\delta\_x)\to 0$ if and only
   <figcaption>Example 5: $W_p(\delta_x,\delta_y)=|x-y|^{\min(1,p)}$. <strong>Left.</strong> For $p\ge 1$ every exponent collapses to $W_p=|x-y|$; for $p\in(0,1)$ one gets the concave $|x-y|^p$; and $p=0$ is the indicator $\mathbf 1_{x\ne y}$ (the total-variation endpoint). <strong>Right.</strong> The scaling exponent $\min(1,p)$ saturates at $p=1$ — the threshold where the metric switches from $\mathcal T_p$ itself to $(\mathcal T_p)^{1/p}$. In every case $W_p(\delta_{x_n},\delta_x)\to0$ exactly when $x_n\to x$.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6</span><span class="math-callout__name">(Oscillation)</span></p>
 
 Let $f\_n\colon\mathbb R\to\mathbb R$ be given by $f\_n(x)=1+\sin(2\pi n x)$, and define
@@ -5786,7 +5786,7 @@ The energy decreases, and the dissipation rate is exactly the squared norm of th
 
 Next, we want to understand this with some specific examples. Note that the energies below are exactly the three canonical functionals of §2.5 — internal, potential, and interaction energy — whose displacement convexity we characterized in Theorem 32.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 7</span><span class="math-callout__name">(The Wasserstein gradient flow zoo)</span></p>
 
 1. **Boltzmann entropy & linear diffusion.** Let $E(\rho)=\int\_{\mathbb R^d}\rho\log\rho\,dx$ be the Boltzmann entropy. Then $\frac{\delta E}{\delta\rho}(\rho)=1+\log\rho$, hence $\rho\nabla\frac{\delta E}{\delta\rho}=\rho\nabla\log\rho=\nabla\rho$, and the gradient flow (3.5) is the **heat equation**
@@ -7488,7 +7488,7 @@ $$
 
 This is a Kantorovich problem (§2.2) with a cost that charges for moving mass *and* for the mismatch of the function values at the two ends of each transport ray. The two familiar distances sit inside it as degenerate cases.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8</span><span class="math-callout__name">($TL^p$ interpolates between $W_p$ and $L^p$)</span></p>
 
 For any $\mu,\nu\in\mathcal P(\mathbb R^d)$ and any $f,g\in L^p(\mu)$:

@@ -794,7 +794,7 @@ $$\mathcal{R}_e : U \neq S_e.$$
 
 At stage $e$, we simply ensure that $u_e \neq s_{e,e}$. This action ensures that $U \neq S_e$ for all $e$; in other words, all the requirements are met.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Post's Problem — Question 2.10.1)</span></p>
 
 **Post's Problem.** Does there exist a computably enumerable degree $\mathbf{a}$ with $\mathbf{0} < \mathbf{a} < \mathbf{0}'$?
@@ -4279,7 +4279,7 @@ For most of this proof we will focus on meeting a single requirement $R_i$ for s
 
 A natural way to view this construction is as a game between us constructing the semimeasure and an opponent constructing the universal monotone machine. For example, to meet the requirement that there is some $1\sigma$ such that $Km(1\sigma) > -\log(a(1\sigma))$, we could choose a string $\sigma$ and set $a(1\sigma, 1) = 2^{-r}$. Then we could wait and see whether a pair $(\tau, 1\sigma')$ is enumerated into $\mathcal{M}$ where $\lvert\tau\rvert \leqslant r$ and $\sigma \preccurlyeq \sigma'$. If such a pair is not enumerated into $\mathcal{M}$ then the requirement is met because $Km(1\sigma) > r = -\log(a(1\sigma))$. If such a pair is enumerated into $\mathcal{M}$ then we can make another change to $a$ at some future stage.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.5.6)</span></p>
 
 We choose a string $\sigma$ and set $a(\sigma, 1) = 2^{-4}$. Now the opponent must respond by ensuring that $Km(\sigma) \leqslant 4$. To do so, the opponent must enumerate some pair $(\tau, \sigma')$ into $\mathcal{M}$, where $\lvert\tau\rvert \leqslant 4$ and $\sigma' \succcurlyeq \sigma$. Let us suppose that the opponent enumerates $(0000, \sigma)$ into $\mathcal{M}$. Then either it is possible for the opponent to add $(000, \sigma)$ into $\mathcal{M}$ or not. If not, we can set $a(\sigma, 2) = a(\sigma, 1) + 2^{-4} = 2^{-3}$. Now, as it is not possible for the opponent to add $(000, \sigma)$ to $\mathcal{M}$, the opponent must find a new string, say $001$, and add $(001, \sigma)$ to $\mathcal{M}$. However, in this case, the opponent has used both $0000$ and $001$ to describe $\sigma$, a waste of resources. Alternatively, assume that the opponent can enumerate $(000, \sigma)$ into $\mathcal{M}$. We can think of the opponent as holding $000$ as a description in reserve for $\sigma$. Now we make this reservation useless, by
@@ -4331,7 +4331,7 @@ $$R_r(\sigma, t) = F_r(\sigma, t) \setminus I_r(\sigma, t).$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.5.8)</span></p>
 
 Suppose that
@@ -4457,7 +4457,7 @@ $$\mu(G^{r_n}_{r_0}(\Sigma; t_0, t_n)) \geqslant \sum_{i < n} \mu(G^{r_{n-1-i}}_
 
 We have seen that we can use strategies sequentially without losing any of their individual gains. However, we need to do better: we need to be able to combine strategies in such a way as to *increase* our gain. To do so, we will make use of reservations.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(4.5.18)</span></p>
 
 Consider the following implementation of three strategies in sequence and assume that they all have outcome (ii). Take some $r_0 \in \mathbb{N}$. Fix a $b \in \mathbb{N}$ and assume we have an $(r, b, \Sigma)$ strategy for any appropriate $r$ and $\Sigma$. Let $r_1$ be the $r'$ computable from $(r_0, b)$, as in Definition 4.5.14. Similarly, let $r_2$ be the $r'$ computable from $(r_1, b)$, and let $r_3$ be the $r'$ computable from $(r_2, b)$. Take any string $\sigma$ and let $\Sigma_2 = \lbrace \sigma 00 \rbrace$, let $\Sigma_1 = \lbrace \sigma 01\tau : \tau \in 2^{r_1 - r_0} \rbrace$, let $\Sigma_0 = \lbrace \sigma 1\tau : \tau \in 2^{r_2 - r_0} \rbrace$, and let $\Sigma = \Sigma_0 \cup \Sigma_1 \cup \Sigma_2$.
@@ -16381,7 +16381,7 @@ If $X$ is 2-random, then there is an $A$ such that $X$ is 1-random relative to $
 
 As was mentioned above, the previous theorem cannot be proved if $X$ is assumed only to be 1-random.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(15.4.2 — Downey, Hirschfeldt, Miller, and Nies)</span></p>
 
 $1 - \Omega$ is not in the range of any Omega operator.
@@ -16645,7 +16645,7 @@ The quantity $q_t - \widehat{c}(x, t)$ measures the computations $U^A(\sigma)[v(
 
 One consequence of this theorem is that all Omega operators are degree invariant on the $K$-trivials. The next example shows that they need not be degree invariant anywhere else.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(15.8.2 — Downey, Hirschfeldt, Miller, and Nies)</span></p>
 
 There is an Omega operator that is degree invariant only on $K$-trivials.
@@ -16772,7 +16772,7 @@ By Proposition 8.11.9, no 1-generic is 1-random, so $\mu(\lbrace A : \Omega_U^A 
 
 One might ask whether Theorem 15.10.4 is vacuous. In other words, is the range of $\Omega_U$ actually closed? We can construct a specific universal prefix-free oracle machine such that it is not. The construction is somewhat similar to the proof of Theorem 15.4.3. In that case, we avoided a measure zero *closed* set by using a natural number to code a finite open cover with sufficiently small measure.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(15.10.6 — Downey, Hirschfeldt, Miller, and Nies)</span></p>
 
 There is a universal prefix-free oracle machine $V$ such that $\mu(\text{rng}(\Omega_V)) < \mu(\text{rng}(\Omega_V)^c)$.

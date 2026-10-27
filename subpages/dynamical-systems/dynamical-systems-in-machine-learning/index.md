@@ -89,7 +89,7 @@ These systems evolve in discrete steps. They are described by iterative function
 
 $$x_t = f(x_{t-1})$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Discrete-Time Systems)</span></p>
 
 * **Population Biology:** Models describing population growth, like the logistic map, often use discrete-time equations to represent generational changes.
@@ -148,7 +148,7 @@ $$\dot{x} = f(x, t)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Forced Oscillator)</span></p>
 
 Consider a simple oscillator. In its autonomous form, its behavior is self-contained. If we add a rhythmic external push (e.g., an "air puff" driving a pendulum), we introduce a forcing function $F(t)$.
@@ -188,7 +188,7 @@ An $n^{th}$-order one-dimensional ODE of the form $F(\frac{d^n x}{dt^n}, \dots, 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Harmonic Oscillator)</span></p>
 
 Let's start with a second-order linear ODE for a harmonic oscillator: 
@@ -299,7 +299,7 @@ The point $x=0$ is an **equilibrium point** (or **fixed point**) because if the 
 
 ### Higher-Dimensional Linear Systems: $\dot{x} = Ax$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear vector field, Non-linear trajectories)</span></p>
 
 Let a dynamical system be linear and $x\in\mathbb{R}^2$, then
@@ -1042,7 +1042,7 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Line Attractor: Hypothalamus of Mice)</span></p>
 
 The new Cell paper, used machine learning to model brain activity, which revealed that the **neural signal causing the state of aggression in mice was a line attractor**.
@@ -1057,7 +1057,7 @@ In the line attractor signal encoding aggression, the farther that neural energy
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Line Attractor: GRU)</span></p>
 
 Two GRUs exhibit a pseudo-line attractor. Nullclines intersect at one point, but are close enough on a finite region to mimic an analytic line attractor in practice. (A,B) depict the same phase portrait on [−1.5, 1.5] and [−0.2, 0.2], respectively.
@@ -1415,7 +1415,7 @@ On the images above, that is very likely what is happening. The nullclines are t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Infinitely Many Fixed Points, No Line Attractor)</span></p>
 
 Consider the following system
@@ -1442,7 +1442,7 @@ No line attractor because all FPs are discrete/isolated points on the x-axis (se
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stable FP at $(-1, 1)$ and Saddle-Node at $(1, 1)$)</span></p>
 
 Consider the following system
@@ -1473,7 +1473,7 @@ The center manifold at $(1,1)$: let $u=x-1$, then $\dot{u} = -(u+2)u^2 \approx -
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Saddle-Nodes, One Stable Node, One Unstable Node)</span></p>
 
 Consider the following system
@@ -1532,7 +1532,7 @@ Now each equation depends only on one variable $y_i$, so the system is decoupled
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
 
 A system is **coupled** if one equation contains several state variables, like
@@ -1566,7 +1566,7 @@ If $A$ is diagonalizable, this gives independent scalar ODEs.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
 
 Take
@@ -1614,7 +1614,7 @@ So, in one sentence:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Physical Example)</span></p>
 
 To really understand decoupling, it helps to step away from the abstract matrix $A$ and look at a physical example. 
@@ -1885,7 +1885,7 @@ In the degenerate case, the solution involves not just exponential terms, but al
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the $2 \times 2$ matrix from the third canonical form, which has a repeated eigenvalue a: 
@@ -2304,7 +2304,7 @@ We must consider two sub-cases:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Flip Oscillation)</span></p>
 
 Consider the system 
@@ -2908,7 +2908,7 @@ This linear map is equivalent to the continuous-time linear ODE system in a spec
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Equivalent Discrete-Time System)</span></p>
 
 <figure>
@@ -2967,7 +2967,7 @@ To find the corresponding offset vector $b$, we can enforce the condition that t
 
 The principles of establishing equivalence between continuous and discrete systems are not merely theoretical exercises. They have profound implications in modern machine learning and computational neuroscience.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Linear Recurrent Neural Networks)</span></p>
 
 An important class of models in machine learning is the **Piecewise Linear Recurrent Neural Network (PL-RNN)**. These networks are often defined using the Rectified Linear Unit (ReLU) activation function, which is a piecewise linear function.
@@ -2997,7 +2997,7 @@ This has a profound consequence: by making subtle changes to the system's parame
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Addition Problem in Machine Learning)</span></p>
 
 A classic benchmark for recurrent neural networks is the addition problem. The network receives two input streams:
@@ -3012,7 +3012,7 @@ A line attractor provides a simple and elegant solution. A two-unit PL-RNN can s
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Attractors in Natural Intelligence)</span></p>
 
 This is not merely a machine learning construct. There is evidence for the existence of line attractors, plane attractors, and even torus attractors (shaped like a donut) in biological brains, for example, in the hippocampus, an area critical for memory and navigation.
@@ -3118,7 +3118,7 @@ This is the standard **forward Euler discretisation**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exact discretization vs. Numerical discretization)</span></p>
 
 Take
@@ -3148,7 +3148,7 @@ So:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear DS: Exact Discretization)</span></p>
 
 For a linear continuous system
@@ -3265,7 +3265,7 @@ Having defined the concepts of flows and trajectories, a fundamental question ar
 
 The unfortunate answer is no, unique solutions are not guaranteed for all systems. However, the fortunate reality is that for the vast majority of well-behaved systems, they almost always do. The conditions where uniqueness fails are quite specific.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the following initial value problem:
@@ -3496,7 +3496,7 @@ For most complex systems encountered in practice, numerical methods are the prim
 To introduce the core properties of nonlinear systems, we will begin with the simplest case: a one-dimensional system, also known as a flow on a line ($\mathbb{R}$).
 
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Cubic Vector Field)</span></p>
 
 Let's consider a one-dimensional nonlinear dynamical system whose vector field is defined by a third-order polynomial:
@@ -3696,7 +3696,7 @@ Recognizing these patterns allows us to transfer insights from one field to anot
 
 To ground our discussion, we will use a classic model from population dynamics that describes the interaction between a population of predators (e.g., foxes) and a population of prey (e.g., rabbits).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lotka-Volterra Equations)</span></p>
 
 Let $x$ represent the population of prey (rabbits) and $y$ represent the population of predators (foxes). The dynamics of their interaction can be modeled by the following system of differential equations:
@@ -3805,7 +3805,7 @@ $$\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} = 0$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Calculating Equilibria for the Predator-Prey Model)</span></p>
 
 We set the equations of motion to zero:
@@ -3842,7 +3842,7 @@ The core idea is to approximate the complex nonlinear system with a simpler line
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Jacobian for the Predator-Prey Model)</span></p>
 
 Our system is:
@@ -4077,7 +4077,7 @@ The "strictly less than" condition is what makes the set open, meaning for any p
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 * **A manifold:** A closed orbit (like a circle) is a simple example of a 1-dimensional manifold. For any point on the circle, you can find a small arc around it that is homeomorphic to an open interval in $\mathbb{R}^1$.
@@ -4280,7 +4280,7 @@ If two systems are topologically equivalent, then properties like the number and
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Let's demonstrate topological equivalence with a simple example.
@@ -4457,7 +4457,7 @@ Notice the crucial difference: the time variable $t$ is exactly the same on both
 
 Let's demonstrate this stronger condition with an example.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Consider the following two systems:
@@ -4875,7 +4875,7 @@ This must hold for all $t$ within some open time interval $I_0 \subset \mathbb{R
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hartman-Grobman Visualization)</span></p>
 
 It shows a hyperbolic equilibrium at the origin for:
@@ -5365,7 +5365,7 @@ In each case, there is a standard oscillation of some preferred period, waveform
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple Limit Cycle)</span></p>
 
 **It’s straightforward to construct examples of limit cycles if we use polar coordinates.**
@@ -5413,7 +5413,7 @@ This behavior represents a nonlinear oscillation. If we were to plot one of the 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Limit cycles are not merely a mathematical curiosity; they appear in numerous models across science and engineering.
@@ -5511,7 +5511,7 @@ A useful intuition:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Damped Oscialltions in Physics)</span></p>
 
 <figure>
@@ -5578,7 +5578,7 @@ Just like fixed points, limit cycles can be classified by their stability. The s
   <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Half-Stable "Saddle" Cycle Around the Origin)</span></p>
 
 Consider the following system in 
@@ -5686,7 +5686,7 @@ A solution cannot get stuck anywhere else. If it did, then $V$ would stop changi
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lyapunov Function Application)</span></p>
 
 Use a Lyapunov function to show that the system
@@ -5864,7 +5864,7 @@ Imagine walking along a closed path on a field of arrows (the vector field). As 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 * Index of $+1$: If we draw a closed curve around a stable or unstable equilibrium point (like a node or a focus), the vectors of the field will make one full counter-clockwise rotation as we move counter-clockwise along the curve. This configuration has an index of $+1$.
@@ -6143,7 +6143,7 @@ The system perpetually jumps back and forth between these two points.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A 2-Cycle in the Logistic Map)</span></p>
 
 For a parameter value of $\alpha = 3.3$, the logistic map exhibits a stable 2-cycle.
@@ -6168,7 +6168,7 @@ This observation leads to a powerful insight: a point on a two-cycle returns to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Logistic Map Iterated Twice)</span></p>
 
 Let's consider the logistic map, which is a second-order polynomial (a "square map"). If we construct the twice-iterated map, $f^2(x) = f(f(x))$, by substituting the logistic equation into itself, the resulting function is a fourth-order polynomial.
@@ -6395,7 +6395,7 @@ corresonds to the **vector field on the circle**.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Vector Field on Circle via Phase Variable)</span></p>
 
 For the system
@@ -6505,7 +6505,7 @@ So:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Important Nonuniform Oscillator)</span></p>
 
 The equation
@@ -6548,7 +6548,7 @@ $$T_{\text{osc}} = \int_0^{2\pi} \frac{1}{f(\theta)} \, d\theta$$
 
 #### Study Case: Saddle-Node Bifurcation in Nonuniform Oscillators
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Saddle-Node Bifurcation in Nonuniform Oscillators (I))</span></p>
 
 Consider the differential equation
@@ -6801,7 +6801,7 @@ The same behavior can also be illustrated by drawing the vector fields directly 
 
 #### Period Divergence at Saddle-Node Bifurcation Point
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Period Divergence at Saddle-Node Bifurcation Point (II))</span></p>
 
 Apply linear stability analysis to determine the nature of the fixed points when $a>\omega$.
@@ -6869,7 +6869,7 @@ So the blow-up follows a **square-root scaling law**.
 
 #### Ghosts and Bottlenecks near Saddle-Node Bifurcation Point
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ghosts and Bottlenecks near Saddle-Node Bifurcation Point (III))</span></p>
 
 The **square-root scaling law derived above is a very common feature of systems near a saddle-node bifurcation**. Right after two fixed points merge and disappear, their influence does not vanish immediately. Instead, a leftover effect remains — often called a **saddle-node ghost** — which causes trajectories to move very slowly through a **bottleneck** region.
@@ -6922,7 +6922,7 @@ We now extend our analysis from a single oscillator to a system of multiple osci
 
 #### The State-Space Torus
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Independent Runners on a Circular Track)</span></p>
 
 Two runners move around the same circular track with constant angular speeds. Let Speedy complete one lap in $T_1$ seconds and Pokey complete one lap in $T_2$ seconds, where $T_2>T_1$. Since Speedy is faster, he will eventually catch up and overtake Pokey. We want to compute the time for one such overtake.
@@ -7265,7 +7265,7 @@ In most non-linear oscillators, the effect of an external perturbation depends c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Biological Neuron)</span></p>
 
 Consider a biological neuron that fires action potentials periodically. If we inject a small pulse of electrical current into the neuron, the effect will depend on when we inject it.
@@ -7347,7 +7347,7 @@ The concept of synchronization or phase locking is now transformed into a famili
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Identical Intrinsic Frequencies)</span></p>
 
 Let's analyze the simplest case, where the two oscillators have the same intrinsic frequency, $\omega_1 = \omega_2$. The phase difference equation simplifies to:
@@ -7835,7 +7835,7 @@ A **bifurcation** is a qualitative, topological change in the state space of a s
 
 One of the most important and common types of bifurcations is the saddle-node bifurcation. In this event, a stable equilibrium (a node) and an unstable equilibrium (a saddle) collide and annihilate each other.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bifurcations in Wilson-Cowan Equations)</span></p>
 
 Consider the Wilson-Cowan model for interacting populations of excitatory ($E$) and inhibitory ($I$) neurons, described by differential equations for their firing rates, $\nu_E$ and $\nu_I$. The equilibria of this system are found at the intersections of the nullclines for each population.
@@ -7851,7 +7851,7 @@ The region of parameter space between these two bifurcation points is a **bistab
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bistable Dynamical System)</span></p>
 
 The plot shows the 1D bistable system
@@ -9168,7 +9168,7 @@ The bifurcation described above is known as a **supercritical pitchfork bifurcat
 })();
 </script>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pitchfork Bifurcations in Neural Systems)</span></p>
 
 The pitchfork bifurcation often appears in models with inherent symmetries.
@@ -9232,7 +9232,7 @@ A **Hopf bifurcation** is a bifurcation where a fixed point of a dynamical syste
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hopf Bifurcation in Neural Models)</span></p>
 
 The Hopf bifurcation is fundamental to the generation of rhythmic activity in many neural models.
@@ -9301,7 +9301,7 @@ Having one pair of complex conjugate eigenvalues cross the imaginary axis is **n
 
 The supercritical Hopf bifurcation is characterized by a smooth, gradual onset of oscillation.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Supercritical Hopf Bifurcation with String)</span></p>
 
 Suppose we have a physical system that settles down to equilibrium through exponentially damped oscillations. In other words, small disturbances decay after "ringing" for a while **(a)**. Now suppose that the decay rate depends on a control parameter $\mu_c$. If the decay becomes slower and slower and finally changes to growth at a critical value $\mu_c$, the equilibrium state will lose stability. In many cases the resulting motion is a small-amplitude, sinusoidal, limit cycle oscillation about the former steady state (**b)**. Then we say that the system has undergone a **supercritical Hopf bifurcation**.
@@ -9852,7 +9852,7 @@ A crucial feature of this system is the existence of a parameter regime before t
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Critical transitions induced by a saddle-node bifurcation)</span></p>
 
 Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011). Panels **a**, **b** and **c** describe the critical slowing down as an early warning indicator that the system lost resilience on the way to the critical point. Local minima represent stable attractors, while the position of the ball represents the present state of the system. 
@@ -10267,7 +10267,7 @@ If there is a nearby periodic orbit, its period often becomes **very large** as 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Critical transitions induced by a saddle-node bifurcation)</span></p>
 
 In this scenario, part of a limit cycle moves closer and closer to a saddle point. At the bifurcation the cycle touches the saddle point and becomes a homoclinic orbit.
@@ -11228,7 +11228,7 @@ The principles of chaos are not just mathematical curiosities; they appear in a 
 
 #### Empirical Evidence: Population Dynamics in Beetles
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Population Dynamics in Beetles)</span></p>
 
 An empirical study of a beetle population provided evidence for the period-doubling cascade in a biological system. By manipulating a control parameter (related to the beetles' environment or resources), researchers observed the population's long-term behavior transition from a stable equilibrium to 2-cycles, then 4-cycles, and eventually to chaotic fluctuations in population numbers. This provides a real-world parallel to the dynamics of the logistic map.
@@ -11237,7 +11237,7 @@ An empirical study of a beetle population provided evidence for the period-doubl
 
 #### Biophysical Systems: The Bursting Neuron Model
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bursting Neuron Model)</span></p>
 
 Chaos can also be found in more complex, higher-dimensional continuous systems. We previously discussed a three-dimensional model of a bursting neuron, described by a set of differential equations for the membrane potential ($V$) and two gating variables ($n$ and $h$).
@@ -11269,7 +11269,7 @@ To build a concrete understanding of chaos, we will examine two canonical exampl
 
 Let us first consider a full three-dimensional model of a biological neuron. The dynamics of this system are governed by several parameters, one of which is a conductance parameter. By systematically increasing this single parameter, we can observe the system's trajectory through distinct behavioral regimes.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bifurcation in a Neuron Model)</span></p>
 
 The model exhibits the following sequence of behaviors as a key conductance parameter is increased:
@@ -12227,7 +12227,7 @@ For the purposes of our initial discussion, we will consider the most extreme ca
 
 The core idea behind reconstruction is that if the variables in a system are all coupled, then the dynamics of the entire system will leave a "trace" on any single variable we measure. While the instantaneous value of our measurement, $y_t$, may be ambiguous, its history contains the information needed to resolve the state of the system.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple Harmonic Oscillator)</span></p>
 
 Imagine we have a scalar measurement from a simple harmonic oscillator, which looks like a sine wave.
@@ -12247,7 +12247,7 @@ Recall that a fundamental property of a valid state space is that trajectories c
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A More Complex Oscillator)</span></p>
 
 Consider a more complex, non-sinusoidal oscillation, similar to an electrocardiogram (ECG) signal, which features sharp spikes and other intricate patterns.
@@ -12431,7 +12431,7 @@ In a space of this dimension or higher, the probability of two randomly placed m
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 Lines in 2D vs. 3D: Imagine randomly "throwing" straight lines (1-dimensional manifolds, so $d_1 = d_2 = 1$) into a space:
@@ -12617,7 +12617,7 @@ As the embedding dimension is increased, the attractor "unfolds." When the dimen
 
 Once a proper embedding has been constructed, the reconstructed state space can be used to compute key dynamical invariants of the original system, even if that system was never directly observed.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computable Quantities)</span></p>
 
 * **Attractor Dimension:** If an estimate of the attractor's dimension (e.g., box-counting dimension, correlation dimension) was not available beforehand, it can be computed from the trajectories in the newly constructed delay-embedding space.
@@ -12735,7 +12735,7 @@ A **delay embedding** builds state vectors from **time-lagged observations**, wh
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Example of Delay Embedding vs. Feature Embedding)</p>
 
 <figure>
@@ -12894,7 +12894,7 @@ where $\mathbf{C}$ is a matrix of coefficients that determines the weight of eac
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Candidate Basis Functions)</span></p>
 
 The library can be constructed from a wide variety of functions. Common choices include:
@@ -13066,7 +13066,7 @@ When $\lambda > 0$, the presence of the sign function in the derivative makes fi
 
 **Application to the Lorenz System**
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recovering the Lorenz Equations)</span></p>
 
 The SINDy algorithm was successfully applied to data generated from the Lorenz system.
@@ -13278,7 +13278,7 @@ This two-part structure is analogous to concepts in dynamical systems where an u
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Decoder)</span></p>
 
 A simple and common choice for the decoder $g$ is a linear mapping, also known as a linear layer in neural network terminology:
@@ -13634,7 +13634,7 @@ $$\theta_{n+1} = \theta_n - \gamma (|H(\theta_n)|)^{-1} \nabla_{\theta} L(\theta
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recursive Least Squares)</span></p>
 
 Recursive Least Squares (RLS) is an algorithm formerly used for updating recurrent networks that falls into the family of quasi-Newton methods.
@@ -13773,7 +13773,7 @@ This decomposition is possible due to the linearity of gradients, which allows u
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Squared Error Loss)</span></p>
 
 For concreteness, a common choice for the loss function is the squared error loss. Let $x_{\text{obs}}(t)$ be the observed value at time $t$ and $x(t)$ be the value predicted by our model. The loss at that time step, $l_t$, would be:
@@ -13857,7 +13857,7 @@ Each term in this product, $\frac{\partial x_u}{\partial x_{u-1}}$, is the Jacob
 
 Let's now investigate the structure of the single-step Jacobian, $\frac{\partial x_u}{\partial x_{u-1}}$, to understand the long-term behavior of this product.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple RNN Update Rule)</span></p>
 
 Consider a standard RNN where the state $x_t$ is updated according to the following rule:
@@ -14181,7 +14181,7 @@ This regularization has two profound effects on the system’s dynamics:
 
 To evaluate the effectiveness of the PLRNN and its regularization in solving the gradient problem, researchers use specific machine learning benchmarks.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Addition Problem)</span></p>
 
 The Addition Problem is a classical benchmark used to test a network’s ability to maintain information over long time delays.
@@ -14215,7 +14215,7 @@ To consider a model a successful reconstruction of a dynamical system, it must e
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bursting Neurons and ECG Data)</span></p>
 
 In models of bursting neurons, the system exhibits very fast spikes separated by long quiescent periods. Similarly, human Electrocardiogram (ECG) data displays disparate time scales. In specialized architectures like the regularized PLRNN, it has been observed that regularized units tend to learn the slow dynamics, while non-regularized units capture the fast dynamics.
@@ -14325,7 +14325,7 @@ Consider two trajectories generated by the Lorenz 63 system using the exact same
   <img src="{{ '/assets/images/notes/dynamical-systems/InadequacyOfMSEforChaoticSystems.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The MSE Illusion)</span></p>
 
 In an experiment comparing two Recurrent Neural Network (RNN) reconstructions of the Lorenz system:
@@ -14584,7 +14584,7 @@ $$\tau \approx \frac{\ln(2)}{\lambda_{\max}}$$
   <img src="{{ '/assets/images/notes/dynamical-systems/OptimalForcingInterval.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Applications of Sparse Teacher Forcing)</span></p>
 
 * **Brain Dynamics:** In reconstructions of human fMRI or EEG data, utilizing STF with an optimized $\tau$ allows the model to generate patterns that overlap with real data in both power spectra and state space.
@@ -14657,7 +14657,7 @@ By adding this term, we "knit" the individual temporal intervals together. This 
 
 The challenge of training dynamical models can be viewed through the lens of Control Theory. Control theory is the study of finding optimal signals to steer a system toward a desired behavior, such as pushing a chaotic system onto a specific limit cycle within the state space. In the context of machine learning, techniques like Teacher Forcing are effectively control-theoretic methods where we use loss gradients to guide the model’s behavior.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Biophysical Neuron Model)</span></p>
 
 Consider a biophysical model of a spiking neuron defined by a voltage signal and gating variables. To estimate the parameters of this system from real voltage recordings, we can add a control term to the differential equations:
@@ -14770,7 +14770,7 @@ When evaluating how well an RNN has reconstructed a dynamical system, we look be
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Attractor Localization)</span></p>
 
 In an ideal reconstruction, the RNN can detect features of the underlying system that were not explicitly present in the training trajectories. For instance, a model trained only on trajectories residing on an attractor might still accurately localize the system’s equilibria (fixed points).
@@ -15108,7 +15108,7 @@ Because the training process is a recursive update, it is subject to all dynamic
 
 To understand how parameter changes affect system behavior, we examine a one-unit RNN with a sigmoid activation function $\phi$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1-Unit Scalar System)</span></p>
 
 Let $W$ and $Z$ be scalars. The system is defined by:
@@ -15332,7 +15332,7 @@ A **bifurcation graph** represents the location and stability of fixed points $z
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Learning Barrier — Kenji Doya, 1998)</span></p>
 
 In a 1998 paper, Kenji Doya illustrated why certain configurations are unlearnable. If a desired state for a network is located at an unstable node surrounded by a cycle, gradient descent will fail to stabilize the system at that point. Because the target is unstable, the system will naturally drift away, preventing the network from ever reaching the desired output.
@@ -15368,7 +15368,7 @@ For certain types of bifurcations and dynamical systems, it can be formally prov
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Empirical Loss Landscapes)</span></p>
 
 Research (e.g., Eisman et al.) using algorithms like PyDSTool to locate bifurcation curves has shown that huge jumps in the loss landscape coincide exactly with these curves. When plotting parameter trajectories during training, the loss spikes precisely as the trajectory crosses a bifurcation boundary.
@@ -15622,7 +15622,7 @@ $$B = \left( \sum_{t=1}^T x_t\, z_t^\top \right) \left( \sum_{t=1}^T z_t\, z_t^\
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Practical Application)</span></p>
 
 In practice, training a reservoir computer is "one line of Python code." Once the reservoir is entrained with the training data and the matrix $B$ is calculated, the model can predict complex sequences (like the Lorenz system) with surprising accuracy, provided the reservoir properties (spectral norm, sparsity) are correctly tuned.
@@ -15716,7 +15716,7 @@ This suggests that $\phi^{-1}$ acts as an approximate inverse of $\phi$, and $z_
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deep Autoencoder: Layer-wise Formulation)</span></p>
 
 Modern Autoencoders are implemented as Deep Neural Networks, alternating affine mappings with nonlinear activation functions. The latent representation $z_t$ for a three-layer encoder can be written as:
@@ -15842,7 +15842,7 @@ where $\lambda_1, \lambda_2, \lambda_3$ are hyper-parameters that weigh the impo
 
 #### Empirical Validation: The Lorenz Attractor
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(High-Dimensional Lorenz Projection)</span></p>
 
 To evaluate the performance of this approach, it is tested on the Lorenz Attractor:
@@ -16066,7 +16066,7 @@ When designing the Koopman matrix $\tilde{K}$, there are two primary approaches:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linearization of Fast-Slow Systems)</span></p>
 
 Consider a system defined by two differential equations where one variable fluctuates much faster than the other:
@@ -16122,7 +16122,7 @@ As established in literature (e.g., Sauer, 1994), delay embedding theorems can b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lorenz Attractor from Point Process Data)</span></p>
 
 Recall the Lorenz attractor’s "butterfly wing" structure, where the system switches between two loops. If we only record the maxima of the trajectories (a form of point process), we can still achieve a reconstruction that is topologically equivalent to the original attractor.
@@ -16264,7 +16264,7 @@ where $\lambda_t$ is the mean parameter of the distribution.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Exponential Link Function)</span></p>
 
 A common way to parameterize $\lambda_t$ is to use an affine transformation of $Z_t$ passed through an exponential function:
@@ -16725,7 +16725,7 @@ The **Kullback-Leibler Divergence** is used to quantify the "geometrical disagre
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lorenz Attractor Reconstruction)</span></p>
 
 In experiments involving the Lorenz attractor, researchers aimed to reconstruct the attractor object from data.
@@ -16812,7 +16812,7 @@ By adopting a probabilistic framework, we are no longer restricted to Gaussian n
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Poisson Observations)</span></p>
 
 For $n$-dimensional count data $\mathbf{x}_t \in \mathbb{N}^n$, we can employ a Poisson decoder:
@@ -16904,7 +16904,7 @@ While the probabilistic framework is robust, it faces challenges common in dynam
 
 In complex real-world systems, observations often come in different forms. Multimodal Teacher Forcing is designed to handle systems where data of varying types (modalities) are observed simultaneously.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Climate Research Data)</span></p>
 
 In climate science, a single dynamical system might produce:
@@ -16930,7 +16930,7 @@ $$\mathbf{y} = [\mathbf{x}, \mathbf{c}, \dots]^\top$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multimodal Data in Practice)</span></p>
 
 * **Climate Science:** Simultaneous recordings of temperatures (modeled as continuous/Gaussian) and counts of extreme weather events like tornadoes (modeled as discrete/count data).
@@ -17180,7 +17180,7 @@ In practical applications, we rarely observe a pristine dynamical system. Often,
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symbolic Lorenz Reconstruction)</span></p>
 
 A more radical approach to reconstruction involves symbolic encoding. Instead of using continuous coordinates, we partition the state space into discrete "boxes":
@@ -17386,7 +17386,7 @@ In other words:
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Generative NODE: Poisson Process likelihoods)</span></p>
 
 The fact that an observation occurred often tells us something about the latent state. For example, a patient may be more likely to take a medical test if they are sick. The rate of events can be parameterized by a function of the latent state:
@@ -17576,7 +17576,7 @@ In the augmented vector field, the second component is $0$ because the parameter
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Augmented Adjoint)</span></p>
 
 Just as we augmented the state, we can augment the adjoint to include $a_\theta$, which corresponds to $\frac{\partial L}{\partial \theta}$. The augmented adjoint $a_{\text{aug}}$ is:
@@ -17702,7 +17702,7 @@ $$\frac{dh}{dt} = f_\theta(h, t) + \gamma K_\psi(h, t)$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lorenz 63 System as a Prior)</span></p>
 
 If we possess prior knowledge that a system behaves similarly to the chaotic Lorenz 63 attractor, we can define $K_\psi$ using the Lorenz equations:
@@ -17808,7 +17808,7 @@ PINNs are notoriously tedious to train. Unlike standard supervised learning, the
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Applications of PINNs)</span></p>
 
 * **Turbulence:** Modeling fluid flow in gas or water tanks.
@@ -17834,7 +17834,7 @@ $$P_{\text{train}} \neq P_{\text{test}}$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Clinical Diagnostics)</span></p>
 
 Consider a classifier trained to differentiate healthy subjects from patients using physiological measures (e.g., ECG, blood tests) collected across a specific set of hospitals. If this model is applied to a new set of hospitals in a different country, the underlying data distribution may shift due to demographic or environmental factors. If the original classifier fails to adapt to this new location in the feature space, it has failed to generalize across the distribution shift.
@@ -17845,7 +17845,7 @@ Consider a classifier trained to differentiate healthy subjects from patients us
 
 When reconstructing dynamical systems—using models such as Recurrent Neural Networks (RNNs), Neural Ordinary Differential Equations (NODEs), or Reservoir Computers—we often seek to reconstruct a chaotic attractor from limited data.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Rössler System)</span></p>
 
 The Rössler system is a 3D chaotic attractor, often viewed as a simplification of the Lorenz system. In a typical reconstruction task, we may only have access to a single, short trajectory starting from a specific initial condition $x_0$.
@@ -17880,7 +17880,7 @@ In the context of dynamical systems, OOD generalization is the capacity to:
 
 Most complex real-world systems—such as the climate, the human brain, or ecosystems—are inherently multi-stable. They possess multiple stable regimes that the system may transition between due to noise or external perturbations.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subcritical Hopf Bifurcation)</span></p>
 
 Consider a system undergoing a subcritical Hopf bifurcation. In such a system, we may observe:
@@ -17893,7 +17893,7 @@ If we only observe data from the stable equilibrium regime, the challenge is to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Spiking Neuron Model)</span></p>
 
 A 2D spiking neuron model can exhibit bi-stability, where a stable point attractor (resting state) and a stable limit cycle (spiking state) coexist in the vector field.
@@ -17941,7 +17941,7 @@ In classical machine learning, generalization refers to the ability of a model t
 
 When a dynamical system possesses multiple stable states, the vector field may behave differently in each basin. Standard architectures like Reservoir Computers or Neural Ordinary Differential Equations (Neural ODEs) often fail to generalize across these boundaries.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bistable Duffing Oscillator)</span></p>
 
 The bistable Duffing oscillator is a 2D system of differential equations characterized by having two attracting spiral points. Each point has its own basin of attraction.
@@ -18085,7 +18085,7 @@ To visualize R-tipping, imagine a system state residing in a minimum of a potent
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quadratic Rate-Induced Model)</span></p>
 
 Consider a system described by a quadratic differential equation where the control parameter $\lambda$ varies at a constant rate $r$:
@@ -18219,7 +18219,7 @@ The goal is to drive a specific subsystem to act as the "driving" system. By reg
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Linear Model Regularization)</span></p>
 
 In a system defined by matrices $\mathbf{A}$, $\mathbf{W}$, and $\mathbf{H}$, we can split the matrices to isolate a non-regularized subspace.
@@ -18230,7 +18230,7 @@ In a system defined by matrices $\mathbf{A}$, $\mathbf{W}$, and $\mathbf{H}$, we
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Biophysical Bursting Neuron)</span></p>
 
 A system trained on a trajectory of a biophysical bursting neuron using this regularization was able to track the system as a control parameter changed slowly. The model successfully followed the system through a bifurcation, moving from a complex bursting regime into a simple regular spiking limit cycle.
@@ -18295,7 +18295,7 @@ If we introduce noise into such a system, the slow dynamics fail to push the sta
 
 </details>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Earthquake Detection)</span></p>
 
 Earthquake detection systems utilize these signatures. By monitoring the increase in variance in seismic signals, researchers attempt to predict the proximity of a critical transition (the earthquake) based on these characteristic features of bifurcations.
@@ -18357,7 +18357,7 @@ $$\theta_k = f(L_k;\; \theta_{\text{group}})$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parameter Unwrapping)</span></p>
 
 If we define $\theta_k$ by unwrapping the system matrices into a single vector (concatenating the diagonal of $A$, then $W_1, W_2, \dots$), the hypernetwork $f$ transforms the low-dimensional feature $L_k$ into this expanded parameter space. In a simple case, a scalar feature $L_k$ could scale an entire parameter vector, though more complex mappings are usually required.
@@ -18406,7 +18406,7 @@ A significant result of this architecture is that the low-dimensional features $
 
 The feature space created by the hypernetwork acts as a metric space where proximity reflects dynamical similarity.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(EEG and Epilepsy Diagnosis)</span></p>
 
 In studies using human electroencephalographic (EEG) recordings, feature vectors can distinguish between different physiological states:

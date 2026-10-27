@@ -151,7 +151,7 @@ $$R_n(f_0) \to R(f_0) \quad \text{(almost surely)}.$$
 
 **No!** The key property in the LLN or Hoeffding inequality is independence. However, the function $f_n$ depends on **all** data points $(X_i, Y_i)\_{i=1,\dots,n}$. So even if the data points $(X_i, Y_i)\_{i=1,\dots,n}$ are independent, the random variables $(Z_i)\_{i=1,\dots,n}$ with $Z_i := \ell(f_n(X_i), Y_i)$ are typically **not independent** any more.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Counter-Example: LLN Fails for ERM)</span></p>
 
 * $\mathcal{X} = [0, 1]$ with uniform distribution; labels deterministic with $x < 0.5 \implies y = -1$ and $x \ge 0.5 \implies y = +1$.
@@ -275,7 +275,7 @@ $$R(f) \le R_n(f) + \sqrt{\frac{\log(2m) + \log(1/\delta)}{2n}}.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Constant Functions on a Grid)</span></p>
 
 Consider $\mathcal{X} = [0, 1]$, split it into a grid of $k$ cells of the same size. As function class, consider all functions that are piecewise constant (0 or 1) on all cells. Denote this function class by $\mathcal{F}_k$.
@@ -305,21 +305,21 @@ $$\mathcal{N}(\mathcal{F}, n) := \max\lbrace \lvert \mathcal{F}_{X_1,\dots,X_n} 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Right Half-Spaces on $\mathbb{R}$)</span></p>
 
 $\mathcal{X} = \mathbb{R}$, $\mathcal{F} = \lbrace \mathbb{1}\_{[a, \infty[} \mid a \in \mathbb{R} \rbrace$ (all half-spaces with the "infinite end" at the right side). With $\mathcal{F}$ we can only realize 4 out of the 8 possible labelings of 3 points. Hence $\mathcal{N}(\mathcal{F}, 3) = 4$. (Because this argument holds for all possible sets of three points.)
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Half-Spaces in $\mathbb{R}^2$)</span></p>
 
 $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F}$ such that positive class $=$ space above a horizontal line. For different data configurations of 5 points: one arrangement gives 5 different ways to separate, so $\mathcal{N}(\mathcal{F}, 5) \ge 5$; another gives 6 ways, so $\mathcal{N}(\mathcal{F}, 5) \ge 6$; collinear points give only 2 ways.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Interior of Circles in $\mathbb{R}^2$)</span></p>
 
 $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F} =$ interior of circles. Challenge: can you come up with a bound on the shattering coefficient for a small $n$?
@@ -379,7 +379,7 @@ If the maximum does not exist, the VC dimension is defined to be infinity.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Closed Intervals on $\mathbb{R}$)</span></p>
 
 $\mathcal{X} = \mathbb{R}$, $\mathcal{F} = \lbrace \mathbb{1}\_{[a,b]} \mid a, b \in \mathbb{R} \rbrace$ (closed intervals).
@@ -390,7 +390,7 @@ $\mathcal{X} = \mathbb{R}$, $\mathcal{F} = \lbrace \mathbb{1}\_{[a,b]} \mid a, b
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Axis-Aligned Rectangles in $\mathbb{R}^2$)</span></p>
 
 $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F} =$ interior of axis-aligned rectangles.
@@ -402,7 +402,7 @@ $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F} =$ interior of axis-aligned rectangle
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Convex Polygons in $\mathbb{R}^2$)</span></p>
 
 $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F}_d =$ convex polygons with $d$ corners. Then $\text{VC} = 2d + 1$.
@@ -413,14 +413,14 @@ $\mathcal{X} = \mathbb{R}^2$, $\mathcal{F}_d =$ convex polygons with $d$ corners
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Sine Waves)</span></p>
 
 $\mathcal{X} = \mathbb{R}$, $\mathcal{F} = \lbrace \text{sgn}(\sin(tx)) \mid t \in \mathbb{R} \rbrace$. Then $\text{VC} = \infty$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Hyperplanes and Margin Classifiers)</span></p>
 
 Relevant for SVMs:

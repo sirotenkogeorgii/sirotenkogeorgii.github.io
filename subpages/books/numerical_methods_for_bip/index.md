@@ -73,7 +73,7 @@ $$u^{(1)}(x, T) - u^{(2)}(x, T) = \theta_N e^{-(N\pi)^2 \alpha T} \sin(N\pi x),$
 
 which is exponentially small. Therefore, any information about this difference will be lost due to measurement noise for $T$ or $N$ sufficiently large, even if the noise is extremely small.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inverse Heat Equation)</span></p>
 
 To demonstrate this, consider the case of $\alpha = 0.01$ (which after nondimensionalisation roughly corresponds to a copper rod of length 10cm in dimensionless quantities with time measured in seconds) and let
@@ -185,7 +185,7 @@ In this course, we will study how ill-posed problems can be solved in a numerica
 
 We finish this section by presenting a few other, typical examples of inverse problems in applications, which all have an infinite-dimensional state space and often also an infinite-dimensional (or at least high-dimensional) parameter space. Finite dimensional inverse problems, while still possibly leading to non-existence and non-uniqueness problems, do typically not violate Hadamard's third condition of stability in Definition 1.2.1 and -- while still interesting -- are fundamentally not as challenging. Our main focus will be on PDE-constrained Bayesian inverse problems, but there are also some classical examples.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(X-ray Tomography)</span></p>
 
 Given a bounded domain $D$, for simplicity $D \subset \mathbb{R}^2$, representing a cross-sectional slice of the object to be studied. Assume that a pointlike X-ray source is placed on one side of the object. The radiation passes through the object and is detected on the other side by an X-ray film or a digital sensor. It is common to assume that the scattering of the X-rays by the traversed material is insignificant, i.e., only absorption occurs, and that rays are not deflected through interaction with the material. If we further assume that the **mass absorption coefficient** is proportional to the density of the material, the attenuation $\mathrm{d}I$ of the intensity $I(x)$ along a line segment $\mathrm{d}s$ at a point $x \in D$ is given by
@@ -208,7 +208,7 @@ In practice, often only limited-angle data is available, which is further pollut
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Process Regression or Kriging)</span></p>
 
 Many problems in spatial statistics are of the form that a functional quantity is to be estimated from a few point evaluations, a form of statistical interpolation also called **kriging**.
@@ -229,7 +229,7 @@ If $g : \mathbb{R}^n \to \mathbb{R}^\ell$ is linear, so that $\mathcal{G}(u) = A
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subsurface Flow, Heat Conduction, Impedance Tomography)</span></p>
 
 The inverse heat equation, the PDE-constrained inverse problem we used as the motivating example in Section 1.1, is exponentially ill-posed. Another model problem, which is less severely ill-posed, is the problem to identify the diffusion coefficient $a$ in a stationary diffusion or heat conduction problem. Let $D \subseteq \mathbb{R}^d$ be a bounded domain and consider the elliptic PDE
@@ -1135,7 +1135,7 @@ i.e. $C_\alpha$ is a bound for the norm of $K_\alpha^\dagger$. Moreover, the con
 
 $$\lim_{\delta \to 0} \delta C_{\alpha(\delta)} = 0.$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4.9</span><span class="math-callout__name">(Truncated SVD)</span></p>
 
 Here, all singular values smaller than a prescribed value (controlled by $\alpha$) are ignored (i.e. set to 0). We choose
@@ -1152,7 +1152,7 @@ motivating the name of the method. The sum in $x_\alpha^\delta$ is always finite
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4.10</span><span class="math-callout__name">(Lavrentiev Regularisation)</span></p>
 
 Here, all singular values are shifted away from zero by $\alpha$, i.e. $g_\alpha(\sigma) = \frac{1}{\sigma + \alpha}$, and
@@ -1171,7 +1171,7 @@ Since $\frac{1}{\sigma + \alpha} \le \frac{1}{\alpha}$, we have again $C_\alpha 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4.11</span><span class="math-callout__name">(Tikhonov Regularisation)</span></p>
 
 Here
@@ -1192,7 +1192,7 @@ a well-posed linear system for $\alpha > 0$. Tikhonov regularisation is in fact 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.4.12</span><span class="math-callout__name">(Landweber Iteration)</span></p>
 
 For $\omega > 0$, consider the fixed point iteration
@@ -1354,7 +1354,7 @@ Let $J : X \to \mathbb{R}$ be a functional on $X$, then **generalised Tikhonov r
 
 $$\Phi_{\alpha, y^\delta}(x) := \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} J(x).$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.5.1</span><span class="math-callout__name">(Tikhonov-Philipps Regularisation)</span></p>
 
 A simple generalisation of the classical Tikhonov regularisation consists in simply replacing $\frac{1}{2} \lVert x \rVert_X$ by $\frac{1}{2} \lVert Dx \rVert_Z$ for some linear (not necessarily bounded) operator $D : X \to Z$ from $X$ to some Hilbert space $Z$. Then minimising
@@ -1365,7 +1365,7 @@ constitutes the so-called Tikhonov-Philipps regularisation. It allows to penalis
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 2.5.2</span><span class="math-callout__name">($\ell^1$-Regularisation)</span></p>
 
 For non-injective operators $K \in \mathcal{L}(l^1, l^2)$ on sequence spaces, a popular choice for $J$ is the $l^1$-norm which is suitable to enforce sparsity in the regularised solution, i.e.,
@@ -1804,7 +1804,7 @@ $$F_{X_1, \ldots, X_n}(x_1, \ldots, x_n) = \int_{-\infty}^{x_1} \cdots \int_{-\i
 
 then $f$ is the **density function** of $X = (X_1, \ldots, X_n)$. We also write $f(x) = f\_{X\_1, \ldots, X\_n}(x)$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.6</span><span class="math-callout__name">(Dice Roll)</span></p>
 
 Let $\Omega = \lbrace 1, \ldots, 6 \rbrace$ be equipped with the $\sigma$-algebra $\mathcal{A} = 2^\Omega$. We interpret each $\omega \in \Omega$ as the outcome of a dice roll, and set
@@ -1821,7 +1821,7 @@ $$\sigma(X) := \lbrace X^{-1}(B) : B \in \mathcal{B}(V) \rbrace$$
 
 is a $\sigma$-algebra, called the **$\sigma$-algebra generated by $X$**. It is the smallest $\sigma$-algebra on $\Omega$ w.r.t. which $X$ is measurable, and it can be interpreted as containing all relevant information about the RV $X$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.7</span><span class="math-callout__name">($\sigma$-Algebra Generated by the Dice Roll)</span></p>
 
 Consider $X : \lbrace 1, \ldots, 6 \rbrace \to \lbrace 0, 1 \rbrace$ from Example 3.2.6. Then
@@ -1860,7 +1860,7 @@ $$\mathbb{V}(X) := \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - \mathbb
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.2.9</span><span class="math-callout__name">(Covariance Matrix)</span></p>
 
 Let $X : \Omega \to \mathbb{R}^n$ and $Y : \Omega \to \mathbb{R}^m$ be two random variables. Then $\mathrm{cov}(X, Y)$ is represented by the **covariance matrix** $C \in \mathbb{R}^{n \times m}$ with entries
@@ -2289,7 +2289,7 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, $V$, $W$ two sep
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.3.19</span><span class="math-callout__name">(Conditional Expectation for Dice Roll)</span></p>
 
 Let $X : \Omega \to \lbrace 0, 1 \rbrace$ be as in Example 3.2.6, i.e. $X$ is 0 if the dice shows an even number and $X$ is 1 if the dice shows an odd number. Let $Y : \Omega \to \lbrace 0, 1 \rbrace$ with $Y(\omega) = 0$ for $\omega \in \lbrace 1, 2, 3 \rbrace$ and $Y(\omega) = 1$ for $\omega \in \lbrace 4, 5, 6 \rbrace$. Then
@@ -2316,7 +2316,7 @@ Note that $\mathbb{P}[A\mid Y]$ is again a RV, that is $A \mapsto \mathbb{P}[A\m
 
 So far we have defined $\mathbb{P}[A\mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$ in case $\mathbb{P}[B] > 0$. The goal of this section is to define the conditional probability $\mathbb{P}[A\mid X = x]$ even if $\mathbb{P}[X = x] = 0$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.3.21</span><span class="math-callout__name">(Why $\mathbb{P}[X=1\mid p=1/2]$ needs care)</span></p>
 
 Let $p$ be a uniformly distributed RV on $[0, 1]$ and let $X$ be a Bernoulli RV, i.e. $X$ takes the value 1 with probability $p$ and the value 0 with probability $1 - p$. What is $\mathbb{P}[X = 1 \mid p = 1/2]$? Our previous definition of conditional probabilities doesn't lead to a meaningful result here since $[p = 1/2]$ is an event of probability 0. Intuitively we expect $\mathbb{P}[X = 1 \mid p = 1/2] = 1/2$, but how to make this rigorous?
@@ -2878,7 +2878,7 @@ The density $\pi_{Y\mid X}(y\mid x)$ is called the **likelihood**. For a fixed $
 
 The following is an example of an inverse problem with an infinite dimensional "latent" field in the background, but where both $V = \mathbb{R}$ and $W = \mathbb{R}$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.2.1</span><span class="math-callout__name">(Logistic Differential Equation)</span></p>
 
 We consider a logistic differential equation modeling the growth of a population $N(t)$ over time $t \ge 0$, with growth rate $r > 0$ and carrying capacity $k$:
@@ -2999,7 +2999,7 @@ Thus, apart from computing point estimates we should additionally always compute
 
 $$\mathbb{E}[\varphi(X)|Y = y] = \int_V \varphi(x) \, \mathrm{d}\mu_{X|y}(x) = \int_V \varphi(x) \pi_{X|Y}(x|y) \, \mathrm{d}x \in \widetilde{W}. \tag{4.2.7}$$
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.2.4</span><span class="math-callout__name">(Posterior Variance)</span></p>
 
 A simple example with $V = \mathbb{R}^n$ and $\widetilde{W} = \mathbb{R}$ would be $\varphi(x) = x\_i^2$, i.e., the second moment of $X\_i$ conditioned on $[Y = y]$. From this we can then estimate the posterior variance of parameter $X\_i$ via
@@ -3120,7 +3120,7 @@ For $\Sigma \in \mathbb{R}^{m \times m}$ symmetric positive definite (SPD) we de
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.2.9</span><span class="math-callout__name">(Additive Gaussian Noise I)</span></p>
 
 Let $E \sim \mathcal{N}(0, \Sigma)$ with SPD $\Sigma \in \mathbb{R}^{m \times m}$ (which is the most common setting for Bayesian inference problems), then the posterior in Cor. 4.2.7 reads
@@ -3129,7 +3129,7 @@ $$\pi_{X|Y}(x|y) \propto \exp\left( -\frac{1}{2} \lVert y - \Phi(x) \rVert_\Sigm
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.2.10</span><span class="math-callout__name">(Linear Gaussian Inverse Problem)</span></p>
 
 Let $A \in \mathbb{R}^{m \times n}$ and suppose that for a given $y \in \mathbb{R}^m$ we wish to find $x \in \mathbb{R}^n$ such $Ax = y$. Assume that $y$ is a realization of $Y = AX + E$ with $E \sim \mathcal{N}(0, I\_m)$. As a prior we *choose* $\mu\_X \sim \mathcal{N}(0, \frac{1}{\alpha} I\_n)$ for some fixed $\alpha > 0$, i.e. $\pi\_X(x) = \frac{\alpha^{n/2}}{(2\pi)^{n/2}} \exp\bigl( -\frac{\alpha \lVert x \rVert^2}{2} \bigr)$. Then
@@ -3249,7 +3249,7 @@ where we have used Lemma 4.2.6 and the fact that $\mathbb{P}[Y \in N] = 0$.
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.3.3</span><span class="math-callout__name">(Additive Gaussian Noise II)</span></p>
 
 Let $V$ be a separable Banach space and $X : \Omega \to V$ a RV. Let $W = \mathbb{R}^m$, $\Phi : V \to \mathbb{R}^m$ measurable, and assume $E : \Omega \to \mathbb{R}^m$ is a RV independent of $X$ and distributed according to $\mathcal{N}(0, \Sigma)$ for an SPD covariance matrix $\Sigma \in \mathbb{R}^{m \times m}$. Then
@@ -3367,7 +3367,7 @@ Similarly, for fixed data $y = y_1 = y_2$, the posterior depends continuously on
 
 *Well-posedness in action (1D problem with Gaussian prior, nonlinear forward map and Gaussian noise): perturbing the data $y$ deforms the posterior continuously (left), and the Hellinger distance $D\_{\mathrm{H}}(\mu\_{X\mid y}, \mu\_{X\mid y'})$ grows at most linearly in $\lVert y - y' \rVert$ (right), exactly as Theorem 4.4.1 predicts.*
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.4.2</span><span class="math-callout__name">(Additive Gaussian Noise III)</span></p>
 
 Let $E \sim \mathcal{N}(0, \Sigma)$ for an SPD matrix $\Sigma \in \mathbb{R}^{m \times m}$, then
@@ -3453,7 +3453,7 @@ The choice of prior plays an important role in Bayesian inference, and is what d
 
 In this section we discuss a few techniques to construct suitable measures in separable Banach spaces. As a motivation, we first define an important PDE-constrained inverse problem.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.1</span><span class="math-callout__name">(PDE-Driven Inverse Problem)</span></p>
 
 Let $D \subseteq \mathbb{R}^d$ be a bounded Lipschitz domain and consider the elliptic PDE
@@ -3525,7 +3525,7 @@ A stochastic process is called
 
 In the following, it will be convenient to work with centered processes, but we emphasize that the following discussion also applies to non-centered processes $(a_x)\_{x \in D}$ by considering $\tilde{a}_x := a_x - m_x$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.5</span><span class="math-callout__name">(Matérn Covariance Functions)</span></p>
 
 A popular family of covariance functions for isotropic stochastic processes is the **Matérn** family
@@ -3839,7 +3839,7 @@ so that $a_n$ converges pointwise to a measurable function $a : \Omega \to L^\in
 </details>
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.17</span><span class="math-callout__name">(Continuation of Example 4.5.1)</span></p>
 
 Let $\omega \in \Omega$ be fixed. Assume that $a(\omega, x)$ is expanded in a series as in (4.5.7), where $\varphi\_j \in L^\infty(D)$ with $\lVert \varphi\_j \rVert\_{L^\infty(D)} = 1$ for all $j \in \mathbb{N}$, and the sequence $(\ell\_j)\_{j \in \mathbb{N}} \in \ell^1(\mathbb{N})$ and $m \in L^\infty(D)$ are chosen such that
@@ -4040,7 +4040,7 @@ On a bounded interval such as $[a,b]$, the uniform distribution is a proper prob
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.5.26</span><span class="math-callout__name">(Uniform Prior is Not Uninformative)</span></p>
 
 Suppose that we wish to find a parameter $X$. Assume that we know (a priori) that $X$ belongs to $[0, 1]$, but we know nothing else about $X$. We may choose the prior $X \sim \mathrm{uniform}(0, 1)$. 
@@ -4275,7 +4275,7 @@ $$N\to\infty \quad \text{or} \quad h\to 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Discretization)</p>
 
 **The original mathematical problem remains infinite-dimensional.**
@@ -4321,14 +4321,14 @@ $$N\to\infty \quad \text{or} \quad h\to 0.$$
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(X-ray tomography problem discretization)</p>
 
 For the **X-ray tomography problem**, the domain $D$ is commonly subdivided using a uniform Cartesian grid into pixels (or voxels in three dimensions) and the absorption coefficient $\theta$ is then approximated by a piecewise constant approximation $\theta\_h$, where $h$ denotes the mesh size.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span>(Inverse heat equation problem discretization)</p>
 
 In the **inverse heat equation problem**, the forward problem was already represented in an orthonormal system. In that case the discretisation is very naturally (and in some sense optimally) achieved by truncating the infinite series expansions after a suitable number of terms $N$.
@@ -5498,7 +5498,7 @@ $$\mathcal{C}_\varepsilon(\widehat{Q}_{h,N}^{\mathrm{QMC}}) \le C\varepsilon^{-2
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.4.12</span><span class="math-callout__name">(Comparison of Sampling Methods in the Lognormal Case)</span></p>
 
 To compare the approaches, let us consider the elliptic PDE (5.2.1) for $D = (0, 1)^2$ (i.e., $d = 2$) and $f \equiv 1$, with lognormal diffusion coefficient $a \in L^\infty(D)$, i.e., $\log a \sim \mathcal{N}(m, C\_{\nu, \sigma^2, \lambda})$, with Matérn covariance $C\_{\nu, \sigma^2, \lambda}$. The **Matérn covariance function** is defined, for any $x, y \in D$, as
@@ -5980,7 +5980,7 @@ with a constant $C$ independent of $\lbrace h\_\ell \rbrace$. Thus, if $h\_0$ is
 
 For $\widehat{Q}\_{q,h,\mathrm{ML}}^{\mathrm{RE}}$, a similar result can also be proved for the case of a lognormal PDE coefficient $a$ (see again [Scheichl, Stuart, Teckentrup, 2017]).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.5.9</span><span class="math-callout__name">(Continuation of Example 5.4.12 — Ratio Estimators in the Lognormal Case)</span></p>
 
 For a numerical comparison we return again to the lognormal case of the elliptic PDE with Matérn covariance on $D = (0, 1)^2$ discretised by piecewise linear FEs. However, in the following experiments we choose $\nu = 1/2$, $\sigma^2 = 1$ and $\lambda = 0.3$, which is a significantly harder case than the one considered in Example 5.4.12. Due to the low regularity, in that case it is only possible to prove
@@ -6054,7 +6054,7 @@ i.e. the error of the Laplace-based ratio estimator converges in probability to 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.5.12</span><span class="math-callout__name">(Robustness of the Laplace-Based Ratio Estimator)</span></p>
 
 The following numerical experiment for the elliptic (P)DE on $(0, 1)$ (i.e. for $d = 1$), with $u = 0$ at $x = 0$ and $x = 1$ and $f(x) = 100x$, is taken from [Schillings, Sprungk, Wacker, 2020]. It is a toy example with uniform $a$, with $\Xi \sim \mathrm{uniform}(-1, 1)^s$, for $s = 1, 2, 3$, and
@@ -6069,7 +6069,7 @@ Estimating the root mean square error of $\widehat{Q}\_{q,\mathrm{QMC}}^{\mathrm
 
 It is also possible to use other preconditioners. For example, one can use **TT-cross approximations**, i.e. low-rank tensor approximations of the unnormalised posterior density $p\_u \propto \pi\_{X\mid Y}$, as the unnormalised importance distribution $q\_u$ [Dolgov, Anaya-Izquierdo, Fox & Scheichl, 2020]. By increasing the ranks in the low-rank approximation, it is possible to make $w\_u(x)$ arbitrarily close to 1. This will be discussed in more detail in Section 5.7.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.5.13</span><span class="math-callout__name">(TT-Preconditioned Ratio Estimators vs. MCMC)</span></p>
 
 Here, we just show how the TT-cross approximation improves the efficiency of the ratio estimator for the elliptic PDE over a prior-based ratio estimator and how it compares to MCMC-based estimators (more details on those in Section 5.6). The setup is almost identical to that in Example 5.5.9, except that $\log a$ is modelled as a (Karhunen-Loève like) expansion with independent *uniform* instead of independent Gaussian coefficients. The observation operator $\Phi : H\_0^1(D) \to \mathbb{R}^m$ and the quantity of interest are the same. We use the same randomised lattice rule, $m = 9$ measurements and a noise $E \sim \mathcal{N}\big(0, \frac{1}{100} I\big)$. For details see [Dolgov et al., 2020].
@@ -6269,7 +6269,7 @@ $$D_{\mathrm{TV}}(\nu K^j, \mu) \le C_\nu r^j \quad \text{for all } j \in \mathb
 
 *Geometric ergodicity of the AR(1) chain with $a = 0.85$: the total variation distance $D\_{\mathrm{TV}}(\nu K^j, \mu)$ (computed exactly, since $\nu K^j$ is a Gaussian mixture in closed form) decays like $C\_\nu \, r^j$ — a straight line on the logarithmic scale — with the* same *rate $r = a$ for a near-point mass, an overdispersed and a bimodal initial law. Only the constant $C\_\nu$ depends on $\nu$, exactly as in Definition 5.6.7.*
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.6.8</span><span class="math-callout__name">(Discrete Markov Chain and Spectral Gap)</span></p>
 
 Consider a Markov chain in a discrete state space with $M$ states and a row-stochastic matrix $K \in [0, 1]^{M \times M}$ representing its transition kernel. Then, $\sum_{j=1}^{M} K_{ij} = 1$ for all $i = 1, \ldots, M$, and the vector of all ones $e$ is a right eigenvector of $K$ to the eigenvalue 1. The corresponding left eigenvector $\mu$ is the invariant measure. If all entries of $K$ are strictly between 0 and 1 then $K$ is called **irreducible** and it follows from the **Perron-Frobenius Theorem** that 1 is in fact **dominant**, i.e. a simple eigenvalue strictly larger in modulus than all other eigenvalues of $K$.
@@ -6860,7 +6860,7 @@ $$\alpha(x, x') := \min\left(1, \frac{p(x')}{p(x)}\right). \tag{5.6.11}$$
 
 The 'rule' can be interpreted such that $x'$ is definitely accepted (i.e. with probability 1) if $p(x') \ge p(x)$, and if $p(x') < p(x)$ it is accepted with probability $\frac{p(x')}{p(x)}$. Importantly, in comparison to pure rejection sampling, when a proposal is rejected we include the previous state $x_j$ again as state $x_{j+1}$, i.e. we increase the 'weight' of that state due to its relatively high probability density.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.6.13</span><span class="math-callout__name">(Gaussian Random Walk)</span></p>
 
 The proposal kernel $Q : \mathbb{R}^n \times \mathcal{B}(\mathbb{R}^n) \to [0, 1]$ is chosen to be
@@ -6917,7 +6917,7 @@ Condition (5.6.14) on the proposal distribution is similar to the condition requ
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.6.16</span><span class="math-callout__name">(MH for a Bimodal 1D Posterior)</span></p>
 
 Let us consider the MH algorithm for a simple one dimensional posterior distribution. In particular, we consider a RV $X : \Omega \to \mathbb{R}$ with prior distribution $X \sim \mu\_X = \mathcal{N}(0, 1)$, conditioned on the observation $y = 4$ of $Y = X^2 + E$ with $E \sim \mathcal{N}(0, 1)$. Thus,
@@ -7066,7 +7066,7 @@ In contrast, MH algorithms that are well-defined also in the infinite-dimensiona
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.6.20</span><span class="math-callout__name">(1D Elliptic Problem: Random Walk vs. pCN)</span></p>
 
 Let us infer the unknown log-diffusion coefficient function $u : [0, 1] \to \mathbb{R}$ in the one-dimensional version of our elliptic model problem
@@ -7168,7 +7168,7 @@ $$\rho^* \in \operatorname{argmin}_{\rho \in \mathcal{H}} D_{\mathrm{KL}}(\rho \
 
 Depending on the choice of $\mathcal{H}$, in general such $\rho^\ast$ need not exist or be unique. However, if it does exist, it can be used in place of $\mu_{X\mid y}$ to approximate the quantities we are interested in, such as the conditional mean $\mathbb{E}\_{\mu_{X\mid y}}[X] \approx \mathbb{E}\_{\rho^\ast}[X]$. For this reason the family $\mathcal{H}$ has to be chosen such that expectations $\mathbb{E}\_\rho[f]$ for $\rho \in \mathcal{H}$ are easy and cheap to compute (this is loosely referred to as being "tractable").
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.7.1</span><span class="math-callout__name">(Gaussian Variational Family)</span></p>
 
 Set $\mathcal{H} := \lbrace \mathcal{N}(\mu, \Sigma) : \mu \in \mathbb{R}^m, \Sigma \in \mathbb{R}^{m \times m} \text{ SPD} \rbrace$. Then (5.7.1) corresponds to fitting a Gaussian to the posterior w.r.t. the KL-divergence. Since a Gaussian is uniquely determined through its expectation and covariance, we merely need to determine $\mu \in \mathbb{R}^m$ and $\Sigma \in \mathbb{R}^{m \times m}$. In practice this is done by minimizing $D_{\mathrm{KL}}(\rho \| \mu_{X\mid y})$ with optimization methods such as gradient descent or stochastic gradient descent. Note that (5.7.1) will in general not yield the same result as the Laplace approximation (5.3.4).
@@ -7515,7 +7515,7 @@ A map $\lVert \cdot \rVert : X \to [0, \infty)$ is a **norm** on a vector space 
 
 The pair $(X, \lVert \cdot \rVert)$ is called a **normed space**. Two norms $\lVert \cdot \rVert_\alpha$ and $\lVert \cdot \rVert_\beta$ are **equivalent** if there are constants $c_1, c_2 > 0$ such that $c_1 \lVert x \rVert_\beta \le \lVert x \rVert_\alpha \le c_2 \lVert x \rVert_\beta$ for all $x \in X$. If $\dim(X) < \infty$ all norms on $X$ are equivalent. The constants $c_1, c_2$ depend on the dimension of $X$.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.1.1</span><span class="math-callout__name">(Examples of Norms)</span></p>
 
 The following maps are norms on
@@ -7644,7 +7644,7 @@ Hilbert spaces distinguish themselves from Banach spaces by having one additiona
 
 The scalar product induces a norm $\lVert x \rVert_X := \sqrt{\langle x, x \rangle_X}$ that satisfies the Cauchy-Schwarz inequality $\lvert \langle x, y \rangle_X \rvert \le \lVert x \rVert_X \lVert y \rVert_X$. A Banach space with a scalar product $(X, \langle \cdot, \cdot \rangle_X)$ is called a **Hilbert space**.
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.2.1</span><span class="math-callout__name">(Examples of Scalar Products)</span></p>
 
 We can define the following scalar products on
@@ -7707,7 +7707,7 @@ $$\sum_{y \in U} |\langle x, y \rangle_X|^2 \le \lVert x \rVert_X^2 \qquad \text
 
 with only countably many nonzero terms in the sum. In the case of equality, $U$ is complete and $x = \sum_{y \in U} \langle x, y \rangle_X y$ for all $x \in X$. Every Hilbert space has an ONB. If the ONB is countable, the Hilbert space is called **separable**. In that case, there exists a sequence $(u_n) \subset U$ such that $U = \operatorname{span}(u_n)$. It follows from the Bessel inequality that the sequence $(u_n)$ converges weakly to zero (but not strongly, since $\lVert u_n \rVert_X = 1$).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.2.4</span><span class="math-callout__name">(ONB of $L^2([0,1])$)</span></p>
 
 Let $X = L^2([0, 1])$. An ONB $(u_n)$ for $X$ is given by
@@ -7728,7 +7728,7 @@ An operator $A : X \to Y$ is said to be **compact**, if the image of any bounded
 
 Clearly every linear operator is compact if $Y$ is finite dimensional. In particular, the identity operator $\mathrm{Id} : X \to X$ is compact iff $\dim(X) < \infty$. The space $\mathcal{K}(X, Y)$ of all compact operators from $X$ to $Y$ is a closed subspace of $\mathcal{L}(X, Y)$ (and hence a Banach space with the operator norm), and the limit of a sequence of linear operators with finite dimensional range is also compact. If $A, S \in \mathcal{L}(X, Y)$ and at least one of the two operators is compact, then $S \circ A$ is also compact. Finally, $A^*$ is compact iff $A$ is compact (Schauder Fixed-Point Theorem).
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.2.5</span><span class="math-callout__name">(Integral Operators)</span></p>
 
 A canonical example for compact operators are **integral operators**. Let $X = Y = L^2([0, 1])$ and, for a given kernel function $k \in L^2([0, 1] \times [0, 1])$, consider the linear operator $K : L^2([0, 1]) \to L^2([0, 1])$ defined by
@@ -7874,14 +7874,14 @@ For a set $\Omega \neq \emptyset$, a $\sigma$-algebra $\mathcal{A}$ on $\Omega$ 
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example B.2.3</span></p>
 
 Let $\Omega = \lbrace \omega_1, \ldots, \omega_N \rbrace$ be a finite set and let $0 \le p_j \le 1$ for $j = 1, \ldots, N$ such that $\sum_{j=1}^N p_j = 1$. Set $\mathcal{A} := 2^\Omega$. Then $\mu(A) := \sum_{\omega_j \in A} p_j$ defines a probability measure on $(\Omega, \mathcal{A})$.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
+<div class="math-callout math-callout--example" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example B.2.4</span></p>
 
 Let $f : \mathbb{R}^n \to \mathbb{R}$ be nonnegative and integrable with $\int_{\mathbb{R}^n} f(x) \, \mathrm{d}x = 1$. Then
