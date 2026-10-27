@@ -402,7 +402,7 @@ and none of the arrows can be reversed (the figure above shows the two gaps). Th
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.1 (Sheet 1: Fréchet vs. Gâteaux differentiability)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Fréchet vs. Gâteaux differentiability)</span></p>
 
 Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable at $x\in X$. Show that $F$ is continuous at $x$. Is Gâteaux differentiability at $x$ a sufficient condition for continuity at $x$? Give a reason for your answer.
 
@@ -439,9 +439,7 @@ Analogously we speak of global and local maxima and extrema.
 
 Let $\mathcal U\subset\mathcal A$ be open, $I:\mathcal U\to\mathbb R$ and $u\in\mathcal U$. If $I$ has a local extremum at $u$ and is Gâteaux differentiable at $u$, then
 
-$$
-I'[u]=0 . \tag{2.1}
-$$
+$$I'[u]=0 . \tag{2.1}$$
 
 If (2.1) is well-defined and holds, we say that $u$ is a **critical point** of $I$. The equation (2.1) is also called the **Euler–Lagrange equation**.
 
@@ -454,6 +452,21 @@ If (2.1) is well-defined and holds, we say that $u$ is a **critical point** of $
 Fix $v\in X\_0$. Since $\mathcal U$ is open there is $\varepsilon\_0>0$ such that $u+tv\in\mathcal U$ for $\lvert t\rvert<\varepsilon\_0$, and by assumption the mapping $f:(-\varepsilon\_0,\varepsilon\_0)\to\mathbb R$, $f(t)=I[u+tv]$, is differentiable at $t=0$. Moreover, $f$ has a local extremum at $t=0$, so by the necessary condition for extrema of functions of one variable, $f^{\prime}(0)=\delta I[u,v]=0$. As $v$ was arbitrary, $I^{\prime}[u]=0$. $\square$
 
 </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(EL equation vs. general extremum equation)</span></p>
+
+The Euler–Lagrange equation is **specific to variational problems (the calculus of variations)**, rather than a general equation for local extrema in standard multivariate calculus.
+
+**Key Facts About the Euler–Lagrange Equation:**
+* **Variational Origin:** It is the central equation of the calculus of variations, used to find functions (paths or fields) that make an action functional stationary (where the first variation equals zero).
+* **Not Always a Minimum:** It only yields a stationary point, which can be a local minimum, a local maximum, or a saddle point (much like setting a single-variable derivative $f'(x) = 0$ in standard calculus does not guarantee a minimum). Additional tests, such as the second-variation or convexity conditions, are required to prove whether a solution is actually a minimum.
+* **General Optimization vs. Variational Problems:** 
+  * For standard finite-dimensional calculus (finding a local minimum of a function $f(x)$ on $\mathbb{R}^{n}$), the condition is $\nabla f(x) = 0$ and checking that the Hessian matrix is positive definite.
+  * The Euler–Lagrange equation generalizes this idea of a derivative to infinite-dimensional function spaces (functionals), rather than serving as a general tool for every local minimum problem (such as constrained nonlinear programming or discrete optimization).
+* **The Role of Euler–Lagrange:** It serves as a necessary condition (analogous to setting a derivative to zero) for a function to make a functional stationary (yielding a local minimum, local maximum, or saddle point)
+
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -596,7 +609,7 @@ If the critical point $u$ is sufficiently regular, then by the fundamental lemma
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.2 (Sheet 1: the Dirichlet energy with a source term)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The Dirichlet energy with a source term)</span></p>
 
 Let $\Omega\subset\mathbb R^d$ be an open and bounded set, $X:=W^{1,2}(\Omega)$ and $f\in L^2(\Omega)$. Furthermore, let $E:X\to\mathbb R$ be given by
 
@@ -693,7 +706,7 @@ $$
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.3 (Sheet 1: Euler–Lagrange equations of three classical functionals)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Euler–Lagrange equations of three classical functionals)</span></p>
 
 Compute (without worrying about technicalities like interchanging limits and regularity of the functions) the first variation and the induced partial differential equation of the following functionals:
 
