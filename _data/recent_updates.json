@@ -1,16 +1,16 @@
 {
  "entries": [
   {
+   "title": "Calculus of Variations",
+   "url": "/subpages/books/calculus_of_variations_hd/",
+   "date": "2026-10-27",
+   "added": false
+  },
+  {
    "title": "Books",
    "url": "/notes/books/",
    "date": "2026-10-25",
    "added": false
-  },
-  {
-   "title": "Calculus of Variations",
-   "url": "/subpages/books/calculus_of_variations_hd/",
-   "date": "2026-10-25",
-   "added": true
   },
   {
    "title": "Introduction to Functional Analysis",

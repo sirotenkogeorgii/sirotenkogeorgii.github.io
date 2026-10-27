@@ -401,6 +401,24 @@ and none of the arrows can be reversed (the figure above shows the two gaps). Th
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.1 (Sheet 1: Fréchet vs. Gâteaux differentiability)</span></p>
+
+*2 points. Builds on Definition 2.1 and the hierarchy remark above.*
+
+Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable at $x\in X$. Show that $F$ is continuous at $x$. Is Gâteaux differentiability at $x$ a sufficient condition for continuity at $x$? Give a reason for your answer.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
+
+</details>
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.2 (Extrema, critical points)</span></p>
 
@@ -436,6 +454,34 @@ If (2.1) is well-defined and holds, we say that $u$ is a **critical point** of $
 <summary>Proof of Theorem 2.3</summary>
 
 Fix $v\in X\_0$. Since $\mathcal U$ is open there is $\varepsilon\_0>0$ such that $u+tv\in\mathcal U$ for $\lvert t\rvert<\varepsilon\_0$, and by assumption the mapping $f:(-\varepsilon\_0,\varepsilon\_0)\to\mathbb R$, $f(t)=I[u+tv]$, is differentiable at $t=0$. Moreover, $f$ has a local extremum at $t=0$, so by the necessary condition for extrema of functions of one variable, $f^{\prime}(0)=\delta I[u,v]=0$. As $v$ was arbitrary, $I^{\prime}[u]=0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.2 (Sheet 1: the Dirichlet energy with a source term)</span></p>
+
+*2 points. Builds on Definition 2.1 and Theorem 2.3; part (e) is the Euler–Lagrange equation of a concrete functional.*
+
+Let $\Omega\subset\mathbb R^d$ be an open and bounded set, $X:=W^{1,2}(\Omega)$ and $f\in L^2(\Omega)$. Furthermore, let $E:X\to\mathbb R$ be given by
+
+$$
+E[u]:=\int_\Omega\Bigl(\frac12\lvert\nabla u\rvert^2-f(x)\,u(x)\Bigr)\mathrm{d}x\qquad\text{for all } u\in X .
+$$
+
+* **(a)** Let $v\in X$. Compute the first variation of $E$ in direction $v$.
+* **(b)** Show that $E$ is Gâteaux differentiable at every $u\in X$.
+* **(c)** Show that $E$ is Fréchet differentiable at every $u\in X$.
+* **(d)** Show that $\delta E:X\to X^\ast$ is continuous.
+* **(e)** Identify the Euler–Lagrange equation for $E\|\_{W\_0^{1,2}(\Omega)}:W\_0^{1,2}(\Omega)\to\mathbb R$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
 
 </details>
 </div>
@@ -648,6 +694,36 @@ $$
 
 *Proof.* With the notation of Theorems 2.5 and 2.6, $f(\xi)=\frac12\lvert\xi\rvert^2$, so $\nabla\_z f=0$ and $D\_\xi f(\xi)=\xi$, and $f$ satisfies the growth conditions with $p=2$, so the integral is well-defined on $W^{1,2}(\Omega)$. The Euler–Lagrange equation $-\operatorname{div}(\nabla u)=0$ is Laplace's equation, and the natural boundary condition $D\_\xi f(\nabla u)\cdot\nu=\nabla u\cdot\nu=0$ is the homogeneous Neumann condition. For a general critical point $u\in W^{1,2}$ the equations hold in the weak sense. $\square$
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.3 (Sheet 1: Euler–Lagrange equations of three classical functionals)</span></p>
+
+*2 points. Builds on Theorems 2.5 and 2.6 and Example 2.7; the functionals are those of Example 1.1.*
+
+Compute (without worrying about technicalities like interchanging limits and regularity of the functions) the first variation and the induced partial differential equation of the following functionals:
+
+$$
+I_1[\gamma]:=\int_0^1\lvert\dot\gamma(t)\rvert\,\mathrm{d}t\qquad\text{where }\gamma:[0,1]\to M\text{ and }M\subset\mathbb R^d\text{ a manifold}, \tag{1}
+$$
+
+$$
+I_2[u]:=\int_\Omega\sqrt{1-\lvert\nabla u\rvert^2}\,\mathrm{d}x\qquad\text{where }u:\Omega\to\mathbb R\text{ and }\Omega\subset\mathbb R^d\text{ an open and bounded set}, \tag{2}
+$$
+
+$$
+I_3[u]:=\int_0^T\!\!\int_\Omega-\frac12\lvert\partial_tu\rvert^2+\frac12\lvert\nabla_xu\rvert^2\,\mathrm{d}x\,\mathrm{d}t\qquad\text{where }u:(0,T)\times\Omega\to\mathbb R . \tag{3}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
+
+</details>
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
