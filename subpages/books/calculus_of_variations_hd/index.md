@@ -369,10 +369,8 @@ Let $\mathcal U\subset\mathcal A$ be open, $I:\mathcal U\to\mathbb R$ and $u\in\
 
    Variations of order $k\in\mathbb N$ are defined iteratively: 
    
-   $$\delta^2 I[u;v,w]:=\frac{\mathrm{d}}{\mathrm{d}t}\big\rvert\_{t=0}\,\delta I[u+tw,v],$$
+   $$\delta^2 I[u;v,w]:=\frac{\mathrm{d}}{\mathrm{d}t}\big\rvert_{t=0}\,\delta I[u+tw,v],$$
    
-   etc.
-
 2. $I$ is **Gâteaux differentiable** at $u$ if $\delta I[u,v]$ exists for every $v\in X\_0$ and $I^{\prime}[u]:=\delta I[u,\cdot]$ defines a continuous *linear* functional on $X\_0$.
 
 3. $I$ is **Fréchet differentiable** at $u$ if it is Gâteaux differentiable at $u$ and
@@ -397,14 +395,20 @@ $$
 \text{Fréchet}\ \Longrightarrow\ \text{Gâteaux}\ \Longrightarrow\ \text{all first variations exist},
 $$
 
-and none of the arrows can be reversed (the figure above shows the two gaps). The first variation is always homogeneous of degree one, $\delta I[u,\lambda v]=\lambda\,\delta I[u,v]$ for $\lambda\in\mathbb R$, but need not be additive in $v$; linearity is an extra requirement, which is why Definition 2.1(ii) demands it. In the calculus of variations one mostly works with the weakest notion: the Euler–Lagrange equation (Theorem 2.3) only needs the first variation in every direction. Fréchet differentiability is what one needs for the chain rule and for Taylor expansions with a remainder that is uniform in the direction, as in Theorem 2.4(ii).
+and none of the arrows can be reversed (the figure above shows the two gaps). 
+* The first variation is always homogeneous of degree one, $\delta I[u,\lambda v]=\lambda\,\delta I[u,v]$ for $\lambda\in\mathbb R$, but need not be additive in $v$; linearity is an extra requirement, which is why Definition 2.1(ii) demands it. 
+* In the calculus of variations one mostly works with the weakest notion: 
+  * the **Euler–Lagrange equation** (Theorem 2.3) only needs the first variation in every direction. 
+  * Fréchet differentiability is what one needs for the **chain rule** and for **Taylor expansions** with a remainder that is uniform in the direction, as in Theorem 2.4(ii).
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Fréchet vs. Gâteaux differentiability)</span></p>
 
-Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable at $x\in X$. Show that $F$ is continuous at $x$. Is Gâteaux differentiability at $x$ a sufficient condition for continuity at $x$? Give a reason for your answer.
+Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable at $x\in X$. 
+1. Show that $F$ is continuous at $x$. 
+2. Is Gâteaux differentiability at $x$ a sufficient condition for continuity at $x$? Give a reason for your answer.
 
 </div>
 
@@ -412,7 +416,24 @@ Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable a
 <details markdown="1">
 <summary>Solution</summary>
 
-TODO:
+1. **Frechet differentiability at $u$ implies continuity at $u$.**
+
+   Using Heine's sequential continuity definition, which coincides with the Cauchy's continuity definition on general metric spaces, and definition of Frechet differentiability,
+
+   $$\lim_{v\to 0} F(u+v) = \limg_{v\to 0} \Bigl[ F(u) + F'(u)v + o(\lVert v \rVert)\Bigr] = F(u) \quad \forall v \in X.$$
+
+   Thus $F$ is continuous at $u$.
+
+2. **Gateaux differentiability at $u$ is not sufficient for continuity at $u$.**
+
+   * No, consider the function of two variables $f(x,y)=1$ if $y=x^2 \neq 0$ and $0$ otherwise.
+   * The function jumps on parabola / $\lbrace 0\rbrace$ and consider the zero point.
+   * The line through the origin touches true parabola at at most two points: origin itself (always) and another point (at most once).
+   * Consider ant fixed line through the origin that touches parabola at $y_0$.
+   * Then the for all $t\in(-1, 1)$, the function $t \mapsto 0+ty_0 \equiv 0$, implying Gateaux differentiability at $0$.
+   * The function $f$ is obviosuly discontinuous at $0$:
+     * Consider the sequence $(x, x^2)$.
+     * Then $\lim_{x\to 0} f(x,x^2) = 1 \neq 0 = f(0,0)$.
 
 </details>
 </div>
@@ -571,15 +592,21 @@ The boundary condition in (2.6) is called a **Dirichlet boundary condition**.
 Let $u\in\mathcal A$ be a critical point and $\varphi\in\mathcal D(\Omega)^m$. Then $u+\varepsilon\varphi\in\mathcal A$ for all $\varepsilon\in\mathbb R$, and
 
 $$
-\delta I[u,\varphi]=\frac{\mathrm{d}}{\mathrm{d}\varepsilon}\Big|_{\varepsilon=0}\int_\Omega f(\cdot,u+\varepsilon\varphi,Du+\varepsilon D\varphi)\,\mathrm{d}x
-=\int_\Omega \partial_{z_\alpha}f(\cdot,u,Du)\,\varphi_\alpha+\partial_{\xi_{\alpha i}}f(\cdot,u,Du)\,\partial_i\varphi_\alpha\,\mathrm{d}x .
+\begin{aligned}
+\delta I[u,\varphi]
+&=\frac{\mathrm{d}}{\mathrm{d}\varepsilon}\Big|_{\varepsilon=0}\int_\Omega f(\cdot,u+\varepsilon\varphi,Du+\varepsilon D\varphi)\,\mathrm{d}x \\
+&=\int_\Omega \frac{\mathrm{d}}{\mathrm{d}\varepsilon}\Big|_{\varepsilon=0} f(\cdot,u+\varepsilon\varphi,Du+\varepsilon D\varphi)\,\mathrm{d}x \\
+&=\int_\Omega \partial_{z_\alpha}f(\cdot,u,Du)\,\varphi_\alpha+\partial_{\xi_{\alpha i}}f(\cdot,u,Du)\,\partial_i\varphi_\alpha\,\mathrm{d}x.
+\end{aligned}
 $$
 
 The interchange of differentiation and integration is justified by dominated convergence: by the fundamental theorem of calculus the difference quotients are
 
 $$
-\frac{f(\cdot,u+\varepsilon\varphi,Du+\varepsilon D\varphi)-f(\cdot,u,Du)}{\varepsilon}
-=\int_0^1 \nabla_z f(\cdot,u+s\varepsilon\varphi,Du+s\varepsilon D\varphi)\cdot\varphi+D_\xi f(\cdot,u+s\varepsilon\varphi,Du+s\varepsilon D\varphi):D\varphi\,\mathrm{d}s ,
+\begin{aligned}
+&\frac{f(\cdot,u+\varepsilon\varphi,Du+\varepsilon D\varphi)-f(\cdot,u,Du)}{\varepsilon} \\
+&= \int_0^1 \nabla_z f(\cdot,u+s\varepsilon\varphi,Du+s\varepsilon D\varphi)\cdot\varphi+D_\xi f(\cdot,u+s\varepsilon\varphi,Du+s\varepsilon D\varphi):D\varphi\,\mathrm{d}s ,
+\end{aligned}
 $$
 
 and by (2.4) and $\lvert\varepsilon\rvert\le1$ the integrand is bounded by $C(1+\lvert u\rvert^{p-1}+\lvert Du\rvert^{p-1}+\lvert\varphi\rvert^{p-1}+\lvert D\varphi\rvert^{p-1})(\lvert\varphi\rvert+\lvert D\varphi\rvert)$, which lies in $L^1(\Omega)$ by Hölder's inequality with the exponents $\frac p{p-1}$ and $p$ (and because $\varphi$ is bounded). Since $u$ is a critical point, $\delta I[u,\varphi]=0$, which is (2.5).
