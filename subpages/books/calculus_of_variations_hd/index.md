@@ -365,19 +365,19 @@ Let $\mathcal U\subset\mathcal A$ be open, $I:\mathcal U\to\mathbb R$ and $u\in\
 
 1. The **first variation** of $I$ at $u$ in direction $v\in X\_0$ is defined by (if it exists)
 
-   $$
-   \delta I[u,v]:=\frac{\mathrm{d}}{\mathrm{d}t}\Big|_{t=0} I[u+tv].
-   $$
+   $$\delta I[u,v]:=\frac{\mathrm{d}}{\mathrm{d}t}\Big|_{t=0} I[u+tv].$$
 
-   Variations of order $k\in\mathbb N$ are defined iteratively: $\delta^2 I[u;v,w]:=\frac{\mathrm{d}}{\mathrm{d}t}\big\rvert\_{t=0}\,\delta I[u+tw,v]$, etc.
+   Variations of order $k\in\mathbb N$ are defined iteratively: 
+   
+   $$\delta^2 I[u;v,w]:=\frac{\mathrm{d}}{\mathrm{d}t}\big\rvert\_{t=0}\,\delta I[u+tw,v],$$
+   
+   etc.
 
 2. $I$ is **Gâteaux differentiable** at $u$ if $\delta I[u,v]$ exists for every $v\in X\_0$ and $I^{\prime}[u]:=\delta I[u,\cdot]$ defines a continuous *linear* functional on $X\_0$.
 
 3. $I$ is **Fréchet differentiable** at $u$ if it is Gâteaux differentiable at $u$ and
 
-   $$
-   I[u+v]=I[u]+I'[u]v+o(\lVert v\rVert)\qquad\text{as } \lVert v\rVert\to0,\ v\in X_0 .
-   $$
+   $$I[u+v]=I[u]+I'[u]v+o(\lVert v\rVert)\qquad\text{as } \lVert v\rVert\to0,\ v\in X_0.$$
 
    The space $C^k(\mathcal U)$ is the space of all $k$-times continuously Fréchet differentiable functions on $\mathcal U$.
 
@@ -403,8 +403,6 @@ and none of the arrows can be reversed (the figure above shows the two gaps). Th
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.1 (Sheet 1: Fréchet vs. Gâteaux differentiability)</span></p>
-
-*2 points. Builds on Definition 2.1 and the hierarchy remark above.*
 
 Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable at $x\in X$. Show that $F$ is continuous at $x$. Is Gâteaux differentiability at $x$ a sufficient condition for continuity at $x$? Give a reason for your answer.
 
@@ -454,34 +452,6 @@ If (2.1) is well-defined and holds, we say that $u$ is a **critical point** of $
 <summary>Proof of Theorem 2.3</summary>
 
 Fix $v\in X\_0$. Since $\mathcal U$ is open there is $\varepsilon\_0>0$ such that $u+tv\in\mathcal U$ for $\lvert t\rvert<\varepsilon\_0$, and by assumption the mapping $f:(-\varepsilon\_0,\varepsilon\_0)\to\mathbb R$, $f(t)=I[u+tv]$, is differentiable at $t=0$. Moreover, $f$ has a local extremum at $t=0$, so by the necessary condition for extrema of functions of one variable, $f^{\prime}(0)=\delta I[u,v]=0$. As $v$ was arbitrary, $I^{\prime}[u]=0$. $\square$
-
-</details>
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.2 (Sheet 1: the Dirichlet energy with a source term)</span></p>
-
-*2 points. Builds on Definition 2.1 and Theorem 2.3; part (e) is the Euler–Lagrange equation of a concrete functional.*
-
-Let $\Omega\subset\mathbb R^d$ be an open and bounded set, $X:=W^{1,2}(\Omega)$ and $f\in L^2(\Omega)$. Furthermore, let $E:X\to\mathbb R$ be given by
-
-$$
-E[u]:=\int_\Omega\Bigl(\frac12\lvert\nabla u\rvert^2-f(x)\,u(x)\Bigr)\mathrm{d}x\qquad\text{for all } u\in X .
-$$
-
-* **(a)** Let $v\in X$. Compute the first variation of $E$ in direction $v$.
-* **(b)** Show that $E$ is Gâteaux differentiable at every $u\in X$.
-* **(c)** Show that $E$ is Fréchet differentiable at every $u\in X$.
-* **(d)** Show that $\delta E:X\to X^\ast$ is continuous.
-* **(e)** Identify the Euler–Lagrange equation for $E\|\_{W\_0^{1,2}(\Omega)}:W\_0^{1,2}(\Omega)\to\mathbb R$.
-
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Solution</summary>
-
-TODO:
 
 </details>
 </div>
@@ -625,6 +595,32 @@ If the critical point $u$ is sufficiently regular, then by the fundamental lemma
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.2 (Sheet 1: the Dirichlet energy with a source term)</span></p>
+
+Let $\Omega\subset\mathbb R^d$ be an open and bounded set, $X:=W^{1,2}(\Omega)$ and $f\in L^2(\Omega)$. Furthermore, let $E:X\to\mathbb R$ be given by
+
+$$
+E[u]:=\int_\Omega\Bigl(\frac12\lvert\nabla u\rvert^2-f(x)\,u(x)\Bigr)\mathrm{d}x\qquad\text{for all } u\in X .
+$$
+
+* **(a)** Let $v\in X$. Compute the first variation of $E$ in direction $v$.
+* **(b)** Show that $E$ is Gâteaux differentiable at every $u\in X$.
+* **(c)** Show that $E$ is Fréchet differentiable at every $u\in X$.
+* **(d)** Show that $\delta E:X\to X^\ast$ is continuous.
+* **(e)** Identify the Euler–Lagrange equation for $E\|\_{W\_0^{1,2}(\Omega)}:W\_0^{1,2}(\Omega)\to\mathbb R$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
+
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.6 (Euler–Lagrange equation II, natural boundary conditions)</span></p>
 
@@ -698,8 +694,6 @@ $$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">1.3 (Sheet 1: Euler–Lagrange equations of three classical functionals)</span></p>
-
-*2 points. Builds on Theorems 2.5 and 2.6 and Example 2.7; the functionals are those of Example 1.1.*
 
 Compute (without worrying about technicalities like interchanging limits and regularity of the functions) the first variation and the induced partial differential equation of the following functionals:
 
