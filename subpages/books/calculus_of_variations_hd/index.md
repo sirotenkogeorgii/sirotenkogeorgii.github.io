@@ -420,7 +420,7 @@ Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable a
 
    Using Heine's sequential continuity definition, which coincides with the Cauchy's continuity definition on general metric spaces, and definition of Frechet differentiability,
 
-   $$\lim_{v\to 0} F(u+v) = \limg_{v\to 0} \Bigl[ F(u) + F'(u)v + o(\lVert v \rVert)\Bigr] = F(u) \quad \forall v \in X.$$
+   $$\lim_{v\to 0} F(u+v) = \lim_{v\to 0} \Bigl[ F(u) + F'(u)v + o(\lVert v \rVert)\Bigr] = F(u) \quad \forall v \in X.$$
 
    Thus $F$ is continuous at $u$.
 
@@ -429,8 +429,8 @@ Let $X$ be a Banach space and let $F:X\to\mathbb R$ be Fréchet differentiable a
    * No, consider the function of two variables $f(x,y)=1$ if $y=x^2 \neq 0$ and $0$ otherwise.
    * The function jumps on parabola / $\lbrace 0\rbrace$ and consider the zero point.
    * The line through the origin touches true parabola at at most two points: origin itself (always) and another point (at most once).
-   * Consider ant fixed line through the origin that touches parabola at $y_0$.
-   * Then the for all $t\in(-1, 1)$, the function $t \mapsto 0+ty_0 \equiv 0$, implying Gateaux differentiability at $0$.
+   * Consider any fixed line through the origin that touches parabola at $y_0$.
+   * Then for all $t\in(-1, 1)$, the function $t \mapsto 0+ty_0 \equiv 0$, implying Gateaux differentiability at $0$.
    * The function $f$ is obviosuly discontinuous at $0$:
      * Consider the sequence $(x, x^2)$.
      * Then $\lim_{x\to 0} f(x,x^2) = 1 \neq 0 = f(0,0)$.
@@ -622,6 +622,59 @@ Since $\varphi\in\mathcal D(\Omega)^m$ is arbitrary, the fundamental lemma (Lemm
 </details>
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Extra explanation on moving the differential operator under the integral</summary>
+
+$$\frac{d}{d\varepsilon}\bigg|\_{\varepsilon=0} \int\_\Omega f(x,u+\varepsilon\varphi,Du+\varepsilon D\varphi)\\,dx = \int\_\Omega \frac{d}{d\varepsilon}\bigg|\_{\varepsilon=0} f(x,u+\varepsilon\varphi,Du+\varepsilon D\varphi)\\,dx$$
+
+requires justification.
+
+The notes claim that Hölder's inequality and growth condition (2.4) justify this step. The conclusion is correct, but the explanation is incomplete: integrability of the derivative at $\varepsilon=0$ alone does not justify differentiating under the integral.
+
+The key idea is to establish an integrable bound on the derivative that is uniform for $\varepsilon$ near zero. We can then apply the dominated convergence theorem.
+
+1. Establish a uniform dominating function.
+
+   Fix $u\in W^{1,p}(\Omega)^m$ and $\varphi\in C_c^\infty(\Omega)^m$. Define
+
+   $$G(\varepsilon,x) =f(x,u+\varepsilon\varphi,Du+\varepsilon D\varphi).$$
+
+   By the chain rule and growth condition (2.4),
+
+   $$
+   \begin{aligned} 
+   |\partial\_\varepsilon G(\varepsilon,x)| 
+   &\le C\bigl(1+|u+\varepsilon\varphi|^{p-1} +|Du+\varepsilon D\varphi|^{p-1}\bigr)\\ 
+   &\qquad\cdot (|\varphi|+|D\varphi|). 
+   \end{aligned}
+   $$
+
+   Since $\varphi,D\varphi\in L^\infty(\Omega)$, for $\lvert \varepsilon\rvert\le 1$ we obtain
+
+   $$|\partial\_\varepsilon G(\varepsilon,x)| \le C\_\varphi \underbrace{\bigl(1+|u(x)|^{p-1}+|Du(x)|^{p-1}\bigr)}\_{=:h(x)}.$$
+
+   Crucially, $h\in L^1(\Omega)$, because $\Omega$ is bounded and $u,Du\in L^p(\Omega)$. This follows from Hölder's inequality.
+
+2. Apply dominated convergence to the difference quotient.
+
+   By the fundamental theorem of calculus,
+
+   $$\frac{G(\varepsilon,x)-G(0,x)}{\varepsilon} =\int_0^1\partial\_\varepsilon G(t\varepsilon,x)\\,dt.$$
+
+   Therefore,
+
+   $$\left|\frac{G(\varepsilon,x)-G(0,x)}{\varepsilon}\right| \le C\_\varphi h(x).$$
+
+   The difference quotient converges pointwise almost everywhere to $\partial_\varepsilon G(0,x)$. Dominated convergence now yields
+
+   $$\lim\_{\varepsilon\to0} \int\_\Omega\frac{G(\varepsilon,x)-G(0,x)}{\varepsilon}\\,dx = \int\_\Omega\partial\_\varepsilon G(0,x)\\,dx.$$
+
+**Remark.** The distinction worth remembering is that a uniform bound on the integrals of the derivatives is generally insufficient for interchanging differentiation and integration. What makes the argument work here is the existence of a single $L^1$ dominating function, independent of $\varepsilon$. This is a standard technique for differentiating parameter-dependent integrals.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Componentwise form, divergence of a matrix field)</span></p>
 
@@ -654,9 +707,93 @@ $$
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Solution</summary>
+<summary>Solution for (a)</summary>
 
-TODO:
+* We compute the function $E$ for perturbed input $u+\varepsilon v$ first (omitting the argument $x$):
+  
+  $$
+  \begin{aligned} 
+  E(u+\varepsilon v) 
+  &= \int_\Omega \Bigl[ \frac{1}{2}\lvert \nabla u+\varepsilon \nabla v \rvert^2 - f(u+\varepsilon v)]\Bigr dx \\
+  &= E(u) + \varepsilon\int_\Omega \nabla u\cdot\nabla v - fv dx + \frac{\varepsilon^2}{2}\int_\Omega \lvert\nabla u\rvert^2 dx \\
+  \end{aligned}
+  $$
+
+* Differentiating wrt $\varepsilon$ and estimating at $\varepsilon=0$, we obtain
+
+  $$\frac{\mathrm{d}}{\mathrm{d}\varepsilon}\Big|_{\varepsilon=0}E(u+\varepsilon v)= \int_\Omega \nabla u\cdot\nabla v - fv dx.$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution for (b)</summary>
+
+* By (a), the directional derivative $\delta Eu$ exists for every $v \in X$.
+* We have to show that the first variation of $E$ is linear and bounded operator in the second argument. 
+* It is obviously linear in $v$, based on the derivation from (a), since the integral is linear in $v$. 
+* We show boundedness
+  
+  $$|\delta E[u,v]| \le \|\nabla u\|_{L^2}\|\nabla v\|_{L^2} + \|f\|_{L^2}\|v\|_{L^2} \le \big(\|\nabla u\|_{L^2} + \|f\|_{L^2}\big)\,\|v\|_X,$$
+
+  where norms are well defined since $u,v \in X$ and $f\in L^2(\Omega)$. The first inequality is a bound by sum of absolute values, subsequent Holder and definition of norm in $X$.
+* Thus, for fixed $u$ we can define a constant $C_u:=\|\nabla u\|_{L^2} + \|f\|_{L^2}$, and
+  
+  $$|\delta E[u,v]| \le C_u\|v\|_X,$$
+
+  which is a definition of bounded operator.
+  
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution for (c)</summary>
+
+* For any $v\in X$, $\varepsilon=1$, definition of Frechet differntiability and results from (a)-(b), we obtain 
+  
+  $$E[u+v] - E[u]-\delta E[u, v] = \frac{1}{2}\int_\Omega \lvert \nabla v \rvert^2dx \leq \frac{1}{2} \lVert v \rVert_X^2$$
+
+* Then for $v\neq 0$, we have
+
+  $$\frac{E[u+v] - E[u]-\delta E[u, v]}{\lVert v \rVert_X} \leq \frac{1}{2} \lVert v \rVert_X \to 0.$$
+
+* Hence $E$ is Frechet differentiable at every $u\in X$,
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution for (d)</summary>
+
+* For any $u, w \in X$, we obtain
+
+  $$\delta E[u, v] - \delta E[w, v] = \int_\Omega \nabla(u-w)\cdot\nabla v\,dx.$$
+
+* By the definition of bounded linear operator, then Cauchy–Schwarz and that $\|v\|_{L^2} \leq \|v\|_X \le 1$, we obtain
+
+  $$\|\delta E[u] - \delta E[w]\|_{X^*} = \sup_{\|v\|_X\le 1}\left|\int_\Omega \nabla(u-w)\cdot\nabla v\,dx\right| \le \|\nabla(u-w)\|_{L^2} \le \|u-w\|_X.$$
+
+So $\delta E$ is uniformly continuous, thus continuous.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution for (e)</summary>
+
+* A critical point $u \in W_0^{1,2}(\Omega)$ of $E\mid_{W_0^{1,2}(\Omega)}$ satisfies $\delta Eu = 0$ for all $v \in W_0^{1,2}(\Omega)$, thus for all $v \in W_0^{1,2}(\Omega)$
+
+  $$\int_\Omega \nabla u\cdot\nabla v\,dx = \int_\Omega f\,v\,dx.$$
+
+* Since $C_c^\infty(\Omega)\subset W_0^{1,2}(\Omega)$, integration by parts (in the distributional sense) gives us
+
+  $$\int_\Omega\nabla u\cdot\nabla v\,dx =-\int_\Omega(\Delta u)v\,dx$$
+
+* Hence $-\Delta u = f$ in $\Omega$, and $u = 0$ on $\partial\Omega$.
 
 </details>
 </div>
@@ -717,9 +854,7 @@ First choose $\varphi\in\mathcal D(\Omega)^m$: the boundary integral vanishes an
 
 Let $\Omega\Subset\mathbb R^n$ be smooth, $m=1$, and
 
-$$
-I[u]=\frac12\int_\Omega \lvert\nabla u\rvert^2\,\mathrm{d}x .
-$$
+$$I[u]=\frac12\int_\Omega \lvert\nabla u\rvert^2\,\mathrm{d}x.$$
 
 Then a critical point $u\in C^2(\overline\Omega)$ satisfies the boundary value problem
 
@@ -728,8 +863,15 @@ $$
 \begin{cases}\Delta u=0 & \text{in }\Omega\\ \partial_\nu u=0 & \text{on }\partial\Omega\end{cases}\quad\text{if }\mathcal A=W^{1,2}(\Omega).
 $$
 
-*Proof.* With the notation of Theorems 2.5 and 2.6, $f(\xi)=\frac12\lvert\xi\rvert^2$, so $\nabla\_z f=0$ and $D\_\xi f(\xi)=\xi$, and $f$ satisfies the growth conditions with $p=2$, so the integral is well-defined on $W^{1,2}(\Omega)$. The Euler–Lagrange equation $-\operatorname{div}(\nabla u)=0$ is Laplace's equation, and the natural boundary condition $D\_\xi f(\nabla u)\cdot\nu=\nabla u\cdot\nu=0$ is the homogeneous Neumann condition. For a general critical point $u\in W^{1,2}$ the equations hold in the weak sense. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+With the notation of Theorems 2.5 and 2.6, $f(\xi)=\frac12\lvert\xi\rvert^2$, so $\nabla\_z f=0$ and $D\_\xi f(\xi)=\xi$, and $f$ satisfies the growth conditions with $p=2$, so the integral is well-defined on $W^{1,2}(\Omega)$. The Euler–Lagrange equation $-\operatorname{div}(\nabla u)=0$ is Laplace's equation, and the natural boundary condition $D\_\xi f(\nabla u)\cdot\nu=\nabla u\cdot\nu=0$ is the homogeneous Neumann condition. For a general critical point $u\in W^{1,2}$ the equations hold in the weak sense. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -737,17 +879,11 @@ $$
 
 Compute (without worrying about technicalities like interchanging limits and regularity of the functions) the first variation and the induced partial differential equation of the following functionals:
 
-$$
-I_1[\gamma]:=\int_0^1\lvert\dot\gamma(t)\rvert\,\mathrm{d}t\qquad\text{where }\gamma:[0,1]\to M\text{ and }M\subset\mathbb R^d\text{ a manifold}, \tag{1}
-$$
+$$I_1[\gamma]:=\int_0^1\lvert\dot\gamma(t)\rvert\,\mathrm{d}t\qquad\text{where }\gamma:[0,1]\to M\text{ and }M\subset\mathbb R^d\text{ a manifold}, \tag{1}$$
 
-$$
-I_2[u]:=\int_\Omega\sqrt{1-\lvert\nabla u\rvert^2}\,\mathrm{d}x\qquad\text{where }u:\Omega\to\mathbb R\text{ and }\Omega\subset\mathbb R^d\text{ an open and bounded set}, \tag{2}
-$$
+$$I_2[u]:=\int_\Omega\sqrt{1-\lvert\nabla u\rvert^2}\,\mathrm{d}x\qquad\text{where }u:\Omega\to\mathbb R\text{ and }\Omega\subset\mathbb R^d\text{ an open and bounded set}, \tag{2}$$
 
-$$
-I_3[u]:=\int_0^T\!\!\int_\Omega-\frac12\lvert\partial_tu\rvert^2+\frac12\lvert\nabla_xu\rvert^2\,\mathrm{d}x\,\mathrm{d}t\qquad\text{where }u:(0,T)\times\Omega\to\mathbb R . \tag{3}
-$$
+$$I_3[u]:=\int_0^T\!\!\int_\Omega-\frac12\lvert\partial_tu\rvert^2+\frac12\lvert\nabla_xu\rvert^2\,\mathrm{d}x\,\mathrm{d}t\qquad\text{where }u:(0,T)\times\Omega\to\mathbb R . \tag{3}$$
 
 </div>
 
