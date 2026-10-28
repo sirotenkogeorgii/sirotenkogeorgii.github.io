@@ -2210,6 +2210,69 @@ Show the following upper bounds for the prefix-free Kolmogorov complexity:
 </details>
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 660 410" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:660px" aria-label="A prefix-free header announces the length of a raw payload">
+    <g font-family="serif" font-size="13" fill="#1f2430">
+      <text x="330" y="24" text-anchor="middle" font-weight="600">Header + payload: the prefix-free header announces where the raw payload ends</text>
+
+      <g stroke="#5b6270" stroke-width="1" fill="none">
+        <path d="M 80 49 V 55 M 80 52 H 266 M 266 49 V 55" />
+        <path d="M 274 49 V 55 M 274 52 H 580 M 580 49 V 55" />
+      </g>
+      <text x="173" y="44" text-anchor="middle" font-size="11" fill="#5b6270">K(n) bits</text>
+      <text x="427" y="44" text-anchor="middle" font-size="11" fill="#5b6270">n bits</text>
+
+      <rect x="80" y="64" width="190" height="54" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="175" y="88" text-anchor="middle" font-size="14">σₙ</text>
+      <text x="175" y="107" text-anchor="middle" font-size="11" fill="#5b6270">prefix-free code for a number n</text>
+
+      <rect x="270" y="64" width="310" height="54" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="425" y="88" text-anchor="middle" font-size="14">payload</text>
+      <text x="425" y="107" text-anchor="middle" font-size="11" fill="#5b6270">exactly n raw bits, not self-delimiting</text>
+
+      <line x1="270" y1="56" x2="270" y2="134" stroke="#b91c1c" stroke-width="2" stroke-dasharray="4 4" />
+      <text x="270" y="150" text-anchor="middle" fill="#7f1d1d" font-size="12">unique split</text>
+      <text x="270" y="164" text-anchor="middle" fill="#7f1d1d" font-size="11">(Ũ halts on one prefix only)</text>
+
+      <line x1="580" y1="56" x2="580" y2="134" stroke="#a86f00" stroke-width="2" stroke-dasharray="4 4" />
+      <text x="580" y="150" text-anchor="middle" fill="#a86f00" font-size="12">input ends here</text>
+      <text x="580" y="164" text-anchor="middle" fill="#a86f00" font-size="11">(else M never halts)</text>
+
+      <g stroke="#5b6270" stroke-width="1.2" fill="none">
+        <path d="M 165 118 V 184" />
+        <path d="M 435 118 V 184" />
+      </g>
+      <polygon points="165,186 160,176 170,176" fill="#5b6270" />
+      <polygon points="435,186 430,176 440,176" fill="#5b6270" />
+
+      <rect x="85" y="186" width="160" height="38" fill="rgba(29,78,216,0.10)" stroke="#1d4ed8" stroke-width="1.5" />
+      <text x="165" y="210" text-anchor="middle">Ũ(σₙ) = n</text>
+      <rect x="345" y="186" width="180" height="38" fill="rgba(18,177,124,0.10)" stroke="#0f9b6c" stroke-width="1.5" />
+      <text x="435" y="210" text-anchor="middle">read exactly n bits</text>
+
+      <path d="M 245 209 H 335" stroke="#5b6270" stroke-width="1.2" fill="none" />
+      <polygon points="345,209 335,204 335,214" fill="#5b6270" />
+      <text x="295" y="199" text-anchor="middle" font-size="11" fill="#5b6270">n fixes the cut</text>
+
+      <path d="M 435 224 V 256" stroke="#5b6270" stroke-width="1.2" fill="none" />
+      <polygon points="435,258 430,248 440,248" fill="#5b6270" />
+      <text x="445" y="241" font-size="11" fill="#5b6270">part 1: print it</text>
+      <text x="445" y="254" font-size="11" fill="#5b6270">part 2: run U on it</text>
+
+      <rect x="355" y="258" width="160" height="30" rx="2" fill="rgba(94,96,96,0.08)" stroke="#1f2430" stroke-width="1.2" />
+      <text x="435" y="278" text-anchor="middle" font-weight="600">output w</text>
+
+      <path d="M 80 306 H 580" stroke="#5b6270" stroke-width="1" stroke-dasharray="2 3" fill="none" />
+
+      <text x="80" y="328"><tspan font-weight="600">Part 1:</tspan> n = l(w), payload = w itself, output the payload</text>
+      <text x="130" y="346">input K(l(w)) + l(w) bits  ⇒  K(w) ≤ l(w) + K(l(w)) + O(1)</text>
+      <text x="80" y="374"><tspan font-weight="600">Part 2:</tspan> n = C(w), payload = p (a shortest plain program for w), output U(p) = w</text>
+      <text x="130" y="392">input K(C(w)) + C(w) bits  ⇒  K(w) ≤ C(w) + K(C(w)) + O(1)</text>
+    </g>
+  </svg>
+  <figcaption>The exercise reuses the split of Theorem 2.21, but only the first block is a prefix-free code. The payload ($w$ in part 1, a shortest plain program $p$ for $w$ in part 2) is not self-delimiting, so the header $\sigma_n$ is spent on announcing its length $n$. The input has $K(n) + n$ bits, and $M$ is prefix-free because it halts only when the input ends exactly $n$ bits after the header.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Comparison of plain and prefix-free KC)</span></p>
 

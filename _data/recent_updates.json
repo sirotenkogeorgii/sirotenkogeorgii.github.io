@@ -1,6 +1,12 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-10-28",
+   "added": false
+  },
+  {
    "title": "Calculus of Variations",
    "url": "/subpages/books/calculus_of_variations_hd/",
    "date": "2026-10-28",
@@ -118,12 +124,6 @@
    "title": "Pravděpodobnost a statistika 1",
    "url": "/subpages/books/pas/",
    "date": "2026-08-31",
-   "added": false
-  },
-  {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-08-20",
    "added": false
   },
   {
