@@ -13,6 +13,12 @@
    "added": true
   },
   {
+   "title": "From Finite to Infinite: Machines for Passing to the Limit",
+   "url": "/subpages/math_topics/from-finite-to-infinite/",
+   "date": "2026-10-28",
+   "added": true
+  },
+  {
    "title": "Books",
    "url": "/notes/books/",
    "date": "2026-10-25",
@@ -171,12 +177,6 @@
   {
    "title": "Cheatsheet — Lecture 8: Planning & Learning (Tabular)",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/",
-   "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 9: On-Policy Prediction with Function Approximation",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture9-function-approximation/",
    "date": "2026-07-23",
    "added": true
   }
