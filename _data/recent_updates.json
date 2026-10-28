@@ -1,16 +1,16 @@
 {
  "entries": [
   {
+   "title": "Calculus of Variations",
+   "url": "/subpages/books/calculus_of_variations_hd/",
+   "date": "2026-10-28",
+   "added": false
+  },
+  {
    "title": "Cheatsheet — Part 2: Prefix-Free Machines & Prefix-Free Complexity",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part2-prefix-free-complexity/",
    "date": "2026-10-28",
    "added": true
-  },
-  {
-   "title": "Calculus of Variations",
-   "url": "/subpages/books/calculus_of_variations_hd/",
-   "date": "2026-10-27",
-   "added": false
   },
   {
    "title": "Books",

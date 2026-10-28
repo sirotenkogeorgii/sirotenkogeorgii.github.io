@@ -809,6 +809,30 @@ The weak form (2.5) reads $\int\_{-1}^1 4(u^{\prime 2}-1)u^{\prime}\,\varphi^{\p
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(First variation, Euler–Lagrange equation and the unique minimizer of a one-dimensional functional)</span></p>
+
+Let $\mathcal F:C^1([-1,1])\to\mathbb R$ be given by
+
+$$
+\mathcal F[u]=\int_{-1}^1 u^2(x)\bigl(2x-u'(x)\bigr)^2\,\mathrm{d}x\qquad\text{for all } u\in C^1([-1,1]).
+$$
+
+* **(a)** Compute the first variation of $\mathcal F$.
+* **(b)** Assuming that $\mathcal F$ attains its minimum at $u\in C^2([-1,1])$, compute the Euler–Lagrange equation for $u$.
+* **(c)** Define the set of admissible functions $\mathcal A=\lbrace u\in C^1([-1,1]):\ u(-1)=0,\ u(1)=1\rbrace$. Show that $u^\ast$ given by $u^\ast(x)=\chi\_{[0,1]}(x)\,x^2$ for all $x\in[-1,1]$ is the unique minimizer of $\mathcal F$ in $\mathcal A$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
+
+</details>
+</div>
+
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Assumption</span><span class="math-callout__name">(Growth condition for the second derivatives)</span></p>
 
@@ -1099,13 +1123,29 @@ $$
 
 None of the coefficients $(\operatorname{cof}A)\_{\alpha i}$ depends on the entries $A\_{\alpha j}$ of the $\alpha$-th row (that row is deleted in the defining minors). Identity (ii) follows by differentiating (2.12) with respect to $A\_{\alpha j}$.
 
-**(iii)** follows from the fact that the determinant is an alternating multilinear form (it is an exercise in the script). Explicitly, from the Leibniz formula $\det A=\sum\_\sigma\operatorname{sgn}\sigma\prod\_i A\_{i\sigma(i)}$,
+**(iii)** follows from the fact that the determinant is an alternating multilinear form; the proof is the exercise right after this lemma. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Antisymmetry of the second derivatives of the determinant)</span></p>
+
+Show that for $A\in\mathbb R^{n\times n}$
 
 $$
-\frac{\partial^2\det A}{\partial A_{\alpha j}\partial A_{\beta k}}=\sum_{\sigma:\ \sigma(\alpha)=j,\ \sigma(\beta)=k}\operatorname{sgn}\sigma\prod_{i\neq\alpha,\beta}A_{i\sigma(i)}\qquad(\alpha\neq\beta,\ j\neq k),
+\frac{\partial^2(\det A)}{\partial A_{\alpha j}\,\partial A_{\beta k}}=-\frac{\partial^2(\det A)}{\partial A_{\alpha k}\,\partial A_{\beta j}} .
 $$
 
-and composing $\sigma$ with the transposition $(j\,k)$ is a bijection between the permutations with $(\sigma(\alpha),\sigma(\beta))=(j,k)$ and those with $(\sigma(\alpha),\sigma(\beta))=(k,j)$ which flips the sign; for $\alpha=\beta$ or $j=k$ both sides vanish. $\square$
+This is Lemma 2.15(iii), whose proof was left open above.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
 
 </details>
 </div>
@@ -1201,6 +1241,28 @@ Can you explain *geometrically* why determinants should be Null Lagrangians?
   <img src="{{ '/assets/images/notes/books/calculus_of_variations_hd/cov_det_null_lagrangian.png' | relative_url }}" alt="Two deformed polar grids on the unit disk; both maps equal the identity on the boundary circle but deform the interior differently, one with a visible fold; both have integral of det equal to pi" loading="lazy">
   <figcaption>Two maps $u,v:\overline{B_1}\to\mathbb R^2$ that are the identity on the circle $\partial B_1$ but deform the interior differently (the images of a polar grid are shown; $u$ even folds the disk over itself near the upper left, where $\det Du<0$). Numerically $\int_{B_1}\det Du\,\mathrm{d}x=\int_{B_1}\det Dv\,\mathrm{d}x=\pi=\lvert B_1\rvert$: the integral of the determinant sees only the boundary values, as Lemma 2.13 and Theorem 2.16 predict. Folds contribute negative area that is exactly compensated by the triple covering next to them.</figcaption>
 </figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The weighted determinant $\eta(z)\det\xi$ is a Null Lagrangian)</span></p>
+
+Let $\eta\in C^1(\mathbb R^d)$ and define $f:\mathbb R^d\times\mathbb R^d\times\mathbb R^{d\times d}\to\mathbb R$ by
+
+$$
+f(x,z,\xi):=\eta(z)\det\xi\qquad\text{for all }(x,z,\xi)\in\mathbb R^d\times\mathbb R^d\times\mathbb R^{d\times d}.
+$$
+
+Show that $f$ is a Null Lagrangian.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+TODO:
+
+</details>
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Minors)</span></p>
