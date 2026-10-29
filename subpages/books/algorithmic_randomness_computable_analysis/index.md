@@ -35,6 +35,7 @@ tags:
 * [Part 2: Prefix-Free Machines & Prefix-Free Complexity (§2.3)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part2-prefix-free-complexity/)
 * [Part 3: Information Content Measures (§3)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part3-information-content-measures/)
 * [Part 4: Incompressibility and Typicality (§4)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part4-incompressibility-typicality/)
+* [Part 5: Computable Approximations of Real Numbers (§5.1–5.11)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part5-computable-approximations-of-reals/)
 
 Before we can talk about randomness in any precise sense, we need a vocabulary for the objects on which the theory operates: finite binary words, infinite binary sequences, and the basic open sets of Cantor space that allow us to attach Lebesgue measure to subsets of these sequences.
 
