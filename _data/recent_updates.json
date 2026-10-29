@@ -19,6 +19,12 @@
    "added": true
   },
   {
+   "title": "Cheatsheet — Part 4: Incompressibility and Typicality",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part4-incompressibility-typicality/",
+   "date": "2026-10-29",
+   "added": true
+  },
+  {
    "title": "Calculus of Variations",
    "url": "/subpages/books/calculus_of_variations_hd/",
    "date": "2026-10-28",
@@ -171,12 +177,6 @@
   {
    "title": "Cheatsheet — Lecture 6: Temporal-Difference Learning",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture6-td-learning/",
-   "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 7: n-step Bootstrapping",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture7-n-step-bootstrapping/",
    "date": "2026-07-23",
    "added": true
   }

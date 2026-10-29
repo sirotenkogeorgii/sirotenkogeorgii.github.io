@@ -171,12 +171,12 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
    ⚠️ The notes write $F = -\log W\_n$ without the ceiling, which is not $\mathbb{N}$-valued; rounding up lowers the masses, so (19) survives, and it costs at most one bit in step 2, absorbed into the constant. The notes' c.e. argument also tests $F > k$ where the epigraph needs $F \le k$.
 2. **Minimality bounds the mass of a length by the mass of its length.** (M) gives $K(\mathrm{bin}(n)) \le F(\mathrm{bin}(n)) + c < -\log W\_n + 1 + c$, hence, after renaming the constant,
 
-$$W_n \;\le\; 2^{\,c}\, 2^{-K(\mathrm{bin}(n))} \qquad \text{for all } n:$$
+   $$W_n \;\le\; 2^{\,c}\, 2^{-K(\mathrm{bin}(n))} \qquad \text{for all } n:$$
 
    all $2^n$ words of length $n$ together weigh at most a constant times the single word $\mathrm{bin}(n)$. ⚠️ The notes print this step as $2^{K(\mathrm{bin}(n))} \ge 2^{-F(\mathrm{bin}(n)) - c}$ — sign typo; the intended inequality is $2^{-K(\mathrm{bin}(n))} \ge 2^{-F(\mathrm{bin}(n)) - c}$ (and they announce a constant $\varepsilon > 0$ that is never used).
 3. **Mass bound → count bound (Markov).** Put $S\_{n,r} := \lbrace \sigma \in \lbrace 0,1\rbrace^n : K(\sigma) \le n + K(\mathrm{bin}(n)) - r\rbrace$. Each member weighs at least $2^{-n - K(\mathrm{bin}(n)) + r}$, so
 
-$$\#S_{n,r} \cdot 2^{-n - K(\mathrm{bin}(n)) + r} \;\le\; \sum_{\sigma \in S_{n,r}} 2^{-K(\sigma)} \;\le\; W_n \;\le\; 2^{c}\, 2^{-K(\mathrm{bin}(n))} \quad\Longrightarrow\quad \#S_{n,r} \le 2^{\,n - r + c}.$$
+   $$\#S_{n,r} \cdot 2^{-n - K(\mathrm{bin}(n)) + r} \;\le\; \sum_{\sigma \in S_{n,r}} 2^{-K(\sigma)} \;\le\; W_n \;\le\; 2^{c}\, 2^{-K(\mathrm{bin}(n))} \quad\Longrightarrow\quad \#S_{n,r} \le 2^{\,n - r + c}.$$
 
 4. **(23).** Upper bound: Chaitin's Thm. 2.29, $K(\sigma) \le n + K(\mathrm{bin}(n)) + c\_2$. Lower bound: take $r := c + 1$ in (22), so $\sharp S\_{n,c+1} \le 2^{n-1} < 2^n$ and some word of length $n$ lies outside, i.e. has $K(\sigma) > n + K(\mathrm{bin}(n)) - c - 1$.
    ⚠️ The sheet prints the lower bound as $n - K(\mathrm{bin}(n)) - c\_1$; it must read $n + K(\mathrm{bin}(n)) - c\_1$, matching (23).
