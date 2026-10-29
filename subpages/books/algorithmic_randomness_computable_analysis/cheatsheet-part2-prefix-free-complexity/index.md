@@ -183,12 +183,29 @@ $$l(\sigma_i) = d_i, \qquad M(\sigma_i) = \tau_i \qquad \text{for all } i.$$
 
 Such a sequence is called a **KC set**. Kraft (2.25) says "prefix-free $\Rightarrow$ the measures fit"; Kraft–Chaitin is the converse: **if the measures fit, and the requests are c.e., you can effectively realize them.**
 
-* **Algorithm.** Track the free measure $R\_s = 1 - \sum\_{i<s} 2^{-d\_i}$; the binary expansion of $R\_s$ records which **placeholders** are available — a word $v\_n^{(s)}$ of length $n$ for each position $n$ with $n$-th bit $1$.
-* **Invariant:** assigned codes $+$ all placeholders form a prefix-free set, and $l(v\_n^{(s)}) = n$.
+**Convention.** The free measure $R\_s = 1 - \sum\_{i<s} 2^{-d\_i}$ is a dyadic rational. We always write it in its **terminating** binary expansion $R\_s = \sum\_{n \ge 0} R\_s(n)\, 2^{-n}$, where bit $n=0$ is the integer part. So $R\_0 = 1.000\ldots$, *not* $0.111\ldots$, and the only initial placeholder is $v\_0^{(0)} = \varepsilon$.
+
+* **Algorithm.** Each position $n$ with $R\_s(n) = 1$ carries a **placeholder** word $v\_n^{(s)}$ of length $n$. There are finitely many placeholders.
+* **Invariant:** the assigned codes together with all placeholders form a prefix-free set, $l(v\_n^{(s)}) = n$, and the expansion of $R\_s$ stays terminating.
 * **Request $(d\_s, \tau\_s)$, two cases:**
-  * bit $R\_s(d\_s) = 1$ — use the placeholder directly: $\sigma\_s := v\_{d\_s}^{(s)}$;
-  * bit $R\_s(d\_s) = 0$ — take the largest $d^{\prime} < d\_s$ with $R\_s(d^{\prime}) = 1$ (it exists, else (13) is already violated), **split** that bigger placeholder, use $\sigma\_s := v\_{d^{\prime}}^{(s)} 0^{\,d\_s - d^{\prime}}$ and keep the siblings as new placeholders.
-* Prefix-freeness is preserved because every new word lives strictly **below the single placeholder that was removed**.
+  * bit $R\_s(d\_s) = 1$: use the placeholder directly, $\sigma\_s := v\_{d\_s}^{(s)}$. Bit $d\_s$ goes from $1$ to $0$, and nothing is borrowed.
+  * bit $R\_s(d\_s) = 0$: take the largest $d^{\prime} < d\_s$ with $R\_s(d^{\prime}) = 1$, **split** that bigger placeholder, and set $\sigma\_s := v\_{d^{\prime}}^{(s)} 0^{\,d\_s - d^{\prime}}$. The siblings $v\_{d^{\prime}}^{(s)}0^{k}1$ for $0 \le k < d\_s - d^{\prime}$ become the new placeholders at positions $d^{\prime}+1,\dots,d\_s$. This is exactly subtraction with a borrow from the left:
+    
+    $$2^{-d'} - 2^{-d_s} = \sum_{n=d'+1}^{d_s} 2^{-n},$$
+    
+    so bit $d'$ goes from $1$ to $0$, and bits $d'+1,\dots,d\_s$ (all $0$ by maximality of $d'$) become $1$. The result is still terminating.
+* **Why $d'$ exists.** For a *terminating* expansion, if $R\_s(0) = \dots = R\_s(d\_s) = 0$, then $R\_s$ is a finite sum of terms $2^{-n}$ with $n > d\_s$. Such a sum is strictly less than $2^{-d\_s}$, so $R\_{s+1} < 0$ and (13) fails. The strictness is the point: a non-terminating tail $0.0\cdots0111\ldots$ can *equal* $2^{-d\_s}$.
+* Prefix-freeness is preserved because every new word lies strictly **below the single placeholder that was removed**.
+
+<div class="math-callout math-callout--example" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Why the convention matters)</span></p>
+
+Take two requests with $d\_0 = d\_1 = 1$. Then (13) holds with equality.
+
+* *Terminating:* $R\_0 = 1.000$. Bit $1$ is $0$, so split $v\_0 = \varepsilon$. This gives $\sigma\_0 = 0$, the placeholder $v\_1 = 1$, and $R\_1 = 0.100$. Now bit $1$ is $1$, so $\sigma\_1 = 1$ and $R\_2 = 0$. ✓
+* *Non-terminating:* $R\_0 = 0.111\ldots$. Bit $1$ is $1$, so it is used directly, leaving $R\_1 = 0.0111\ldots = \tfrac12$. For the second request bit $1$ is $0$, and **there is no $1$ to the left to borrow from**. The algorithm is stuck. The free measure $\tfrac12$ is there, but it is broken into infinitely many pieces ($01, 001, \dots$), none of length $\le 1$.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(2.28.1 — KC sets bound $K$)</span></p>
