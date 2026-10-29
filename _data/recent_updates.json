@@ -1,16 +1,22 @@
 {
  "entries": [
   {
+   "title": "Algorithmic Randomness and Computable Analysis",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
+   "date": "2026-10-29",
+   "added": false
+  },
+  {
    "title": "Cheatsheet — Part 2: Prefix-Free Machines & Prefix-Free Complexity",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part2-prefix-free-complexity/",
    "date": "2026-10-29",
    "added": false
   },
   {
-   "title": "Algorithmic Randomness and Computable Analysis",
-   "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-10-28",
-   "added": false
+   "title": "Cheatsheet — Part 3: Information Content Measures",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part3-information-content-measures/",
+   "date": "2026-10-29",
+   "added": true
   },
   {
    "title": "Calculus of Variations",
@@ -171,12 +177,6 @@
   {
    "title": "Cheatsheet — Lecture 7: n-step Bootstrapping",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture7-n-step-bootstrapping/",
-   "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 8: Planning & Learning (Tabular)",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture8-planning/",
    "date": "2026-07-23",
    "added": true
   }
