@@ -477,7 +477,7 @@ $$C(\sigma) \le C_M(\sigma) + c_M \qquad \text{for every word } \sigma. \tag{1}$
 
    $$C_L(Z) \le l(z_1 \dots z_{1000}) = 1000, \qquad \text{hence} \qquad C(Z) \le 1000 + c_L.$$
 
-* **Sequence $Y$.** A short description of $Y$ is its index in a fixed computable enumeration of all binary words of length 2000 with at most 200 ones (see Section 1.3 — this enumeration is much smaller than $2^{2000}$). TODO: is not the complexity of such a word 200 + c_L, because 200 indices with ones, the rest are zeros hardcoded into a turing machine for this class of sequences Y?
+* **Sequence $Y$.** A short description of $Y$ is its index in a fixed computable enumeration of all binary words of length $2000$ with at most $200$ ones (see Section 1.3 — this enumeration is much smaller than $2^{2000}$). TODO: is not the complexity of such a word $200 + c_L$, because $200$ indices with ones, the rest are zeros hardcoded into a turing machine for this class of sequences $Y$?
 
 </div>
 
@@ -507,7 +507,7 @@ again with $c_L$ independent of $n$.
 How incompressible can an infinite sequence be? Surprisingly, *no* infinite sequence has all of its prefixes incompressible — there is always some recurrent slack.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(1.3 — Martin-Löf, 1966)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Martin-Löf’s Complexity Oscillation Theorem (1966))</span></p>
 
 For every infinite binary sequence $A$ and every constant $c$, there exist infinitely many $n$ such that
 
@@ -1031,7 +1031,7 @@ which concludes the proof.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(2.3 — Counting bound)</span></p>
 
-For every $n$, there exist at most $2^n - 1$ words of Kolmogorov complexity less than $n$:
+For every $n$, there exist at most $2^n - 1$ words of Kolmogorov complexity **less than** $n$:
 
 $$\forall n: \quad \#\lbrace w \in \lbrace 0, 1 \rbrace^{\ast} : C(w) < n \rbrace < 2^n.$$
 
@@ -1542,7 +1542,12 @@ where $U(\sigma)[t]$ denotes the result of running $U$ on $\sigma$ for at most $
   <figcaption>Approximation characterization (Proposition 2.9) applied to $C$. Running $U$ for more and more steps $t$ enumerates new short inputs $\sigma$ with $U(\sigma) = w$, so $F(w, t)$ is a *decreasing staircase* converging to $C(w)$. The function can only be approximated *from above*: at any finite $t$ we only know an upper bound, never a tight value — this is the source of the asymmetry in Theorem 2.11.</figcaption>
 </figure>
 
-The next theorem makes the asymmetry between the upper and the (missing) lower side of $C$ painfully explicit: there is no computable, unbounded *lower bound* on Kolmogorov complexity at all.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">()</span></p>
+
+The next theorem makes the asymmetry between the upper and the (missing) lower side of $C$ painfully explicit: there is no computable, unbounded **lower bound** on Kolmogorov complexity at all.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.11 — No computable unbounded lower bound)</span></p>
@@ -1876,7 +1881,7 @@ $$C(xy) > C(x) + \log C(x) + C(y) + n.$$
 <details markdown="1">
 <summary>Proof sketch</summary>
 
-The proof reuses the computable sequence $S$ from the proof of Theorem 1.3. The machine $M_S$ enumerates special words $\sigma \in S$ which are relatively compressible compared with their length. In particular, for all such prefixes,
+The proof reuses the computable sequence $S$ from the proof of Martin-Löf’s Complexity Oscillation Theorem (1966). The machine $M_S$ enumerates special words $\sigma \in S$ which are relatively compressible compared with their length. In particular, for all such prefixes,
 
 $$C(\sigma) \le l(\sigma) - \log l(\sigma) + O(1). \tag{5}$$
 
@@ -2084,7 +2089,12 @@ If $M_i$ is prefix-free, then $\widetilde U(i,w) = M_i(w)$, so $\widetilde U$ si
 </details>
 </div>
 
-The central technical advantage of prefix-free complexity is that valid programs can be concatenated without separately encoding the boundary between them. The first program ends exactly when the first prefix-free computation accepts.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The main motivation of prefix-free TMs is to have programs self-delimiting)</span></p>
+
+The **central technical advantage of prefix-free complexity** is that valid programs can be concatenated without separately encoding the boundary between them. The first program ends exactly when the first prefix-free computation accepts.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.21 — Concatenation for prefix-free complexity)</span></p>
@@ -2177,12 +2187,7 @@ $$K(vw) \le C_M(vw) + c_M \le K(v) + K(w) + c_M.$$
 Show the following upper bounds for the prefix-free Kolmogorov complexity:
 
 1. $K(w) \leq l(w) + K(l(w)) + O(1) \qquad \forall w$
-
-   *(Hint: construct a prefix-free Turing machine $M$ that, for the input $\sigma_w\text{bin}(w)$, where $\sigma_w$ is an optimal prefix-free code of $w$, returns $w$)*
-
 2. $K(w) \leq C(w) + K(C(w)) + O(1) \qquad \forall w$
-
-   *(Hint: modify the machine $M$ constructed above by computing some data from their optimal (non-prefix-free) codes)*
 
 </div>
 
@@ -3337,45 +3342,45 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 
    is an information content measure.
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
+   <div class="accordion" markdown="1">
+   <details markdown="1">
+   <summary>Proof</summary>
 
-**UPPER BOUND**
+   **UPPER BOUND**
 
-Then for a single $bin(n) \in \operatorname{dom}(F)$ we get:
+   Then for a single $bin(n) \in \operatorname{dom}(F)$ we get:
 
-$$2^{-F(bin(n))} = 2^{\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}} = \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
+   $$2^{-F(bin(n))} = 2^{\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}} = \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$$
 
-Over all $bin(n) \in \operatorname{dom}(F)$:
+   Over all $bin(n) \in \operatorname{dom}(F)$:
 
-$$\sum_{bin(n)\in\operatorname{dom}(F)} 2^{-F(bin(n))} = \sum_{bin(n)\in\operatorname{dom}(F)}\ \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)} \leq \sum_{\sigma\in\lbrace 0,1\rbrace^\ast} 2^{-K(\sigma)} \leq 1$$
+   $$\sum_{bin(n)\in\operatorname{dom}(F)} 2^{-F(bin(n))} = \sum_{bin(n)\in\operatorname{dom}(F)}\ \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)} \leq \sum_{\sigma\in\lbrace 0,1\rbrace^\ast} 2^{-K(\sigma)} \leq 1$$
 
-**C.E. EPIGRAPH**
+   **C.E. EPIGRAPH**
 
-Prefix-free Kolmogorov complexity $K$ is upper semi-computable. For the given pair $(bin(n), k)$ we do dovetailing over all binary words $\sigma\in\lbrace 0,1\rbrace^n$ and for each word $\sigma$ we again in dovetailing manner enumerably upper compute $K(\sigma)$. Since $\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$ only decreases, the moment when $F(bin(n)) > k$ would be confirmed in finite number of steps if it's true.
+   Prefix-free Kolmogorov complexity $K$ is upper semi-computable. For the given pair $(bin(n), k)$ we do dovetailing over all binary words $\sigma\in\lbrace 0,1\rbrace^n$ and for each word $\sigma$ we again in dovetailing manner enumerably upper compute $K(\sigma)$. Since $\log \sum_{\sigma\in\lbrace 0,1\rbrace^n} 2^{-K(\sigma)}$ only decreases, the moment when $F(bin(n)) > k$ would be confirmed in finite number of steps if it's true.
 
-</details>
-</div>
+   </details>
+   </div>
    
-1. Show that there exists a constant $\varepsilon > 0$ such that
+2. Show that there exists a constant $\varepsilon > 0$ such that
    
    $$2^{K(bin(n))} \geq 2^{-F(bin(n))-c}$$
 
    *(hint: $K$ is a minimal information content measure)*
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
+   <div class="accordion" markdown="1">
+   <details markdown="1">
+   <summary>Proof</summary>
 
-Since $K$ is the minimal among infomration content measures, and $F$ is an in information content measure, there is a constant $c$ such that
+   Since $K$ is the minimal among infomration content measures, and $F$ is an in information content measure, there is a constant $c$ such that
 
-$$K(bin(n)) \leq F(bin(n)) + c$$
+   $$K(bin(n)) \leq F(bin(n)) + c$$
 
-</details>
-</div>
+   </details>
+   </div>
 
-1. For all natural numbers $n, r$, we define the set of all words of length $n$ with prefix-free complexity below $n + K(\operatorname{bin}(n)) - r$:
+3. For all natural numbers $n, r$, we define the set of all words of length $n$ with prefix-free complexity below $n + K(\operatorname{bin}(n)) - r$:
 
    $$S_{n,r} = \lbrace\sigma \in 2^n : K(\sigma) \le n + K(\operatorname{bin}(n)) - r\rbrace.$$
 
@@ -3385,108 +3390,101 @@ $$K(bin(n)) \leq F(bin(n)) + c$$
 
    for all $n, r$.
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
+   <div class="accordion" markdown="1">
+   <details markdown="1">
+   <summary>Proof</summary>
 
-Recall
+   Recall
 
-$$S_{n,r} = \lbrace \sigma\in{0,1}^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace.$$
+   $$S_{n,r} = \lbrace \sigma\in{0,1}^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace.$$
 
-If $\sigma\in S_{n,r}$, then
+   If $\sigma\in S_{n,r}$, then
 
-$$2^{-K(\sigma)} \ge 2^{-n-K(\operatorname{bin}(n))+r}.$$
+   $$2^{-K(\sigma)} \ge 2^{-n-K(\operatorname{bin}(n))+r}.$$
 
-Therefore
+   Therefore
 
-$$
-\begin{aligned}
-\sharp S_{n,r}\cdot 2^{-n-K(\operatorname{bin}(n))+r}
-&\le
-\sum_{\sigma\in S_{n,r}}2^{-K(\sigma)}
-\\
-&\le
-\sum_{\sigma\in{0,1}^n}2^{-K(\sigma)}
-\\
-&=
-W_n
-\\
-&\le
-2^c2^{-K(\operatorname{bin}(n))}.
-\end{aligned}
-$$
+   $$
+   \begin{aligned}
+   \sharp S_{n,r}\cdot 2^{-n-K(\operatorname{bin}(n))+r} 
+   &\le \sum_{\sigma\in S_{n,r}}2^{-K(\sigma)} \\
+   &\le \sum_{\sigma\in{0,1}^n}2^{-K(\sigma)} \\
+   &= W_n \\
+   &\le 2^c2^{-K(\operatorname{bin}(n))}.
+   \end{aligned}
+   $$
 
-Canceling $2^{-K(\operatorname{bin}(n))}$, we obtain
+   Canceling $2^{-K(\operatorname{bin}(n))}$, we obtain
 
-$$#S_{n,r}\le 2^{n-r+c}.$$
+   $$\sharp S_{n,r}\le 2^{n-r+c}.$$
 
-Thus there is a constant $c$ such that
+   Thus there is a constant $c$ such that
 
-$$\boxed{\sharp S_{n,r}\le 2^{n-r+c}}$$
+   $$\boxed{\sharp S_{n,r}\le 2^{n-r+c}}$$
 
-for all $n,r$.
+   for all $n,r$.
 
-</details>
-</div>
+   </details>
+   </div>
 
-1. Show that there exist two constants $c_1$ and $c_2$ such that
+4. Show that there exist two constants $c_1$ and $c_2$ such that
 
    $$n - K(\operatorname{bin}(n)) - c_1 \le \max \lbrace K(\sigma) : l(\sigma) = n \rbrace \le n + K(\operatorname{bin}(n)) + c_2.$$
 
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
+   <div class="accordion" markdown="1">
+   <details markdown="1">
+   <summary>Proof</summary>
 
-The sheet’s displayed lower bound says
+   The sheet’s displayed lower bound says
 
-$$n-K(\operatorname{bin}(n))-c_1 \le \max_{l(\sigma)=n}K(\sigma),$$
+   $$n-K(\operatorname{bin}(n))-c_1 \le \max_{l(\sigma)=n}K(\sigma),$$
 
-but the theorem stated immediately before says the intended bound is
+   but the theorem stated immediately before says the intended bound is
 
-$$\boxed{n+K(\operatorname{bin}(n))-O(1)\le\max_{l(\sigma)=n}K(\sigma).}$$
+   $$\boxed{n+K(\operatorname{bin}(n))-O(1)\le\max_{l(\sigma)=n}K(\sigma).}$$
 
-We prove the stronger, intended form.
+   We prove the stronger, intended form.
 
-**Upper bound.**
+   **Upper bound.**
 
-By the known upper bound,
+   By the known upper bound,
 
-$$K(\sigma) \le l(\sigma)+K(\operatorname{bin}(l(\sigma)))+O(1).$$
+   $$K(\sigma) \le l(\sigma)+K(\operatorname{bin}(l(\sigma)))+O(1).$$
 
-For (l(\sigma)=n),
+   For (l(\sigma)=n),
 
-$$K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
+   $$K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
 
-Hence
+   Hence
 
-$$\max_{l(\sigma)=n}K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
+   $$\max_{l(\sigma)=n}K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
 
-**Lower bound.**
+   **Lower bound.**
 
-Use the counting estimate with $r=c+1$. Then
+   Use the counting estimate with $r=c+1$. Then
 
-$$\sharp S_{n,c+1} \le 2^{n-(c+1)+c} = 2^{n-1}.$$
+   $$\sharp S_{n,c+1} \le 2^{n-(c+1)+c} = 2^{n-1}.$$
 
-So fewer than all $2^n$ strings of length $n$ lie in $S_{n,c+1}$. Hence there exists some $\sigma\in{0,1}^n$ with
+   So fewer than all $2^n$ strings of length $n$ lie in $S_{n,c+1}$. Hence there exists some $\sigma\in{0,1}^n$ with
 
-$$\sigma\notin S_{n,c+1}.$$
+   $$\sigma\notin S_{n,c+1}.$$
 
-Therefore
+   Therefore
 
-$$K(\sigma) > n+K(\operatorname{bin}(n))-(c+1).$$
+   $$K(\sigma) > n+K(\operatorname{bin}(n))-(c+1).$$
 
-Thus
+   Thus
 
-$$\max_{l(\sigma)=n}K(\sigma) \ge n+K(\operatorname{bin}(n))-c_1$$
+   $$\max_{l(\sigma)=n}K(\sigma) \ge n+K(\operatorname{bin}(n))-c_1$$
 
-for a suitable constant $c_1$.
+   for a suitable constant $c_1$.
 
-Combining both inequalities,
+   Combining both inequalities,
 
-$$\boxed{\max_{l(\sigma)=n}K(\sigma) = n+K(\operatorname{bin}(n))\pm O(1).}$$
+   $$\boxed{\max_{l(\sigma)=n}K(\sigma) = n+K(\operatorname{bin}(n))\pm O(1).}$$
 
-</details>
-</div>
+   </details>
+   </div>
 
 </details>
 </div>
@@ -3721,7 +3719,7 @@ In this exercise, we prove in three steps that all Martin-Löf random sequences 
 <details markdown="1">
 <summary>Proof II</summary>
 
-Let (U) be the fixed universal prefix-free machine defining prefix-free Kolmogorov complexity
+Let $U$ be the fixed universal prefix-free machine defining prefix-free Kolmogorov complexity
 
 $$K(\sigma)=C_U(\sigma).$$
 
@@ -4424,10 +4422,9 @@ $$K(\alpha \upharpoonright n) = K(\operatorname{bin}(n)) \pm O(1).$$
 <summary>Solution</summary>
 
 > Solution:
-> We know that a real \alpha is computable iff there is a computable sequence (a_i)\_{i\in\mathbb{N}} such that \lvert \alpha-a_i\rvert < 2^{-n} for all n\in\mathbb{N}.
-> Give the number n\in\mathbb{N} and *given* (or computable in constant time by the *given* Turing machine) the approximating computable sequence (a_i)\_{i\in\mathbb{N}}, satisfying the property above, we obtain a_n, which has the same prefix as the real \alpha. So, K-complexity of the prefix alpha is reduced to the K-complexity of the number or index n\in\mathbb{N}. 
+> We know that a real $\alpha$ is computable iff there is a computable sequence $(a_i)\_{i\in\mathbb{N}}$ such that $\lvert \alpha-a_i\rvert < 2^{-n}$ for all $n\in\mathbb{N}$.
+> Give the number $n\in\mathbb{N}$ and *given* (or computable in constant time by the *given* Turing machine) the approximating computable sequence $(a_i)\_{i\in\mathbb{N}}$, satisfying the property above, we obtain $a_n$, which has the same prefix as the real $\alpha$. So, $K$-complexity of the prefix alpha is reduced to the $K$-complexity of the number or index $n\in\mathbb{N}$. 
 > **Note aside:** I guess that we assume that the approximation is given explicitly or implicitly via given Turing machine. Turing machine is given, because I suspect we would have to add the complexity of the Turing machine that computes the approximating sequence.
-
 
 TODO: decide, why it is false.
 
@@ -4465,7 +4462,7 @@ where $[T]$ means the set of infinite paths through $T$.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Approximation does not automatically give the exact binary prefix.)</span></p>
 
-Let \alpha be a computable real. For the approximating sequence $(a_n)\_{n\in\mathbb{N}}$ from the condition
+Let $\alpha$ be a computable real. For the approximating sequence $(a_n)\_{n\in\mathbb{N}}$ from the condition
 
 $$\lvert\alpha−a_n\rvert<2^{−n}$$
  
