@@ -43,7 +43,7 @@ Parts 1–4 defined randomness for infinite binary sequences and proved that inc
 
 $$\text{computable} \;\subsetneq\; \text{left-c.e.} \;\subsetneq\; \text{computably approximable} \;=\; \Delta^0_2\text{-reals}.$$
 
-The inclusions are immediate from the definitions ($a\_n := \alpha \upharpoonright n$ is a nondecreasing approximation; a nondecreasing approximation is an approximation). $\Omega$ separates the first two classes (Prop. 5.11) and $1 - \Omega$ the last two (see below).
+The inclusions are immediate from the definitions. $\Omega$ separates the first two classes (Prop. 5.11) and $1 - \Omega$ the last two (see below).
 
 ## Vocabulary (5.1–5.5)
 
@@ -60,9 +60,9 @@ The inclusions are immediate from the definitions ($a\_n := \alpha \upharpoonrig
 
 </div>
 
-* **Dyadic rationals.** $0.w1000\ldots = 0.w0111\ldots$: a dyadic rational has two expansions, both computable, so Def. 5.1 is unambiguous; dyadics are identified with their finite words. Every "dyadic boundary" case distinction below comes from this double expansion.
-* **Cauchy is not effective.** Def. 5.4 only asserts that $N(\epsilon)$ *exists*. The three classes differ in what stage $n$ tells you about the error $\alpha - a\_n$: a **bound** ($< 2^{-n}$, computable reals), a **sign** ($a\_n \le \alpha$, left-c.e. reals), **nothing** (c.a. reals).
-* **"Left-c.e." is about the cut, not the bits.** If the *set* $A$ is c.e., then $0.A$ is left-c.e. (enumerate the ones; the partial sums climb). The converse is not claimed: left-c.e.-ness is c.e.-ness of $L(\alpha)$ (Prop. 5.9).
+* **Dyadic rationals.** $0.w1000\ldots = 0.w0111\ldots$: two expansions, both computable, so Def. 5.1 is unambiguous. Every "dyadic boundary" case distinction below comes from this double expansion.
+* **Cauchy is not effective.** The three classes differ in what stage $n$ tells you about the error $\alpha - a\_n$: a **bound** ($< 2^{-n}$, computable reals), a **sign** ($a\_n \le \alpha$, left-c.e. reals), **nothing** (c.a. reals).
+* **"Left-c.e." is about the cut, not the bits.** $A$ c.e. $\Rightarrow 0.A$ left-c.e.; the converse is not claimed.
 
 ## Computable reals: Proposition 5.6
 
@@ -79,34 +79,13 @@ $$\lvert \alpha - a_n\rvert < 2^{-n} \qquad \text{for every } n. \tag{25}$$
 
 </div>
 
-All four implications run on the **dyadic bracket**: for $\alpha = 0.A$ and $a\_n := \alpha \upharpoonright n := 0.A(0)\cdots A(n-1)$,
+Everything runs on the **dyadic bracket** $\alpha \in [\alpha \upharpoonright n,\ \alpha \upharpoonright n + 2^{-n}]$ (27).
 
-$$\alpha \in \big[\, a_n,\ a_n + 2^{-n}\,\big] \qquad \text{for all } n. \tag{27}$$
+* **(i) ⇒ (iii):** the prefixes themselves. **(i) ⇒ (ii):** compute prefixes until $q$ falls left of the bracket (yes) or right of it (no); halts for every $q \ne \alpha$. **(ii) ⇒ (i):** $\alpha \upharpoonright n$ is the largest level-$n$ dyadic in $L(\alpha)$ — a max over $2^n$ decidable candidates. **(iii) ⇒ (i):** wait until the error interval $(a\_n \pm 2^{-n})$ sits inside a single level-$k$ dyadic interval and read off its index; a non-dyadic $\alpha$ lies in the interior of exactly one, so the wait ends.
+* **Non-uniformity.** Rational / dyadic $\alpha$ are handled by hard-coding finitely much information; harmless, since "computable" asks only for *some* machine per $\alpha$.
+* ⚠️ **Approximation ≠ prefix.** $\lvert \alpha - a\_n\rvert < 2^{-n}$ does not make $a\_n$ share $n$ bits with $\alpha$ (dyadic boundary) — hence the waiting in (iii) ⇒ (i), and hence the K-trivial exercise argues from Def. 5.1, not from (25).
 
-* **(i) ⇒ (iii): prefixes are an effective approximation.** $a\_n = \alpha \upharpoonright n$ is computable from $n$, and (27) gives $\lvert \alpha - a\_n\rvert < 2^{-n}$ (strict, since the expansion has no all-ones tail).
-* **(i) ⇒ (ii): decide $q < \alpha$ by a bracket search.** Compute $a\_0, a\_1, \ldots$ until some $N$ satisfies
-
-  $$q < a_N \qquad\text{or}\qquad q \ge a_N + 2^{-N}. \tag{26}$$
-
-  Left alternative: $q < a\_N \le \alpha$, answer **yes**. Right alternative: $q \ge a\_N + 2^{-N} \ge \alpha$ by (27), answer **no**. The search halts for every $q \ne \alpha$: if $q < \alpha$, then $a\_N \to \alpha$ eventually exceeds $q$; if $q > \alpha$, then $a\_N + 2^{-N} \to \alpha$ eventually drops to $q$ or below.
-
-  ⚠️ For $q = \alpha$ neither alternative ever holds ($a\_N \le \alpha < a\_N + 2^{-N}$ for all $N$), so the notes' "for every $q$ the search halts" needs the case $\alpha \in \mathbb{Q}$ separately: then $L(\alpha)$ is decidable outright by rational comparison with the hard-coded $\alpha$. Non-uniform, exactly like the dyadic case of (iii) ⇒ (i).
-* **(ii) ⇒ (i): read the prefix off the cut.**
-
-  $$\alpha \upharpoonright n = \max\lbrace 0.\sigma : l(\sigma) = n \text{ and } 0.\sigma \in L(\alpha)\rbrace,$$
-
-  a maximum over $2^n$ decidable candidates. (If $\alpha$ is itself a level-$n$ dyadic, the formula returns the prefix of the other expansion $w0111\ldots$ — still a computable expansion of $\alpha$.)
-* **(iii) ⇒ (i): wait until the bracket settles.** If $\alpha$ is dyadic, hard-code its finite expansion. Otherwise, to get $\alpha \upharpoonright k$, search for an $n$ with
-
-  $$\big(a_n - 2^{-n},\ a_n + 2^{-n}\big) \subseteq \Big[\, \tfrac{j}{2^k},\ \tfrac{j+1}{2^k}\Big) \qquad \text{for some } j,$$
-
-  and output the $k$-bit binary representation of $j$. Such an $n$ exists because a non-dyadic $\alpha$ lies in the *interior* of exactly one level-$k$ interval and the error intervals shrink onto it.
-
-  ⚠️ **Approximation ≠ prefix.** Even with $\lvert \alpha - a\_n\rvert < 2^{-n}$, $a\_n$ need not share $n$ bits with $\alpha$: near a dyadic boundary a tiny error flips the $n$-th digit. That is why one waits for a nested interval — and why the K-trivial exercise below must argue from Def. 5.1, not from (25).
-
-**Why two directions are non-uniform.** Deciding from an approximation whether $\alpha$ is *exactly* rational or dyadic is not an effective task; the proofs sidestep it by hard-coding finitely much information. This is harmless, because "$\alpha$ is computable" asks only for *some* machine per $\alpha$.
-
-**Relativization (Cor. 5.6.1).** (i) ⇔ (ii) uses the machine for $A$, resp. the decision procedure for $L(\alpha)$, only as a black box, so it holds relative to any oracle. With the halting problem: $A \le\_T \emptyset^{\prime} \iff L(\alpha) \le\_T \emptyset^{\prime}$. This is the bridge that Thm. 5.7 crosses.
+**Relativization (Cor. 5.6.1).** (i) ⇔ (ii) uses the machine for $A$, resp. the decision procedure for $L(\alpha)$, only as a black box, so it holds relative to any oracle: $A \le\_T \emptyset^{\prime} \iff L(\alpha) \le\_T \emptyset^{\prime}$. This is the bridge that Thm. 5.7 crosses.
 
 ## Computably approximable reals: Theorem 5.7
 
@@ -117,22 +96,12 @@ A real $\alpha = 0.A$ is computably approximable if and only if $A \in \Delta^0\
 
 </div>
 
-**Reminder (Post's theorem / the limit lemma).** For $A \subseteq \mathbb{N}$: $A \in \Delta^0\_2 = \Sigma^0\_2 \cap \Pi^0\_2 \iff A \le\_T \emptyset^{\prime} \iff A(n) = \lim\_{k} g(k, n)$ for some computable $g : \mathbb{N}^2 \to \lbrace 0,1\rbrace$.
+**Reminder (limit lemma).** $A \in \Delta^0\_2 = \Sigma^0\_2 \cap \Pi^0\_2 \iff A \le\_T \emptyset^{\prime} \iff A(n) = \lim\_{k} g(k, n)$ for some computable $g$.
 
-* **(⇐) from a limit to an approximation.** Let $A(n) = \lim\_k g(k,n)$ and take the stage-$n$ guesses of the first $n$ bits,
+* **(⇐):** take as $a\_n$ the stage-$n$ guess of the first $n$ bits; each finite block of guesses is eventually correct, so $a\_n \to \alpha$ — with no monotonicity and no modulus, exactly the c.a. freedom.
+* **(⇒):** $q < \alpha \iff \exists n\, \forall m \ge n\ (q < a\_m) \iff \forall n\, \exists m \ge n\ (q < a\_m)$ puts $L(\alpha)$ in $\Sigma^0\_2 \cap \Pi^0\_2$ (up to the single point $q = \alpha$, which is harmless), so $L(\alpha) \le\_T \emptyset^{\prime}$ and Cor. 5.6.1 transfers this to $A$.
 
-  $$a_n := 0.A_n, \qquad A_n := g(n,0)\,g(n,1)\cdots g(n,n-1).$$
-
-  This is computable, and for each $m$ the first $m$ guesses are correct from some stage on; from then on $a\_n$ and $\alpha$ share $m$ bits, so $\lvert a\_n - \alpha\rvert \le 2^{-m}$. Hence $a\_n \to \alpha$. Note what is *missing*: monotonicity and a modulus — precisely the c.a. freedom.
-* **(⇒) from an approximation to $\Delta^0\_2$.** Let $\alpha = \lim\_n a\_n$. Then $L(\alpha)$ lies in both halves of level two,
-
-  $$q \in L(\alpha) \iff \exists n\, \forall m \ge n\ (q < a_m) \quad (\Sigma^0_2), \qquad\qquad q \in L(\alpha) \iff \forall n\, \exists m \ge n\ (q < a_m) \quad (\Pi^0_2),$$
-
-  so $L(\alpha) \in \Delta^0\_2$, i.e. $L(\alpha) \le\_T \emptyset^{\prime}$, and Cor. 5.6.1 gives $A \le\_T \emptyset^{\prime}$, i.e. $A \in \Delta^0\_2$. $\square$
-
-  ⚠️ Both equivalences are exact for $q \ne \alpha$ but can fail at $q = \alpha$: if $a\_m \searrow \alpha$ from above, $q = \alpha$ satisfies both right-hand sides. Each formula therefore describes $L(\alpha)$ up to at most one rational, and a finite change leaves $\Sigma^0\_2$ and $\Pi^0\_2$ unchanged, so the conclusion stands. A uniform repair of the $\Sigma^0\_2$ side: $q < \alpha \iff \exists k\, \exists n\, \forall m \ge n\ (a\_m > q + 2^{-k})$.
-
-**Reading.** "Limit of a computable sequence" is the same notion on both sides — the limit lemma for sets, Thm. 5.7 for reals. The c.a. reals are therefore also called the **$\Delta^0\_2$ reals**, and every one of them is $\le\_T \emptyset^{\prime}$.
+**Reading.** "Limit of a computable sequence" is the same notion on both sides — the limit lemma for sets, Thm. 5.7 for reals. Every c.a. real is $\le\_T \emptyset^{\prime}$.
 
 ## Left-c.e. reals: Definition 5.8 and Proposition 5.9
 
@@ -158,27 +127,15 @@ For a real $\alpha$ (in $[0,1]$ for (iii)), the following are equivalent:
 
 </div>
 
-### The four implications
+* **(i) ⇒ (ii):** with $a\_n \nearrow \alpha$, "$a\_n > q$" is a **certificate** for $q < \alpha$ — monotonicity is what makes it one.
+* **(ii) ⇒ (i):** running maximum of an enumeration of $L(\alpha)$.
+* **(iii) ⇒ (i):** halted mass only grows — stage sums $\sum\_{\sigma \in \operatorname{dom}\widetilde M[n],\ l(\sigma) < n} 2^{-l(\sigma)}$.
+* **(i) ⇒ (iii), Kraft–Chaitin:** climb along *dyadic* lower bounds $b\_s \nearrow \alpha$; each increment $b\_{s+1} - b\_s$ is a finite sum of powers of two, so request codewords of those lengths (output irrelevant). The Kraft sum telescopes to $\alpha \le 1$, and KC delivers a machine whose halting probability is exactly $\alpha$. *Dyadic* because KC takes integer lengths.
 
-* **(i) ⇒ (ii): monotone stages certify the cut.** With $a\_n \nearrow \alpha$, $L(\alpha) = \operatorname{dom}(f)$ for the partial computable $f(q) := \min\lbrace n : a\_n > q\rbrace$. Monotonicity is what makes "$a\_n > q$" a **certificate**: $q < a\_n \le \alpha$. For a non-monotone approximation, $a\_n > q$ certifies nothing.
-* **(ii) ⇒ (i): climb along an enumeration.** Given an enumeration $q\_0, q\_1, \ldots$ of $L(\alpha)$, take the record subsequence $i\_0 := 0$, $i\_n := \min\lbrace m > i\_{n-1} : q\_m > q\_{i\_{n-1}}\rbrace$ (or simply the running maximum $a\_n := \max(q\_0, \ldots, q\_n)$): computable, nondecreasing, and converging to $\sup L(\alpha) = \alpha$.
-* **(iii) ⇒ (i): halted mass only grows.** Run $\widetilde M$ for $n$ steps and add up what has halted,
+**Reading 5.9.**
 
-  $$a_n := \sum_{\sigma \in \operatorname{dom}(\widetilde M[n]),\ l(\sigma) < n} 2^{-l(\sigma)} .$$
-
-  A finite computation (the length cut-off), nondecreasing (halted stays halted), and $a\_n \to \alpha\_{\widetilde M}$.
-* **(i) ⇒ (iii): realize a climb as halting mass (Kraft–Chaitin).** Let $\alpha \in [0,1]$ be left-c.e.
-  1. **Make the climb dyadic.** $L(\alpha)$ is c.e. by (ii), so enumerate the dyadic rationals below $\alpha$ and let $b\_s$ be the maximum of $0$ and the first $s$ of them: $0 = b\_0 \le b\_1 \le \cdots \nearrow \alpha$.
-  2. **Split each increment into powers of two.** $\delta\_s := b\_{s+1} - b\_s$ is dyadic, hence a *finite* sum $\delta\_s = \sum\_i 2^{-d\_{s,i}}$. Issue the requests $(d\_{s,i}, \lambda)$ — all with empty output; only the domain matters.
-  3. **The Kraft sum telescopes.** $\sum\_{s,i} 2^{-d\_{s,i}} = \sum\_s (b\_{s+1} - b\_s) = \alpha \le 1$.
-  4. **Kraft–Chaitin (Thm. 2.28)** yields a prefix-free $\widetilde M$ with codewords of exactly these lengths, so $\alpha\_{\widetilde M} = \sum\_{s,i} 2^{-d\_{s,i}} = \alpha$. $\square$
-
-  *Why dyadic:* KC takes integer lengths, and a rational increment such as $\tfrac13$ is an infinite sum of powers of two. Passing from $(a\_s)$ to the dyadic approximants $(b\_s)$ makes every increment a finite batch of requests.
-
-### Reading Proposition 5.9
-
-* A left-c.e. real is "**mass enumerated so far**": every stage-wise nondecreasing enumeration of dyadic mass is the halting probability of some machine, and conversely. Via $\alpha\_{\widetilde M} = \lambda(\operatorname{dom}\widetilde M)$, the left-c.e. reals in $[0,1]$ are exactly the Lebesgue measures of c.e. open subsets of Cantor space.
-* **Strictness at both ends** (the second is not in the notes). $\Omega$ is left-c.e. and not computable (Prop. 5.11). And $1 - \Omega$ is c.a. (negate an approximation) but **not** left-c.e.: otherwise $L(\Omega)$ and $R(\Omega) := \lbrace q : q > \Omega\rbrace$ would both be c.e.; as $\Omega$ is irrational (a rational is computable), every $q$ lies in exactly one of them, so running both enumerations decides $L(\Omega)$ and $\Omega$ would be computable. Hence computable $\subsetneq$ left-c.e. $\subsetneq$ c.a.
+* A left-c.e. real is "**mass enumerated so far**"; the left-c.e. reals in $[0,1]$ are exactly the Lebesgue measures of c.e. open subsets of Cantor space.
+* **Strictness at both ends.** $\Omega$ is left-c.e. and not computable (Prop. 5.11). $1 - \Omega$ is c.a. but **not** left-c.e.: otherwise both cuts of the irrational $\Omega$ would be c.e. and $\Omega$ computable.
 
 ## Chaitin's $\Omega$: Definition 5.10 and Proposition 5.11
 
@@ -202,11 +159,7 @@ In particular $\Omega$ is a left-c.e. real that is **not computable**.
 
 </div>
 
-### $\Omega \le\_T \emptyset^{\prime}$: nothing specific to $\Omega$
-
-$L(\Omega)$ is c.e. (Prop. 5.9), hence decidable from $\emptyset^{\prime}$, hence $\Omega \le\_T \emptyset^{\prime}$ by Cor. 5.6.1. (The notes phrase it through $(w\_s)$: $\emptyset^{\prime}$ answers the $\Sigma^0\_1$ question "do the first $n$ bits of $w\_s$ still change after stage $s$?") The same holds for every c.a. real (Thm. 5.7).
-
-### $\emptyset^{\prime} \le\_T \Omega$: the gap argument
+* **$\Omega \le\_T \emptyset^{\prime}$:** nothing specific to $\Omega$ — $L(\Omega)$ is c.e., hence decidable from $\emptyset^{\prime}$, and Cor. 5.6.1. The same holds for every c.a. real.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(The halting problem is Turing reducible to Chaitin's $\Omega$)</span></p>
@@ -215,17 +168,8 @@ Show $\emptyset^{\prime} \le\_T \Omega$. *Hint:* for given $e$, build a prefix-f
 
 </div>
 
-1. **Package the question as one $\widetilde U$-code.** Let $\widetilde M(0^e 1) \downarrow \iff \Phi\_e(e) \downarrow$; its domain lies in the prefix-free set $\lbrace 0^e 1 : e \in \mathbb{N}\rbrace$. By universality there is a fixed $\rho$ with $\widetilde U(\rho\, 0^e 1) = \widetilde M(0^e 1)$. Put $p\_e := \rho\, 0^e 1$ and $N := l(p\_e) = l(\rho) + e + 1$, both computable from $e$.
-2. **Read an upper bound off the oracle.** From $\Omega \upharpoonright (N+1)$ form $u := 0.(\Omega \upharpoonright (N+1)) + 2^{-(N+1)}$. Then
-
-   $$\Omega < u < \Omega + 2^{-N}.$$
-
-3. **Wait until the unseen mass is small.** Dovetail $\widetilde U$ and let $\omega\_s := \sum\_{\sigma \in \operatorname{dom}(\widetilde U[s])} 2^{-l(\sigma)} \nearrow \Omega$. Wait for a stage $s$ with $u - \omega\_s < 2^{-N}$; it comes, since $u - \omega\_s \to u - \Omega < 2^{-N}$.
-4. **Decide.** If $p\_e \in \operatorname{dom}(\widetilde U[s])$, then $\Phi\_e(e)\downarrow$. Otherwise $p\_e$ never halts: it would add $2^{-N}$ to an unseen mass $\Omega - \omega\_s < u - \omega\_s < 2^{-N}$. $\square$
-
-* ⚠️ The naive version — "the first $N$ bits of $\Omega$ are the sum over the halting programs of length $\le N$" — is false: longer programs carry into the first $N$ bits. What is true, and enough, is the **gap**: once the unseen mass is below $2^{-N}$, no program of length $\le N$ is still pending. So $\Omega \upharpoonright (N+1)$ decides halting for *all* $\widetilde U$-programs of length $\le N$ — $\Omega$ is the halting problem in maximally compressed form.
-* **Why the detour through $\widetilde M$.** $\emptyset^{\prime}$ asks about arbitrary computations $\Phi\_e(e)$, which are not codes of the prefix-free $\widetilde U$; $\widetilde M$ translates question $e$ into a single $\widetilde U$-code $p\_e$ of *known* length. The notes' "simpler solution" is the same argument, phrased as comparing the potential increment $2^{-N}$ of $p\_e$ with the current upper bound on $\Omega - \omega\_s$.
-* **"In particular".** $\Omega$ is left-c.e. by Def. 5.10; were it computable, $\emptyset^{\prime} \le\_T \Omega$ would make the halting problem decidable.
+* **Idea.** Connect two views of $\Omega$: the oracle gives **any precision of $\Omega$**, and running $\widetilde U$ tracks the **halting-mass partial sums in real time**; together they bound the mass still to come. Package "$\Phi\_e(e)\downarrow$?" as one $\widetilde U$-code $\rho\,0^e1$ of known length $N$. Once the remaining mass is below $2^{-N}$, that code has either already halted or never will — its contribution $2^{-N}$ no longer fits.
+* **Reading.** The first $N$ bits of $\Omega$ are *not* the sum over halting programs of length $\le N$ (longer programs carry). What is true is the **gap**: $\Omega \upharpoonright (N+1)$ decides halting for *all* $\widetilde U$-programs of length $\le N$ — $\Omega$ is the halting problem in maximally compressed form.
 
 ### Why "slowest": Solovay domination
 
@@ -238,15 +182,8 @@ $$a_{n+1} - a_n \;\le\; c\,(w_{n+1} - w_n) \qquad \text{for all } n.$$
 
 </div>
 
-* **Locate $\alpha$ inside $\Omega$.** By universality, $\widetilde U(i\_{\widetilde M}\, \sigma) = \widetilde M(\sigma)$ for a fixed code $i\_{\widetilde M}$; let $d := l(i\_{\widetilde M})$. The codes with prefix $i\_{\widetilde M}$ contribute $\sum\_{\sigma \in \operatorname{dom}\widetilde M} 2^{-d - l(\sigma)} = 2^{-d}\alpha$, the remaining codes a left-c.e. real $\beta$ (stage sums over a c.e. set of codes). So $\Omega = 2^{-d}\alpha + \beta$.
-* **Build the approximation.** Pick a left-c.e. approximation $b\_n \nearrow \beta$ and set $w\_n := 2^{-d} a\_n + b\_n$: computable, nondecreasing, $\to \Omega$.
-* **Compare increments.** $w\_{n+1} - w\_n = 2^{-d}(a\_{n+1} - a\_n) + (b\_{n+1} - b\_n) \ge 2^{-d}(a\_{n+1} - a\_n)$, so $c := 2^{d}$ works. $\square$
-
-**Reading.**
-
-* Per step, $\Omega$ moves at least a fixed fraction of what any other halting probability moves — and by Prop. 5.9 that means of what *any* left-c.e. real moves. Large late increments are slow convergence: $\Omega$'s approximation is the **slowest** one. The constant $2^{d}$ is the cost of coding $\widetilde M$ inside $\widetilde U$.
-* The approximation $(w\_n)$ is tailored to the given $(a\_n)$; the statement is existential in $(w\_n)$, not about a fixed approximation of $\Omega$.
-* Forward reference: this relation is **Solovay reducibility** $\alpha \le\_S \Omega$, and the exercise says that every left-c.e. real is Solovay-reducible to $\Omega$ (chapter Solovay Reducibility).
+* **Idea.** $\widetilde M$ sits inside $\widetilde U$ behind a code of length $d$, so $\Omega = 2^{-d}\alpha + \beta$ with $\beta$ (the mass of all other codes) left-c.e.; take $w\_n := 2^{-d}a\_n + b\_n$ for any $b\_n \nearrow \beta$ and compare increments, $c = 2^d$.
+* **Reading.** Per step, $\Omega$ moves at least a fixed fraction of what *any* left-c.e. real moves (Prop. 5.9): large late increments are slow convergence, so $\Omega$'s approximation is the **slowest**. Forward: this is Solovay reducibility $\alpha \le\_S \Omega$ (Part 7).
 
 ## Exercise: computable ⇒ K-trivial ⇒ computably approximable
 
@@ -260,26 +197,11 @@ $$a_{n+1} - a_n \;\le\; c\,(w_{n+1} - w_n) \qquad \text{for all } n.$$
 
 </div>
 
-**Where K-trivial sits.** For every $A$ and $n$, $K(\mathrm{bin}(n)) - O(1) \le K(A \upharpoonright n) \le n + K(\mathrm{bin}(n)) + O(1)$ — the length is computable from the prefix, and Thm. 3.7 gives the maximum. 1-random sequences sit at the top ($K(A \upharpoonright n) \ge n - c$, Def. 3.8); K-trivial ones sit at the bottom: each prefix carries no more information than its length.
+**Where K-trivial sits.** $K(\mathrm{bin}(n)) - O(1) \le K(A \upharpoonright n) \le n + K(\mathrm{bin}(n)) + O(1)$ for every $A$ (length is computable from the prefix; Thm. 3.7 for the max). 1-random sequences sit at the top, K-trivial ones at the bottom: each prefix carries no more information than its length.
 
-1. **Computable ⇒ K-trivial.** Let $\alpha = 0.A$ with $A$ computable. From $\mathrm{bin}(n)$ the machine for $A$ prints $A \upharpoonright n = \alpha \upharpoonright n$, so $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1)$; conversely $\mathrm{bin}(n)$ is computable from $\alpha \upharpoonright n$, so $K(\mathrm{bin}(n)) \le K(\alpha \upharpoonright n) + O(1)$. Hence $K(\alpha \upharpoonright n) = K(\mathrm{bin}(n)) \pm O(1)$. The constant is the code of the (fixed, $\alpha$-dependent) machine.
-
-   ⚠️ Argue from Def. 5.1, not from an effective approximation (25): $a\_n$ need not share $n$ bits with $\alpha$ (dyadic boundary).
-2. **$T\_c := \lbrace \sigma : \forall \tau \sqsubseteq \sigma\ \ K(\tau) \le K(\mathrm{bin}(l(\tau))) + c\rbrace$ is a tree computable in $\emptyset^{\prime}$.** Prefix-closed by the "$\forall \tau$". And $K \le\_T \emptyset^{\prime}$: "$K(\tau) \le k$" is $\Sigma^0\_1$ (some program of length $\le k$ halts with output $\tau$), so $\emptyset^{\prime}$ answers it for $k = 0, 1, 2, \ldots$ until the first yes. Membership in $T\_c$ is finitely many such queries.
-3. **The levels of $T\_c$ are uniformly bounded.** Chaitin's counting theorem (3.7) in uniform form: there is $d$ with
-
-   $$\sharp\lbrace \sigma \in \lbrace 0,1\rbrace^n : K(\sigma) \le n + K(\mathrm{bin}(n)) - r\rbrace \le 2^{\,n - r + d} \qquad \text{for all } n, r.$$
-
-   For $\sigma \in T\_c$ of length $n$, $K(\sigma) \le K(\mathrm{bin}(n)) + c = n + K(\mathrm{bin}(n)) - (n - c)$. Choose $r := n - c$: the level has at most $2^{c + d} =: N$ nodes. Letting $r$ depend on $n$ is exactly what cancels the $n$-dependence.
-4. **A K-trivial sequence is an isolated path of $T\_c$.** $A \upharpoonright n \in T\_c$ for all $n$, so $A$ is a path. If $A$ were not isolated, then beyond every level another path leaves $A$, so $A$ has infinitely many splitting points; take $N$ of them, $s\_1 < \cdots < s\_N$, follow the side branch at each to a path $B\_j$, and pick a level $L > s\_N$. The $N + 1$ words $A \upharpoonright L, B\_1 \upharpoonright L, \ldots, B\_N \upharpoonright L$ are distinct nodes of $T\_c$ (branches of a prefix tree never merge) — contradicting step 3.
-5. **An isolated path of a computable tree is computable.** Let $\rho \sqsubset A$ be an isolating prefix and hard-code it. On input $n \ge l(\rho)$, search for a level $m \ge n$ at which all $\sigma \in T$ with $l(\sigma) = m$ and $\rho \sqsubseteq \sigma$ agree on their first $n$ bits; output that common prefix — it is $A \upharpoonright n$, since $A \upharpoonright m$ is among the nodes. The search halts: otherwise some $n$-bit word $\tau \ne A \upharpoonright n$ (finitely many candidates) has nodes above it at infinitely many levels, hence at all levels, and König's lemma gives a second path through $\rho$.
-6. **K-trivial ⇒ c.a.** Let $\alpha = 0.A$ be K-trivial with constant $c$. By step 4, $A$ is an isolated path of $T\_c$; by step 2, $T\_c \le\_T \emptyset^{\prime}$; step 5 relativized to $\emptyset^{\prime}$ gives $A \le\_T \emptyset^{\prime}$, i.e. $A \in \Delta^0\_2$. By Thm. 5.7, $\alpha$ is computably approximable. $\square$
-
-**Reading.**
-
-* **Finite evidence versus infinite properties.** "$K(\sigma) \le k$" has a finite witness (a short halting program) and is c.e.; "$K(\sigma) > k$" has none. "$\sigma \in T$" is finite; "$\sigma$ has an infinite extension in $T$" is not. Where the finite evidence runs out, the proof reaches for an oracle ($\emptyset^{\prime}$ in step 2), compactness (König in step 5), or finite advice ($\rho$ in step 5).
-* **Non-uniformity.** Step 5 proves "for each isolated path there is a machine", not "from $T$, list the isolated paths". The isolating prefix is used, never found.
-* **What the exercise does not say.** It lands K-trivial reals in $\Delta^0\_2$, one level above the computable reals; it does not claim that they are computable.
+* **Computable ⇒ K-trivial.** Prefix and length are computable from each other, so $K(\alpha \upharpoonright n) = K(\mathrm{bin}(n)) \pm O(1)$. (Argue from Def. 5.1, not from (25).)
+* **K-trivial ⇒ c.a.** The tree $T\_c$ of words all of whose prefixes are K-trivial with constant $c$ is **computable in $\emptyset^{\prime}$** ("$K(\tau) \le k$" is $\Sigma^0\_1$) and has **uniformly bounded levels**: Chaitin's counting theorem with $r := n - c$ gives at most $2^{c+d}$ nodes per level. A K-trivial $A$ is a path of $T\_c$, and bounded width forces it to be **isolated** (infinitely many splittings would put more than $2^{c+d}$ nodes on one level). An isolated path of a computable tree is computable — hard-code an isolating prefix and wait until all nodes above it agree on $n$ bits (König: otherwise a second path) — and relativized to $\emptyset^{\prime}$ this gives $A \in \Delta^0\_2$, so $\alpha$ is c.a. by Thm. 5.7.
+* **Reading.** Where finite evidence runs out ("$K > k$", "has an infinite extension") the proof reaches for an oracle, compactness, or finite advice. The exercise lands K-trivial reals in $\Delta^0\_2$; it does not claim they are computable.
 
 ## The three classes side by side
 
@@ -299,18 +221,15 @@ $$a_{n+1} - a_n \;\le\; c\,(w_{n+1} - w_n) \qquad \text{for all } n.$$
 | Result | Statement | Tool |
 | :-- | :-- | :-- |
 | 5.1–5.5 | computable real $= 0.A$ with $A$ computable; $L(\alpha) = \lbrace q < \alpha\rbrace$; c.a. $=$ limit of a computable Cauchy sequence; left-c.e. $=$ of a nondecreasing one | definitions |
-| 5.6 | computable $\iff$ $L(\alpha)$ computable $\iff$ effective approximation $\lvert \alpha - a\_n\rvert < 2^{-n}$ | dyadic bracket (27); bracket search (26); non-uniform for rational/dyadic $\alpha$ |
+| 5.6 | computable $\iff$ $L(\alpha)$ computable $\iff$ effective approximation $\lvert \alpha - a\_n\rvert < 2^{-n}$ | dyadic bracket (27); bracket search; non-uniform for rational/dyadic $\alpha$ |
 | 5.6.1 | $A \le\_T \emptyset^{\prime} \iff L(\alpha) \le\_T \emptyset^{\prime}$ | relativize (i) ⇔ (ii) |
-| 5.7 | c.a. $\iff A \in \Delta^0\_2$ | limit lemma; $L(\alpha) \in \Sigma^0\_2 \cap \Pi^0\_2$ (up to the point $q = \alpha$); 5.6.1 |
+| 5.7 | c.a. $\iff A \in \Delta^0\_2$ | limit lemma; $L(\alpha) \in \Sigma^0\_2 \cap \Pi^0\_2$; 5.6.1 |
 | 5.8 | $\alpha\_{\widetilde M} = \sum\_{\sigma \in \operatorname{dom}\widetilde M} 2^{-l(\sigma)} = \lambda(\operatorname{dom}\widetilde M) \le 1$ | Kraft 2.25 |
-| 5.9 | left-c.e. $\iff$ $L(\alpha)$ c.e. $\iff$ halting probability | $f(q) = \min\lbrace n : a\_n > q\rbrace$; running max; stage sums; dyadic climb + Kraft–Chaitin 2.28 |
+| 5.9 | left-c.e. $\iff$ $L(\alpha)$ c.e. $\iff$ halting probability | monotone certificates; running max; stage sums; dyadic climb + Kraft–Chaitin 2.28 |
 | 5.10 | $\Omega = \alpha\_{\widetilde U}$, approximation $w\_s$ = mass halted by stage $s$ | left-c.e. by construction |
 | 5.11 | $\emptyset^{\prime} \equiv\_T \Omega$; $\Omega$ left-c.e. and noncomputable | $\le$: c.e. cut + 5.6.1; $\ge$: gap argument |
-| Ex. ($\emptyset^{\prime} \le\_T \Omega$) | $\Omega \upharpoonright (N+1)$ decides halting of all $\widetilde U$-codes of length $\le N$ | $\widetilde M(0^e1)\downarrow \iff \Phi\_e(e)\downarrow$; wait until $u - \omega\_s < 2^{-N}$ |
+| Ex. ($\emptyset^{\prime} \le\_T \Omega$) | $\Omega \upharpoonright (N+1)$ decides halting of all $\widetilde U$-codes of length $\le N$ | code $\rho 0^e1$ of known length; wait until the remaining mass is $< 2^{-N}$ |
 | Ex. (Solovay domination) | $a\_{n+1} - a\_n \le 2^{d}(w\_{n+1} - w\_n)$ for a suitable $(w\_n) \nearrow \Omega$ | $\Omega = 2^{-d}\alpha + \beta$; $w\_n := 2^{-d}a\_n + b\_n$ |
-| Ex. (K-trivial), 1 | computable $\Rightarrow K(\alpha \upharpoonright n) = K(\mathrm{bin}(n)) \pm O(1)$ | the machine for $A$; length from prefix |
-| Ex. (K-trivial), 2–3 | $T\_c$ is an $\emptyset^{\prime}$-computable tree with levels $\le 2^{c+d}$ | $K \le\_T \emptyset^{\prime}$; counting theorem 3.7 with $r = n - c$ |
-| Ex. (K-trivial), 4–5 | K-trivial $A$ is an isolated path of $T\_c$; isolated paths of computable trees are computable | pigeonhole on a level; König + hard-coded $\rho$ |
-| Ex. (K-trivial), 6 | K-trivial $\Rightarrow$ c.a. | relativize 5 to $\emptyset^{\prime}$; 5.7 |
+| Ex. (K-trivial) | computable $\Rightarrow$ K-trivial $\Rightarrow$ c.a. | prefix ↔ length; $T\_c$ is a thin $\emptyset^{\prime}$-computable tree (3.7 with $r = n - c$); isolated path ⇒ computable, relativized |
 
 **Punchline.** A real is as computable as its left cut, and the left cut is as computable as the best approximation one can run: an error *bound* at every stage makes $L(\alpha)$ decidable and $\alpha$ computable; a known *sign* of the error — approximation from below — makes $L(\alpha)$ c.e. and $\alpha$ the halting probability of a prefix-free machine, Kraft–Chaitin turning every dyadic climb into halting programs; no information at all still leaves $L(\alpha)$ in $\Delta^0\_2$, the limit lemma on the real line. Chaitin's $\Omega$ lives in the middle layer and marks its edge: left-c.e. by construction, Turing-equivalent to the halting problem because the unseen halting mass below $2^{-N}$ cannot hide a program of length $N$, and the slowest of all left-c.e. approximations because every other halting probability is a scaled part of it. At the opposite end, the K-trivial reals — prefixes no more complex than their lengths — are trapped as isolated paths of a thin $\emptyset^{\prime}$-computable tree and so are $\Delta^0\_2$ as well. The chapter's hierarchy, **computable $\subsetneq$ left-c.e. $\subsetneq$ c.a.**, is the stage on which the randomness of $\Omega$ is played out next.

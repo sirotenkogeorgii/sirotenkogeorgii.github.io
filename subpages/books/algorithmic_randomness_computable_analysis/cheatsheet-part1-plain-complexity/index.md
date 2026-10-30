@@ -186,8 +186,8 @@ $$\frac{g(n)}{n} \ge 1 - 2^{-n} - \frac{1}{n}\sum_{i=1}^{n} i\,2^{-i} \;\ge\; 1 
 * **Axiomatic characterization of $C$.** $(M\_0, M\_1, \dots)$ is **uniformly c.e.** if $\lbrace (x,i) : x \in M\_i \rbrace$ is c.e. Put $S\_n := \lbrace w : C(w) < n \rbrace$ (so $\lvert S\_n\rvert < 2^n$ by Prop. 2.3).
   * **(a)** $(S\_n)$ is uniformly c.e. — dovetail $U$ over all programs of length $< n$ and all $n$.
   * **(b)** For **every** uniformly c.e. $(V\_n)$ with $\lvert V\_n\rvert < 2^n$ there is $c$ with $\;C(w) < n + c$ for all $w \in V\_n$.
-  * Proof of (b): let the program be the $n$-bit **index** of $w$ inside $V\_n$; the machine reads $n := l(p)$ off the *input length* (a plain machine sees its whole input), enumerates $V\_n$ to the $p$-th element. So $C\_M(w) \le n$, and (1) gives $c := c\_M + 1$.
-  * **Punchline:** (b) says every admissible family sits inside a shifted $S$, i.e. $V\_n \subseteq S\_{n+c}$ — so $(S\_n)$ is the *largest* such family, equivalently $C$ is the *smallest* such complexity measure, up to an additive constant. This characterizes $C$ **without mentioning Turing machines**: it is the least function whose sublevel sets are uniformly c.e. and of size $< 2^n$.
+  * Proof of (b): the program is the $n$-bit **index** of $w$ inside $V\_n$; a plain machine reads $n$ off its input length and enumerates $V\_n$ to that index.
+  * **Punchline:** $V\_n \subseteq S\_{n+c}$ for every admissible family — $(S\_n)$ is the largest, $C$ the smallest, up to a constant. This characterizes $C$ **without mentioning Turing machines**.
 * **Rate of growth.** $\;B(n) := \max\lbrace m \in \mathbb{N} : C(m) \le n \rbrace$.
   * **(a)** $B$ is **total**: at most $2^{n+1} - 1$ programs of length $\le n$, so the set is finite and has a maximum. *Totality comes from finiteness, not computability.*
   * **(b)** $B$ **grows faster than every partially computable** $f$: $\;f(n) \le B(n)$ for all but finitely many $n \in \mathrm{dom}(f)$, since $C(f(n)) \le C(n) + c\_f \le \log(n) + \tilde c < n$ eventually. Busy-beaver flavour: well-defined, not computable.
@@ -245,15 +245,7 @@ $$n < f(M(\mathrm{bin}(n))) < C(M(\mathrm{bin}(n))) \;\overset{\text{Thm. 2.2}}{
 | add / change / delete the **last** bit | $\pm c$ for a fixed $c$ | Prop. 2.12 |
 | insert / change / delete **one interior** bit | can raise $C$ by more than any $n$ | Prop. 2.13 |
 
-**Prop. 2.13 construction.** Take the highly compressible $w\_n := (01)^{2^n}$, so $C(w\_n) \le \log(n) + c\_M$, and the family
-
-$$W_n^{+} = \lbrace (01)^k 1 (01)^{2^n - k} : 0 \le k \le 2^n \rbrace \qquad (2^n + 1 \text{ distinct words}).$$
-
-By the counting bound at most $2^n - 1$ words have $C < n$, so some $w\_n^{+} \in W\_n^{+}$ has $C(w\_n^{+}) \ge n$, hence
-
-$$C(w_n^{+}) - C(w_n) \ge n - \log(n) - c_M \xrightarrow[n\to\infty]{} \infty.$$
-
-Cases (ii) change and (iii) delete are analogous with $W\_n^{c} = \lbrace (01)^{k-1}11(01)^{2^n-k}\rbrace$ and $W\_n^{-} = \lbrace (01)^{k-1}1(01)^{2^n-k}\rbrace$.
+**Prop. 2.13 idea.** Insert one $1$ into the very compressible $w\_n := (01)^{2^n}$ ($C \le \log n + c$) at any of $2^n + 1$ positions; by the counting bound one of these $2^n + 1$ words has $C \ge n$, so the jump is $\ge n - \log n - c \to \infty$. Change and delete: same family, same count.
 
 ### Concatenation: the parsing overhead
 
@@ -266,8 +258,7 @@ $$\boxed{\,C(xy) \le C(x) + 2\log C(x) + C(y) + c\,}$$
 
 </div>
 
-* **Construction:** feed $M$ the input $\;\mathrm{bin}(l(\tau\_x))\,01\,\tau\_x\tau\_y$; the separator $01$ makes the length field parseable, then split off the first $l(\tau\_x)$ bits and output $U(\tau\_1)U(\tau\_2)$.
-* Where the **factor 2** comes from: the length field must itself be self-delimiting, since a bare $01$ can also occur *inside* $\mathrm{bin}(l(\tau\_x))$. The standard fix — double every bit of the length field, then terminate with $01$ — costs $2\log C(x) + 2$ bits, which is exactly the overhead term.
+* **Idea:** prepend a **self-delimiting length header** for $\tau\_x$ to the pair $\tau\_x\tau\_y$; the decoder then knows where to cut. Doubling each header bit and ending with $01$ costs $2\log C(x) + O(1)$ — that is the whole overhead term.
 * **Exercise 2.15** (iterated-log refinement, for each fixed $n$):
 
 $$C(xy) \le C(x) + \log C(x) + \log\log C(x) + \cdots + \underbrace{\log\cdots\log}_{n-1} C(x) + 2\underbrace{\log\cdots\log}_{n} C(x) + C(y) + c_n$$
@@ -283,8 +274,8 @@ $$C(xy) > C(x) + \log C(x) + C(y) + n.$$
 
 </div>
 
-* **Proof sketch:** reuse the set $S$ from Thm. 1.3, whose members satisfy $C(\sigma) \le l(\sigma) - \log l(\sigma) + O(1)$. Take $w$ with $C(w) \ge l(w)$ (counting bound), let $x$ be a long prefix of $w$ lying in $S$, and $w = xy$. Then $C(x) + C(y)$ loses $\log l(x)$ against $l(w) \le C(xy)$.
-* ⚠️ The lecture PDF's closing line of this proof is a **typo** — as printed, $\log l(x) - \log(l(x) - \log l(x)) \to 0$, not $\infty$. The intended claim (a logarithmic additive term is necessary) still stands; check the inequality against the lecturer's version before quoting it.
+* **Idea:** split an incompressible $w = xy$ ($C(w) \ge l(w)$, counting bound) so that $x$ lies in the set $S$ of Thm. 1.3, where $C(x) \le l(x) - \log l(x) + O(1)$; the $\log l(x)$ lost on the right-hand side is the gap.
+* ⚠️ The source's closing inequality has a typo (its difference tends to $0$, not $\infty$); the claim stands, check against the lecturer's version before quoting.
 
 ## One-glance summary of the bounds
 

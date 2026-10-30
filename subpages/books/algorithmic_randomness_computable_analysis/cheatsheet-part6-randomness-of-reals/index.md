@@ -39,7 +39,7 @@ The proof needs one classical tool — a machine that can refer to **its own ind
 
 ## The toolkit: machines that know their own index (5.12–5.15)
 
-**Notation.** $M\_0, M\_1, \ldots$ is the standard enumeration of all Turing machines on words; $\widetilde M\_e := M\_{T(e)}$ is its prefix-free trimming from the proof of Thm. 2.20, so that $\widetilde U(i\_e\, \tau) = \widetilde M\_e(\tau)$ for the self-delimiting code $i\_e$ of the index $e$. We write $d\_e := l(i\_e)$ for the length of that code — the **coding constant** of $\widetilde M\_e$ (for instance $d\_e = e + 1$ if $i\_e = 0^e1$); $e \mapsto d\_e$ is computable.
+**Notation.** $M\_0, M\_1, \ldots$ is the standard enumeration of all Turing machines on words; $\widetilde M\_e := M\_{T(e)}$ is its prefix-free trimming from the proof of Thm. 2.20, so that $\widetilde U(i\_e\, \tau) = \widetilde M\_e(\tau)$ for the self-delimiting code $i\_e$ of the index $e$. We write $d\_e := l(i\_e)$ for the length of that code — the **coding constant** of $\widetilde M\_e$; $e \mapsto d\_e$ is computable.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorems</span><span class="math-callout__name">(5.12–5.15 — $s$-$m$-$n$, fixed point, recursion)</span></p>
@@ -62,25 +62,11 @@ The proof needs one classical tool — a machine that can refer to **its own ind
 
 </div>
 
-### The four proofs
-
-* **5.12 — hard-code the parameter.** Given $x$, build the machine "on input $y$, write $(x, y)$ and run the machine for $g$". Its index $s(x)$ is computable from $x$, and the construction always succeeds, so $s$ is total even where $g(x, \cdot)$ is nowhere defined.
-* **5.13 — self-application plus $s$-$m$-$n$.** Let $d$ be total computable with
-
-  $$M_{d(e)} = M_{M_e(e)} \ \text{ if } M_e(e)\downarrow, \qquad M_{d(e)} = \text{the nowhere-defined machine otherwise}$$
-
-  ($s$-$m$-$n$ applied to the partial computable $(e, k) \mapsto M\_{M\_e(e)}(k)$). Pick $i$ with $M\_i = f \circ d$ — total, so $M\_i(i)\downarrow = f(d(i))$ — and put $n := d(i)$. Then
-
-  $$M_n = M_{d(i)} = M_{M_i(i)} = M_{f(d(i))} = M_{f(n)}.$$
-
-* **5.14 — a fixed point of the $s$-$m$-$n$ function.** Take total $s$ with $M\_{s(x)}(y) = g(x, y)$ and a fixed point $e$ of $s$ (5.13): $M\_e(y) = M\_{s(e)}(y) = g(e, y)$.
-* **5.15 — trimming is invisible on prefix-free machines.** Apply 5.14 to $g(e, y) := h(y, e)$: some $M\_e = h(\cdot, e)$. This machine is prefix-free, and the construction of Thm. 2.20 only removes inputs that conflict with an earlier comparable one, so it leaves $M\_e$ unchanged: $\widetilde M\_e = M\_{T(e)} = M\_e = h(\cdot, e)$.
-
-### Reading the toolkit
-
-* **What the recursion theorem buys.** Any program may be written as "on input $y$, do $g(\text{my own index}, y)$": the index is unknown while $g$ is being written, yet some $e$ makes the self-reference exact. In Thm. 6.2 the index is used for one thing only — to know the **coding constant** $d\_e$ at which $\widetilde U$ simulates the machine.
-* **Why a prefix-free version.** $K$ is defined through $\widetilde U$, which simulates the *trimmed* machines $\widetilde M\_e$. A fixed point for the plain enumeration is useless unless it is also one for the tilde enumeration; 5.15 says it is, provided every section of $h$ is prefix-free. The construction in 6.2 guarantees this for free: $\operatorname{dom} h(\cdot, c) \subseteq \operatorname{dom} \widetilde U$.
-* **Effective, but opaque.** The fixed point $n = d(i)$ is *computed* from an index of $f \circ d$. What is not available is any information about what $M\_n$ does beyond $M\_n = M\_{f(n)}$ — in particular, whether it halts anywhere.
+* **5.12:** hard-code the parameter $x$ into the program; always succeeds, so $s$ is total.
+* **5.13:** self-application — let $d$ be total with $M\_{d(e)} = M\_{M\_e(e)}$ ($s$-$m$-$n$), pick $i$ with $M\_i = f \circ d$, then $n := d(i)$ satisfies $M\_n = M\_{M\_i(i)} = M\_{f(n)}$.
+* **5.14:** a fixed point of the $s$-$m$-$n$ function $s$ for $g$.
+* **5.15:** apply 5.14 to $g(e, y) := h(y, e)$; the resulting $M\_e$ is prefix-free, and trimming leaves prefix-free machines untouched, so $\widetilde M\_e = M\_e$.
+* **What it buys.** A program may say "do $g(\text{my own index}, y)$"; in Thm. 6.2 the index is used only to know the **coding constant** $d\_e$. The prefix-free version is needed because $K$ is defined via the trimmed machines; the construction in 6.2 makes every section prefix-free for free ($\operatorname{dom} h(\cdot, c) \subseteq \operatorname{dom} \widetilde U$).
 
 ## Random reals: Definition 6.1
 
@@ -95,14 +81,9 @@ where $\alpha \upharpoonright n := A \upharpoonright n$ are the first $n$ bits o
 
 </div>
 
-* **The dyadic convention is harmless.** Only dyadic rationals have two expansions, $0.w1000\ldots = 0.w0111\ldots$; both are computable, hence (Remark below) nonrandom either way. Every other real has exactly one expansion, so Def. 6.1 is well posed.
-* **Tests directly on $[0,1]$.** A **Martin-Löf test for reals** is a uniformly c.e. sequence of open sets $U\_i \subseteq [0,1]$, each a c.e. union of dyadic intervals (closed or open — the endpoints are dyadic, hence computable and irrelevant), with $\lambda(U\_i) \le 2^{-i}$; $\alpha$ is random iff $\alpha \notin \bigcap\_i U\_i$ for every such test. This is Def. 1.5 transported along
-
-  $$[\![\sigma]\!] \;\longleftrightarrow\; I_\sigma := \bigl[\,0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}\,\bigr], \qquad \lambda(I_\sigma) = 2^{-l(\sigma)} = \lambda([\![\sigma]\!]),$$
-
-  the map $A \mapsto 0.A$ being measure-preserving and injective off the dyadic rationals. Pushing a layer forward does not change its measure; pulling one back adds at most the second names of dyadic endpoints — computable sequences. So a non-dyadic $\alpha$ is caught by a test on $[0,1]$ iff its expansion is caught by one on Cantor space.
-* **Almost every real is random.** The 1-nonrandom sequences form a null set (Part 4) and $A \mapsto 0.A$ preserves measure, so $\lambda(\lbrace \alpha \in [0,1] : \alpha \text{ is ML-random}\rbrace) = 1$.
-* **Geometry.** $\alpha \upharpoonright n$ names the level-$n$ dyadic interval $I\_{\alpha \upharpoonright n} \ni \alpha$ of length $2^{-n}$ — the real-line face of the dyadic bracket (27) of Part 5. A non-dyadic $\alpha$ lies in its *interior*; this is the fact used at step $(\ast)$ of Thm. 6.2.
+* **The dyadic convention is harmless.** Both expansions of a dyadic rational are computable, hence nonrandom either way.
+* **Tests directly on $[0,1]$.** Uniformly c.e. unions of dyadic intervals $U\_i$ with $\lambda(U\_i) \le 2^{-i}$, via $[[\sigma]] \leftrightarrow I\_\sigma = [0.\sigma, 0.\sigma + 2^{-l(\sigma)}]$; the map $A \mapsto 0.A$ is measure-preserving and injective off the dyadics, so a non-dyadic $\alpha$ is caught on $[0,1]$ iff its expansion is caught on Cantor space.
+* **Almost every real is random**, and $\alpha \upharpoonright n$ names the level-$n$ dyadic interval of length $2^{-n}$ containing $\alpha$ — a non-dyadic $\alpha$ lies in its *interior*, which is the fact Thm. 6.2 uses.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Computable reals are null-test visible)</span></p>
@@ -111,8 +92,8 @@ If $\alpha$ is computable, then $U\_i := [[\alpha \upharpoonright i]]$ — one i
 
 </div>
 
-* **In the other currency.** For computable $\alpha$, $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1) \le 2\log n + O(1)$ (step 1 of the K-trivial exercise, Part 5) — nowhere near $n - c$. Both proofs say the same thing: a computable real can be *pointed at* with $O(\log n)$ bits, or trapped in intervals of length $2^{-n}$ by a procedure that costs nothing.
-* **What is ruled out, and what is not.** Random reals are irrational, non-dyadic and noncomputable. They need *not* fail to be left-c.e. or $\Delta^0\_2$: Thm. 6.2 exhibits a random real that is left-c.e. and computes $\emptyset^{\prime}$. "Random" measures the description length of prefixes, not the usefulness of the real as an oracle.
+* **In the other currency:** $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1)$ for computable $\alpha$ (K-trivial exercise, Part 5). A computable real can be *pointed at* with $O(\log n)$ bits.
+* **What is ruled out, and what is not.** Random reals are irrational and noncomputable, but may well be left-c.e. and compute $\emptyset^{\prime}$ — $\Omega$ is the example. "Random" measures description length of prefixes, not usefulness as an oracle.
 
 ## Theorem 6.2: Chaitin's $\Omega$ is random
 
@@ -123,55 +104,12 @@ $\Omega = \sum\_{\sigma \in \operatorname{dom}(\widetilde U)} 2^{-l(\sigma)}$ is
 
 </div>
 
-Fix the approximation $w\_s = \sum\_{\sigma \in \operatorname{dom}(\widetilde U[s]),\ l(\sigma) \le s} 2^{-l(\sigma)} \nearrow \Omega$ of Def. 5.10, where $\widetilde U[s]$ is $\widetilde U$ run for $s$ steps on the inputs of length $\le s$ (the length bound of the sum); so $\operatorname{dom}(\widetilde U[s])$ and $\operatorname{range}(\widetilde U[s])$ are finite and computable from $s$.
+Let $w\_s \nearrow \Omega$ be the stage approximation of Def. 5.10.
 
-### Step 1 — a uniform family of saboteur machines
-
-For every $c \in \mathbb{N}$ define a partial computable $f^c$ by enumerating its graph. **Stage $s$:** for every $n \le s$ and every $\tau \in \operatorname{dom}(\widetilde U[s])$ not yet in $\operatorname{dom}(f^c)$ with
-
-$$\widetilde U(\tau)[s]\downarrow = w_s \upharpoonright n \qquad \text{and} \qquad l(\tau) + d_c \le n, \tag{S}$$
-
-choose a word $\sigma \notin \operatorname{range}(\widetilde U[s])$ — say the length-lexicographically least — and set $f^c(\tau) := \sigma$.
-
-* **Reading (S).** $\tau$ is a $\widetilde U$-code of the *current* $n$-bit prefix of the approximation, and it is so short that even after the simulation overhead $d\_c$ it still fits into $n$ bits.
-* **Prefix-free.** $\operatorname{dom}(f^c) \subseteq \operatorname{dom}(\widetilde U)$, which is prefix-free.
-* **Uniform.** $h(\tau, c) := f^c(\tau)$ is partial computable: dovetail over $c$ and $s$; each stage checks finitely many pairs $(n, \tau)$.
-* **Fresh output is the whole point.** Every $\widetilde U$-code of $\sigma$ halts *after* stage $s$, because $\sigma$ is not among the outputs seen by stage $s$.
-
-### Step 2 — the fixed point
-
-By 5.15 there is an index $e$ with $\widetilde M\_e = f^e$: a machine that acts only on codes beating **its own** coding constant $d\_e$. For every $\tau \in \operatorname{dom}(f^e)$ put $\nu := i\_e\, \tau$; then
-
-$$\widetilde U(\nu) = \widetilde M_e(\tau) = f^e(\tau), \qquad l(\nu) = l(\tau) + d_e .$$
-
-### Step 3 — the contradiction
-
-**Claim:** $K(\Omega \upharpoonright n) > n - d\_e$ for every $n$. Suppose not: some $\tau$ has $\widetilde U(\tau) = \Omega \upharpoonright n$ and $l(\tau) + d\_e \le n$.
-
-1. **The prefix stabilizes.** $\Omega$ is noncomputable (Prop. 5.11), in particular not dyadic, so $0.(\Omega \upharpoonright n) < \Omega < 0.(\Omega \upharpoonright n) + 2^{-n}$ strictly. As $w\_s \nearrow \Omega$, from some stage on $w\_s$ lies in this open interval, i.e. $w\_s \upharpoonright n = \Omega \upharpoonright n$; once $\widetilde U(\tau)$ has halted as well, (S) holds for $(n, \tau)$ at all large stages $s$. So $f^e(\tau) =: \sigma$ is defined, at some stage $s$ with
-
-   $$\widetilde U(\tau)[s]\downarrow = w_s \upharpoonright n = \Omega \upharpoonright n. \tag{$\ast$}$$
-
-2. **A late halting event.** $\sigma \notin \operatorname{range}(\widetilde U[s])$, so $\nu = i\_e\tau$ satisfies $\widetilde U(\nu) = \sigma$ but $\nu \notin \operatorname{dom}(\widetilde U[s])$: its mass is not yet in $w\_s$. Hence
-
-   $$\Omega - w_s \;\ge \sum_{\rho \,\in\, \operatorname{dom}(\widetilde U) \setminus \operatorname{dom}(\widetilde U[s])} 2^{-l(\rho)} \;\ge\; 2^{-l(\nu)} \;\ge\; 2^{-n}.$$
-
-3. **But the prefix had stabilized.** By $(\ast)$, $0.(\Omega \upharpoonright n) \le w\_s \le \Omega < 0.(\Omega \upharpoonright n) + 2^{-n}$, so $\Omega - w\_s < 2^{-n}$. Contradiction. $\square$
-
-Hence $K(\Omega \upharpoonright n) \ge n - d\_e + 1$ for all $n$: $\Omega$ is 1-random (Def. 3.8) and therefore Martin-Löf random (Thm. 4.1).
-
-### Why the details are the way they are
-
-* **Why a fresh $\sigma$.** The contradiction needs a code of length $\le n$ that halts *after* stage $s$. Outputting an old word would not guarantee this: the code $\nu$ might already lie in $\operatorname{dom}(\widetilde U[s])$ with its mass already counted in $w\_s$. Freshness of the *output* is the only handle on the halting time of the *code*.
-* **Why the recursion theorem.** The machine must ignore codes with $l(\tau) + d > n$: otherwise $\nu$ could be longer than $n$ and the mass $2^{-l(\nu)}$ too small to contradict anything. So the threshold in (S) must be the machine's own coding constant, which only 5.15 makes available. A machine cannot in general know how expensive it is to simulate itself; the fixed point gives one that does.
-* **Why noncomputability of $\Omega$ is an input.** It guarantees step 1. The prefixes of an approximation from below need never agree with those of a *dyadic* limit ($0.0111\ldots1 \to 0.1$ — the dyadic-boundary issue of Part 5). A weaker, earlier fact (Prop. 5.11) is thus used to prove a stronger one.
-* **Where prefix-freeness and Kraft enter.** $\Omega \le 1$ and $\Omega = \lambda(\operatorname{dom} \widetilde U)$ (Def. 5.8) are Kraft; $\operatorname{dom}(f^c) \subseteq \operatorname{dom}(\widetilde U)$ makes 5.15 applicable without any trimming. The inequality in step 2 itself only uses that masses are nonnegative.
-* **What the construction never needs to know.** Whether $w\_s \upharpoonright n$ really is $\Omega \upharpoonright n$. $f^e$ reacts to every short code of every *current* prefix; most reactions are harmless (they define $f^e$ on more of $\operatorname{dom} \widetilde U$). Only the reaction to a true prefix is contradictory — which is exactly why no true prefix has a short code.
-* ⚠️ **Source slips.** The notes state the stage condition as "$K(\tau) < l(\tau) - n$", with $K(\tau)$ where a length comparison belongs and with no reference to $c$ at all; the intended condition is (S). They also write $l(\nu) < l(\tau) + e < n$, conflating the fixed-point index $e$ with the length of its code; with $l(\nu) = l(\tau) + d\_e \le n$ the argument goes through unchanged, since $w\_s \upharpoonright n = \Omega \upharpoonright n$ already forces $\Omega - w\_s < 2^{-n}$.
-
-### An alternative without the recursion theorem (not in the notes)
-
-Act on *every* code instead of only on the short ones, and pay with Kraft mass. At stage $s$, for each unhandled $\tau \in \operatorname{dom}(\widetilde U[s])$ whose output is the current prefix of its own length, $\widetilde U(\tau)[s] = w\_s \upharpoonright l(\widetilde U(\tau))$, issue the request $(l(\tau), \sigma\_\tau)$ with $\sigma\_\tau \notin \operatorname{range}(\widetilde U[s])$ fresh. The request set is c.e. of total weight $\le \sum\_{\tau \in \operatorname{dom} \widetilde U} 2^{-l(\tau)} = \Omega \le 1$, so Kraft–Chaitin (Cor. 2.28.1) gives a constant $d$ with $K(\sigma\_\tau) \le l(\tau) + d$. If $\tau$ is a code of the true prefix $\Omega \upharpoonright n$, then at its acting stage $s$ a code of $\sigma\_\tau$ of length $\le l(\tau) + d$ is still pending, so $2^{-l(\tau) - d} \le \Omega - w\_s < 2^{-n}$, i.e. $l(\tau) > n - d$. Hence $K(\Omega \upharpoonright n) > n - d$ for all $n$. The coding constant now appears only at the *end*, so no self-reference is needed; the price is the Kraft bookkeeping, which the notes' version gets for free from $\operatorname{dom}(f^c) \subseteq \operatorname{dom}(\widetilde U)$.
+* **Idea (saboteur with self-knowledge).** For each $c$ build a machine $f^c$ that watches the approximation: whenever some $\widetilde U$-code $\tau$ of the *current* prefix $w\_s \upharpoonright n$ is so short that $l(\tau) + d\_c \le n$, it outputs a **fresh** word, one that $\widetilde U$ has not output by stage $s$. The recursion theorem (5.15) gives an $e$ with $\widetilde M\_e = f^e$: the saboteur reacts exactly to codes that beat **its own** coding constant $d\_e$.
+* **Contradiction.** Suppose $K(\Omega \upharpoonright n) \le n - d\_e$ via $\tau$. Since $\Omega$ is non-dyadic the prefix of $w\_s$ stabilizes, so at some stage $s$ the saboteur fires on $\tau$ and outputs a fresh $\sigma$. The code $i\_e\tau$ of $\sigma$ has length $\le n$ and **halts after stage $s$** (freshness), so mass $\ge 2^{-n}$ is still pending — but a stabilized prefix means $\Omega - w\_s < 2^{-n}$. $\square$
+* **Why these two ingredients.** *Freshness of the output* is the only handle on the halting time of the code $i\_e\tau$. *Self-knowledge of $d\_e$* is needed so that $l(i\_e\tau) \le n$ — a machine cannot in general know how expensive it is to simulate itself; the fixed point gives one that does. Noncomputability of $\Omega$ (Prop. 5.11, a weaker fact) is used to make the prefix stabilize.
+* **Alternative without the recursion theorem (not in the notes).** React to *every* code $\tau$ of its current prefix by issuing the KC request $(l(\tau), \text{fresh } \sigma)$; total weight $\le \Omega \le 1$, so $K(\sigma) \le l(\tau) + d$ by Cor. 2.28.1, and the same pending-mass argument gives $l(\tau) > n - d$. The coding constant then appears only at the end.
 
 ## $\Omega$'s two faces side by side
 
@@ -202,11 +140,8 @@ Act on *every* code instead of only on the short ones, and pay with Kraft mass. 
 | convention | dyadic rationals: use the terminating expansion; both expansions are computable | — |
 | 6.1 | $\alpha$ ML-random $:\iff$ its expansion is ML-random $\iff \exists c\,\forall n: K(\alpha \upharpoonright n) \ge n - c$ | Def. 1.5, Def. 3.8, Thm. 4.1 |
 | tests on $[0,1]$ | uniformly c.e. unions of dyadic intervals with $\lambda(U\_i) \le 2^{-i}$ | $[[\sigma]] \leftrightarrow I\_\sigma$, same measure |
-| Remark | computable ⇒ not random | one-interval test $[[\alpha \upharpoonright i]]$; or $K(\alpha \upharpoonright n) \le 2\log n + O(1)$ |
-| 6.2, step 1 | $f^c(\tau) :=$ fresh $\sigma$ whenever $\widetilde U(\tau)[s] = w\_s \upharpoonright n$ and $l(\tau) + d\_c \le n$ | $\operatorname{dom} f^c \subseteq \operatorname{dom} \widetilde U$ ⇒ prefix-free; uniform in $c$ |
-| 6.2, step 2 | $\widetilde M\_e = f^e$, so $\widetilde U(i\_e\tau) = f^e(\tau)$ with $l(i\_e\tau) = l(\tau) + d\_e$ | 5.15 |
-| 6.2, step 3 | short code of $\Omega \upharpoonright n$ ⇒ pending code of length $\le n$ ⇒ $\Omega - w\_s \ge 2^{-n}$; but $w\_s \upharpoonright n = \Omega \upharpoonright n$ ⇒ $\Omega - w\_s < 2^{-n}$ | $\Omega$ non-dyadic (5.11) for the stage; freshness for the pending code |
-| 6.2 | $K(\Omega \upharpoonright n) \ge n - d\_e$ for all $n$: $\Omega$ is 1-random, hence ML-random | 4.1 |
+| Remark | computable ⇒ not random | one-interval test $[[\alpha \upharpoonright i]]$; or $K(\alpha \upharpoonright n) \le K(\mathrm{bin}(n)) + O(1)$ |
+| 6.2 | $K(\Omega \upharpoonright n) \ge n - d\_e$ for all $n$: $\Omega$ is 1-random, hence ML-random | saboteur $f^e$ that knows $d\_e$ (5.15); fresh output ⇒ pending code of length $\le n$ ⇒ pending mass $\ge 2^{-n}$, against the stabilized prefix |
 | alternative | KC requests $(l(\tau), \sigma\_\tau)$ of total weight $\le \Omega \le 1$ | 2.28.1; no recursion theorem |
 | outlook | random left-c.e. reals $=$ Solovay-complete reals; all $\Omega$'s are Solovay-equivalent | 7.3, 7.4, 7.6 |
 
