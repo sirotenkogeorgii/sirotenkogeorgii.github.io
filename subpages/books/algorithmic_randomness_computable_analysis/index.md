@@ -2848,6 +2848,29 @@ $$K(\tau_i) \le C_M(\tau_i) + O(1) \le d_i + O(1).$$
 </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kraft–Chaitin as a memory allocator)</span></p>
+
+**Blocks instead of codes.** A codeword $\sigma$ *is* the cylinder $[\![\sigma]\!]$, a dyadic block of measure $2^{-l(\sigma)}$ inside the unit of memory $\lbrace 0,1\rbrace^{\omega}$ (equi
+valently the dyadic interval $[0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$ of $[0,1]$). Under this identification a prefix-free set is a family of pairwise disjoint blocks, a prefix-free machine
+ is an allocation in which every allocated block carries one label (its output word), and a KC request $(d\_i, \tau\_i)$ is an allocation request *without an address*: a size $2^{-d\_i}$ an
+d a label $\tau\_i$. Theorem 2.28 says that addresses can always be found — online, in the order the requests arrive, without ever moving a block that has been placed — as long as the total
+ requested size does not exceed the memory, which is condition (13). The codes themselves can then be forgotten: every allocated block determines its codeword (its address) and, by the theo
+rem, its output word (its label).
+
+**The proof idea is a buddy allocator.** The free memory is kept as placeholders of pairwise distinct sizes — one block of size $2^{-n}$ for every $1$ in the binary expansion of the free me
+asure $R\_s$. A request of size $2^{-d}$ is served from the placeholder of exactly that size if there is one, and otherwise by splitting the smallest larger placeholder into halves, quarter
+s, … until a block of the requested size falls off, the other pieces becoming new placeholders. Nothing is ever freed, so no merging is needed and no fragmentation can occur: the allocator
+never fails before the memory is genuinely exhausted.
+
+**The machine is the allocator's log, read backwards.** On input $\sigma$, the machine $M$ enumerates the allocations until the block $[\![\sigma]\!]$ is allocated and then outputs its labe
+l; if the block is never allocated, $M$ diverges. This is why $M$ is computable (the request list is c.e.) and prefix-free (allocated blocks are disjoint). Encoding is computable as well: t
+o find a name for $\tau\_i$, enumerate the KC set until the request $(d\_i, \tau\_i)$ has been served.
+
+Read a codeword $\sigma$ as the block $[\![\sigma]\!]$ of size $2^{-l(\sigma)}$ in the unit of memory $\lbrace 0,1\rbrace^{\omega}$. A prefix-free machine is then an allocation of pairwise disjoint blocks, each carrying one label — its output word — and the codes themselves can be forgotten: an allocated block determines its address (the code) and, by the theorem, its label. A KC request $(d\_i, \tau\_i)$ asks for a block of size $2^{-d\_i}$ labelled $\tau\_i$ without naming an address; condition (13) says the requests fit into the memory; and Theorem 2.28 is an online allocator that serves them in the order they arrive and never moves or frees a block, which is why no foresight is needed and a c.e. request list suffices. The machine $M$ is the allocator's log read backwards: on input $\sigma$ it waits until the block $[\![\sigma]\!]$ is allocated and outputs its label.
+
+</div>
+
 We close the discussion of prefix-free complexity with an upper bound on $K(\sigma)$ in terms of the length $l(\sigma)$ together with the cost of describing that length.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3365,9 +3388,9 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
    </details>
    </div>
    
-2. Show that there exists a constant $\varepsilon > 0$ such that
+2. Show that there exists a constant $c > 0$ such that
    
-   $$2^{K(bin(n))} \geq 2^{-F(bin(n))-c}$$
+   $$2^{-K(bin(n))} \geq 2^{-F(bin(n))-c}$$
 
    *(hint: $K$ is a minimal information content measure)*
 
@@ -3398,7 +3421,7 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 
    Recall
 
-   $$S_{n,r} = \lbrace \sigma\in{0,1}^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace.$$
+   $$S_{n,r} = \lbrace \sigma\in \lbrace 0,1\rbrace^n: K(\sigma)\le n+K(\operatorname{bin}(n))-r\rbrace.$$
 
    If $\sigma\in S_{n,r}$, then
 
@@ -3410,7 +3433,7 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
    \begin{aligned}
    \sharp S_{n,r}\cdot 2^{-n-K(\operatorname{bin}(n))+r} 
    &\le \sum_{\sigma\in S_{n,r}}2^{-K(\sigma)} \\
-   &\le \sum_{\sigma\in{0,1}^n}2^{-K(\sigma)} \\
+   &\le \sum_{\sigma\in\lbrace 0,1\rbrace^n}2^{-K(\sigma)} \\
    &= W_n \\
    &\le 2^c2^{-K(\operatorname{bin}(n))}.
    \end{aligned}
@@ -3453,7 +3476,7 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 
    $$K(\sigma) \le l(\sigma)+K(\operatorname{bin}(l(\sigma)))+O(1).$$
 
-   For (l(\sigma)=n),
+   For $l(\sigma)=n$,
 
    $$K(\sigma)\le n+K(\operatorname{bin}(n))+c_2.$$
 
@@ -3467,7 +3490,7 @@ $$\max\lbrace K(\sigma) : l(\sigma) = n\rbrace = n + K(\mathrm{bin}(n)) \pm O(1)
 
    $$\sharp S_{n,c+1} \le 2^{n-(c+1)+c} = 2^{n-1}.$$
 
-   So fewer than all $2^n$ strings of length $n$ lie in $S_{n,c+1}$. Hence there exists some $\sigma\in{0,1}^n$ with
+   So fewer than all $2^n$ strings of length $n$ lie in $S_{n,c+1}$. Hence there exists some $\sigma\in\lbrace 0,1\rbrace^n$ with
 
    $$\sigma\notin S_{n,c+1}.$$
 
@@ -3584,11 +3607,7 @@ $$\widetilde{S}_i = \lbrace [\![\sigma^i_0]\!], [\![\sigma^i_1]\!], \dots\rbrace
 
 for all $i$, is a Schnorr test.
 
-Show that the partial function
-
-$$F : \subseteq \lbrace 0,1\rbrace^* \to \mathbb{N}$$
-
-defined by
+Show that the partial function $F : \subseteq \lbrace 0,1\rbrace^\ast \to \mathbb{N}$ defined by
 
 $$\sum_{\sigma \in S_n} 2^{-l(\sigma)+n}$$
 
@@ -5970,6 +5989,13 @@ By the speed-of-convergence characterization (iv) of Proposition 7.2, this synch
   </svg>
   <figcaption>Proposition 7.4 as a weight transfer. Every program $\sigma$ of the prefix-free machine $\widetilde M$ with $\alpha = \sum_\sigma 2^{-l(\sigma)}$ reappears inside $\operatorname{dom}(\widetilde U)$ as $i\sigma$, carrying $2^{-e}$ times its weight (blue); the universal machine also has programs of its own (gray). The $\alpha$-weight still missing at stage $s$ consists exactly of the blue $\Omega$-weight not yet enumerated, so $\alpha - a_s \le 2^e(\Omega - w_s)$: the tail of $\alpha$ is dominated by a constant multiple of the tail of $\Omega$, which is precisely a Solovay reduction.</figcaption>
 </figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Simulation is sub-allocation)</span></p>
+
+In the memory-allocator reading of the Kraft–Chaitin theorem (remark after Corollary 2.28.1), $\widetilde U$ reserves the region $[\![i]\!]$ of size $2^{-e}$ for $\widetilde M$ and places inside it a copy of $\widetilde M$'s whole allocation shrunk by $2^{-e}$: the block $[\![\sigma]\!]$ becomes $[\![i\sigma]\!]$. The tail comparison $\alpha - a\_s \le 2^{e}(\Omega - w\_s)$ then just says that the $\alpha$-memory still to come is $2^{e}$ times a part of the $\Omega$-memory still to come.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Martin-Löf random left-c.e. reals form the greatest $\le$-degree)</span></p>
