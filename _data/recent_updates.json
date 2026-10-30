@@ -3,8 +3,14 @@
   {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-10-29",
+   "date": "2026-10-30",
    "added": false
+  },
+  {
+   "title": "Cheatsheet — Part 6: Randomness of Reals",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part6-randomness-of-reals/",
+   "date": "2026-10-30",
+   "added": true
   },
   {
    "title": "Cheatsheet — Part 2: Prefix-Free Machines & Prefix-Free Complexity",
@@ -171,12 +177,6 @@
   {
    "title": "Cheatsheet — Lecture 2: Multi-Armed Bandits",
    "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture2-bandits/",
-   "date": "2026-07-23",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 5: Monte Carlo Methods",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture5-monte-carlo/",
    "date": "2026-07-23",
    "added": true
   }
