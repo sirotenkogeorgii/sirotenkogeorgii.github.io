@@ -37,6 +37,7 @@ tags:
 * [Part 4: Incompressibility and Typicality (§4)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part4-incompressibility-typicality/)
 * [Part 5: Computable Approximations of Real Numbers (§5.1–5.11)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part5-computable-approximations-of-reals/)
 * [Part 6: Randomness of Reals (§5.12–5.15 and §6)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part6-randomness-of-reals/)
+* [Part 7: Solovay Reducibility (§7)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part7-solovay-reducibility/)
 
 Before we can talk about randomness in any precise sense, we need a vocabulary for the objects on which the theory operates: finite binary words, infinite binary sequences, and the basic open sets of Cantor space that allow us to attach Lebesgue measure to subsets of these sequences.
 
