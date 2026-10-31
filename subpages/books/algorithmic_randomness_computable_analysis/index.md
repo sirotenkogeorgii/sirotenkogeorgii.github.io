@@ -38,6 +38,8 @@ tags:
 * [Part 5: Computable Approximations of Real Numbers (§5.1–5.11)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part5-computable-approximations-of-reals/)
 * [Part 6: Randomness of Reals (§5.12–5.15 and §6)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part6-randomness-of-reals/)
 * [Part 7: Solovay Reducibility (§7)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part7-solovay-reducibility/)
+* [Part 8: Relative Randomness and Relative Complexity (§8)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part8-relative-randomness-and-relative-complexity/)
+* [Part 9: Universal Randomness Tests (§9)](/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part9-universal-randomness-tests/)
 
 Before we can talk about randomness in any precise sense, we need a vocabulary for the objects on which the theory operates: finite binary words, infinite binary sequences, and the basic open sets of Cantor space that allow us to attach Lebesgue measure to subsets of these sequences.
 

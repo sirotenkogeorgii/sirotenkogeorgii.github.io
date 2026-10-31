@@ -3,8 +3,20 @@
   {
    "title": "Algorithmic Randomness and Computable Analysis",
    "url": "/subpages/books/algorithmic_randomness_computable_analysis/",
-   "date": "2026-10-30",
+   "date": "2026-10-31",
    "added": false
+  },
+  {
+   "title": "Cheatsheet — Part 8: Relative Randomness and Relative Complexity",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part8-relative-randomness-and-relative-complexity/",
+   "date": "2026-10-31",
+   "added": true
+  },
+  {
+   "title": "Cheatsheet — Part 9: Universal Randomness Tests",
+   "url": "/subpages/books/algorithmic_randomness_computable_analysis/cheatsheet-part9-universal-randomness-tests/",
+   "date": "2026-10-31",
+   "added": true
   },
   {
    "title": "Cheatsheet — Part 1: Foundations & Plain Kolmogorov Complexity",
@@ -166,18 +178,6 @@
    "title": "MCU 2026: S2a-reducibility and differentiation in Martin-Löf random reals",
    "url": "/subpages/presentations/conferences/mcu_2026/",
    "date": "2026-07-25",
-   "added": true
-  },
-  {
-   "title": "Presentations and Talks",
-   "url": "/notes/presentations/",
-   "date": "2026-07-25",
-   "added": true
-  },
-  {
-   "title": "Cheatsheet — Lecture 10: Policy Gradient Methods",
-   "url": "/subpages/reinforcement_learning_hd/cheatsheet-lecture10-policy-gradients/",
-   "date": "2026-07-23",
    "added": true
   }
  ]
