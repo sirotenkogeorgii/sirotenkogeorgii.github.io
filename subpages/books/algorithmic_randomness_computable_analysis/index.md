@@ -261,7 +261,7 @@ Before formalizing anything, it is useful to look at concrete sequences that *fe
 </div>
 
 <div class="math-callout math-callout--example" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three intuitively nonrandom finite sequences of length 2000)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Three intuitively nonrandom finite sequences of length $2000$)</span></p>
 
 * $X := (01)^{1000} = \underbrace{0101 \dots 01}_{2000 \text{ digits}}.$
 * $Y := x_1 x_2 \dots x_{2000}$ such that $b_1 + b_2 + \dots + b_{2000} \le 200$ (i.e., at most 200 ones).
@@ -646,7 +646,7 @@ The exponential relation $s\approx2^k$ becomes the saving $k\approx\log s$.
 
 * For $X$: $X(2i) = 0$ and $X(2i+1) = 1$ for every $i$, so *every* bit of $X$ is predictable. The same holds for $\tilde X$. In particular, betting one dollar that $\tilde X(2i+1) = 0$ (or $= 1$ depending on indexing) yields an unbounded increase of capital.
 * For $Z$: $Z(2i+1) = 0$ for every $i$, so every second bit of $Z$ is predictable. The same holds for $\tilde Z$.
-* For $Y$: for every $n$ from 0 to 1999 we can bet one dollar that the bit at position $n$ is 0 and earn approximately a $1800$ dollars profit (since at most 200 of the 2000 bits are 1). Similarly, for $\tilde Y$ we can secure an unbounded increase of capital without knowing exactly which positions hold the rare ones.
+* For $Y$: for every $n$ from $0$ to $1999$ we can bet one dollar that the bit at position $n$ is 0 and earn approximately a $1800$ dollars profit (since at most $200$ of the $2000$ bits are 1). Similarly, for $\tilde Y$ we can secure an unbounded increase of capital without knowing exactly which positions hold the rare ones.
 
 </div>
 
@@ -663,12 +663,12 @@ A finite sequence with some *rare* property — one that is easy to describe and
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Untypical properties of $X$, $Y$, $Z$)</span></p>
 
 * $X = (01)^{1000}$ is one of a kind.
-* $Y$ has at most 200 ones. Among $2^{2000}$ binary words of length 2000, only
+* $Y$ has at most 200 ones. Among $2^{2000}$ binary words of length $2000$, only
 
   $$\binom{2000}{\le 200} \approx 1.1 \cdot \binom{2000}{200} \approx 2^{938}$$
 
   have this property — a vanishingly small fraction.
-* Every bit of $Z$ at an even position equals zero. Only $2^{1000}$ of $2^{2000}$ binary words of length 2000 share this property.
+* Every bit of $Z$ at an even position equals zero. Only $2^{1000}$ of $2^{2000}$ binary words of length $2000$ share this property.
 
 </div>
 
@@ -2853,21 +2853,11 @@ $$K(\tau_i) \le C_M(\tau_i) + O(1) \le d_i + O(1).$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kraft–Chaitin as a memory allocator)</span></p>
 
-**Blocks instead of codes.** A codeword $\sigma$ *is* the cylinder $[\![\sigma]\!]$, a dyadic block of measure $2^{-l(\sigma)}$ inside the unit of memory $\lbrace 0,1\rbrace^{\omega}$ (equi
-valently the dyadic interval $[0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$ of $[0,1]$). Under this identification a prefix-free set is a family of pairwise disjoint blocks, a prefix-free machine
- is an allocation in which every allocated block carries one label (its output word), and a KC request $(d\_i, \tau\_i)$ is an allocation request *without an address*: a size $2^{-d\_i}$ an
-d a label $\tau\_i$. Theorem 2.28 says that addresses can always be found — online, in the order the requests arrive, without ever moving a block that has been placed — as long as the total
- requested size does not exceed the memory, which is condition (13). The codes themselves can then be forgotten: every allocated block determines its codeword (its address) and, by the theo
-rem, its output word (its label).
+**Blocks instead of codes.** A codeword $\sigma$ *is* the cylinder $[\![\sigma]\!]$, a dyadic block of measure $2^{-l(\sigma)}$ inside the unit of memory $\lbrace 0,1\rbrace^{\omega}$ (equivalently the dyadic interval $[0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]$ of $[0,1]$). Under this identification a prefix-free set is a family of pairwise disjoint blocks, a prefix-free machine is an allocation in which every allocated block carries one label (its output word), and a KC request $(d\_i, \tau\_i)$ is an allocation request *without an address*: a size $2^{-d\_i}$ an d a label $\tau\_i$. Theorem 2.28 says that addresses can always be found — online, in the order the requests arrive, without ever moving a block that has been placed — as long as the total requested size does not exceed the memory, which is condition (13). The codes themselves can then be forgotten: every allocated block determines its codeword (its address) and, by the theo rem, its output word (its label).
 
-**The proof idea is a buddy allocator.** The free memory is kept as placeholders of pairwise distinct sizes — one block of size $2^{-n}$ for every $1$ in the binary expansion of the free me
-asure $R\_s$. A request of size $2^{-d}$ is served from the placeholder of exactly that size if there is one, and otherwise by splitting the smallest larger placeholder into halves, quarter
-s, … until a block of the requested size falls off, the other pieces becoming new placeholders. Nothing is ever freed, so no merging is needed and no fragmentation can occur: the allocator
-never fails before the memory is genuinely exhausted.
+**The proof idea is a buddy allocator.** The free memory is kept as placeholders of pairwise distinct sizes — one block of size $2^{-n}$ for every $1$ in the binary expansion of the free me asure $R\_s$. A request of size $2^{-d}$ is served from the placeholder of exactly that size if there is one, and otherwise by splitting the smallest larger placeholder into halves, quarters, … until a block of the requested size falls off, the other pieces becoming new placeholders. Nothing is ever freed, so no merging is needed and no fragmentation can occur: the allocator never fails before the memory is genuinely exhausted.
 
-**The machine is the allocator's log, read backwards.** On input $\sigma$, the machine $M$ enumerates the allocations until the block $[\![\sigma]\!]$ is allocated and then outputs its labe
-l; if the block is never allocated, $M$ diverges. This is why $M$ is computable (the request list is c.e.) and prefix-free (allocated blocks are disjoint). Encoding is computable as well: t
-o find a name for $\tau\_i$, enumerate the KC set until the request $(d\_i, \tau\_i)$ has been served.
+**The machine is the allocator's log, read backwards.** On input $\sigma$, the machine $M$ enumerates the allocations until the block $[\![\sigma]\!]$ is allocated and then outputs its label; if the block is never allocated, $M$ diverges. This is why $M$ is computable (the request list is c.e.) and prefix-free (allocated blocks are disjoint). Encoding is computable as well: to find a name for $\tau\_i$, enumerate the KC set until the request $(d\_i, \tau\_i)$ has been served.
 
 Read a codeword $\sigma$ as the block $[\![\sigma]\!]$ of size $2^{-l(\sigma)}$ in the unit of memory $\lbrace 0,1\rbrace^{\omega}$. A prefix-free machine is then an allocation of pairwise disjoint blocks, each carrying one label — its output word — and the codes themselves can be forgotten: an allocated block determines its address (the code) and, by the theorem, its label. A KC request $(d\_i, \tau\_i)$ asks for a block of size $2^{-d\_i}$ labelled $\tau\_i$ without naming an address; condition (13) says the requests fit into the memory; and Theorem 2.28 is an online allocator that serves them in the order they arrive and never moves or frees a block, which is why no foresight is needed and a c.e. request list suffices. The machine $M$ is the allocator's log read backwards: on input $\sigma$ it waits until the block $[\![\sigma]\!]$ is allocated and outputs its label.
 
@@ -5672,8 +5662,6 @@ We show the usual form
 
 $$K(\alpha\upharpoonright n)\le K(\beta\upharpoonright n)+O(1),$$
 
-which is what the notation $K(\beta\upharpoonright n)-O(1)$ means here.
-
 Let $\alpha\le_S\beta$ via $g,c$. Choose a fixed integer $d$ so large that
 
 $$c2^{1-d}<1.$$
@@ -5703,34 +5691,30 @@ $$K(\alpha\upharpoonright n) \le K(\beta\upharpoonright n)+O(1).$$
 </details>
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Property 3 proof</summary>
+
+* We show the usual form $K(\alpha\upharpoonright n)\le K(\beta\upharpoonright n)+O(1),$
+* Let $\alpha\le_S\beta$ via $g,c$. Choose a fixed integer $d$ so large that $2^d \gt c$.
+* The **key idea** is to read additional $d$ bits after reading the first $n$ bits of $\beta$ to eliminate the scale of the constant $c$ and make $g(q)$ lying in the left neighborhood of $\alpha$ of the length $n$. Since we read only a constant amount of additional bits, it will take us only constant bits of prefix-free Kolmogorov complexity:
+  * $K(\beta\upharpoonright (n+d)) \leq K(\beta\upharpoonright n) + K(\tilde{\beta}(n)\upharpoonright d) + O(1)$, where $\tilde{\beta}(n) = \beta[n:]$.
+  * Since $\lvert\tilde{\beta}(n)\upharpoonright d\rvert = d$ for all $n\in\mathbb{N}$, we can establish a constant upper bound on this term.
+  * $K(w) \leq K(l(w)) + l(w) + O(1)$ for all $w \in \lbrace 0, 1\rbrace^\ast$.
+  * For us, $l(w) = d$, so the upper bound for $K(\tilde{\beta}(n)\upharpoonright d)$ is some constant.
+  * Thus, $K(\beta\upharpoonright (n+d)) \leq K(\beta\upharpoonright n) + O(1)$.
+* Then, $0 \lt \alpha - g(\beta \upharpoonright (n+d)) \lt c(\beta - \beta \upharpoonright (n+d)) \lt c 2^{-(n+d)} \lt 2^{-n}$.
+* So, given $\beta \upharpoonright (n+d)$ and the partial computable function $g$, we still cannot compute a number $g(\beta \upharpoonright (n+d))$, whose first $n$ bits coincide with the first $n$ bits of $\alpha$, since $0<\alpha-r<2^{-n}$, with $r=g(\beta\upharpoonright(n+d))$, does not imply $r\upharpoonright n=\alpha\upharpoonright n$, because of a carry across a dyadic point. For example, $r=0.0111\ldots$ can sit just below $\alpha=0.1000\ldots$. The fix: with $\rho=r\upharpoonright n$ we have $\rho\le r<\alpha<\rho+2\cdot 2^{-n}$.
+* The fix costs one bit: $\alpha\upharpoonright n\in\lbrace\rho,\ \rho+2^{-n}\rbrace$, i.e. it is $\rho$ or its successor string. One advice bit $e$ selects the right one.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is Solovay reducibility roughly about)</span></p>
 
-$$\boxed{\text{Solovay reducibility is just a computable way of converting lower bounds for $\beta$ into comparably good lower bounds for $\alpha$.}}$$
+**Solovay reducibility is just a computable way of converting lower bounds for $\beta$ into comparably good lower bounds for $\alpha$.**
 
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>We do we actually read more than $n$ bits from prefix? Is it legal?</summary>
-
-You are right that we are reading more than $n$ bits of $\beta$. But the point is that $d$ is a **fixed constant**, depending only on the Solovay constant $c$, not on $n$. So we first get
-
-$$K(\alpha\upharpoonright n) \le K(\beta\upharpoonright(n+d))+O(1).$$
-
-Then, because $d$ is fixed,
-
-$$K(\beta\upharpoonright(n+d)) \le K(\beta\upharpoonright n)+O(1).$$
-
-Indeed, a program for $\beta\upharpoonright n$, plus the next $d$ bits written literally, gives $\beta\upharpoonright(n+d)$. Since $d$ is constant, those extra $d$ bits cost only $O(1)$.
-
-So the proof is not claiming that exactly $n$ bits of $\beta$ determine $n$ bits of $\alpha$. It claims:
-
-$$n+O(1)\text{ bits of }\beta \quad\text{determine}\quad n\text{ bits of }\alpha.$$
-
-In Kolmogorov complexity, a fixed finite loss in precision is invisible because it is absorbed into the $O(1)$ term.
-
-</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
