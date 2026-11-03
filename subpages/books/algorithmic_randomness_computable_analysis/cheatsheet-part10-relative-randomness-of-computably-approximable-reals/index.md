@@ -57,13 +57,13 @@ $$\alpha\le^{2a}_S\beta \quad\Longleftrightarrow\quad \alpha\le_S\beta.$$
 
 </div>
 
-**Idea: thin to lower bounds, then spend genuine progress instead of slack.** The forward implication from $\le\_S$ to $\le^{2a}\_S$ uses the usual increasing witnesses and simply allows an extra positive term. Conversely, use independent left-c.e. approximations to certify lower bounds and thin the two-sided witnesses, first for $\alpha$ and then for $\beta$ along the same subsequence; an eventually-from-above case makes the corresponding left-c.e. real computable and is handled separately. Once both witnesses increase from below, choose a later stage $m$ with $b\_m-b\_k>2^{-m}$, so
+**Idea: keep increasing terms below each limit, then remove the extra error.** An ordinary Solovay reduction already gives the required inequality without the extra $2^{-n}$. For the reverse direction, first keep indices at which $a\_n$ increases towards $\alpha$; among those indices, keep further ones at which $b\_n$ increases towards $\beta$. To check that a chosen term is below its limit, wait for a known increasing approximation of that limit to pass the term. If the available terms eventually stay at or above a limit, that real is also right-c.e., hence computable, and the claim follows from the computable case. Once both selected sequences increase from below, wait until $b\_m-b\_k>2^{-m}$; this increase is large enough to replace the extra error:
 
 $$\alpha-a_m\le c\bigl(\beta-b_m+2^{-m}\bigr)<c(\beta-b_k),$$
 
 which is the ordinary Solovay tail inequality.
 
-**Where the hypothesis enters.** The left-c.e. approximations certify that selected values lie below the limits; convergence alone cannot do that. The nested thinning preserves the pairing of the witnesses.
+**Where the hypothesis enters.** Knowing that the reals are left-c.e. gives us increasing approximations that let us check whether a chosen term is below its limit. Always keep $a\_n$ and $b\_n$ at the same index: the original error bound compares them at that index.
 
 ## Proposition 10.3: why the relation is transitive
 
@@ -220,7 +220,7 @@ so their complexity gap tends to infinity. The zero odd bits give a **limsup bou
 | Result | Statement | Key move |
 | :-- | :-- | :-- |
 | 10.1 | $\lvert\alpha-a\_n\rvert\le c(\lvert\beta-b\_n\rvert+2^{-n})$ for some computable approximations | absolute errors; additive tolerance |
-| 10.2 | $\le^{2a}\_S\iff\le\_S$ on left-c.e. reals | nested thinning; absorb slack into positive progress |
+| 10.2 | $\le^{2a}\_S\iff\le\_S$ on left-c.e. reals | keep increasing terms at matching indices; wait until the increase in $b$ exceeds the extra error |
 | 10.3 | reflexive and transitive | make middle witnesses agree to fixed precision $2^{-n}$ |
 | 10.4 | least degree $=$ computable reals | fast approximation fits in slack; computable upper error bound gives a search |
 | 10.5 | $\le^2\_S$ is not transitive | diagonalize against an irrational computable target; insert a rational middle real |
