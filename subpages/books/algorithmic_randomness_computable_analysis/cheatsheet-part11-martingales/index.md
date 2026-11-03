@@ -23,7 +23,7 @@ tags:
 
 **Conventions.** Work on fair-coin Cantor space $\lbrace0,1\rbrace^{\mathbb N}$, with cylinder $[[\sigma]]$, length $l(\sigma)$ and measure $\lambda([[\sigma]])=2^{-l(\sigma)}$. As in the notes, $\lambda$ also denotes the empty word, so $d(\lambda)$ is initial capital; $\tau\sqsubseteq\sigma$ means “$\tau$ is a prefix of $\sigma$.” All capital values are finite and nonnegative. “C.e.” for a real-valued function means uniformly **lower semicomputable**, and “random” means Martin-Löf random; $K$ denotes prefix-free complexity. We do not assume initial capital is computable or normalize it by dividing by an unknown real.
 
-**The one idea.** *Capital and measure are reciprocal.* Buying a unit payoff on a cylinder $[[\sigma]]$ costs $2^{-l(\sigma)}$; conversely, a strategy with initial capital $c$ can reach capital $k$ on a set of measure at most $c/k$. Thus a small effective exceptional set finances a successful betting strategy, and a successful effective strategy generates small exceptional sets. This completes the equivalence between untypicality, compressibility and predictability.
+**The one idea.** *Small measure corresponds to a large possible gain in capital.* Start with capital $2^{-l(\sigma)}$ and bet everything on each successive bit of $\sigma$: every correct prediction doubles the capital, so it reaches $1$ exactly when the observed sequence begins with $\sigma$; a wrong prediction leaves $0$. Conversely, a strategy starting with $c$ can reach capital $k$ on a set of measure at most $c/k$. These two observations convert effective tests into successful betting strategies and successful strategies into effective tests, completing the equivalence between untypicality, compressibility and predictability.
 
 | step | result | what it contributes |
 | :-- | :-- | :-- |
@@ -158,13 +158,46 @@ If $d$ is computable or c.e., respectively, $\tilde d$ can be chosen in the same
 
 </div>
 
-**Idea: protect accumulated winnings and keep the active stake bounded.** The saved capital only increases, so arbitrarily high peaks can fund savings tending to infinity even if the original strategy repeatedly crashes. A bounded original path must produce bounded savings as well; this gives equality of the two success sets, not merely inclusion.
+**Idea: remember the peaks, so later losses cannot erase all earlier gains.** Merely replacing $d$ by $\log(1+d)$ would compress the peaks but still crash back towards $0$ whenever $d$ does. Instead, remember the largest capital reached so far, $M$, and split the transformed capital into **protected savings**, depending only on $M$, and a **small active stake**, depending on the current $d$. Only the active part can be lost when $d$ falls.
 
 **A smooth formula for the trick.** The following version avoids deciding equality at saving thresholds. Put
 
 $$M(\sigma)=\max_{\tau\sqsubseteq\sigma}d(\tau),\qquad s(M)=\log(1+M)-\frac{M}{1+M},\qquad \tilde d(\sigma)=s(M(\sigma))+\frac{d(\sigma)}{1+M(\sigma)},$$
 
-where $\log$ is the natural logarithm. Concavity of $\log(1+x)$ bounds each child's new total by $s(M(\sigma))+d(\sigma i)/(1+M(\sigma))$, whose average is at most $\tilde d(\sigma)$. The saved term $s(M)$ is increasing and unbounded, while the active term lies in $[0,1)$, so precisely the unbounded original paths give $\tilde d\to\infty$. Finally, the formula is computable and nondecreasing in both $d$ and $M$ on $0\le d\le M$, so it preserves computability and lower semicomputability.
+where $\log$ is the natural logarithm.
+
+**Between records: the savings stay fixed.** While the original capital remains below its previous maximum $M$, the transformed strategy holds $s(M)$ untouched and follows $d$ at the reduced scale $1/(1+M)$. Since $0\le d\le M$, its active capital is always less than one unit:
+
+$$0\le\frac{d}{1+M}<1,\qquad s(M)\le\tilde d<s(M)+1.$$
+
+Even if $d$ loses almost everything, $\tilde d$ can only fall back towards the savings already accumulated. For example, after a record $M=8$, savings are $s(8)\approx1.308$; a crash from $d=8$ to $d=0.5$ reduces transformed capital from $\log9\approx2.197$ to about $1.364$, while those savings remain intact.
+
+**At a new record: save more and reduce the scale of future bets.** If $d$ reaches a new maximum $x>M$, the savings increase from $s(M)$ to $s(x)$ and the active multiplier decreases from $1/(1+M)$ to $1/(1+x)$. The savings really do grow with the record:
+
+$$s'(M)=\frac{M}{(1+M)^2}\ge0,\qquad s(M)=\log(1+M)-1+\frac1{1+M}\longrightarrow\infty.$$
+
+Thus unbounded records produce an unbounded, nondecreasing floor under the new capital. The logarithm deliberately makes that floor grow slowly; the theorem asks for divergence, not a fast rate of gain.
+
+<figure class="math-figure">
+  <img src="{{ '/assets/images/notes/books/algorithmic_randomness_computable_analysis/arca_smooth_savings.png' | relative_url }}" alt="Two aligned plots of a martingale capital path and its savings transform. Original capital reaches 8, 16, 32, and 64, repeatedly falling to 0.5. Protected savings never decrease, and transformed capital always lies between the savings and savings plus one." loading="lazy" width="1696" height="1248">
+  <figcaption>The same finite path before and after the transformation; the vertical scales differ. Red is the original capital $d_n$, orange its running maximum $M_n$, green the protected savings $s(M_n)$, and blue the transformed capital. The shaded strip is $[s(M_n),s(M_n)+1]$: blue always stays inside it. At each crash, green stays fixed. Extending this pattern with unbounded peaks would make the green floor, and hence the blue capital, tend to infinity.</figcaption>
+</figure>
+
+**Where the formula comes from: use the tangent at the last record.** For $\phi(x)=\log(1+x)$, the tangent line at $M$ is
+
+$$\phi(M)+\phi'(M)(d-M)=\underbrace{\log(1+M)-\frac{M}{1+M}}_{\text{protected savings}}+\underbrace{\frac{d}{1+M}}_{\text{active capital}}.$$
+
+So the savings are exactly the tangent's intercept, and the active multiplier is its slope. Below the record we follow this line; at a new record $x$ we switch to the tangent at $x$, whose value there is $\phi(x)$. Concavity puts $\phi(x)$ below the old tangent, so switching never requires extra money: any surplus can be discarded, as a supermartingale allows.
+
+**Why the strategy remains a supermartingale.** For either child with original capital $x=d(\sigma i)$, the new total is at most $s(M(\sigma))+x/(1+M(\sigma))$: equality holds if no new record is set, and concavity gives the bound otherwise. Averaging over the next bit therefore gives
+
+$$\frac{\tilde d(\sigma0)+\tilde d(\sigma1)}2\le s(M(\sigma))+\frac{d(\sigma0)+d(\sigma1)}{2(1+M(\sigma))}\le\tilde d(\sigma).$$
+
+**Why success and effectiveness are preserved.** Unbounded $d$ means $M\to\infty$, so the savings force $\tilde d\to\infty$; bounded $d$ keeps $M$, the savings and the total bounded. The full expression $F(d,M)=s(M)+d/(1+M)$ is computable and nondecreasing in both variables on $0\le d\le M$:
+
+$$\frac{\partial F}{\partial d}=\frac1{1+M}>0,\qquad \frac{\partial F}{\partial M}=\frac{M-d}{(1+M)^2}\ge0.$$
+
+Consequently, computable approximations remain computable, and increasing lower approximations to $d$ and its finite running maximum yield increasing lower approximations to the total (with the usual rational approximations to the logarithm). It is the **whole expression** that preserves lower semicomputability, not its quotient term considered separately.
 
 **What actually increases.** Savings are monotone; total capital need not be. The conclusion is convergence to infinity, not monotone divergence. Also, arbitrary quotients of left-c.e. reals need not be left-c.e., so the source's betting-ratio formulas alone do not establish the c.e. preservation claim; the monotone formula above does.
 
@@ -187,7 +220,7 @@ $$U_n=\bigcup_{d(\sigma)>2^n k}[[\sigma]],\qquad n\ge1.$$
 
 Strict comparison makes the $U\_n$ uniformly c.e. open, while 11.2 gives $\lambda(U\_n)\le d(\lambda)/(2^n k)\le2^{-n}$. Unbounded capital puts $A$ in every $U\_n$, so $A$ fails this Martin-Löf test. The integer $k$ is a fixed finite choice; one need not compute the exact initial capital from its lower approximation.
 
-**The elementary bet: buy one cylinder.** For a word $\sigma$, define
+**The elementary bet: predict a fixed prefix.** For a word $\sigma$, define
 
 $$g_\sigma(\tau)=2^{l(\tau)}\lambda([[\sigma]]\cap[[\tau]])=
 \begin{cases}
@@ -198,13 +231,13 @@ $$g_\sigma(\tau)=2^{l(\tau)}\lambda([[\sigma]]\cap[[\tau]])=
 
 This computable rational-valued martingale starts with $2^{-l(\sigma)}$, doubles on each correct bit, loses everything on a wrong bit, and freezes at $1$ after reaching $\sigma$. It is the conditional probability of the target cylinder given the observed prefix.
 
-**Test → strategy: each failed layer buys another permanent unit.** Write a failed Martin-Löf test as $U\_i=\bigcup\_{\sigma\in L\_i}[[\sigma]]$, with uniformly c.e. prefix-free presentations $L\_i$, and set
+**Test → strategy: each failed layer contributes another permanent unit of capital.** Write a failed Martin-Löf test as $U\_i=\bigcup\_{\sigma\in L\_i}[[\sigma]]$, with uniformly c.e. prefix-free presentations $L\_i$, and set
 
 $$d=\sum_{i\ge1}\sum_{\sigma\in L_i}g_\sigma,\qquad d(\lambda)=\sum_{i\ge1}\lambda(U_i)\le\sum_{i\ge1}2^{-i}=1.$$
 
 Proposition 11.4 gives a c.e. martingale. For each $i$, some prefix of $A$ belongs to $L\_i$, and that component contributes $1$ at every later prefix; after the first $r$ layers have all been hit, $d(A\upharpoonright n)\ge r$ forever. Thus this construction already gives $d(A\upharpoonright n)\to\infty$, and the remaining implication follows because every martingale is a supermartingale.
 
-**Bookkeeping that matters.** Count pairs $(i,\sigma)$, not just words: the same cylinder appearing in different layers must finance a separate unit each time. A prefix-free presentation prevents double-counting measure within a layer, and the layer-hit lengths need not be increasing—use their running maximum.
+**Bookkeeping that matters.** Count pairs $(i,\sigma)$, not just words: the same cylinder appearing in different layers needs a separate copy of its betting strategy for each layer. A prefix-free presentation prevents double-counting measure within a layer, and the layer-hit lengths need not be increasing—use their running maximum.
 
 ## The three intuitions, with the quantifiers visible
 
