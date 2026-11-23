@@ -1,0 +1,65 @@
+title: Georgii Sirotenko
+description: >-
+  Georgii Sirotenko is an M.Sc. student at Heidelberg University working on the
+  mathematical foundations of machine learning: learning theory, information
+  theory, optimization and generative modelling.
+url: "https://sirotenkogeorgii.github.io"
+baseurl: ""
+lang: en
+
+author:
+  name: Georgii Sirotenko
+  email: georgiisirotenko@gmail.com
+github_username: sirotenkogeorgii
+
+# Show "Notes" in the navigation once at least one note is published at /notes/.
+# All notes are private for now, so the link stays hidden.
+notes_public: false
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+permalink: /blog/:year/:title/
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+feed:
+  path: blog/feed.xml
+
+# Old note URLs that should forward to /notes/... once a note is public.
+# Each document sets `permalink:` (old URL) and `redirect_to:` (new URL).
+collections:
+  redirects:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      math: true
+  - scope:
+      path: ""
+      type: redirects
+    values:
+      sitemap: false
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .github
+  - .bundle
