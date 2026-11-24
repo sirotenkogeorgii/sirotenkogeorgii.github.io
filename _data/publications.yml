@@ -1,0 +1,17 @@
+# Newest first. Authors exactly as printed; "G. Sirotenko" is highlighted.
+- year: 2026
+  title: "S2a-reducibility and differentiation in Martin-Löf random reals"
+  authors: ["G. Sirotenko", "I. Titov"]
+  venue: "Machines, Computations, and Universality (MCU 2026), Lecture Notes in Computer Science, Springer"
+  status: "to appear"
+  links:
+    - label: "arXiv:2608.15750"
+      url: "https://arxiv.org/abs/2608.15750"
+
+- year: 2024
+  title: "Changes in Concrete Subjected to Neutron Irradiation"
+  authors: ["Z. Hlaváč", "J. Blažek", "G. Sirotenko"]
+  venue: "Modern Building Materials, Structures and Techniques, Lecture Notes in Civil Engineering 392, pp. 99–108, Springer"
+  links:
+    - label: "doi:10.1007/978-3-031-44603-0_9"
+      url: "https://doi.org/10.1007/978-3-031-44603-0_9"

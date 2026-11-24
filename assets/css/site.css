@@ -1,0 +1,276 @@
+/* Personal site. Palette shared with the notes site; text set in a
+   screen serif, navigation in the notes site's system sans. */
+
+:root {
+  --paper: #ffffff;
+  --ink: #1f2430;
+  --muted: #5b6270;
+  --rule: #e2e5eb;
+  --link: #1d4ed8;
+  --flow-a: #1d4ed8;
+  --flow-b: #0f9b6c;
+
+  --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, "Iowan Old Style", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+
+  --measure: 34rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171b24;
+    --ink: #e4e7ee;
+    --muted: #a3aab7;
+    --rule: #2c323e;
+    --link: #82a6ff;
+    --flow-a: #6f95ff;
+    --flow-b: #3cc596;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.1875rem;          /* 19px */
+  line-height: 1.6;
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+}
+
+/* Layout: one left-aligned column, ragged right. */
+.site-header,
+.content,
+.site-footer {
+  width: 100%;
+  max-width: calc(var(--measure) + 3rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+
+.site-name {
+  font-size: 1.1875rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.125rem;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.125rem 0;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  background: var(--paper);
+  color: var(--link);
+  padding: 0.25rem 0.5rem;
+}
+.skip-link:focus { left: 0.5rem; }
+
+/* Text */
+h1, h2, h3 {
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }      /* 36px */
+h2 { font-size: 1.5rem;  margin: 2.5rem 0 0.75rem; }   /* 24px */
+h3 { font-size: 1.1875rem; font-weight: 700; margin: 2rem 0 0.25rem; }
+
+p, ul, ol { margin: 0 0 1rem; }
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.lede {
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+
+/* Landing figure: a displacement interpolation of densities.
+   The single animated moment on the site: curves draw in once, left to
+   right in t, then stay still. */
+.flow-figure { margin: 0 0 2rem; }
+
+.flow-figure__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.flow-figure__base {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.flow-figure__curve {
+  fill: none;
+  stroke: var(--flow-a);
+  stroke: color-mix(in oklab, var(--flow-b) calc(var(--t) * 100%), var(--flow-a));
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+.flow-figure__curve--end {
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.flow-figure figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flow-figure__curve {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.1s cubic-bezier(.4, 0, .2, 1) forwards;
+    animation-delay: calc(var(--i) * 90ms);
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+}
+
+.contact {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+}
+
+/* Publications: year in a hanging column, entry beside it. */
+.pubs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pub {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: 0 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.pub__year {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--muted);
+  padding-top: 0.2rem;
+}
+
+.pub__title { margin: 0; }
+.pub__authors,
+.pub__venue { margin: 0; color: var(--muted); font-size: 1.0625rem; }
+.pub__authors .me { color: var(--ink); }
+.pub__links { margin: 0.25rem 0 0; font-size: 1.0625rem; }
+.pub__links a { text-underline-offset: 0.3em; }
+.pub__status { font-style: italic; }
+
+@media (max-width: 30rem) {
+  .pub { grid-template-columns: 1fr; }
+  .pub__year { padding-top: 0; }
+}
+
+/* Research */
+.project { margin-bottom: 2.25rem; }
+.project h2 { margin-top: 0; margin-bottom: 0.25rem; font-size: 1.375rem; }
+
+/* Blog */
+.post-list { list-style: none; padding: 0; }
+.post-list li { margin-bottom: 0.75rem; }
+.post-list time {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  color: var(--muted);
+  margin-right: 0.75rem;
+}
+.post-date { color: var(--muted); font-size: 1.0625rem; margin-bottom: 2rem; }
+
+.empty { color: var(--muted); font-style: italic; }
+
+/* Code and math */
+code, pre {
+  font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85em;
+}
+pre {
+  overflow-x: auto;
+  padding: 0.75rem 1rem;
+  border-left: 2px solid var(--rule);
+}
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-bottom: 2.5rem;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}

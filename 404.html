@@ -1,0 +1,14 @@
+---
+title: Page not found
+permalink: /404.html
+sitemap: false
+---
+<h1>Page not found</h1>
+
+<p>There is no page at this address.</p>
+{% if site.notes_public %}
+<p>Study notes have moved to <a href="{{ '/notes/' | relative_url }}">the notes site</a>.</p>
+{% else %}
+<p>The study notes that used to be on this site are not public at the moment.</p>
+{% endif %}
+<p><a href="{{ '/' | relative_url }}">Go to the home page</a></p>

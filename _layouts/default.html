@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  {% seo %}
+  {% feed_meta %}
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {% if page.math %}
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        processEscapes: true,
+        packages: {'[+]': ['ams']}
+      }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  {% endif %}
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  {%- assign cv = site.static_files | where: "path", "/assets/cv.pdf" | first -%}
+  <header class="site-header">
+    <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>About</a>
+      <a href="{{ '/publications/' | relative_url }}"{% if page.url == '/publications/' %} aria-current="page"{% endif %}>Publications</a>
+      <a href="{{ '/research/' | relative_url }}"{% if page.url == '/research/' %} aria-current="page"{% endif %}>Research</a>
+      {%- if cv %}
+      <a href="{{ '/assets/cv.pdf' | relative_url }}">CV</a>
+      {%- endif %}
+      <a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a>
+      {%- if site.notes_public %}
+      <a href="{{ '/notes/' | relative_url }}">Notes</a>
+      {%- endif %}
+    </nav>
+  </header>
+
+  <main id="content" class="content">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}</p>
+  </footer>
+</body>
+</html>

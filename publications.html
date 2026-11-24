@@ -1,0 +1,26 @@
+---
+title: Publications
+permalink: /publications/
+---
+<h1>Publications</h1>
+
+<ul class="pubs">
+  {%- for p in site.data.publications %}
+  <li class="pub">
+    <span class="pub__year">{{ p.year }}</span>
+    <div>
+      <p class="pub__title">{{ p.title }}</p>
+      <p class="pub__authors">
+        {%- for a in p.authors -%}
+          {%- if forloop.last and forloop.length > 1 %} and {% elsif forloop.index > 1 %}, {% endif -%}
+          {%- if a == "G. Sirotenko" %}<span class="me">{{ a }}</span>{% else %}{{ a }}{% endif -%}
+        {%- endfor -%}
+      </p>
+      <p class="pub__venue">{{ p.venue }}{% if p.status %}, <span class="pub__status">{{ p.status }}</span>{% endif %}.</p>
+      {%- if p.links %}
+      <p class="pub__links">{% for l in p.links %}<a href="{{ l.url }}">{{ l.label }}</a>{% unless forloop.last %} &ensp;{% endunless %}{% endfor %}</p>
+      {%- endif %}
+    </div>
+  </li>
+  {%- endfor %}
+</ul>
