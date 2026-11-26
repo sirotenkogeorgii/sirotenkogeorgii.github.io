@@ -5,3 +5,6 @@ _site/
 .bundle/
 vendor/
 .DS_Store
+
+# Built from cv/ by cv/build.sh
+/assets/cv.pdf

@@ -1,0 +1,38 @@
+% Shared visual style -- based on the earlier academic CV preferred by the author.
+\usepackage[a4paper,top=12mm,bottom=9mm,left=20mm,right=20mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{needspace}
+\definecolor{cvgray}{HTML}{555555}
+\hypersetup{colorlinks=true,urlcolor=black,linkcolor=black,pdfauthor={Georgii Sirotenko},pdfsubject={Curriculum Vitae}}
+\linespread{0.97}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.35em,topsep=0pt,itemsep=0pt,parsep=0pt,partopsep=0pt}
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{-3pt}\titlerule]
+\titlespacing*{\section}{0pt}{5pt}{3pt}
+\newcommand{\cvheader}{%
+\begin{center}
+{\LARGE\bfseries Georgii Sirotenko}\\[4pt]
+Heidelberg, Germany \quad $\cdot$ \quad \href{https://github.com/sirotenkogeorgii}{github.com/sirotenkogeorgii}\\[2pt]
+\href{mailto:georgiisirotenko@gmail.com}{georgiisirotenko@gmail.com}
+\end{center}
+\vspace{-5pt}
+}
+\newcommand{\cvdated}[2]{\needspace{2.6\baselineskip}\textbf{#1}\hfill\textcolor{cvgray}{#2}\par}
+\newcommand{\cventry}[3]{\cvdated{#1}{#2}#3\par}
+\newcommand{\cvrole}[3]{\cvdated{#1}{#2}\textit{#3}\par}
+\newcommand{\cvproject}[2]{\needspace{2\baselineskip}\textbf{#1} #2\par\vspace{1pt}}
+\input{content/education.tex}
+\input{content/research.tex}
+\input{content/publications.tex}
+\input{content/experience.tex}
+\input{content/projects.tex}
+\input{content/skills.tex}
