@@ -16,7 +16,7 @@ with finite-sample coverage guarantees.
 
 <div class="project" markdown="1">
 ## Generative Neural Fields for Random and Stochastic PDEs
-<p class="meta">M.Sc. thesis (planned, from January 2027), supervised by Prof. Jakob Zech</p>
+<p class="meta">M.Sc. thesis (in progress), supervised by Prof. Jakob Zech</p>
 
 Coordinate-based generative neural fields for solutions of random and
 stochastic PDEs, focusing on approximation rates, latent dimensionality and
