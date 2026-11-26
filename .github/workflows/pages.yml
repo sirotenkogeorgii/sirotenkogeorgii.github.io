@@ -24,6 +24,14 @@ jobs:
         with:
           ruby-version: "3.1"
           bundler-cache: true
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends latexmk lmodern \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended
+      - name: Build the CV
+        run: bash cv/build.sh
       - name: Build
         run: bundle exec jekyll build
         env:

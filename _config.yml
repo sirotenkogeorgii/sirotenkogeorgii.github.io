@@ -63,3 +63,4 @@ exclude:
   - vendor
   - .github
   - .bundle
+  - cv
